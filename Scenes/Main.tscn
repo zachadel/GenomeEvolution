@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scenes/Main.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/Gene.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/Chromosome.tscn" type="PackedScene" id=3]
+
+[node name="Main" type="Node" index="0"]
+
+script = ExtResource( 1 )
+Gene = ExtResource( 2 )
+
+[node name="Chromosome" parent="." index="0" instance=ExtResource( 3 )]
+
+
