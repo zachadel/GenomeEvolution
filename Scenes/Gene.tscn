@@ -3,7 +3,7 @@
 [ext_resource path="res://Scripts/Gene.gd" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
 
-[node name="Gene" type="Node2D" index="0"]
+[node name="Gene" type="Node2D"]
 
 position = Vector2( 32.6489, 31.2885 )
 script = ExtResource( 1 )
@@ -13,7 +13,7 @@ _sections_unfolded = [ "Transform" ]
 
 texture = ExtResource( 2 )
 
-[node name="ID_Label" type="Label" parent="." index="1"]
+[node name="Gene_ID_Label" type="Label" parent="." index="1"]
 
 anchor_left = 0.0
 anchor_top = 0.0

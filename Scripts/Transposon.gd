@@ -10,7 +10,7 @@ func _ready():
 func _process(delta):
 	pass
 
-func _init(id):
-	self.id = id
-	TE_type += str(self.id)
-	$ID_Label.text = TE_type
+func init():
+	id = randi() % 10 + 2
+	TE_type = str(id)
+	$TE_ID_Label.text = TE_type

@@ -14,21 +14,23 @@ enum GAME_STATE{
 }
 
 var game_state = GAME_STATE.start
-var has_changed = true
+var has_changed = false
 var game_over = false
 var score = 0
 
 func _ready():
+	randomize()
 	game_over = false
 	$score_text.text = "Score: " + str(score)
 	game_state = GAME_STATE.gainTE
-	$phase.text = str(game_state)
+	$phase.text = "Phase: " + str(game_state)
 
 func _process(delta):
 	if has_changed:
 		match game_state:
 			gainTE:
 				$phase.text = str(game_state)
+				$chromosome.add_TE()
 				game_state = GAME_STATE.jumpingTE
 				pass
 			jumpingTE:
@@ -60,15 +62,4 @@ func _on_next_phase_button_down():
 	has_changed = true
 		
 func scoring():
-	pass
-	
-func turn_sequence():
-	gain_transposons()
-	transposon_jumping()
-	
-func gain_transposons():
-	$chromosome.add_TE()
-	
-	
-func transposon_jumping():
 	pass

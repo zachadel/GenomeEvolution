@@ -14,4 +14,4 @@ func _process(delta):
 func init(id):
 	self.id = id
 	gene_type = str(self.id)
-	$ID_Label.text = str(self.id)
+	$Gene_ID_Label.text = str(self.id)
