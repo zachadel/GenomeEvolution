@@ -7,7 +7,6 @@ var gene_types = ["replication","building", "sensing", "breaking", "moving_thing
 func _ready():
 	gene_type = ""
 	id = 0
-	#$ID_Label.text = str(id)
 
 func _process(delta):
 	pass
@@ -15,5 +14,4 @@ func _process(delta):
 func init(id):
 	self.id = id
 	gene_type = str(self.id)
-	#position = location
 	$ID_Label.text = str(self.id)

@@ -4,13 +4,13 @@ var TE_type
 var id
 
 func _ready():
-	TE_type = ""
+	TE_type = "TE: "
 	id = 0
 
 func _process(delta):
 	pass
 
-func _init(id, location):
-	id = randi()%6+1
-	TE_type = str(id)
-	position = location
+func _init(id):
+	self.id = id
+	TE_type += str(self.id)
+	$ID_Label.text = TE_type
