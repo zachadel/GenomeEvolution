@@ -11,13 +11,17 @@ config_version=3
 [application]
 
 config/name="Genome Evolution"
-run/main_scene="res://Scenes/Main.tscn"
+run/main_scene="res://Scenes/CardTable.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+Game="*res://Scripts/Game.gd"
 
 [display]
 
-window/size/width=1280
-window/size/height=720
+window/size/width=1600
+window/size/height=900
 
 [rendering]
 

@@ -1,56 +1,70 @@
-extends Panel
+extends HBoxContainer
 
-#export (PackedScene) var gene_scene
+signal elm_clicked(elm);
+func _propogate_click(elm):
+	emit_signal("elm_clicked", elm);
 
-var gene_scene = preload("res://Scenes/Gene.tscn")
-var TE_scene = preload("res://Scenes/Transposon.tscn")
+signal got_dupe_essgene(elm);
 
-var gene_TE_Arrays = [[], []]
-var number_of_genes = 6
+func valid_gap_pos(idx):
+	return idx > 0 && idx < get_child_count()-1 && !get_child(idx - 1).is_gap() && !get_child(idx + 1).is_gap();
 
-func _ready():
-	init_genes()
+func create_gap(pos):
+	var gap = load("res://Scenes/SequenceElement.tscn").instance();
+	gap.setup("break");
+	return add_elm(gap, pos);
 
-func _process(delta):
-	pass
-	
-#redorder the array when necessary to update sprite locations
-func order_array():
-	#these are variables needed for spacing
-	var init_pos = Vector2(OS.get_real_window_size().x / 2, OS.get_real_window_size().y / 3)
-	var temp_gene = gene_scene.instance()
-	var gene_sprite_size = temp_gene.get_node("Sprite").get_texture().get_size()
-	temp_gene.queue_free()
-	
-	#simple reordering
-	for i in range(2):
-		for j in range(gene_TE_Arrays[i].size()):
-			if number_of_genes % 2 == 0:
-				gene_TE_Arrays[i][j].position.x = init_pos.x + (gene_sprite_size.x * 2 * (j + 0.5 - (gene_TE_Arrays[i].size()/2)))
-			else:
-				gene_TE_Arrays[i][j].position.x = init_pos.x + (gene_sprite_size.x * 2 * (j - (gene_TE_Arrays[i].size()/2)))
-			gene_TE_Arrays[i][j].position.y = init_pos.y + (gene_sprite_size.y * i * 2)
-	pass
-	
-func add_TE():
-	var num_of_TE = randi()%6+1
-	for i in range(num_of_TE):
-		var new_pos = randi()%(gene_TE_Arrays[0].size() + gene_TE_Arrays[1].size())
-		var prime_ndx = floor(new_pos / gene_TE_Arrays[0].size())
-		new_pos -= ((prime_ndx * gene_TE_Arrays[0].size()) - 1)
-		#print(prime_ndx)
-		gene_TE_Arrays[prime_ndx].insert(new_pos, TE_scene.instance())
-		gene_TE_Arrays[prime_ndx][new_pos].init()
-		add_child(gene_TE_Arrays[prime_ndx][new_pos])
-	order_array()
-	
-#this function instances all of the initial genes, puts them
-#into an array, then sets their positions appropriately, and
-#finally adds them as a child of the chromosome object
-func init_genes():
-	for i in range(2):
-		for j in range(number_of_genes):
-			gene_TE_Arrays[i].push_back(gene_scene.instance())
-			gene_TE_Arrays[i][j].init(j)
-			add_child(gene_TE_Arrays[i][j])
-	order_array()
+func add_elm(elm, pos = null):
+	if (pos == null):
+		pos = get_child_count();
+	if (!(elm in get_children())):
+		if (has_gene(elm.id) && elm.mode == "essential"):
+			emit_signal("got_dupe_essgene", elm);
+		if (elm.get_parent() != null):
+			elm.disconnect("elm_clicked", elm.get_parent(), "_propogate_click");
+			elm.get_parent().remove_child(elm);
+		add_child(elm);
+		elm.connect("elm_clicked", self, "_propogate_click");
+	move_child(elm, pos);
+	return elm;
+
+func find_pair(left, right):
+	for i in range(get_child_count()-1):
+		if (get_child(i).id == left && get_child(i+1).id == right):
+			return i;
+	return -1;
+
+func pair_exists(left, right):
+	return bool(1+find_pair(left, right)); # Is this a hack? Yeah, kinda...
+
+func find_gene(id):
+	for i in range(get_child_count()):
+		if (get_child(i).id == id):
+			return i;
+	return -1;
+
+func has_gene(id):
+	return bool(1+find_gene(id)); # But it's a good enough hack to do again
+
+func has_essclass(sc):
+	for g in get_children():
+		if (g.ess_class == sc):
+			return true;
+	return false;
+
+func find_all_genes(id):
+	var matched = [];
+	for g in get_children():
+		if (g.id == id):
+			matched.append(g);
+	return matched;
+
+func get_elms_around_pos(idx, clickable = false):
+	var elms = [];
+	if (idx > 0):
+		get_child(idx-1).disable(!clickable);
+		elms.append(get_child(idx-1));
+	if (idx < get_child_count()-1):
+		get_child(idx+1).disable(!clickable);
+		elms.append(get_child(idx+1));
+	return elms;
