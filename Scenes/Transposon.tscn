@@ -16,7 +16,7 @@ void fragment(){
 render_priority = 0
 shader = SubResource( 1 )
 
-[node name="Transposon" type="Node2D" index="0"]
+[node name="Transposon" type="Node2D"]
 
 position = Vector2( 32.6489, 31.2885 )
 script = ExtResource( 1 )

@@ -39,6 +39,7 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 texture = ExtResource( 2 )
 expand = true
+stretch_mode = 0
 _sections_unfolded = [ "Material", "Rect", "Visibility" ]
 
 [node name="GrayFilter" type="ColorRect" parent="." index="1"]

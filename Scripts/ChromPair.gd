@@ -56,7 +56,7 @@ func recombine(elm0, elm1):
 		var other_idx = int(!bool(cm)); # Don't be mad
 		var cmsm = get_node("cmsm" + str(other_idx) + "/cmsm");
 		for elm in cm_bunches[cm]:
-			cmsm.add_elm(elm);
+			cmsm.add_elm(elm)
 	recombining = false;
 	return idxs;
 	

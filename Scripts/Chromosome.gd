@@ -26,6 +26,7 @@ func add_elm(elm, pos = null):
 		add_child(elm);
 		elm.connect("elm_clicked", self, "_propogate_click");
 	move_child(elm, pos);
+	move_to(Vector2(150, 150), Vector2(500, 500), 5000)
 	return elm;
 
 func find_pair(left, right):
@@ -68,3 +69,18 @@ func get_elms_around_pos(idx, clickable = false):
 		get_child(idx+1).disable(!clickable);
 		elms.append(get_child(idx+1));
 	return elms;
+
+func move_to(start, end, duration):
+	var scene = load("res://Scenes/MovingElement.tscn")
+	var elm = scene.instance()
+	get_tree().get_root().get_node("Control").add_child(elm)
+	elm.position = start
+	var start_time = OS.get_ticks_msec()
+	var elapsed = OS.get_ticks_msec() - start_time
+	while elapsed < duration:
+		elapsed = OS.get_ticks_msec() - start_time
+		var intermediate = ((end - start) * (float(elapsed) / duration)) + start
+		elm.position = intermediate
+		yield(get_tree(), "idle_frame")
+	elm.position = end
+	return

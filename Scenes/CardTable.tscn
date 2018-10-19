@@ -24,7 +24,7 @@ tracks/0/keys = {
 } ]
 }
 
-[node name="Control" type="Control" index="0"]
+[node name="Control" type="Control"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -50,7 +50,7 @@ blend_times = [  ]
 
 [node name="chromes" parent="." index="1" instance=ExtResource( 2 )]
 
-margin_bottom = 510.0
+margin_bottom = 660.0
 
 [node name="btn_nxt" type="Button" parent="." index="2"]
 
