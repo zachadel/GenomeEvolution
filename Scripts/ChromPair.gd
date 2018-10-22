@@ -3,17 +3,23 @@ extends VBoxContainer
 var ate_list = [];
 var gap_list = [];
 var evolve_candidates = [];
-var recombining = false; # Used to prevent recombination from triggering evolution conditions
+var recombining = false;  # Used to prevent recombination from triggering evolution conditions
 
 signal elm_clicked(elm);
+
+func _ready():
+	$cmsm0/cmsm.connect("sort_children", self, "on_sort_elms");
+
 func _propogate_click(elm):
 	emit_signal("elm_clicked", elm);
+
 func fix_bars():
 	Game.change_slider_width($cmsm0);
 	Game.change_slider_width($cmsm1);
 
 func get_cmsm(idx):
 	return get_node("cmsm" + str(idx) + "/cmsm");
+
 func get_other_cmsm(cmsm):
 	if (cmsm == $cmsm0/cmsm):
 		return $cmsm1/cmsm;
@@ -183,3 +189,10 @@ func validate_essentials(ess_classes):
 		if (!$cmsm0/cmsm.has_essclass(e) && !$cmsm1/cmsm.has_essclass(e)):
 			return false;
 	return true;
+
+func on_sort_elms():
+	yield( get_tree().create_timer(2.0), "timeout" );
+	for el in $cmsm0/cmsm.get_children():
+		el.get_node("Tween").interpolate_property(el, "Margin/Left", 0, 500, 2, Tween.EASE_IN, Tween.TRANS_LINEAR);
+		el.get_node("Tween").start();
+		print(el);

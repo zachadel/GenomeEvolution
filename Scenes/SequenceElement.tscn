@@ -9,8 +9,6 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 477.0
-margin_bottom = 253.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -23,7 +21,7 @@ enabled_focus_mode = 2
 shortcut = null
 group = null
 script = ExtResource( 1 )
-_sections_unfolded = [ "Textures", "Visibility" ]
+_sections_unfolded = [ "Margin", "Textures", "Visibility" ]
 
 [node name="BorderRect" type="TextureRect" parent="." index="0"]
 
@@ -78,6 +76,15 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Rect" ]
+
+[node name="Tween" type="Tween" parent="." index="3"]
+
+repeat = false
+playback_process_mode = 1
+playback_speed = 1.0
+playback/active = false
+playback/repeat = false
+playback/speed = 1.0
 
 [connection signal="pressed" from="." to="." method="_on_SeqElm_pressed"]
 
