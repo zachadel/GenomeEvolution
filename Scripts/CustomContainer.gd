@@ -1,4 +1,4 @@
-extends HBoxContainer
+extends Container
 
 var SeqEl;
 
@@ -16,7 +16,7 @@ func _on_HBoxContainer_sort_children():
 		var i = 0
 		for el in elements:
 			el.get_node("Tween").interpolate_property(el, "margin_left",
-			 el.get_begin().x - el.texture_normal.get_width(), el.texture_normal.get_width() * i, 1,
+			 el.get_begin().x, el.texture_normal.get_width() * i, 1,
 			 Tween.EASE_IN, Tween.TRANS_LINEAR);
 			el.get_node("Tween").start();
 	#		el.set_begin(Vector2(el.texture_normal.get_width() * i, 0));
@@ -31,7 +31,6 @@ func _input(event):
 		newGene.modulate = Color(get_child_count() * 0.1, 0.1, 0.1);
 		elements.push_front(newGene);
 		add_child(newGene);
-		move_child(newGene, 0);
 
 func add_spacer(begin):
 	pass
