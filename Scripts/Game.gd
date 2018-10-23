@@ -6,6 +6,9 @@ var essential_classes = ["Replication", "Locomotion", "Manipulation", "Sensing",
 var turns = ["New TEs", "Active TEs Jump", "Repair Breaks", "Environmental Damage", "Repair Breaks", "Recombination", "Evolve", "Check Viability"];
 var turn_idx = -1;
 var round_num = 1;
+var animation_duration = 0.5;
+var animation_ease = Tween.EASE_IN;
+var animation_trans = Tween.TRANS_LINEAR;
 
 func _ready():
 	randomize();
