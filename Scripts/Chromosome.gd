@@ -59,25 +59,25 @@ func add_elm(elm, pos = null):
 		# remove element from other chromosome
 		if (elm.get_cmsm() != null):
 			yield(remove_elm(elm), "completed");
-		if (elm.is_gap()):
-			print("gap");
-			# animate sliding of following elements
-			if (pos == get_child_count()):
+		
+		if (pos == get_child_count()):
 				yield(get_tree(), "idle_frame");
-			else:
-				for i in range(pos, get_child_count()):
-					var start_pos = get_child(i).get_begin();
-					var end_pos = start_pos + Vector2(get_child(i).get_size().x, 0);
-					get_child(i).get_node("Tween").interpolate_property(get_child(i), "rect_position",
-						start_pos, end_pos, Game.animation_duration,Game.animation_ease, Game.animation_trans);
-					get_child(i).get_node("Tween").start();
-				yield(get_child(pos).get_node("Tween"), "tween_completed");
-			add_child(elm);
 		else:
+			# animate elements sliding right to make room
+			for i in range(pos, get_child_count()):
+				var start_pos = get_child(i).get_begin();
+				var end_pos = start_pos + Vector2(get_child(i).get_size().x, 0);
+				get_child(i).get_node("Tween").interpolate_property(get_child(i), "rect_position",
+					start_pos, end_pos, Game.animation_duration,Game.animation_ease, Game.animation_trans);
+				get_child(i).get_node("Tween").start();
+			yield(get_child(pos).get_node("Tween"), "tween_completed");
+		elm.hide();
+		yield(get_tree(), "idle_frame");
+		add_child(elm);
+		move_child(elm, pos);
+		elm.show();
+		if (!elm.is_gap()):
 			# animate insertion
-			elm.hide();
-			add_child(elm);
-			yield(get_tree(), "idle_frame");
 			var center = elm.get_cmsm().get_cmsm_pair().get_center();
 			var offset = center - elm.get_cmsm().get_parent().get_begin() - \
 			(elm.get_size() / 2.0);
@@ -85,11 +85,10 @@ func add_elm(elm, pos = null):
 			elm.get_node("Tween").interpolate_property(elm, "rect_position",
 				 offset, end_pos, Game.animation_duration,
 				 Game.animation_ease, Game.animation_trans);
-			elm.show();
+			#elm.show();
 			elm.get_node("Tween").start();
 			yield(elm.get_node("Tween"), "tween_completed");
 		elm.connect("elm_clicked", self, "_propogate_click");
-	move_child(elm, pos);
 	return elm;
 
 func remove_elm(elm):
