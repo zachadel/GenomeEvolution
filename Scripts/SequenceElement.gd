@@ -73,13 +73,6 @@ func disable(dis):
 	$GrayFilter.visible = dis;
 	$BorderRect.visible = !dis;
 
-func get_cmsm():
-	if get_parent() == null:
-		return null;
-	elif get_parent().get_parent() == null:
-		return null;
-	return get_parent().get_parent().get_parent();
-
 func _on_SeqElm_pressed():
 	emit_signal("elm_clicked", self);
 

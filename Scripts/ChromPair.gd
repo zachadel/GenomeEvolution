@@ -6,51 +6,28 @@ var evolve_candidates = [];
 var recombining = false;  # Used to prevent recombination from triggering evolution conditions
 
 signal elm_clicked(elm);
-signal elms_moved;
 
 func _ready():
-	connect("elms_moved", self, "on_elms_moved");
+	$cmsm0/cmsm.connect("sort_children", self, "on_sort_elms");
 
 func _propogate_click(elm):
 	emit_signal("elm_clicked", elm);
 
-# GETTER FUNCTIONS
+func fix_bars():
+	Game.change_slider_width($cmsm0);
+	Game.change_slider_width($cmsm1);
 
 func get_cmsm(idx):
-	match idx:
-		0:
-			return $cmsm0;
-		1:
-			return $cmsm1;
-		_:
-			return null;
+	return get_node("cmsm" + str(idx) + "/cmsm");
 
-func get_max_pos(ends = true):
-	var sum = get_cmsm(0).holder.get_child_count() + get_cmsm(1).holder.get_child_count();
-	if (ends):
-		return sum + 2;
+func get_other_cmsm(cmsm):
+	if (cmsm == $cmsm0/cmsm):
+		return $cmsm1/cmsm;
 	else:
-		return sum - 2;
-
-func pos_to_cmsm_idx(pos, ends = true):
-	var first_posns = get_cmsm(0).holder.get_child_count();
-	if (!ends):
-		first_posns -= 1;
-	return int(pos >= first_posns);
-
-func rand_truepos(allow_ends = true):
-	var rand_val = randi()%get_max_pos(allow_ends);
-	if (!allow_ends):
-		if (pos_to_cmsm_idx(rand_val, false)):
-			rand_val += 3;
-		else:
-			rand_val += 1;
-	return rand_val;
-
-# CHROMOSOME MODIFICATION FUNCTIONS
+		return $cmsm0/cmsm;
 
 func displace_elm(elm, place_gap = true):
-	var cmsm = elm.get_cmsm();
+	var cmsm = elm.get_parent();
 	var elm_idx = elm.get_index();
 	
 	if (place_gap && cmsm.valid_gap_pos(elm_idx)):
@@ -59,13 +36,13 @@ func displace_elm(elm, place_gap = true):
 			gap_list.append(gap);
 	
 	elm.disconnect("elm_clicked", elm.get_parent(), "_propogate_click");
-	cmsm.remove_elm(elm);
+	cmsm.remove_child(elm);
 	return elm;
 
 func recombine(elm0, elm1):
 	recombining = true;
 	var idxs = [];
-	if (elm0.get_cmsm() == get_cmsm(0)):
+	if (elm0.get_parent() == $cmsm0/cmsm):
 		idxs = [elm0.get_index(), elm1.get_index()];
 	else:
 		idxs = [elm1.get_index(), elm0.get_index()];
@@ -73,17 +50,17 @@ func recombine(elm0, elm1):
 	
 	# Remove both bunches from their respective chromosomes
 	for cm in range(2):
-		var cmsm = get_cmsm(cm);
+		var cmsm = get_node("cmsm" + str(cm) + "/cmsm");
 		# Note which ones need to be removed
-		for i in range(cmsm.holder.get_child_count()-idxs[cm]):
-			cm_bunches[cm].append(cmsm.holder.get_child(i+idxs[cm]));
+		for i in range(cmsm.get_child_count()-idxs[cm]):
+			cm_bunches[cm].append(cmsm.get_child(i+idxs[cm]));
 		# Remove them (doing this earlier screws up the loop)
 		for b in cm_bunches[cm]:
 			displace_elm(b, false);
 	# Add the bunches to the other chromosomes
 	for cm in range(2):
 		var other_idx = int(!bool(cm)); # Don't be mad
-		var cmsm = get_cmsm(cm);
+		var cmsm = get_node("cmsm" + str(other_idx) + "/cmsm");
 		for elm in cm_bunches[cm]:
 			cmsm.add_elm(elm)
 	recombining = false;
@@ -94,14 +71,14 @@ func recombine(elm0, elm1):
 func create_gap(truepos = null):
 	if (truepos == null):
 		truepos = rand_truepos(false);
-	var first_posns = get_cmsm(0).holder.get_child_count();
+	var first_posns = $cmsm0/cmsm.get_child_count();
 	var cmsm_idx = int(truepos > first_posns);
 	if (cmsm_idx):
 		truepos -= first_posns + 1;
 	gap_list.append(get_cmsm(cmsm_idx).create_gap(truepos));
 
 func remove_elm_by_cm_idx(cmsm, idx, place_gap = true):
-	remove_elm(cmsm.holder.get_child(idx), place_gap);
+	remove_elm(cmsm.get_child(idx), place_gap);
 
 func remove_elm(elm, place_gap = true):
 	if (elm in ate_list):
@@ -119,16 +96,46 @@ func collapse_gaps():
 	var _close = [];
 	for g in gap_list:
 		var i = g.get_index();
-		var cmsm = g.get_cmsm();
-		if (i == 0 || i == cmsm.holder.get_child_count() - 1 ||
-		 cmsm.holder.get_child(i + 1).is_gap()):
+		var cm = g.get_parent();
+		if (i == 0 || i == cm.get_child_count()-1 || cm.get_child(i+1).is_gap()):
 			_close.append(g);
 	for g in _close:
 		close_gap(g);
 	return gap_list.size();
 
+func silence_ates(ids):
+	var _remove = [];
+	for ate in ate_list:
+		if (ate.id in ids):
+			ate.silence_ate();
+			_remove.append(ate);
+	for r in _remove:
+		ate_list.erase(r);
+
+func get_max_pos(ends = true):
+	var sum = $cmsm0/cmsm.get_child_count() + $cmsm1/cmsm.get_child_count();
+	if (ends):
+		return sum + 2;
+	else:
+		return sum - 2;
+
+func pos_to_cmtd_idx(pos, ends = true):
+	var first_posns = $cmsm0/cmsm.get_child_count();
+	if (!ends):
+		first_posns -= 1;
+	return int(pos >= first_posns);
+
+func rand_truepos(allow_ends = true):
+	var rand_val = randi()%get_max_pos(allow_ends);
+	if (!allow_ends):
+		if (pos_to_cmtd_idx(rand_val, false)):
+			rand_val += 3;
+		else:
+			rand_val += 1;
+	return rand_val;
+
 func move_to_truepos(sq_elm, pos):
-	var first_posns = get_cmsm(0).holder.get_child_count();
+	var first_posns = $cmsm0/cmsm.get_child_count();
 	var cmsm_idx = int(pos > first_posns);
 	if (cmsm_idx):
 		pos -= first_posns + 1;
@@ -141,7 +148,7 @@ func dupe_elm(elm):
 	var copy_elm = Game.copy_elm(elm);
 	if (copy_elm.mode == "ate"):
 		ate_list.append(copy_elm);
-	elm.get_cmsm().add_elm(copy_elm, elm.get_index());
+	elm.get_parent().add_elm(copy_elm, elm.get_index());
 	return copy_elm;
 
 func insert_ate(elm, pos = null):
@@ -151,29 +158,14 @@ func insert_ate(elm, pos = null):
 	ate_list.append(elm);
 	return pos;
 
-# HELPER FUNCTIONS
-
-func fix_bars():
-	Game.change_slider_width(get_cmsm(0).get_node("holder_scroll"));
-	Game.change_slider_width(get_cmsm(1).get_node("holder_scroll"));
-
-func silence_ates(ids):
-	var _remove = [];
-	for ate in ate_list:
-		if (ate.id in ids):
-			ate.silence_ate();
-			_remove.append(ate);
-	for r in _remove:
-		ate_list.erase(r);
-
 func highlight_gaps():
 	for g in gap_list:
 		g.disable(false);
 
 func highlight_common_genes():
 	var append_to = [];
-	for x in get_cmsm(0).holder.get_children():
-		for y in get_cmsm(1).find_all_genes(x.id):
+	for x in $cmsm0/cmsm.get_children():
+		for y in $cmsm1/cmsm.find_all_genes(x.id):
 			y.disable(false);
 			x.disable(false);
 			
@@ -194,6 +186,13 @@ func _on_cmsm_got_dupe_essgene(elm):
 
 func validate_essentials(ess_classes):
 	for e in ess_classes:
-		if (!get_cmsm(0).has_essclass(e) && !get_cmsm(1).has_essclass(e)):
+		if (!$cmsm0/cmsm.has_essclass(e) && !$cmsm1/cmsm.has_essclass(e)):
 			return false;
 	return true;
+
+func on_sort_elms():
+	yield( get_tree().create_timer(2.0), "timeout" );
+	for el in $cmsm0/cmsm.get_children():
+		el.get_node("Tween").interpolate_property(el, "Margin/Left", 0, 500, 2, Tween.EASE_IN, Tween.TRANS_LINEAR);
+		el.get_node("Tween").start();
+		print(el);
