@@ -3,7 +3,7 @@
 [ext_resource path="res://Scripts/ChromPair.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Chromosome.tscn" type="PackedScene" id=2]
 
-[node name="ChromPair" type="VBoxContainer" index="0"]
+[node name="ChromPair" type="VBoxContainer"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -31,7 +31,7 @@ margin_right = 1600.0
 margin_bottom = 310.0
 rect_min_size = Vector2( 0, 310 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = true
+rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -41,7 +41,7 @@ scroll_horizontal = 0
 scroll_vertical_enabled = false
 scroll_vertical = 0
 scroll_deadzone = 0
-_sections_unfolded = [ "Rect", "Scroll" ]
+_sections_unfolded = [ "Rect" ]
 
 [node name="cmsm" parent="cmsm0" index="0" instance=ExtResource( 2 )]
 
@@ -59,7 +59,7 @@ margin_right = 1600.0
 margin_bottom = 660.0
 rect_min_size = Vector2( 0, 310 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = true
+rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1

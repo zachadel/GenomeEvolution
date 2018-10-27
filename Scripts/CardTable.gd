@@ -13,21 +13,21 @@ func _ready():
 		for n in Game.essential_classes:
 			var nxt_gelm = load("res://Scenes/SequenceElement.tscn").instance();
 			nxt_gelm.setup("gene", n, "essential", n);
-			$chromes.get_cmsm(y).add_elm(nxt_gelm);
-	gain_ates(1+randi()%6);
+			yield($chromes.get_cmsm(y).add_elm(nxt_gelm), "completed");
+	yield(gain_ates(1+randi()%6), "completed");
 	$lbl_turn.text = "Click \"Continue\" to start.";
 
 func gain_ates(count = 1):
 	for i in range(count):
 		var nxt_te = load("res://Scenes/SequenceElement.tscn").instance();
 		nxt_te.setup("gene", Game.getTEName());
-		var pos = $chromes.insert_ate(nxt_te);
-		$lbl_justnow.text += "Inserted %s into position %d (%s, %d).\n" % [nxt_te.id, pos, nxt_te.get_parent().get_parent().name, nxt_te.get_index()];
+		var pos = yield($chromes.insert_ate(nxt_te), "completed");
+		$lbl_justnow.text += "Inserted %s into position %d (%s, %d).\n" % [nxt_te.id, pos, nxt_te.get_cmsm().name, nxt_te.get_index()];
 
 func gain_gaps(count = 1):
 	for i in range(count):
-		$chromes.create_gap(3);
-	return $chromes.collapse_gaps();
+		yield($chromes.create_gap(3), "completed");
+	return yield($chromes.collapse_gaps(), "completed");
 
 func jump_ates():
 	var _actives = $chromes.ate_list + [];
@@ -36,29 +36,30 @@ func jump_ates():
 		match (Game.rollATEJumps()):
 			0:
 				var old_idx = ate.get_index();
-				var old_par = ate.get_parent().get_parent().name;
+				var old_par = ate.get_cmsm().name;
 				var old_id = ate.id;
-				$chromes.remove_elm(ate);
+				yield($chromes.remove_elm(ate), "completed");
 				$lbl_justnow.text += "%s removed from (%s, %d); left a gap.\n" % [old_id, old_par, old_idx];
 			1:
 				var old_idx = ate.get_index();
-				var old_par = ate.get_parent().get_parent().name;
-				$chromes.move_to_randpos($chromes.displace_elm(ate));
+				var old_par = ate.get_cmsm().name;
+				var displaced = yield($chromes.displace_elm(ate), "completed");
+				yield($chromes.add_to_randpos(displaced), "completed");
 				$lbl_justnow.text += "%s jumped from (%s, %d) to (%s, %d); left a gap.\n" % \
-					[ate.id, old_par, old_idx, ate.get_parent().get_parent().name, ate.get_index()];
+					[ate.id, old_par, old_idx, ate.get_cmsm().name, ate.get_index()];
 			2:
 				var copy_ate = Game.copy_elm(ate);
-				$chromes.insert_ate(copy_ate);
+				yield($chromes.insert_ate(copy_ate), "completed");
 				$lbl_justnow.text += "%s copied itself to (%s, %d); left no gap.\n" % \
-					[ate.id, copy_ate.get_parent().get_parent().name, copy_ate.get_index()];
+					[ate.id, copy_ate.get_cmsm().name, copy_ate.get_index()];
 			3:
 				var copy_ate = Game.copy_elm(ate);
-				$chromes.insert_ate(copy_ate);
+				yield($chromes.insert_ate(copy_ate), "completed");
 				silence_ids.append(ate.id);
 				$lbl_justnow.text += "%s copied itself to (%s, %d); left no gap; silenced.\n" % \
-					[ate.id, copy_ate.get_parent().get_parent().name, copy_ate.get_index()];
+					[ate.id, copy_ate.get_cmsm().name, copy_ate.get_index()];
 	$chromes.silence_ates(silence_ids);
-	$chromes.collapse_gaps();
+	yield($chromes.collapse_gaps(), "completed");
 
 func _on_chromes_elm_clicked(elm):
 	match (elm.type):
@@ -72,7 +73,7 @@ func _on_chromes_elm_clicked(elm):
 				$lbl_justnow.text = "";
 			else:
 				selected_gap = elm;
-				repair_gap(elm);
+				yield(repair_gap(elm), "completed");
 			
 			for g in $chromes.gap_list:
 				g.disable(selected_gap != null && g != selected_gap);
@@ -86,14 +87,14 @@ var roll_storage = [{}, {}]; # When a player selects a gap, its roll is stored. 
 # The array number refers to the kind of repair being done (i.e. it should reroll if it is using a different repair option)
 # The dictionaries are indexed by the object itself cuz Godot is bonkers like that
 func repair_gap(gap):
-	var cmsm = gap.get_parent();
+	var cmsm = gap.get_cmsm();
 	var g_idx = gap.get_index();
 	
-	var left_id = cmsm.get_child(g_idx-1).id;
-	var right_id = cmsm.get_child(g_idx+1).id;
+	var left_id = cmsm.get_child(g_idx - 1).id;
+	var right_id = cmsm.get_child(g_idx + 1).id;
 	if (left_id == right_id):
-		$chromes.remove_elm(cmsm.get_child(g_idx+1), false);
-		$chromes.close_gap(gap);
+		yield($chromes.remove_elm(cmsm.get_child(g_idx + 1), false), "completed");
+		yield($chromes.close_gap(gap), "completed");
 		$lbl_justnow.text = "Gap at %s, %d closed: collapsed the duplicate %s genes (one was lost)." % [cmsm.get_parent().name, g_idx, left_id];
 	elif ($chromes.get_other_cmsm(cmsm).pair_exists(left_id, right_id)):
 		if (!roll_storage[0].has(gap)):
@@ -110,23 +111,23 @@ func repair_gap(gap):
 					
 					var gene = gene_selection.back();
 					var g_id = gene.id;
-					$chromes.remove_elm(gene, false);
+					yield($chromes.remove_elm(gene, false), "completed");
 					$lbl_justnow.text = "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome, but a %s gene was lost." % [cmsm.get_parent().name, g_idx, left_id, right_id, g_id];
-					$chromes.close_gap(gap);
+					yield($chromes.close_gap(gap), "completed");
 			1:
 				$lbl_justnow.text = "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome without complications." % [cmsm.get_parent().name, g_idx, left_id, right_id];
-				$chromes.close_gap(gap);
+				yield($chromes.close_gap(gap), "completed");
 			2:
 				$lbl_justnow.text = "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome without complications." % [cmsm.get_parent().name, g_idx, left_id, right_id];
-				$chromes.close_gap(gap); # Intervening cards are copied?
+				yield($chromes.close_gap(gap), "completed") # Intervening cards are copied?
 			3:
 				var copy_elm;
 				if (randi()%2):
 					copy_elm = cmsm.get_child(g_idx-1);
 				else:
 					copy_elm = cmsm.get_child(g_idx+1);
-				$chromes.dupe_elm(copy_elm);
-				$chromes.close_gap(gap);
+				yield($chromes.dupe_elm(copy_elm), "completed");
+				yield($chromes.close_gap(gap), "completed");
 				$lbl_justnow.text = "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome, but a %s gene was copied." % [cmsm.get_parent().name, g_idx, left_id, right_id, copy_elm.id];
 	else:
 		if (!roll_storage[1].has(gap)):
@@ -143,11 +144,11 @@ func repair_gap(gap):
 					
 					var gene = gene_selection.back();
 					var g_id = gene.id;
-					$chromes.remove_elm(gene, false);
-					$chromes.close_gap(gap);
+					yield($chromes.remove_elm(gene, false), "completed");
+					yield($chromes.close_gap(gap), "completed");
 					$lbl_justnow.text = "Joined ends for the gap at %s, %d; lost a %s gene in the repair." % [cmsm.get_parent().name, g_idx, g_id];
 			1:
-				$chromes.close_gap(gap);
+				yield($chromes.close_gap(gap), "completed");
 				$lbl_justnow.text = "Joined ends for the gap at %s, %d without complications." % [cmsm.get_parent().name, g_idx];
 			2:
 				var copy_elm;
@@ -155,8 +156,8 @@ func repair_gap(gap):
 					copy_elm = cmsm.get_child(g_idx-1);
 				else:
 					copy_elm = cmsm.get_child(g_idx+1);
-				$chromes.dupe_elm(copy_elm);
-				$chromes.close_gap(gap);
+				yield($chromes.dupe_elm(copy_elm), "completed");
+				yield($chromes.close_gap(gap), "completed");
 				$lbl_justnow.text = "Joined ends for the gap at %s, %d; duplicated a %s gene in the repair." % [cmsm.get_parent().name, g_idx, copy_elm.id];
 	highlight_gap_choices();
 
@@ -165,7 +166,7 @@ func highlight_gap_choices():
 	selected_gap = null;
 	$chromes.highlight_gaps();
 	for g in $chromes.gap_list:
-		$lbl_criteria.text += "Chromosome %s needs a repair at %d.\n" % [g.get_parent().get_parent().name, g.get_index()];
+		$lbl_criteria.text += "Chromosome %s needs a repair at %d.\n" % [g.get_cmsm().get_parent().name, g.get_index()];
 	$btn_nxt.disabled = $chromes.gap_list.size() > 0;
 
 func evolve_candidates(candids):
@@ -196,16 +197,16 @@ func recombination():
 		for g in gene_selection:
 			g.disable(true);
 			
-		gene_selection = $chromes.highlight_this_gene($chromes.get_other_cmsm(first_elm.get_parent()), first_elm.id);
+		gene_selection = $chromes.highlight_this_gene($chromes.get_other_cmsm(first_elm.get_cmsm()), first_elm.id);
 		yield(self, "gene_clicked");
 		var scnd_elm = gene_selection.back();
 		for g in gene_selection:
 			g.disable(true);
 		
 		if (randf() <= recombo_chance):
-			var idxs = $chromes.recombine(first_elm, scnd_elm);
+			var idxs = yield($chromes.recombine(first_elm, scnd_elm), "completed");
 			recombo_chance *= RECOMBO_COMPOUND;
-			$lbl_justnow.text = "Recombination success: swapped %s genes at positions %d and %d.\nNext recombination has a %d%% chance of success." % ([first_elm.id] + idxs + [100*recombo_chance]);
+			$lbl_justnow.text = "Recombination success: swapped %s genes at positions %d and %d.\nNext recombination has a %d%% chance of success." % ([first_elm.id] + idxs + [100 * recombo_chance]);
 		else:
 			$lbl_justnow.text = "Recombination failed.";
 		$btn_nxt.disabled = false;
@@ -216,10 +217,10 @@ func _on_btn_nxt_pressed():
 	match (Game.get_turn_txt()):
 		"New TEs":
 			$lbl_justnow.text = "";
-			gain_ates(1);
+			yield(gain_ates(1), "completed");
 		"Active TEs Jump":
 			$lbl_justnow.text = "";
-			jump_ates();
+			yield(jump_ates(), "completed");
 		"Repair Breaks":
 			roll_storage = [{}, {}];
 			var num_gaps = $chromes.gap_list.size();
@@ -231,14 +232,14 @@ func _on_btn_nxt_pressed():
 				$lbl_justnow.text = "%d gaps need repair." % num_gaps;
 			highlight_gap_choices();
 		"Environmental Damage":
-			var rand = gain_gaps(1+randi()%3);
+			var rand = yield(gain_gaps(1 + randi() % 3), "completed");
 			var plrl = "s";
 			if (rand == 1):
 				plrl = "";
 			$lbl_justnow.text = "%d gap%s appeared due to environmental damage." % [rand, plrl];
 		"Recombination":
 			$lbl_justnow.text = "If you want, you can select a gene that is common to both chromosomes. Those genes and every gene to their right swap chromosomes.\nThis recombination has a %d%% chance of success." % (100*recombo_chance);
-			recombination();
+			yield(recombination(), "completed");
 		"Evolve":
 			for g in gene_selection:
 				g.disable(true);

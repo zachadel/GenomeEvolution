@@ -7,6 +7,10 @@ var turns = ["New TEs", "Active TEs Jump", "Repair Breaks", "Environmental Damag
 var turn_idx = -1;
 var round_num = 1;
 
+var animation_duration = 1;
+var animation_ease = Tween.EASE_IN;
+var animation_trans = Tween.TRANS_LINEAR;
+
 func _ready():
 	randomize();
 
@@ -29,6 +33,7 @@ func adv_turn():
 	if (turn_idx == turns.size()):
 		turn_idx = 0;
 		round_num += 1;
+
 func get_turn_txt():
 	return turns[turn_idx];
 

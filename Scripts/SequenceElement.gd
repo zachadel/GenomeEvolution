@@ -60,6 +60,9 @@ func upd_display():
 		_:
 			self_modulate = Color(1, 1, 1);
 
+func get_cmsm():
+	return get_parent();
+
 func is_gap():
 	return type == "break";
 
