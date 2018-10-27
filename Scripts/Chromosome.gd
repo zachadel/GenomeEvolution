@@ -59,31 +59,56 @@ func add_elm(elm, pos = null):
 		# remove element from other chromosome
 		if (elm.get_cmsm() != null):
 			yield(remove_elm(elm), "completed");
-		add_child(elm);
-		# animate insertion
-		elm.hide();
-		yield(get_tree(), "idle_frame");
-		var cmsm_pair = elm.get_cmsm().get_parent().get_parent();
-		var center = Vector2(get_viewport().size.x / 2.0, 
-		cmsm_pair.get_begin().y + (cmsm_pair.get_size().y / 2.0));
-		var offset = center - elm.get_cmsm().get_parent().get_begin() - \
-		(elm.get_size() / 2.0);
-		var end_pos = Vector2(pos * elm.get_size().x, 0);
-		elm.get_node("Tween").interpolate_property(elm, "rect_position",
-			 offset, end_pos, Game.animation_duration,
-			 Game.animation_ease, Game.animation_trans);
-		elm.show();
-		elm.get_node("Tween").start();
-		yield(elm.get_node("Tween"), "tween_completed");
-		
+		if (elm.is_gap()):
+			print("gap");
+			# animate sliding of following elements
+			if (pos == get_child_count()):
+				yield(get_tree(), "idle_frame");
+			else:
+				for i in range(pos, get_child_count()):
+					var start_pos = get_child(i).get_begin();
+					var end_pos = start_pos + Vector2(get_child(i).get_size().x, 0);
+					get_child(i).get_node("Tween").interpolate_property(get_child(i), "rect_position",
+						start_pos, end_pos, Game.animation_duration,Game.animation_ease, Game.animation_trans);
+					get_child(i).get_node("Tween").start();
+				yield(get_child(pos).get_node("Tween"), "tween_completed");
+			add_child(elm);
+		else:
+			# animate insertion
+			elm.hide();
+			add_child(elm);
+			yield(get_tree(), "idle_frame");
+			var cmsm_pair = elm.get_cmsm().get_parent().get_parent();
+			var center = Vector2(get_viewport().size.x / 2.0, 
+			cmsm_pair.get_begin().y + (cmsm_pair.get_size().y / 2.0));
+			var offset = center - elm.get_cmsm().get_parent().get_begin() - \
+			(elm.get_size() / 2.0);
+			var end_pos = Vector2(pos * elm.get_size().x, 0);
+			elm.get_node("Tween").interpolate_property(elm, "rect_position",
+				 offset, end_pos, Game.animation_duration,
+				 Game.animation_ease, Game.animation_trans);
+			elm.show();
+			elm.get_node("Tween").start();
+			yield(elm.get_node("Tween"), "tween_completed");
 		elm.connect("elm_clicked", self, "_propogate_click");
 	move_child(elm, pos);
 	return elm;
 
 func remove_elm(elm):
 	elm.disconnect("elm_clicked", elm.get_cmsm(), "_propogate_click");
-	get_cmsm_pair().move_to_center(elm);
-	yield(elm.get_node("Tween"), "tween_completed");
+	if (!elm.is_gap()):
+		get_cmsm_pair().move_to_center(elm);
+	# animate closing of gap
+	for i in range(elm.get_index() + 1, get_child_count()):
+		var start_pos = get_child(i).get_begin();
+		var end_pos = start_pos - Vector2(get_child(i).get_size().x, 0);
+		get_child(i).get_node("Tween").interpolate_property(get_child(i), "rect_position",
+			start_pos, end_pos, Game.animation_duration,Game.animation_ease, Game.animation_trans);
+		get_child(i).get_node("Tween").start();
+	if (elm.get_index() + 1 < get_child_count()):
+		yield(get_child(elm.get_index() + 1).get_node("Tween"), "tween_completed");
+	else:
+		yield(get_tree(), "idle_frame");
 	elm.get_parent().remove_child(elm);
 
 # HELPER FUNCTIONS
