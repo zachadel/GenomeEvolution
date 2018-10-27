@@ -7,6 +7,7 @@ func fix_bars():
 var selected_gap = null;
 
 signal gene_clicked;
+signal animating(state);
 
 func _ready():
 	for y in range(2):
@@ -16,6 +17,7 @@ func _ready():
 			yield($chromes.get_cmsm(y).add_elm(nxt_gelm), "completed");
 	yield(gain_ates(1+randi()%6), "completed");
 	$lbl_turn.text = "Click \"Continue\" to start.";
+	connect("animating", self, "on_animating_changed");
 
 func gain_ates(count = 1):
 	for i in range(count):
@@ -254,3 +256,5 @@ func _on_btn_nxt_pressed():
 				$lbl_justnow.text = "Nope! You're dead!";
 				$btn_nxt.disabled = true;
 
+func _on_animating_changed(state):
+	$btn_next.disabled = state;

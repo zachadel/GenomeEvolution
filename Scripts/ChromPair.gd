@@ -32,6 +32,10 @@ func get_max_pos(ends = true):
 	else:
 		return sum - 2;
 
+func get_center():
+	return Vector2(get_viewport().size.x / 2.0, 
+	get_begin().y + (get_size().y / 2.0));
+
 # CHROMOSOME MODIFICATION FUNCTIONS
 
 func displace_elm(elm, place_gap = true):
@@ -196,14 +200,3 @@ func validate_essentials(ess_classes):
 		if (!$cmsm0/cmsm.has_essclass(e) && !$cmsm1/cmsm.has_essclass(e)):
 			return false;
 	return true;
-
-func move_to_center(elm):
-	var current_pos = elm.get_cmsm().get_begin() + elm.get_begin();
-	var center = Vector2(get_viewport().size.x / 2.0, 
-	get_begin().y + (get_size().y / 2.0));
-	var end_pos = center - elm.get_cmsm().get_parent().get_begin() - \
-	(elm.get_size() / 2.0);
-	elm.get_node("Tween").interpolate_property(elm, "rect_position",
-		 current_pos, end_pos, Game.animation_duration,
-		 Game.animation_ease, Game.animation_trans);
-	elm.get_node("Tween").start();

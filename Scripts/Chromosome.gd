@@ -78,9 +78,7 @@ func add_elm(elm, pos = null):
 			elm.hide();
 			add_child(elm);
 			yield(get_tree(), "idle_frame");
-			var cmsm_pair = elm.get_cmsm().get_parent().get_parent();
-			var center = Vector2(get_viewport().size.x / 2.0, 
-			cmsm_pair.get_begin().y + (cmsm_pair.get_size().y / 2.0));
+			var center = elm.get_cmsm().get_cmsm_pair().get_center();
 			var offset = center - elm.get_cmsm().get_parent().get_begin() - \
 			(elm.get_size() / 2.0);
 			var end_pos = Vector2(pos * elm.get_size().x, 0);
@@ -97,7 +95,15 @@ func add_elm(elm, pos = null):
 func remove_elm(elm):
 	elm.disconnect("elm_clicked", elm.get_cmsm(), "_propogate_click");
 	if (!elm.is_gap()):
-		get_cmsm_pair().move_to_center(elm);
+		var current_pos = elm.get_cmsm().get_begin() + elm.get_begin();
+		var center = get_cmsm_pair().get_center();
+		var end_pos = center - elm.get_cmsm().get_parent().get_begin() - \
+		(elm.get_size() / 2.0);
+		elm.get_node("Tween").interpolate_property(elm, "rect_position",
+			 current_pos, end_pos, Game.animation_duration,
+			 Game.animation_ease, Game.animation_trans);
+		elm.get_node("Tween").start();
+		yield(elm.get_node("Tween"), "tween_completed");
 	# animate closing of gap
 	for i in range(elm.get_index() + 1, get_child_count()):
 		var start_pos = get_child(i).get_begin();
