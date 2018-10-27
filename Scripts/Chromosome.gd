@@ -60,9 +60,9 @@ func add_elm(elm, pos = null):
 		if (elm.get_cmsm() != null):
 			yield(remove_elm(elm), "completed");
 		add_child(elm);
+		# animate insertion
 		elm.hide();
 		yield(get_tree(), "idle_frame");
-		
 		var cmsm_pair = elm.get_cmsm().get_parent().get_parent();
 		var center = Vector2(get_viewport().size.x / 2.0, 
 		cmsm_pair.get_begin().y + (cmsm_pair.get_size().y / 2.0));
@@ -75,7 +75,6 @@ func add_elm(elm, pos = null):
 		elm.show();
 		elm.get_node("Tween").start();
 		yield(elm.get_node("Tween"), "tween_completed");
-		print("done tweening");
 		
 		elm.connect("elm_clicked", self, "_propogate_click");
 	move_child(elm, pos);

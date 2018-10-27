@@ -198,11 +198,12 @@ func validate_essentials(ess_classes):
 	return true;
 
 func move_to_center(elm):
-	var window = OS.get_window_safe_area();
-	var center = window.position + window.size / 2.0;
 	var current_pos = elm.get_cmsm().get_begin() + elm.get_begin();
+	var center = Vector2(get_viewport().size.x / 2.0, 
+	get_begin().y + (get_size().y / 2.0));
+	var end_pos = center - elm.get_cmsm().get_parent().get_begin() - \
+	(elm.get_size() / 2.0);
 	elm.get_node("Tween").interpolate_property(elm, "rect_position",
-			 current_pos, center, Game.animation_duration,
-			 Game.animation_ease, Game.animation_trans);
+		 current_pos, end_pos, Game.animation_duration,
+		 Game.animation_ease, Game.animation_trans);
 	elm.get_node("Tween").start();
-	print("moving to center");
