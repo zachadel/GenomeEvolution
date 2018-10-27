@@ -26,7 +26,7 @@ func gain_ates(count = 1):
 
 func gain_gaps(count = 1):
 	for i in range(count):
-		yield($chromes.create_gap(3), "completed");
+		yield($chromes.create_gap(), "completed");
 	return yield($chromes.collapse_gaps(), "completed");
 
 func jump_ates():
