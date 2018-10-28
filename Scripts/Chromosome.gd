@@ -71,11 +71,9 @@ func add_elm(elm, pos = null):
 					start_pos, end_pos, Game.animation_duration,Game.animation_ease, Game.animation_trans);
 				get_child(i).get_node("Tween").start();
 			yield(get_child(pos).get_node("Tween"), "tween_completed");
-		elm.hide();
 		yield(get_tree(), "idle_frame");
 		add_child(elm);
 		move_child(elm, pos);
-		elm.show();
 		if (!elm.is_gap()):
 			# animate insertion
 			var center = elm.get_cmsm().get_cmsm_pair().get_center();
@@ -85,7 +83,6 @@ func add_elm(elm, pos = null):
 			elm.get_node("Tween").interpolate_property(elm, "rect_position",
 				 offset, end_pos, Game.animation_duration,
 				 Game.animation_ease, Game.animation_trans);
-			#elm.show();
 			elm.get_node("Tween").start();
 			yield(elm.get_node("Tween"), "tween_completed");
 		elm.connect("elm_clicked", self, "_propogate_click");
