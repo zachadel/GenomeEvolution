@@ -18,7 +18,7 @@ func _ready():
 	timer.connect("timeout", self, "_on_Timer_timeout")
 	
 	var temp_node = world_tile_scene.instance()
-	tile_sprite_size = temp_node.get_node("Sprite").get_texture().get_size()
+	tile_sprite_size = temp_node.get_node("Area2D").get_node("Sprite").get_texture().get_size()
 	temp_node.queue_free()
 	
 	spawn_map()
@@ -31,13 +31,7 @@ func _ready():
 	player.position = tile_map[Vector2(0, 0)].position
 
 func _process(delta):
-	if has_moved:
-		set_new_grey()
 	pass
-
-func set_new_grey():
-	
-	has_moved = false
 
 func spawn_map():
 	tile_map[Vector2(0, 0)] = world_tile_scene.instance()
@@ -54,12 +48,12 @@ func hex_spawn(center):
 	var offsetX = unit_len * sqrt(3)
 	var offsetY = unit_len
 	var pos = Vector2(0, 0)
-	var indices = [Vector2(0, -1), Vector2(1, -1), Vector2(1, 1), Vector2(0, 1), Vector2(-1, 1), Vector2(-1, -1)]
 	
 	for i in range(6):
-		if center.neighbors[i] == null:
-			tile_map[indices[i] + center.map_ndx] = world_tile_scene.instance()
-			center.neighbors[i] = tile_map[indices[i]]
+		if !tile_map.has(hex_vec_pos[i] * unit_len + center.map_ndx):
+			tile_map[hex_vec_pos[i] * unit_len + center.map_ndx] = world_tile_scene.instance()
+			tile_map[hex_vec_pos[i] * unit_len + center.map_ndx].init_data(hex_vec_pos[i] * unit_len + center.map_ndx)
+			center.neighbors[i] = tile_map[hex_vec_pos[i] * unit_len + center.map_ndx]
 			add_child(center.neighbors[i])
 			center.neighbors[i].position.x = center.position.x + hex_vec_pos[i].x * unit_len
 			center.neighbors[i].position.y = center.position.y + hex_vec_pos[i].y * unit_len
