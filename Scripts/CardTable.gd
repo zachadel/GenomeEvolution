@@ -10,11 +10,18 @@ signal gene_clicked;
 signal animating(state);
 
 func _ready():
+	# speed up animations for setup
+	var tmp = Game.animation_duration;
+	Game.animation_duration = 0.2;
+	# initialize chromosomes
 	for y in range(2):
 		for n in Game.essential_classes:
+			# create gene
 			var nxt_gelm = load("res://Scenes/SequenceElement.tscn").instance();
 			nxt_gelm.setup("gene", n, "essential", n);
 			yield($chromes.get_cmsm(y).add_elm(nxt_gelm), "completed");
+	# reset animation speed
+	Game.animation_duration = tmp;
 	yield(gain_ates(1+randi()%6), "completed");
 	$lbl_turn.text = "Click \"Continue\" to start.";
 	connect("animating", self, "on_animating_changed");
@@ -37,12 +44,14 @@ func jump_ates():
 	for ate in _actives:
 		match (Game.rollATEJumps()):
 			0:
+				# remove and leave gap
 				var old_idx = ate.get_index();
 				var old_par = ate.get_cmsm().name;
 				var old_id = ate.id;
 				yield($chromes.remove_elm(ate), "completed");
 				$lbl_justnow.text += "%s removed from (%s, %d); left a gap.\n" % [old_id, old_par, old_idx];
 			1:
+				# jump and leave gap
 				var old_idx = ate.get_index();
 				var old_par = ate.get_cmsm().name;
 				var displaced = yield($chromes.displace_elm(ate), "completed");
@@ -50,11 +59,13 @@ func jump_ates():
 				$lbl_justnow.text += "%s jumped from (%s, %d) to (%s, %d); left a gap.\n" % \
 					[ate.id, old_par, old_idx, ate.get_cmsm().name, ate.get_index()];
 			2:
+				# copy and leave no gap
 				var copy_ate = Game.copy_elm(ate);
 				yield($chromes.insert_ate(copy_ate), "completed");
 				$lbl_justnow.text += "%s copied itself to (%s, %d); left no gap.\n" % \
 					[ate.id, copy_ate.get_cmsm().name, copy_ate.get_index()];
 			3:
+				# copy and leave no gap and silence
 				var copy_ate = Game.copy_elm(ate);
 				yield($chromes.insert_ate(copy_ate), "completed");
 				silence_ids.append(ate.id);

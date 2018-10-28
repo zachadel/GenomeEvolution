@@ -43,11 +43,11 @@ func displace_elm(elm, place_gap = true):
 	var elm_idx = elm.get_index();
 	
 	if (place_gap && cmsm.valid_gap_pos(elm_idx)):
-		var gap = yield(cmsm.create_gap(elm_idx), "completed");
+		var gap = yield(cmsm.remove_elm_create_gap(elm), "completed");
 		if (gap != null):
 			gap_list.append(gap);
-	
-	yield(cmsm.remove_elm(elm), "completed");
+	else:
+		yield(cmsm.remove_elm(elm), "completed");
 	return elm;
 
 func recombine(elm0, elm1):

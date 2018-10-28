@@ -103,6 +103,8 @@ func remove_elm(elm):
 			 Game.animation_ease, Game.animation_trans);
 		elm.get_node("Tween").start();
 		yield(elm.get_node("Tween"), "tween_completed");
+	else:
+		elm.hide();
 	# animate closing of gap
 	for i in range(elm.get_index() + 1, get_child_count()):
 		var start_pos = get_child(i).get_begin();
@@ -115,6 +117,30 @@ func remove_elm(elm):
 	else:
 		yield(get_tree(), "idle_frame");
 	elm.get_parent().remove_child(elm);
+
+func remove_elm_create_gap(elm):
+	elm.disconnect("elm_clicked", elm.get_cmsm(), "_propogate_click");
+	var index = elm.get_index();
+	if (!elm.is_gap()):
+		var current_pos = elm.get_cmsm().get_begin() + elm.get_begin();
+		var center = get_cmsm_pair().get_center();
+		var end_pos = center - elm.get_cmsm().get_parent().get_begin() - \
+		(elm.get_size() / 2.0);
+		elm.get_node("Tween").interpolate_property(elm, "rect_position",
+			 current_pos, end_pos, Game.animation_duration,
+			 Game.animation_ease, Game.animation_trans);
+		elm.get_node("Tween").start();
+		yield(elm.get_node("Tween"), "tween_completed");
+	else:
+		elm.hide();
+		yield(get_tree(), "idle_frame");
+	elm.get_parent().remove_child(elm);
+	var gap = load("res://Scenes/SequenceElement.tscn").instance();
+	gap.setup("break");
+	add_child(gap);
+	move_child(gap, index);
+	gap.connect("elm_clicked", self, "_propogate_click");
+	return gap;
 
 # HELPER FUNCTIONS
 
