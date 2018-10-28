@@ -1,12 +1,17 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://Assets/Images/PlayerSprite.png" type="Texture" id=1]
+[ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Images/PlayerSprite.png" type="Texture" id=2]
 
 [node name="Player" type="Node2D"]
 
+z_index = 1
+script = ExtResource( 1 )
+_sections_unfolded = [ "Z Index" ]
+
 [node name="Sprite" type="Sprite" parent="." index="0"]
 
-texture = ExtResource( 1 )
+texture = ExtResource( 2 )
 
 [node name="Camera2D" type="Camera2D" parent="." index="1"]
 

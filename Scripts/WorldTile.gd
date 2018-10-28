@@ -10,10 +10,10 @@ func _ready():
 	position = Vector2(0, 0)
 	
 func init_data(ndx):
-	map_ndx.x = ndx.x
-	map_ndx.y = ndx.y
+	map_ndx = ndx
 
 func _on_Area2D_input_event(viewport, event, shape_idx):
 	if event.is_action_pressed("mouse_left"):
 		get_tree().get_root().get_node("Control/Player").position = position
-		print(position)
+		get_tree().get_root().get_node("Control/Player").tile_ndx = map_ndx
+		get_tree().get_root().get_node("Control").has_moved = true

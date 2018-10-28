@@ -5,9 +5,10 @@ var tile_col = 6
 var tile_rows = 4
 var world_tile_scene = preload("res://Scenes/WorldTile.tscn")
 var player_scene = preload("res://Scenes/Player.tscn")
+var player
 var tile_sprite_size
 var timer
-var has_moved = true
+var has_moved = false
 
 
 var hex_vec_pos = [Vector2(0, -2), Vector2(sqrt(3), -1), Vector2(sqrt(3), 1), Vector2(0, 2), Vector2(-sqrt(3), 1), Vector2(-sqrt(3), -1)]
@@ -23,7 +24,7 @@ func _ready():
 	
 	spawn_map()
 	
-	var player = player_scene.instance()
+	player = player_scene.instance()
 	player.set_name("Player")
 	add_child(player)
 	var player_size = player.get_node("Sprite").get_texture().get_size()
@@ -31,7 +32,10 @@ func _ready():
 	player.position = tile_map[Vector2(0, 0)].position
 
 func _process(delta):
-	pass
+	
+	if has_moved:
+		hex_spawn(tile_map[player.tile_ndx])
+		has_moved = false
 
 func spawn_map():
 	tile_map[Vector2(0, 0)] = world_tile_scene.instance()
