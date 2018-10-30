@@ -53,8 +53,8 @@ func jump_ates():
 				# jump and leave gap
 				var old_idx = ate.get_index();
 				var old_par = ate.get_cmsm().name;
-				var displaced = yield($chromes.displace_elm(ate), "completed");
-				yield($chromes.add_to_randpos(displaced), "completed");
+				var extracted = yield($chromes.extract_elm(ate), "completed");
+				yield($chromes.add_to_randpos(extracted), "completed");
 				$lbl_justnow.text += "%s jumped from (%s, %d) to (%s, %d); left a gap.\n" % \
 					[ate.id, old_par, old_idx, ate.get_cmsm().name, ate.get_index()];
 			2:

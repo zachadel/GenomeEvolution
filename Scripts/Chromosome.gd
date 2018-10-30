@@ -103,6 +103,7 @@ func remove_elm(elm):
 	emit_signal("animating", true);
 	elm.disconnect("elm_clicked", elm.get_cmsm(), "_propogate_click");
 	if (!elm.is_gap()):
+		# animate element moving to center
 		var current_pos = elm.get_cmsm().get_begin() + elm.get_begin();
 		var center = get_cmsm_pair().get_center();
 		var end_pos = center - elm.get_cmsm().get_parent().get_begin() - \

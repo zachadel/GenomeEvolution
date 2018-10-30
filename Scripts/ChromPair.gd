@@ -38,7 +38,7 @@ func get_center():
 
 # CHROMOSOME MODIFICATION FUNCTIONS
 
-func displace_elm(elm, place_gap = true):
+func extract_elm(elm, place_gap = true):
 	var cmsm = elm.get_cmsm();
 	var elm_idx = elm.get_index();
 	
@@ -67,7 +67,7 @@ func recombine(elm0, elm1):
 			cm_bunches[cm].append(cmsm.get_child(i + idxs[cm]));
 		# Remove them (doing this earlier screws up the loop)
 		for b in cm_bunches[cm]:
-			yield(displace_elm(b, false), "completed");
+			yield(extract_elm(b, false), "completed");
 	# Add the bunches to the other chromosomes
 	for cm in range(2):
 		var other_idx = int(!bool(cm)); # Don't be mad
@@ -89,15 +89,15 @@ func create_gap(truepos = null):
 	var gap = yield(get_cmsm(cmsm_idx).create_gap(truepos), "completed");
 	gap_list.append(gap);
 
-func remove_elm_by_cm_idx(cmsm, idx, place_gap = true):
-	yield(remove_elm(cmsm.get_child(idx), place_gap), "completed");
+#func remove_elm_by_cm_idx(cmsm, idx, place_gap = true):
+#	yield(remove_elm(cmsm.get_child(idx), place_gap), "completed");
 
 func remove_elm(elm, place_gap = true):
 	if (elm in ate_list):
 		ate_list.erase(elm);
 	if (elm in gap_list):
 		gap_list.erase(elm);
-	var displaced = yield(displace_elm(elm, place_gap), "completed");
+	var displaced = yield(extract_elm(elm, place_gap), "completed");
 	displaced.queue_free();
 
 func close_gap(gap):
