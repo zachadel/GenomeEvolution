@@ -5,6 +5,10 @@ func _propogate_click(elm):
 	emit_signal("elm_clicked", elm);
 
 signal got_dupe_essgene(elm);
+signal animating(state);
+
+func _ready():
+	connect("animating", get_card_table(), "_on_animating_changed");
 
 # GETTER FUNCTIONS
 
@@ -42,6 +46,9 @@ func get_cmsm_pair():
 		return get_parent().get_parent();
 	return null;
 
+func get_card_table():
+	return get_cmsm_pair().get_parent();
+
 # CHROMOSOME MODIFICATION FUNCTIONS
 
 func create_gap(pos):
@@ -50,6 +57,7 @@ func create_gap(pos):
 	return yield(add_elm(gap, pos), "completed");
 
 func add_elm(elm, pos = null):
+	emit_signal("animating", true);
 	if (pos == null):
 		pos = get_child_count();
 	# element not in this chromosome
@@ -86,9 +94,13 @@ func add_elm(elm, pos = null):
 			elm.get_node("Tween").start();
 			yield(elm.get_node("Tween"), "tween_completed");
 		elm.connect("elm_clicked", self, "_propogate_click");
+	else:
+		move_child(elm, pos);
+	emit_signal("animating", false);
 	return elm;
 
 func remove_elm(elm):
+	emit_signal("animating", true);
 	elm.disconnect("elm_clicked", elm.get_cmsm(), "_propogate_click");
 	if (!elm.is_gap()):
 		var current_pos = elm.get_cmsm().get_begin() + elm.get_begin();
@@ -114,8 +126,10 @@ func remove_elm(elm):
 	else:
 		yield(get_tree(), "idle_frame");
 	elm.get_parent().remove_child(elm);
+	emit_signal("animating", false);
 
 func remove_elm_create_gap(elm):
+	emit_signal("animating", true);
 	elm.disconnect("elm_clicked", elm.get_cmsm(), "_propogate_click");
 	var index = elm.get_index();
 	if (!elm.is_gap()):
@@ -137,6 +151,7 @@ func remove_elm_create_gap(elm):
 	add_child(gap);
 	move_child(gap, index);
 	gap.connect("elm_clicked", self, "_propogate_click");
+	emit_signal("animating", false);
 	return gap;
 
 # HELPER FUNCTIONS

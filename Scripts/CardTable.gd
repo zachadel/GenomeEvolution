@@ -7,7 +7,7 @@ func fix_bars():
 var selected_gap = null;
 
 signal gene_clicked;
-signal animating(state);
+#signal animating(state);
 
 func _ready():
 	# speed up animations for setup
@@ -24,7 +24,6 @@ func _ready():
 	Game.animation_duration = tmp;
 	yield(gain_ates(1+randi()%6), "completed");
 	$lbl_turn.text = "Click \"Continue\" to start.";
-	connect("animating", self, "on_animating_changed");
 
 func gain_ates(count = 1):
 	for i in range(count):
@@ -268,4 +267,4 @@ func _on_btn_nxt_pressed():
 				$btn_nxt.disabled = true;
 
 func _on_animating_changed(state):
-	$btn_next.disabled = state;
+	$btn_nxt.disabled = state;
