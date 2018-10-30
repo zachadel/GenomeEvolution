@@ -5,6 +5,7 @@ func fix_bars():
 	# This is a little hack I've come up with to make bars in ScrollContainer controls larger
 
 var selected_gap = null;
+var silenced_genes = [];
 
 signal gene_clicked;
 
@@ -20,9 +21,10 @@ func _ready():
 func gain_ates(count = 1):
 	for i in range(count):
 		var nxt_te = load("res://Scenes/SequenceElement.tscn").instance();
-		nxt_te.setup("gene", Game.getTEName());
-		var pos = $chromes.insert_ate(nxt_te);
-		$lbl_justnow.text += "Inserted %s into position %d (%s, %d).\n" % [nxt_te.id, pos, nxt_te.get_parent().get_parent().name, nxt_te.get_index()];
+		nxt_te.setup("gene");
+		$chromes.insert_new_ate(nxt_te);
+		$lbl_justnow.text += "Inserted %s into position (%s, %d).\n" % [nxt_te.id, nxt_te.get_parent().get_parent().name, nxt_te.get_index()];
+	$chromes.silence_ates(silenced_genes);
 
 func gain_gaps(count = 1):
 	for i in range(count):
@@ -33,31 +35,34 @@ func jump_ates():
 	var _actives = $chromes.ate_list + [];
 	var silence_ids = [];
 	for ate in _actives:
-		match (Game.rollATEJumps()):
+		match (ate.get_ate_jump_roll()):
 			0:
+				$lbl_justnow.text += "%s did not do anything.\n" % ate.id;
+			1:
 				var old_idx = ate.get_index();
 				var old_par = ate.get_parent().get_parent().name;
 				var old_id = ate.id;
 				$chromes.remove_elm(ate);
 				$lbl_justnow.text += "%s removed from (%s, %d); left a gap.\n" % [old_id, old_par, old_idx];
-			1:
+			2:
 				var old_idx = ate.get_index();
 				var old_par = ate.get_parent().get_parent().name;
-				$chromes.move_to_randpos($chromes.displace_elm(ate));
+				
+				$chromes.jump_ate(ate);
 				$lbl_justnow.text += "%s jumped from (%s, %d) to (%s, %d); left a gap.\n" % \
 					[ate.id, old_par, old_idx, ate.get_parent().get_parent().name, ate.get_index()];
-			2:
-				var copy_ate = Game.copy_elm(ate);
-				$chromes.insert_ate(copy_ate);
+			3:
+				var copy_ate = $chromes.copy_ate(ate);
 				$lbl_justnow.text += "%s copied itself to (%s, %d); left no gap.\n" % \
 					[ate.id, copy_ate.get_parent().get_parent().name, copy_ate.get_index()];
-			3:
-				var copy_ate = Game.copy_elm(ate);
-				$chromes.insert_ate(copy_ate);
-				silence_ids.append(ate.id);
+			4:
+				var copy_ate = $chromes.copy_ate(ate);
+				if (!silence_ids.has(ate.id)):
+					silence_ids.append(ate.id);
 				$lbl_justnow.text += "%s copied itself to (%s, %d); left no gap; silenced.\n" % \
 					[ate.id, copy_ate.get_parent().get_parent().name, copy_ate.get_index()];
 	$chromes.silence_ates(silence_ids);
+	silenced_genes += silence_ids;
 	$chromes.collapse_gaps();
 
 func _on_chromes_elm_clicked(elm):

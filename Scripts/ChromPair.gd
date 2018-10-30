@@ -106,37 +106,59 @@ func silence_ates(ids):
 	for r in _remove:
 		ate_list.erase(r);
 
-func get_max_pos(ends = true):
-	var sum = $cmsm0/cmsm.get_child_count() + $cmsm1/cmsm.get_child_count();
-	if (ends):
-		return sum + 2;
-	else:
-		return sum - 2;
+# Calling this function kinda sucks, which is why there are a bunch of almost-aliases below it
+func insert_from_behavior(sq_elm, this_cmsm, ref_pos, behave_dict = Game.DEFAULT_ATE_RANGE_BEHAVIOR):
+	var other_cmsm = get_other_cmsm(this_cmsm);
+	
+	var possible_spots = [];
+	# Get spots from this cmsm
+	if (behave_dict["this_cmsm"]):
+		for s in [-1, 1]:
+			var start = ref_pos + s*behave_dict["min_dist"];
+			start = min(this_cmsm.get_child_count()-1, max(0, start));
+			var end = behave_dict["max_dist"];
+			if (end == -1):
+				end = this_cmsm.get_child_count();
+			end = min(this_cmsm.get_child_count()-1, max(0, ref_pos + s*end));
+			
+			if (s == 1):
+				possible_spots += range(start, end+1); # = [start, start+1, ..., end-1, end]
+			else:
+				possible_spots += range(end+1, start+2);
+	var ends_idx = possible_spots.size();
+	# Get spots from the other cmsm
+	if (behave_dict["other_cmsm"]):
+		var start = round(behave_dict["min_range"] * other_cmsm.get_child_count());
+		var end = round(behave_dict["max_range"] * other_cmsm.get_child_count());
+		possible_spots += range(start, end+1);
+	
+	# Pick a random spot from the array
+	var rand_idx = randi()%possible_spots.size();
+	# Determine which cmsm to go to
+	var final_cmsm = this_cmsm;
+	if (rand_idx >= ends_idx):
+		final_cmsm = other_cmsm;
+	
+	# Move sq_elm to the picked spot
+	if (sq_elm.mode == "ate" && !ate_list.has(sq_elm)):
+		ate_list.append(sq_elm);
+	
+	final_cmsm.add_elm(sq_elm, possible_spots[rand_idx]);
 
-func pos_to_cmtd_idx(pos, ends = true):
-	var first_posns = $cmsm0/cmsm.get_child_count();
-	if (!ends):
-		first_posns -= 1;
-	return int(pos >= first_posns);
+func jump_ate(ate_elm):
+	var old_idx = ate_elm.get_index();
+	var old_cmsm = ate_elm.get_parent();
+	displace_elm(ate_elm);
+	insert_from_behavior(ate_elm, old_cmsm, old_idx, ate_elm.get_active_behavior(true));
 
-func rand_truepos(allow_ends = true):
-	var rand_val = randi()%get_max_pos(allow_ends);
-	if (!allow_ends):
-		if (pos_to_cmtd_idx(rand_val, false)):
-			rand_val += 3;
-		else:
-			rand_val += 1;
-	return rand_val;
+func copy_ate(original_ate):
+	var copy_ate = Game.copy_elm(original_ate);
+	insert_from_behavior(copy_ate, original_ate.get_parent(), original_ate.get_index(),\
+		original_ate.get_active_behavior(false));
+	return copy_ate;
 
-func move_to_truepos(sq_elm, pos):
-	var first_posns = $cmsm0/cmsm.get_child_count();
-	var cmsm_idx = int(pos > first_posns);
-	if (cmsm_idx):
-		pos -= first_posns + 1;
-	get_cmsm(cmsm_idx).add_elm(sq_elm, pos);
-
-func move_to_randpos(sq_elm, allow_ends = true):
-	move_to_truepos(sq_elm, rand_truepos(allow_ends));
+func insert_new_ate(ate_elm):
+	insert_from_behavior(ate_elm, $cmsm0/cmsm, 0);
 
 func dupe_elm(elm):
 	var copy_elm = Game.copy_elm(elm);
@@ -144,13 +166,6 @@ func dupe_elm(elm):
 		ate_list.append(copy_elm);
 	elm.get_parent().add_elm(copy_elm, elm.get_index());
 	return copy_elm;
-
-func insert_ate(elm, pos = null):
-	if (pos == null):
-		pos = rand_truepos();
-	move_to_truepos(elm, pos);
-	ate_list.append(elm);
-	return pos;
 
 func highlight_gaps():
 	for g in gap_list:
