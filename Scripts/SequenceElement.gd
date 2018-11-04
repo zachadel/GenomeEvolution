@@ -8,27 +8,49 @@ var ate_personality = {};
 
 signal elm_clicked(elm);
 
-func setup(_type, _id = "", _mode = "ate", _ess_class = "", _pers = null):
+func setup(_type, _id = "", _mode = "ate", _ess_class = ""):
 	id = _id;
 	type = _type;
 	mode = _mode;
+	var tex;
 	if (type == "gene"):
 		match (mode):
 			"essential":
 				if (_ess_class in Game.essential_classes):
 					ess_class = _ess_class;
+					tex = Game.ess_textures[_ess_class];
 				else:
 					print("!! Trying to put ", name, " (", _type, ", ", _id, ") in non-existent eclass (", _ess_class, ")");
 			"ate":
-				if (_pers == null):
-					ate_personality = Game.get_random_ate_personality();
-				else:
-					ate_personality = _pers;
+				ate_personality = Game.get_random_ate_personality();
 				id = ate_personality["title"];
+				tex = ate_personality["art"];
+	else:
+		tex = Game.sqelm_textures[_type];
 	
 	upd_display();
 	
-	var tex = Game.sqelm_textures[_type];
+	texture_normal = tex;
+	texture_pressed = tex;
+	texture_disabled = tex;
+	
+	disable(true);
+
+func setup_copy(ref_elm):
+	id = ref_elm.id;
+	type = ref_elm.type;
+	mode = ref_elm.mode;
+	var tex = ref_elm.texture_normal;
+	if (ref_elm.type == "gene"):
+		match (ref_elm.mode):
+			"essential":
+				ess_class = ref_elm.ess_class;
+			"ate":
+				ate_personality = ref_elm.ate_personality;
+				id = ate_personality["title"];
+				tex = ate_personality["art"];
+	upd_display();
+	
 	texture_normal = tex;
 	texture_pressed = tex;
 	texture_disabled = tex;
