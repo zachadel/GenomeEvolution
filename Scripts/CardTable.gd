@@ -6,6 +6,9 @@ func fix_bars():
 
 var selected_gap = null;
 var silenced_genes = [];
+var energy = 0;
+var min_energy = 0;
+var max_energy = 100;
 
 signal gene_clicked;
 
@@ -17,6 +20,23 @@ func _ready():
 			$chromes.get_cmsm(y).add_elm(nxt_gelm);
 	gain_ates(1+randi()%6);
 	$lbl_turn.text = "Click \"Continue\" to start.";
+
+func _process(delta):
+	if (Input.is_action_just_pressed("increment")):
+		increment_energy(5);
+	elif (Input.is_action_just_pressed("decrement")):
+		increment_energy(-5);
+
+func get_energy():
+	return energy;
+
+func increment_energy(amount):
+	energy += amount;
+	if (energy < min_energy):
+		energy = min_energy;
+	elif (energy > max_energy):
+		energy = max_energy;
+	$energy_bar.value = energy;
 
 func gain_ates(count = 1):
 	for i in range(count):
