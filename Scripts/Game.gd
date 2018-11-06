@@ -7,7 +7,7 @@ var turns = ["New TEs", "Active TEs Jump", "Repair Breaks", "Environmental Damag
 var turn_idx = -1;
 var round_num = 1;
 
-var animation_duration = 1;
+var animation_speed = 600;
 var animation_ease = Tween.EASE_IN;
 var animation_trans = Tween.TRANS_LINEAR;
 

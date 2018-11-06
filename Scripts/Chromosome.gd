@@ -75,8 +75,9 @@ func add_elm(elm, pos = null):
 			for i in range(pos, get_child_count()):
 				var start_pos = get_child(i).get_begin();
 				var end_pos = start_pos + Vector2(get_child(i).get_size().x, 0);
+				var distance = start_pos.distance_to(end_pos);
 				get_child(i).get_node("Tween").interpolate_property(get_child(i), "rect_position",
-					start_pos, end_pos, Game.animation_duration,Game.animation_ease, Game.animation_trans);
+					start_pos, end_pos, distance / Game.animation_speed,Game.animation_ease, Game.animation_trans);
 				get_child(i).get_node("Tween").start();
 			yield(get_child(pos).get_node("Tween"), "tween_completed");
 		yield(get_tree(), "idle_frame");
@@ -88,8 +89,9 @@ func add_elm(elm, pos = null):
 			var offset = center - elm.get_cmsm().get_parent().get_begin() - \
 			(elm.get_size() / 2.0);
 			var end_pos = Vector2(pos * elm.get_size().x, 0);
+			var distance = offset.distance_to(end_pos);
 			elm.get_node("Tween").interpolate_property(elm, "rect_position",
-				 offset, end_pos, Game.animation_duration,
+				 offset, end_pos, distance / Game.animation_speed,
 				 Game.animation_ease, Game.animation_trans);
 			elm.get_node("Tween").start();
 			yield(elm.get_node("Tween"), "tween_completed");
@@ -108,8 +110,9 @@ func remove_elm(elm):
 		var center = get_cmsm_pair().get_center();
 		var end_pos = center - elm.get_cmsm().get_parent().get_begin() - \
 		(elm.get_size() / 2.0);
+		var distance = current_pos.distance_to(end_pos);
 		elm.get_node("Tween").interpolate_property(elm, "rect_position",
-			 current_pos, end_pos, Game.animation_duration,
+			 current_pos, end_pos, distance / Game.animation_speed,
 			 Game.animation_ease, Game.animation_trans);
 		elm.get_node("Tween").start();
 		yield(elm.get_node("Tween"), "tween_completed");
@@ -119,8 +122,9 @@ func remove_elm(elm):
 	for i in range(elm.get_index() + 1, get_child_count()):
 		var start_pos = get_child(i).get_begin();
 		var end_pos = start_pos - Vector2(get_child(i).get_size().x, 0);
+		var distance = start_pos.distance_to(end_pos);
 		get_child(i).get_node("Tween").interpolate_property(get_child(i), "rect_position",
-			start_pos, end_pos, Game.animation_duration,Game.animation_ease, Game.animation_trans);
+			start_pos, end_pos, distance / Game.animation_speed,Game.animation_ease, Game.animation_trans);
 		get_child(i).get_node("Tween").start();
 	if (elm.get_index() + 1 < get_child_count()):
 		yield(get_child(elm.get_index() + 1).get_node("Tween"), "tween_completed");
@@ -138,8 +142,9 @@ func remove_elm_create_gap(elm):
 		var center = get_cmsm_pair().get_center();
 		var end_pos = center - elm.get_cmsm().get_parent().get_begin() - \
 		(elm.get_size() / 2.0);
+		var distance = current_pos.distance_to(end_pos);
 		elm.get_node("Tween").interpolate_property(elm, "rect_position",
-			 current_pos, end_pos, Game.animation_duration,
+			 current_pos, end_pos, distance / Game.animation_speed,
 			 Game.animation_ease, Game.animation_trans);
 		elm.get_node("Tween").start();
 		yield(elm.get_node("Tween"), "tween_completed");

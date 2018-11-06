@@ -11,8 +11,8 @@ signal gene_clicked;
 
 func _ready():
 	# speed up animations for setup
-	var tmp = Game.animation_duration;
-	Game.animation_duration = 0.2;
+	var tmp = Game.animation_speed;
+	Game.animation_speed *= 2;
 	# initialize chromosomes
 	for y in range(2):
 		for n in Game.essential_classes:
@@ -21,7 +21,7 @@ func _ready():
 			nxt_gelm.setup("gene", n, "essential", n);
 			yield($chromes.get_cmsm(y).add_elm(nxt_gelm), "completed");
 	# reset animation speed
-	Game.animation_duration = tmp;
+	Game.animation_speed = tmp;
 	yield(gain_ates(1+randi()%6), "completed");
 	$lbl_turn.text = "Click \"Continue\" to start.";
 
