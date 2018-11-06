@@ -1,65 +1,39 @@
 extends Node
 
-export (PackedScene) var Gene
+enum GSTATE {
+	TABLE,
+	MAP	
+};
 
-enum GAME_STATE{
-	start,
-	gainTE,
-	jumpingTE,
-	repairBreaks,
-	environmentBreaks,
-	repairEnvBreaks,
-	recombination,
-	evolve	
-}
-
-var game_state = GAME_STATE.start
-var has_changed = false
-var game_over = false
-var score = 0
+var card_table_scene = preload("res://Scenes/CardTable.tscn")
+var world_tile_scene = preload("res://Scenes/WorldMap.tscn")
+var card_table
+var world_map
+var gstate = GSTATE.TABLE
+var state_label = ["Map", "Table"]
+var button
 
 func _ready():
-	randomize()
-	game_over = false
-	$score_text.text = "Score: " + str(score)
-	game_state = GAME_STATE.gainTE
-	$phase.text = "Phase: " + str(game_state)
+	card_table = card_table_scene.instance()
+	$CardTable.add_child(card_table)
+	
+	world_map = world_tile_scene.instance()
+	add_child(world_map)
+	world_map.hide()
+	
+	button = $UI/modeSwitch
+	button.text += state_label[0]
 
-func _process(delta):
-	if has_changed:
-		match game_state:
-			gainTE:
-				$phase.text = str(game_state)
-				$chromosome.add_TE()
-				game_state = GAME_STATE.jumpingTE
-				pass
-			jumpingTE:
-				$phase.text = str(game_state)
-				game_state = GAME_STATE.repairBreaks
-				pass
-			repairBreaks:
-				$phase.text = str(game_state)
-				game_state = GAME_STATE.environmentBreaks
-				pass
-			environmentBreaks:
-				$phase.text = str(game_state)
-				game_state = GAME_STATE.repairEnvBreaks
-				pass
-			repairEnvBreaks:
-				$phase.text = str(game_state)
-				game_state = GAME_STATE.recombination
-				pass
-			recombination:
-				$phase.text = str(game_state)
-				game_state = GAME_STATE.evolve
-				pass
-			evolve:
-				$phase.text = str(game_state)
-				pass
-		has_changed = false
-			
-func _on_next_phase_button_down():
-	has_changed = true
-		
-func scoring():
-	pass
+func _on_modeSwitch_pressed():
+	
+	match(gstate):
+		GSTATE.TABLE:
+			card_table.hide()
+			world_map.show()
+			gstate = GSTATE.MAP
+			button.text = "To " + state_label[1]
+		GSTATE.MAP:
+			world_map.hide()
+			card_table.show()
+			gstate = GSTATE.TABLE
+			button.text = "To " + state_label[0]

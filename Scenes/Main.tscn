@@ -1,29 +1,48 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=2 format=2]
 
 [ext_resource path="res://Scripts/Main.gd" type="Script" id=1]
-[ext_resource path="res://Scenes/Gene.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Scenes/Chromosome.tscn" type="PackedScene" id=3]
 
-[node name="Main" type="Node"]
+[node name="Control" type="Control" index="0"]
 
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
 script = ExtResource( 1 )
-Gene = ExtResource( 2 )
 
-[node name="chromosome" parent="." index="0" instance=ExtResource( 3 )]
+[node name="CardTable" type="CanvasLayer" parent="." index="0"]
 
-margin_top = 2.0
-margin_bottom = 722.0
+layer = 1
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 
-[node name="next_phase" type="Button" parent="." index="1"]
+[node name="UI" type="CanvasLayer" parent="." index="1"]
+
+editor/display_folded = true
+layer = 1
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+
+[node name="modeSwitch" type="Button" parent="UI" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 1113.0
-margin_top = 626.0
-margin_right = 1235.0
-margin_bottom = 692.0
+margin_left = 24.0
+margin_top = 742.0
+margin_right = 242.0
+margin_bottom = 823.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -35,57 +54,10 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-text = "Next Phase"
+text = "To "
 flat = false
 align = 1
 
-[node name="score_text" type="Label" parent="." index="2"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 515.0
-margin_top = 20.0
-margin_right = 765.0
-margin_bottom = 70.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-custom_colors/font_color = Color( 1, 1, 1, 1 )
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="phase" type="Label" parent="." index="3"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 515.0
-margin_top = 100.0
-margin_right = 765.0
-margin_bottom = 150.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-custom_colors/font_color = Color( 1, 1, 1, 1 )
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Rect" ]
-
-[connection signal="button_down" from="next_phase" to="." method="_on_next_phase_button_down"]
+[connection signal="pressed" from="UI/modeSwitch" to="." method="_on_modeSwitch_pressed"]
 
 

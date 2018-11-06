@@ -14,9 +14,6 @@ var has_moved = false
 var hex_vec_pos = [Vector2(0, -2), Vector2(sqrt(3), -1), Vector2(sqrt(3), 1), Vector2(0, 2), Vector2(-sqrt(3), 1), Vector2(-sqrt(3), -1)]
 
 func _ready():
-	timer = get_node("Timer")
-	timer.set_wait_time(2)
-	timer.connect("timeout", self, "_on_Timer_timeout")
 	
 	var temp_node = world_tile_scene.instance()
 	tile_sprite_size = temp_node.get_node("Area2D").get_node("Sprite").get_texture().get_size()
@@ -61,10 +58,3 @@ func hex_spawn(center):
 			add_child(center.neighbors[i])
 			center.neighbors[i].position.x = center.position.x + hex_vec_pos[i].x * unit_len
 			center.neighbors[i].position.y = center.position.y + hex_vec_pos[i].y * unit_len
-	
-func _on_gameButton_pressed():
-	timer.start()
-	hide()
-	
-func _on_Timer_timeout():
-	show()
