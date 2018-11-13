@@ -29,7 +29,7 @@ func _ready():
 func gain_ates(count = 1):
 	for i in range(count):
 		var nxt_te = load("res://Scenes/SequenceElement.tscn").instance();
-		nxt_te.setup("gene", Game.getTEName());
+		nxt_te.setup("gene");
 		var pos = yield($chromes.insert_ate(nxt_te), "completed");
 		$lbl_justnow.text += "Inserted %s into position %d (%s, %d).\n" % [nxt_te.id, pos, nxt_te.get_cmsm().name, nxt_te.get_index()];
 	$chromes.silence_ates(silenced_genes);
