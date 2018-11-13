@@ -152,7 +152,8 @@ func jump_ate(ate_elm):
 	insert_from_behavior(ate_elm, old_cmsm, old_idx, ate_elm.get_active_behavior(true));
 
 func copy_ate(original_ate):
-	var copy_ate = Game.copy_elm(original_ate);
+	var copy_ate = load("res://Scenes/SequenceElement.tscn").instance();
+	copy_ate.setup_copy(original_ate);
 	insert_from_behavior(copy_ate, original_ate.get_parent(), original_ate.get_index(),\
 		original_ate.get_active_behavior(false));
 	return copy_ate;
@@ -161,7 +162,8 @@ func insert_new_ate(ate_elm):
 	insert_from_behavior(ate_elm, $cmsm0/cmsm, 0);
 
 func dupe_elm(elm):
-	var copy_elm = Game.copy_elm(elm);
+	var copy_elm = load("res://Scenes/SequenceElement.tscn").instance();
+	copy_elm.setup_copy(elm);
 	if (copy_elm.mode == "ate"):
 		ate_list.append(copy_elm);
 	elm.get_parent().add_elm(copy_elm, elm.get_index());

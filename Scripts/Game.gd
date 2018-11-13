@@ -1,6 +1,8 @@
 extends Node
 
 var sqelm_textures = {"gene": load("res://Assets/Images/gene.png"), "break": load("res://Assets/Images/break.png")};
+var ess_textures = {};
+var default_te_texture = load("res://Assets/Images/tes/default_te.png");
 var essential_classes = ["Replication", "Locomotion", "Manipulation", "Sensing", "Construction", "Deconstruction"];
 
 var turns = ["New TEs", "Active TEs Jump", "Repair Breaks", "Environmental Damage", "Repair Breaks", "Recombination", "Evolve", "Check Viability"];
@@ -13,8 +15,11 @@ func _ready():
 	#Generate a new seed for all rand calls
 	randomize();
 	
+	for c in essential_classes:
+		ess_textures[c] = load("res://Assets/Images/genes/" + c + ".png");
+	
 	# Import ATE Personalities
-	load_data("ate_personalities", ate_personalities);
+	load_personalities("ate_personalities", ate_personalities);
 
 func cfg_sec_to_dict(cfg, sec):
 	var build = {};
@@ -31,13 +36,16 @@ const DEFAULT_ATE_RANGE_BEHAVIOR = {
 	"max_range": 1.0 #If other_cmsm is true, this is the rightmost spot as a percentage it will jump to
 };
 
-# Dictionaries are passed by reference
-func load_data(data_name, dict):
+func load_personalities(data_name, dict):
 	var data = ConfigFile.new();
 	var err = data.load("res://Data/" + data_name + ".cfg");
 	if (err == OK):
 		for s in data.get_sections():
 			dict[s] = cfg_sec_to_dict(data, s);
+			if (dict[s].has("art")):
+				dict[s]["art"] = load("res://Assets/Images/tes/" + dict[s]["art"] + ".png");
+			else:
+				dict[s]["art"] = default_te_texture;
 	else: print("Failed to load " + data_name + " data files. Very bad!");
 
 func get_random_ate_personality():
@@ -71,11 +79,6 @@ func roll(n, d = null):
 	for i in range(n):
 		sum += randi()%d + 1;
 	return sum;
-
-func copy_elm(elm):
-	var copy = load("res://Scenes/SequenceElement.tscn").instance();
-	copy.setup(elm.type, elm.id, elm.mode, elm.ess_class, elm.ate_personality);
-	return copy;
 
 func rollCopyRepair():
 	var rand = randf();
