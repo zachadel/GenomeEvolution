@@ -88,7 +88,7 @@ func add_elm(elm, pos = null):
 			var center = elm.get_cmsm().get_cmsm_pair().get_center();
 			var offset = center - elm.get_cmsm().get_parent().get_begin() - \
 			(elm.get_size() / 2.0);
-			var end_pos = Vector2(pos * elm.get_size().x, 0);
+			var end_pos = Vector2(pos * elm.get_size().x + 3, 0);
 			var distance = offset.distance_to(end_pos);
 			elm.get_node("Tween").interpolate_property(elm, "rect_position",
 				 offset, end_pos, distance / Game.animation_speed,
@@ -99,6 +99,7 @@ func add_elm(elm, pos = null):
 	else:
 		move_child(elm, pos);
 	emit_signal("animating", false);
+	queue_sort();
 	return elm;
 
 func remove_elm(elm):
@@ -132,6 +133,7 @@ func remove_elm(elm):
 		yield(get_tree(), "idle_frame");
 	elm.get_parent().remove_child(elm);
 	emit_signal("animating", false);
+	queue_sort();
 
 func remove_elm_create_gap(elm):
 	emit_signal("animating", true);
@@ -158,6 +160,7 @@ func remove_elm_create_gap(elm):
 	move_child(gap, index);
 	gap.connect("elm_clicked", self, "_propogate_click");
 	emit_signal("animating", false);
+	queue_sort();
 	return gap;
 
 # HELPER FUNCTIONS
