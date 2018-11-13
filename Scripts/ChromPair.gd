@@ -61,7 +61,7 @@ func recombine(elm0, elm1):
 	
 	# Remove both bunches from their respective chromosomes
 	for cm in range(2):
-		var cmsm = get_node("cmsm" + str(cm) + "/cmsm");
+		var cmsm = get_cmsm(cm)
 		# Note which ones need to be removed
 		for i in range(cmsm.get_child_count() - idxs[cm]):
 			cm_bunches[cm].append(cmsm.get_child(i + idxs[cm]));
@@ -71,7 +71,7 @@ func recombine(elm0, elm1):
 	# Add the bunches to the other chromosomes
 	for cm in range(2):
 		var other_idx = int(!bool(cm)); # Don't be mad
-		var cmsm = get_node("cmsm" + str(other_idx) + "/cmsm");
+		var cmsm = get_cmsm(other_idx)
 		for elm in cm_bunches[cm]:
 			yield(cmsm.add_elm(elm), "completed");
 	recombining = false;
@@ -82,15 +82,12 @@ func recombine(elm0, elm1):
 func create_gap(truepos = null):
 	if (truepos == null):
 		truepos = rand_truepos(false);
-	var first_posns = $cmsm0/cmsm.get_child_count();
+	var first_posns = get_cmsm(0).get_child_count();
 	var cmsm_idx = int(truepos > first_posns);
 	if (cmsm_idx):
 		truepos -= first_posns + 1;
 	var gap = yield(get_cmsm(cmsm_idx).create_gap(truepos), "completed");
 	gap_list.append(gap);
-
-#func remove_elm_by_cm_idx(cmsm, idx, place_gap = true):
-#	yield(remove_elm(cmsm.get_child(idx), place_gap), "completed");
 
 func remove_elm(elm, place_gap = true):
 	if (elm in ate_list):
@@ -129,7 +126,7 @@ func silence_ates(ids):
 		ate_list.erase(r);
 
 func add_to_truepos(sq_elm, pos):
-	var first_posns = $cmsm0/cmsm.get_child_count();
+	var first_posns = get_cmsm(0).get_child_count();
 	var cmsm_idx = int(pos > first_posns);
 	if (cmsm_idx):
 		pos -= first_posns + 1;
@@ -137,6 +134,60 @@ func add_to_truepos(sq_elm, pos):
 
 func add_to_randpos(sq_elm, allow_ends = true):
 	yield(add_to_truepos(sq_elm, rand_truepos(allow_ends)), "completed");
+
+# Calling this function kinda sucks, which is why there are a bunch of almost-aliases below it
+func insert_from_behavior(sq_elm, this_cmsm, ref_pos, behave_dict = Game.DEFAULT_ATE_RANGE_BEHAVIOR):
+	var other_cmsm = get_other_cmsm(this_cmsm);
+	
+	var possible_spots = [];
+	# Get spots from this cmsm
+	if (behave_dict["this_cmsm"]):
+		for s in [-1, 1]:
+			var start = ref_pos + s * behave_dict["min_dist"];
+			start = min(this_cmsm.get_child_count()-1, max(0, start));
+			var end = behave_dict["max_dist"];
+			if (end == -1):
+				end = this_cmsm.get_child_count();
+			end = min(this_cmsm.get_child_count() - 1, max(0, ref_pos + s * end));
+			
+			if (s == 1):
+				possible_spots += range(start, end + 1); # = [start, start+1, ..., end-1, end]
+			else:
+				possible_spots += range(end + 1, start + 2);
+	var ends_idx = possible_spots.size();
+	# Get spots from the other cmsm
+	if (behave_dict["other_cmsm"]):
+		var start = round(behave_dict["min_range"] * other_cmsm.get_child_count());
+		var end = round(behave_dict["max_range"] * other_cmsm.get_child_count());
+		possible_spots += range(start, end + 1);
+	
+	# Pick a random spot from the array
+	var rand_idx = randi() % possible_spots.size();
+	# Determine which cmsm to go to
+	var final_cmsm = this_cmsm;
+	if (rand_idx >= ends_idx):
+		final_cmsm = other_cmsm;
+	
+	# Move sq_elm to the picked spot
+	if (sq_elm.mode == "ate" && !ate_list.has(sq_elm)):
+		ate_list.append(sq_elm);
+	
+	yield(final_cmsm.add_elm(sq_elm, possible_spots[rand_idx]), "completed");
+
+func jump_ate(ate_elm):
+	var old_idx = ate_elm.get_index();
+	var old_cmsm = ate_elm.get_cmsm();
+	yield(displace_elm(ate_elm), "completed")
+	yield(insert_from_behavior(ate_elm, old_cmsm, old_idx, ate_elm.get_active_behavior(true)), "completed");
+
+func copy_ate(original_ate):
+	var copy_ate = Game.copy_elm(original_ate);
+	yield(insert_from_behavior(copy_ate, original_ate.get_parent(), original_ate.get_index(),\
+		original_ate.get_active_behavior(false)), "completed");
+	return copy_ate;
+
+func insert_new_ate(ate_elm):
+	yield(insert_from_behavior(ate_elm, $cmsm0/cmsm, 0), "completed");
 
 func dupe_elm(elm):
 	var copy_elm = Game.copy_elm(elm);

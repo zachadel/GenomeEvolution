@@ -5,6 +5,7 @@ func fix_bars():
 	# This is a little hack I've come up with to make bars in ScrollContainer controls larger
 
 var selected_gap = null;
+var silenced_genes = [];
 
 signal gene_clicked;
 #signal animating(state);
@@ -31,6 +32,7 @@ func gain_ates(count = 1):
 		nxt_te.setup("gene", Game.getTEName());
 		var pos = yield($chromes.insert_ate(nxt_te), "completed");
 		$lbl_justnow.text += "Inserted %s into position %d (%s, %d).\n" % [nxt_te.id, pos, nxt_te.get_cmsm().name, nxt_te.get_index()];
+	$chromes.silence_ates(silenced_genes);
 
 func gain_gaps(count = 1):
 	for i in range(count):
@@ -41,15 +43,18 @@ func jump_ates():
 	var _actives = $chromes.ate_list + [];
 	var silence_ids = [];
 	for ate in _actives:
-		match (Game.rollATEJumps()):
+		match (ate.get_ate_jump_roll()):
 			0:
+				# do nothing
+				$lbl_justnow.text += "%s did not do anything.\n" % ate.id;
+			1:
 				# remove and leave gap
 				var old_idx = ate.get_index();
 				var old_par = ate.get_cmsm().name;
 				var old_id = ate.id;
 				yield($chromes.remove_elm(ate), "completed");
 				$lbl_justnow.text += "%s removed from (%s, %d); left a gap.\n" % [old_id, old_par, old_idx];
-			1:
+			2:
 				# jump and leave gap
 				var old_idx = ate.get_index();
 				var old_par = ate.get_cmsm().name;
@@ -57,13 +62,13 @@ func jump_ates():
 				yield($chromes.add_to_randpos(extracted), "completed");
 				$lbl_justnow.text += "%s jumped from (%s, %d) to (%s, %d); left a gap.\n" % \
 					[ate.id, old_par, old_idx, ate.get_cmsm().name, ate.get_index()];
-			2:
+			3:
 				# copy and leave no gap
 				var copy_ate = Game.copy_elm(ate);
 				yield($chromes.insert_ate(copy_ate), "completed");
 				$lbl_justnow.text += "%s copied itself to (%s, %d); left no gap.\n" % \
 					[ate.id, copy_ate.get_cmsm().name, copy_ate.get_index()];
-			3:
+			4:
 				# copy and leave no gap and silence
 				var copy_ate = Game.copy_elm(ate);
 				yield($chromes.insert_ate(copy_ate), "completed");
@@ -71,6 +76,7 @@ func jump_ates():
 				$lbl_justnow.text += "%s copied itself to (%s, %d); left no gap; silenced.\n" % \
 					[ate.id, copy_ate.get_cmsm().name, copy_ate.get_index()];
 	$chromes.silence_ates(silence_ids);
+	silenced_genes += silence_ids;
 	yield($chromes.collapse_gaps(), "completed");
 
 func _on_chromes_elm_clicked(elm):

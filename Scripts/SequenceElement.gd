@@ -4,18 +4,27 @@ var type;
 var mode;
 var id;
 var ess_class = null;
+var ate_personality = {};
 
 signal elm_clicked(elm);
 
-func setup(_type, _id = "", _mode = "ate", _ess_class = ""):
+func setup(_type, _id = "", _mode = "ate", _ess_class = "", _pers = null):
 	id = _id;
 	type = _type;
 	mode = _mode;
-	if (mode == "essential"):
-		if (_ess_class in Game.essential_classes):
-			ess_class = _ess_class;
-		else:
-			print("!! Trying to put ", name, " (", _type, ", ", _id, ") in non-existent eclass (", _ess_class, ")");
+	if (type == "gene"):
+		match (mode):
+			"essential":
+				if (_ess_class in Game.essential_classes):
+					ess_class = _ess_class;
+				else:
+					print("!! Trying to put ", name, " (", _type, ", ", _id, ") in non-existent eclass (", _ess_class, ")");
+			"ate":
+				if (_pers == null):
+					ate_personality = Game.get_random_ate_personality();
+				else:
+					ate_personality = _pers;
+				id = ate_personality["title"];
 	
 	upd_display();
 	
@@ -75,6 +84,45 @@ func disable(dis):
 	disabled = dis;
 	$GrayFilter.visible = dis;
 	$BorderRect.visible = !dis;
+
+func get_ate_jump_roll():
+	var idx = 0;
+	var roll = randf();
+	while (idx < ate_personality["roll"].size() && roll >= ate_personality["roll"][idx]):
+		idx += 1;
+	return idx;
+
+func get_active_behavior(jump): #if jump==false, get the copy range
+	var grab_dict = {};
+	if (jump):
+		# If jumping and j_range is present, use that
+		if (ate_personality.has("j_range")):
+			grab_dict = ate_personality["j_range"];
+	else:
+		# If copying and c_range is present, use that
+		if (ate_personality.has("c_range")):
+			grab_dict = ate_personality["c_range"];
+	
+	if (grab_dict.size() == 0):
+		# If we haven't found one to use, use range
+		if (ate_personality.has("range")):
+			grab_dict = ate_personality["range"];
+		else:
+			# If none of the ranges are present, use the default behavior
+			return Game.DEFAULT_ATE_RANGE_BEHAVIOR;
+	var idx = 0;
+	var roll = randf();
+	# Roll a random number, then find the behavior that matches the probability
+	while (idx < grab_dict.size() && roll >= grab_dict.keys()[idx]):
+		idx += 1;
+	
+	# Once found, fill in the implied default behavior
+	grab_dict = grab_dict[grab_dict.keys()[idx]];
+	if (grab_dict.size() < Game.DEFAULT_ATE_RANGE_BEHAVIOR.size()):
+		for k in Game.DEFAULT_ATE_RANGE_BEHAVIOR:
+			if (!grab_dict.has(k)):
+				grab_dict[k] = Game.DEFAULT_ATE_RANGE_BEHAVIOR[k];
+	return grab_dict;
 
 func _on_SeqElm_pressed():
 	emit_signal("elm_clicked", self);

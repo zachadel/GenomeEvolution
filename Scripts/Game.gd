@@ -7,15 +7,47 @@ var turns = ["New TEs", "Active TEs Jump", "Repair Breaks", "Environmental Damag
 var turn_idx = -1;
 var round_num = 1;
 
+
 var animation_speed = 600;
 var animation_ease = Tween.EASE_IN;
 var animation_trans = Tween.TRANS_LINEAR;
 
-func _ready():
-	randomize();
+var ate_personalities = {};
 
-func getTEName():
-	return "T" + str(randi()%10);
+
+func _ready():
+	#Generate a new seed for all rand calls
+	randomize();
+	
+	# Import ATE Personalities
+	load_data("ate_personalities", ate_personalities);
+
+func cfg_sec_to_dict(cfg, sec):
+	var build = {};
+	for k in cfg.get_section_keys(sec):
+		build[k] = cfg.get_value(sec, k);
+	return build;
+
+const DEFAULT_ATE_RANGE_BEHAVIOR = {
+	"this_cmsm": true, #Can jump to another spot on this chromosome
+	"min_dist": 1, #If this_cmsm is true, this is the smallest distance it will move; if the chromosome is too short, it will move until it runs out of space. This really shouldn't ever be lower than 1
+	"max_dist": -1, #If this_cmsm is true, this is the largest distance it will move; -1 means the whole chromosome
+	"other_cmsm": true, #Can jump to a spot on the other chromosome
+	"min_range": 0.0, #If other_cmsm is true, this is the leftmost spot as a percentage it will jump to
+	"max_range": 1.0 #If other_cmsm is true, this is the rightmost spot as a percentage it will jump to
+};
+
+# Dictionaries are passed by reference
+func load_data(data_name, dict):
+	var data = ConfigFile.new();
+	var err = data.load("res://Data/" + data_name + ".cfg");
+	if (err == OK):
+		for s in data.get_sections():
+			dict[s] = cfg_sec_to_dict(data, s);
+	else: print("Failed to load " + data_name + " data files. Very bad!");
+
+func get_random_ate_personality():
+	return ate_personalities[ate_personalities.keys()[randi()%ate_personalities.size()]];
 
 # This is a little hack I've come up with to make bars in ScrollContainer controls larger
 func change_slider_width(scroll_cont, horiz = true, width = 30):
@@ -49,19 +81,8 @@ func roll(n, d = null):
 
 func copy_elm(elm):
 	var copy = load("res://Scenes/SequenceElement.tscn").instance();
-	copy.setup(elm.type, elm.id, elm.mode, elm.ess_class);
+	copy.setup(elm.type, elm.id, elm.mode, elm.ess_class, elm.ate_personality);
 	return copy;
-
-func rollATEJumps():
-	var rand = randf();
-	if (rand <= .2778):
-		return 0;
-	elif (rand <= .7223):
-		return 1;
-	elif (rand <= .9167):
-		return 2;
-	else:
-		return 3;
 
 func rollCopyRepair():
 	var rand = randf();
