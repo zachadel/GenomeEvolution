@@ -173,6 +173,7 @@ func insert_from_behavior(sq_elm, this_cmsm, ref_pos, behave_dict = Game.DEFAULT
 		ate_list.append(sq_elm);
 	
 	yield(final_cmsm.add_elm(sq_elm, possible_spots[rand_idx]), "completed");
+	return rand_idx;
 
 func jump_ate(ate_elm):
 	var old_idx = ate_elm.get_index();
@@ -187,7 +188,8 @@ func copy_ate(original_ate):
 	return copy_ate;
 
 func insert_ate(ate_elm):
-	yield(insert_from_behavior(ate_elm, $cmsm0/cmsm, 0), "completed");
+	var index = yield(insert_from_behavior(ate_elm, $cmsm0/cmsm, 0), "completed");
+	return index;
 
 func dupe_elm(elm):
 	var copy_elm = Game.copy_elm(elm);

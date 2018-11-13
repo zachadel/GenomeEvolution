@@ -23,7 +23,7 @@ func _ready():
 			yield($chromes.get_cmsm(y).add_elm(nxt_gelm), "completed");
 	# reset animation speed
 	Game.animation_speed = tmp;
-	yield(gain_ates(1+randi()%6), "completed");
+	yield(gain_ates(1 + randi()%6), "completed");
 	$lbl_turn.text = "Click \"Continue\" to start.";
 
 func gain_ates(count = 1):
@@ -31,6 +31,7 @@ func gain_ates(count = 1):
 		var nxt_te = load("res://Scenes/SequenceElement.tscn").instance();
 		nxt_te.setup("gene");
 		var pos = yield($chromes.insert_ate(nxt_te), "completed");
+		print("pos: ", pos);
 		$lbl_justnow.text += "Inserted %s into position %d (%s, %d).\n" % [nxt_te.id, pos, nxt_te.get_cmsm().name, nxt_te.get_index()];
 	$chromes.silence_ates(silenced_genes);
 
