@@ -186,7 +186,7 @@ func copy_ate(original_ate):
 		original_ate.get_active_behavior(false)), "completed");
 	return copy_ate;
 
-func insert_new_ate(ate_elm):
+func insert_ate(ate_elm):
 	yield(insert_from_behavior(ate_elm, $cmsm0/cmsm, 0), "completed");
 
 func dupe_elm(elm):
@@ -195,13 +195,6 @@ func dupe_elm(elm):
 		ate_list.append(copy_elm);
 	yield(elm.get_cmsm().add_elm(copy_elm, elm.get_index()), "completed");
 	return copy_elm;
-
-func insert_ate(elm, pos = null):
-	if (pos == null):
-		pos = rand_truepos();
-	yield(add_to_truepos(elm, pos), "completed");
-	ate_list.append(elm);
-	return pos;
 
 # HELPER FUNCTINOS
 
