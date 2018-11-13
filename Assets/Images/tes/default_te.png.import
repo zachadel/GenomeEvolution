@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/gene_orig.png-b6d00b4615b565733b56eef7c02770a8.stex"
+path="res://.import/default_te.png-dddcfe8b8e1e4515c708822d559c7855.stex"
 
 [deps]
 
-source_file="res://Assets/Images/gene_orig.png"
-dest_files=[ "res://.import/gene_orig.png-b6d00b4615b565733b56eef7c02770a8.stex" ]
+source_file="res://Assets/Images/tes/default_te.png"
+dest_files=[ "res://.import/default_te.png-dddcfe8b8e1e4515c708822d559c7855.stex" ]
 
 [params]
 

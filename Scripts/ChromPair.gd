@@ -182,7 +182,8 @@ func jump_ate(ate_elm):
 	yield(insert_from_behavior(ate_elm, old_cmsm, old_idx, ate_elm.get_active_behavior(true)), "completed");
 
 func copy_ate(original_ate):
-	var copy_ate = Game.copy_elm(original_ate);
+	var copy_ate = load("res://Scenes/SequenceElement.tscn").instance();
+	copy_ate.setup_copy(original_ate);
 	yield(insert_from_behavior(copy_ate, original_ate.get_parent(), original_ate.get_index(),\
 		original_ate.get_active_behavior(false)), "completed");
 	return copy_ate;
