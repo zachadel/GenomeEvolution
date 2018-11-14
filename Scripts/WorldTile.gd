@@ -12,6 +12,6 @@ func init_data(ndx):
 
 func _on_Area2D_input_event(viewport, event, shape_idx):
 	if event.is_action_pressed("mouse_left"):
-		get_tree().get_root().get_node("World_Map_Control/Player").position = position
-		get_tree().get_root().get_node("World_Map_Control/Player").tile_ndx = map_ndx
-		get_tree().get_root().get_node("World_Map_Control").has_moved = true
+		get_tree().get_root().get_node("Control/World_Map_Control/Player").position = position
+		get_tree().get_root().get_node("Control/World_Map_Control/Player").tile_ndx = map_ndx
+		get_tree().get_root().get_node("Control/World_Map_Control").has_moved = true
