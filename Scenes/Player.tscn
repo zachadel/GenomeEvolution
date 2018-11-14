@@ -11,10 +11,13 @@ _sections_unfolded = [ "Z Index" ]
 
 [node name="Sprite" type="Sprite" parent="." index="0"]
 
+z_index = 1
 texture = ExtResource( 2 )
+_sections_unfolded = [ "Z Index" ]
 
 [node name="Camera2D" type="Camera2D" parent="." index="1"]
 
+editor/display_folded = true
 anchor_mode = 1
 rotating = false
 current = false

@@ -29,9 +29,10 @@ texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" index="1"]
 
-position = Vector2( -0.00686884, 0.00900957 )
 scale = Vector2( 4.81075, 4.11264 )
+z_as_relative = false
 shape = SubResource( 1 )
+_sections_unfolded = [ "Transform", "Z Index" ]
 
 [connection signal="input_event" from="Area2D" to="." method="_on_Area2D_input_event"]
 
