@@ -31,7 +31,7 @@ margin_right = 1600.0
 margin_bottom = 310.0
 rect_min_size = Vector2( 0, 310 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = true
+rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -46,7 +46,7 @@ _sections_unfolded = [ "Rect" ]
 [node name="cmsm" parent="cmsm0" index="0" instance=ExtResource( 2 )]
 
 anchor_right = 0.0
-margin_bottom = 253.0
+margin_bottom = 200.0
 
 [node name="cmsm1" type="ScrollContainer" parent="." index="1"]
 
@@ -59,7 +59,7 @@ margin_right = 1600.0
 margin_bottom = 660.0
 rect_min_size = Vector2( 0, 310 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = true
+rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -74,7 +74,7 @@ _sections_unfolded = [ "Rect" ]
 [node name="cmsm" parent="cmsm1" index="0" instance=ExtResource( 2 )]
 
 anchor_right = 0.0
-margin_bottom = 253.0
+margin_bottom = 200.0
 
 [connection signal="elm_clicked" from="cmsm0/cmsm" to="." method="_propogate_click"]
 

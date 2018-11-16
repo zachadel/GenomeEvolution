@@ -37,7 +37,6 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 script = ExtResource( 1 )
-_sections_unfolded = [ "Anchor", "Margin", "Rect" ]
 
 [node name="slider_correct" type="AnimationPlayer" parent="." index="0"]
 
@@ -77,7 +76,6 @@ group = null
 text = "Continue"
 flat = false
 align = 1
-_sections_unfolded = [ "Anchor", "Margin" ]
 
 [node name="lbl_turn" type="Label" parent="." index="3"]
 
@@ -168,7 +166,6 @@ value = 0.0
 exp_edit = false
 rounded = false
 percent_visible = false
-_sections_unfolded = [ "Anchor", "Margin", "Percent", "Rect" ]
 
 [connection signal="elm_clicked" from="chromes" to="." method="_on_chromes_elm_clicked"]
 
