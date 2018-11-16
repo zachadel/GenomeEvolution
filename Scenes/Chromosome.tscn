@@ -2,14 +2,12 @@
 
 [ext_resource path="res://Scripts/Chromosome.gd" type="Script" id=1]
 
-[node name="Chromosome" type="HBoxContainer"]
+[node name="Chromosome" type="HBoxContainer" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 0.0
-margin_right = 436.0
-margin_bottom = 200.0
 rect_min_size = Vector2( 0, 200 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -20,5 +18,3 @@ size_flags_vertical = 1
 alignment = 0
 script = ExtResource( 1 )
 _sections_unfolded = [ "Pause", "Rect" ]
-
-
