@@ -11,7 +11,7 @@ config_version=3
 [application]
 
 config/name="Genome Evolution"
-run/main_scene="res://Scenes/CardTable.tscn"
+run/main_scene="res://Scenes/Main.tscn"
 config/icon="res://icon.png"
 
 [autoload]
