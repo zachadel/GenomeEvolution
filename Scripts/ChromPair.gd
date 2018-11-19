@@ -4,6 +4,7 @@ var ate_list = [];
 var gap_list = [];
 var evolve_candidates = [];
 var recombining = false;  # Used to prevent recombination from triggering evolution conditions
+var do_yields = false;
 
 signal elm_clicked(elm);
 
@@ -13,6 +14,16 @@ func _propogate_click(elm):
 func fix_bars():
 	Game.change_slider_width($cmsm0);
 	Game.change_slider_width($cmsm1);
+
+func setup(card_table):
+	$cmsm0/cmsm.setup(card_table);
+	$cmsm1/cmsm.setup(card_table);
+	do_yields = true;
+
+func perform_anims(perform):
+	do_yields = perform;
+	$cmsm0/cmsm.perform_anims(perform);
+	$cmsm1/cmsm.perform_anims(perform);
 
 # GETTER FUNCTIONS
 
@@ -43,11 +54,18 @@ func extract_elm(elm, place_gap = true):
 	var elm_idx = elm.get_index();
 	
 	if (place_gap && cmsm.valid_gap_pos(elm_idx)):
-		var gap = yield(cmsm.remove_elm_create_gap(elm), "completed");
+		var gap;
+		if (do_yields):
+			gap = yield(cmsm.remove_elm_create_gap(elm), "completed");
+		else:
+			gap = cmsm.remove_elm_create_gap(elm);
 		if (gap != null):
-			gap_list.append(gap);
+			append_gaplist(gap);
 	else:
-		yield(cmsm.remove_elm(elm), "completed");
+		if (do_yields):
+			yield(cmsm.remove_elm(elm), "completed");
+		else:
+			cmsm.remove_elm(elm);
 	return elm;
 
 func recombine(elm0, elm1):
@@ -67,13 +85,19 @@ func recombine(elm0, elm1):
 			cm_bunches[cm].append(cmsm.get_child(i + idxs[cm]));
 		# Remove them (doing this earlier screws up the loop)
 		for b in cm_bunches[cm]:
-			yield(extract_elm(b, false), "completed");
+			if (do_yields):
+				yield(extract_elm(b, false), "completed");
+			else:
+				extract_elm(b, false);
 	# Add the bunches to the other chromosomes
 	for cm in range(2):
 		var other_idx = int(!bool(cm)); # Don't be mad
 		var cmsm = get_cmsm(other_idx)
 		for elm in cm_bunches[cm]:
-			yield(cmsm.add_elm(elm), "completed");
+			if (do_yields):
+				yield(cmsm.add_elm(elm), "completed");
+			else:
+				cmsm.add_elm(elm);
 	recombining = false;
 	return idxs;
 	
@@ -86,34 +110,55 @@ func create_gap(truepos = null):
 	var cmsm_idx = int(truepos > first_posns);
 	if (cmsm_idx):
 		truepos -= first_posns + 1;
-	var gap = yield(get_cmsm(cmsm_idx).create_gap(truepos), "completed");
-	gap_list.append(gap);
+	var gap;
+	if (do_yields):
+		gap = yield(get_cmsm(cmsm_idx).create_gap(truepos), "completed");
+	else:
+		gap = get_cmsm(cmsm_idx).create_gap(truepos);
+	append_gaplist(gap);
 
 func remove_elm(elm, place_gap = true):
 	if (elm in ate_list):
 		ate_list.erase(elm);
 	if (elm in gap_list):
 		gap_list.erase(elm);
-	var displaced = yield(extract_elm(elm, place_gap), "completed");
+	if (elm in evolve_candidates):
+		evolve_candidates.erase(elm);
+	
+	var displaced;
+	if (do_yields):
+		displaced = yield(extract_elm(elm, place_gap), "completed");
+	else:
+		displaced = extract_elm(elm, place_gap);
 	displaced.queue_free();
 
 func close_gap(gap):
-	yield(gap.get_cmsm().remove_elm(gap), "completed");
-	gap_list.erase(gap);
+	if (gap in gap_list):
+		gap_list.erase(gap);
+	if (do_yields):
+		yield(gap.get_cmsm().remove_elm(gap), "completed");
+	else:
+		gap.get_cmsm().remove_elm(gap);
 	gap.queue_free();
+	collapse_gaps();
 
 func collapse_gaps():
 	var _close = [];
 	for g in gap_list:
-		var i = g.get_index();
-		var cmsm = g.get_cmsm();
-		if (i == 0 || i == cmsm.get_child_count() - 1 || 
-		cmsm.get_child(i + 1).is_gap()):
-			_close.append(g);
-	if _close.size() == 0:
-		yield(get_tree(), "idle_frame");
-	for g in _close:
-		yield(close_gap(g), "completed");
+		if (g == null):
+			gap_list.erase(g);
+		else:
+			var i = g.get_index();
+			var cmsm = g.get_cmsm();
+			if (i == 0 || i == cmsm.get_child_count() - 1 || 
+			cmsm.get_child(i + 1).is_gap()):
+				_close.append(g);
+	
+	if (do_yields):
+		if _close.size() == 0:
+			yield(get_tree(), "idle_frame");
+		for g in _close:
+			yield(close_gap(g), "completed");
 	return gap_list.size();
 
 func silence_ates(ids):
@@ -130,12 +175,18 @@ func add_to_truepos(sq_elm, pos):
 	var cmsm_idx = int(pos > first_posns);
 	if (cmsm_idx):
 		pos -= first_posns + 1;
-	yield(get_cmsm(cmsm_idx).add_elm(sq_elm, pos), "completed");
+	if (do_yields):
+		yield(get_cmsm(cmsm_idx).add_elm(sq_elm, pos), "completed");
+	else:
+		get_cmsm(cmsm_idx).add_elm(sq_elm, pos);
 
 func add_to_randpos(sq_elm, allow_ends = true):
-	yield(add_to_truepos(sq_elm, rand_truepos(allow_ends)), "completed");
+	if (do_yields):
+		yield(add_to_truepos(sq_elm, rand_truepos(allow_ends)), "completed");
+	else:
+		add_to_truepos(sq_elm, rand_truepos(allow_ends));
 
-# Calling this function kinda sucks, which is why there are a bunch of almost-aliases below it
+# Calling this function kinda sucks, which is why there are a bunch of helpers below it
 func insert_from_behavior(sq_elm, this_cmsm, ref_pos, behave_dict = Game.DEFAULT_ATE_RANGE_BEHAVIOR):
 	var other_cmsm = get_other_cmsm(this_cmsm);
 	
@@ -170,36 +221,54 @@ func insert_from_behavior(sq_elm, this_cmsm, ref_pos, behave_dict = Game.DEFAULT
 	
 	# Move sq_elm to the picked spot
 	if (sq_elm.mode == "ate" && !ate_list.has(sq_elm)):
-		ate_list.append(sq_elm);
+		append_atelist(sq_elm);
 	
-	yield(final_cmsm.add_elm(sq_elm, possible_spots[rand_idx]), "completed");
+	if (do_yields):
+		yield(final_cmsm.add_elm(sq_elm, possible_spots[rand_idx]), "completed");
+	else:
+		final_cmsm.add_elm(sq_elm, possible_spots[rand_idx]);
 	return rand_idx;
 
 func jump_ate(ate_elm):
 	var old_idx = ate_elm.get_index();
 	var old_cmsm = ate_elm.get_cmsm();
-	yield(displace_elm(ate_elm), "completed")
-	yield(insert_from_behavior(ate_elm, old_cmsm, old_idx, ate_elm.get_active_behavior(true)), "completed");
+	if (do_yields):
+		yield(extract_elm(ate_elm), "completed")
+		yield(insert_from_behavior(ate_elm, old_cmsm, old_idx, ate_elm.get_active_behavior(true)), "completed");
+	else:
+		extract_elm(ate_elm);
+		insert_from_behavior(ate_elm, old_cmsm, old_idx, ate_elm.get_active_behavior(true));
 
 func copy_ate(original_ate):
 	var copy_ate = load("res://Scenes/SequenceElement.tscn").instance();
 	copy_ate.setup_copy(original_ate);
-	yield(insert_from_behavior(copy_ate, original_ate.get_parent(), original_ate.get_index(),\
-		original_ate.get_active_behavior(false)), "completed");
+	if (do_yields):
+		yield(insert_from_behavior(copy_ate, original_ate.get_parent(), original_ate.get_index(),\
+			original_ate.get_active_behavior(false)), "completed");
+	else:
+		insert_from_behavior(copy_ate, original_ate.get_parent(), original_ate.get_index(),\
+			original_ate.get_active_behavior(false));
 	return copy_ate;
 
 func insert_ate(ate_elm):
-	var index = yield(insert_from_behavior(ate_elm, $cmsm0/cmsm, 0), "completed");
+	var index;
+	if (do_yields):
+		index = yield(insert_from_behavior(ate_elm, $cmsm0/cmsm, 0), "completed");
+	else:
+		index = insert_from_behavior(ate_elm, $cmsm0/cmsm, 0);
 	return index;
 
 func dupe_elm(elm):
 	var copy_elm = Game.copy_elm(elm);
 	if (copy_elm.mode == "ate"):
-		ate_list.append(copy_elm);
-	yield(elm.get_cmsm().add_elm(copy_elm, elm.get_index()), "completed");
+		append_atelist(copy_elm);
+	if (do_yields):
+		yield(elm.get_cmsm().add_elm(copy_elm, elm.get_index()), "completed");
+	else:
+		elm.get_cmsm().add_elm(copy_elm, elm.get_index());
 	return copy_elm;
 
-# HELPER FUNCTINOS
+# HELPER FUNCTIONS
 
 func pos_to_cmtd_idx(pos, ends = true):
 	var first_posns = $cmsm0/cmsm.get_child_count();
@@ -247,3 +316,10 @@ func validate_essentials(ess_classes):
 		if (!$cmsm0/cmsm.has_essclass(e) && !$cmsm1/cmsm.has_essclass(e)):
 			return false;
 	return true;
+
+func append_gaplist(gap):
+	if (!(gap in gap_list)):
+		gap_list.append(gap);
+func append_atelist(ate):
+	if (!(ate in ate_list) && ate.type == "gene" && ate.mode == "ate"):
+		ate_list.append(ate);
