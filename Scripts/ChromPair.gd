@@ -14,6 +14,10 @@ func fix_bars():
 	Game.change_slider_width($cmsm0);
 	Game.change_slider_width($cmsm1);
 
+func setup(card_table):
+	$cmsm0/cmsm.setup(card_table);
+	$cmsm1/cmsm.setup(card_table);
+
 # GETTER FUNCTIONS
 
 func get_cmsm(idx):
@@ -135,7 +139,7 @@ func add_to_truepos(sq_elm, pos):
 func add_to_randpos(sq_elm, allow_ends = true):
 	yield(add_to_truepos(sq_elm, rand_truepos(allow_ends)), "completed");
 
-# Calling this function kinda sucks, which is why there are a bunch of almost-aliases below it
+# Calling this function kinda sucks, which is why there are a bunch of helpers below it
 func insert_from_behavior(sq_elm, this_cmsm, ref_pos, behave_dict = Game.DEFAULT_ATE_RANGE_BEHAVIOR):
 	var other_cmsm = get_other_cmsm(this_cmsm);
 	
@@ -178,7 +182,7 @@ func insert_from_behavior(sq_elm, this_cmsm, ref_pos, behave_dict = Game.DEFAULT
 func jump_ate(ate_elm):
 	var old_idx = ate_elm.get_index();
 	var old_cmsm = ate_elm.get_cmsm();
-	yield(displace_elm(ate_elm), "completed")
+	yield(extract_elm(ate_elm), "completed")
 	yield(insert_from_behavior(ate_elm, old_cmsm, old_idx, ate_elm.get_active_behavior(true)), "completed");
 
 func copy_ate(original_ate):
