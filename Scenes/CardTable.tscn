@@ -6,7 +6,7 @@
 [ext_resource path="res://Assets/Images/icons/copy_repair.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Images/icons/join_ends.png" type="Texture" id=5]
 
-[node name="Control" type="Control" index="0"]
+[node name="Control" type="Control"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -39,7 +39,6 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-disabled = true
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null

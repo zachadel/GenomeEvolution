@@ -6,7 +6,8 @@ func fix_bars():
 
 var selected_gap = null;
 
-export var is_ai = true;
+var is_ai = true;
+var do_yields = false;
 var born_on_turn = -1;
 var died_on_turn = -1;
 
@@ -21,39 +22,47 @@ signal show_repair_opts(show);
 signal died(org);
 
 func _ready():
-	# speed up animations for setup
-	var tmp = Game.animation_speed;
-	Game.animation_speed *= 2;
-	# initialize chromosomes
+	perform_anims(false);
 	for y in range(2):
 		for n in Game.essential_classes:
 			# create gene
 			var nxt_gelm = load("res://Scenes/SequenceElement.tscn").instance();
 			nxt_gelm.setup("gene", n, "essential", n);
-			yield($chromes.get_cmsm(y).add_elm(nxt_gelm), "completed");
-	# reset animation speed
-	Game.animation_speed = tmp;
-	
-	yield(gain_ates(1 + randi()%6), "completed");
+			$chromes.get_cmsm(y).add_elm(nxt_gelm);
+	gain_ates(1 + randi()%6);
 	born_on_turn = Game.round_num;
 
 func setup(card_table):
 	is_ai = false;
+	do_yields = true;
 	$chromes.setup(card_table);
+
+func perform_anims(perform):
+	do_yields = perform;
 
 func gain_ates(count = 1):
 	var justnow = "";
 	for i in range(count):
 		var nxt_te = load("res://Scenes/SequenceElement.tscn").instance();
 		nxt_te.setup("gene");
-		var pos = yield($chromes.insert_ate(nxt_te), "completed");
+		var pos;
+		if (do_yields):
+			pos = yield($chromes.insert_ate(nxt_te), "completed");
+		else:
+			pos = $chromes.insert_ate(nxt_te);
 		justnow += "Inserted %s into position %d (%s, %d).\n" % [nxt_te.id, pos, nxt_te.get_parent().get_parent().name, nxt_te.get_index()];
 	emit_signal("justnow_update", justnow);
 
 func gain_gaps(count = 1):
 	for i in range(count):
-		yield($chromes.create_gap(), "completed");
-	return yield($chromes.collapse_gaps(), "completed");
+		if (do_yields):
+			yield($chromes.create_gap(), "completed");
+		else:
+			$chromes.create_gap();
+	if (do_yields):
+		return yield($chromes.collapse_gaps(), "completed");
+	else:
+		return $chromes.collapse_gaps();
 
 func jump_ates():
 	var _actives = $chromes.ate_list + [];
@@ -66,21 +75,34 @@ func jump_ates():
 				var old_idx = ate.get_index();
 				var old_par = ate.get_parent().get_parent().name;
 				var old_id = ate.id;
-				yield($chromes.remove_elm(ate), "completed");
+				if (do_yields):
+					yield($chromes.remove_elm(ate), "completed");
+				else:
+					$chromes.remove_elm(ate);
 				justnow += "%s removed from (%s, %d); left a gap.\n" % [old_id, old_par, old_idx];
 			2:
 				var old_idx = ate.get_index();
 				var old_par = ate.get_parent().get_parent().name;
 				
-				yield($chromes.jump_ate(ate), "completed");
+				if (do_yields):
+					yield($chromes.jump_ate(ate), "completed");
+				else:
+					$chromes.jump_ate(ate);
 				justnow += "%s jumped from (%s, %d) to (%s, %d); left a gap.\n" % \
 					[ate.id, old_par, old_idx, ate.get_parent().get_parent().name, ate.get_index()];
 			3:
-				var copy_ate = yield($chromes.copy_ate(ate), "completed");
+				var copy_ate;
+				if (do_yields):
+					copy_ate = yield($chromes.copy_ate(ate), "completed");
+				else:
+					copy_ate = $chromes.copy_ate(ate);
 				justnow += "%s copied itself to (%s, %d); left no gap.\n" % \
 					[ate.id, copy_ate.get_parent().get_parent().name, copy_ate.get_index()];
 	emit_signal("justnow_update", justnow);
-	yield($chromes.collapse_gaps(), "completed");
+	if (do_yields):
+		yield($chromes.collapse_gaps(), "completed");
+	else:
+		$chromes.collapse_gaps();
 
 func _on_chromes_elm_clicked(elm):
 	match (elm.type):
@@ -116,17 +138,22 @@ func upd_repair_opts(gap):
 	
 	var cmsm = gap.get_parent();
 	var g_idx = gap.get_index();
-	
-	var left_id = cmsm.get_child(g_idx-1).id;
-	var right_id = cmsm.get_child(g_idx+1).id;
-	
-	repair_type_possible[0] = left_id == right_id;
-	repair_type_possible[1] = $chromes.get_other_cmsm(cmsm).pair_exists(left_id, right_id);
-	repair_type_possible[2] = true;
-	
-	sel_repair_idx = 0;
-	while (sel_repair_idx < 2 && !repair_type_possible[sel_repair_idx]):
-		sel_repair_idx += 1;
+	if (g_idx == 0 || g_idx == cmsm.get_child_count()-1):
+		if (do_yields):
+			yield($chromes.close_gap(gap), "completed");
+		else:
+			$chromes.close_gap(gap);
+	else:
+		var left_id = cmsm.get_child(g_idx-1).id;
+		var right_id = cmsm.get_child(g_idx+1).id;
+		
+		repair_type_possible[0] = left_id == right_id;
+		repair_type_possible[1] = $chromes.get_other_cmsm(cmsm).pair_exists(left_id, right_id);
+		repair_type_possible[2] = true;
+		
+		sel_repair_idx = 0;
+		while (sel_repair_idx < 2 && !repair_type_possible[sel_repair_idx]):
+			sel_repair_idx += 1;
 	
 	emit_signal("show_repair_opts", true);
 
@@ -151,8 +178,12 @@ func repair_gap(gap, repair_idx):
 		match (repair_idx):
 			0:
 				# Collapse Duplicates
-				yield($chromes.remove_elm(cmsm.get_child(g_idx+1), false), "completed");
-				yield($chromes.close_gap(gap), "completed");
+				if (do_yields):
+					yield($chromes.remove_elm(cmsm.get_child(g_idx+1), false), "completed");
+					yield($chromes.close_gap(gap), "completed");
+				else:
+					$chromes.remove_elm(cmsm.get_child(g_idx+1), false);
+					$chromes.close_gap(gap);
 				emit_signal("justnow_update", "Gap at %s, %d closed: collapsed the duplicate %s genes (one was lost)." % [cmsm.get_parent().name, g_idx, left_id]);
 			1:
 				# Copy Pattern
@@ -176,24 +207,39 @@ func repair_gap(gap, repair_idx):
 							
 							var gene = gene_selection.back();
 							var g_id = gene.id;
-							yield($chromes.remove_elm(gene, false), "completed");
 							emit_signal("justnow_update", "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome, but a %s gene was lost." % [cmsm.get_parent().name, g_idx, left_id, right_id, g_id]);
-							yield($chromes.close_gap(gap), "completed");
+							if (do_yields):
+								yield($chromes.remove_elm(gene, false), "completed");
+								yield($chromes.close_gap(gap), "completed");
+							else:
+								$chromes.remove_elm(gene, false);
+								$chromes.close_gap(gap);
 					1:
 						emit_signal("justnow_update", "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome without complications." % [cmsm.get_parent().name, g_idx, left_id, right_id]);
-						yield($chromes.close_gap(gap), "completed");
+						if (do_yields):
+							yield($chromes.close_gap(gap), "completed");
+						else:
+							$chromes.close_gap(gap);
 					2:
 						emit_signal("justnow_update", "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome without complications." % [cmsm.get_parent().name, g_idx, left_id, right_id]);
-						yield($chromes.close_gap(gap), "completed"); # Intervening cards are copied?
+						if (do_yields):
+							yield($chromes.close_gap(gap), "completed"); # Intervening cards are copied?
+						else:
+							$chromes.close_gap(gap);
 					3:
 						var copy_elm;
 						if (randi()%2):
 							copy_elm = cmsm.get_child(g_idx-1);
 						else:
 							copy_elm = cmsm.get_child(g_idx+1);
-						yield($chromes.dupe_elm(copy_elm), "completed");
-						yield($chromes.close_gap(gap), "completed");
+						
 						emit_signal("justnow_update", "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome, but a %s gene was copied." % [cmsm.get_parent().name, g_idx, left_id, right_id, copy_elm.id]);
+						if (do_yields):
+							yield($chromes.dupe_elm(copy_elm), "completed");
+							yield($chromes.close_gap(gap), "completed");
+						else:
+							$chromes.dupe_elm(copy_elm);
+							$chromes.close_gap(gap);
 			2:
 				# Join Ends
 				if (!roll_storage[1].has(gap)):
@@ -216,11 +262,18 @@ func repair_gap(gap, repair_idx):
 							
 							var gene = gene_selection.back();
 							var g_id = gene.id;
-							yield($chromes.remove_elm(gene, false), "completed");
-							yield($chromes.close_gap(gap), "completed");
+							if (do_yields):
+								yield($chromes.remove_elm(gene, false), "completed");
+								yield($chromes.close_gap(gap), "completed");
+							else:
+								$chromes.remove_elm(gene, false);
+								$chromes.close_gap(gap);
 							emit_signal("justnow_update", "Joined ends for the gap at %s, %d; lost a %s gene in the repair." % [cmsm.get_parent().name, g_idx, g_id]);
 					1:
-						yield($chromes.close_gap(gap), "completed");
+						if (do_yields):
+							yield($chromes.close_gap(gap), "completed");
+						else:
+							$chromes.close_gap(gap);
 						emit_signal("justnow_update", "Joined ends for the gap at %s, %d without complications." % [cmsm.get_parent().name, g_idx]);
 					2:
 						var copy_elm;
@@ -228,8 +281,12 @@ func repair_gap(gap, repair_idx):
 							copy_elm = cmsm.get_child(g_idx-1);
 						else:
 							copy_elm = cmsm.get_child(g_idx+1);
-						yield($chromes.dupe_elm(copy_elm), "completed");
-						yield($chromes.close_gap(gap), "completed");
+						if (do_yields):
+							yield($chromes.dupe_elm(copy_elm), "completed");
+							yield($chromes.close_gap(gap), "completed");
+						else:
+							$chromes.dupe_elm(copy_elm);
+							$chromes.close_gap(gap)
 						emit_signal("justnow_update", "Joined ends for the gap at %s, %d; duplicated a %s gene in the repair." % [cmsm.get_parent().name, g_idx, copy_elm.id]);
 		gene_selection.erase(gap);
 		highlight_gap_choices();
@@ -286,7 +343,11 @@ func recombination():
 				g.disable(true);
 			
 			if (randf() <= recombo_chance):
-				var idxs = yield($chromes.recombine(first_elm, scnd_elm), "completed");
+				var idxs;
+				if (do_yields):
+					idxs = yield($chromes.recombine(first_elm, scnd_elm), "completed");
+				else:
+					idxs = $chromes.recombine(first_elm, scnd_elm);
 				recombo_chance *= RECOMBO_COMPOUND;
 				emit_signal("justnow_update", "Recombination success: swapped %s genes at positions %d and %d.\nNext recombination has a %d%% chance of success." % ([first_elm.id] + idxs + [100*recombo_chance]));
 			else:
@@ -298,10 +359,16 @@ func adv_turn(round_num, turn_txt):
 		match (turn_txt):
 			"New TEs":
 				emit_signal("justnow_update", "");
-				yield(gain_ates(1), "completed");
+				if (do_yields):
+					yield(gain_ates(1), "completed");
+				else:
+					gain_ates(1);
 			"Active TEs Jump":
 				emit_signal("justnow_update", "");
-				yield(jump_ates(), "completed");
+				if (do_yields):
+					yield(jump_ates(), "completed");
+				else:
+					jump_ates();
 			"Repair Breaks":
 				roll_storage = [{}, {}];
 				var num_gaps = $chromes.gap_list.size();
@@ -313,14 +380,21 @@ func adv_turn(round_num, turn_txt):
 					emit_signal("justnow_update", "%d gaps need repair." % num_gaps);
 				highlight_gap_choices();
 			"Environmental Damage":
-				var rand = yield(gain_gaps(1+randi()%3), "completed");
+				var rand;
+				if (do_yields):
+					rand = yield(gain_gaps(1+randi()%3), "completed");
+				else:
+					rand = gain_gaps(1+randi()%3);
 				var plrl = "s";
 				if (rand == 1):
 					plrl = "";
 				emit_signal("justnow_update", "%d gap%s appeared due to environmental damage." % [rand, plrl]);
 			"Recombination":
 				emit_signal("justnow_update", "If you want, you can select a gene that is common to both chromosomes. Those genes and every gene to their right swap chromosomes.\nThis recombination has a %d%% chance of success." % (100*recombo_chance));
-				yield(recombination(), "completed");
+				if (do_yields):
+					yield(recombination(), "completed");
+				else:
+					recombination();
 			"Evolve":
 				for g in gene_selection:
 					g.disable(true);

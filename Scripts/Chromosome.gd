@@ -13,6 +13,9 @@ func setup(card_table):
 	do_animations = true;
 	connect("animating", card_table, "_on_animating_changed");
 
+func perform_anims(perform):
+	do_animations = perform;
+
 # GETTER FUNCTIONS
 
 func find_pair(left, right):
@@ -54,7 +57,11 @@ func get_cmsm_pair():
 func create_gap(pos):
 	var gap = load("res://Scenes/SequenceElement.tscn").instance();
 	gap.setup("break");
-	return yield(add_elm(gap, pos), "completed");
+	get_cmsm_pair().append_gaplist(gap);
+	if (do_animations):
+		return yield(add_elm(gap, pos), "completed");
+	else:
+		add_elm(gap, pos);
 
 func add_elm(elm, pos = null):
 	emit_signal("animating", true);
@@ -66,13 +73,16 @@ func add_elm(elm, pos = null):
 			emit_signal("got_dupe_essgene", elm);
 		# remove element from other chromosome
 		if (elm.get_cmsm() != null):
-			yield(remove_elm(elm), "completed");
-		
-		if (pos == get_child_count()):
-				yield(get_tree(), "idle_frame");
-		else:
-			# animate elements sliding right to make room
 			if (do_animations):
+				yield(remove_elm(elm), "completed");
+			else:
+				remove_elm(elm);
+		
+		if (do_animations):
+			if (pos == get_child_count()):
+				yield(get_tree(), "idle_frame");
+			else:
+				# animate elements sliding right to make room
 				for i in range(pos, get_child_count()):
 					var start_pos = get_child(i).get_begin();
 					var end_pos = start_pos + Vector2(get_child(i).get_size().x, 0);
@@ -81,15 +91,14 @@ func add_elm(elm, pos = null):
 						start_pos, end_pos, distance / Game.animation_speed,Game.animation_ease, Game.animation_trans);
 					get_child(i).get_node("Tween").start();
 				yield(get_child(pos).get_node("Tween"), "tween_completed");
-		
-		yield(get_tree(), "idle_frame");
+			yield(get_tree(), "idle_frame");
 		
 		add_child(elm);
 		move_child(elm, pos);
 		
-		if (!elm.is_gap()):
-			# animate insertion
-			if (do_animations):
+		if (do_animations):
+			if (!elm.is_gap()):
+				# animate insertion
 				var center = elm.get_cmsm().get_cmsm_pair().get_center();
 				var offset = center - elm.get_cmsm().get_parent().get_begin() - \
 				(elm.get_size() / 2.0);
@@ -165,11 +174,14 @@ func remove_elm_create_gap(elm):
 			yield(get_tree(), "idle_frame");
 	
 	elm.get_parent().remove_child(elm);
+	
 	var gap = load("res://Scenes/SequenceElement.tscn").instance();
 	gap.setup("break");
 	add_child(gap);
 	move_child(gap, index);
 	gap.connect("elm_clicked", self, "_propogate_click");
+	get_cmsm_pair().append_gaplist(gap);
+	
 	emit_signal("animating", false);
 	queue_sort();
 	return gap;
@@ -180,10 +192,10 @@ func valid_gap_pos(idx):
 	return idx > 0 && idx < get_child_count()-1 && !get_child(idx - 1).is_gap() && !get_child(idx + 1).is_gap();
 
 func pair_exists(left, right):
-	return bool(1+find_pair(left, right)); # Is this a hack? Yeah, kinda...
+	return bool(1+find_pair(left, right));
 
 func has_gene(id):
-	return bool(1+find_gene(id)); # But it's a good enough hack to do again
+	return bool(1+find_gene(id));
 
 func has_essclass(sc):
 	for g in get_children():
