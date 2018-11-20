@@ -126,6 +126,12 @@ func _on_chromes_elm_clicked(elm):
 				gene_selection.append(elm); # The selection is accessed via gene_selection.back()
 				emit_signal("gene_clicked");
 
+func _on_chromes_elm_mouse_entered(elm):
+	pass;
+
+func _on_chromes_elm_mouse_exited(elm):
+	pass;
+
 var gene_selection = [];
 var roll_storage = [{}, {}]; # When a player selects a gap, its roll is stored. That way reselection scumming doesn't work
 # The array number refers to the kind of repair being done (i.e. it should reroll if it is using a different repair option)

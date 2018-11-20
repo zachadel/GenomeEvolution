@@ -20,8 +20,4 @@ alignment = 0
 script = ExtResource( 1 )
 _sections_unfolded = [ "Anchor", "Margin", "Mouse", "Pause", "Rect" ]
 
-[connection signal="mouse_entered" from="." to="." method="_on_Chromosome_mouse_entered"]
-
-[connection signal="mouse_exited" from="." to="." method="_on_Chromosome_mouse_exited"]
-
 

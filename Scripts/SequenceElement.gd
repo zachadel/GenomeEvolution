@@ -10,6 +10,8 @@ var DEFAULT_SIZE = 200;
 var MIN_SIZE = 100;
 
 signal elm_clicked(elm);
+signal elm_mouse_entered(elm);
+signal elm_mouse_exited(elm);
 
 func setup(_type, _id = "", _mode = "ate", _ess_class = ""):
 	id = _id;
@@ -38,9 +40,6 @@ func setup(_type, _id = "", _mode = "ate", _ess_class = ""):
 	texture_disabled = tex;
 	
 	disable(true);
-	
-	connect("mouse_entered", self, "_on_mouse_entered");
-	connect("mouse_exited", self, "_on_mouse_exited");
 
 func setup_copy(ref_elm):
 	id = ref_elm.id;
@@ -152,9 +151,6 @@ func get_active_behavior(jump): #if jump==false, get the copy range
 				grab_dict[k] = Game.DEFAULT_ATE_RANGE_BEHAVIOR[k];
 	return grab_dict;
 
-func _on_SeqElm_pressed():
-	emit_signal("elm_clicked", self);
-
 var rect_clr = {true: Color(0.5, 0.5, 0), false: Color(1, 1, 1)};
 func _on_SeqElm_toggled(on):
 	$BorderRect.modulate = rect_clr[on];
@@ -173,15 +169,12 @@ func set_size(size = null):
 	$BorderRect.rect_size = Vector2(size, size);
 	$GrayFilter.rect_size = Vector2(size, size);
 
-func _on_mouse_entered():
-	print("mouse entered");
 
-func _on_mouse_exited():
-	print("mouse exited");
+func _on_SeqElm_pressed():
+	emit_signal("elm_clicked", self);
 
 func _on_SeqElm_mouse_entered():
-	print("mouse entered 2");
+	emit_signal("elm_mouse_entered", self);
 
-
-func _on_SeqElm_focus_entered():
-	print("focus entered");
+func _on_SeqElm_mouse_exited():
+	emit_signal("elm_mouse_exited", self);

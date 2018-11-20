@@ -1,11 +1,19 @@
 extends HBoxContainer
 
 signal elm_clicked(elm);
+signal elm_mouse_entered(elm);
+signal elm_mouse_exited(elm);
+signal got_dupe_essgene(elm);
+signal animating(state);
+
 func _propogate_click(elm):
 	emit_signal("elm_clicked", elm);
 
-signal got_dupe_essgene(elm);
-signal animating(state);
+func _propagate_mouse_entered(elm):
+	emit_signal("elm_mouse_entered", elm);
+
+func _propagate_mouse_exited(elm):
+	emit_signal("elm_mouse_exited", elm);
 
 var do_animations = false;
 
@@ -112,6 +120,8 @@ func add_elm(elm, pos = null):
 				elm.get_node("Tween").start();
 				yield(elm.get_node("Tween"), "tween_completed");
 		elm.connect("elm_clicked", self, "_propogate_click");
+		elm.connect("elm_mouse_entered", self, "_propagate_mouse_entered");
+		elm.connect("elm_mouse_exited", self, "_propagate_mouse_exited");
 	else:
 		move_child(elm, pos);
 	emit_signal("animating", false);
@@ -122,6 +132,8 @@ func add_elm(elm, pos = null):
 func remove_elm(elm):
 	emit_signal("animating", true);
 	elm.disconnect("elm_clicked", elm.get_cmsm(), "_propogate_click");
+	elm.disconnect("elm_mouse_entered", elm.get_cmsm(), "_propagate_mouse_entered");
+	elm.disconnect("elm_mouse_exited", elm.get_cmsm(), "_propagate_mouse_exited");
 	
 	if (do_animations):
 		if (!elm.is_gap()):
@@ -159,6 +171,8 @@ func remove_elm(elm):
 func remove_elm_create_gap(elm):
 	emit_signal("animating", true);
 	elm.disconnect("elm_clicked", elm.get_cmsm(), "_propogate_click");
+	elm.disconnect("elm_mouse_entered", elm.get_cmsm(), "_propagate_mouse_entered");
+	elm.disconnect("elm_mouse_exited", elm.get_cmsm(), "_propagate_mouse_exited");
 	var index = elm.get_index();
 	
 	if (do_animations):
@@ -184,6 +198,8 @@ func remove_elm_create_gap(elm):
 	add_child(gap);
 	move_child(gap, index);
 	gap.connect("elm_clicked", self, "_propogate_click");
+	gap.connect("elm_mouse_entered", self, "_propagate_mouse_entered");
+	gap.connect("elm_mouse_exited", self, "_propagate_mouse_exited");
 	get_cmsm_pair().append_gaplist(gap);
 	
 	emit_signal("animating", false);
@@ -235,10 +251,3 @@ func set_size():
 #		rect_size = Vector2(rect_min_size.x, size);
 #		for elm in get_children():
 #			elm.set_size(size);
-
-func _on_Chromosome_mouse_entered():
-	print("chromosome mouse entered");
-
-
-func _on_Chromosome_mouse_exited():
-	print("chromosome mouse exited");

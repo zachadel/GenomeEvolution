@@ -3,7 +3,7 @@
 [ext_resource path="res://Scripts/ChromPair.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Chromosome.tscn" type="PackedScene" id=2]
 
-[node name="ChromPair" type="VBoxContainer" index="0"]
+[node name="ChromPair" type="VBoxContainer"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -76,13 +76,19 @@ _sections_unfolded = [ "Anchor", "Margin", "Mouse", "Rect" ]
 anchor_right = 0.0
 margin_bottom = 100.0
 
-[connection signal="mouse_entered" from="." to="." method="_on_ChromPair_mouse_entered"]
-
 [connection signal="elm_clicked" from="cmsm0/cmsm" to="." method="_propogate_click"]
+
+[connection signal="elm_mouse_entered" from="cmsm0/cmsm" to="." method="_propagate_mouse_entered"]
+
+[connection signal="elm_mouse_exited" from="cmsm0/cmsm" to="." method="_propagate_mouse_exited"]
 
 [connection signal="got_dupe_essgene" from="cmsm0/cmsm" to="." method="_on_cmsm_got_dupe_essgene"]
 
 [connection signal="elm_clicked" from="cmsm1/cmsm" to="." method="_propogate_click"]
+
+[connection signal="elm_mouse_entered" from="cmsm1/cmsm" to="." method="_propagate_mouse_entered"]
+
+[connection signal="elm_mouse_exited" from="cmsm1/cmsm" to="." method="_propagate_mouse_exited"]
 
 [connection signal="got_dupe_essgene" from="cmsm1/cmsm" to="." method="_on_cmsm_got_dupe_essgene"]
 

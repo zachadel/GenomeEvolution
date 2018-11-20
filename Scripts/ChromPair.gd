@@ -7,12 +7,17 @@ var recombining = false;  # Used to prevent recombination from triggering evolut
 var do_yields = false;
 
 signal elm_clicked(elm);
+signal elm_mouse_entered(elm);
+signal elm_mouse_exited(elm);
 
 func _propogate_click(elm):
 	emit_signal("elm_clicked", elm);
 
-func _propogate_mouse_entered(elm):
-	emit_signal("mouse_entered", elm);
+func _propagate_mouse_entered(elm):
+	emit_signal("elm_mouse_entered", elm);
+
+func _propagate_mouse_exited(elm):
+	emit_signal("elm_mouse_exited", elm);
 
 func fix_bars():
 	Game.change_slider_width($cmsm0);
@@ -326,6 +331,3 @@ func append_gaplist(gap):
 func append_atelist(ate):
 	if (!(ate in ate_list) && ate.type == "gene" && ate.mode == "ate"):
 		ate_list.append(ate);
-
-func _on_ChromPair_mouse_entered():
-	print("chrom pair mouse entered");
