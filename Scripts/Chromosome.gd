@@ -236,8 +236,8 @@ func set_size():
 		size = get_child(0).MIN_SIZE;
 	elif (get_child_count() > 0 && size > get_child(0).DEFAULT_SIZE):
 		size = get_child(0).DEFAULT_SIZE;
-	rect_min_size = Vector2(rect_min_size.x, size);
-	rect_size = Vector2(rect_min_size.x, size);
+	#rect_min_size = Vector2(rect_min_size.x, size);
+	#rect_size = Vector2(rect_min_size.x, size);
 	for elm in get_children():
 		elm.set_size(size);
 #	if (get_child_count() < 7):
@@ -251,3 +251,13 @@ func set_size():
 #		rect_size = Vector2(rect_min_size.x, size);
 #		for elm in get_children():
 #			elm.set_size(size);
+
+func magnify_elm(elm):
+	elm.current_size = elm.rect_size.x;
+	var new_size = min(elm.DEFAULT_SIZE, elm.current_size * elm.MAGNIFICATION_FACTOR);
+	elm.rect_min_size = Vector2(new_size, new_size);
+	elm.rect_size = Vector2(new_size, new_size);
+
+func demagnify_elm(elm):
+	elm.rect_min_size = Vector2(elm.current_size, elm.current_size);
+	elm.rect_size = Vector2(elm.current_size, elm.current_size);

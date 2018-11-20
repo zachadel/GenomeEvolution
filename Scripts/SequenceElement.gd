@@ -8,6 +8,9 @@ var ate_personality = {};
 
 var DEFAULT_SIZE = 200;
 var MIN_SIZE = 100;
+var MAGNIFICATION_FACTOR = 1.4;
+var MAGNIFICATION_DROPOFF = 0.5;
+var current_size;
 
 signal elm_clicked(elm);
 signal elm_mouse_entered(elm);
@@ -174,7 +177,9 @@ func _on_SeqElm_pressed():
 	emit_signal("elm_clicked", self);
 
 func _on_SeqElm_mouse_entered():
+	get_cmsm().magnify_elm(self);
 	emit_signal("elm_mouse_entered", self);
 
 func _on_SeqElm_mouse_exited():
+	get_cmsm().demagnify_elm(self);
 	emit_signal("elm_mouse_exited", self);
