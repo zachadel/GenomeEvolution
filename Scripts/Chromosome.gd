@@ -254,10 +254,34 @@ func set_size():
 
 func magnify_elm(elm):
 	elm.current_size = elm.rect_size.x;
+	if (elm.current_size >= 0.9 * elm.DEFAULT_SIZE):
+		return;
 	var new_size = min(elm.DEFAULT_SIZE, elm.current_size * elm.MAGNIFICATION_FACTOR);
 	elm.rect_min_size = Vector2(new_size, new_size);
 	elm.rect_size = Vector2(new_size, new_size);
+	var counter = 1;
+	for i in range(elm.get_index() - 1, max(elm.get_index() - 3, 0), -1):
+		var next = elm.get_parent().get_child(i);
+		next.current_size = next.rect_size.x;
+		next.rect_min_size = Vector2(new_size * pow(next.MAGNIFICATION_DROPOFF, counter), new_size * pow(next.MAGNIFICATION_DROPOFF, counter));
+		next.rect_size = Vector2(new_size * pow(next.MAGNIFICATION_DROPOFF, counter), new_size * pow(next.MAGNIFICATION_DROPOFF, counter));
+		counter += 1;
+	counter = 1;
+	for i in range(elm.get_index() + 1, min(elm.get_index() + 3, elm.get_parent().get_child_count())):
+		var next = elm.get_parent().get_child(i);
+		next.current_size = next.rect_size.x;
+		next.rect_min_size = Vector2(new_size * pow(next.MAGNIFICATION_DROPOFF, counter), new_size * pow(next.MAGNIFICATION_DROPOFF, counter));
+		next.rect_size = Vector2(new_size * pow(next.MAGNIFICATION_DROPOFF, counter), new_size * pow(next.MAGNIFICATION_DROPOFF, counter));
+		counter += 1;
 
 func demagnify_elm(elm):
 	elm.rect_min_size = Vector2(elm.current_size, elm.current_size);
 	elm.rect_size = Vector2(elm.current_size, elm.current_size);
+	for i in range(elm.get_index() - 1, max(elm.get_index() - 3, 0), -1):
+		var next = elm.get_parent().get_child(i);
+		next.rect_min_size = Vector2(next.current_size, next.current_size);
+		next.rect_size = Vector2(next.current_size, next.current_size);
+	for i in range(elm.get_index() + 1, min(elm.get_index() + 3, elm.get_parent().get_child_count())):
+		var next = elm.get_parent().get_child(i);
+		next.rect_min_size = Vector2(next.current_size, next.current_size);
+		next.rect_size = Vector2(next.current_size, next.current_size);

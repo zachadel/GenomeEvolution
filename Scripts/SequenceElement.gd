@@ -8,13 +8,16 @@ var ate_personality = {};
 
 var DEFAULT_SIZE = 200;
 var MIN_SIZE = 75;
-var MAGNIFICATION_FACTOR = 1.4;
-var MAGNIFICATION_DROPOFF = 0.5;
+var MAGNIFICATION_FACTOR = 1.5;
+var MAGNIFICATION_DROPOFF = 0.9;
 var current_size;
 
 signal elm_clicked(elm);
 signal elm_mouse_entered(elm);
 signal elm_mouse_exited(elm);
+
+func _ready():
+	current_size = DEFAULT_SIZE;
 
 func setup(_type, _id = "", _mode = "ate", _ess_class = ""):
 	id = _id;
