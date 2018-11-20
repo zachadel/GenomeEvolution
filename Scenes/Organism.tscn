@@ -54,7 +54,6 @@ blend_times = [  ]
 [node name="chromes" parent="." index="1" instance=ExtResource( 2 )]
 
 margin_bottom = 660.0
-custom_constants/separation = 35
 
 [node name="lbl_dead" type="Label" parent="." index="2"]
 

@@ -228,7 +228,7 @@ func set_size():
 #	var size = (get_parent().rect_size.x / get_child_count()) - \
 #		(get_child_count() * 5);
 	# TODO: fix this so it doesn't require a constant value
-	var size = (1600 / (get_child_count() + 1)) - (get_child_count() * 0.2);
+	var size = (1600 / (get_child_count() + 1));
 #	print("scroll box width = " + str(get_parent().rect_size.x));
 #	print("child_count = " + str(get_child_count()));
 #	print("size = " + str(size));

@@ -3,7 +3,7 @@
 [ext_resource path="res://Scripts/SequenceElement.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Images/border.png" type="Texture" id=2]
 
-[node name="SeqElm" type="TextureButton"]
+[node name="SeqElm" type="TextureButton" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -25,7 +25,7 @@ shortcut = null
 group = null
 expand = true
 script = ExtResource( 1 )
-_sections_unfolded = [ "Focus", "Margin", "Mouse", "Rect", "Size Flags", "Textures", "Theme", "Visibility" ]
+_sections_unfolded = [ "Anchor", "Focus", "Margin", "Mouse", "Rect", "Size Flags", "Textures", "Theme", "Visibility" ]
 
 [node name="BorderRect" type="TextureRect" parent="." index="0"]
 
@@ -60,7 +60,7 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 color = Color( 0, 0, 0, 0.33 )
-_sections_unfolded = [ "Mouse", "Rect" ]
+_sections_unfolded = [ "Anchor", "Margin", "Mouse", "Rect", "Visibility" ]
 
 [node name="lbl" type="Label" parent="." index="2"]
 
