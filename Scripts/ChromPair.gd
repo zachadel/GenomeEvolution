@@ -11,6 +11,9 @@ signal elm_clicked(elm);
 func _propogate_click(elm):
 	emit_signal("elm_clicked", elm);
 
+func _propogate_mouse_entered(elm):
+	emit_signal("mouse_entered", elm);
+
 func fix_bars():
 	Game.change_slider_width($cmsm0);
 	Game.change_slider_width($cmsm1);
@@ -323,3 +326,6 @@ func append_gaplist(gap):
 func append_atelist(ate):
 	if (!(ate in ate_list) && ate.type == "gene" && ate.mode == "ate"):
 		ate_list.append(ate);
+
+func _on_ChromPair_mouse_entered():
+	print("chrom pair mouse entered");

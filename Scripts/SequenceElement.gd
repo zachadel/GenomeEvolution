@@ -38,6 +38,9 @@ func setup(_type, _id = "", _mode = "ate", _ess_class = ""):
 	texture_disabled = tex;
 	
 	disable(true);
+	
+	connect("mouse_entered", self, "_on_mouse_entered");
+	connect("mouse_exited", self, "_on_mouse_exited");
 
 func setup_copy(ref_elm):
 	id = ref_elm.id;
@@ -169,3 +172,16 @@ func set_size(size = null):
 	rect_size = Vector2(size, size);
 	$BorderRect.rect_size = Vector2(size, size);
 	$GrayFilter.rect_size = Vector2(size, size);
+
+func _on_mouse_entered():
+	print("mouse entered");
+
+func _on_mouse_exited():
+	print("mouse exited");
+
+func _on_SeqElm_mouse_entered():
+	print("mouse entered 2");
+
+
+func _on_SeqElm_focus_entered():
+	print("focus entered");

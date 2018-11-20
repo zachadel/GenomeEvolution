@@ -213,9 +213,9 @@ func set_size():
 #		(get_child_count() * 5);
 	# TODO: fix this so it doesn't require a constant value
 	var size = 1600 / (get_child_count() + 1);
-	print("scroll box width = " + str(get_parent().rect_size.x));
-	print("child_count = " + str(get_child_count()));
-	print("size = " + str(size));
+#	print("scroll box width = " + str(get_parent().rect_size.x));
+#	print("child_count = " + str(get_child_count()));
+#	print("size = " + str(size));
 	if (get_child_count() > 0 && size < get_child(0).MIN_SIZE):
 		size = get_child(0).MIN_SIZE;
 	elif (get_child_count() > 0 && size > get_child(0).DEFAULT_SIZE):
@@ -235,3 +235,10 @@ func set_size():
 #		rect_size = Vector2(rect_min_size.x, size);
 #		for elm in get_children():
 #			elm.set_size(size);
+
+func _on_Chromosome_mouse_entered():
+	print("chromosome mouse entered");
+
+
+func _on_Chromosome_mouse_exited():
+	print("chromosome mouse exited");
