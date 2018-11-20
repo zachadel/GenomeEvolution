@@ -84,18 +84,33 @@ func spread_neighbors(center_tile, tile_influence_color, strength, orig_stren):
 		tile_map[curr_vec2.x][curr_vec2.y].change_color(tile_influence_color * clamp(((strength)/orig_stren), .5, 1))
 		tile_map[curr_vec2.x][curr_vec2.y].biome_set = true
 		tile_map[curr_vec2.x][curr_vec2.y].biome_rank = strength
-		
-	for k in range(6):
-		if int(center_tile.map_ndx.x) % 2 == 0:
-			curr_vec2 = center_tile.map_ndx + hex_positions_even[k]
-		else:
-			curr_vec2 = center_tile.map_ndx + hex_positions_odd[k]
-		if curr_vec2.x == 32 or curr_vec2.y == 32:
-			continue
 		spread_neighbors(tile_map[curr_vec2.x][curr_vec2.y], tile_influence_color, strength - 1, orig_stren)
 
-func forget():
-	pass
+#func _process(delta):
+#	if has_moved:
+#		forget(tile_map[player.tile_ndx.x][player.tile_ndx.y], player.sensing_strength)
+#		learn(tile_map[player.tile_ndx.x][player.tile_ndx.y], player.sensing_strength)
+#
+#func forget(center_tile, strength):
+#	if strength < 1:
+#		return
+#
+#	for t in range(6):
+#		if int(center_tile.map_ndx.x) % 2 == 0:
+#			curr_vec2 = center_tile.map_ndx + hex_positions_even[k]
+#		else:
+#			curr_vec2 = center_tile.map_ndx + hex_positions_odd[k]
+#		if curr_vec2.x == 32 or curr_vec2.y == 32:
+#			continue
+#
+#		tile_map[curr_vec2.x][curr_vec2.y].hide_color()
+#
+#	for t in range(6):
+#		forget()
+#
+#func learn(center_tile, strength):
+#
+#	pass
 
 
 
