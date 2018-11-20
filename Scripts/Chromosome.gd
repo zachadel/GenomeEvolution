@@ -10,6 +10,8 @@ signal animating(state);
 func _ready():
 	connect("animating", get_card_table(), "_on_animating_changed");
 
+var SequenceElement = preload("res://Scripts/SequenceElement.gd");
+
 # GETTER FUNCTIONS
 
 func find_pair(left, right):
@@ -99,6 +101,7 @@ func add_elm(elm, pos = null):
 	else:
 		move_child(elm, pos);
 	emit_signal("animating", false);
+	set_size();
 	queue_sort();
 	return elm;
 
@@ -133,6 +136,7 @@ func remove_elm(elm):
 		yield(get_tree(), "idle_frame");
 	elm.get_parent().remove_child(elm);
 	emit_signal("animating", false);
+	set_size();
 	queue_sort();
 
 func remove_elm_create_gap(elm):
@@ -160,6 +164,7 @@ func remove_elm_create_gap(elm):
 	move_child(gap, index);
 	gap.connect("elm_clicked", self, "_propogate_click");
 	emit_signal("animating", false);
+	set_size();
 	queue_sort();
 	return gap;
 
@@ -179,3 +184,16 @@ func has_essclass(sc):
 		if (g.ess_class == sc):
 			return true;
 	return false;
+
+func set_size():
+	if (get_child_count() < 7):
+		rect_min_size = Vector2(rect_min_size.x, get_child(0).DEFAULT_SIZE);
+		rect_size = Vector2(rect_min_size.x, get_child(0).DEFAULT_SIZE);
+		for elm in get_children():
+			elm.set_size();
+	else:
+		var size = 200 - ((get_child_count() - 7) * 25);
+		rect_min_size = Vector2(rect_min_size.x, size);
+		rect_size = Vector2(rect_min_size.x, size);
+		for elm in get_children():
+			elm.set_size(size);

@@ -6,6 +6,9 @@ var id;
 var ess_class = null;
 var ate_personality = {};
 
+var DEFAULT_SIZE = 200;
+var MIN_SIZE = 100;
+
 signal elm_clicked(elm);
 
 func setup(_type, _id = "", _mode = "ate", _ess_class = ""):
@@ -75,16 +78,16 @@ func upd_display():
 			match (mode):
 				"ate":
 					self_modulate = Color(.8, .15, 0);
-					$lbl.text += " (Active)";
+					#$lbl.text += " (Active)";
 				"ste":
 					self_modulate = Color(.55, 0, 0);
-					$lbl.text += " (Silenced)";
+					#$lbl.text += " (Silenced)";
 				"essential":
 					self_modulate = Color(.15, .8, 0);
-					$lbl.text += " (Essential)";
+					#$lbl.text += " (Essential)";
 				"pseudo":
 					self_modulate = Color(.5, .5, 0);
-					$lbl.text += " (Pseudogene)";
+					#$lbl.text += " (Pseudogene)";
 		"break":
 			toggle_mode = true;
 			continue;
@@ -152,3 +155,17 @@ func _on_SeqElm_pressed():
 var rect_clr = {true: Color(0.5, 0.5, 0), false: Color(1, 1, 1)};
 func _on_SeqElm_toggled(on):
 	$BorderRect.modulate = rect_clr[on];
+
+func set_size(size = null):
+	if (size == null):
+		size = DEFAULT_SIZE;
+	elif (size < MIN_SIZE):
+		size = MIN_SIZE;
+	elif (size > DEFAULT_SIZE):
+		size = DEFAULT_SIZE;
+	rect_min_size = Vector2(size, size);
+	$BorderRect.rect_min_size = Vector2(size, size);
+	$GrayFilter.rect_min_size = Vector2(size, size);
+	rect_size = Vector2(size, size);
+	$BorderRect.rect_size = Vector2(size, size);
+	$GrayFilter.rect_size = Vector2(size, size);

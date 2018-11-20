@@ -46,7 +46,7 @@ _sections_unfolded = [ "Rect" ]
 [node name="cmsm" parent="cmsm0" index="0" instance=ExtResource( 2 )]
 
 anchor_right = 0.0
-margin_bottom = 200.0
+margin_right = 0.0
 
 [node name="cmsm1" type="ScrollContainer" parent="." index="1"]
 
@@ -74,7 +74,7 @@ _sections_unfolded = [ "Rect" ]
 [node name="cmsm" parent="cmsm1" index="0" instance=ExtResource( 2 )]
 
 anchor_right = 0.0
-margin_bottom = 200.0
+margin_right = 0.0
 
 [connection signal="elm_clicked" from="cmsm0/cmsm" to="." method="_propogate_click"]
 
