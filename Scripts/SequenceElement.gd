@@ -7,7 +7,7 @@ var ess_class = null;
 var ate_personality = {};
 
 var DEFAULT_SIZE = 200;
-var MIN_SIZE = 100;
+var MIN_SIZE = 75;
 var MAGNIFICATION_FACTOR = 1.4;
 var MAGNIFICATION_DROPOFF = 0.5;
 var current_size;
