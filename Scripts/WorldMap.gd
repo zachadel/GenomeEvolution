@@ -3,11 +3,11 @@ extends Control
 var tile_map = []
 var tile_col = 32
 var tile_rows = 32
+var POIs = {}
 var world_tile_scene = preload("res://Scenes/WorldTile.tscn")
 var player_scene = preload("res://Scenes/Player.tscn")
 var player
 var tile_sprite_size
-var timer
 var has_moved = false
 
 func _ready():
@@ -28,6 +28,10 @@ func _ready():
 	
 func spawn_map():
 	var current_ndx
+	
+	calc_biomes()
+	
+	
 	for i in range(tile_col):
 		for j in range(tile_rows):
 			current_ndx = (i * tile_rows) + j
@@ -42,9 +46,11 @@ func spawn_map():
 				tile_map[current_ndx].position.x = tile_sprite_size.x * i
 				tile_map[current_ndx].position.y = tile_sprite_size.y * j + (tile_sprite_size.y / 2)
 
-func _process(delta):
-	if has_moved:
-		forget()
+func calc_biomes():
+	var number_of_pois = (randi() % int(ceil(sqrt(tile_col)))) + 1
+	for i in range(number_of_pois):
+		var info = Vector3(randi()%tile_col, randi()%tile_rows, i)
+		POIs[info] = Color(randf()*.5 +.2, randf()*.5 + .2, randf()*.5 + .2)
 
 
 func forget():
