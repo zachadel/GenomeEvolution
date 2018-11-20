@@ -24,6 +24,9 @@ func _ready():
 	
 	spawn_map()
 	player.position = tile_map[ceil(tile_col/2)][ceil(tile_rows / 2)].position
+	player.tile_ndx = Vector2(ceil(tile_col/2), ceil(tile_rows / 2))
+	player.prev_tile_ndx = Vector2(ceil(tile_col/2), ceil(tile_rows / 2))
+	learn(tile_map[ceil(tile_col/2)][ceil(tile_rows / 2)], player.sensing_strength)
 	
 	
 func spawn_map():
@@ -66,7 +69,6 @@ var hex_positions_even = [Vector2(1, -1), Vector2(1, 0), Vector2(0, 1), Vector2(
 func spread_neighbors(center_tile, tile_influence_color, strength, orig_stren):
 	
 	var curr_vec2
-	var curr_tile
 	
 	if strength < 1:
 		return
@@ -86,31 +88,42 @@ func spread_neighbors(center_tile, tile_influence_color, strength, orig_stren):
 		tile_map[curr_vec2.x][curr_vec2.y].biome_rank = strength
 		spread_neighbors(tile_map[curr_vec2.x][curr_vec2.y], tile_influence_color, strength - 1, orig_stren)
 
-#func _process(delta):
-#	if has_moved:
-#		forget(tile_map[player.tile_ndx.x][player.tile_ndx.y], player.sensing_strength)
-#		learn(tile_map[player.tile_ndx.x][player.tile_ndx.y], player.sensing_strength)
-#
-#func forget(center_tile, strength):
-#	if strength < 1:
-#		return
-#
-#	for t in range(6):
-#		if int(center_tile.map_ndx.x) % 2 == 0:
-#			curr_vec2 = center_tile.map_ndx + hex_positions_even[k]
-#		else:
-#			curr_vec2 = center_tile.map_ndx + hex_positions_odd[k]
-#		if curr_vec2.x == 32 or curr_vec2.y == 32:
-#			continue
-#
-#		tile_map[curr_vec2.x][curr_vec2.y].hide_color()
-#
-#	for t in range(6):
-#		forget()
-#
-#func learn(center_tile, strength):
-#
-#	pass
+func _process(delta):
+	if has_moved:
+		forget(tile_map[player.prev_tile_ndx.x][player.prev_tile_ndx.y], player.sensing_strength)
+		learn(tile_map[player.tile_ndx.x][player.tile_ndx.y], player.sensing_strength)
+
+func forget(center_tile, strength):
+	var curr_vec2
+	
+	if strength < 1:
+		return
+
+	for t in range(6):
+		if int(center_tile.map_ndx.x) % 2 == 0:
+			curr_vec2 = center_tile.map_ndx + hex_positions_even[t]
+		else:
+			curr_vec2 = center_tile.map_ndx + hex_positions_odd[t]
+		if curr_vec2.x == 32 or curr_vec2.y == 32:
+			continue
+		tile_map[curr_vec2.x][curr_vec2.y].hide_color()
+		forget(tile_map[curr_vec2.x][curr_vec2.y], strength - 1)
+
+func learn(center_tile, strength):
+	var curr_vec2
+	
+	if strength < 1:
+		return
+
+	for t in range(6):
+		if int(center_tile.map_ndx.x) % 2 == 0:
+			curr_vec2 = center_tile.map_ndx + hex_positions_even[t]
+		else:
+			curr_vec2 = center_tile.map_ndx + hex_positions_odd[t]
+		if curr_vec2.x == 32 or curr_vec2.y == 32:
+			continue
+		tile_map[curr_vec2.x][curr_vec2.y].show_color()
+		learn(tile_map[curr_vec2.x][curr_vec2.y], strength - 1)
 
 
 
