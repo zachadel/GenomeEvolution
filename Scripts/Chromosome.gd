@@ -129,6 +129,7 @@ func add_elm(elm, pos = null):
 	else:
 		move_child(elm, pos);
 	emit_signal("animating", false);
+	yield(get_tree(), "idle_frame");
 	queue_sort();
 	return elm;
 
@@ -169,6 +170,7 @@ func remove_elm(elm):
 	elm.get_parent().remove_child(elm);
 	emit_signal("animating", false);
 	set_size();
+	yield(get_tree(), "idle_frame");
 	queue_sort();
 
 func remove_elm_create_gap(elm):
@@ -207,6 +209,7 @@ func remove_elm_create_gap(elm):
 	
 	emit_signal("animating", false);
 	set_size();
+	yield(get_tree(), "idle_frame");
 	queue_sort();
 	return gap;
 
