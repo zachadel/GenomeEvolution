@@ -3,11 +3,11 @@ extends Control
 var tile_map = []
 var tile_col = 32
 var tile_rows = 32
+var POIs = {}
 var world_tile_scene = preload("res://Scenes/WorldTile.tscn")
 var player_scene = preload("res://Scenes/Player.tscn")
 var player
 var tile_sprite_size
-var timer
 var has_moved = false
 
 func _ready():
@@ -23,32 +23,107 @@ func _ready():
 	
 	
 	spawn_map()
-	player.position = tile_map[ceil((tile_col * tile_rows)/2) + ceil(tile_col / 2)].position
+	player.position = tile_map[ceil(tile_col/2)][ceil(tile_rows / 2)].position
+	player.tile_ndx = Vector2(ceil(tile_col/2), ceil(tile_rows / 2))
+	player.prev_tile_ndx = Vector2(ceil(tile_col/2), ceil(tile_rows / 2))
+	learn(tile_map[ceil(tile_col/2)][ceil(tile_rows / 2)], player.sensing_strength)
 	
 	
 func spawn_map():
 	var current_ndx
+	
 	for i in range(tile_col):
+		tile_map.push_back([])
 		for j in range(tile_rows):
-			current_ndx = (i * tile_rows) + j
-			tile_map.push_back(world_tile_scene.instance())
-			add_child(tile_map[current_ndx])
-			tile_map[current_ndx].init_data(Vector2(i, j))
+			tile_map[i].push_back(world_tile_scene.instance())
+			add_child(tile_map[i][j])
+			tile_map[i][j].map_ndx = Vector2(i, j)
 			
 			if (i % 2) == 0:
-				tile_map[current_ndx].position.x = tile_sprite_size.x * i
-				tile_map[current_ndx].position.y = tile_sprite_size.y * j
+				tile_map[i][j].position.x = tile_sprite_size.x * i
+				tile_map[i][j].position.y = tile_sprite_size.y * j
 			else:
-				tile_map[current_ndx].position.x = tile_sprite_size.x * i
-				tile_map[current_ndx].position.y = tile_sprite_size.y * j + (tile_sprite_size.y / 2)
+				tile_map[i][j].position.x = tile_sprite_size.x * i
+				tile_map[i][j].position.y = tile_sprite_size.y * j + (tile_sprite_size.y / 2)
+
+	calc_biomes()
+
+func calc_biomes():
+	var n = int(ceil(sqrt(tile_col)))
+	var number_of_pois = n
+	print(number_of_pois)
+	for i in range(number_of_pois):
+		var info = Quat(randi()%tile_col, randi()%tile_rows, (randi()%n + 3), i)
+		POIs[info] = Color(randf() +.2, randf()*.25 - .5, randf() + .2)
+		
+		tile_map[info.x][info.y].change_color(POIs[info])
+		tile_map[info.x][info.y].biome_set = true
+		tile_map[info.x][info.y].biome_rank = info.z
+		
+		
+		spread_neighbors(tile_map[info.x][info.y], POIs[info], info.z-1, info.z)
+
+var hex_positions_odd = [Vector2(1, 0), Vector2(1, 1), Vector2(0, 1), Vector2(-1, 1), Vector2(-1, 0), Vector2(0, -1)]
+var hex_positions_even = [Vector2(1, -1), Vector2(1, 0), Vector2(0, 1), Vector2(-1, 0), Vector2(-1, -1), Vector2(0, -1)]
+
+func spread_neighbors(center_tile, tile_influence_color, strength, orig_stren):
+	
+	var curr_vec2
+	
+	if strength < 1:
+		return
+		
+	for k in range(6):
+		if int(center_tile.map_ndx.x) % 2 == 0:
+			curr_vec2 = center_tile.map_ndx + hex_positions_even[k]
+		else:
+			curr_vec2 = center_tile.map_ndx + hex_positions_odd[k]
+		if curr_vec2.x == 32 or curr_vec2.y == 32:
+			continue
+		if tile_map[curr_vec2.x][curr_vec2.y].biome_set and tile_map[curr_vec2.x][curr_vec2.y].biome_rank >= strength:
+			continue
+		
+		tile_map[curr_vec2.x][curr_vec2.y].change_color(tile_influence_color * clamp(((strength)/orig_stren), .5, 1))
+		tile_map[curr_vec2.x][curr_vec2.y].biome_set = true
+		tile_map[curr_vec2.x][curr_vec2.y].biome_rank = strength
+		spread_neighbors(tile_map[curr_vec2.x][curr_vec2.y], tile_influence_color, strength - 1, orig_stren)
 
 func _process(delta):
 	if has_moved:
-		forget()
+		forget(tile_map[player.prev_tile_ndx.x][player.prev_tile_ndx.y], player.sensing_strength)
+		learn(tile_map[player.tile_ndx.x][player.tile_ndx.y], player.sensing_strength)
 
+func forget(center_tile, strength):
+	var curr_vec2
+	
+	if strength < 1:
+		return
 
-func forget():
-	pass
+	for t in range(6):
+		if int(center_tile.map_ndx.x) % 2 == 0:
+			curr_vec2 = center_tile.map_ndx + hex_positions_even[t]
+		else:
+			curr_vec2 = center_tile.map_ndx + hex_positions_odd[t]
+		if curr_vec2.x == 32 or curr_vec2.y == 32:
+			continue
+		tile_map[curr_vec2.x][curr_vec2.y].hide_color()
+		forget(tile_map[curr_vec2.x][curr_vec2.y], strength - 1)
+
+func learn(center_tile, strength):
+	var curr_vec2
+	
+	if strength < 1:
+		return
+
+	for t in range(6):
+		if int(center_tile.map_ndx.x) % 2 == 0:
+			curr_vec2 = center_tile.map_ndx + hex_positions_even[t]
+		else:
+			curr_vec2 = center_tile.map_ndx + hex_positions_odd[t]
+		if curr_vec2.x == 32 or curr_vec2.y == 32:
+			continue
+		tile_map[curr_vec2.x][curr_vec2.y].show_color()
+		learn(tile_map[curr_vec2.x][curr_vec2.y], strength - 1)
 
 
 

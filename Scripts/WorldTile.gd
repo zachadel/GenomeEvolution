@@ -1,17 +1,37 @@
 extends Node2D
 
-var tile_type_colors = [Color(0, 0, .75), Color(0, 0.75, 0), Color(1, 0.5, 0.15)]
+var curr_color = Color(0, 0.75, 0)
+var natural_tile_color = Color(0, 0.75, 0)
 var map_ndx = Vector2(0.0, 0.0)
 var neighbors = [null, null, null, null, null, null]
+var biome_set = false
+var biome_rank = -1
+var player_rank = -1
+var hidden_color = Color(0, 0, 0, 0)
+var hidden = true
 
 func _ready():
-	$Area2D/Sprite.modulate = tile_type_colors[randi()%3]
+	$Area2D/Sprite.modulate = hidden_color
 	
-func init_data(ndx):
+func init_data(ndx, bio_set = true):
 	map_ndx = ndx
+	biome_set = bio_set
 
 func _on_Area2D_input_event(viewport, event, shape_idx):
-	if event.is_action_pressed("mouse_left"):
-		get_parent().player.position = position
-		get_parent().player.tile_ndx = map_ndx
-		get_parent().has_moved = true
+	if event.is_action_pressed("mouse_left") and !hidden:
+		print(map_ndx)
+		get_tree().get_root().get_node("Control/WorldMap/Player").position = position
+		get_tree().get_root().get_node("Control/WorldMap/Player").prev_tile_ndx = get_tree().get_root().get_node("Control/WorldMap/Player").tile_ndx
+		get_tree().get_root().get_node("Control/WorldMap/Player").tile_ndx = map_ndx
+		get_tree().get_root().get_node("Control/WorldMap").has_moved = true
+		
+func change_color(color):
+	curr_color = natural_tile_color + color
+
+func show_color():
+	hidden = false
+	$Area2D/Sprite.modulate = curr_color
+
+func hide_color():
+	hidden = true
+	$Area2D/Sprite.modulate = hidden_color
