@@ -3,7 +3,8 @@ extends Node
 var sqelm_textures = {"gene": load("res://Assets/Images/gene.png"), "break": load("res://Assets/Images/break.png")};
 var ess_textures = {};
 var default_te_texture = load("res://Assets/Images/tes/default_te.png");
-var essential_classes = ["Replication", "Locomotion", "Manipulation", "Sensing", "Construction", "Deconstruction"];
+#var essential_classes = ["Replication", "Locomotion", "Manipulation", "Sensing", "Construction", "Deconstruction"];
+enum ESSENTIAL_CLASSES {Replication, Locomotion, Manipulation, Sensing, Construction, Deconstruction};
 
 var turns = ["New TEs", "Active TEs Jump", "Repair Breaks", "Environmental Damage", "Repair Breaks", "Recombination", "Evolve", "Check Viability"];
 var turn_idx = -1;
@@ -22,8 +23,8 @@ func _ready():
 	#Generate a new seed for all rand calls
 	randomize();
 	
-	for c in essential_classes:
-		ess_textures[c] = load("res://Assets/Images/genes/" + c + ".png");
+	for c in ESSENTIAL_CLASSES.values():
+		ess_textures[c] = load("res://Assets/Images/genes/" + class_to_string(c) + ".png");
 	
 	# Import ATE Personalities
 	load_personalities("ate_personalities", ate_personalities);
@@ -33,6 +34,22 @@ func cfg_sec_to_dict(cfg, sec):
 	for k in cfg.get_section_keys(sec):
 		build[k] = cfg.get_value(sec, k);
 	return build;
+
+func class_to_string(type):
+	match (type):
+		ESSENTIAL_CLASSES.Replication:
+			return "Replication";
+		ESSENTIAL_CLASSES.Locomotion:
+			return "Locomotion";
+		ESSENTIAL_CLASSES.Manipulation:
+			return "Manipulation";
+		ESSENTIAL_CLASSES.Sensing:
+			return "Sensing";
+		ESSENTIAL_CLASSES.Construction:
+			return "Construction";
+		ESSENTIAL_CLASSES.Deconstruction:
+			return "Deconstruction";
+	return "";
 
 const DEFAULT_ATE_RANGE_BEHAVIOR = {
 	"this_cmsm": true, #Can jump to another spot on this chromosome

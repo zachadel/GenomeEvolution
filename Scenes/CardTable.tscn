@@ -1,12 +1,13 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scripts/CardTable.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Organism.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/Images/icons/collapse_dupes.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Images/icons/copy_repair.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Images/icons/join_ends.png" type="Texture" id=5]
+[ext_resource path="res://Scenes/pnl_energy_allocation.gd" type="Script" id=6]
 
-[node name="Control" type="Control"]
+[node name="Control" type="Control" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -49,7 +50,33 @@ flat = false
 align = 1
 _sections_unfolded = [ "Mouse" ]
 
-[node name="lbl_turn" type="Label" parent="." index="2"]
+[node name="btn_energy_allocation" type="Button" parent="." index="2"]
+
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -50.0
+margin_top = -310.0
+margin_right = 50.0
+margin_bottom = -250.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Energy Allocation"
+flat = false
+align = 1
+_sections_unfolded = [ "Anchor", "Margin", "Rect" ]
+
+[node name="lbl_turn" type="Label" parent="." index="3"]
 
 anchor_left = 0.0
 anchor_top = 1.0
@@ -70,7 +97,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="lbl_justnow" type="Label" parent="." index="3"]
+[node name="lbl_justnow" type="Label" parent="." index="4"]
 
 anchor_left = 0.0
 anchor_top = 1.0
@@ -92,7 +119,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="lbl_criteria" type="Label" parent="." index="4"]
+[node name="lbl_criteria" type="Label" parent="." index="5"]
 
 anchor_left = 1.0
 anchor_top = 1.0
@@ -113,32 +140,6 @@ autowrap = true
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
-
-[node name="energy_bar" type="ProgressBar" parent="." index="5"]
-
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -300.0
-margin_top = -290.0
-margin_right = 300.0
-margin_bottom = -270.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 0
-min_value = 0.0
-max_value = 100.0
-step = 1.0
-page = 0.0
-value = 0.0
-exp_edit = false
-rounded = false
-percent_visible = false
-_sections_unfolded = [ "Anchor", "Margin" ]
 
 [node name="pnl_repair_choices" type="Panel" parent="." index="6"]
 
@@ -292,6 +293,438 @@ text = "Repair"
 flat = false
 align = 1
 
+[node name="pnl_energy_allocation" type="Panel" parent="." index="7"]
+
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -500.0
+margin_top = -200.0
+margin_right = 500.0
+margin_bottom = 200.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+script = ExtResource( 6 )
+_sections_unfolded = [ "Anchor", "Margin", "Rect", "Visibility" ]
+
+[node name="holder" type="HBoxContainer" parent="pnl_energy_allocation" index="0"]
+
+editor/display_folded = true
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -50.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_constants/separation = 60
+alignment = 1
+_sections_unfolded = [ "Anchor", "Margin", "custom_constants" ]
+
+[node name="Construction_container" type="Container" parent="pnl_energy_allocation/holder" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 65.0
+margin_right = 160.0
+margin_bottom = 350.0
+rect_min_size = Vector2( 95, 0 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Anchor", "Margin", "Rect" ]
+
+[node name="Construction_button" type="Button" parent="pnl_energy_allocation/holder/Construction_container" index="0"]
+
+anchor_left = 0.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -30.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Construction"
+flat = false
+align = 1
+_sections_unfolded = [ "Anchor", "Margin", "Rect" ]
+
+[node name="Construction_labels" type="VBoxContainer" parent="pnl_energy_allocation/holder/Construction_container" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -40.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+alignment = 2
+_sections_unfolded = [ "Anchor", "Margin" ]
+
+[node name="Deconstruction_container" type="Container" parent="pnl_energy_allocation/holder" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 220.0
+margin_right = 315.0
+margin_bottom = 350.0
+rect_min_size = Vector2( 95, 0 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Anchor", "Margin", "Rect" ]
+
+[node name="Deconstruction_button" type="Button" parent="pnl_energy_allocation/holder/Deconstruction_container" index="0"]
+
+anchor_left = 0.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -30.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Destruction"
+flat = false
+align = 1
+_sections_unfolded = [ "Anchor", "Margin", "Rect" ]
+
+[node name="Deconstruction_labels" type="VBoxContainer" parent="pnl_energy_allocation/holder/Deconstruction_container" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -40.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+alignment = 2
+_sections_unfolded = [ "Anchor", "Margin" ]
+
+[node name="Locomotion_container" type="Container" parent="pnl_energy_allocation/holder" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 375.0
+margin_right = 470.0
+margin_bottom = 350.0
+rect_min_size = Vector2( 95, 0 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Anchor", "Margin", "Rect" ]
+
+[node name="Locomotion_button" type="Button" parent="pnl_energy_allocation/holder/Locomotion_container" index="0"]
+
+anchor_left = 0.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -30.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Locomotion"
+flat = false
+align = 1
+_sections_unfolded = [ "Anchor", "Margin", "Rect" ]
+
+[node name="Locomotion_labels" type="VBoxContainer" parent="pnl_energy_allocation/holder/Locomotion_container" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -40.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+alignment = 2
+_sections_unfolded = [ "Anchor", "Margin" ]
+
+[node name="Manipulation_container" type="Container" parent="pnl_energy_allocation/holder" index="3"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 530.0
+margin_right = 625.0
+margin_bottom = 350.0
+rect_min_size = Vector2( 95, 0 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Anchor", "Margin", "Rect" ]
+
+[node name="Manipulation_button" type="Button" parent="pnl_energy_allocation/holder/Manipulation_container" index="0"]
+
+anchor_left = 0.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -30.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Manipulation"
+flat = false
+align = 1
+_sections_unfolded = [ "Anchor", "Margin", "Rect" ]
+
+[node name="Manipulation_labels" type="VBoxContainer" parent="pnl_energy_allocation/holder/Manipulation_container" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -40.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+alignment = 2
+_sections_unfolded = [ "Anchor", "Margin" ]
+
+[node name="Replication_container" type="Container" parent="pnl_energy_allocation/holder" index="4"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 685.0
+margin_right = 780.0
+margin_bottom = 350.0
+rect_min_size = Vector2( 95, 0 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Anchor", "Margin", "Rect" ]
+
+[node name="Replication_button" type="Button" parent="pnl_energy_allocation/holder/Replication_container" index="0"]
+
+anchor_left = 0.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -30.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Replication"
+flat = false
+align = 1
+_sections_unfolded = [ "Anchor", "Margin", "Rect" ]
+
+[node name="Replication_labels" type="VBoxContainer" parent="pnl_energy_allocation/holder/Replication_container" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -40.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+alignment = 2
+_sections_unfolded = [ "Anchor", "Margin" ]
+
+[node name="Sensing_container" type="Container" parent="pnl_energy_allocation/holder" index="5"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 840.0
+margin_right = 935.0
+margin_bottom = 350.0
+rect_min_size = Vector2( 95, 0 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Anchor", "Margin", "Rect" ]
+
+[node name="Sensing_button" type="Button" parent="pnl_energy_allocation/holder/Sensing_container" index="0"]
+
+anchor_left = 0.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -30.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Sensing"
+flat = false
+align = 1
+_sections_unfolded = [ "Anchor", "Margin", "Rect" ]
+
+[node name="Sensing_labels" type="VBoxContainer" parent="pnl_energy_allocation/holder/Sensing_container" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -40.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+alignment = 2
+_sections_unfolded = [ "Anchor", "Margin" ]
+
+[node name="energy_bar" type="ProgressBar" parent="pnl_energy_allocation" index="1"]
+
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -300.0
+margin_top = -30.0
+margin_right = 300.0
+margin_bottom = -10.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 0
+min_value = 0.0
+max_value = 100.0
+step = 1.0
+page = 0.0
+value = 0.0
+exp_edit = false
+rounded = false
+percent_visible = false
+_sections_unfolded = [ "Anchor", "Margin" ]
+
+[node name="btn_exit" type="Button" parent="pnl_energy_allocation" index="2"]
+
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -40.0
+margin_top = -40.0
+margin_right = -10.0
+margin_bottom = -10.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "x"
+flat = false
+align = 1
+_sections_unfolded = [ "Anchor", "Margin" ]
+
 [connection signal="died" from="Organism" to="." method="_on_Organism_died"]
 
 [connection signal="doing_work" from="Organism" to="." method="_on_Organism_doing_work"]
@@ -304,10 +737,26 @@ align = 1
 
 [connection signal="pressed" from="btn_nxt" to="." method="_on_btn_nxt_pressed"]
 
+[connection signal="pressed" from="btn_energy_allocation" to="." method="_on_btn_energy_allocation_pressed"]
+
 [connection signal="item_activated" from="pnl_repair_choices/hsplit/ilist_choices" to="." method="_on_ilist_choices_item_activated"]
 
 [connection signal="item_selected" from="pnl_repair_choices/hsplit/ilist_choices" to="." method="upd_repair_desc"]
 
 [connection signal="pressed" from="pnl_repair_choices/hsplit/vsplit/btn_apply_repair" to="." method="_on_btn_apply_repair_pressed"]
+
+[connection signal="gui_input" from="pnl_energy_allocation/holder/Construction_container/Construction_button" to="pnl_energy_allocation" method="_on_construction_button_gui_input"]
+
+[connection signal="gui_input" from="pnl_energy_allocation/holder/Deconstruction_container/Deconstruction_button" to="pnl_energy_allocation" method="_on_deconstruction_button_gui_input"]
+
+[connection signal="gui_input" from="pnl_energy_allocation/holder/Locomotion_container/Locomotion_button" to="pnl_energy_allocation" method="_on_locomotion_button_gui_input"]
+
+[connection signal="gui_input" from="pnl_energy_allocation/holder/Manipulation_container/Manipulation_button" to="pnl_energy_allocation" method="_on_manipulation_button_gui_input"]
+
+[connection signal="gui_input" from="pnl_energy_allocation/holder/Replication_container/Replication_button" to="pnl_energy_allocation" method="_on_replication_button_gui_input"]
+
+[connection signal="gui_input" from="pnl_energy_allocation/holder/Sensing_container/Sensing_button" to="pnl_energy_allocation" method="_on_sensing_button_gui_input"]
+
+[connection signal="pressed" from="pnl_energy_allocation/btn_exit" to="pnl_energy_allocation" method="_on_btn_exit_pressed"]
 
 

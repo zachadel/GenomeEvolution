@@ -11,6 +11,12 @@ var do_yields = false;
 var born_on_turn = -1;
 var died_on_turn = -1;
 
+var energy = 5;
+var MIN_ENERGY = 0;
+var MAX_ENERGY = 10;
+var energy_allocations = {};
+onready var energy_allocation_panel = get_node("../pnl_energy_allocation");
+
 signal gene_clicked();
 
 signal doing_work(working);
@@ -24,10 +30,10 @@ signal died(org);
 func _ready():
 	perform_anims(false);
 	for y in range(2):
-		for n in Game.essential_classes:
+		for n in Game.ESSENTIAL_CLASSES:
 			# create gene
 			var nxt_gelm = load("res://Scenes/SequenceElement.tscn").instance();
-			nxt_gelm.setup("gene", n, "essential", n);
+			nxt_gelm.setup("gene", n, "essential", Game.ESSENTIAL_CLASSES[n]);
 			$chromes.get_cmsm(y).add_elm(nxt_gelm);
 	gain_ates(1 + randi()%6);
 	born_on_turn = Game.round_num;
@@ -35,6 +41,9 @@ func _ready():
 func setup(card_table):
 	is_ai = false;
 	do_yields = true;
+	for type in Game.ESSENTIAL_CLASSES.values():
+		print("type: " + str(type));
+		energy_allocations[type] = 0;
 	$chromes.setup(card_table);
 
 func perform_anims(perform):
@@ -408,7 +417,7 @@ func adv_turn(round_num, turn_txt):
 				var _candidates = $chromes.evolve_candidates + [];
 				evolve_candidates(_candidates);
 			"Check Viability":
-				var viable = $chromes.validate_essentials(Game.essential_classes);
+				var viable = $chromes.validate_essentials(Game.ESSENTIAL_CLASSES);
 				if (viable):
 					emit_signal("justnow_update", "You're still kicking!");
 				else:
@@ -420,3 +429,23 @@ func adv_turn(round_num, turn_txt):
 
 func is_dead():
 	return died_on_turn > -1;
+
+func update_energy(amount):
+	energy += amount;
+	if (energy < MIN_ENERGY):
+		energy = MIN_ENERGY;
+	elif (energy > MAX_ENERGY):
+		energy = MAX_ENERGY;
+	energy_allocation_panel.update_energy(energy);
+
+func update_energy_allocation(type, amount):
+	print(type);
+	if (energy - amount < MIN_ENERGY || energy - amount > MAX_ENERGY):
+		return;
+	if (energy_allocations[type] + amount < 0):
+		return;
+	energy -= amount;
+	energy_allocations[type] += amount;
+	energy_allocation_panel.update_energy_allocation(type, energy_allocations[type]);
+	energy_allocation_panel.update_energy(energy);
+	

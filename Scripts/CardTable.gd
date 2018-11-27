@@ -1,9 +1,5 @@
 extends Control
 
-var energy = 0;
-var min_energy = 0;
-var max_energy = 100;
-
 signal gene_clicked;
 signal next_turn(turn_text, round_num);
 
@@ -13,23 +9,6 @@ func _ready():
 	
 	$lbl_turn.text = "Click \"Continue\" to start.";
 	connect("next_turn", $Organism, "adv_turn");
-
-func _process(delta):
-	if (Input.is_action_just_pressed("increment")):
-		increment_energy(5);
-	elif (Input.is_action_just_pressed("decrement")):
-		increment_energy(-5);
-
-func get_energy():
-	return energy;
-
-func increment_energy(amount):
-	energy += amount;
-	if (energy < min_energy):
-		energy = min_energy;
-	elif (energy > max_energy):
-		energy = max_energy;
-	$energy_bar.value = energy;
 
 # Gaps and repairs
 
@@ -92,3 +71,6 @@ func _on_Organism_died():
 
 func check_if_ready():
 	$btn_nxt.disabled = $Organism.is_dead() || wait_on_anim || wait_on_select;
+
+func _on_btn_energy_allocation_pressed():
+	$pnl_energy_allocation.visible = true;

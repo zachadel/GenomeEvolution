@@ -19,7 +19,7 @@ signal elm_mouse_exited(elm);
 func _ready():
 	current_size = DEFAULT_SIZE;
 
-func setup(_type, _id = "", _mode = "ate", _ess_class = ""):
+func setup(_type, _id = "", _mode = "ate", _ess_class = -1):
 	id = _id;
 	type = _type;
 	mode = _mode;
@@ -27,7 +27,7 @@ func setup(_type, _id = "", _mode = "ate", _ess_class = ""):
 	if (type == "gene"):
 		match (mode):
 			"essential":
-				if (_ess_class in Game.essential_classes):
+				if (_ess_class in Game.ESSENTIAL_CLASSES.values()):
 					ess_class = _ess_class;
 					tex = Game.ess_textures[_ess_class];
 				else:
