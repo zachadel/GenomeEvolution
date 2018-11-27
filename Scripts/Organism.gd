@@ -417,7 +417,7 @@ func adv_turn(round_num, turn_txt):
 				var _candidates = $chromes.evolve_candidates + [];
 				evolve_candidates(_candidates);
 			"Check Viability":
-				var viable = $chromes.validate_essentials(Game.ESSENTIAL_CLASSES);
+				var viable = $chromes.validate_essentials(Game.ESSENTIAL_CLASSES.values());
 				if (viable):
 					emit_signal("justnow_update", "You're still kicking!");
 				else:
