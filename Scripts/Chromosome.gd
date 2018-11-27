@@ -6,6 +6,8 @@ signal elm_mouse_exited(elm);
 signal got_dupe_essgene(elm);
 signal animating(state);
 
+var animating = false;
+
 func _propogate_click(elm):
 	emit_signal("elm_clicked", elm);
 
@@ -20,6 +22,7 @@ var do_animations = false;
 func setup(card_table):
 	do_animations = true;
 	connect("animating", card_table, "_on_animating_changed");
+	connect("animating", self, "_on_animating_changed");
 
 func perform_anims(perform):
 	do_animations = perform;
@@ -224,64 +227,53 @@ func has_essclass(sc):
 			return true;
 	return false;
 
+func _on_animating_changed(state):
+	animating = state;
+
 func set_size():
 #	var size = (get_parent().rect_size.x / get_child_count()) - \
 #		(get_child_count() * 5);
 	# TODO: fix this so it doesn't require a constant value
 	var size = (1600 / (get_child_count() + 1));
-#	print("scroll box width = " + str(get_parent().rect_size.x));
-#	print("child_count = " + str(get_child_count()));
-#	print("size = " + str(size));
 	if (get_child_count() > 0 && size < get_child(0).MIN_SIZE):
 		size = get_child(0).MIN_SIZE;
 	elif (get_child_count() > 0 && size > get_child(0).DEFAULT_SIZE):
 		size = get_child(0).DEFAULT_SIZE;
-	#rect_min_size = Vector2(rect_min_size.x, size);
-	#rect_size = Vector2(rect_min_size.x, size);
 	for elm in get_children():
 		elm.set_size(size);
-#	if (get_child_count() < 7):
-#		rect_min_size = Vector2(rect_min_size.x, get_child(0).DEFAULT_SIZE);
-#		rect_size = Vector2(rect_min_size.x, get_child(0).DEFAULT_SIZE);
-#		for elm in get_children():
-#			elm.set_size();
-#	else:
-#		var size = 200 - ((get_child_count() - 7) * 25);
-#		rect_min_size = Vector2(rect_min_size.x, size);
-#		rect_size = Vector2(rect_min_size.x, size);
-#		for elm in get_children():
-#			elm.set_size(size);
 
 func magnify_elm(elm):
-	elm.current_size = elm.rect_size.x;
-	if (elm.current_size >= 0.8 * elm.DEFAULT_SIZE):
-		return;
-	var new_size = min(elm.DEFAULT_SIZE, elm.current_size * elm.MAGNIFICATION_FACTOR);
-	elm.rect_min_size = Vector2(new_size, new_size);
-	elm.rect_size = Vector2(new_size, new_size);
-	var counter = 1;
-	for i in range(elm.get_index() - 1, max(elm.get_index() - 3, 0), -1):
-		var next = elm.get_parent().get_child(i);
-		next.current_size = next.rect_size.x;
-		next.rect_min_size = Vector2(new_size * pow(next.MAGNIFICATION_DROPOFF, counter), new_size * pow(next.MAGNIFICATION_DROPOFF, counter));
-		next.rect_size = Vector2(new_size * pow(next.MAGNIFICATION_DROPOFF, counter), new_size * pow(next.MAGNIFICATION_DROPOFF, counter));
-		counter += 1;
-	counter = 1;
-	for i in range(elm.get_index() + 1, min(elm.get_index() + 3, elm.get_parent().get_child_count())):
-		var next = elm.get_parent().get_child(i);
-		next.current_size = next.rect_size.x;
-		next.rect_min_size = Vector2(new_size * pow(next.MAGNIFICATION_DROPOFF, counter), new_size * pow(next.MAGNIFICATION_DROPOFF, counter));
-		next.rect_size = Vector2(new_size * pow(next.MAGNIFICATION_DROPOFF, counter), new_size * pow(next.MAGNIFICATION_DROPOFF, counter));
-		counter += 1;
+	if (!animating && !get_cmsm_pair().get_other_cmsm(self).animating):
+		elm.current_size = elm.rect_size.x;
+		if (elm.current_size >= 0.8 * elm.DEFAULT_SIZE):
+			return;
+		var new_size = min(elm.DEFAULT_SIZE, elm.current_size * elm.MAGNIFICATION_FACTOR);
+		elm.rect_min_size = Vector2(new_size, new_size);
+		elm.rect_size = Vector2(new_size, new_size);
+		var counter = 1;
+		for i in range(elm.get_index() - 1, max(elm.get_index() - 3, 0), -1):
+			var next = elm.get_parent().get_child(i);
+			next.current_size = next.rect_size.x;
+			next.rect_min_size = Vector2(new_size * pow(next.MAGNIFICATION_DROPOFF, counter), new_size * pow(next.MAGNIFICATION_DROPOFF, counter));
+			next.rect_size = Vector2(new_size * pow(next.MAGNIFICATION_DROPOFF, counter), new_size * pow(next.MAGNIFICATION_DROPOFF, counter));
+			counter += 1;
+		counter = 1;
+		for i in range(elm.get_index() + 1, min(elm.get_index() + 3, elm.get_parent().get_child_count())):
+			var next = elm.get_parent().get_child(i);
+			next.current_size = next.rect_size.x;
+			next.rect_min_size = Vector2(new_size * pow(next.MAGNIFICATION_DROPOFF, counter), new_size * pow(next.MAGNIFICATION_DROPOFF, counter));
+			next.rect_size = Vector2(new_size * pow(next.MAGNIFICATION_DROPOFF, counter), new_size * pow(next.MAGNIFICATION_DROPOFF, counter));
+			counter += 1;
 
 func demagnify_elm(elm):
-	elm.rect_min_size = Vector2(elm.current_size, elm.current_size);
-	elm.rect_size = Vector2(elm.current_size, elm.current_size);
-	for i in range(elm.get_index() - 1, max(elm.get_index() - 3, 0), -1):
-		var next = elm.get_parent().get_child(i);
-		next.rect_min_size = Vector2(next.current_size, next.current_size);
-		next.rect_size = Vector2(next.current_size, next.current_size);
-	for i in range(elm.get_index() + 1, min(elm.get_index() + 3, elm.get_parent().get_child_count())):
-		var next = elm.get_parent().get_child(i);
-		next.rect_min_size = Vector2(next.current_size, next.current_size);
-		next.rect_size = Vector2(next.current_size, next.current_size);
+	if (!animating && !get_cmsm_pair().get_other_cmsm(self).animating):
+		elm.rect_min_size = Vector2(elm.current_size, elm.current_size);
+		elm.rect_size = Vector2(elm.current_size, elm.current_size);
+		for i in range(elm.get_index() - 1, max(elm.get_index() - 3, 0), -1):
+			var next = elm.get_parent().get_child(i);
+			next.rect_min_size = Vector2(next.current_size, next.current_size);
+			next.rect_size = Vector2(next.current_size, next.current_size);
+		for i in range(elm.get_index() + 1, min(elm.get_index() + 3, elm.get_parent().get_child_count())):
+			var next = elm.get_parent().get_child(i);
+			next.rect_min_size = Vector2(next.current_size, next.current_size);
+			next.rect_size = Vector2(next.current_size, next.current_size);
