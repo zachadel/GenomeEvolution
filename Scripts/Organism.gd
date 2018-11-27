@@ -14,6 +14,7 @@ var died_on_turn = -1;
 var energy = 5;
 var MIN_ENERGY = 0;
 var MAX_ENERGY = 10;
+var MAX_ALLOCATED_ENERGY = 10;
 var energy_allocations = {};
 onready var energy_allocation_panel = get_node("../pnl_energy_allocation");
 
@@ -37,6 +38,12 @@ func _ready():
 			$chromes.get_cmsm(y).add_elm(nxt_gelm);
 	gain_ates(1 + randi()%6);
 	born_on_turn = Game.round_num;
+
+func _process(delta):
+	if (Input.is_action_just_pressed("increment")):
+		update_energy(1);
+	elif (Input.is_action_just_pressed("decrement")):
+		update_energy(-1);
 
 func setup(card_table):
 	is_ai = false;
@@ -442,7 +449,7 @@ func update_energy_allocation(type, amount):
 	print(type);
 	if (energy - amount < MIN_ENERGY || energy - amount > MAX_ENERGY):
 		return;
-	if (energy_allocations[type] + amount < 0):
+	if (energy_allocations[type] + amount < 0 || energy_allocations[type] + amount > MAX_ALLOCATED_ENERGY):
 		return;
 	energy -= amount;
 	energy_allocations[type] += amount;
