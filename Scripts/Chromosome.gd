@@ -108,6 +108,7 @@ func add_elm(elm, pos = null):
 		
 		add_child(elm);
 		move_child(elm, pos);
+		set_size();
 		
 		if (do_animations):
 			if (!elm.is_gap()):
@@ -128,7 +129,6 @@ func add_elm(elm, pos = null):
 	else:
 		move_child(elm, pos);
 	emit_signal("animating", false);
-	set_size();
 	queue_sort();
 	return elm;
 
