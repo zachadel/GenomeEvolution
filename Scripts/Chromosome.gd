@@ -254,7 +254,7 @@ func set_size():
 
 func magnify_elm(elm):
 	elm.current_size = elm.rect_size.x;
-	if (elm.current_size >= 0.9 * elm.DEFAULT_SIZE):
+	if (elm.current_size >= 0.8 * elm.DEFAULT_SIZE):
 		return;
 	var new_size = min(elm.DEFAULT_SIZE, elm.current_size * elm.MAGNIFICATION_FACTOR);
 	elm.rect_min_size = Vector2(new_size, new_size);

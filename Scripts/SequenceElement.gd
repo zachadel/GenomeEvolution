@@ -174,6 +174,7 @@ func set_size(size = null):
 	rect_size = Vector2(size, size);
 	$BorderRect.rect_size = Vector2(size, size);
 	$GrayFilter.rect_size = Vector2(size, size);
+	current_size = size;
 
 
 func _on_SeqElm_pressed():
