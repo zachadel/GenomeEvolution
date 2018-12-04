@@ -3,6 +3,9 @@ extends Control
 signal gene_clicked;
 signal next_turn(turn_text, round_num);
 
+onready var justnow_label = $sc_justnow/lbl_justnow;
+onready var criteria_label = $sc_criteria/lbl_criteria;
+
 func _ready():
 	Game.card_table = self;
 	$Organism.setup(self);
@@ -40,11 +43,13 @@ func _on_btn_apply_repair_pressed():
 	$Organism.auto_repair();
 
 func _on_Organism_justnow_update(text):
-	$lbl_justnow.text = text;
+	if (justnow_label == null):
+		justnow_label = $sc_justnow/lbl_justnow;
+	justnow_label.text = text;
 
 func _on_Organism_updated_gaps(has_gaps, gap_text):
 	$btn_nxt.disabled = has_gaps;
-	$lbl_criteria.text = gap_text;
+	criteria_label.text = gap_text;
 
 func _on_ilist_choices_item_activated(idx):
 	$Organism.apply_repair_choice(idx);
