@@ -18,13 +18,14 @@ func init_data(ndx, bio_set = true):
 	biome_set = bio_set
 
 func _on_Area2D_input_event(viewport, event, shape_idx):
-	if event.is_action_pressed("mouse_left") and !hidden:
-		print(map_ndx)
-		get_tree().get_root().get_node("Control/WorldMap/Player").position = position
-		get_tree().get_root().get_node("Control/WorldMap/Player").prev_tile_ndx = get_tree().get_root().get_node("Control/WorldMap/Player").tile_ndx
-		get_tree().get_root().get_node("Control/WorldMap/Player").tile_ndx = map_ndx
+	var player = get_tree().get_root().get_node("Control/WorldMap/Player")
+	if event.is_action_pressed("mouse_left") and !hidden and (player.organism.energy > player.organism.MIN_ENERGY):
+		player.position = position
+		player.prev_tile_ndx = player.tile_ndx
+		player.tile_ndx = map_ndx
 		get_tree().get_root().get_node("Control/WorldMap").has_moved = true
-		
+		player.organism.update_energy(-1)
+
 func change_color(color):
 	curr_color = natural_tile_color + color
 
