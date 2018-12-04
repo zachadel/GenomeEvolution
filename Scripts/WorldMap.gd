@@ -92,6 +92,26 @@ func _process(delta):
 	if has_moved:
 		forget(tile_map[player.prev_tile_ndx.x][player.prev_tile_ndx.y], player.sensing_strength)
 		learn(tile_map[player.tile_ndx.x][player.tile_ndx.y], player.sensing_strength)
+	
+	update_energy_allocation(player.organism.energy)
+
+func create_energy_label():
+	var label = ColorRect.new();
+	label.color = Color(0, 1, 0);
+	label.rect_min_size = Vector2(0, 20);
+	return label;
+	
+func update_energy_allocation(amount):
+	var container = get_node("WorldMap_UI/EnergyBar/VBoxContainer")
+	if (amount > container.get_child_count()):
+		for i in range(amount - container.get_child_count()):
+			var label = create_energy_label();
+			container.add_child(label);
+	elif(amount < container.get_child_count()):
+		for i in range(container.get_child_count() - amount):
+			var to_remove = container.get_child(0);
+			container.remove_child(to_remove);
+			to_remove.queue_free()
 
 func forget(center_tile, strength):
 	var curr_vec2

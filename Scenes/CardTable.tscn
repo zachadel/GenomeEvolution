@@ -5,7 +5,7 @@
 [ext_resource path="res://Assets/Images/icons/collapse_dupes.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Images/icons/copy_repair.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Images/icons/join_ends.png" type="Texture" id=5]
-[ext_resource path="res://Scenes/pnl_energy_allocation.gd" type="Script" id=6]
+[ext_resource path="res://Scripts/pnl_energy_allocation.gd" type="Script" id=6]
 
 [node name="Control" type="Control"]
 
