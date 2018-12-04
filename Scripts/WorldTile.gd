@@ -20,7 +20,7 @@ func init_data(ndx, bio_set = true):
 
 func _on_Area2D_input_event(viewport, event, shape_idx):
 	var player = get_tree().get_root().get_node("Control/WorldMap/Player")
-	if event.is_action_pressed("mouse_left") and !hidden and (player.organism.energy > player.organism.MIN_ENERGY):
+	if event.is_action_pressed("mouse_left") and !hidden and (player.organism.energy > player.organism.MIN_ENERGY) and (map_ndx != player.tile_ndx):
 		print(resources)
 		player.position = position
 		player.prev_tile_ndx = player.tile_ndx

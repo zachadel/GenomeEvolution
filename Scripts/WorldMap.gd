@@ -9,7 +9,7 @@ var player_scene = preload("res://Scenes/Player.tscn")
 var player
 var tile_sprite_size
 var has_moved = false
-var curr_round_num = 0
+var curr_round_num = 1
 
 func _ready():
 	var temp_node = world_tile_scene.instance()
