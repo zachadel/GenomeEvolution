@@ -54,7 +54,7 @@ func _on_ilist_choices_item_activated(idx):
 func _on_btn_nxt_pressed():
 	Game.adv_turn();
 	$lbl_turn.text = "Round " + str(Game.round_num) + "\n" + Game.get_turn_txt();
-	emit_signal("next_turn", Game.round_num, Game.get_turn_txt());
+	emit_signal("next_turn", Game.round_num, Game.turn_idx);
 
 var wait_on_anim = false;
 var wait_on_select = false;

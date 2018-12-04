@@ -376,22 +376,22 @@ func recombination():
 				emit_signal("justnow_update", "Recombination failed.");
 			emit_signal("doing_work", false);
 
-func adv_turn(round_num, turn_txt):
+func adv_turn(round_num, turn_idx):
 	if (died_on_turn == -1):
-		match (turn_txt):
-			"New TEs":
+		match (turn_idx):
+			0:
 				emit_signal("justnow_update", "");
 				if (do_yields):
 					yield(gain_ates(1), "completed");
 				else:
 					gain_ates(1);
-			"Active TEs Jump":
+			1:
 				emit_signal("justnow_update", "");
 				if (do_yields):
 					yield(jump_ates(), "completed");
 				else:
 					jump_ates();
-			"Repair Breaks":
+			2, 4:
 				roll_storage = [{}, {}];
 				var num_gaps = $chromes.gap_list.size();
 				if (num_gaps == 0):
@@ -401,7 +401,7 @@ func adv_turn(round_num, turn_txt):
 				else:
 					emit_signal("justnow_update", "%d gaps need repair." % num_gaps);
 				highlight_gap_choices();
-			"Environmental Damage":
+			3:
 				var rand;
 				if (do_yields):
 					rand = yield(gain_gaps(1+randi()%3), "completed");
@@ -411,19 +411,19 @@ func adv_turn(round_num, turn_txt):
 				if (rand == 1):
 					plrl = "";
 				emit_signal("justnow_update", "%d gap%s appeared due to environmental damage." % [rand, plrl]);
-			"Recombination":
+			5:
 				emit_signal("justnow_update", "If you want, you can select a gene that is common to both chromosomes. Those genes and every gene to their right swap chromosomes.\nThis recombination has a %d%% chance of success." % (100*recombo_chance));
 				if (do_yields):
 					yield(recombination(), "completed");
 				else:
 					recombination();
-			"Evolve":
+			6:
 				for g in gene_selection:
 					g.disable(true);
 				emit_signal("justnow_update", "");
 				var _candidates = $chromes.evolve_candidates + [];
 				evolve_candidates(_candidates);
-			"Check Viability":
+			7:
 				var viable = $chromes.validate_essentials(Game.ESSENTIAL_CLASSES.values());
 				if (viable):
 					emit_signal("justnow_update", "You're still kicking!");

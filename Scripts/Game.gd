@@ -3,10 +3,10 @@ extends Node
 var sqelm_textures = {"gene": load("res://Assets/Images/gene.png"), "break": load("res://Assets/Images/break.png")};
 var ess_textures = {};
 var default_te_texture = load("res://Assets/Images/tes/default_te.png");
-#var essential_classes = ["Replication", "Locomotion", "Manipulation", "Sensing", "Construction", "Deconstruction"];
 enum ESSENTIAL_CLASSES {Replication, Locomotion, Manipulation, Sensing, Construction, Deconstruction};
+enum TURN_TYPES {NewTEs, TEJump, RepairBreaks, EnvironmentalDamage, Recombination, Evolve, CheckViability};
 
-var turns = ["New TEs", "Active TEs Jump", "Repair Breaks", "Environmental Damage", "Repair Breaks", "Recombination", "Evolve", "Check Viability"];
+var turns = [TURN_TYPES.NewTEs, TURN_TYPES.TEJump, TURN_TYPES.RepairBreaks, TURN_TYPES.EnvironmentalDamage, TURN_TYPES.RepairBreaks, TURN_TYPES.Recombination, TURN_TYPES.Evolve, TURN_TYPES.CheckViability];
 var turn_idx = -1;
 var round_num = 1;
 
@@ -93,7 +93,23 @@ func adv_turn():
 		round_num += 1;
 
 func get_turn_txt():
-	return turns[turn_idx];
+	match(turn_idx):
+		TURN_TYPES.NewTEs:
+			return "New TEs";
+		TURN_TYPES.TEJump:
+			return "Active TEs Jump";
+		TURN_TYPES.RepairBreaks:
+			return "Repair Breaks";
+		TURN_TYPES.EnvironmentalDamage:
+			return "Environmental Damage";
+		TURN_TYPES.Recombination:
+			return "Recombination";
+		TURN_TYPES.Evolve:
+			return "Evolve";
+		TURN_TYPES.CheckViability:
+			return "Check Viability";
+		_:
+			return "";
 
 func copy_elm(elm):
 	var copy_elm = load("res://Scenes/SequenceElement.tscn").instance();
