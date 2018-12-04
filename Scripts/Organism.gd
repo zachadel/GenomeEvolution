@@ -36,7 +36,8 @@ func _ready():
 			var nxt_gelm = load("res://Scenes/SequenceElement.tscn").instance();
 			nxt_gelm.setup("gene", n, "essential", Game.ESSENTIAL_CLASSES[n]);
 			$chromes.get_cmsm(y).add_elm(nxt_gelm);
-	gain_ates(1 + randi()%6);
+	gain_ates(1 + randi() % 6);
+	perform_anims(true);
 	born_on_turn = Game.round_num;
 
 func _process(delta):
@@ -55,6 +56,7 @@ func setup(card_table):
 
 func perform_anims(perform):
 	do_yields = perform;
+	$chromes.perform_anims(perform);
 
 func gain_ates(count = 1):
 	var justnow = "";
