@@ -20,7 +20,6 @@ func _propagate_mouse_exited(elm):
 var do_animations = false;
 
 func setup(card_table):
-	do_animations = true;
 	connect("animating", card_table, "_on_animating_changed");
 	connect("animating", self, "_on_animating_changed");
 
@@ -90,7 +89,6 @@ func add_elm(elm, pos = null):
 				yield(remove_elm(elm), "completed");
 			else:
 				remove_elm(elm);
-		
 		if (do_animations):
 			if (pos == get_child_count()):
 				yield(get_tree(), "idle_frame");
@@ -104,7 +102,7 @@ func add_elm(elm, pos = null):
 					if (Game.turns[Game.turn_idx] == Game.TURN_TYPES.TEJump):
 						var _actives = get_cmsm_pair().ate_list + [];
 						if (_actives.size() > 0):
-							duration = min(distance / Game.animation_speed, 5 / _actives.size());
+							duration = min(distance / Game.animation_speed, (0.5 * Game.TE_jump_time_limit) / _actives.size());
 						else:
 							duration = distance / Game.animation_speed;
 					else:
@@ -131,7 +129,7 @@ func add_elm(elm, pos = null):
 				if (Game.turns[Game.turn_idx] == Game.TURN_TYPES.TEJump):
 					var _actives = get_cmsm_pair().ate_list + [];
 					if (_actives.size() > 0):
-						duration = min(distance / Game.animation_speed, 5 / _actives.size());
+						duration = min(distance / Game.animation_speed, (0.5 * Game.TE_jump_time_limit) / _actives.size());
 					else:
 						duration = distance / Game.animation_speed;
 				else:
@@ -168,7 +166,7 @@ func remove_elm(elm):
 			if (Game.turns[Game.turn_idx] == Game.TURN_TYPES.TEJump):
 				var _actives = get_cmsm_pair().ate_list + [];
 				if (_actives.size() > 0):
-					duration = min(distance / Game.animation_speed, 5 / _actives.size());
+					duration = min(distance / Game.animation_speed, (0.5 * Game.TE_jump_time_limit) / _actives.size());
 				else:
 					duration = distance / Game.animation_speed;
 			else:
@@ -188,7 +186,7 @@ func remove_elm(elm):
 			if (Game.turns[Game.turn_idx] == Game.TURN_TYPES.TEJump):
 				var _actives = get_cmsm_pair().ate_list + [];
 				if (_actives.size() > 0):
-					duration = min(distance / Game.animation_speed, 5 / _actives.size());
+					duration = min(distance / Game.animation_speed, (0.5 * Game.TE_jump_time_limit) / _actives.size());
 				else:
 					duration = distance / Game.animation_speed;
 			else:
@@ -198,8 +196,8 @@ func remove_elm(elm):
 			get_child(i).get_node("Tween").start();
 		if (elm.get_index() + 1 < get_child_count()):
 			yield(get_child(elm.get_index() + 1).get_node("Tween"), "tween_completed");
-		else:
-			yield(get_tree(), "idle_frame");
+	
+	yield(get_tree(), "idle_frame");
 	
 	elm.get_parent().remove_child(elm);
 	emit_signal("animating", false);
@@ -225,7 +223,7 @@ func remove_elm_create_gap(elm):
 			if (Game.turns[Game.turn_idx] == Game.TURN_TYPES.TEJump):
 				var _actives = get_cmsm_pair().ate_list + [];
 				if (_actives.size() > 0):
-					duration = min(distance / Game.animation_speed, 5 / _actives.size());
+					duration = min(distance / Game.animation_speed, (0.5 * Game.TE_jump_time_limit) / _actives.size());
 				else:
 					duration = distance / Game.animation_speed;
 			else:
