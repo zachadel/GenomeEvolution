@@ -352,7 +352,7 @@ func recombination():
 		gene_selection = $chromes.highlight_common_genes();
 		yield(self, "gene_clicked");
 		# Because this step is optional, by the time a gene is clicked, it might be a different turn
-		if (Game.get_turn_txt() == "Recombination"):
+		if (Game.turns[Game.turn_idx] == Game.TURN_TYPES.Recombination):
 			emit_signal("doing_work", true);
 			var first_elm = gene_selection.back();
 			for g in gene_selection:
@@ -378,61 +378,60 @@ func recombination():
 
 func adv_turn(round_num, turn_idx):
 	if (died_on_turn == -1):
-		match (turn_idx):
-			0:
-				emit_signal("justnow_update", "");
-				if (do_yields):
-					yield(gain_ates(1), "completed");
-				else:
-					gain_ates(1);
-			1:
-				emit_signal("justnow_update", "");
-				if (do_yields):
-					yield(jump_ates(), "completed");
-				else:
-					jump_ates();
-			2, 4:
-				roll_storage = [{}, {}];
-				var num_gaps = $chromes.gap_list.size();
-				if (num_gaps == 0):
-					emit_signal("justnow_update", "No gaps present.");
-				elif (num_gaps == 1):
-					emit_signal("justnow_update", "1 gap needs repair.");
-				else:
-					emit_signal("justnow_update", "%d gaps need repair." % num_gaps);
-				highlight_gap_choices();
-			3:
-				var rand;
-				if (do_yields):
-					rand = yield(gain_gaps(1+randi()%3), "completed");
-				else:
-					rand = gain_gaps(1+randi()%3);
-				var plrl = "s";
-				if (rand == 1):
-					plrl = "";
-				emit_signal("justnow_update", "%d gap%s appeared due to environmental damage." % [rand, plrl]);
-			5:
-				emit_signal("justnow_update", "If you want, you can select a gene that is common to both chromosomes. Those genes and every gene to their right swap chromosomes.\nThis recombination has a %d%% chance of success." % (100*recombo_chance));
-				if (do_yields):
-					yield(recombination(), "completed");
-				else:
-					recombination();
-			6:
-				for g in gene_selection:
-					g.disable(true);
-				emit_signal("justnow_update", "");
-				var _candidates = $chromes.evolve_candidates + [];
-				evolve_candidates(_candidates);
-			7:
-				var viable = $chromes.validate_essentials(Game.ESSENTIAL_CLASSES.values());
-				if (viable):
-					emit_signal("justnow_update", "You're still kicking!");
-				else:
-					died_on_turn = Game.round_num;
-					$lbl_dead.text = "Died after %d rounds." % (died_on_turn - born_on_turn);
-					$lbl_dead.visible = true;
-					emit_signal("justnow_update", "Nope! You're dead!");
-					emit_signal("died", self);
+		if (Game.turns[turn_idx] == Game.TURN_TYPES.NewTEs):
+			emit_signal("justnow_update", "");
+			if (do_yields):
+				yield(gain_ates(1), "completed");
+			else:
+				gain_ates(1);
+		elif (Game.turns[turn_idx] == Game.TURN_TYPES.TEJump):
+			emit_signal("justnow_update", "");
+			if (do_yields):
+				yield(jump_ates(), "completed");
+			else:
+				jump_ates();
+		elif (Game.turns[turn_idx] == Game.TURN_TYPES.RepairBreaks):
+			roll_storage = [{}, {}];
+			var num_gaps = $chromes.gap_list.size();
+			if (num_gaps == 0):
+				emit_signal("justnow_update", "No gaps present.");
+			elif (num_gaps == 1):
+				emit_signal("justnow_update", "1 gap needs repair.");
+			else:
+				emit_signal("justnow_update", "%d gaps need repair." % num_gaps);
+			highlight_gap_choices();
+		elif (Game.turns[turn_idx] == Game.TURN_TYPES.EnvironmentalDamage):
+			var rand;
+			if (do_yields):
+				rand = yield(gain_gaps(1+randi()%3), "completed");
+			else:
+				rand = gain_gaps(1+randi()%3);
+			var plrl = "s";
+			if (rand == 1):
+				plrl = "";
+			emit_signal("justnow_update", "%d gap%s appeared due to environmental damage." % [rand, plrl]);
+		elif (Game.turns[turn_idx] == Game.TURN_TYPES.Recombination):
+			emit_signal("justnow_update", "If you want, you can select a gene that is common to both chromosomes. Those genes and every gene to their right swap chromosomes.\nThis recombination has a %d%% chance of success." % (100*recombo_chance));
+			if (do_yields):
+				yield(recombination(), "completed");
+			else:
+				recombination();
+		elif (Game.turns[turn_idx] == Game.TURN_TYPES.Evolve):
+			for g in gene_selection:
+				g.disable(true);
+			emit_signal("justnow_update", "");
+			var _candidates = $chromes.evolve_candidates + [];
+			evolve_candidates(_candidates);
+		elif (Game.turns[turn_idx] == Game.TURN_TYPES.CheckViability):
+			var viable = $chromes.validate_essentials(Game.ESSENTIAL_CLASSES.values());
+			if (viable):
+				emit_signal("justnow_update", "You're still kicking!");
+			else:
+				died_on_turn = Game.round_num;
+				$lbl_dead.text = "Died after %d rounds." % (died_on_turn - born_on_turn);
+				$lbl_dead.visible = true;
+				emit_signal("justnow_update", "Nope! You're dead!");
+				emit_signal("died", self);
 
 func is_dead():
 	return died_on_turn > -1;
