@@ -176,7 +176,6 @@ func set_size(size = null):
 	$GrayFilter.rect_size = Vector2(size, size);
 	current_size = size;
 
-
 func _on_SeqElm_pressed():
 	emit_signal("elm_clicked", self);
 
