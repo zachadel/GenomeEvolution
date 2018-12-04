@@ -61,8 +61,13 @@ func get_elms_around_pos(idx, clickable = false):
 
 func get_cmsm_pair():
 	if (get_parent() != null):
-		return get_parent().get_parent();
+		if (get_parent().get_parent() != null):
+			return get_parent().get_parent().get_parent();
 	return null;
+
+func get_cmsm_status():
+	if (get_cmsm_pair() != null):
+		return get_cmsm_pair().get_cmsm_status(self);
 
 # CHROMOSOME MODIFICATION FUNCTIONS
 
@@ -147,6 +152,7 @@ func add_elm(elm, pos = null):
 	emit_signal("animating", false);
 	yield(get_tree(), "idle_frame");
 	queue_sort();
+	get_cmsm_status().update();
 	return elm;
 
 func remove_elm(elm):
@@ -206,6 +212,7 @@ func remove_elm(elm):
 	set_size();
 	yield(get_tree(), "idle_frame");
 	queue_sort();
+	get_cmsm_status().update();
 
 func remove_elm_create_gap(elm):
 	emit_signal("animating", true);
@@ -253,6 +260,7 @@ func remove_elm_create_gap(elm):
 	set_size();
 	yield(get_tree(), "idle_frame");
 	queue_sort();
+	get_cmsm_status().update();
 	return gap;
 
 # HELPER FUNCTIONS

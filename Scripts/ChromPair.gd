@@ -20,8 +20,8 @@ func _propagate_mouse_exited(elm):
 	emit_signal("elm_mouse_exited", elm);
 
 func fix_bars():
-	Game.change_slider_width($cmsm0);
-	Game.change_slider_width($cmsm1);
+	Game.change_slider_width(get_cmsm(0).get_parent());
+	Game.change_slider_width(get_cmsm(1).get_parent());
 
 func setup(card_table):
 	get_cmsm(0).setup(card_table);
@@ -33,19 +33,23 @@ func perform_anims(perform):
 	get_cmsm(0).perform_anims(perform);
 	get_cmsm(1).perform_anims(perform);
 
+func _ready():
+	$cmsm0/ChromosomeStatus.update();
+	$cmsm1/ChromosomeStatus.update();
+
 # GETTER FUNCTIONS
 
 func get_cmsm(idx):
-	return get_node("cmsm" + str(idx) + "/cmsm");
+	return get_node("cmsm" + str(idx) + "/sc/cmsm");
 
 func get_other_cmsm(cmsm):
-	if (cmsm == $cmsm0/cmsm):
-		return $cmsm1/cmsm;
+	if (cmsm == get_cmsm(0)):
+		return get_cmsm(1);
 	else:
-		return $cmsm0/cmsm;
+		return get_cmsm(0);
 
 func get_max_pos(ends = true):
-	var sum = $cmsm0/cmsm.get_child_count() + $cmsm1/cmsm.get_child_count();
+	var sum = get_cmsm(0).get_child_count() + get_cmsm(1).get_child_count();
 	if (ends):
 		return sum + 2;
 	else:
@@ -54,6 +58,12 @@ func get_max_pos(ends = true):
 func get_center():
 	return Vector2(get_viewport().size.x / 2.0, 
 	get_begin().y + (get_size().y / 2.0));
+
+func get_cmsm_status(cmsm):
+	if (cmsm == get_cmsm(0)):
+		return $cmsm0/ChromosomeStatus;
+	elif (cmsm == get_cmsm(1)):
+		return $cmsm1/ChromosomeStatus;
 
 # CHROMOSOME MODIFICATION FUNCTIONS
 
@@ -266,9 +276,9 @@ func copy_ate(original_ate):
 func insert_ate(ate_elm):
 	var index;
 	if (do_yields):
-		index = yield(insert_from_behavior(ate_elm, $cmsm0/cmsm, 0), "completed");
+		index = yield(insert_from_behavior(ate_elm, get_cmsm(0), 0), "completed");
 	else:
-		index = insert_from_behavior(ate_elm, $cmsm0/cmsm, 0);
+		index = insert_from_behavior(ate_elm, get_cmsm(0), 0);
 	return index;
 
 func dupe_elm(elm):
@@ -284,7 +294,7 @@ func dupe_elm(elm):
 # HELPER FUNCTIONS
 
 func pos_to_cmtd_idx(pos, ends = true):
-	var first_posns = $cmsm0/cmsm.get_child_count();
+	var first_posns = get_cmsm(0).get_child_count();
 	if (!ends):
 		first_posns -= 1;
 	return int(pos >= first_posns);
@@ -304,8 +314,8 @@ func highlight_gaps():
 
 func highlight_common_genes():
 	var append_to = [];
-	for x in $cmsm0/cmsm.get_children():
-		for y in $cmsm1/cmsm.find_all_genes(x.id):
+	for x in get_cmsm(0).get_children():
+		for y in get_cmsm(1).find_all_genes(x.id):
 			y.disable(false);
 			x.disable(false);
 			
@@ -326,7 +336,7 @@ func _on_cmsm_got_dupe_essgene(elm):
 
 func validate_essentials(ess_classes):
 	for e in ess_classes:
-		if (!$cmsm0/cmsm.has_essclass(e) && !$cmsm1/cmsm.has_essclass(e)):
+		if (!get_cmsm(0).has_essclass(e) && !get_cmsm(1).has_essclass(e)):
 			return false;
 	return true;
 
