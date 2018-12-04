@@ -367,12 +367,14 @@ func recombination():
 				g.disable(true);
 			
 			if (randf() <= recombo_chance):
+				perform_anims(false);
 				var idxs;
 				if (do_yields):
 					idxs = yield($chromes.recombine(first_elm, scnd_elm), "completed");
 				else:
 					idxs = $chromes.recombine(first_elm, scnd_elm);
 				recombo_chance *= RECOMBO_COMPOUND;
+				perform_anims(true);
 				emit_signal("justnow_update", "Recombination success: swapped %s genes at positions %d and %d.\nNext recombination has a %d%% chance of success." % ([first_elm.id] + idxs + [100*recombo_chance]));
 			else:
 				emit_signal("justnow_update", "Recombination failed.");

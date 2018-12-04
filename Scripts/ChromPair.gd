@@ -92,19 +92,23 @@ func recombine(elm0, elm1):
 		for i in range(cmsm.get_child_count() - idxs[cm]):
 			cm_bunches[cm].append(cmsm.get_child(i + idxs[cm]));
 		# Remove them (doing this earlier screws up the loop)
-		for b in cm_bunches[cm]:
-			if (do_yields):
-				yield(extract_elm(b, false), "completed");
-			else:
+		if (do_yields):
+			for i in range(0, cm_bunches[cm].size() - 1):
+				extract_elm(cm_bunches[cm][i], false);
+			yield(extract_elm(cm_bunches[cm][cm_bunches[cm].size() - 1], false), "completed");
+		else:
+			for b in cm_bunches[cm]:
 				extract_elm(b, false);
 	# Add the bunches to the other chromosomes
 	for cm in range(2):
 		var other_idx = int(!bool(cm)); # Don't be mad
-		var cmsm = get_cmsm(other_idx)
-		for elm in cm_bunches[cm]:
-			if (do_yields):
-				yield(cmsm.add_elm(elm), "completed");
-			else:
+		var cmsm = get_cmsm(other_idx);
+		if (do_yields):
+			for i in range(0, cm_bunches[cm].size() - 1):
+				cmsm.add_elm(cm_bunches[cm][i]);
+			yield(cmsm.add_elm(cm_bunches[cm][cm_bunches[cm].size() - 1]), "completed");
+		else:
+			for elm in cm_bunches[cm]:
 				cmsm.add_elm(elm);
 	recombining = false;
 	return idxs;
