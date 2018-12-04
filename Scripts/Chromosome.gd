@@ -254,7 +254,7 @@ func magnify_elm(elm):
 		elm.rect_min_size = Vector2(new_size, new_size);
 		elm.rect_size = Vector2(new_size, new_size);
 		var counter = 1;
-		for i in range(elm.get_index() - 1, max(elm.get_index() - 3, 0), -1):
+		for i in range(elm.get_index() - 1, max(elm.get_index() - 3, -1), -1):
 			var next = elm.get_parent().get_child(i);
 			next.current_size = next.rect_size.x;
 			next.rect_min_size = Vector2(new_size * pow(next.MAGNIFICATION_DROPOFF, counter), new_size * pow(next.MAGNIFICATION_DROPOFF, counter));
@@ -272,7 +272,7 @@ func demagnify_elm(elm):
 	if (!animating && !get_cmsm_pair().get_other_cmsm(self).animating):
 		elm.rect_min_size = Vector2(elm.current_size, elm.current_size);
 		elm.rect_size = Vector2(elm.current_size, elm.current_size);
-		for i in range(elm.get_index() - 1, max(elm.get_index() - 3, 0), -1):
+		for i in range(elm.get_index() - 1, max(elm.get_index() - 3, -1), -1):
 			var next = elm.get_parent().get_child(i);
 			next.rect_min_size = Vector2(next.current_size, next.current_size);
 			next.rect_size = Vector2(next.current_size, next.current_size);
