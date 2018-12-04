@@ -24,14 +24,14 @@ func fix_bars():
 	Game.change_slider_width($cmsm1);
 
 func setup(card_table):
-	$cmsm0/cmsm.setup(card_table);
-	$cmsm1/cmsm.setup(card_table);
+	get_cmsm(0).setup(card_table);
+	get_cmsm(1).setup(card_table);
 	do_yields = true;
 
 func perform_anims(perform):
 	do_yields = perform;
-	$cmsm0/cmsm.perform_anims(perform);
-	$cmsm1/cmsm.perform_anims(perform);
+	get_cmsm(0).perform_anims(perform);
+	get_cmsm(1).perform_anims(perform);
 
 # GETTER FUNCTIONS
 
@@ -143,10 +143,11 @@ func remove_elm(elm, place_gap = true):
 func close_gap(gap):
 	if (gap in gap_list):
 		gap_list.erase(gap);
-	if (do_yields):
-		yield(gap.get_cmsm().remove_elm(gap), "completed");
-	else:
-		gap.get_cmsm().remove_elm(gap);
+	if (gap.get_cmsm() != null):
+		if (do_yields):
+			yield(gap.get_cmsm().remove_elm(gap), "completed");
+		else:
+			gap.get_cmsm().remove_elm(gap);
 	gap.queue_free();
 	collapse_gaps();
 

@@ -20,7 +20,6 @@ func _propagate_mouse_exited(elm):
 var do_animations = false;
 
 func setup(card_table):
-	do_animations = true;
 	connect("animating", card_table, "_on_animating_changed");
 	connect("animating", self, "_on_animating_changed");
 
@@ -100,8 +99,17 @@ func add_elm(elm, pos = null):
 					var start_pos = get_child(i).get_begin();
 					var end_pos = start_pos + Vector2(get_child(i).get_size().x, 0);
 					var distance = start_pos.distance_to(end_pos);
+					var duration = 0.5;
+					if (Game.turns[Game.turn_idx] == Game.TURN_TYPES.TEJump):
+						var _actives = get_cmsm_pair().ate_list + [];
+						if (_actives.size() > 0):
+							duration = min(distance / Game.animation_speed, (0.5 * Game.TE_jump_time_limit) / _actives.size());
+						else:
+							duration = distance / Game.animation_speed;
+					else:
+						duration = distance / Game.animation_speed;
 					get_child(i).get_node("Tween").interpolate_property(get_child(i), "rect_position",
-						start_pos, end_pos, distance / Game.animation_speed,Game.animation_ease, Game.animation_trans);
+						start_pos, end_pos, duration, Game.animation_ease, Game.animation_trans);
 					get_child(i).get_node("Tween").start();
 				yield(get_child(pos).get_node("Tween"), "tween_completed");
 			yield(get_tree(), "idle_frame");
@@ -118,9 +126,17 @@ func add_elm(elm, pos = null):
 				(elm.get_size() / 2.0);
 				var end_pos = Vector2(pos * elm.get_size().x + 3, 0);
 				var distance = offset.distance_to(end_pos);
+				var duration = 0.5;
+				if (Game.turns[Game.turn_idx] == Game.TURN_TYPES.TEJump):
+					var _actives = get_cmsm_pair().ate_list + [];
+					if (_actives.size() > 0):
+						duration = min(distance / Game.animation_speed, (0.5 * Game.TE_jump_time_limit) / _actives.size());
+					else:
+						duration = distance / Game.animation_speed;
+				else:
+					duration = distance / Game.animation_speed;
 				elm.get_node("Tween").interpolate_property(elm, "rect_position",
-					 offset, end_pos, distance / Game.animation_speed,
-					 Game.animation_ease, Game.animation_trans);
+					 offset, end_pos, duration, Game.animation_ease, Game.animation_trans);
 				elm.get_node("Tween").start();
 				yield(elm.get_node("Tween"), "tween_completed");
 		elm.connect("elm_clicked", self, "_propogate_click");
@@ -147,9 +163,17 @@ func remove_elm(elm):
 			var end_pos = center - elm.get_cmsm().get_parent().get_begin() - \
 			(elm.get_size() / 2.0);
 			var distance = current_pos.distance_to(end_pos);
+			var duration = 0.5;
+			if (Game.turns[Game.turn_idx] == Game.TURN_TYPES.TEJump):
+				var _actives = get_cmsm_pair().ate_list + [];
+				if (_actives.size() > 0):
+					duration = min(distance / Game.animation_speed, (0.5 * Game.TE_jump_time_limit) / _actives.size());
+				else:
+					duration = distance / Game.animation_speed;
+			else:
+				duration = distance / Game.animation_speed;
 			elm.get_node("Tween").interpolate_property(elm, "rect_position",
-				 current_pos, end_pos, distance / Game.animation_speed,
-				 Game.animation_ease, Game.animation_trans);
+				 current_pos, end_pos, duration, Game.animation_ease, Game.animation_trans);
 			elm.get_node("Tween").start();
 			yield(elm.get_node("Tween"), "tween_completed");
 		else:
@@ -159,15 +183,25 @@ func remove_elm(elm):
 			var start_pos = get_child(i).get_begin();
 			var end_pos = start_pos - Vector2(get_child(i).get_size().x, 0);
 			var distance = start_pos.distance_to(end_pos);
+			var duration = 0.5;
+			if (Game.turns[Game.turn_idx] == Game.TURN_TYPES.TEJump):
+				var _actives = get_cmsm_pair().ate_list + [];
+				if (_actives.size() > 0):
+					duration = min(distance / Game.animation_speed, (0.5 * Game.TE_jump_time_limit) / _actives.size());
+				else:
+					duration = distance / Game.animation_speed;
+			else:
+				duration = distance / Game.animation_speed;
 			get_child(i).get_node("Tween").interpolate_property(get_child(i), "rect_position",
-				start_pos, end_pos, distance / Game.animation_speed,Game.animation_ease, Game.animation_trans);
+				start_pos, end_pos, duration, Game.animation_ease, Game.animation_trans);
 			get_child(i).get_node("Tween").start();
 		if (elm.get_index() + 1 < get_child_count()):
 			yield(get_child(elm.get_index() + 1).get_node("Tween"), "tween_completed");
 		else:
 			yield(get_tree(), "idle_frame");
 	
-	elm.get_parent().remove_child(elm);
+	if (elm.get_parent() != null):
+		elm.get_parent().remove_child(elm);
 	emit_signal("animating", false);
 	set_size();
 	yield(get_tree(), "idle_frame");
@@ -187,9 +221,17 @@ func remove_elm_create_gap(elm):
 			var end_pos = center - elm.get_cmsm().get_parent().get_begin() - \
 			(elm.get_size() / 2.0);
 			var distance = current_pos.distance_to(end_pos);
+			var duration = 0.5;
+			if (Game.turns[Game.turn_idx] == Game.TURN_TYPES.TEJump):
+				var _actives = get_cmsm_pair().ate_list + [];
+				if (_actives.size() > 0):
+					duration = min(distance / Game.animation_speed, (0.5 * Game.TE_jump_time_limit) / _actives.size());
+				else:
+					duration = distance / Game.animation_speed;
+			else:
+				duration = distance / Game.animation_speed;
 			elm.get_node("Tween").interpolate_property(elm, "rect_position",
-				 current_pos, end_pos, distance / Game.animation_speed,
-				 Game.animation_ease, Game.animation_trans);
+				 current_pos, end_pos, duration, Game.animation_ease, Game.animation_trans);
 			elm.get_node("Tween").start();
 			yield(elm.get_node("Tween"), "tween_completed");
 		else:

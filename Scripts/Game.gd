@@ -15,6 +15,7 @@ var card_table;
 var animation_speed = 600;
 var animation_ease = Tween.EASE_IN;
 var animation_trans = Tween.TRANS_LINEAR;
+var TE_jump_time_limit = 5;
 
 var ate_personalities = {};
 
