@@ -25,8 +25,8 @@ func _ready():
 	
 	spawn_map()
 	player.position = tile_map[ceil(tile_col/2)][ceil(tile_rows / 2)].position
-	player.tile_ndx = Vector2(ceil(tile_col/2), ceil(tile_rows / 2))
-	player.prev_tile_ndx = Vector2(ceil(tile_col/2), ceil(tile_rows / 2))
+	player.tile_ndx = tile_map[ceil(tile_col/2)][ceil(tile_rows / 2)]
+	player.prev_tile_ndx = tile_map[ceil(tile_col/2)][ceil(tile_rows / 2)]
 	learn(tile_map[ceil(tile_col/2)][ceil(tile_rows / 2)], player.sensing_strength)
 	
 	
@@ -91,8 +91,8 @@ func spread_neighbors(center_tile, tile_influence_color, strength, orig_stren):
 
 func _process(delta):
 	if has_moved:
-		forget(tile_map[player.prev_tile_ndx.x][player.prev_tile_ndx.y], player.sensing_strength)
-		learn(tile_map[player.tile_ndx.x][player.tile_ndx.y], player.sensing_strength)
+		forget(tile_map[player.prev_tile_ndx.map_ndx.x][player.prev_tile_ndx.map_ndx.y], player.sensing_strength)
+		learn(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y], player.sensing_strength)
 	
 	update_energy_allocation(player.organism.energy)
 
@@ -149,7 +149,7 @@ func learn(center_tile, strength):
 func _on_CardTable_next_turn(turn_text, round_num):
 	if round_num != curr_round_num:
 		curr_round_num = round_num
-		var res_vec =  tile_map[player.tile_ndx.x][player.tile_ndx.y].resources
+		var res_vec =  tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources
 		if res_vec.x > 1 and res_vec.y > 1 and res_vec.z > 1:
 			player.organism.update_energy(1)
-			tile_map[player.tile_ndx.x][player.tile_ndx.y].resources += Vector3(-1, -1, -1)
+			tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources += Vector3(-1, -1, -1)

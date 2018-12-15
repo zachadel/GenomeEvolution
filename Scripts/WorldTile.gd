@@ -17,16 +17,26 @@ func _ready():
 func init_data(ndx, bio_set = true):
 	map_ndx = ndx
 	biome_set = bio_set
+	
+func tile_distance(curr, prev):
+	var distance = sqrt(pow(curr.x - prev.x, 2) + pow(curr.y - prev.y, 2))
+	var diameter = get_node("Area2D/Sprite").get_texture().get_size().x
+	
+	print(distance / diameter)
+	print(round(distance / diameter))
+	return round(distance / diameter)
 
 func _on_Area2D_input_event(viewport, event, shape_idx):
 	var player = get_tree().get_root().get_node("Control/WorldMap/Player")
-	if event.is_action_pressed("mouse_left") and !hidden and (player.organism.energy > player.organism.MIN_ENERGY) and (map_ndx != player.tile_ndx):
+	var distance = tile_distance(player.tile_ndx.position, position)
+	if event.is_action_pressed("mouse_left") and !hidden and (map_ndx != player.tile_ndx.map_ndx):
 		print(resources)
-		player.position = position
-		player.prev_tile_ndx = player.tile_ndx
-		player.tile_ndx = map_ndx
-		get_tree().get_root().get_node("Control/WorldMap").has_moved = true
-		player.organism.update_energy(-1)
+		if player.organism.energy >= (player.organism.MIN_ENERGY + distance):
+			player.position = position
+			player.prev_tile_ndx = player.tile_ndx
+			player.tile_ndx = self
+			get_tree().get_root().get_node("Control/WorldMap").has_moved = true
+			player.organism.update_energy(-distance)
 
 func change_color(color):
 	curr_color = natural_tile_color + color
