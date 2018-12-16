@@ -9,7 +9,6 @@ var player_scene = preload("res://Scenes/Player.tscn")
 var player
 var tile_sprite_size
 var has_moved = false
-var curr_round_num = 1
 
 func _ready():
 	var temp_node = world_tile_scene.instance()
@@ -146,9 +145,10 @@ func learn(center_tile, strength):
 		tile_map[curr_vec2.x][curr_vec2.y].show_color()
 		learn(tile_map[curr_vec2.x][curr_vec2.y], strength - 1)
 
+#energy after turn is given here
 func _on_CardTable_next_turn(turn_text, round_num):
-	if round_num != curr_round_num:
-		curr_round_num = round_num
+	print("yo", round_num)
+	if round_num >= 7:
 		var res_vec =  tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources
 		if res_vec.x > 1 and res_vec.y > 1 and res_vec.z > 1:
 			player.organism.update_energy(1)
