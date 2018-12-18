@@ -8,8 +8,8 @@ enum GSTATE {
 var gstate = GSTATE.TABLE
 var state_label = ["Map", "Table"]
 
-func _ready():
-	pass
+func _ready(): 
+	$WorldMap.hide()
 
 func _on_modeSwitch_pressed():
 	match(gstate):

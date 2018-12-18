@@ -347,6 +347,8 @@ func evolve_candidates(candids):
 
 var recombo_chance = 1;
 const RECOMBO_COMPOUND = 0.85;
+var cont_recombo = true
+var recom_justnow = ""
 func recombination():
 	if (is_ai):
 		gene_selection = [];
@@ -375,9 +377,11 @@ func recombination():
 					idxs = $chromes.recombine(first_elm, scnd_elm);
 				recombo_chance *= RECOMBO_COMPOUND;
 				perform_anims(true);
-				emit_signal("justnow_update", "Recombination success: swapped %s genes at positions %d and %d.\nNext recombination has a %d%% chance of success." % ([first_elm.id] + idxs + [100*recombo_chance]));
+				recom_justnow = "Recombination success: swapped %s genes at positions %d and %d.\n"  % ([first_elm.id] + idxs)
+				#emit_signal("justnow_update", "Recombination success: swapped %s genes at positions %d and %d.\nNext recombination has a %d%% chance of success." % ([first_elm.id] + idxs + [100*recombo_chance]));
 			else:
 				emit_signal("justnow_update", "Recombination failed.");
+				cont_recombo = false
 			emit_signal("doing_work", false);
 
 func adv_turn(round_num, turn_idx):
@@ -415,11 +419,20 @@ func adv_turn(round_num, turn_idx):
 				plrl = "";
 			emit_signal("justnow_update", "%d gap%s appeared due to environmental damage." % [rand, plrl]);
 		elif (Game.turns[turn_idx] == Game.TURN_TYPES.Recombination):
-			emit_signal("justnow_update", "If you want, you can select a gene that is common to both chromosomes. Those genes and every gene to their right swap chromosomes.\nThis recombination has a %d%% chance of success." % (100*recombo_chance));
-			if (do_yields):
-				yield(recombination(), "completed");
-			else:
-				recombination();
+			var first = true
+			while cont_recombo:
+				var update_recombo_chance = "If you want, you can select a gene that is common to both chromosomes. Those genes and every gene to their right swap chromosomes.\nThis recombination has a %d%% chance of success." % (100*recombo_chance);
+				if first:
+					emit_signal("justnow_update", update_recombo_chance);
+					first = false
+				else:
+					
+					recom_justnow += update_recombo_chance
+					emit_signal("justnow_update", recom_justnow)
+				if (do_yields):
+					yield(recombination(), "completed");
+				else:
+					recombination();
 		elif (Game.turns[turn_idx] == Game.TURN_TYPES.Evolve):
 			for g in gene_selection:
 				g.disable(true);
@@ -430,6 +443,8 @@ func adv_turn(round_num, turn_idx):
 			var viable = $chromes.validate_essentials(Game.ESSENTIAL_CLASSES.values());
 			if (viable):
 				emit_signal("justnow_update", "You're still kicking!");
+				cont_recombo = true
+				recombo_chance = 1
 			else:
 				died_on_turn = Game.round_num;
 				$lbl_dead.text = "Died after %d rounds." % (died_on_turn - born_on_turn);
