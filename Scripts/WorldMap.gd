@@ -147,7 +147,6 @@ func learn(center_tile, strength):
 
 #energy after turn is given here
 func _on_CardTable_next_turn(turn_text, round_num):
-	print("yo", round_num)
 	if round_num >= 7:
 		var res_vec =  tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources
 		if res_vec.x > 1 and res_vec.y > 1 and res_vec.z > 1:
