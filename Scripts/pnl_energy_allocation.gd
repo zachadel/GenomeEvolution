@@ -1,6 +1,7 @@
 extends Panel
 
 # GODOT FUNCTION
+var player
 
 func _ready():
 	$energy_bar.min_value = get_organism().MIN_ENERGY;
@@ -77,11 +78,14 @@ func _on_replication_button_gui_input(ev):
 
 
 func _on_sensing_button_gui_input(ev):
+	player = get_node("../../../WorldMap/Player")
 	if (ev is InputEventMouseButton and ev.pressed):
 		if (ev.button_index == BUTTON_LEFT):
 			get_organism().update_energy_allocation(Game.ESSENTIAL_CLASSES.Sensing, 1);
+			player.sensing_strength += 1
 		elif (ev.button_index == BUTTON_RIGHT):
 			get_organism().update_energy_allocation(Game.ESSENTIAL_CLASSES.Sensing, -1);
+			player.sensing_strength = max(0, player.sensing_strength - 1)
 
 
 func _on_btn_exit_pressed():

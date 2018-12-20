@@ -20,7 +20,7 @@ func _ready():
 	add_child(player)
 	var player_size = player.get_node("Sprite").get_texture().get_size()
 	player.get_node("Camera2D").make_current()
-	
+	$"WorldMap_UI/ResourceStats".set_player(player)
 	
 	spawn_map()
 	player.position = tile_map[ceil(tile_col/2)][ceil(tile_rows / 2)].position
@@ -145,10 +145,17 @@ func learn(center_tile, strength):
 		tile_map[curr_vec2.x][curr_vec2.y].show_color()
 		learn(tile_map[curr_vec2.x][curr_vec2.y], strength - 1)
 
+var res_stack = 0
 #energy after turn is given here
 func _on_CardTable_next_turn(turn_text, round_num):
 	if round_num >= 7:
 		var res_vec =  tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources
-		if res_vec.x > 1 and res_vec.y > 1 and res_vec.z > 1:
+		res_stack = (max(res_vec.x - (res_vec.x - 1), 0) + max(res_vec.y - (res_vec.y - 1), 0) + max(res_vec.z - (res_vec.z - 1), 0))
+		#if res_vec.x > 1 and res_vec.y > 1 and res_vec.z > 1:
+		if res_stack >= 3:
 			player.organism.update_energy(1)
 			tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources += Vector3(-1, -1, -1)
+			tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.x = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.x, 0)
+			tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.y = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.y, 0)
+			tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.z = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.z, 0)
+			res_stack -= 3;

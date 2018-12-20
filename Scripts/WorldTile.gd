@@ -38,6 +38,9 @@ func _on_Area2D_input_event(viewport, event, shape_idx):
 func change_color(color):
 	curr_color = natural_tile_color + color
 	resources = Vector3(curr_color.r, curr_color.g, curr_color.b) * 10
+	resources.x = round(resources.x)
+	resources.y = round(resources.y)
+	resources.z = round(resources.z)
 
 func show_color():
 	hidden = false
