@@ -92,7 +92,10 @@ func _process(delta):
 	if has_moved:
 		forget(tile_map[player.prev_tile_ndx.map_ndx.x][player.prev_tile_ndx.map_ndx.y], player.sensing_strength)
 		learn(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y], player.sensing_strength)
-	
+	if (player.sensing_strength != player.prev_sensing_strength):
+		forget(tile_map[player.prev_tile_ndx.map_ndx.x][player.prev_tile_ndx.map_ndx.y], player.prev_sensing_strength)
+		learn(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y], player.sensing_strength)
+		player.prev_sensing_strength = player.sensing_strength
 	update_energy_allocation(player.organism.energy)
 
 func create_energy_label():
