@@ -3,7 +3,7 @@
 [ext_resource path="res://Scripts/ChromPair.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Chromosome.tscn" type="PackedScene" id=2]
 
-[node name="ChromPair" type="VBoxContainer" index="0"]
+[node name="ChromPair" type="VBoxContainer"]
 
 anchor_left = 0.0
 anchor_top = 0.0

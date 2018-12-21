@@ -19,6 +19,24 @@ func get_status_elm(elm):
 			return status_elm;
 	return null;
 
+class ElmSorter:
+	static func sort(a, b):
+		if (a.mode == "essential"):
+			if (b.mode == "essential"):
+				return a.id < b.id;
+			else:
+				return true;
+		elif (b.mode == "essential"):
+			return false;
+		else:
+			return a.id < b.id;
+
+func sort():
+	var sorted = container.get_children();
+	sorted.sort_custom(ElmSorter, "sort");
+	for i in range(sorted.size()):
+		container.move_child(get_status_elm(sorted[i]), i);
+
 func update():
 	for elm in container.get_children():
 		elm.count = 0;
@@ -34,3 +52,4 @@ func update():
 					elif elm.mode == "ate":
 						new_elm.setup(elm.id, elm.mode, null, elm.ate_personality, 1);
 					container.add_child(new_elm);
+	sort();
