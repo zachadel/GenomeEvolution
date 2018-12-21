@@ -9,6 +9,7 @@ var do_yields = false;
 signal elm_clicked(elm);
 signal elm_mouse_entered(elm);
 signal elm_mouse_exited(elm);
+signal on_cmsm_changed();
 
 func _propogate_click(elm):
 	emit_signal("elm_clicked", elm);
@@ -33,14 +34,19 @@ func perform_anims(perform):
 	get_cmsm(0).perform_anims(perform);
 	get_cmsm(1).perform_anims(perform);
 
-func _ready():
-	$cmsm0/ChromosomeStatus.update();
-	$cmsm1/ChromosomeStatus.update();
-
 # GETTER FUNCTIONS
 
 func get_cmsm(idx):
-	return get_node("cmsm" + str(idx) + "/sc/cmsm");
+	return get_node("cmsm" + str(idx) + "/cmsm");
+
+func get_cmsms():
+	var to_return = [];
+	for i in range(get_child_count()):
+		to_return.append(get_cmsm(i));
+	return to_return;
+
+func get_organism():
+	return get_parent();
 
 func get_other_cmsm(cmsm):
 	if (cmsm == get_cmsm(0)):
@@ -58,12 +64,6 @@ func get_max_pos(ends = true):
 func get_center():
 	return Vector2(get_viewport().size.x / 2.0, 
 	get_begin().y + (get_size().y / 2.0));
-
-func get_cmsm_status(cmsm):
-	if (cmsm == get_cmsm(0)):
-		return $cmsm0/ChromosomeStatus;
-	elif (cmsm == get_cmsm(1)):
-		return $cmsm1/ChromosomeStatus;
 
 # CHROMOSOME MODIFICATION FUNCTIONS
 
@@ -346,3 +346,6 @@ func append_gaplist(gap):
 func append_atelist(ate):
 	if (!(ate in ate_list) && ate.type == "gene" && ate.mode == "ate"):
 		ate_list.append(ate);
+
+func _on_cmsm_changed():
+	get_organism()

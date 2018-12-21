@@ -30,8 +30,8 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 0.0
-margin_bottom = 554.0
-rect_min_size = Vector2( 800, 554 )
+margin_bottom = 550.0
+rect_min_size = Vector2( 200, 550 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -39,7 +39,7 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 script = ExtResource( 1 )
-_sections_unfolded = [ "Mouse", "Rect" ]
+_sections_unfolded = [ "Anchor", "Margin", "Mouse", "Rect" ]
 
 [node name="slider_correct" type="AnimationPlayer" parent="." index="0"]
 
@@ -52,8 +52,6 @@ anims/correction = SubResource( 1 )
 blend_times = [  ]
 
 [node name="chromes" parent="." index="1" instance=ExtResource( 2 )]
-
-margin_bottom = 660.0
 
 [node name="lbl_dead" type="Label" parent="." index="2"]
 

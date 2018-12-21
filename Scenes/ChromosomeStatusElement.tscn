@@ -1,9 +1,9 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://Scenes/ChromosomeStatusElement.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/ChromosomeStatusElement.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Images/genes/Construction.png" type="Texture" id=2]
 
-[node name="ChromosomeStatusElement" type="HBoxContainer"]
+[node name="ChromosomeStatusElement" type="VBoxContainer"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -11,7 +11,7 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 100.0
 margin_bottom = 50.0
-rect_min_size = Vector2( 100, 50 )
+rect_min_size = Vector2( 100, 70 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -22,7 +22,23 @@ alignment = 0
 script = ExtResource( 1 )
 _sections_unfolded = [ "Rect" ]
 
-[node name="ImageContainer" type="CenterContainer" parent="." index="0"]
+[node name="HBoxContainer" type="HBoxContainer" parent="." index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 104.0
+margin_bottom = 50.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+alignment = 0
+
+[node name="ImageContainer" type="CenterContainer" parent="HBoxContainer" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -40,7 +56,7 @@ size_flags_vertical = 1
 use_top_left = false
 _sections_unfolded = [ "Rect" ]
 
-[node name="Image" type="TextureRect" parent="ImageContainer" index="0"]
+[node name="Image" type="TextureRect" parent="HBoxContainer/ImageContainer" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -60,7 +76,7 @@ expand = true
 stretch_mode = 0
 _sections_unfolded = [ "Visibility" ]
 
-[node name="NumberContainer" type="CenterContainer" parent="." index="1"]
+[node name="NumberContainer" type="CenterContainer" parent="HBoxContainer" index="1"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -79,7 +95,7 @@ size_flags_vertical = 1
 use_top_left = false
 _sections_unfolded = [ "Rect" ]
 
-[node name="Number" type="Label" parent="NumberContainer" index="0"]
+[node name="Number" type="Label" parent="HBoxContainer/NumberContainer" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -100,5 +116,30 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Anchor", "Margin" ]
+
+[node name="Label" type="Label" parent="." index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 54.0
+margin_right = 104.0
+margin_bottom = 69.0
+rect_min_size = Vector2( 0, 15 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "test"
+align = 1
+valign = 1
+autowrap = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Rect" ]
 
 

@@ -58,6 +58,12 @@ func perform_anims(perform):
 	do_yields = perform;
 	$chromes.perform_anims(perform);
 
+func get_card_table():
+	return get_parent();
+
+func get_cmsm_pair():
+	return $chromes;
+
 func gain_ates(count = 1):
 	var justnow = "";
 	for i in range(count):

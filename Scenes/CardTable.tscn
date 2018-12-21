@@ -1,13 +1,14 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scripts/CardTable.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Organism.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Assets/Images/icons/collapse_dupes.png" type="Texture" id=3]
-[ext_resource path="res://Assets/Images/icons/copy_repair.png" type="Texture" id=4]
-[ext_resource path="res://Assets/Images/icons/join_ends.png" type="Texture" id=5]
-[ext_resource path="res://Scripts/pnl_energy_allocation.gd" type="Script" id=6]
+[ext_resource path="res://Scenes/ChromosomeStatus.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/Images/icons/collapse_dupes.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Images/icons/copy_repair.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Images/icons/join_ends.png" type="Texture" id=6]
+[ext_resource path="res://Scripts/pnl_energy_allocation.gd" type="Script" id=7]
 
-[node name="Control" type="Control"]
+[node name="Control" type="Control" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -50,16 +51,27 @@ flat = false
 align = 1
 _sections_unfolded = [ "Mouse" ]
 
-[node name="btn_energy_allocation" type="Button" parent="." index="2"]
+[node name="ChromosomeStatus" parent="." index="2" instance=ExtResource( 3 )]
 
 anchor_left = 0.5
-anchor_top = 1.0
 anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -50.0
-margin_top = -310.0
-margin_right = 50.0
-margin_bottom = -250.0
+margin_left = -600.0
+margin_top = 499.0
+margin_right = 600.0
+margin_bottom = 561.0
+rect_min_size = Vector2( 0, 50 )
+_sections_unfolded = [ "Anchor", "Margin", "Rect", "Scroll" ]
+
+[node name="btn_energy_allocation" type="Button" parent="." index="3"]
+
+anchor_left = 0.5
+anchor_top = 0.0
+anchor_right = 0.5
+anchor_bottom = 0.0
+margin_left = -70.0
+margin_top = 623.0
+margin_right = 70.0
+margin_bottom = 683.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -76,7 +88,7 @@ flat = false
 align = 1
 _sections_unfolded = [ "Anchor", "Margin", "Rect" ]
 
-[node name="lbl_turn" type="Label" parent="." index="3"]
+[node name="lbl_turn" type="Label" parent="." index="4"]
 
 anchor_left = 0.0
 anchor_top = 1.0
@@ -98,8 +110,9 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="sc_justnow" type="ScrollContainer" parent="." index="4"]
+[node name="sc_justnow" type="ScrollContainer" parent="." index="5"]
 
+editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -144,17 +157,17 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Rect" ]
 
-[node name="sc_criteria" type="ScrollContainer" parent="." index="5"]
+[node name="sc_criteria" type="ScrollContainer" parent="." index="6"]
 
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -346.0
-margin_top = -311.0
-margin_right = -26.0
-margin_bottom = -81.0
-rect_min_size = Vector2( 320, 230 )
+margin_top = -275.0
+margin_right = -14.0
+margin_bottom = -75.0
+rect_min_size = Vector2( 320, 200 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = true
 mouse_filter = 0
@@ -166,7 +179,7 @@ scroll_horizontal = 0
 scroll_vertical_enabled = true
 scroll_vertical = 0
 scroll_deadzone = 0
-_sections_unfolded = [ "Anchor", "Rect", "Scroll" ]
+_sections_unfolded = [ "Anchor", "Margin", "Rect", "Scroll" ]
 
 [node name="lbl_criteria" type="Label" parent="sc_criteria" index="0"]
 
@@ -175,8 +188,8 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 320.0
-margin_bottom = 210.0
-rect_min_size = Vector2( 320, 210 )
+margin_bottom = 180.0
+rect_min_size = Vector2( 320, 180 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -191,7 +204,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Anchor", "Rect" ]
 
-[node name="pnl_repair_choices" type="Panel" parent="." index="6"]
+[node name="pnl_repair_choices" type="Panel" parent="." index="7"]
 
 editor/display_folded = true
 visible = false
@@ -249,7 +262,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-items = [ "Collapse Duplicates", ExtResource( 3 ), false, "Copy Pattern", ExtResource( 4 ), false, "Join Ends", ExtResource( 5 ), false ]
+items = [ "Collapse Duplicates", ExtResource( 4 ), false, "Copy Pattern", ExtResource( 5 ), false, "Join Ends", ExtResource( 6 ), false ]
 select_mode = 0
 allow_reselect = false
 same_column_width = true
@@ -343,7 +356,7 @@ text = "Repair"
 flat = false
 align = 1
 
-[node name="pnl_energy_allocation" type="Panel" parent="." index="7"]
+[node name="pnl_energy_allocation" type="Panel" parent="." index="8"]
 
 editor/display_folded = true
 visible = false
@@ -361,7 +374,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-script = ExtResource( 6 )
+script = ExtResource( 7 )
 _sections_unfolded = [ "Anchor", "Margin", "Rect", "Visibility" ]
 
 [node name="holder" type="HBoxContainer" parent="pnl_energy_allocation" index="0"]

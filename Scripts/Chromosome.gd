@@ -5,6 +5,7 @@ signal elm_mouse_entered(elm);
 signal elm_mouse_exited(elm);
 signal got_dupe_essgene(elm);
 signal animating(state);
+signal cmsm_changed();
 
 var animating = false;
 
@@ -22,6 +23,7 @@ var do_animations = false;
 func setup(card_table):
 	connect("animating", card_table, "_on_animating_changed");
 	connect("animating", self, "_on_animating_changed");
+	connect("cmsm_changed", get_cmsm_pair().get_organism().get_card_table().get_cmsm_status(), "update");
 
 func perform_anims(perform):
 	do_animations = perform;
@@ -61,13 +63,8 @@ func get_elms_around_pos(idx, clickable = false):
 
 func get_cmsm_pair():
 	if (get_parent() != null):
-		if (get_parent().get_parent() != null):
-			return get_parent().get_parent().get_parent();
+		return get_parent().get_parent();
 	return null;
-
-func get_cmsm_status():
-	if (get_cmsm_pair() != null):
-		return get_cmsm_pair().get_cmsm_status(self);
 
 # CHROMOSOME MODIFICATION FUNCTIONS
 
@@ -152,7 +149,7 @@ func add_elm(elm, pos = null):
 	emit_signal("animating", false);
 	yield(get_tree(), "idle_frame");
 	queue_sort();
-	get_cmsm_status().update();
+	emit_signal("cmsm_changed");
 	return elm;
 
 func remove_elm(elm):
@@ -211,8 +208,8 @@ func remove_elm(elm):
 	emit_signal("animating", false);
 	set_size();
 	yield(get_tree(), "idle_frame");
+	emit_signal("cmsm_changed");
 	queue_sort();
-	get_cmsm_status().update();
 
 func remove_elm_create_gap(elm):
 	emit_signal("animating", true);
@@ -260,7 +257,7 @@ func remove_elm_create_gap(elm):
 	set_size();
 	yield(get_tree(), "idle_frame");
 	queue_sort();
-	get_cmsm_status().update();
+	emit_signal("cmsm_changed");
 	return gap;
 
 # HELPER FUNCTIONS

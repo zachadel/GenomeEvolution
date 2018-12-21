@@ -13,6 +13,9 @@ func _ready():
 	$lbl_turn.text = "Click \"Continue\" to start.";
 	connect("next_turn", $Organism, "adv_turn");
 
+func get_cmsm_status():
+	return $ChromosomeStatus;
+
 # Gaps and repairs
 
 func show_repair_opts(show):
