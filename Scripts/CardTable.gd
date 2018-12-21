@@ -29,6 +29,7 @@ func hide_repair_opts():
 
 func upd_repair_desc(idx):
 	$pnl_repair_choices/hsplit/vsplit/btn_apply_repair.disabled = !$Organism.repair_type_possible[idx];
+	$Organism.sel_repair_idx = idx;
 	match (idx):
 		0:
 			$pnl_repair_choices/hsplit/vsplit/scroll/lbl_choice_desc.text = "If the genes to the left and the right of the gap are the same, the break can be repaired by discarding one of the duplicates.";
@@ -37,7 +38,7 @@ func upd_repair_desc(idx):
 		2:
 			$pnl_repair_choices/hsplit/vsplit/scroll/lbl_choice_desc.text = "You can always just attempt to join ends without a template. There is a high chance for complications (duplications, discarding, etc.).";
 		var _err_idx:
-			$pnl_repair_choices/hsplit/vsplit/scroll/lbl_choice_desc.text = "This is an error! You picked an option (%d) we are not familiar with!" % _err_idx;
+			$pnl_repair_choices/hsplit/vsplit/scroll/lbl_choice_desc.text = "This is an error! You picked an option (#%d) we are not familiar with!" % _err_idx;
 
 func _on_btn_apply_repair_pressed():
 	$Organism.auto_repair();
