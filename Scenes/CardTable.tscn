@@ -83,9 +83,9 @@ anchor_top = 1.0
 anchor_right = 0.0
 anchor_bottom = 1.0
 margin_left = 25.0
-margin_top = -187.0
+margin_top = -66.0
 margin_right = 262.0
-margin_bottom = -84.0
+margin_bottom = -6.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -193,7 +193,6 @@ _sections_unfolded = [ "Anchor", "Rect" ]
 
 [node name="pnl_repair_choices" type="Panel" parent="." index="6"]
 
-editor/display_folded = true
 visible = false
 anchor_left = 0.5
 anchor_top = 1.0

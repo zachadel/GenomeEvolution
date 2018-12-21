@@ -127,10 +127,10 @@ func _on_chromes_elm_clicked(elm):
 		"break":
 			if (elm == selected_gap):
 				for r in gene_selection:
-					if (Game.node_exists(r)):
-						r.disable(true);
+					r.disable(true);
 				highlight_gap_choices();
 				gene_selection = [];
+				repair_canceled = true;
 				emit_signal("gene_clicked"); # Used to continue the yields
 				emit_signal("justnow_update", "");
 			else:
@@ -191,6 +191,7 @@ func auto_repair():
 func apply_repair_choice(idx):
 	repair_gap(sel_repair_gap, idx);
 
+var repair_canceled = false;
 func repair_gap(gap, repair_idx):
 	if (repair_type_possible[repair_idx]):
 		hide_repair_opts();
@@ -199,6 +200,8 @@ func repair_gap(gap, repair_idx):
 		
 		var left_id = cmsm.get_child(g_idx-1).id;
 		var right_id = cmsm.get_child(g_idx+1).id;
+		
+		repair_canceled = false;
 		match (repair_idx):
 			0:
 				# Collapse Duplicates
@@ -225,7 +228,7 @@ func repair_gap(gap, repair_idx):
 						else:
 							yield(self, "gene_clicked");
 						# Yield also ended when a gap is deselected and gene_selection is cleared
-						if (gene_selection.size() > 0):
+						if (!repair_canceled && gene_selection.size() > 0):
 							for r in gene_selection:
 								r.disable(true);
 							
@@ -280,12 +283,12 @@ func repair_gap(gap, repair_idx):
 						else:
 							yield(self, "gene_clicked");
 						# Yield also ended when a gap is deselected and gene_selection is cleared
-						if (gene_selection.size() > 0):
+						if (!repair_canceled && gene_selection.size() > 0):
 							for r in gene_selection:
 								r.disable(true);
 							
 							var gene = gene_selection.back();
-							var g_id = gene.id;
+							var g_id = gene.id; # Saved here cuz it'll free the gene in a bit
 							if (do_yields):
 								yield($chromes.remove_elm(gene, false), "completed");
 								yield($chromes.close_gap(gap), "completed");
@@ -356,7 +359,7 @@ func recombination():
 		gene_selection = $chromes.highlight_common_genes();
 		yield(self, "gene_clicked");
 		# Because this step is optional, by the time a gene is clicked, it might be a different turn
-		if (Game.turns[Game.turn_idx] == Game.TURN_TYPES.Recombination):
+		if (Game.get_turn_type() == Game.TURN_TYPES.Recombination):
 			emit_signal("doing_work", true);
 			var first_elm = gene_selection.back();
 			for g in gene_selection:
@@ -386,19 +389,19 @@ func recombination():
 
 func adv_turn(round_num, turn_idx):
 	if (died_on_turn == -1):
-		if (Game.turns[turn_idx] == Game.TURN_TYPES.NewTEs):
+		if (Game.get_turn_type() == Game.TURN_TYPES.NewTEs):
 			emit_signal("justnow_update", "");
 			if (do_yields):
 				yield(gain_ates(1), "completed");
 			else:
 				gain_ates(1);
-		elif (Game.turns[turn_idx] == Game.TURN_TYPES.TEJump):
+		elif (Game.get_turn_type() == Game.TURN_TYPES.TEJump):
 			emit_signal("justnow_update", "");
 			if (do_yields):
 				yield(jump_ates(), "completed");
 			else:
 				jump_ates();
-		elif (Game.turns[turn_idx] == Game.TURN_TYPES.RepairBreaks):
+		elif (Game.get_turn_type() == Game.TURN_TYPES.RepairBreaks):
 			roll_storage = [{}, {}];
 			var num_gaps = $chromes.gap_list.size();
 			if (num_gaps == 0):
@@ -408,7 +411,7 @@ func adv_turn(round_num, turn_idx):
 			else:
 				emit_signal("justnow_update", "%d gaps need repair." % num_gaps);
 			highlight_gap_choices();
-		elif (Game.turns[turn_idx] == Game.TURN_TYPES.EnvironmentalDamage):
+		elif (Game.get_turn_type() == Game.TURN_TYPES.EnvironmentalDamage):
 			var rand;
 			if (do_yields):
 				rand = yield(gain_gaps(1+randi()%3), "completed");
@@ -418,7 +421,7 @@ func adv_turn(round_num, turn_idx):
 			if (rand == 1):
 				plrl = "";
 			emit_signal("justnow_update", "%d gap%s appeared due to environmental damage." % [rand, plrl]);
-		elif (Game.turns[turn_idx] == Game.TURN_TYPES.Recombination):
+		elif (Game.get_turn_type() == Game.TURN_TYPES.Recombination):
 			var first = true
 			while cont_recombo:
 				var update_recombo_chance = "If you want, you can select a gene that is common to both chromosomes. Those genes and every gene to their right swap chromosomes.\nThis recombination has a %d%% chance of success." % (100*recombo_chance);
@@ -426,20 +429,19 @@ func adv_turn(round_num, turn_idx):
 					emit_signal("justnow_update", update_recombo_chance);
 					first = false
 				else:
-					
 					recom_justnow += update_recombo_chance
 					emit_signal("justnow_update", recom_justnow)
 				if (do_yields):
 					yield(recombination(), "completed");
 				else:
 					recombination();
-		elif (Game.turns[turn_idx] == Game.TURN_TYPES.Evolve):
+		elif (Game.get_turn_type() == Game.TURN_TYPES.Evolve):
 			for g in gene_selection:
 				g.disable(true);
 			emit_signal("justnow_update", "");
 			var _candidates = $chromes.evolve_candidates + [];
 			evolve_candidates(_candidates);
-		elif (Game.turns[turn_idx] == Game.TURN_TYPES.CheckViability):
+		elif (Game.get_turn_type() == Game.TURN_TYPES.CheckViability):
 			var viable = $chromes.validate_essentials(Game.ESSENTIAL_CLASSES.values());
 			if (viable):
 				emit_signal("justnow_update", "You're still kicking!");
