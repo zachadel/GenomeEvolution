@@ -90,12 +90,12 @@ func spread_neighbors(center_tile, tile_influence_color, strength, orig_stren):
 
 func _process(delta):
 	if has_moved:
-		forget(tile_map[player.prev_tile_ndx.map_ndx.x][player.prev_tile_ndx.map_ndx.y], player.sensing_strength)
-		learn(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y], player.sensing_strength)
+		forget(tile_map[player.prev_tile_ndx.map_ndx.x][player.prev_tile_ndx.map_ndx.y], max(2, floor(player.sensing_strength / 2) + 1))
+		learn(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y], max(2, floor(player.sensing_strength / 2) + 1))
 		has_moved = false
 	if (player.update_sensing):
-		forget(tile_map[player.prev_tile_ndx.map_ndx.x][player.prev_tile_ndx.map_ndx.y], player.prev_sensing_strength)
-		learn(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y], player.sensing_strength)
+		forget(tile_map[player.prev_tile_ndx.map_ndx.x][player.prev_tile_ndx.map_ndx.y], max(2, floor(player.prev_sensing_strength / 2) + 1))
+		learn(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y], max(2, floor(player.sensing_strength / 2) + 1))
 		player.prev_sensing_strength = player.sensing_strength
 		player.update_sensing = false
 	update_energy_allocation(player.organism.energy)

@@ -265,7 +265,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Rect" ]
 
-[node name="Label" type="Label" parent="WorldMap_UI/ResourceStats" index="4"]
+[node name="InfoPanel" type="Label" parent="WorldMap_UI/ResourceStats" index="4"]
 
 anchor_left = 0.0
 anchor_top = 0.0
