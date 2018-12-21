@@ -56,9 +56,9 @@ _sections_unfolded = [ "Mouse" ]
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -600.0
-margin_top = 499.0
+margin_top = 512.0
 margin_right = 600.0
-margin_bottom = 561.0
+margin_bottom = 574.0
 rect_min_size = Vector2( 0, 50 )
 _sections_unfolded = [ "Anchor", "Margin", "Rect", "Scroll" ]
 
