@@ -4,6 +4,7 @@ var tile_ndx
 var prev_tile_ndx
 var sensing_strength
 var prev_sensing_strength = -1
+var update_sensing = false
 var organism
 
 func _ready():

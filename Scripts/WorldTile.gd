@@ -27,7 +27,6 @@ func _on_Area2D_input_event(viewport, event, shape_idx):
 	var distance = tile_distance(player.tile_ndx.position, position)
 	
 	if event.is_action_pressed("mouse_left") and !hidden and (map_ndx != player.tile_ndx.map_ndx):
-		print(resources)
 		if player.organism.energy >= (player.organism.MIN_ENERGY + distance):
 			player.position = position
 			player.prev_tile_ndx = player.tile_ndx

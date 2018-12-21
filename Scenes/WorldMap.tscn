@@ -118,9 +118,9 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 98.0
+margin_left = 66.0
 margin_top = 10.0
-margin_right = 203.0
+margin_right = 234.0
 margin_bottom = 24.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -128,7 +128,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-text = "Resources Panel"
+text = "Resources For Current Tile"
 align = 1
 valign = 1
 percent_visible = 1.0
@@ -273,7 +273,8 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 200.0
-margin_bottom = 100.0
+margin_bottom = 150.0
+grow_vertical = 0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -281,7 +282,7 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 popup_exclusive = false
-_sections_unfolded = [ "Rect" ]
+_sections_unfolded = [ "Grow Direction", "Rect" ]
 
 [node name="Info" type="Label" parent="WorldMap_UI/ResourceStats/PopupPanel" index="0"]
 
@@ -290,9 +291,9 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 15.0
-margin_top = 10.0
+margin_top = 15.0
 margin_right = 182.0
-margin_bottom = 93.0
+margin_bottom = 131.0
 grow_horizontal = 0
 grow_vertical = 0
 rect_pivot_offset = Vector2( 0, 0 )
@@ -302,13 +303,16 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
 text = "3 resources = 1 energy
-
+Each pool (x, y, z) can only
+be pulled once per turn
 Examples:
 x + y + z = 1 energy/1 turn
+x + y + x = 2 energy/2 turn
 x + x + x = 3 energy/3 turn"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
+_sections_unfolded = [ "Rect" ]
 
 [node name="InfoButton" type="Button" parent="WorldMap_UI/ResourceStats" index="5"]
 

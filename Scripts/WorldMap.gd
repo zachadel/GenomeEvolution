@@ -51,7 +51,7 @@ func spawn_map():
 func calc_biomes():
 	var n = int(ceil(sqrt(tile_col)))
 	var number_of_pois = n
-	print(number_of_pois)
+
 	for i in range(number_of_pois):
 		var info = Quat(randi()%tile_col, randi()%tile_rows, (randi()%n + 3), i)
 		POIs[info] = Color(randf() +.2, randf()*.25 - .5, randf() + .2)
@@ -92,10 +92,12 @@ func _process(delta):
 	if has_moved:
 		forget(tile_map[player.prev_tile_ndx.map_ndx.x][player.prev_tile_ndx.map_ndx.y], player.sensing_strength)
 		learn(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y], player.sensing_strength)
-	if (player.sensing_strength != player.prev_sensing_strength):
+		has_moved = false
+	if (player.update_sensing):
 		forget(tile_map[player.prev_tile_ndx.map_ndx.x][player.prev_tile_ndx.map_ndx.y], player.prev_sensing_strength)
 		learn(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y], player.sensing_strength)
 		player.prev_sensing_strength = player.sensing_strength
+		player.update_sensing = false
 	update_energy_allocation(player.organism.energy)
 
 func create_energy_label():
@@ -119,7 +121,7 @@ func update_energy_allocation(amount):
 func forget(center_tile, strength):
 	var curr_vec2
 	
-	if strength < 1:
+	if strength < 0:
 		return
 
 	for t in range(6):
