@@ -93,8 +93,11 @@ func adv_turn():
 		turn_idx = 0;
 		round_num += 1;
 
+func get_turn_type():
+	return turns[turn_idx];
+
 func get_turn_txt():
-	match(turn_idx):
+	match(get_turn_type()):
 		TURN_TYPES.NewTEs:
 			return "New TEs";
 		TURN_TYPES.TEJump:
@@ -109,8 +112,8 @@ func get_turn_txt():
 			return "Evolve";
 		TURN_TYPES.CheckViability:
 			return "Check Viability";
-		_:
-			return "";
+		var _x:
+			return "Unknown turn type (#%d)" % _x;
 
 func copy_elm(elm):
 	var copy_elm = load("res://Scenes/SequenceElement.tscn").instance();

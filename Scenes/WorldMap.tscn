@@ -265,7 +265,28 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Rect" ]
 
-[node name="PopupPanel" type="PopupPanel" parent="WorldMap_UI/ResourceStats" index="4"]
+[node name="InfoPanel" type="Label" parent="WorldMap_UI/ResourceStats" index="4"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 51.0
+margin_top = 127.0
+margin_right = 249.0
+margin_bottom = 141.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Upgrade Sensing to Know More"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="PopupPanel" type="PopupPanel" parent="WorldMap_UI/ResourceStats" index="5"]
 
 visible = false
 anchor_left = 0.0
@@ -314,7 +335,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Rect" ]
 
-[node name="InfoButton" type="Button" parent="WorldMap_UI/ResourceStats" index="5"]
+[node name="InfoButton" type="Button" parent="WorldMap_UI/ResourceStats" index="6"]
 
 anchor_left = 0.0
 anchor_top = 0.0

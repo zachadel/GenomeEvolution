@@ -90,12 +90,12 @@ func spread_neighbors(center_tile, tile_influence_color, strength, orig_stren):
 
 func _process(delta):
 	if has_moved:
-		forget(tile_map[player.prev_tile_ndx.map_ndx.x][player.prev_tile_ndx.map_ndx.y], player.sensing_strength)
-		learn(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y], player.sensing_strength)
+		forget(tile_map[player.prev_tile_ndx.map_ndx.x][player.prev_tile_ndx.map_ndx.y], max(2, floor(player.sensing_strength / 2) + 1))
+		learn(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y], max(2, floor(player.sensing_strength / 2) + 1))
 		has_moved = false
 	if (player.update_sensing):
-		forget(tile_map[player.prev_tile_ndx.map_ndx.x][player.prev_tile_ndx.map_ndx.y], player.prev_sensing_strength)
-		learn(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y], player.sensing_strength)
+		forget(tile_map[player.prev_tile_ndx.map_ndx.x][player.prev_tile_ndx.map_ndx.y], max(2, floor(player.prev_sensing_strength / 2) + 1))
+		learn(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y], max(2, floor(player.sensing_strength / 2) + 1))
 		player.prev_sensing_strength = player.sensing_strength
 		player.update_sensing = false
 	update_energy_allocation(player.organism.energy)
@@ -155,12 +155,29 @@ var res_stack = 0
 func _on_CardTable_next_turn(turn_text, round_num):
 	if round_num >= 7:
 		var res_vec =  tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources
-		res_stack = (max(res_vec.x - (res_vec.x - 1), 0) + max(res_vec.y - (res_vec.y - 1), 0) + max(res_vec.z - (res_vec.z - 1), 0))
-		#if res_vec.x > 1 and res_vec.y > 1 and res_vec.z > 1:
+		res_stack += get_round_res(res_vec)
+
+		tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources += Vector3(-1, -1, -1)
+		tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.x = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.x, 0)
+		tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.y = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.y, 0)
+		tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.z = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.z, 0)
+		
 		if res_stack >= 3:
 			player.organism.update_energy(1)
-			tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources += Vector3(-1, -1, -1)
-			tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.x = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.x, 0)
-			tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.y = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.y, 0)
-			tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.z = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.z, 0)
 			res_stack -= 3;
+
+
+func get_round_res(res_vec):
+	var sum = 0
+	
+	if res_vec.x > 0:
+		sum += 1
+	if res_vec.y > 0:
+		sum += 1
+	if res_vec.z > 0:
+		sum += 1
+	
+	return sum
+	
+	
+	
