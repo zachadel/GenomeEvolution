@@ -8,6 +8,13 @@ func _ready():
 func _process(delta):
 	if player != null:
 		if player.sensing_strength >= 3:
+			$Title.text = "Resources for tile (" + String(player.tile_ndx.map_ndx.x) + ", " + String(player.tile_ndx.map_ndx.x) + ")"
+		else:
+			$Title.text = "Resources for tile (x, y)"
+		
+		
+		
+		if player.sensing_strength >= 4:
 			$"Res X/Amount".text = String(player.tile_ndx.resources.x)
 			$"Res Y/Amount".text = String(player.tile_ndx.resources.y)
 			$"Res Z/Amount".text = String(player.tile_ndx.resources.z)
@@ -19,8 +26,6 @@ func _process(delta):
 
 func set_player(world_player):
 	player = world_player
-	
-
 
 func _on_InfoButton_pressed():
 	$PopupPanel.popup()
