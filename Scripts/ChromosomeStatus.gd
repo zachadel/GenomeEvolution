@@ -45,7 +45,7 @@ func update():
 			if (!elm.is_gap()):
 				if (contains(elm)):
 					get_status_elm(elm).increment_count();
-				else:
+				elif (elm.mode != "pseudo"):
 					var new_elm = StatusElement.instance();
 					if elm.mode == "essential":
 						new_elm.setup(elm.id, elm.mode, elm.ess_class, null, 1);
@@ -53,7 +53,7 @@ func update():
 						new_elm.setup(elm.id, elm.mode, null, elm.ate_personality, 1);
 					container.add_child(new_elm);
 	for elm in container.get_children():
-		if (elm.count == 0):
+		if (elm.mode != "essential" && elm.count == 0):
 			container.remove_child(elm);
 			elm.queue_free();
 	sort();
