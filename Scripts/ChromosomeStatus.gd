@@ -23,13 +23,13 @@ class ElmSorter:
 	static func sort(a, b):
 		if (a.mode == "essential"):
 			if (b.mode == "essential"):
-				return a.id < b.id;
+				return a.id.to_lower() < b.id.to_lower();
 			else:
 				return true;
 		elif (b.mode == "essential"):
 			return false;
 		else:
-			return a.id < b.id;
+			return a.id.to_lower() < b.id.to_lower();
 
 func sort():
 	var sorted = container.get_children();
@@ -52,4 +52,8 @@ func update():
 					elif elm.mode == "ate":
 						new_elm.setup(elm.id, elm.mode, null, elm.ate_personality, 1);
 					container.add_child(new_elm);
+	for elm in container.get_children():
+		if (elm.count == 0):
+			container.remove_child(elm);
+			elm.queue_free();
 	sort();
