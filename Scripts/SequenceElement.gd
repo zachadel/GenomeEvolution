@@ -76,6 +76,7 @@ func evolve(good = true):
 		mode = "pseudo";
 		ess_class = null;
 	upd_display();
+	get_cmsm().emit_signal("cmsm_changed");
 
 func upd_display():
 	$lbl.text = id;
