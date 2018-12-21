@@ -1,6 +1,7 @@
 extends Panel
 
 # GODOT FUNCTION
+var player
 
 func _ready():
 	$energy_bar.min_value = get_organism().MIN_ENERGY;
@@ -41,14 +42,14 @@ func _on_construction_button_gui_input(ev):
 	if (ev is InputEventMouseButton and ev.pressed):
 		if (ev.button_index == BUTTON_LEFT):
 			get_organism().update_energy_allocation(Game.ESSENTIAL_CLASSES.Construction, 1);
-		elif (ev.button_index == BUTTON_RIGHT):
+		elif (ev.button_index == BUTTON_RIGHT && get_organism().energy_allocations[Game.ESSENTIAL_CLASSES.Construction] > 0):
 			get_organism().update_energy_allocation(Game.ESSENTIAL_CLASSES.Construction, -1);
 
 func _on_deconstruction_button_gui_input(ev):
 	if (ev is InputEventMouseButton and ev.pressed):
 		if (ev.button_index == BUTTON_LEFT):
 			get_organism().update_energy_allocation(Game.ESSENTIAL_CLASSES.Deconstruction, 1);
-		elif (ev.button_index == BUTTON_RIGHT):
+		elif (ev.button_index == BUTTON_RIGHT && get_organism().energy_allocations[Game.ESSENTIAL_CLASSES.Deconstruction] > 0):
 			get_organism().update_energy_allocation(Game.ESSENTIAL_CLASSES.Deconstruction, -1);
 
 
@@ -56,7 +57,7 @@ func _on_locomotion_button_gui_input(ev):
 	if (ev is InputEventMouseButton and ev.pressed):
 		if (ev.button_index == BUTTON_LEFT):
 			get_organism().update_energy_allocation(Game.ESSENTIAL_CLASSES.Locomotion, 1);
-		elif (ev.button_index == BUTTON_RIGHT):
+		elif (ev.button_index == BUTTON_RIGHT && get_organism().energy_allocations[Game.ESSENTIAL_CLASSES.Locomotion] > 0):
 			get_organism().update_energy_allocation(Game.ESSENTIAL_CLASSES.Locomotion, -1);
 
 
@@ -64,7 +65,7 @@ func _on_manipulation_button_gui_input(ev):
 	if (ev is InputEventMouseButton and ev.pressed):
 		if (ev.button_index == BUTTON_LEFT):
 			get_organism().update_energy_allocation(Game.ESSENTIAL_CLASSES.Manipulation, 1);
-		elif (ev.button_index == BUTTON_RIGHT):
+		elif (ev.button_index == BUTTON_RIGHT && get_organism().energy_allocations[Game.ESSENTIAL_CLASSES.Manipulation] > 0):
 			get_organism().update_energy_allocation(Game.ESSENTIAL_CLASSES.Manipulation, -1);
 
 
@@ -72,16 +73,23 @@ func _on_replication_button_gui_input(ev):
 	if (ev is InputEventMouseButton and ev.pressed):
 		if (ev.button_index == BUTTON_LEFT):
 			get_organism().update_energy_allocation(Game.ESSENTIAL_CLASSES.Replication, 1);
-		elif (ev.button_index == BUTTON_RIGHT):
+		elif (ev.button_index == BUTTON_RIGHT && get_organism().energy_allocations[Game.ESSENTIAL_CLASSES.Replication] > 0):
 			get_organism().update_energy_allocation(Game.ESSENTIAL_CLASSES.Replication, -1);
 
 
 func _on_sensing_button_gui_input(ev):
+	player = get_node("../../../WorldMap/Player")
 	if (ev is InputEventMouseButton and ev.pressed):
-		if (ev.button_index == BUTTON_LEFT):
+		if (ev.button_index == BUTTON_LEFT && get_organism().energy_allocations[Game.ESSENTIAL_CLASSES.Sensing] < 4):
 			get_organism().update_energy_allocation(Game.ESSENTIAL_CLASSES.Sensing, 1);
-		elif (ev.button_index == BUTTON_RIGHT):
+			player.prev_sensing_strength = player.sensing_strength
+			player.sensing_strength += 1
+			player.update_sensing = true
+		elif (ev.button_index == BUTTON_RIGHT && get_organism().energy_allocations[Game.ESSENTIAL_CLASSES.Sensing] > 0):
 			get_organism().update_energy_allocation(Game.ESSENTIAL_CLASSES.Sensing, -1);
+			player.prev_sensing_strength = player.sensing_strength
+			player.sensing_strength = max(1, player.sensing_strength - 1)
+			player.update_sensing = true
 
 
 func _on_btn_exit_pressed():

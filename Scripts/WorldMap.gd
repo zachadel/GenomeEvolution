@@ -20,12 +20,12 @@ func _ready():
 	add_child(player)
 	var player_size = player.get_node("Sprite").get_texture().get_size()
 	player.get_node("Camera2D").make_current()
-	
+	$"WorldMap_UI/ResourceStats".set_player(player)
 	
 	spawn_map()
 	player.position = tile_map[ceil(tile_col/2)][ceil(tile_rows / 2)].position
-	player.tile_ndx = Vector2(ceil(tile_col/2), ceil(tile_rows / 2))
-	player.prev_tile_ndx = Vector2(ceil(tile_col/2), ceil(tile_rows / 2))
+	player.tile_ndx = tile_map[ceil(tile_col/2)][ceil(tile_rows / 2)]
+	player.prev_tile_ndx = tile_map[ceil(tile_col/2)][ceil(tile_rows / 2)]
 	learn(tile_map[ceil(tile_col/2)][ceil(tile_rows / 2)], player.sensing_strength)
 	
 	
@@ -51,7 +51,7 @@ func spawn_map():
 func calc_biomes():
 	var n = int(ceil(sqrt(tile_col)))
 	var number_of_pois = n
-	print(number_of_pois)
+
 	for i in range(number_of_pois):
 		var info = Quat(randi()%tile_col, randi()%tile_rows, (randi()%n + 3), i)
 		POIs[info] = Color(randf() +.2, randf()*.25 - .5, randf() + .2)
@@ -90,9 +90,14 @@ func spread_neighbors(center_tile, tile_influence_color, strength, orig_stren):
 
 func _process(delta):
 	if has_moved:
-		forget(tile_map[player.prev_tile_ndx.x][player.prev_tile_ndx.y], player.sensing_strength)
-		learn(tile_map[player.tile_ndx.x][player.tile_ndx.y], player.sensing_strength)
-	
+		forget(tile_map[player.prev_tile_ndx.map_ndx.x][player.prev_tile_ndx.map_ndx.y], player.sensing_strength)
+		learn(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y], player.sensing_strength)
+		has_moved = false
+	if (player.update_sensing):
+		forget(tile_map[player.prev_tile_ndx.map_ndx.x][player.prev_tile_ndx.map_ndx.y], player.prev_sensing_strength)
+		learn(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y], player.sensing_strength)
+		player.prev_sensing_strength = player.sensing_strength
+		player.update_sensing = false
 	update_energy_allocation(player.organism.energy)
 
 func create_energy_label():
@@ -116,7 +121,7 @@ func update_energy_allocation(amount):
 func forget(center_tile, strength):
 	var curr_vec2
 	
-	if strength < 1:
+	if strength < 0:
 		return
 
 	for t in range(6):
@@ -145,53 +150,17 @@ func learn(center_tile, strength):
 		tile_map[curr_vec2.x][curr_vec2.y].show_color()
 		learn(tile_map[curr_vec2.x][curr_vec2.y], strength - 1)
 
-
-
-
-#var hex_vec_pos = [Vector2(0, -2), Vector2(sqrt(3), -1), Vector2(sqrt(3), 1), Vector2(0, 2), Vector2(-sqrt(3), 1), Vector2(-sqrt(3), -1)]
-#
-#func _ready():
-#
-#	var temp_node = world_tile_scene.instance()
-#	tile_sprite_size = temp_node.get_node("Area2D").get_node("Sprite").get_texture().get_size()
-#	temp_node.queue_free()
-#
-#	spawn_map()
-#
-#	player = player_scene.instance()
-#	player.set_name("Player")
-#	add_child(player)
-#	var player_size = player.get_node("Sprite").get_texture().get_size()
-#	player.get_node("Camera2D").make_current()
-#	player.position = tile_map[Vector2(0, 0)].position
-#
-#func _process(delta):
-#
-#	if has_moved:
-#		hex_spawn(tile_map[player.tile_ndx])
-#		has_moved = false
-#
-#func spawn_map():
-#	tile_map[Vector2(0, 0)] = world_tile_scene.instance()
-#	tile_map[Vector2(0, 0)].init_data(Vector2(0,0))
-#	add_child(tile_map[Vector2(0, 0)])
-#	hex_spawn(tile_map[Vector2(0, 0)])
-#
-#	for i in range(6):
-#		hex_spawn(tile_map[Vector2(0, 0)].neighbors[i])
-#
-#
-#func hex_spawn(center):
-#	var unit_len = tile_sprite_size.y / 2
-#	var offsetX = unit_len * sqrt(3)
-#	var offsetY = unit_len
-#	var pos = Vector2(0, 0)
-#
-#	for i in range(6):
-#		if !tile_map.has(hex_vec_pos[i] * unit_len + center.map_ndx):
-#			tile_map[hex_vec_pos[i] * unit_len + center.map_ndx] = world_tile_scene.instance()
-#			tile_map[hex_vec_pos[i] * unit_len + center.map_ndx].init_data(hex_vec_pos[i] * unit_len + center.map_ndx)
-#			center.neighbors[i] = tile_map[hex_vec_pos[i] * unit_len + center.map_ndx]
-#			add_child(center.neighbors[i])
-#			center.neighbors[i].position.x = center.position.x + hex_vec_pos[i].x * unit_len
-#			center.neighbors[i].position.y = center.position.y + hex_vec_pos[i].y * unit_len
+var res_stack = 0
+#energy after turn is given here
+func _on_CardTable_next_turn(turn_text, round_num):
+	if round_num >= 7:
+		var res_vec =  tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources
+		res_stack = (max(res_vec.x - (res_vec.x - 1), 0) + max(res_vec.y - (res_vec.y - 1), 0) + max(res_vec.z - (res_vec.z - 1), 0))
+		#if res_vec.x > 1 and res_vec.y > 1 and res_vec.z > 1:
+		if res_stack >= 3:
+			player.organism.update_energy(1)
+			tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources += Vector3(-1, -1, -1)
+			tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.x = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.x, 0)
+			tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.y = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.y, 0)
+			tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.z = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.z, 0)
+			res_stack -= 3;
