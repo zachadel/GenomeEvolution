@@ -4,6 +4,7 @@ var type;
 var mode;
 var id;
 var ess_class = null;
+var ess_version;
 var ate_personality = {};
 
 var DEFAULT_SIZE = 200;
@@ -19,7 +20,7 @@ signal elm_mouse_exited(elm);
 func _ready():
 	current_size = DEFAULT_SIZE;
 
-func setup(_type, _id = "", _mode = "ate", _ess_class = -1):
+func setup(_type, _id = "", _mode = "ate", _ess_class = -1, _ess_version = 1):
 	id = _id;
 	type = _type;
 	mode = _mode;
@@ -29,6 +30,7 @@ func setup(_type, _id = "", _mode = "ate", _ess_class = -1):
 			"essential":
 				if (_ess_class in Game.ESSENTIAL_CLASSES.values()):
 					ess_class = _ess_class;
+					ess_version = _ess_version;
 					tex = Game.ess_textures[_ess_class];
 				else:
 					print("!! Trying to put ", name, " (", _type, ", ", _id, ") in non-existent eclass (", _ess_class, ")");
@@ -56,6 +58,7 @@ func setup_copy(ref_elm):
 		match (ref_elm.mode):
 			"essential":
 				ess_class = ref_elm.ess_class;
+				ess_version = ref_elm.ess_version;
 			"ate":
 				ate_personality = ref_elm.ate_personality;
 				id = ate_personality["title"];
@@ -70,7 +73,8 @@ func setup_copy(ref_elm):
 
 func evolve(good = true):
 	if (good):
-		id += "+";
+		ess_version = Game.essential_versions[ess_class] + 1;
+		Game.essential_versions[ess_class] += 1;
 	else:
 		id += "[p]";
 		mode = "pseudo";
@@ -93,6 +97,8 @@ func upd_display():
 					#$lbl.text += " (Silenced)";
 				"essential":
 					self_modulate = Color(.15, .8, 0);
+					if (ess_version > 1):
+						$lbl.text += "-" + str(ess_version);
 					#$lbl.text += " (Essential)";
 				"pseudo":
 					self_modulate = Color(.5, .5, 0);

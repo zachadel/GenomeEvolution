@@ -6,6 +6,7 @@ var default_te_texture = load("res://Assets/Images/tes/default_te.png");
 enum ESSENTIAL_CLASSES {Replication, Locomotion, Manipulation, Sensing, Construction, Deconstruction};
 enum TURN_TYPES {NewTEs, TEJump, RepairBreaks, EnvironmentalDamage, Recombination, Evolve, CheckViability};
 
+var essential_versions = {};
 var turns = [TURN_TYPES.NewTEs, TURN_TYPES.TEJump, TURN_TYPES.RepairBreaks, TURN_TYPES.EnvironmentalDamage, TURN_TYPES.RepairBreaks, TURN_TYPES.Recombination, TURN_TYPES.Evolve, TURN_TYPES.CheckViability];
 var turn_idx = -1;
 var round_num = 1;
@@ -26,6 +27,7 @@ func _ready():
 	
 	for c in ESSENTIAL_CLASSES.values():
 		ess_textures[c] = load("res://Assets/Images/genes/" + class_to_string(c) + ".png");
+		essential_versions[c] = 1;
 	
 	# Import ATE Personalities
 	load_personalities("ate_personalities", ate_personalities);

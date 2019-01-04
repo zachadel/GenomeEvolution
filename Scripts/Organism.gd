@@ -34,7 +34,7 @@ func _ready():
 		for n in Game.ESSENTIAL_CLASSES:
 			# create gene
 			var nxt_gelm = load("res://Scenes/SequenceElement.tscn").instance();
-			nxt_gelm.setup("gene", n, "essential", Game.ESSENTIAL_CLASSES[n]);
+			nxt_gelm.setup("gene", n, "essential", Game.ESSENTIAL_CLASSES[n], 1);
 			$chromes.get_cmsm(y).add_elm(nxt_gelm);
 	gain_ates(1 + randi() % 6);
 	perform_anims(true);
