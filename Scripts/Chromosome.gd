@@ -108,6 +108,8 @@ func add_elm(elm, pos = null):
 							duration = min(distance / Game.animation_speed, (0.5 * Game.TE_jump_time_limit) / _actives.size());
 						else:
 							duration = distance / Game.animation_speed;
+					elif (Game.turns[Game.turn_idx] == Game.TURN_TYPES.NewTEs):
+						duration = min(distance / Game.animation_speed, Game.TE_insertion_time_limit);
 					else:
 						duration = distance / Game.animation_speed;
 					get_child(i).get_node("Tween").interpolate_property(get_child(i), "rect_position",
@@ -135,6 +137,8 @@ func add_elm(elm, pos = null):
 						duration = min(distance / Game.animation_speed, (0.5 * Game.TE_jump_time_limit) / _actives.size());
 					else:
 						duration = distance / Game.animation_speed;
+				elif (Game.turns[Game.turn_idx] == Game.TURN_TYPES.NewTEs):
+					duration = min(distance / Game.animation_speed, Game.TE_insertion_time_limit);
 				else:
 					duration = distance / Game.animation_speed;
 				elm.get_node("Tween").interpolate_property(elm, "rect_position",
@@ -173,6 +177,8 @@ func remove_elm(elm):
 					duration = min(distance / Game.animation_speed, (0.5 * Game.TE_jump_time_limit) / _actives.size());
 				else:
 					duration = distance / Game.animation_speed;
+			elif (Game.turns[Game.turn_idx] == Game.TURN_TYPES.NewTEs):
+				duration = min(distance / Game.animation_speed, Game.TE_insertion_time_limit);
 			else:
 				duration = distance / Game.animation_speed;
 			elm.get_node("Tween").interpolate_property(elm, "rect_position",
@@ -193,6 +199,8 @@ func remove_elm(elm):
 					duration = min(distance / Game.animation_speed, (0.5 * Game.TE_jump_time_limit) / _actives.size());
 				else:
 					duration = distance / Game.animation_speed;
+			elif (Game.turns[Game.turn_idx] == Game.TURN_TYPES.NewTEs):
+				duration = min(distance / Game.animation_speed, Game.TE_insertion_time_limit);
 			else:
 				duration = distance / Game.animation_speed;
 			get_child(i).get_node("Tween").interpolate_property(get_child(i), "rect_position",
@@ -232,6 +240,8 @@ func remove_elm_create_gap(elm):
 					duration = min(distance / Game.animation_speed, (0.5 * Game.TE_jump_time_limit) / _actives.size());
 				else:
 					duration = distance / Game.animation_speed;
+			elif (Game.turns[Game.turn_idx] == Game.TURN_TYPES.NewTEs):
+				duration = min(distance / Game.animation_speed, Game.TE_insertion_time_limit);
 			else:
 				duration = distance / Game.animation_speed;
 			elm.get_node("Tween").interpolate_property(elm, "rect_position",
