@@ -4,18 +4,18 @@ func fix_bars():
 	$chromes.fix_bars();
 	# This is a little hack I've come up with to make bars in ScrollContainer controls larger
 
-var selected_gap = null;
+var selected_gap# = null;
 
-var is_ai = true;
-var do_yields = false;
-var born_on_turn = -1;
-var died_on_turn = -1;
+var is_ai
+var do_yields
+var born_on_turn
+var died_on_turn
 
-var energy = 5;
+var energy
 var MIN_ENERGY = 0;
 var MAX_ENERGY = 10;
 var MAX_ALLOCATED_ENERGY = 10;
-var energy_allocations = {};
+var energy_allocations
 onready var energy_allocation_panel = get_node("../pnl_energy_allocation");
 
 signal gene_clicked();
@@ -29,6 +29,17 @@ signal show_repair_opts(show);
 signal died(org);
 
 func _ready():
+	#initialization done in _ready for restarts
+	selected_gap = null;
+	
+	is_ai = true;
+	do_yields = false;
+	born_on_turn = -1;
+	died_on_turn = -1;
+
+	energy = 5;
+	energy_allocations = {};
+	
 	perform_anims(false);
 	for y in range(2):
 		for n in Game.ESSENTIAL_CLASSES:
@@ -464,8 +475,8 @@ func adv_turn(round_num, turn_idx):
 				recombo_chance = 1
 			else:
 				died_on_turn = Game.round_num;
-				$lbl_dead.text = "Died after %d rounds." % (died_on_turn - born_on_turn);
-				$lbl_dead.visible = true;
+				#$lbl_dead.text = "Died after %d rounds." % (died_on_turn - born_on_turn);
+				#$lbl_dead.visible = true;
 				emit_signal("justnow_update", "Nope! You're dead!");
 				emit_signal("died", self);
 

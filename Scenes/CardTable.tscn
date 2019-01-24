@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Scripts/CardTable.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Organism.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Assets/Images/icons/copy_repair.png" type="Texture" id=5]
 [ext_resource path="res://Assets/Images/icons/join_ends.png" type="Texture" id=6]
 [ext_resource path="res://Scripts/pnl_energy_allocation.gd" type="Script" id=7]
+[ext_resource path="res://Scenes/GameOver.gd" type="Script" id=8]
 
 [node name="Control" type="Control" index="0"]
 
@@ -24,6 +25,12 @@ script = ExtResource( 1 )
 _sections_unfolded = [ "Mouse" ]
 
 [node name="Organism" parent="." index="0" instance=ExtResource( 2 )]
+
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 1.0
+margin_bottom = 551.0
+_sections_unfolded = [ "Anchor", "Margin", "Mouse" ]
 
 [node name="btn_nxt" type="Button" parent="." index="1"]
 
@@ -791,24 +798,22 @@ _sections_unfolded = [ "Anchor", "Margin" ]
 
 [node name="GameOver" type="PopupPanel" parent="." index="9"]
 
-editor/display_folded = true
 visible = false
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 650.0
-margin_top = 250.0
-margin_right = 1050.0
-margin_bottom = 450.0
+margin_right = 1600.0
+margin_bottom = 900.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
 popup_exclusive = false
-_sections_unfolded = [ "Rect" ]
+script = ExtResource( 8 )
+_sections_unfolded = [ "Rect", "Size Flags" ]
 
 [node name="Label" type="Label" parent="GameOver" index="0"]
 
@@ -816,10 +821,10 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 165.0
-margin_top = 20.0
-margin_right = 238.0
-margin_bottom = 34.0
+margin_left = 775.0
+margin_top = 150.0
+margin_right = 848.0
+margin_bottom = 164.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -834,23 +839,42 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Rect" ]
 
-[node name="Reset" type="Button" parent="GameOver" index="1"]
+[node name="GridContainer" type="GridContainer" parent="GameOver" index="1"]
+
+editor/display_folded = true
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 665.0
+margin_top = 350.0
+margin_right = 965.0
+margin_bottom = 400.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/hseparation = 50
+columns = 2
+_sections_unfolded = [ "Rect" ]
+
+[node name="Reset" type="Button" parent="GameOver/GridContainer" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 150.0
-margin_top = 50.0
-margin_right = 250.0
-margin_bottom = 100.0
+margin_right = 125.0
+margin_bottom = 50.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -858,25 +882,24 @@ group = null
 text = "Reset"
 flat = false
 align = 1
-_sections_unfolded = [ "Rect" ]
+_sections_unfolded = [ "Size Flags" ]
 
-[node name="Exit" type="Button" parent="GameOver" index="2"]
+[node name="Exit" type="Button" parent="GameOver/GridContainer" index="1"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 150.0
-margin_top = 125.0
-margin_right = 250.0
-margin_bottom = 175.0
+margin_left = 175.0
+margin_right = 300.0
+margin_bottom = 50.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -884,8 +907,33 @@ group = null
 text = "Exit"
 flat = false
 align = 1
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="Turn" type="Label" parent="GameOver" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 755.0
+margin_top = 250.0
+margin_right = 875.0
+margin_bottom = 264.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "You died on round "
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Rect" ]
 
 [connection signal="died" from="Organism" to="." method="_on_Organism_died"]
+
+[connection signal="died" from="Organism" to="GameOver" method="_on_Organism_died"]
 
 [connection signal="doing_work" from="Organism" to="." method="_on_Organism_doing_work"]
 
@@ -918,5 +966,9 @@ align = 1
 [connection signal="gui_input" from="pnl_energy_allocation/holder/Sensing_container/Sensing_button" to="pnl_energy_allocation" method="_on_sensing_button_gui_input"]
 
 [connection signal="pressed" from="pnl_energy_allocation/btn_exit" to="pnl_energy_allocation" method="_on_btn_exit_pressed"]
+
+[connection signal="pressed" from="GameOver/GridContainer/Reset" to="GameOver" method="_on_Reset_pressed"]
+
+[connection signal="pressed" from="GameOver/GridContainer/Exit" to="GameOver" method="_on_Exit_pressed"]
 
 

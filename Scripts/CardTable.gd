@@ -76,7 +76,8 @@ func _on_Organism_doing_work(working):
 	check_if_ready();
 
 func _on_Organism_died(org):
-	$GameOver.popup()
+	$GameOver.popup_centered()
+	Game.round_num = 0
 	$btn_nxt.disabled = true;
 
 func check_if_ready():

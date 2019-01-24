@@ -8,8 +8,8 @@ enum TURN_TYPES {NewTEs, TEJump, RepairBreaks, EnvironmentalDamage, Recombinatio
 
 var essential_versions = {};
 var turns = [TURN_TYPES.NewTEs, TURN_TYPES.TEJump, TURN_TYPES.RepairBreaks, TURN_TYPES.EnvironmentalDamage, TURN_TYPES.RepairBreaks, TURN_TYPES.Recombination, TURN_TYPES.Evolve, TURN_TYPES.CheckViability];
-var turn_idx = -1;
-var round_num = 1;
+var turn_idx
+var round_num
 
 var card_table;
 
@@ -23,6 +23,10 @@ var ate_personalities = {};
 
 
 func _ready():
+	#initialization done in _ready for restarts
+	turn_idx = -1;
+	round_num = 1;
+	
 	#Generate a new seed for all rand calls
 	randomize();
 	
