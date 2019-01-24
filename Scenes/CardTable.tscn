@@ -9,7 +9,7 @@
 [ext_resource path="res://Scripts/pnl_energy_allocation.gd" type="Script" id=7]
 [ext_resource path="res://Scenes/GameOver.gd" type="Script" id=8]
 
-[node name="Control" type="Control" index="0"]
+[node name="Control" type="Control"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -798,6 +798,7 @@ _sections_unfolded = [ "Anchor", "Margin" ]
 
 [node name="GameOver" type="PopupPanel" parent="." index="9"]
 
+editor/display_folded = true
 visible = false
 anchor_left = 0.0
 anchor_top = 0.0
