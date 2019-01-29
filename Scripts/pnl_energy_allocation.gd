@@ -45,12 +45,11 @@ func _on_construction_button_gui_input(ev):
 		elif (ev.button_index == BUTTON_RIGHT && get_organism().energy_allocations[Game.ESSENTIAL_CLASSES.Construction] > 0):
 			get_organism().update_energy_allocation(Game.ESSENTIAL_CLASSES.Construction, -1);
 
-func _on_deconstruction_button_gui_input(ev):
-	if (ev is InputEventMouseButton and ev.pressed):
-		if (ev.button_index == BUTTON_LEFT):
-			get_organism().update_energy_allocation(Game.ESSENTIAL_CLASSES.Deconstruction, 1);
-		elif (ev.button_index == BUTTON_RIGHT && get_organism().energy_allocations[Game.ESSENTIAL_CLASSES.Deconstruction] > 0):
-			get_organism().update_energy_allocation(Game.ESSENTIAL_CLASSES.Deconstruction, -1);
+func _on_deconstruction_plus_pressed():
+	get_organism().update_energy_allocation(Game.ESSENTIAL_CLASSES.Deconstruction, 1);
+
+func _on_deconstruction_minus_pressed():
+	get_organism().update_energy_allocation(Game.ESSENTIAL_CLASSES.Deconstruction, -1);
 
 
 func _on_locomotion_button_gui_input(ev):
