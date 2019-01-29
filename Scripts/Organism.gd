@@ -351,16 +351,20 @@ func evolve_candidates(candids):
 	if (candids.size() > 0):
 		var justnow = "";
 		for e in candids:
-			match (Game.rollEvolve()):
-				0:
-					justnow += "%s received a fatal mutation and has become a pseudogene.\n" % e.id;
-					e.evolve(false);
-				1:
-					justnow += "%s did not evolve.\n" % e.id;
-				2:
-					justnow += "%s now performs a new function.\n" % e.id;
-					e.evolve();
-			$chromes.evolve_candidates.erase(e);
+			if (($chromes.get_cmsm(0).find_all_genes(e.id).size() + $chromes.get_cmsm(1).find_all_genes(e.id).size()) > 1):
+				match (Game.rollEvolve()):
+					0:
+						justnow += "%s received a fatal mutation and has become a pseudogene.\n" % e.id;
+						e.evolve(false);
+						$chromes.evolve_candidates.erase(e);
+					1:
+						justnow += "%s did not evolve.\n" % e.id;
+					2:
+						justnow += "%s now performs a new function.\n" % e.id;
+						e.evolve();
+						$chromes.evolve_candidates.erase(e);
+			else:
+				$chromes.evolve_candidates.erase(e);
 		emit_signal("justnow_update", justnow);
 	else:
 		emit_signal("justnow_update", "No essential genes were duplicated, so no genes evolve.");

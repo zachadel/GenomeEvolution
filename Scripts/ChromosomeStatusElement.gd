@@ -16,12 +16,12 @@ func setup(_id, _mode, _ess_class = null, ate_personality = null, _count = 0):
 			if (_ess_class in Game.ESSENTIAL_CLASSES.values()):
 				ess_class = _ess_class;
 				tex = Game.ess_textures[_ess_class];
-				$HBoxContainer/ImageContainer/Image.self_modulate = Color(.15, .8, 0);
+				$HBoxContainer/ImageContainer/Image.self_modulate = Color(.15, .80, 0);
 			else:
 				print("!! Trying to put ", name, " (", _id, ") in non-existent eclass (", _ess_class, ")");
 		"ate":
 			tex = ate_personality["art"];
-			$HBoxContainer/ImageContainer/Image.self_modulate = Color(.8, .15, 0);
+			$HBoxContainer/ImageContainer/Image.self_modulate = Color(.80, .15, 0);
 	
 	$HBoxContainer/ImageContainer/Image.texture = tex;
 	$Label.text = id;
