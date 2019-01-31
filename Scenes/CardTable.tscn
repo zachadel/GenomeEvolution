@@ -364,7 +364,6 @@ align = 1
 
 [node name="pnl_energy_allocation" type="Panel" parent="." index="8"]
 
-editor/display_folded = true
 visible = false
 anchor_left = 0.5
 anchor_top = 0.5
@@ -402,6 +401,7 @@ _sections_unfolded = [ "Anchor", "Margin", "custom_constants" ]
 
 [node name="Construction_container" type="Container" parent="pnl_energy_allocation/holder" index="0"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -424,7 +424,7 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_bottom = -40.0
+margin_bottom = -65.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -434,13 +434,16 @@ size_flags_vertical = 1
 alignment = 2
 _sections_unfolded = [ "Anchor", "Margin" ]
 
-[node name="Construction_button" type="Button" parent="pnl_energy_allocation/holder/Construction_container" index="1"]
+[node name="C+" type="Button" parent="pnl_energy_allocation/holder/Construction_container" index="1"]
 
 anchor_left = 0.0
-anchor_top = 1.0
-anchor_right = 1.0
+anchor_top = 0.0
+anchor_right = 0.0
 anchor_bottom = 1.0
-margin_top = -30.0
+margin_left = 55.0
+margin_top = 295.0
+margin_right = 95.0
+margin_bottom = -25.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -452,13 +455,61 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-text = "Construction"
+text = "+"
 flat = false
 align = 1
-_sections_unfolded = [ "Anchor", "Margin", "Rect" ]
+_sections_unfolded = [ "Anchor", "Rect" ]
+
+[node name="C-" type="Button" parent="pnl_energy_allocation/holder/Construction_container" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 1.0
+margin_top = 295.0
+margin_right = 40.0
+margin_bottom = -25.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "-"
+flat = false
+align = 1
+_sections_unfolded = [ "Margin", "Rect" ]
+
+[node name="Label" type="Label" parent="pnl_energy_allocation/holder/Construction_container" index="3"]
+
+anchor_left = 1.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -95.0
+margin_top = 325.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Construction"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Margin" ]
 
 [node name="Deconstruction_container" type="Container" parent="pnl_energy_allocation/holder" index="1"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -481,7 +532,7 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_bottom = -40.0
+margin_bottom = -65.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -491,13 +542,16 @@ size_flags_vertical = 1
 alignment = 2
 _sections_unfolded = [ "Anchor", "Margin" ]
 
-[node name="Deconstruction_button" type="Button" parent="pnl_energy_allocation/holder/Deconstruction_container" index="1"]
+[node name="D+" type="Button" parent="pnl_energy_allocation/holder/Deconstruction_container" index="1"]
 
 anchor_left = 0.0
-anchor_top = 1.0
-anchor_right = 1.0
+anchor_top = 0.0
+anchor_right = 0.0
 anchor_bottom = 1.0
-margin_top = -30.0
+margin_left = 55.0
+margin_top = 295.0
+margin_right = 95.0
+margin_bottom = -25.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -509,13 +563,61 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-text = "Destruction"
+text = "+"
 flat = false
 align = 1
-_sections_unfolded = [ "Anchor", "Margin", "Rect" ]
+_sections_unfolded = [ "Anchor", "Rect" ]
+
+[node name="D-" type="Button" parent="pnl_energy_allocation/holder/Deconstruction_container" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 1.0
+margin_top = 295.0
+margin_right = 40.0
+margin_bottom = -25.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "-"
+flat = false
+align = 1
+_sections_unfolded = [ "Rect" ]
+
+[node name="Label" type="Label" parent="pnl_energy_allocation/holder/Deconstruction_container" index="3"]
+
+anchor_left = 1.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -95.0
+margin_top = 325.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Deconstruction"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Anchor", "Margin" ]
 
 [node name="Locomotion_container" type="Container" parent="pnl_energy_allocation/holder" index="2"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -538,7 +640,7 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_bottom = -40.0
+margin_bottom = -65.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -548,13 +650,16 @@ size_flags_vertical = 1
 alignment = 2
 _sections_unfolded = [ "Anchor", "Margin" ]
 
-[node name="Locomotion_button" type="Button" parent="pnl_energy_allocation/holder/Locomotion_container" index="1"]
+[node name="L+" type="Button" parent="pnl_energy_allocation/holder/Locomotion_container" index="1"]
 
 anchor_left = 0.0
-anchor_top = 1.0
-anchor_right = 1.0
+anchor_top = 0.0
+anchor_right = 0.0
 anchor_bottom = 1.0
-margin_top = -30.0
+margin_left = 55.0
+margin_top = 295.0
+margin_right = 95.0
+margin_bottom = -25.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -566,13 +671,61 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-text = "Locomotion"
+text = "+"
 flat = false
 align = 1
 _sections_unfolded = [ "Anchor", "Margin", "Rect" ]
 
+[node name="L-" type="Button" parent="pnl_energy_allocation/holder/Locomotion_container" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 1.0
+margin_top = 295.0
+margin_right = 40.0
+margin_bottom = -25.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "-"
+flat = false
+align = 1
+_sections_unfolded = [ "Anchor", "Margin", "Rect" ]
+
+[node name="Label" type="Label" parent="pnl_energy_allocation/holder/Locomotion_container" index="3"]
+
+anchor_left = 1.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -95.0
+margin_top = 325.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Locomotion"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Anchor", "Margin" ]
+
 [node name="Manipulation_container" type="Container" parent="pnl_energy_allocation/holder" index="3"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -595,7 +748,7 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_bottom = -40.0
+margin_bottom = -65.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -605,13 +758,16 @@ size_flags_vertical = 1
 alignment = 2
 _sections_unfolded = [ "Anchor", "Margin" ]
 
-[node name="Manipulation_button" type="Button" parent="pnl_energy_allocation/holder/Manipulation_container" index="1"]
+[node name="M+" type="Button" parent="pnl_energy_allocation/holder/Manipulation_container" index="1"]
 
 anchor_left = 0.0
-anchor_top = 1.0
-anchor_right = 1.0
+anchor_top = 0.0
+anchor_right = 0.0
 anchor_bottom = 1.0
-margin_top = -30.0
+margin_left = 55.0
+margin_top = 295.0
+margin_right = 95.0
+margin_bottom = -25.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -623,13 +779,61 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-text = "Manipulation"
+text = "+"
 flat = false
 align = 1
 _sections_unfolded = [ "Anchor", "Margin", "Rect" ]
 
+[node name="M-" type="Button" parent="pnl_energy_allocation/holder/Manipulation_container" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 1.0
+margin_top = 295.0
+margin_right = 40.0
+margin_bottom = -25.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "-"
+flat = false
+align = 1
+_sections_unfolded = [ "Anchor", "Margin", "Rect" ]
+
+[node name="Label" type="Label" parent="pnl_energy_allocation/holder/Manipulation_container" index="3"]
+
+anchor_left = 1.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -95.0
+margin_top = 325.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Manipulation"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Anchor", "Margin", "Rect" ]
+
 [node name="Replication_container" type="Container" parent="pnl_energy_allocation/holder" index="4"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -652,7 +856,7 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_bottom = -40.0
+margin_bottom = -65.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -662,13 +866,16 @@ size_flags_vertical = 1
 alignment = 2
 _sections_unfolded = [ "Anchor", "Margin" ]
 
-[node name="Replication_button" type="Button" parent="pnl_energy_allocation/holder/Replication_container" index="1"]
+[node name="R+" type="Button" parent="pnl_energy_allocation/holder/Replication_container" index="1"]
 
 anchor_left = 0.0
-anchor_top = 1.0
-anchor_right = 1.0
+anchor_top = 0.0
+anchor_right = 0.0
 anchor_bottom = 1.0
-margin_top = -30.0
+margin_left = 55.0
+margin_top = 295.0
+margin_right = 95.0
+margin_bottom = -25.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -680,9 +887,56 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-text = "Replication"
+text = "+"
 flat = false
 align = 1
+_sections_unfolded = [ "Anchor", "Margin", "Rect" ]
+
+[node name="R-" type="Button" parent="pnl_energy_allocation/holder/Replication_container" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 1.0
+margin_top = 295.0
+margin_right = 40.0
+margin_bottom = -25.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "-"
+flat = false
+align = 1
+_sections_unfolded = [ "Anchor", "Margin", "Rect" ]
+
+[node name="Label" type="Label" parent="pnl_energy_allocation/holder/Replication_container" index="3"]
+
+anchor_left = 1.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -95.0
+margin_top = 325.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Replication"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
 _sections_unfolded = [ "Anchor", "Margin", "Rect" ]
 
 [node name="Sensing_container" type="Container" parent="pnl_energy_allocation/holder" index="5"]
@@ -709,7 +963,7 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_bottom = -40.0
+margin_bottom = -65.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -719,13 +973,16 @@ size_flags_vertical = 1
 alignment = 2
 _sections_unfolded = [ "Anchor", "Margin" ]
 
-[node name="Sensing_button" type="Button" parent="pnl_energy_allocation/holder/Sensing_container" index="1"]
+[node name="S+" type="Button" parent="pnl_energy_allocation/holder/Sensing_container" index="1"]
 
 anchor_left = 0.0
-anchor_top = 1.0
-anchor_right = 1.0
+anchor_top = 0.0
+anchor_right = 0.0
 anchor_bottom = 1.0
-margin_top = -30.0
+margin_left = 55.0
+margin_top = 295.0
+margin_right = 95.0
+margin_bottom = -25.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -737,9 +994,56 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-text = "Sensing"
+text = "+"
 flat = false
 align = 1
+_sections_unfolded = [ "Anchor", "Margin", "Rect" ]
+
+[node name="S-" type="Button" parent="pnl_energy_allocation/holder/Sensing_container" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 1.0
+margin_top = 295.0
+margin_right = 40.0
+margin_bottom = -25.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "-"
+flat = false
+align = 1
+_sections_unfolded = [ "Anchor", "Margin", "Rect" ]
+
+[node name="Label" type="Label" parent="pnl_energy_allocation/holder/Sensing_container" index="3"]
+
+anchor_left = 1.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -95.0
+margin_top = 325.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Sensing"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
 _sections_unfolded = [ "Anchor", "Margin", "Rect" ]
 
 [node name="energy_bar" type="ProgressBar" parent="pnl_energy_allocation" index="1"]
@@ -796,6 +1100,7 @@ _sections_unfolded = [ "Anchor", "Margin" ]
 
 [node name="GameOver" type="PopupPanel" parent="." index="9"]
 
+editor/display_folded = true
 visible = false
 anchor_left = 0.0
 anchor_top = 0.0
@@ -931,6 +1236,8 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Anchor" ]
 
+[connection signal="player_done" from="." to="pnl_energy_allocation" method="_on_Control_player_done"]
+
 [connection signal="died" from="Organism" to="." method="_on_Organism_died"]
 
 [connection signal="died" from="Organism" to="GameOver" method="_on_Organism_died"]
@@ -953,17 +1260,29 @@ _sections_unfolded = [ "Anchor" ]
 
 [connection signal="pressed" from="pnl_repair_choices/hsplit/vsplit/btn_apply_repair" to="." method="_on_btn_apply_repair_pressed"]
 
-[connection signal="gui_input" from="pnl_energy_allocation/holder/Construction_container/Construction_button" to="pnl_energy_allocation" method="_on_construction_button_gui_input"]
+[connection signal="pressed" from="pnl_energy_allocation/holder/Construction_container/C+" to="pnl_energy_allocation" method="_on_construction_plus_pressed"]
 
-[connection signal="gui_input" from="pnl_energy_allocation/holder/Deconstruction_container/Deconstruction_button" to="pnl_energy_allocation" method="_on_deconstruction_button_gui_input"]
+[connection signal="pressed" from="pnl_energy_allocation/holder/Construction_container/C-" to="pnl_energy_allocation" method="_on_construction_minus_pressed"]
 
-[connection signal="gui_input" from="pnl_energy_allocation/holder/Locomotion_container/Locomotion_button" to="pnl_energy_allocation" method="_on_locomotion_button_gui_input"]
+[connection signal="pressed" from="pnl_energy_allocation/holder/Deconstruction_container/D+" to="pnl_energy_allocation" method="_on_deconstruction_plus_pressed"]
 
-[connection signal="gui_input" from="pnl_energy_allocation/holder/Manipulation_container/Manipulation_button" to="pnl_energy_allocation" method="_on_manipulation_button_gui_input"]
+[connection signal="pressed" from="pnl_energy_allocation/holder/Deconstruction_container/D-" to="pnl_energy_allocation" method="_on_deconstruction_minus_pressed"]
 
-[connection signal="gui_input" from="pnl_energy_allocation/holder/Replication_container/Replication_button" to="pnl_energy_allocation" method="_on_replication_button_gui_input"]
+[connection signal="pressed" from="pnl_energy_allocation/holder/Locomotion_container/L+" to="pnl_energy_allocation" method="_on_locomotion_plus_pressed"]
 
-[connection signal="gui_input" from="pnl_energy_allocation/holder/Sensing_container/Sensing_button" to="pnl_energy_allocation" method="_on_sensing_button_gui_input"]
+[connection signal="pressed" from="pnl_energy_allocation/holder/Locomotion_container/L-" to="pnl_energy_allocation" method="_on_locomotion_minus_pressed"]
+
+[connection signal="pressed" from="pnl_energy_allocation/holder/Manipulation_container/M+" to="pnl_energy_allocation" method="_on_manipulation_plus_pressed"]
+
+[connection signal="pressed" from="pnl_energy_allocation/holder/Manipulation_container/M-" to="pnl_energy_allocation" method="_on_manipulation_minus_pressed"]
+
+[connection signal="pressed" from="pnl_energy_allocation/holder/Replication_container/R+" to="pnl_energy_allocation" method="_on_replication_plus_pressed"]
+
+[connection signal="pressed" from="pnl_energy_allocation/holder/Replication_container/R-" to="pnl_energy_allocation" method="_on_replication_minus_pressed"]
+
+[connection signal="pressed" from="pnl_energy_allocation/holder/Sensing_container/S+" to="pnl_energy_allocation" method="_on_sensing_plus_pressed"]
+
+[connection signal="pressed" from="pnl_energy_allocation/holder/Sensing_container/S-" to="pnl_energy_allocation" method="_on_sensing_minus_pressed"]
 
 [connection signal="pressed" from="pnl_energy_allocation/btn_exit" to="pnl_energy_allocation" method="_on_btn_exit_pressed"]
 

@@ -9,5 +9,4 @@ var organism
 
 func _ready():
 	sensing_strength = 2
-	
 	organism = get_tree().get_root().get_node("Control/Canvas_CardTable/CardTable/Organism")

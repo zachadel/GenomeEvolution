@@ -2,16 +2,34 @@ extends Panel
 
 # GODOT FUNCTION
 var player
+var organism
 
 func _ready():
-	$energy_bar.min_value = get_organism().MIN_ENERGY;
-	$energy_bar.max_value = get_organism().MAX_ENERGY;
-	update_energy(get_organism().energy);
+	get_organism();
+	$energy_bar.min_value = organism.MIN_ENERGY;
+	$energy_bar.max_value = organism.MAX_ENERGY;
+	update_energy(organism.energy);
 
 # GETTER FUNCTIONS	
 
 func get_organism():
-	return get_node("../Organism");
+	organism = get_node("../Organism");
+	return organism
+	
+func get_energy(type):
+	match(type):
+		"construction":
+			return;
+		"deconstruction":
+			return;
+		"locomotion":
+			return;
+		"manipulation":
+			return;
+		"replication":
+			return;
+		"sensing":
+			return organism.energy_allocations[Game.ESSENTIAL_CLASSES.Sensing];
 
 # MODIFICATION FUNCTIONS
 
@@ -38,59 +56,48 @@ func update_energy_allocation(type, amount):
 
 # EVENT HANDLERS
 
-func _on_construction_button_gui_input(ev):
-	if (ev is InputEventMouseButton and ev.pressed):
-		if (ev.button_index == BUTTON_LEFT):
-			get_organism().update_energy_allocation(Game.ESSENTIAL_CLASSES.Construction, 1);
-		elif (ev.button_index == BUTTON_RIGHT && get_organism().energy_allocations[Game.ESSENTIAL_CLASSES.Construction] > 0):
-			get_organism().update_energy_allocation(Game.ESSENTIAL_CLASSES.Construction, -1);
+func _on_construction_plus_pressed():
+	organism.update_energy_allocation(Game.ESSENTIAL_CLASSES.Construction, 1);
+func _on_construction_minus_pressed():
+	organism.update_energy_allocation(Game.ESSENTIAL_CLASSES.Construction, -1);
 
-func _on_deconstruction_button_gui_input(ev):
-	if (ev is InputEventMouseButton and ev.pressed):
-		if (ev.button_index == BUTTON_LEFT):
-			get_organism().update_energy_allocation(Game.ESSENTIAL_CLASSES.Deconstruction, 1);
-		elif (ev.button_index == BUTTON_RIGHT && get_organism().energy_allocations[Game.ESSENTIAL_CLASSES.Deconstruction] > 0):
-			get_organism().update_energy_allocation(Game.ESSENTIAL_CLASSES.Deconstruction, -1);
+func _on_deconstruction_plus_pressed():
+	organism.update_energy_allocation(Game.ESSENTIAL_CLASSES.Deconstruction, 1);
+func _on_deconstruction_minus_pressed():
+	organism.update_energy_allocation(Game.ESSENTIAL_CLASSES.Deconstruction, -1);
 
+func _on_locomotion_plus_pressed():
+	organism.update_energy_allocation(Game.ESSENTIAL_CLASSES.Locomotion, 1);
+func _on_locomotion_minus_pressed():
+	organism.update_energy_allocation(Game.ESSENTIAL_CLASSES.Locomotion, -1);
 
-func _on_locomotion_button_gui_input(ev):
-	if (ev is InputEventMouseButton and ev.pressed):
-		if (ev.button_index == BUTTON_LEFT):
-			get_organism().update_energy_allocation(Game.ESSENTIAL_CLASSES.Locomotion, 1);
-		elif (ev.button_index == BUTTON_RIGHT && get_organism().energy_allocations[Game.ESSENTIAL_CLASSES.Locomotion] > 0):
-			get_organism().update_energy_allocation(Game.ESSENTIAL_CLASSES.Locomotion, -1);
+func _on_manipulation_plus_pressed():
+	organism.update_energy_allocation(Game.ESSENTIAL_CLASSES.Manipulation, 1);
+func _on_manipulation_minus_pressed():
+	organism.update_energy_allocation(Game.ESSENTIAL_CLASSES.Manipulation, -1);
 
+func _on_replication_plus_pressed():
+	organism.update_energy_allocation(Game.ESSENTIAL_CLASSES.Replication, 1);
+func _on_replication_minus_pressed():
+	organism.update_energy_allocation(Game.ESSENTIAL_CLASSES.Replication, -1);
 
-func _on_manipulation_button_gui_input(ev):
-	if (ev is InputEventMouseButton and ev.pressed):
-		if (ev.button_index == BUTTON_LEFT):
-			get_organism().update_energy_allocation(Game.ESSENTIAL_CLASSES.Manipulation, 1);
-		elif (ev.button_index == BUTTON_RIGHT && get_organism().energy_allocations[Game.ESSENTIAL_CLASSES.Manipulation] > 0):
-			get_organism().update_energy_allocation(Game.ESSENTIAL_CLASSES.Manipulation, -1);
-
-
-func _on_replication_button_gui_input(ev):
-	if (ev is InputEventMouseButton and ev.pressed):
-		if (ev.button_index == BUTTON_LEFT):
-			get_organism().update_energy_allocation(Game.ESSENTIAL_CLASSES.Replication, 1);
-		elif (ev.button_index == BUTTON_RIGHT && get_organism().energy_allocations[Game.ESSENTIAL_CLASSES.Replication] > 0):
-			get_organism().update_energy_allocation(Game.ESSENTIAL_CLASSES.Replication, -1);
-
-
-func _on_sensing_button_gui_input(ev):
-	player = get_node("../../../WorldMap/Player")
-	if (ev is InputEventMouseButton and ev.pressed):
-		if (ev.button_index == BUTTON_LEFT && get_organism().energy_allocations[Game.ESSENTIAL_CLASSES.Sensing] < 4):
-			get_organism().update_energy_allocation(Game.ESSENTIAL_CLASSES.Sensing, 1);
-			player.prev_sensing_strength = player.sensing_strength
-			player.sensing_strength += 1
-			player.update_sensing = true
-		elif (ev.button_index == BUTTON_RIGHT && get_organism().energy_allocations[Game.ESSENTIAL_CLASSES.Sensing] > 0):
-			get_organism().update_energy_allocation(Game.ESSENTIAL_CLASSES.Sensing, -1);
-			player.prev_sensing_strength = player.sensing_strength
-			player.sensing_strength = max(1, player.sensing_strength - 1)
-			player.update_sensing = true
+func _on_sensing_plus_pressed():
+	if (organism.energy > 0 && get_energy("sensing") < 4):
+		organism.update_energy_allocation(Game.ESSENTIAL_CLASSES.Sensing, 1);
+		player.prev_sensing_strength = player.sensing_strength
+		player.sensing_strength += 1
+		player.update_sensing = true
+func _on_sensing_minus_pressed():
+	if (get_energy("sensing") > 0):
+		organism.update_energy_allocation(Game.ESSENTIAL_CLASSES.Sensing, -1);
+		player.prev_sensing_strength = player.sensing_strength
+		player.sensing_strength = max(1, player.sensing_strength - 1)
+		player.update_sensing = true
 
 
 func _on_btn_exit_pressed():
 	visible = false;
+
+
+func _on_Control_player_done():
+	player = get_node("../../../WorldMap/Player")

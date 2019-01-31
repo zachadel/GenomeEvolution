@@ -1,5 +1,7 @@
 extends Control
 
+signal player_done
+
 var tile_map = []
 var tile_col = 32
 var tile_rows = 32
@@ -21,6 +23,7 @@ func _ready():
 	var player_size = player.get_node("Sprite").get_texture().get_size()
 	player.get_node("Camera2D").make_current()
 	$"WorldMap_UI/ResourceStats".set_player(player)
+	emit_signal("player_done");
 	
 	spawn_map()
 	player.position = tile_map[ceil(tile_col/2)][ceil(tile_rows / 2)].position
