@@ -1,6 +1,7 @@
 extends Control
 
 signal gene_clicked;
+signal player_done;
 signal next_turn(turn_text, round_num);
 
 onready var justnow_label = $sc_justnow/lbl_justnow;
@@ -85,3 +86,7 @@ func check_if_ready():
 
 func _on_btn_energy_allocation_pressed():
 	$pnl_energy_allocation.visible = true;
+
+
+func _on_WorldMap_player_done():
+	emit_signal("player_done");
