@@ -402,6 +402,7 @@ func recombination():
 				recombo_chance *= RECOMBO_COMPOUND;
 				perform_anims(true);
 				emit_signal("justnow_update", "Recombination success: swapped %s genes at positions %d and %d.\nNext recombination has a %d%% chance of success." % ([first_elm.id] + idxs + [100*recombo_chance]));
+				emit_signal("doing_work", false);
 				if (do_yields):
 					yield(recombination(), "completed");
 				else:
@@ -409,7 +410,7 @@ func recombination():
 			else:
 				emit_signal("justnow_update", "Recombination failed.");
 				cont_recombo = false
-			emit_signal("doing_work", false);
+				emit_signal("doing_work", false);
 
 func adv_turn(round_num, turn_idx):
 	if (died_on_turn == -1):
@@ -451,20 +452,6 @@ func adv_turn(round_num, turn_idx):
 				yield(recombination(), "completed");
 			else:
 				recombination();
-#			var first = true
-#			while cont_recombo:
-#				var update_recombo_chance = "If you want, you can select a gene that is common to both chromosomes. Those genes and every gene to their right swap chromosomes.\nThis recombination has a %d%% chance of success." % (100*recombo_chance);
-#				if first:
-#					emit_signal("justnow_update", update_recombo_chance);
-#					first = false
-#				else:
-#
-#					recom_justnow += update_recombo_chance
-#					emit_signal("justnow_update", recom_justnow)
-#				if (do_yields):
-#					yield(recombination(), "completed");
-#				else:
-#					recombination();
 		elif (Game.get_turn_type() == Game.TURN_TYPES.Evolve):
 			for g in gene_selection:
 				g.disable(true);
