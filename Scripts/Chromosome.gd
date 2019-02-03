@@ -32,11 +32,30 @@ var SequenceElement = preload("res://Scripts/SequenceElement.gd");
 
 # GETTER FUNCTIONS
 
-func find_pair(left, right):
+func get_pairs(left_id, right_id, minimal = false):
+	var pairs = {}; # key is left_idx, value is an array of right_idxs
+	
 	for i in range(get_child_count()-1):
-		if (get_child(i).id == left && get_child(i+1).id == right):
-			return i;
-	return -1;
+		if (get_child(i).id == left_id):
+			var right_idxs = find_right_idxs(i, right_id);
+			if (right_idxs.size() > 0):
+				pairs[i] = right_idxs;
+				
+				# For when we only need to if any left/right pair exists at all
+				if (minimal):
+					return pairs;
+	
+	return pairs;
+
+func find_right_idxs(left_idx, right_id):
+	var valid_rights = [];
+	for i in range(left_idx, get_child_count()):
+		var gene = get_child(i);
+		if (gene.is_gap()):
+			return valid_rights;
+		elif (gene.id == right_id):
+			valid_rights.append(gene.get_index());
+	return valid_rights;
 
 func find_gene(id):
 	for i in range(get_child_count()):
@@ -44,11 +63,15 @@ func find_gene(id):
 			return i;
 	return -1;
 
-func find_all_genes(id):
+func find_all_genes(id, left_idx_limit = -1, right_idx_limit = -1):
 	var matched = [];
-	for g in get_children():
-		if (g.id == id):
-			matched.append(g);
+	if (right_idx_limit < 0):
+		right_idx_limit = get_child_count();
+	for i in range(get_child_count()):
+		if (i > left_idx_limit && i < right_idx_limit):
+			var gene = get_child(i);
+			if (gene.id == id):
+				matched.append(gene);
 	return matched;
 
 func get_elms_around_pos(idx, clickable = false):
@@ -275,8 +298,8 @@ func remove_elm_create_gap(elm):
 func valid_gap_pos(idx):
 	return idx > 0 && idx < get_child_count()-1 && !get_child(idx - 1).is_gap() && !get_child(idx + 1).is_gap();
 
-func pair_exists(left, right):
-	return bool(1+find_pair(left, right));
+func pair_exists(left_id, right_id):
+	return get_pairs(left_id, right_id, true).size() > 0;
 
 func has_gene(id):
 	return bool(1+find_gene(id));

@@ -202,26 +202,82 @@ func hide_repair_opts():
 	repair_type_possible = [false, false, false];
 	emit_signal("show_repair_opts", false);
 
+func change_selected_repair(repair_idx):
+	sel_repair_idx = repair_idx;
+	if (choosing_repair_opts):
+		for g in gene_selection:
+			g.disable(true);
+
 func auto_repair():
-	repair_gap(sel_repair_gap, sel_repair_idx);
+	make_repair_choices(sel_repair_gap, sel_repair_idx);
 
 func apply_repair_choice(idx):
-	repair_gap(sel_repair_gap, idx);
+	make_repair_choices(sel_repair_gap, idx);
+
+var choosing_repair_opts = false;
+func make_repair_choices(gap, repair_idx):
+	hide_repair_opts();
+	var choice_info = {};
+	choosing_repair_opts = true;
+	match repair_idx:
+		0: # Collapse Duplicates
+			pass; # Replace this!
+		1: # Copy Pattern
+			var gap_cmsm = gap.get_parent();
+			var g_idx = gap.get_index();
+			var left_id = gap_cmsm.get_child(g_idx-1).id;
+			var right_id = gap_cmsm.get_child(g_idx+1).id
+			
+			var template_cmsm = $chromes.get_other_cmsm(gap_cmsm);
+			
+			var pairs_dict = template_cmsm.get_pairs(left_id, right_id);
+			
+			gene_selection = [];
+			if (is_ai || pairs_dict.size() == 1):
+				choice_info["left"] = template_cmsm.get_child(pairs_dict.keys()[0]);
+			else:
+				for k in pairs_dict.keys():
+					var gene = template_cmsm.get_child(k);
+					gene_selection.append(gene);
+					gene.disable(false);
+				yield(self, "gene_clicked");
+				choice_info["left"] = gene_selection.back();
+				for g in gene_selection:
+					g.disable(true);
+			var left_idx = choice_info["left"].get_index();
+			choice_info["left"].highlight_border(true);
+			
+			gene_selection = [];
+			var right_idxs = pairs_dict[choice_info["left"].get_index()];
+			if (is_ai || right_idxs.size() == 1):
+				choice_info["right"] = template_cmsm.get_child(right_idxs[0]);
+			else:
+				for i in right_idxs:
+					var gene = template_cmsm.get_child(i);
+					gene_selection.append(gene);
+					gene.disable(false);
+				yield(self, "gene_clicked");
+				choice_info["right"] = gene_selection.back();
+				for g in gene_selection:
+					g.disable(true);
+			
+	choosing_repair_opts = false;
+	repair_gap(gap, repair_idx, choice_info);
 
 var repair_canceled = false;
-func repair_gap(gap, repair_idx):
+func repair_gap(gap, repair_idx, choice_info = {}):
 	if (repair_type_possible[repair_idx]):
-		hide_repair_opts();
 		var cmsm = gap.get_parent();
 		var g_idx = gap.get_index();
+		
+		var other_cmsm = $chromes.get_other_cmsm(cmsm);
 		
 		var left_id = cmsm.get_child(g_idx-1).id;
 		var right_id = cmsm.get_child(g_idx+1).id;
 		
 		repair_canceled = false;
 		match (repair_idx):
-			0:
-				# Collapse Duplicates
+			0: # Collapse Duplicates
 				if (do_yields):
 					yield($chromes.remove_elm(cmsm.get_child(g_idx+1), false), "completed");
 					yield($chromes.close_gap(gap), "completed");
@@ -229,8 +285,8 @@ func repair_gap(gap, repair_idx):
 					$chromes.remove_elm(cmsm.get_child(g_idx+1), false);
 					$chromes.close_gap(gap);
 				emit_signal("justnow_update", "Gap at %s, %d closed: collapsed the duplicate %s genes (one was lost)." % [cmsm.get_parent().name, g_idx, left_id]);
-			1:
-				# Copy Pattern
+			1: # Copy Pattern
+				choice_info["left"].highlight_border(false);
 				if (!roll_storage[0].has(gap)):
 					roll_storage[0][gap] = Game.rollCopyRepair();
 				match (roll_storage[0][gap]):
@@ -265,10 +321,16 @@ func repair_gap(gap, repair_idx):
 						else:
 							$chromes.close_gap(gap);
 					2:
-						emit_signal("justnow_update", "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome without complications." % [cmsm.get_parent().name, g_idx, left_id, right_id]);
+						emit_signal("justnow_update", "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome along with intervening genes." % [cmsm.get_parent().name, g_idx, left_id, right_id]);
 						if (do_yields):
-							yield($chromes.close_gap(gap), "completed"); # Intervening cards are copied?
+							for i in range(choice_info["left"].get_index()+1, choice_info["right"].get_index()):
+								var copy_elm = Game.copy_elm(other_cmsm.get_child(i));
+								yield(cmsm.add_elm(copy_elm, gap.get_index()), "completed");
+							yield($chromes.close_gap(gap), "completed");
 						else:
+							for i in range(choice_info["left"].get_index()+1, choice_info["right"].get_index()):
+								var copy_elm = Game.copy_elm(other_cmsm.get_child(i));
+								cmsm.add_elm(copy_elm, gap.get_index());
 							$chromes.close_gap(gap);
 					3:
 						var copy_elm;
@@ -284,8 +346,7 @@ func repair_gap(gap, repair_idx):
 						else:
 							$chromes.dupe_elm(copy_elm);
 							$chromes.close_gap(gap);
-			2:
-				# Join Ends
+			2: # Join Ends
 				if (!roll_storage[1].has(gap)):
 					roll_storage[1][gap] = Game.rollJoinEnds();
 				match (roll_storage[1][gap]):
