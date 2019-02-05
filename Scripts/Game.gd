@@ -138,7 +138,6 @@ func roll(n, d = null):
 	return sum;
 
 func rollCopyRepair():
-	return 2;
 	var rand = randf();
 	if (rand <= .1667):
 		return 0;

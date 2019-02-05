@@ -107,9 +107,7 @@ func find_dupe_blocks(gap_idx, minimal = false):
 		if (block_dict.size() > 0):
 			dupe_blocks[left_bound + left_idx] = block_dict;
 			if (minimal):
-				print(dupe_blocks);
 				return dupe_blocks;
-	print(dupe_blocks);
 	return dupe_blocks;
 
 func block_exists(start_idx, block_ids):
