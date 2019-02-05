@@ -2,14 +2,16 @@ extends Panel
 
 var player
 var count = 0
+var progress_bar
 
 func _ready():
-	$ProgressBar.value = 100;
+	progress_bar = $"../ProgressBar";
+	progress_bar.value = 100;
 
 func _process(delta):
 	count += 1;
-	if $ProgressBar.value > 0 and (count % 10 == 0):
-		$ProgressBar.value -= 1;
+	if progress_bar.value > 0 and (count % 10 == 0):
+		progress_bar.value -= 1;
 	
 	
 	if player != null:
