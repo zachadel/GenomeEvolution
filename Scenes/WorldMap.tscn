@@ -3,7 +3,6 @@
 [ext_resource path="res://Scripts/WorldMap.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Resource Stats.gd" type="Script" id=2]
 
-
 [node name="World_Map_Control" type="Control" index="0"]
 
 anchor_left = 0.5
@@ -33,6 +32,7 @@ transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 
 [node name="EnergyBar" type="Panel" parent="WorldMap_UI" index="0"]
 
+editor/display_folded = true
 visible = false
 anchor_left = 1.0
 anchor_top = 1.0

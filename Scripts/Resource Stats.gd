@@ -1,11 +1,17 @@
 extends Panel
 
 var player
+var count = 0
 
 func _ready():
-	pass
+	$ProgressBar.value = 100;
 
 func _process(delta):
+	count += 1;
+	if $ProgressBar.value > 0 and (count % 10 == 0):
+		$ProgressBar.value -= 1;
+	
+	
 	if player != null:
 		if player.sensing_strength >= 3:
 			$Title.text = "Resources for tile (" + String(player.tile_ndx.map_ndx.x) + ", " + String(player.tile_ndx.map_ndx.x) + ")"

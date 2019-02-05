@@ -9,9 +9,15 @@ var player_rank = -1
 var hidden_color = Color(0, 0, 0, 0)
 var hidden = true
 var resources = Vector3(2, 2, 2)
+var resource_2d_array = [[],[],[],[]]
 
 func _ready():
 	$Area2D/Sprite.modulate = hidden_color
+	
+	for i in range(0, 4):
+		for j in range(0, 20):
+			resource_2d_array[i].append([])
+			resource_2d_array[i][j] = 0
 	
 func init_data(ndx, bio_set = true):
 	map_ndx = ndx
@@ -40,6 +46,8 @@ func change_color(color):
 	resources.x = round(resources.x)
 	resources.y = round(resources.y)
 	resources.z = round(resources.z)
+	
+	#set 4 resources here!
 
 func show_color():
 	hidden = false
