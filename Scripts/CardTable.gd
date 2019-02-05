@@ -33,7 +33,7 @@ func hide_repair_opts():
 
 func upd_repair_desc(idx):
 	$pnl_repair_choices/hsplit/vsplit/btn_apply_repair.disabled = !$Organism.repair_type_possible[idx];
-	$Organism.sel_repair_idx = idx;
+	$Organism.change_selected_repair(idx);
 	match (idx):
 		0:
 			$pnl_repair_choices/hsplit/vsplit/scroll/lbl_choice_desc.text = "If the genes to the left and the right of the gap are the same, the break can be repaired by discarding one of the duplicates.";

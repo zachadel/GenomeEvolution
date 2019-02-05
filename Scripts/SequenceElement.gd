@@ -123,7 +123,13 @@ func silence_ate():
 func disable(dis):
 	disabled = dis;
 	$GrayFilter.visible = dis;
-	$BorderRect.visible = !dis;
+	highlight_border(!dis);
+
+func highlight_border(on):
+	$BorderRect.visible = on;
+
+func is_highlighted():
+	return $BorderRect.visible;
 
 func get_ate_jump_roll():
 	var idx = 0;

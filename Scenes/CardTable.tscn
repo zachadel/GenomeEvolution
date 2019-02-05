@@ -164,7 +164,6 @@ _sections_unfolded = [ "Rect" ]
 
 [node name="sc_criteria" type="ScrollContainer" parent="." index="6"]
 
-editor/display_folded = true
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -212,7 +211,6 @@ _sections_unfolded = [ "Anchor", "Rect" ]
 
 [node name="pnl_repair_choices" type="Panel" parent="." index="7"]
 
-editor/display_folded = true
 visible = false
 anchor_left = 0.5
 anchor_top = 1.0
@@ -364,6 +362,7 @@ align = 1
 
 [node name="pnl_energy_allocation" type="Panel" parent="." index="8"]
 
+editor/display_folded = true
 visible = false
 anchor_left = 0.5
 anchor_top = 0.5
@@ -384,6 +383,7 @@ _sections_unfolded = [ "Anchor", "Margin", "Rect", "Visibility" ]
 
 [node name="holder" type="HBoxContainer" parent="pnl_energy_allocation" index="0"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -941,6 +941,7 @@ _sections_unfolded = [ "Anchor", "Margin", "Rect" ]
 
 [node name="Sensing_container" type="Container" parent="pnl_energy_allocation/holder" index="5"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -1238,9 +1239,9 @@ _sections_unfolded = [ "Anchor" ]
 
 [connection signal="player_done" from="." to="pnl_energy_allocation" method="_on_Control_player_done"]
 
-[connection signal="died" from="Organism" to="." method="_on_Organism_died"]
-
 [connection signal="died" from="Organism" to="GameOver" method="_on_Organism_died"]
+
+[connection signal="died" from="Organism" to="." method="_on_Organism_died"]
 
 [connection signal="doing_work" from="Organism" to="." method="_on_Organism_doing_work"]
 
