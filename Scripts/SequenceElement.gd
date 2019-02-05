@@ -128,6 +128,9 @@ func disable(dis):
 func highlight_border(on):
 	$BorderRect.visible = on;
 
+func is_highlighted():
+	return $BorderRect.visible;
+
 func get_ate_jump_roll():
 	var idx = 0;
 	var roll = randf();

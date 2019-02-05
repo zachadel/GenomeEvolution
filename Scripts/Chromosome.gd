@@ -37,7 +37,7 @@ func get_pairs(left_id, right_id, minimal = false):
 	
 	for i in range(get_child_count()-1):
 		if (get_child(i).id == left_id):
-			var right_idxs = find_right_idxs(i, right_id);
+			var right_idxs = find_pair_right_idxs(i, right_id);
 			if (right_idxs.size() > 0):
 				pairs[i] = right_idxs;
 				
@@ -47,7 +47,7 @@ func get_pairs(left_id, right_id, minimal = false):
 	
 	return pairs;
 
-func find_right_idxs(left_idx, right_id):
+func find_pair_right_idxs(left_idx, right_id):
 	var valid_rights = [];
 	for i in range(left_idx, get_child_count()):
 		var gene = get_child(i);
@@ -56,6 +56,77 @@ func find_right_idxs(left_idx, right_id):
 		elif (gene.id == right_id):
 			valid_rights.append(gene.get_index());
 	return valid_rights;
+
+# 0g123g0123g0
+# 0123456789ab
+# gap_idx = 5
+#
+# left_bound = 2
+# right_bound = a
+# right_start = 6
+# l_ch_sz = 3
+# r_ch_sz = 4
+# min_ch_sz = 3
+
+func find_dupe_blocks(gap_idx, minimal = false):
+	var left_bound = find_next_gap(gap_idx - 1, -1) + 1;
+	
+	var right_bound = find_next_gap(gap_idx + 1);
+	if (right_bound < 0):
+		right_bound = get_child_count();
+	
+	var right_start = gap_idx + 1;
+	
+	var left_chunk_size = gap_idx - left_bound;
+	var right_chunk_size = right_bound - right_start;
+	var smallest_chunk_size = min(left_chunk_size, right_chunk_size);
+	
+	var dupe_blocks = {}; # indexed by left_idx, values of another dict (indexed by size, values of right_idxs)
+	
+	# Each number in the left chunk can start a block
+	for left_idx in range(left_chunk_size):
+		var max_block_size = min(smallest_chunk_size, left_chunk_size - left_idx);
+		var block_dict = {};
+		
+		# The size of the block is going to be in [1, max_block_size]; check all possible sizes
+		for sz in range(1, max_block_size+1):
+			var left_block_ids = [];
+			for blk in range(sz):
+				left_block_ids.append(get_child(left_bound + left_idx + blk).id);
+			
+			# Check for a matching block in the right chunk
+			var right_chunk_idxs = [];
+			for right_idx in range(right_chunk_size - left_block_ids.size() + 1):
+				if (block_exists(right_start + right_idx, left_block_ids)):
+					right_chunk_idxs.append(right_start + right_idx);
+			if (right_chunk_idxs.size() > 0):
+				block_dict[sz] = right_chunk_idxs;
+				if (minimal):
+					break;
+		
+		if (block_dict.size() > 0):
+			dupe_blocks[left_bound + left_idx] = block_dict;
+			if (minimal):
+				print(dupe_blocks);
+				return dupe_blocks;
+	print(dupe_blocks);
+	return dupe_blocks;
+
+func block_exists(start_idx, block_ids):
+	for i in range(block_ids.size()):
+		if (get_child(start_idx + i).id != block_ids[i]):
+			return false;
+	return true;
+
+func find_next_gap(start_idx, step = 1, end_at = -1):
+	if (step == 0):
+		return start_idx;
+	if (end_at < 0 && step > 0):
+		end_at = get_child_count();
+	for i in range(start_idx, end_at, step):
+		if (get_child(i).is_gap()):
+			return i;
+	return -1;
 
 func find_gene(id):
 	for i in range(get_child_count()):
@@ -300,6 +371,9 @@ func valid_gap_pos(idx):
 
 func pair_exists(left_id, right_id):
 	return get_pairs(left_id, right_id, true).size() > 0;
+
+func dupe_block_exists(gap_idx):
+	return find_dupe_blocks(gap_idx, true).size() > 0;
 
 func has_gene(id):
 	return bool(1+find_gene(id));
