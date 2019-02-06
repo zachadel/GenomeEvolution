@@ -40,14 +40,32 @@ func _on_Area2D_input_event(viewport, event, shape_idx):
 			get_tree().get_root().get_node("Control/WorldMap").has_moved = true
 			player.organism.update_energy(-distance)
 
+
+#We populate the resources here
 func change_color(color):
 	curr_color = natural_tile_color + color
-	resources = Vector3(curr_color.r, curr_color.g, curr_color.b) * 10
+	resources = Vector3(curr_color.r, curr_color.g, curr_color.b) * 100
 	resources.x = round(resources.x)
 	resources.y = round(resources.y)
 	resources.z = round(resources.z)
 	
 	#set 4 resources here!
+	for i in range(0, 3):
+		var res
+		match i:
+			0:
+				res = resources.x
+			1:
+				res = resources.y
+			2:
+				res = resources.z
+		
+		
+		resource_2d_array[i] = res
+		
+	for i in range(0, 20):
+		resource_2d_array[3] = int(rand_range(0, 5))
+	
 
 func show_color():
 	hidden = false

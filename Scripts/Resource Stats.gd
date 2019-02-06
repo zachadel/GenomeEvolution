@@ -10,11 +10,6 @@ func _ready():
 		progress_bars[i].value = 100
 
 func _process(delta):
-	count += 1;
-	if progress_bars[1].value > 0 and (count % 10 == 0):
-		progress_bars[1].value -= 1
-	
-	
 	if player != null:
 		if player.sensing_strength >= 3:
 			$Title.text = "Resources for tile (" + String(player.tile_ndx.map_ndx.x) + ", " + String(player.tile_ndx.map_ndx.x) + ")"
@@ -23,13 +18,13 @@ func _process(delta):
 		
 		
 		if player.sensing_strength >= 5:
-			$"Res X/Amount".text = String(player.tile_ndx.resources.x)
-			$"Res Y/Amount".text = String(player.tile_ndx.resources.y)
-			$"Res Z/Amount".text = String(player.tile_ndx.resources.z)
+			$"Res 1/Amount".text = String(player.tile_ndx.resources.x)
+			$"Res 2/Amount".text = String(player.tile_ndx.resources.y)
+			$"Res 3/Amount".text = String(player.tile_ndx.resources.z)
 		else:
-			$"Res X/Amount".text = "???"
-			$"Res Y/Amount".text = "???"
-			$"Res Z/Amount".text = "???"
+			$"Res 1/Amount".text = "???"
+			$"Res 2/Amount".text = "???"
+			$"Res 3/Amount".text = "???"
 	
 		if player.sensing_strength >= 6:
 			$InfoPanel.text = "Sensing at current max level..."
