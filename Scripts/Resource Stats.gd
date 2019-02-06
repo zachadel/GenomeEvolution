@@ -2,16 +2,17 @@ extends Panel
 
 var player
 var count = 0
-var progress_bar
+var progress_bars = []
 
 func _ready():
-	progress_bar = $"../ProgressBar";
-	progress_bar.value = 100;
+	for i in range(0, 4):
+		progress_bars.append(get_node("../GridContainer/ResPanel" + str(i+1) + "/ProgressBar"))
+		progress_bars[i].value = 100
 
 func _process(delta):
 	count += 1;
-	if progress_bar.value > 0 and (count % 10 == 0):
-		progress_bar.value -= 1;
+	if progress_bars[1].value > 0 and (count % 10 == 0):
+		progress_bars[1].value -= 1
 	
 	
 	if player != null:

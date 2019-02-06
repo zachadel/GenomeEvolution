@@ -22,7 +22,7 @@ func _ready():
 	add_child(player)
 	var player_size = player.get_node("Sprite").get_texture().get_size()
 	player.get_node("Camera2D").make_current()
-	$"WorldMap_UI/Panel/ResourceStats".set_player(player)
+	$"WorldMap_UI/StatsPanel/ResourceStats".set_player(player)
 	emit_signal("player_done");
 	
 	spawn_map()
@@ -110,7 +110,7 @@ func create_energy_label():
 	return label;
 	
 func update_energy_allocation(amount):
-	var container = get_node("WorldMap_UI//Panel/EnergyBar/VBoxContainer")
+	var container = get_node("WorldMap_UI/StatsPanel/EnergyBar/VBoxContainer")
 	if (amount > container.get_child_count()):
 		for i in range(amount - container.get_child_count()):
 			var label = create_energy_label();
