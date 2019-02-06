@@ -172,4 +172,4 @@ func collapseChance(segment_size, total_dist_from_gap):
 
 func rollCollapse(segment_size, left_idx, right_idx):
 	var net_distance = right_idx - left_idx - segment_size + 1;
-	return randf() < collapseChance(segment_size, total_dist_from_gap);
+	return randf() < collapseChance(segment_size, net_distance);
