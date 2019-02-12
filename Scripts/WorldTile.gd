@@ -10,12 +10,13 @@ var hidden_color = Color(0, 0, 0, 0)
 var hidden = true
 var resources = {"x": 10, "y": 10, "z": 10, "w": 10}
 var resource_2d_array = [[],[],[],[]]
+var resource_group_types = 10
 
 func _ready():
 	$Area2D/Sprite.modulate = hidden_color
 	
 	for i in range(0, 4):
-		for j in range(0, 20):
+		for j in range(0, resource_group_types):
 			resource_2d_array[i].append([])
 			resource_2d_array[i][j] = 0
 	
@@ -41,9 +42,13 @@ func _on_Area2D_input_event(viewport, event, shape_idx):
 			player.organism.update_energy(-distance)
 
 
-#We populate the resources here
+#We populate the resources here using the color
 func change_color(color):
 	curr_color = natural_tile_color + color
+	
+	set_resources()
+
+func set_resources():
 	resources.x = round(curr_color.r * 100)
 	resources.y = round(curr_color.g * 100)
 	resources.z = round(curr_color.b * 100)
@@ -61,8 +66,13 @@ func change_color(color):
 				res = resources.z
 			3:
 				res = resources.w
-		for j in range(0, 20):
-			resource_2d_array[i][j] = int(rand_range(0, res))
+		for j in range(0, resource_group_types):
+			print(res)
+			if(res > 0):
+				resource_2d_array[i][j] = int(rand_range(1, min(res, 20)))
+				res -= resource_2d_array[i][j]
+			else:
+				resource_2d_array[i][j] = 0
 	
 
 func show_color():

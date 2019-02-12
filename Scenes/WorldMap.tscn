@@ -32,7 +32,6 @@ transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 
 [node name="StatsPanel" type="Panel" parent="WorldMap_UI" index="0"]
 
-visible = false
 self_modulate = Color( 1, 1, 1, 0.313726 )
 anchor_left = 0.0
 anchor_top = 1.0
@@ -111,7 +110,6 @@ alignment = 2
 
 [node name="ResourceStats" type="Panel" parent="WorldMap_UI/StatsPanel" index="1"]
 
-editor/display_folded = true
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0

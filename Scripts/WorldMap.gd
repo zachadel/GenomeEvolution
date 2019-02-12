@@ -157,17 +157,20 @@ var res_stack = 0
 #energy after turn is given here
 func _on_CardTable_next_turn(turn_text, round_num):
 	if round_num >= 7:
-		var res_vec =  tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources
-		res_stack += get_round_res(res_vec)
+		convert_res_to_energy()
 
-		tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.x = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.x - 1, 0)
-		tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.y = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.y - 1, 0)
-		tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.z = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.z - 1, 0)
-		tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.w = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.w - 1, 0)
-		
-		if res_stack >= 4:
-			player.organism.update_energy(1)
-			res_stack -= 4;
+func convert_res_to_energy():
+	var res_vec =  tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources
+	res_stack += get_round_res(res_vec)
+
+	tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.x = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.x - 1, 0)
+	tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.y = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.y - 1, 0)
+	tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.z = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.z - 1, 0)
+	tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.w = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.w - 1, 0)
+	
+	if res_stack >= 4:
+		player.organism.update_energy(1)
+		res_stack -= 4;
 
 
 func get_round_res(res_vec):
