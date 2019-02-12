@@ -57,7 +57,7 @@ func calc_biomes():
 
 	for i in range(number_of_pois):
 		var info = Quat(randi()%tile_col, randi()%tile_rows, (randi()%n + 3), i)
-		POIs[info] = Color(randf() +.2, randf()*.25 - .5, randf() + .2)
+		POIs[info] = Color(randf() +.2, randf()*.25 - .5, randf() + .2, randf() + .5)
 		
 		tile_map[info.x][info.y].change_color(POIs[info])
 		tile_map[info.x][info.y].biome_set = true
@@ -160,14 +160,14 @@ func _on_CardTable_next_turn(turn_text, round_num):
 		var res_vec =  tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources
 		res_stack += get_round_res(res_vec)
 
-		tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources += Vector3(-1, -1, -1)
-		tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.x = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.x, 0)
-		tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.y = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.y, 0)
-		tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.z = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.z, 0)
+		tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.x = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.x - 1, 0)
+		tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.y = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.y - 1, 0)
+		tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.z = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.z - 1, 0)
+		tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.w = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.w - 1, 0)
 		
-		if res_stack >= 3:
+		if res_stack >= 4:
 			player.organism.update_energy(1)
-			res_stack -= 3;
+			res_stack -= 4;
 
 
 func get_round_res(res_vec):
@@ -178,6 +178,8 @@ func get_round_res(res_vec):
 	if res_vec.y > 0:
 		sum += 1
 	if res_vec.z > 0:
+		sum += 1
+	if res_vec.w > 0:
 		sum += 1
 	
 	return sum

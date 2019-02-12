@@ -32,7 +32,6 @@ transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 
 [node name="StatsPanel" type="Panel" parent="WorldMap_UI" index="0"]
 
-editor/display_folded = true
 visible = false
 self_modulate = Color( 1, 1, 1, 0.313726 )
 anchor_left = 0.0
@@ -154,7 +153,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Rect" ]
 
-[node name="Res X" type="Label" parent="WorldMap_UI/StatsPanel/ResourceStats" index="1"]
+[node name="Res 1" type="Label" parent="WorldMap_UI/StatsPanel/ResourceStats" index="1"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -177,7 +176,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Rect" ]
 
-[node name="Amount" type="Label" parent="WorldMap_UI/StatsPanel/ResourceStats/Res X" index="0"]
+[node name="Amount" type="Label" parent="WorldMap_UI/StatsPanel/ResourceStats/Res 1" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -197,7 +196,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Rect" ]
 
-[node name="Res Y" type="Label" parent="WorldMap_UI/StatsPanel/ResourceStats" index="2"]
+[node name="Res 2" type="Label" parent="WorldMap_UI/StatsPanel/ResourceStats" index="2"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -220,7 +219,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Rect" ]
 
-[node name="Amount" type="Label" parent="WorldMap_UI/StatsPanel/ResourceStats/Res Y" index="0"]
+[node name="Amount" type="Label" parent="WorldMap_UI/StatsPanel/ResourceStats/Res 2" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -240,7 +239,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Rect" ]
 
-[node name="Res Z" type="Label" parent="WorldMap_UI/StatsPanel/ResourceStats" index="3"]
+[node name="Res 3" type="Label" parent="WorldMap_UI/StatsPanel/ResourceStats" index="3"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -263,7 +262,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Rect" ]
 
-[node name="Amount" type="Label" parent="WorldMap_UI/StatsPanel/ResourceStats/Res Z" index="0"]
+[node name="Amount" type="Label" parent="WorldMap_UI/StatsPanel/ResourceStats/Res 3" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -306,6 +305,7 @@ max_lines_visible = -1
 
 [node name="PopupPanel" type="PopupPanel" parent="WorldMap_UI/StatsPanel/ResourceStats" index="5"]
 
+editor/display_folded = true
 visible = false
 anchor_left = 0.0
 anchor_top = 0.0

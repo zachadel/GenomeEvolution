@@ -18,9 +18,10 @@ func _process(delta):
 		
 		
 		if player.sensing_strength >= 5:
-			$"Res 1/Amount".text = String(player.tile_ndx.resources.x)
-			$"Res 2/Amount".text = String(player.tile_ndx.resources.y)
-			$"Res 3/Amount".text = String(player.tile_ndx.resources.z)
+			$"Res 1/Amount".text = String(player.tile_ndx.resources["x"])
+			$"Res 2/Amount".text = String(player.tile_ndx.resources["y"])
+			$"Res 3/Amount".text = String(player.tile_ndx.resources["z"])
+			#$"Res 4/Amount".text = String(player.tile_ndx.resources.w)
 		else:
 			$"Res 1/Amount".text = "???"
 			$"Res 2/Amount".text = "???"

@@ -1,14 +1,14 @@
 extends Node2D
 
-var curr_color = Color(0, 0.75, 0)
-var natural_tile_color = Color(0, 0.75, 0)
+var curr_color = Color(0, 0.75, 0, .5)
+var natural_tile_color = Color(0, 0.75, 0, 1)
 var map_ndx = Vector2(0.0, 0.0)
 var biome_set = false
 var biome_rank = -1
 var player_rank = -1
 var hidden_color = Color(0, 0, 0, 0)
 var hidden = true
-var resources = Vector3(2, 2, 2)
+var resources = {"x": 10, "y": 10, "z": 10, "w": 10}
 var resource_2d_array = [[],[],[],[]]
 
 func _ready():
@@ -44,10 +44,10 @@ func _on_Area2D_input_event(viewport, event, shape_idx):
 #We populate the resources here
 func change_color(color):
 	curr_color = natural_tile_color + color
-	resources = Vector3(curr_color.r, curr_color.g, curr_color.b) * 100
-	resources.x = round(resources.x)
-	resources.y = round(resources.y)
-	resources.z = round(resources.z)
+	resources.x = round(curr_color.r * 100)
+	resources.y = round(curr_color.g * 100)
+	resources.z = round(curr_color.b * 100)
+	resources.w = round((1 - curr_color.a) * 100)
 	
 	#set 4 resources here!
 	for i in range(0, 3):
@@ -59,12 +59,10 @@ func change_color(color):
 				res = resources.y
 			2:
 				res = resources.z
-		
-		
-		resource_2d_array[i] = res
-		
-	for i in range(0, 20):
-		resource_2d_array[3] = int(rand_range(0, 5))
+			3:
+				res = resources.w
+		for j in range(0, 20):
+			resource_2d_array[i][j] = int(rand_range(0, res))
 	
 
 func show_color():
