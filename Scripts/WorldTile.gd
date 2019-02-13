@@ -67,7 +67,6 @@ func set_resources():
 			3:
 				res = resources.w
 		for j in range(0, resource_group_types):
-			print(res)
 			if(res > 0):
 				resource_2d_array[i][j] = int(rand_range(1, min(res, 20)))
 				res -= resource_2d_array[i][j]
