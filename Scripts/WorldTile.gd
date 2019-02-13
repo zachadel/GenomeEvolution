@@ -1,17 +1,24 @@
 extends Node2D
 
-var curr_color = Color(0, 0.75, 0)
-var natural_tile_color = Color(0, 0.75, 0)
+var curr_color = Color(0, 0.75, 0, .5)
+var natural_tile_color = Color(0, 0.75, 0, 1)
 var map_ndx = Vector2(0.0, 0.0)
 var biome_set = false
 var biome_rank = -1
 var player_rank = -1
 var hidden_color = Color(0, 0, 0, 0)
 var hidden = true
-var resources = Vector3(2, 2, 2)
+var resources = {"x": 10, "y": 10, "z": 10, "w": 10}
+var resource_2d_array = [[],[],[],[]]
+var resource_group_types = 10
 
 func _ready():
 	$Area2D/Sprite.modulate = hidden_color
+	
+	for i in range(0, 4):
+		for j in range(0, resource_group_types):
+			resource_2d_array[i].append([])
+			resource_2d_array[i][j] = 0
 	
 func init_data(ndx, bio_set = true):
 	map_ndx = ndx
@@ -34,12 +41,39 @@ func _on_Area2D_input_event(viewport, event, shape_idx):
 			get_tree().get_root().get_node("Control/WorldMap").has_moved = true
 			player.organism.update_energy(-distance)
 
+
+#We populate the resources here using the color
 func change_color(color):
 	curr_color = natural_tile_color + color
-	resources = Vector3(curr_color.r, curr_color.g, curr_color.b) * 10
-	resources.x = round(resources.x)
-	resources.y = round(resources.y)
-	resources.z = round(resources.z)
+	
+	set_resources()
+
+func set_resources():
+	resources.x = round(curr_color.r * 100)
+	resources.y = round(curr_color.g * 100)
+	resources.z = round(curr_color.b * 100)
+	resources.w = round((1 - curr_color.a) * 100)
+	
+	#set 4 resources here!
+	for i in range(0, 3):
+		var res
+		match i:
+			0:
+				res = resources.x
+			1:
+				res = resources.y
+			2:
+				res = resources.z
+			3:
+				res = resources.w
+		for j in range(0, resource_group_types):
+			print(res)
+			if(res > 0):
+				resource_2d_array[i][j] = int(rand_range(1, min(res, 20)))
+				res -= resource_2d_array[i][j]
+			else:
+				resource_2d_array[i][j] = 0
+	
 
 func show_color():
 	hidden = false

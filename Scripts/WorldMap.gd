@@ -22,7 +22,7 @@ func _ready():
 	add_child(player)
 	var player_size = player.get_node("Sprite").get_texture().get_size()
 	player.get_node("Camera2D").make_current()
-	$"WorldMap_UI/ResourceStats".set_player(player)
+	$"WorldMap_UI/StatsPanel/ResourceStats".set_player(player)
 	emit_signal("player_done");
 	
 	spawn_map()
@@ -57,7 +57,7 @@ func calc_biomes():
 
 	for i in range(number_of_pois):
 		var info = Quat(randi()%tile_col, randi()%tile_rows, (randi()%n + 3), i)
-		POIs[info] = Color(randf() +.2, randf()*.25 - .5, randf() + .2)
+		POIs[info] = Color(randf() +.2, randf()*.25 - .5, randf() + .2, randf() + .5)
 		
 		tile_map[info.x][info.y].change_color(POIs[info])
 		tile_map[info.x][info.y].biome_set = true
@@ -110,7 +110,7 @@ func create_energy_label():
 	return label;
 	
 func update_energy_allocation(amount):
-	var container = get_node("WorldMap_UI/EnergyBar/VBoxContainer")
+	var container = get_node("WorldMap_UI/StatsPanel/EnergyBar/VBoxContainer")
 	if (amount > container.get_child_count()):
 		for i in range(amount - container.get_child_count()):
 			var label = create_energy_label();
@@ -157,17 +157,20 @@ var res_stack = 0
 #energy after turn is given here
 func _on_CardTable_next_turn(turn_text, round_num):
 	if round_num >= 7:
-		var res_vec =  tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources
-		res_stack += get_round_res(res_vec)
+		convert_res_to_energy()
 
-		tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources += Vector3(-1, -1, -1)
-		tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.x = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.x, 0)
-		tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.y = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.y, 0)
-		tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.z = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.z, 0)
-		
-		if res_stack >= 3:
-			player.organism.update_energy(1)
-			res_stack -= 3;
+func convert_res_to_energy():
+	var res_vec =  tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources
+	res_stack += get_round_res(res_vec)
+
+	tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.x = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.x - 1, 0)
+	tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.y = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.y - 1, 0)
+	tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.z = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.z - 1, 0)
+	tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.w = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.w - 1, 0)
+	
+	if res_stack >= 4:
+		player.organism.update_energy(1)
+		res_stack -= 4;
 
 
 func get_round_res(res_vec):
@@ -178,6 +181,8 @@ func get_round_res(res_vec):
 	if res_vec.y > 0:
 		sum += 1
 	if res_vec.z > 0:
+		sum += 1
+	if res_vec.w > 0:
 		sum += 1
 	
 	return sum
