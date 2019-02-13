@@ -23,6 +23,7 @@ func _ready():
 	var player_size = player.get_node("Sprite").get_texture().get_size()
 	player.get_node("Camera2D").make_current()
 	$"WorldMap_UI/StatsPanel/ResourceStats".set_player(player)
+	$"WorldMap_UI/ResourceStatsPanel".set_player(player)
 	emit_signal("player_done");
 	
 	spawn_map()

@@ -17,11 +17,13 @@ func _on_modeSwitch_pressed():
 			$Canvas_CardTable/CardTable.hide()
 			$WorldMap.show()
 			$WorldMap/WorldMap_UI/StatsPanel.show()
+			$WorldMap/WorldMap_UI/ResourceStatsPanel.show()
 			gstate = GSTATE.MAP
 			$Canvas_UI/modeSwitch.text = "To " + state_label[1]
 		GSTATE.MAP:
 			$WorldMap.hide()
 			$WorldMap/WorldMap_UI/StatsPanel.hide()
+			$WorldMap/WorldMap_UI/ResourceStatsPanel.hide()
 			$Canvas_CardTable/CardTable.show()
 			gstate = GSTATE.TABLE
 			$Canvas_UI/modeSwitch.text = "To " + state_label[0]
