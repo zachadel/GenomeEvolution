@@ -4,7 +4,7 @@
 [ext_resource path="res://Scripts/Resource Stats.gd" type="Script" id=2]
 [ext_resource path="res://Scenes/ResourceStatsPanel.gd" type="Script" id=3]
 
-[node name="World_Map_Control" type="Control" index="0"]
+[node name="World_Map_Control" type="Control"]
 
 anchor_left = 0.5
 anchor_top = 0.5
@@ -656,12 +656,12 @@ percent_visible = true
 
 [node name="ResourceStatsPanel" type="Panel" parent="WorldMap_UI" index="1"]
 
-visible = false
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 300.0
+margin_left = -250.0
+margin_right = 50.0
 margin_bottom = 900.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -677,6 +677,7 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_right = -50.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = true
 focus_mode = 2
@@ -691,7 +692,41 @@ hide_folding = false
 hide_root = false
 drop_mode_flags = 0
 select_mode = 0
+_sections_unfolded = [ "Margin" ]
+
+[node name="Tween" type="Tween" parent="WorldMap_UI/ResourceStatsPanel" index="1"]
+
+repeat = false
+playback_process_mode = 1
+playback_speed = 1.0
+playback/active = false
+playback/repeat = false
+playback/speed = 1.0
+
+[node name="Button" type="Button" parent="WorldMap_UI/ResourceStatsPanel" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 250.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Stats"
+flat = false
+align = 1
 
 [connection signal="pressed" from="WorldMap_UI/StatsPanel/ResourceStats/InfoButton" to="WorldMap_UI/StatsPanel/ResourceStats" method="_on_InfoButton_pressed"]
+
+[connection signal="pressed" from="WorldMap_UI/ResourceStatsPanel/Button" to="WorldMap_UI/ResourceStatsPanel" method="_on_Button_pressed"]
 
 
