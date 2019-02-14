@@ -4,7 +4,7 @@
 [ext_resource path="res://Scripts/Resource Stats.gd" type="Script" id=2]
 [ext_resource path="res://Scenes/ResourceStatsPanel.gd" type="Script" id=3]
 
-[node name="World_Map_Control" type="Control"]
+[node name="World_Map_Control" type="Control" index="0"]
 
 anchor_left = 0.5
 anchor_top = 0.5
@@ -656,6 +656,8 @@ percent_visible = true
 
 [node name="ResourceStatsPanel" type="Panel" parent="WorldMap_UI" index="1"]
 
+editor/display_folded = true
+visible = false
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
