@@ -2,7 +2,8 @@
 
 [ext_resource path="res://Scripts/WorldMap.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Resource Stats.gd" type="Script" id=2]
-[ext_resource path="res://Scenes/ResourceStatsPanel.gd" type="Script" id=3]
+[ext_resource path="res://Scripts/ResourceStatsPanel.gd" type="Script" id=3]
+
 
 [node name="World_Map_Control" type="Control" index="0"]
 
