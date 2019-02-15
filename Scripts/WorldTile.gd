@@ -52,10 +52,10 @@ func set_resources():
 	resources.x = round(curr_color.r * 100)
 	resources.y = round(curr_color.g * 100)
 	resources.z = round(curr_color.b * 100)
-	resources.w = round((1 - curr_color.a) * 100)
+	resources.w = round(curr_color.a * 10)
 	
 	#set 4 resources here!
-	for i in range(0, 3):
+	for i in range(0, 4):
 		var res
 		match i:
 			0:

@@ -4,6 +4,8 @@ var root
 onready var tween_node = $Tween
 var hidden = true
 var player
+var begin_tile_resources = false
+var res_tree = [[],[],[],[]]
 
 func _ready():
 	root = $Tree.create_item()
@@ -11,19 +13,20 @@ func _ready():
 	
 func set_player(_player):
 	player = _player
-	set_up_tree()
 
-func set_up_tree():
-	var res_tree = [[],[],[],[]]
-	
+func _on_World_Map_Control_tiles_done():
 	for i in range(0, 4):
-		var group = $Tree.create_item(root)
-		for j in range(0, 10):
-			var sub_group = $Tree.create_item(group)
-			#moreAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+		res_tree[i].append($Tree.create_item(root))
+		res_tree[i][0].set_text(0, "Resource " + String(i))
+		for j in range(1, 11):
+			res_tree[i].append($Tree.create_item(res_tree[i][0]))
+			res_tree[i][j].set_text(0, "Sub-Resource " + String(i) + "-" + String(j) + ": " + String(player.tile_ndx.resource_2d_array[i][j - 1]))
+	begin_tile_resources = true
 	
-	var resource1 = $Tree.create_item(root)
-	resource1.set_text(0, "Resource 1:")
+func _process(delta):
+	for i in range(0, 4):
+		for j in range(1, 11):
+			res_tree[i][j].set_text(0, "Sub-Resource " + String(i) + "-" + String(j) + ": " + String(player.tile_ndx.resource_2d_array[i][j - 1]))
 
 func _on_Button_pressed():
 	if hidden:

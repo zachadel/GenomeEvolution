@@ -1,6 +1,6 @@
 extends Node2D
 
-var tile_ndx
+onready var tile_ndx
 var prev_tile_ndx
 var sensing_strength
 var prev_sensing_strength = -1

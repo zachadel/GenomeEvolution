@@ -23,16 +23,16 @@ func switch_mode():
 		GSTATE.MAP:
 			$Canvas_CardTable/CardTable.hide()
 			$WorldMap.show()
-			$WorldMap/WorldMap_UI/StatsPanel.show()
+			$WorldMap/WorldMap_UI/UIPanel.show()
 			$WorldMap/WorldMap_UI/ResourceStatsPanel.show()
-			$Canvas_UI/modeSwitch.show()
+			$WorldMap/WorldMap_UI/EnergyBar.show()
 			gstate = GSTATE.MAP
 			$Canvas_UI/modeSwitch.text = "To " + state_label[1]
 		GSTATE.TABLE:
 			$WorldMap.hide()
-			$WorldMap/WorldMap_UI/StatsPanel.hide()
+			$WorldMap/WorldMap_UI/UIPanel.hide()
 			$WorldMap/WorldMap_UI/ResourceStatsPanel.hide()
-			$Canvas_UI/modeSwitch.hide()
+			$WorldMap/WorldMap_UI/EnergyBar.hide()
 			$Canvas_CardTable/CardTable.show()
 			gstate = GSTATE.TABLE
 			$Canvas_UI/modeSwitch.text = "To " + state_label[0]

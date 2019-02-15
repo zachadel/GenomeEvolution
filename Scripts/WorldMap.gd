@@ -1,6 +1,7 @@
 extends Control
 
 signal player_done
+signal tiles_done
 
 var tile_map = []
 var tile_col = 32
@@ -22,7 +23,7 @@ func _ready():
 	add_child(player)
 	var player_size = player.get_node("Sprite").get_texture().get_size()
 	player.get_node("Camera2D").make_current()
-	$"WorldMap_UI/StatsPanel/ResourceStats".set_player(player)
+	$"WorldMap_UI/ResourceStatsPanel".set_player(player)
 	$"WorldMap_UI/ResourceStatsPanel".set_player(player)
 	emit_signal("player_done");
 	
@@ -32,7 +33,8 @@ func _ready():
 	player.prev_tile_ndx = tile_map[ceil(tile_col/2)][ceil(tile_rows / 2)]
 	learn(tile_map[ceil(tile_col/2)][ceil(tile_rows / 2)], player.sensing_strength)
 	
-	
+	emit_signal("tiles_done")
+
 func spawn_map():
 	var current_ndx
 	
@@ -111,7 +113,7 @@ func create_energy_label():
 	return label;
 	
 func update_energy_allocation(amount):
-	var container = get_node("WorldMap_UI/StatsPanel/EnergyBar/VBoxContainer")
+	var container = get_node("WorldMap_UI/EnergyBar/VBoxContainer")
 	if (amount > container.get_child_count()):
 		for i in range(amount - container.get_child_count()):
 			var label = create_energy_label();
@@ -187,6 +189,7 @@ func get_round_res(res_vec):
 		sum += 1
 	
 	return sum
-	
-	
-	
+
+func _on_Switch_Button_pressed():
+	get_tree().get_root().get_node("Control").gstate = get_tree().get_root().get_node("Control").GSTATE.TABLE
+	get_tree().get_root().get_node("Control").switch_mode()
