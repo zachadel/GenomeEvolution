@@ -18,7 +18,10 @@ func _ready():
 	for i in range(0, 4):
 		for j in range(0, resource_group_types):
 			resource_2d_array[i].append([])
-			resource_2d_array[i][j] = 0
+			if j < 4:
+				resource_2d_array[i][j] = 1
+			else:
+				resource_2d_array[i][j] = 0
 	
 func init_data(ndx, bio_set = true):
 	map_ndx = ndx
@@ -45,7 +48,6 @@ func _on_Area2D_input_event(viewport, event, shape_idx):
 #We populate the resources here using the color
 func change_color(color):
 	curr_color = natural_tile_color + color
-	
 	set_resources()
 
 func set_resources():

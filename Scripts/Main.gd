@@ -27,7 +27,6 @@ func switch_mode():
 			$WorldMap/WorldMap_UI/ResourceStatsPanel.show()
 			$WorldMap/WorldMap_UI/EnergyBar.show()
 			gstate = GSTATE.MAP
-			$Canvas_UI/modeSwitch.text = "To " + state_label[1]
 		GSTATE.TABLE:
 			$WorldMap.hide()
 			$WorldMap/WorldMap_UI/UIPanel.hide()
@@ -35,7 +34,6 @@ func switch_mode():
 			$WorldMap/WorldMap_UI/EnergyBar.hide()
 			$Canvas_CardTable/CardTable.show()
 			gstate = GSTATE.TABLE
-			$Canvas_UI/modeSwitch.text = "To " + state_label[0]
 
 
 func _on_CardTable_next_turn(turn_text, round_num):

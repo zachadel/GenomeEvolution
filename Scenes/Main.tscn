@@ -4,7 +4,7 @@
 [ext_resource path="res://Scenes/CardTable.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/WorldMap.tscn" type="PackedScene" id=3]
 
-[node name="Control" type="Control"]
+[node name="Control" type="Control" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -34,42 +34,7 @@ transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 margin_left = 1.0
 margin_right = 1.0
 
-[node name="Canvas_UI" type="CanvasLayer" parent="." index="1"]
-
-layer = 2
-offset = Vector2( 0, 0 )
-rotation = 0.0
-scale = Vector2( 1, 1 )
-transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-
-[node name="modeSwitch" type="Button" parent="Canvas_UI" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 1.0
-margin_left = 100.0
-margin_top = 767.0
-margin_right = 250.0
-margin_bottom = -58.0
-rect_min_size = Vector2( 150, 75 )
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
-text = "To Map"
-flat = false
-align = 1
-_sections_unfolded = [ "Anchor", "Margin" ]
-
-[node name="WorldMap" parent="." index="2" instance=ExtResource( 3 )]
+[node name="WorldMap" parent="." index="1" instance=ExtResource( 3 )]
 
 visible = false
 anchor_left = 0.0
@@ -81,11 +46,9 @@ margin_top = 0.0
 margin_right = 0.0
 margin_bottom = 0.0
 
-[connection signal="next_turn" from="Canvas_CardTable/CardTable" to="WorldMap" method="_on_CardTable_next_turn"]
-
 [connection signal="next_turn" from="Canvas_CardTable/CardTable" to="." method="_on_CardTable_next_turn"]
 
-[connection signal="pressed" from="Canvas_UI/modeSwitch" to="." method="_on_modeSwitch_pressed"]
+[connection signal="next_turn" from="Canvas_CardTable/CardTable" to="WorldMap" method="_on_CardTable_next_turn"]
 
 [connection signal="player_done" from="WorldMap" to="Canvas_CardTable/CardTable" method="_on_WorldMap_player_done"]
 
