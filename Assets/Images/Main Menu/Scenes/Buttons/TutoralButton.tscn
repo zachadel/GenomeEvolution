@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Assets/Images/Main Menu/Scenes/Buttons/Button.tscn" type="PackedScene" id=1]
+
+[node name="TutoralButton" instance=ExtResource( 1 )]
+
+scene_to_load = "res://Assets/Images/Main Menu/Scenes/PlaceholderScenes/TutorialScene.tscn"
+
+[node name="Label" parent="." index="0"]
+
+text = "> Tutorial"
+_sections_unfolded = [ "Rect", "custom_colors" ]
+
+
