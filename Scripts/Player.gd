@@ -6,6 +6,7 @@ var sensing_strength
 var prev_sensing_strength = -1
 var update_sensing = false
 var organism
+var move_enabled = false
 
 func _ready():
 	sensing_strength = 2

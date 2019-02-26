@@ -62,6 +62,7 @@ func calc_biomes():
 		var info = Quat(randi()%tile_col, randi()%tile_rows, (randi()%n + 3), i)
 		POIs[info] = Color(randf() +.2, randf()*.25 - .5, randf() + .2, randf() + .5)
 		
+		tile_map[info.x][info.y].strength_from_poi = info.z
 		tile_map[info.x][info.y].change_color(POIs[info])
 		tile_map[info.x][info.y].biome_set = true
 		tile_map[info.x][info.y].biome_rank = info.z
@@ -89,6 +90,7 @@ func spread_neighbors(center_tile, tile_influence_color, strength, orig_stren):
 		if tile_map[curr_vec2.x][curr_vec2.y].biome_set and tile_map[curr_vec2.x][curr_vec2.y].biome_rank >= strength:
 			continue
 		
+		tile_map[curr_vec2.x][curr_vec2.y].strength_from_poi = strength
 		tile_map[curr_vec2.x][curr_vec2.y].change_color(tile_influence_color * clamp(((strength)/orig_stren), .5, 1))
 		tile_map[curr_vec2.x][curr_vec2.y].biome_set = true
 		tile_map[curr_vec2.x][curr_vec2.y].biome_rank = strength
@@ -191,5 +193,13 @@ func get_round_res(res_vec):
 	return sum
 
 func _on_Switch_Button_pressed():
+	player.move_enabled = false
+	$WorldMap_UI/UIPanel/ActionsPanel/GridContainer/Move_Button.modulate -= Color(.5, .5, .5, .5)
 	get_tree().get_root().get_node("Control").gstate = get_tree().get_root().get_node("Control").GSTATE.TABLE
 	get_tree().get_root().get_node("Control").switch_mode()
+
+
+func _on_Move_Button_pressed():
+	if !player.move_enabled:
+		$WorldMap_UI/UIPanel/ActionsPanel/GridContainer/Move_Button.modulate += Color(.5, .5, .5, .5)
+	player.move_enabled = true

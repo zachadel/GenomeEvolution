@@ -68,6 +68,7 @@ _sections_unfolded = [ "Margin", "Rect" ]
 
 [node name="ResPanel1" type="Panel" parent="WorldMap_UI/UIPanel/GridContainer" index="0"]
 
+editor/display_folded = true
 self_modulate = Color( 1, 1, 1, 0.470588 )
 anchor_left = 0.0
 anchor_top = 0.0
@@ -323,7 +324,6 @@ percent_visible = true
 
 [node name="ActionsPanel" type="Panel" parent="WorldMap_UI/UIPanel" index="1"]
 
-editor/display_folded = true
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -361,7 +361,7 @@ custom_constants/hseparation = 20
 columns = 2
 _sections_unfolded = [ "custom_constants" ]
 
-[node name="Button" type="Button" parent="WorldMap_UI/UIPanel/ActionsPanel/GridContainer" index="0"]
+[node name="Move_Button" type="Button" parent="WorldMap_UI/UIPanel/ActionsPanel/GridContainer" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -597,6 +597,8 @@ size_flags_vertical = 1
 alignment = 2
 
 [connection signal="tiles_done" from="." to="WorldMap_UI/ResourceStatsPanel" method="_on_World_Map_Control_tiles_done"]
+
+[connection signal="pressed" from="WorldMap_UI/UIPanel/ActionsPanel/GridContainer/Move_Button" to="." method="_on_Move_Button_pressed"]
 
 [connection signal="pressed" from="WorldMap_UI/UIPanel/ActionsPanel/GridContainer/Switch_Button" to="." method="_on_Switch_Button_pressed"]
 
