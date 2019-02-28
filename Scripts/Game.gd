@@ -167,9 +167,14 @@ func rollEvolve():
 		return 2;
 
 # used Desmos to come up with a quick and dirty formula
-func collapseChance(segment_size, total_dist_from_gap):
-	return 4 * (segment_size + total_dist_from_gap) / (total_dist_from_gap * total_dist_from_gap) / 3;
+func collapseChance(segment_size, dist_from_gap):
+	return 2.0 * float(segment_size + dist_from_gap) / (segment_size * dist_from_gap * dist_from_gap)
 
-func rollCollapse(segment_size, left_idx, right_idx):
-	var net_distance = right_idx - left_idx - segment_size + 1;
-	return randf() < collapseChance(segment_size, net_distance);
+func rollCollapse(segment_size, dist_from_gap):
+	var roll = randf();
+	var need = collapseChance(segment_size, dist_from_gap);
+	print("need: ", need);
+	print("got: ", roll);
+	print("---");
+	return roll <= need;
+	#return randf() <= collapseChance(segment_size, dist_from_gap);

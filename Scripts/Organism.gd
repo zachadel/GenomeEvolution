@@ -327,15 +327,50 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 			0: # Collapse Duplicates
 				var left_idx = choice_info["left"].get_index();
 				var right_idx = choice_info["right"].get_index();
+				choice_info["left"].highlight_border(false);
+				choice_info["right"].highlight_border(false);
 				
-				# Find all the genes you're removing before removing them
+				# Find all the genes to remove before removing them
 				var remove_genes = [];
-				for i in range(choice_info["size"]):
-					remove_genes.append(cmsm.get_child(left_idx + i));
-				for i in range(left_idx + choice_info["size"], right_idx):
-					var gene = cmsm.get_child(i);
-					if (!gene.is_gap() && Game.rollCollapse(choice_info["size"], left_idx, right_idx)):
-						remove_genes.append(cmsm.get_child(i));
+				
+				var collapsed_so_far = 0;
+				var gap_dist = 1;
+				var alternating = true;
+				var right_side_collapse = true;
+				var max_collapse_count = right_idx - left_idx - 1;
+				var rightmost_idx = right_idx + choice_info["size"] - 1;
+				var continue_collapse = true;
+				var ended_due_to = "failure";
+				
+				# Alternate removing right, then left until either failure or finished
+				while (continue_collapse && collapsed_so_far < max_collapse_count):
+					continue_collapse = Game.rollCollapse(choice_info["size"], gap_dist);
+					
+					if (g_idx + gap_dist >= rightmost_idx):
+						alternating = false;
+						right_side_collapse = false;
+					if (g_idx - gap_dist <= left_idx):
+						alternating = false;
+						right_side_collapse = true;
+					
+					var remove_idx = g_idx;
+					if (right_side_collapse):
+						remove_idx += gap_dist;
+					else:
+						remove_idx -= gap_dist;
+						if (alternating):
+							gap_dist += 1;
+					
+					if (alternating):
+						right_side_collapse = !right_side_collapse;
+					else:
+						gap_dist += 1;
+					
+					remove_genes.append(cmsm.get_child(remove_idx));
+					
+					collapsed_so_far += 1;
+				if (collapsed_so_far == max_collapse_count):
+					ended_due_to = "completion";
 				
 				for g in remove_genes:
 					if (do_yields):
@@ -346,7 +381,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 					yield($chromes.close_gap(gap), "completed");
 				else:
 					$chromes.close_gap(gap);
-				emit_signal("justnow_update", "Gap at %s, %d closed: collapsed the duplicate %s genes (one was lost)." % [cmsm.get_parent().name, g_idx, left_id]);
+				emit_signal("justnow_update", "Gap at %s, %d closed: collapsed %d genes and ended due to %s." % [cmsm.get_parent().name, g_idx, collapsed_so_far, ended_due_to]);
 			1: # Copy Pattern
 				choice_info["left"].highlight_border(false);
 				if (!roll_storage[0].has(gap)):
