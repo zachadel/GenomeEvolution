@@ -10,9 +10,6 @@ var res_tree = [[],[],[],[]]
 func _ready():
 	root = $Tree.create_item()
 	root.set_text(0, "Tile Resources")
-	
-func set_player(_player):
-	player = _player
 
 func _on_World_Map_Control_tiles_done():
 	for i in range(0, 4):
@@ -38,3 +35,7 @@ func _on_Button_pressed():
 		tween_node.start()
 		hidden = true
 	print(hidden)
+
+
+func _on_WorldMapControl_player_done():
+	player = get_tree().get_root().get_node("Control/WorldMap/Player")

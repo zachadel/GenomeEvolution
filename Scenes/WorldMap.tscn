@@ -1,9 +1,10 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scripts/WorldMap.gd" type="Script" id=1]
-[ext_resource path="res://Scripts/ResourceStatsPanel.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/UIPanel.gd" type="Script" id=2]
+[ext_resource path="res://Scripts/ResourceStatsPanel.gd" type="Script" id=3]
 
-[node name="World_Map_Control" type="Control" index="0"]
+[node name="WorldMapControl" type="Control" index="0"]
 
 anchor_left = 0.5
 anchor_top = 0.5
@@ -44,6 +45,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
+script = ExtResource( 2 )
 _sections_unfolded = [ "Rect" ]
 
 [node name="GridContainer" type="GridContainer" parent="WorldMap_UI/UIPanel" index="0"]
@@ -478,7 +480,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-script = ExtResource( 2 )
+script = ExtResource( 3 )
 
 [node name="Tree" type="Tree" parent="WorldMap_UI/ResourceStatsPanel" index="0"]
 
@@ -595,6 +597,10 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 alignment = 2
+
+[connection signal="player_done" from="." to="WorldMap_UI/UIPanel" method="_on_WorldMapControl_player_done"]
+
+[connection signal="player_done" from="." to="WorldMap_UI/ResourceStatsPanel" method="_on_WorldMapControl_player_done"]
 
 [connection signal="tiles_done" from="." to="WorldMap_UI/ResourceStatsPanel" method="_on_World_Map_Control_tiles_done"]
 

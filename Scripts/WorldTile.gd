@@ -4,7 +4,7 @@ var curr_color = Color(0, 0.75, 0, .5)
 var natural_tile_color = Color(0, 0.75, 0, 1)
 var map_ndx = Vector2(0.0, 0.0)
 var biome_set = false
-var biome_rank = -1
+var biome_rank = -2
 var strength_from_poi = 0
 var player_rank = -1
 var hidden_color = Color(0, 0, 0, 0)
@@ -51,9 +51,11 @@ func _on_Area2D_input_event(viewport, event, shape_idx):
 func change_color(color):
 	curr_color = natural_tile_color + color
 	if strength_from_poi > 0:
-		set_resources()
+		set_resources(1)
+	elif strength_from_poi == -1:
+		set_resources(-1)
 
-func set_resources():
+func set_resources(step):
 	resources.x = round(curr_color.r * 100)
 	resources.y = round(curr_color.g * 100)
 	resources.z = round(curr_color.b * 100)
@@ -62,6 +64,14 @@ func set_resources():
 	#set 4 resources here!
 	for i in range(0, 4):
 		var res
+		var start
+		var end
+		if step == -1:
+			start = resource_group_types - 1
+			end = 0
+		else:
+			start = 0
+			end = resource_group_types
 		match i:
 			0:
 				res = resources.x
@@ -71,9 +81,9 @@ func set_resources():
 				res = resources.z
 			3:
 				res = resources.w
-		for j in range(0, resource_group_types):
+		for j in range(start, end, step):
 			if(res > 0):
-				resource_2d_array[i][j] = int(rand_range(1, min(res, 20/strength_from_poi)))
+				resource_2d_array[i][j] = int(rand_range(1, min(res, 20 / (strength_from_poi * biome_rank))))
 				res -= resource_2d_array[i][j]
 			else:
 				resource_2d_array[i][j] = 0

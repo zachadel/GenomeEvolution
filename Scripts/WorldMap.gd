@@ -23,8 +23,6 @@ func _ready():
 	add_child(player)
 	var player_size = player.get_node("Sprite").get_texture().get_size()
 	player.get_node("Camera2D").make_current()
-	$"WorldMap_UI/ResourceStatsPanel".set_player(player)
-	$"WorldMap_UI/ResourceStatsPanel".set_player(player)
 	emit_signal("player_done");
 	
 	spawn_map()
@@ -62,7 +60,7 @@ func calc_biomes():
 		var info = Quat(randi()%tile_col, randi()%tile_rows, (randi()%n + 3), i)
 		POIs[info] = Color(randf() +.2, randf()*.25 - .5, randf() + .2, randf() + .5)
 		
-		tile_map[info.x][info.y].strength_from_poi = info.z
+		tile_map[info.x][info.y].strength_from_poi = -1
 		tile_map[info.x][info.y].change_color(POIs[info])
 		tile_map[info.x][info.y].biome_set = true
 		tile_map[info.x][info.y].biome_rank = info.z
@@ -158,12 +156,15 @@ func learn(center_tile, strength):
 		tile_map[curr_vec2.x][curr_vec2.y].show_color()
 		learn(tile_map[curr_vec2.x][curr_vec2.y], strength - 1)
 
-var res_stack = 0
+var grace_period = 1
 #energy after turn is given here
 func _on_CardTable_next_turn(turn_text, round_num):
 	if round_num >= 7:
 		convert_res_to_energy()
+		if round_num > grace_period:
+			player.begin_timed()
 
+var res_stack = 0
 func convert_res_to_energy():
 	var res_vec =  tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources
 	res_stack += get_round_res(res_vec)
@@ -193,8 +194,9 @@ func get_round_res(res_vec):
 	return sum
 
 func _on_Switch_Button_pressed():
+	if player.move_enabled:
+		$WorldMap_UI/UIPanel/ActionsPanel/GridContainer/Move_Button.modulate -= Color(.5, .5, .5, .5)
 	player.move_enabled = false
-	$WorldMap_UI/UIPanel/ActionsPanel/GridContainer/Move_Button.modulate -= Color(.5, .5, .5, .5)
 	get_tree().get_root().get_node("Control").gstate = get_tree().get_root().get_node("Control").GSTATE.TABLE
 	get_tree().get_root().get_node("Control").switch_mode()
 
