@@ -10,7 +10,7 @@ var update_sensing = false
 var organism
 var move_enabled = false
 
-var tolerance = [10, 1, 5, 20]
+var tolerance = [10, 1, 2, 20]
 var danger = [0, 0, 0, 0]
 var resource_timers = []
 var UIPanel
@@ -31,6 +31,8 @@ func check_if_resources(ndx):
 	if (danger[0] + danger[1] + danger[2] + danger[3]) <= 1:
 		if organism.resources[ndx] <= 0:
 			danger[ndx] = 1
+			var res_string = "GridContainer/ResPanel" + str(ndx + 1) + "/Label"
+			UIPanel.get_node(res_string).modulate = Color(1, 0, 0, 1)
 	else:
 		organism.get_parent()._on_Organism_died(organism)
 	print(danger[0] + danger[1] + danger[2] + danger[3])

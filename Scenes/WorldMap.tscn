@@ -33,7 +33,6 @@ transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 
 [node name="UIPanel" type="Panel" parent="WorldMap_UI" index="0"]
 
-editor/display_folded = true
 self_modulate = Color( 1, 1, 1, 0.313726 )
 anchor_left = 0.0
 anchor_top = 1.0
@@ -327,6 +326,7 @@ percent_visible = true
 
 [node name="ActionsPanel" type="Panel" parent="WorldMap_UI/UIPanel" index="1"]
 
+editor/display_folded = true
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
