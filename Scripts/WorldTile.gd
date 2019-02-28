@@ -44,7 +44,6 @@ func _on_Area2D_input_event(viewport, event, shape_idx):
 				player.tile_ndx = self
 				get_tree().get_root().get_node("Control/WorldMap").has_moved = true
 				player.organism.update_energy(-distance)
-				print(strength_from_poi)
 
 
 #We populate the resources here using the color
