@@ -44,6 +44,7 @@ func _on_Area2D_input_event(viewport, event, shape_idx):
 				player.tile_ndx = self
 				get_tree().get_root().get_node("Control/WorldMap").has_moved = true
 				player.organism.update_energy(-distance)
+				print(biome_rank)
 
 
 #We populate the resources here using the color
@@ -82,7 +83,7 @@ func set_resources(step):
 				res = resources.w
 		for j in range(start, end, step):
 			if(res > 0):
-				resource_2d_array[i][j] = int(rand_range(1, min(res, 20 / (strength_from_poi * biome_rank))))
+				resource_2d_array[i][j] = int(rand_range(1, min(res, 20 / abs(strength_from_poi))))
 				res -= resource_2d_array[i][j]
 			else:
 				resource_2d_array[i][j] = 0

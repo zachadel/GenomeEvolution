@@ -39,9 +39,6 @@ func check_if_resources(ndx):
 
 func on_Timer_Timout(ndx):
 	consume_resources(ndx)
-	if UIPanel == null:
-		UIPanel = get_tree().get_root().get_node("Control/WorldMap/WorldMap_UI/UIPanel")
-		self.connect("changed", UIPanel, "on_Changed")
 	emit_signal("changed")
 
 func consume_resources(ndx):
@@ -53,5 +50,8 @@ func consume_resources(ndx):
 	check_if_resources(ndx)
 
 func begin_timed():
+	UIPanel = get_tree().get_root().get_node("Control/WorldMap/WorldMap_UI/UIPanel")
+	UIPanel.get_node("Warning").hide()
+	self.connect("changed", UIPanel, "on_Changed")
 	for t in range(4):
 		resource_timers[t].start()
