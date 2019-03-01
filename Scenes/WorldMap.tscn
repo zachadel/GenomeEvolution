@@ -1,9 +1,10 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scripts/WorldMap.gd" type="Script" id=1]
-[ext_resource path="res://Scripts/Resource Stats.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/UIPanel.gd" type="Script" id=2]
+[ext_resource path="res://Scripts/ResourceStatsPanel.gd" type="Script" id=3]
 
-[node name="World_Map_Control" type="Control" index="0"]
+[node name="WorldMapControl" type="Control"]
 
 anchor_left = 0.5
 anchor_top = 0.5
@@ -30,9 +31,8 @@ rotation = 0.0
 scale = Vector2( 1, 1 )
 transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 
-[node name="StatsPanel" type="Panel" parent="WorldMap_UI" index="0"]
+[node name="UIPanel" type="Panel" parent="WorldMap_UI" index="0"]
 
-visible = false
 self_modulate = Color( 1, 1, 1, 0.313726 )
 anchor_left = 0.0
 anchor_top = 1.0
@@ -45,9 +45,500 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
+script = ExtResource( 2 )
 _sections_unfolded = [ "Rect" ]
 
-[node name="EnergyBar" type="Panel" parent="WorldMap_UI/StatsPanel" index="0"]
+[node name="GridContainer" type="GridContainer" parent="WorldMap_UI/UIPanel" index="0"]
+
+editor/display_folded = true
+anchor_left = 0.5
+anchor_top = 0.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -350.0
+margin_top = 50.0
+margin_right = 250.0
+margin_bottom = -26.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+columns = 2
+_sections_unfolded = [ "Margin", "Rect" ]
+
+[node name="ResPanel1" type="Panel" parent="WorldMap_UI/UIPanel/GridContainer" index="0"]
+
+editor/display_folded = true
+self_modulate = Color( 1, 1, 1, 0.470588 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 300.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 300, 60 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Rect" ]
+
+[node name="Label" type="Label" parent="WorldMap_UI/UIPanel/GridContainer/ResPanel1" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+margin_top = 5.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Resource 1"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Anchor", "Margin" ]
+
+[node name="ProgressBar" type="ProgressBar" parent="WorldMap_UI/UIPanel/GridContainer/ResPanel1" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 20.0
+rect_min_size = Vector2( 300, 40 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 0
+min_value = 0.0
+max_value = 100.0
+step = 1.0
+page = 0.0
+value = 0.0
+exp_edit = false
+rounded = false
+percent_visible = true
+
+[node name="ResPanel2" type="Panel" parent="WorldMap_UI/UIPanel/GridContainer" index="1"]
+
+editor/display_folded = true
+self_modulate = Color( 1, 1, 1, 0.470588 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 304.0
+margin_right = 604.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 300, 60 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Rect" ]
+
+[node name="Label" type="Label" parent="WorldMap_UI/UIPanel/GridContainer/ResPanel2" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+margin_top = 5.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Resource 2"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Anchor", "Margin" ]
+
+[node name="ProgressBar" type="ProgressBar" parent="WorldMap_UI/UIPanel/GridContainer/ResPanel2" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 20.0
+rect_min_size = Vector2( 300, 40 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 0
+min_value = 0.0
+max_value = 100.0
+step = 1.0
+page = 0.0
+value = 0.0
+exp_edit = false
+rounded = false
+percent_visible = true
+
+[node name="ResPanel3" type="Panel" parent="WorldMap_UI/UIPanel/GridContainer" index="2"]
+
+editor/display_folded = true
+self_modulate = Color( 1, 1, 1, 0.470588 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 64.0
+margin_right = 300.0
+margin_bottom = 124.0
+rect_min_size = Vector2( 300, 60 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Rect" ]
+
+[node name="Label" type="Label" parent="WorldMap_UI/UIPanel/GridContainer/ResPanel3" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+margin_top = 5.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Resource 3"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Anchor", "Margin" ]
+
+[node name="ProgressBar" type="ProgressBar" parent="WorldMap_UI/UIPanel/GridContainer/ResPanel3" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 20.0
+rect_min_size = Vector2( 300, 40 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 0
+min_value = 0.0
+max_value = 100.0
+step = 1.0
+page = 0.0
+value = 0.0
+exp_edit = false
+rounded = false
+percent_visible = true
+
+[node name="ResPanel4" type="Panel" parent="WorldMap_UI/UIPanel/GridContainer" index="3"]
+
+editor/display_folded = true
+self_modulate = Color( 1, 1, 1, 0.470588 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 304.0
+margin_top = 64.0
+margin_right = 604.0
+margin_bottom = 124.0
+rect_min_size = Vector2( 300, 60 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Rect" ]
+
+[node name="Label" type="Label" parent="WorldMap_UI/UIPanel/GridContainer/ResPanel4" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+margin_top = 5.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Resource 4"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Anchor", "Margin" ]
+
+[node name="ProgressBar" type="ProgressBar" parent="WorldMap_UI/UIPanel/GridContainer/ResPanel4" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 20.0
+rect_min_size = Vector2( 300, 40 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 0
+min_value = 0.0
+max_value = 100.0
+step = 1.0
+page = 0.0
+value = 0.0
+exp_edit = false
+rounded = false
+percent_visible = true
+
+[node name="ActionsPanel" type="Panel" parent="WorldMap_UI/UIPanel" index="1"]
+
+editor/display_folded = true
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -400.0
+margin_top = -175.0
+margin_right = -50.0
+margin_bottom = -25.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Rect" ]
+
+[node name="GridContainer" type="GridContainer" parent="WorldMap_UI/UIPanel/ActionsPanel" index="0"]
+
+editor/display_folded = true
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = 10.0
+margin_right = -10.0
+margin_bottom = -10.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_constants/vseparation = 20
+custom_constants/hseparation = 20
+columns = 2
+_sections_unfolded = [ "custom_constants" ]
+
+[node name="Move_Button" type="Button" parent="WorldMap_UI/UIPanel/ActionsPanel/GridContainer" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 155.0
+margin_bottom = 55.0
+rect_min_size = Vector2( 150, 50 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Move"
+flat = false
+align = 1
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="Button2" type="Button" parent="WorldMap_UI/UIPanel/ActionsPanel/GridContainer" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 175.0
+margin_right = 330.0
+margin_bottom = 55.0
+rect_min_size = Vector2( 150, 50 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 7
+size_flags_vertical = 7
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Energy Allocation"
+flat = false
+align = 1
+
+[node name="Button3" type="Button" parent="WorldMap_UI/UIPanel/ActionsPanel/GridContainer" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 75.0
+margin_right = 155.0
+margin_bottom = 130.0
+rect_min_size = Vector2( 150, 50 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 7
+size_flags_vertical = 7
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Action 3"
+flat = false
+align = 1
+
+[node name="Switch_Button" type="Button" parent="WorldMap_UI/UIPanel/ActionsPanel/GridContainer" index="3"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 175.0
+margin_top = 75.0
+margin_right = 330.0
+margin_bottom = 130.0
+rect_min_size = Vector2( 150, 50 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 7
+size_flags_vertical = 7
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "End Map Turn"
+flat = false
+align = 1
+
+[node name="ResourceStatsPanel" type="Panel" parent="WorldMap_UI" index="1"]
+
+editor/display_folded = true
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = -250.0
+margin_right = 50.0
+margin_bottom = 900.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+script = ExtResource( 3 )
+
+[node name="Tree" type="Tree" parent="WorldMap_UI/ResourceStatsPanel" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -50.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = true
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+columns = 1
+allow_reselect = false
+allow_rmb_select = false
+hide_folding = false
+hide_root = false
+drop_mode_flags = 0
+select_mode = 0
+_sections_unfolded = [ "Margin" ]
+
+[node name="Tween" type="Tween" parent="WorldMap_UI/ResourceStatsPanel" index="1"]
+
+repeat = false
+playback_process_mode = 1
+playback_speed = 1.0
+playback/active = false
+playback/repeat = false
+playback/speed = 1.0
+
+[node name="Button" type="Button" parent="WorldMap_UI/ResourceStatsPanel" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 250.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Stats"
+flat = false
+align = 1
+
+[node name="EnergyBar" type="Panel" parent="WorldMap_UI" index="2"]
 
 editor/display_folded = true
 anchor_left = 1.0
@@ -66,7 +557,7 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 _sections_unfolded = [ "Anchor", "Margin" ]
 
-[node name="Label" type="Label" parent="WorldMap_UI/StatsPanel/EnergyBar" index="0"]
+[node name="Label" type="Label" parent="WorldMap_UI/EnergyBar" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -90,7 +581,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Rect" ]
 
-[node name="VBoxContainer" type="VBoxContainer" parent="WorldMap_UI/StatsPanel/EnergyBar" index="1"]
+[node name="VBoxContainer" type="VBoxContainer" parent="WorldMap_UI/EnergyBar" index="1"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -109,550 +600,16 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 alignment = 2
 
-[node name="ResourceStats" type="Panel" parent="WorldMap_UI/StatsPanel" index="1"]
+[connection signal="player_done" from="." to="WorldMap_UI/UIPanel" method="_on_WorldMapControl_player_done"]
 
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -325.0
-margin_top = -175.0
-margin_right = -25.0
-margin_bottom = -25.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-script = ExtResource( 2 )
-_sections_unfolded = [ "Rect" ]
+[connection signal="player_done" from="." to="WorldMap_UI/ResourceStatsPanel" method="_on_WorldMapControl_player_done"]
 
-[node name="Title" type="Label" parent="WorldMap_UI/StatsPanel/ResourceStats" index="0"]
+[connection signal="tiles_done" from="." to="WorldMap_UI/ResourceStatsPanel" method="_on_World_Map_Control_tiles_done"]
 
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 66.0
-margin_top = 10.0
-margin_right = 234.0
-margin_bottom = 24.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-text = "Resources For Current Tile"
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Rect" ]
+[connection signal="pressed" from="WorldMap_UI/UIPanel/ActionsPanel/GridContainer/Move_Button" to="." method="_on_Move_Button_pressed"]
 
-[node name="Res 1" type="Label" parent="WorldMap_UI/StatsPanel/ResourceStats" index="1"]
+[connection signal="pressed" from="WorldMap_UI/UIPanel/ActionsPanel/GridContainer/Switch_Button" to="." method="_on_Switch_Button_pressed"]
 
-editor/display_folded = true
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 10.0
-margin_top = 35.0
-margin_right = 75.0
-margin_bottom = 49.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-text = "Resouce x:"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Rect" ]
-
-[node name="Amount" type="Label" parent="WorldMap_UI/StatsPanel/ResourceStats/Res 1" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 75.0
-margin_right = 115.0
-margin_bottom = 14.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Rect" ]
-
-[node name="Res 2" type="Label" parent="WorldMap_UI/StatsPanel/ResourceStats" index="2"]
-
-editor/display_folded = true
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 10.0
-margin_top = 65.0
-margin_right = 79.0
-margin_bottom = 79.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-text = "Resouce y:"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Rect" ]
-
-[node name="Amount" type="Label" parent="WorldMap_UI/StatsPanel/ResourceStats/Res 2" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 75.0
-margin_right = 115.0
-margin_bottom = 14.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Rect" ]
-
-[node name="Res 3" type="Label" parent="WorldMap_UI/StatsPanel/ResourceStats" index="3"]
-
-editor/display_folded = true
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 10.0
-margin_top = 95.0
-margin_right = 79.0
-margin_bottom = 109.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-text = "Resouce z:"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Rect" ]
-
-[node name="Amount" type="Label" parent="WorldMap_UI/StatsPanel/ResourceStats/Res 3" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 75.0
-margin_right = 115.0
-margin_bottom = 14.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Rect" ]
-
-[node name="InfoPanel" type="Label" parent="WorldMap_UI/StatsPanel/ResourceStats" index="4"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 51.0
-margin_top = 127.0
-margin_right = 249.0
-margin_bottom = 141.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-text = "Upgrade Sensing to Know More"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="PopupPanel" type="PopupPanel" parent="WorldMap_UI/StatsPanel/ResourceStats" index="5"]
-
-editor/display_folded = true
-visible = false
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 200.0
-margin_bottom = 150.0
-grow_vertical = 0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-popup_exclusive = false
-_sections_unfolded = [ "Grow Direction", "Rect" ]
-
-[node name="Info" type="Label" parent="WorldMap_UI/StatsPanel/ResourceStats/PopupPanel" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 15.0
-margin_top = 15.0
-margin_right = 182.0
-margin_bottom = 131.0
-grow_horizontal = 0
-grow_vertical = 0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-text = "3 resources = 1 energy
-Each pool (x, y, z) can only
-be pulled once per turn
-Examples:
-x + y + z = 1 energy/1 turn
-x + y + x = 2 energy/2 turn
-x + x + x = 3 energy/3 turn"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Rect" ]
-
-[node name="InfoButton" type="Button" parent="WorldMap_UI/StatsPanel/ResourceStats" index="6"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 250.0
-margin_top = 35.0
-margin_right = 266.0
-margin_bottom = 55.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
-text = "!"
-flat = false
-align = 1
-_sections_unfolded = [ "Rect" ]
-
-[node name="GridContainer" type="GridContainer" parent="WorldMap_UI/StatsPanel" index="2"]
-
-editor/display_folded = true
-anchor_left = 0.5
-anchor_top = 0.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -300.0
-margin_top = 50.0
-margin_right = 304.0
-margin_bottom = -26.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-columns = 2
-_sections_unfolded = [ "Anchor", "Rect" ]
-
-[node name="ResPanel1" type="Panel" parent="WorldMap_UI/StatsPanel/GridContainer" index="0"]
-
-self_modulate = Color( 1, 1, 1, 0.470588 )
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 300.0
-margin_bottom = 60.0
-rect_min_size = Vector2( 300, 60 )
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-_sections_unfolded = [ "Rect" ]
-
-[node name="Label" type="Label" parent="WorldMap_UI/StatsPanel/GridContainer/ResPanel1" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 1.0
-anchor_bottom = 0.0
-margin_top = 5.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-text = "Resource 1"
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Anchor", "Margin" ]
-
-[node name="ProgressBar" type="ProgressBar" parent="WorldMap_UI/StatsPanel/GridContainer/ResPanel1" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_top = 20.0
-rect_min_size = Vector2( 300, 40 )
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 0
-min_value = 0.0
-max_value = 100.0
-step = 1.0
-page = 0.0
-value = 0.0
-exp_edit = false
-rounded = false
-percent_visible = true
-
-[node name="ResPanel2" type="Panel" parent="WorldMap_UI/StatsPanel/GridContainer" index="1"]
-
-editor/display_folded = true
-self_modulate = Color( 1, 1, 1, 0.470588 )
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 304.0
-margin_right = 604.0
-margin_bottom = 60.0
-rect_min_size = Vector2( 300, 60 )
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-_sections_unfolded = [ "Rect" ]
-
-[node name="Label" type="Label" parent="WorldMap_UI/StatsPanel/GridContainer/ResPanel2" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 1.0
-anchor_bottom = 0.0
-margin_top = 5.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-text = "Resource 2"
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Anchor", "Margin" ]
-
-[node name="ProgressBar" type="ProgressBar" parent="WorldMap_UI/StatsPanel/GridContainer/ResPanel2" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_top = 20.0
-rect_min_size = Vector2( 300, 40 )
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 0
-min_value = 0.0
-max_value = 100.0
-step = 1.0
-page = 0.0
-value = 0.0
-exp_edit = false
-rounded = false
-percent_visible = true
-
-[node name="ResPanel3" type="Panel" parent="WorldMap_UI/StatsPanel/GridContainer" index="2"]
-
-editor/display_folded = true
-self_modulate = Color( 1, 1, 1, 0.470588 )
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 64.0
-margin_right = 300.0
-margin_bottom = 124.0
-rect_min_size = Vector2( 300, 60 )
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-_sections_unfolded = [ "Rect" ]
-
-[node name="Label" type="Label" parent="WorldMap_UI/StatsPanel/GridContainer/ResPanel3" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 1.0
-anchor_bottom = 0.0
-margin_top = 5.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-text = "Resource 3"
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Anchor", "Margin" ]
-
-[node name="ProgressBar" type="ProgressBar" parent="WorldMap_UI/StatsPanel/GridContainer/ResPanel3" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_top = 20.0
-rect_min_size = Vector2( 300, 40 )
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 0
-min_value = 0.0
-max_value = 100.0
-step = 1.0
-page = 0.0
-value = 0.0
-exp_edit = false
-rounded = false
-percent_visible = true
-
-[node name="ResPanel4" type="Panel" parent="WorldMap_UI/StatsPanel/GridContainer" index="3"]
-
-editor/display_folded = true
-self_modulate = Color( 1, 1, 1, 0.470588 )
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 304.0
-margin_top = 64.0
-margin_right = 604.0
-margin_bottom = 124.0
-rect_min_size = Vector2( 300, 60 )
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-_sections_unfolded = [ "Rect" ]
-
-[node name="Label" type="Label" parent="WorldMap_UI/StatsPanel/GridContainer/ResPanel4" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 1.0
-anchor_bottom = 0.0
-margin_top = 5.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-text = "Resource 4"
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Anchor", "Margin" ]
-
-[node name="ProgressBar" type="ProgressBar" parent="WorldMap_UI/StatsPanel/GridContainer/ResPanel4" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_top = 20.0
-rect_min_size = Vector2( 300, 40 )
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 0
-min_value = 0.0
-max_value = 100.0
-step = 1.0
-page = 0.0
-value = 0.0
-exp_edit = false
-rounded = false
-percent_visible = true
-
-[connection signal="pressed" from="WorldMap_UI/StatsPanel/ResourceStats/InfoButton" to="WorldMap_UI/StatsPanel/ResourceStats" method="_on_InfoButton_pressed"]
+[connection signal="pressed" from="WorldMap_UI/ResourceStatsPanel/Button" to="WorldMap_UI/ResourceStatsPanel" method="_on_Button_pressed"]
 
 

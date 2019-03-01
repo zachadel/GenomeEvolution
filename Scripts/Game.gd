@@ -11,13 +11,13 @@ var turns = [TURN_TYPES.NewTEs, TURN_TYPES.TEJump, TURN_TYPES.RepairBreaks, TURN
 var turn_idx
 var round_num
 
-var card_table;
+var card_table
 
-var animation_speed = 600;
-var animation_ease = Tween.EASE_IN;
-var animation_trans = Tween.TRANS_LINEAR;
-var TE_jump_time_limit = 5;
-var TE_insertion_time_limit = 0.8;
+var animation_speed = 600
+var animation_ease = Tween.EASE_IN
+var animation_trans = Tween.TRANS_LINEAR
+var TE_jump_time_limit = 5
+var TE_insertion_time_limit = 0.8
 
 var ate_personalities = {};
 
