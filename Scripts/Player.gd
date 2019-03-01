@@ -10,7 +10,8 @@ var update_sensing = false
 var organism
 var move_enabled = false
 
-var tolerance = [10, 1, 2, 20]
+var t_changed
+var tolerance = [3.0, 3.0, 3.0, 3.0]
 var danger = [0, 0, 0, 0]
 var resource_timers = []
 var UIPanel
@@ -35,7 +36,6 @@ func check_if_resources(ndx):
 			UIPanel.get_node(res_string).modulate = Color(1, 0, 0, 1)
 	else:
 		organism.get_parent()._on_Organism_died(organism)
-	print(danger[0] + danger[1] + danger[2] + danger[3])
 
 func on_Timer_Timout(ndx):
 	consume_resources(ndx)
@@ -46,6 +46,10 @@ func on_Timer_Timout(ndx):
 
 func consume_resources(ndx):
 	organism.resources[ndx] = max(0, organism.resources[ndx] - 1)
+	if t_changed:
+		for t in range(4):
+			resource_timers[t].set_wait_time(tolerance[t])
+		t_changed = false
 	check_if_resources(ndx)
 
 func begin_timed():

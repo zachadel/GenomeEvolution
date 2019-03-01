@@ -45,9 +45,9 @@ margin_top = 0.0
 margin_right = 0.0
 margin_bottom = 0.0
 
-[connection signal="next_turn" from="Canvas_CardTable/CardTable" to="WorldMap" method="_on_CardTable_next_turn"]
-
 [connection signal="next_turn" from="Canvas_CardTable/CardTable" to="." method="_on_CardTable_next_turn"]
+
+[connection signal="next_turn" from="Canvas_CardTable/CardTable" to="WorldMap" method="_on_CardTable_next_turn"]
 
 [connection signal="player_done" from="WorldMap" to="Canvas_CardTable/CardTable" method="_on_WorldMap_player_done"]
 

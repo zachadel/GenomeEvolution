@@ -12,7 +12,7 @@ var born_on_turn
 var died_on_turn
 
 var energy
-var resources = [10, 10, 10, 10] #the 4 resource groups
+var resources = [100, 100, 100, 100] #the 4 resource groups
 var MIN_ENERGY = 0;
 var MAX_ENERGY = 10;
 var MAX_ALLOCATED_ENERGY = 10;
