@@ -35,13 +35,13 @@ func tile_distance(curr, prev):
 
 func _on_Area2D_input_event(viewport, event, shape_idx):
 	var player = get_tree().get_root().get_node("Control/WorldMap/Player")
-	var distance = tile_distance(player.tile_ndx.position, position)
+	var distance = tile_distance(player.curr_tile.position, position)
 	if player.move_enabled:
-		if event.is_action_pressed("mouse_left") and !hidden and (map_ndx != player.tile_ndx.map_ndx):
+		if event.is_action_pressed("mouse_left") and !hidden and (map_ndx != player.curr_tile.map_ndx):
 			if player.organism.energy >= (player.organism.MIN_ENERGY + distance):
 				player.position = position
-				player.prev_tile_ndx = player.tile_ndx
-				player.tile_ndx = self
+				player.prev_tile = player.curr_tile
+				player.curr_tile = self
 				get_tree().get_root().get_node("Control/WorldMap").has_moved = true
 				player.organism.update_energy(-distance)
 				print(biome_rank)

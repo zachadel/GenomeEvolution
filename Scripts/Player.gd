@@ -2,8 +2,8 @@ extends Node2D
 
 signal changed
 
-onready var tile_ndx
-var prev_tile_ndx
+onready var curr_tile
+var prev_tile
 var sensing_strength
 var prev_sensing_strength = -1
 var update_sensing = false
@@ -12,6 +12,7 @@ var move_enabled = false
 
 var t_changed
 var tolerance = [3.0, 3.0, 3.0, 3.0]
+var res_breaking_proficiency = [5, 5, 5, 5]
 var danger = [0, 0, 0, 0]
 var resource_timers = []
 var UIPanel
@@ -40,6 +41,11 @@ func check_if_resources(ndx):
 func on_Timer_Timout(ndx):
 	consume_resources(ndx)
 	emit_signal("changed")
+
+func acquire_resources():
+	organism.resources += curr_tile.res_2d_array[int(rand_range(0, res_breaking_proficiency[0]))]
+	#some other stuff above too!
+	pass
 
 func consume_resources(ndx):
 	organism.resources[ndx] = max(0, organism.resources[ndx] - 1)

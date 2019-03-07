@@ -27,8 +27,8 @@ func _ready():
 	
 	spawn_map()
 	player.position = tile_map[ceil(tile_col/2)][ceil(tile_rows / 2)].position
-	player.tile_ndx = tile_map[ceil(tile_col/2)][ceil(tile_rows / 2)]
-	player.prev_tile_ndx = tile_map[ceil(tile_col/2)][ceil(tile_rows / 2)]
+	player.curr_tile = tile_map[ceil(tile_col/2)][ceil(tile_rows / 2)]
+	player.prev_tile = tile_map[ceil(tile_col/2)][ceil(tile_rows / 2)]
 	learn(tile_map[ceil(tile_col/2)][ceil(tile_rows / 2)], player.sensing_strength)
 	
 	emit_signal("tiles_done")
@@ -96,12 +96,12 @@ func spread_neighbors(center_tile, tile_influence_color, strength, orig_stren):
 
 func _process(delta):
 	if has_moved:
-		forget(tile_map[player.prev_tile_ndx.map_ndx.x][player.prev_tile_ndx.map_ndx.y], max(2, floor(player.sensing_strength / 2) + 1))
-		learn(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y], max(2, floor(player.sensing_strength / 2) + 1))
+		forget(tile_map[player.prev_tile.map_ndx.x][player.prev_tile.map_ndx.y], max(2, floor(player.sensing_strength / 2) + 1))
+		learn(tile_map[player.curr_tile.map_ndx.x][player.curr_tile.map_ndx.y], max(2, floor(player.sensing_strength / 2) + 1))
 		has_moved = false
 	if (player.update_sensing):
-		forget(tile_map[player.prev_tile_ndx.map_ndx.x][player.prev_tile_ndx.map_ndx.y], max(2, floor(player.prev_sensing_strength / 2) + 1))
-		learn(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y], max(2, floor(player.sensing_strength / 2) + 1))
+		forget(tile_map[player.prev_tile.map_ndx.x][player.prev_tile.map_ndx.y], max(2, floor(player.prev_sensing_strength / 2) + 1))
+		learn(tile_map[player.curr_tile.map_ndx.x][player.curr_tile.map_ndx.y], max(2, floor(player.sensing_strength / 2) + 1))
 		player.prev_sensing_strength = player.sensing_strength
 		player.update_sensing = false
 	update_energy_allocation(player.organism.energy)
@@ -166,14 +166,15 @@ func _on_CardTable_next_turn(turn_text, round_num):
 
 var res_stack = 0
 func convert_res_to_energy():
-	var res_vec =  tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources
-	res_stack += get_round_res(res_vec)
-
-	tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.x = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.x - 1, 0)
-	tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.y = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.y - 1, 0)
-	tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.z = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.z - 1, 0)
-	tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.w = max(tile_map[player.tile_ndx.map_ndx.x][player.tile_ndx.map_ndx.y].resources.w - 1, 0)
+	var cur_player_tile =  tile_map[player.curr_tile.map_ndx.x][player.curr_tile.map_ndx.y]
 	
+	player.acquire_resources()
+
+#	tile_map[player.curr_tile.map_ndx.x][player.curr_tile.map_ndx.y].resources.x = max(tile_map[player.curr_tile.map_ndx.x][player.curr_tile.map_ndx.y].resources.x - 1, 0)
+#	tile_map[player.curr_tile.map_ndx.x][player.curr_tile.map_ndx.y].resources.y = max(tile_map[player.curr_tile.map_ndx.x][player.curr_tile.map_ndx.y].resources.y - 1, 0)
+#	tile_map[player.curr_tile.map_ndx.x][player.curr_tile.map_ndx.y].resources.z = max(tile_map[player.curr_tile.map_ndx.x][player.curr_tile.map_ndx.y].resources.z - 1, 0)
+#	tile_map[player.curr_tile.map_ndx.x][player.curr_tile.map_ndx.y].resources.w = max(tile_map[player.curr_tile.map_ndx.x][player.curr_tile.map_ndx.y].resources.w - 1, 0)
+
 	if res_stack >= 4:
 		player.organism.update_energy(1)
 		res_stack -= 4;
