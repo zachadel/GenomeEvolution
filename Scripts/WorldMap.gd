@@ -161,8 +161,6 @@ var grace_period = 1
 func _on_CardTable_next_turn(turn_text, round_num):
 	if round_num >= 7:
 		convert_res_to_energy()
-		if round_num > grace_period:
-			player.begin_timed()
 
 var res_stack = 0
 func convert_res_to_energy():

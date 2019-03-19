@@ -158,7 +158,7 @@ func _on_chromes_elm_clicked(elm):
 			else:
 				selected_gap = elm;
 				upd_repair_opts(elm);
-			
+				print("repair?")
 			for g in $chromes.gap_list:
 				g.disable(selected_gap != null && g != selected_gap);
 		"gene":
@@ -650,4 +650,16 @@ func update_energy_allocation(type, amount):
 	energy_allocations[type] += amount;
 	energy_allocation_panel.update_energy_allocation(type, energy_allocations[type]);
 	energy_allocation_panel.update_energy(energy);
-	
+
+var costs = {
+	"move" : 5,
+	"repair" : 2
+}
+
+func use_resources(resource_cost):
+	for i in range(4):
+		resources[i] = min(resource_cost[i], 0)
+
+
+
+

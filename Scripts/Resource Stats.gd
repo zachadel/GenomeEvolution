@@ -11,27 +11,8 @@ func _ready():
 
 func _process(delta):
 	if player != null:
-		if player.sensing_strength >= 3:
-			$Title.text = "Resources for tile (" + String(player.tile_ndx.map_ndx.x) + ", " + String(player.tile_ndx.map_ndx.x) + ")"
-		else:
-			$Title.text = "Resources for tile (x, y)"
+		pass
 		
-		
-		if player.sensing_strength >= 5:
-			#for i in range(0, 10):
-			$"Res 1/Amount".text = String(player.tile_ndx.resource_2d_array[0][9])
-			$"Res 2/Amount".text = String(player.tile_ndx.resources.y)
-			$"Res 3/Amount".text = String(player.tile_ndx.resources.z)
-			#$"Res 4/Amount".text = String(player.tile_ndx.resources.w)
-		else:
-			$"Res 1/Amount".text = "???"
-			$"Res 2/Amount".text = "???"
-			$"Res 3/Amount".text = "???"
-	
-		if player.sensing_strength >= 6:
-			$InfoPanel.text = "Sensing at current max level..."
-		else:
-			$InfoPanel.text = "Upgrade Sensing to Know More"
 
 func set_player(world_player):
 	player = world_player
