@@ -656,10 +656,14 @@ var costs = {
 	"repair" : 2
 }
 
-func use_resources(resource_cost):
-	for i in range(4):
-		resources[i] = min(resource_cost[i], 0)
-
-
+func use_resources(action):
+	#for i in range(4):
+	#	resources[i] = min(resource_cost[i], 0)
+	
+	match action:
+		"move":
+			resources[0] -= costs[action]
+		"repair":
+			resources[1] -= costs[action]
 
 

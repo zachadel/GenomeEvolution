@@ -42,6 +42,11 @@ func acquire_resources():
 	#some other stuff above too!
 	pass
 
-func consume_resources(cost):
-	organism.use_resources(cost)
+func consume_resources(action):
+	organism.use_resources(action)
 	check_if_resources()
+
+
+
+
+
