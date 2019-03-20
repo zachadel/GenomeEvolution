@@ -669,7 +669,6 @@ var costs = {
 }
 
 func use_resources(action):
-
 	for i in range(4):
 		resources[i] -= costs[action][i]
 

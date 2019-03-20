@@ -4,6 +4,7 @@ signal changed
 
 onready var curr_tile
 var prev_tile
+var breaking_strength = [5, 5, 5, 5]
 var sensing_strength
 var prev_sensing_strength = -1
 var update_sensing = false
@@ -38,7 +39,7 @@ func on_Timer_Timout(ndx):
 	emit_signal("changed")
 
 func acquire_resources():
-	#organism.resources += curr_tile.res_2d_array[int(rand_range(0, res_breaking_proficiency[0]))]
+	organism.resources += curr_tile.res_2d_array[int(rand_range(0, res_breaking_proficiency[0]))]
 	#some other stuff above too!
 	pass
 
