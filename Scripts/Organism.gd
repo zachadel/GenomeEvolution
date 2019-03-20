@@ -443,6 +443,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 							$chromes.dupe_elm(copy_elm);
 							$chromes.close_gap(gap);
 							
+				get_tree().get_root().get_node("Control/WorldMap").player.consume_resources("repair_cp")
 				print("repair copy pattern");
 			2: # Join Ends
 				if (!roll_storage[1].has(gap)):
@@ -491,7 +492,8 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 							$chromes.dupe_elm(copy_elm);
 							$chromes.close_gap(gap)
 						emit_signal("justnow_update", "Joined ends for the gap at %s, %d; duplicated a %s gene in the repair." % [cmsm.get_parent().name, g_idx, copy_elm.id]);
-		
+				
+				get_tree().get_root().get_node("Control/WorldMap").player.consume_resources("repair_je")
 				print("repair join ends")
 		
 		gene_selection.erase(gap);
@@ -656,15 +658,16 @@ func update_energy_allocation(type, amount):
 	energy_allocation_panel.update_energy(energy);
 
 var costs = {
-	"move" : 5,
-	"repair" : 2
+	"move" : 10,
+	"repair_cp" : 5,
+	"repair_je" : 2
 }
 
 func use_resources(action):
 	match action:
 		"move":
 			resources[0] -= costs[action]
-		"repair":
+		"repair_cp", "repair_je":
 			resources[1] -= costs[action]
 
 
