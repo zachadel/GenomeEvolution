@@ -381,6 +381,10 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 				else:
 					$chromes.close_gap(gap);
 				emit_signal("justnow_update", "Gap at %s, %d closed: collapsed %d genes and ended due to %s." % [cmsm.get_parent().name, g_idx, collapsed_so_far, ended_due_to]);
+			
+				get_tree().get_root().get_node("Control/WorldMap").player.consume_resources("repair_cd")
+				print("repair duplicates");
+			
 			1: # Copy Pattern
 				choice_info["left"].highlight_border(false);
 				if (!roll_storage[0].has(gap)):
@@ -658,16 +662,15 @@ func update_energy_allocation(type, amount):
 	energy_allocation_panel.update_energy(energy);
 
 var costs = {
-	"move" : 10,
-	"repair_cp" : 5,
-	"repair_je" : 2
+	"move" : [10, 0, 0, 0],
+	"repair_cd" : [0, 1, 5, 0],
+	"repair_cp" : [0, 3, 3, 0],
+	"repair_je" : [0, 5, 1, 0]
 }
 
 func use_resources(action):
-	match action:
-		"move":
-			resources[0] -= costs[action]
-		"repair_cp", "repair_je":
-			resources[1] -= costs[action]
+
+	for i in range(4):
+		resources[i] -= costs[action][i]
 
 
