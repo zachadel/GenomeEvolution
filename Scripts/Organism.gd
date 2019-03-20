@@ -158,7 +158,6 @@ func _on_chromes_elm_clicked(elm):
 			else:
 				selected_gap = elm;
 				upd_repair_opts(elm);
-				print("repair?")
 			for g in $chromes.gap_list:
 				g.disable(selected_gap != null && g != selected_gap);
 		"gene":
@@ -443,6 +442,8 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 						else:
 							$chromes.dupe_elm(copy_elm);
 							$chromes.close_gap(gap);
+							
+				print("repair copy pattern");
 			2: # Join Ends
 				if (!roll_storage[1].has(gap)):
 					roll_storage[1][gap] = Game.rollJoinEnds();
@@ -490,6 +491,9 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 							$chromes.dupe_elm(copy_elm);
 							$chromes.close_gap(gap)
 						emit_signal("justnow_update", "Joined ends for the gap at %s, %d; duplicated a %s gene in the repair." % [cmsm.get_parent().name, g_idx, copy_elm.id]);
+		
+				print("repair join ends")
+		
 		gene_selection.erase(gap);
 		highlight_gap_choices();
 
@@ -657,9 +661,6 @@ var costs = {
 }
 
 func use_resources(action):
-	#for i in range(4):
-	#	resources[i] = min(resource_cost[i], 0)
-	
 	match action:
 		"move":
 			resources[0] -= costs[action]

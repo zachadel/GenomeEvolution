@@ -168,11 +168,6 @@ func convert_res_to_energy():
 	
 	player.acquire_resources()
 
-#	tile_map[player.curr_tile.map_ndx.x][player.curr_tile.map_ndx.y].resources.x = max(tile_map[player.curr_tile.map_ndx.x][player.curr_tile.map_ndx.y].resources.x - 1, 0)
-#	tile_map[player.curr_tile.map_ndx.x][player.curr_tile.map_ndx.y].resources.y = max(tile_map[player.curr_tile.map_ndx.x][player.curr_tile.map_ndx.y].resources.y - 1, 0)
-#	tile_map[player.curr_tile.map_ndx.x][player.curr_tile.map_ndx.y].resources.z = max(tile_map[player.curr_tile.map_ndx.x][player.curr_tile.map_ndx.y].resources.z - 1, 0)
-#	tile_map[player.curr_tile.map_ndx.x][player.curr_tile.map_ndx.y].resources.w = max(tile_map[player.curr_tile.map_ndx.x][player.curr_tile.map_ndx.y].resources.w - 1, 0)
-
 	if res_stack >= 4:
 		player.organism.update_energy(1)
 		res_stack -= 4;
