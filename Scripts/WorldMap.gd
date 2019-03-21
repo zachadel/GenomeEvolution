@@ -164,10 +164,12 @@ func _on_CardTable_next_turn(turn_text, round_num):
 
 var res_stack = 0
 func convert_res_to_energy():
-	var cur_player_tile =  tile_map[player.curr_tile.map_ndx.x][player.curr_tile.map_ndx.y]
-	
-	player.acquire_resources()
+	#moves resources from the tile to the player
+	var ndices_arr = player.acquire_resources()
+	for ndices in ndices_arr:
+		tile_map[player.curr_tile.map_ndx.x][player.curr_tile.map_ndx.y].resource_2d_array[ndices[0]][ndices[1]] -= ndices[2]
 
+	#outdated mechanic for energy
 	if res_stack >= 4:
 		player.organism.update_energy(1)
 		res_stack -= 4;

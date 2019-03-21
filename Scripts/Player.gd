@@ -4,14 +4,13 @@ signal changed
 
 onready var curr_tile
 var prev_tile
-var breaking_strength = [5, 5, 5, 5]
+var breaking_strength = [Vector2(3, 5), Vector2(3, 5), Vector2(3, 5), Vector2(3, 5)]
 var sensing_strength
 var prev_sensing_strength = -1
 var update_sensing = false
 var organism
 var move_enabled = false
 
-var t_changed
 var tolerance = [3.0, 3.0, 3.0, 3.0]
 var danger = [0, 0, 0, 0]
 var UIPanel
@@ -39,9 +38,14 @@ func on_Timer_Timout(ndx):
 	emit_signal("changed")
 
 func acquire_resources():
-	organism.resources += curr_tile.res_2d_array[int(rand_range(0, res_breaking_proficiency[0]))]
-	#some other stuff above too!
-	pass
+	var ndices_array = []
+	for i in range(4):
+		var res_rarity = int(rand_range(1, sensing_strength))
+		var amount = max(0, curr_tile.resource_2d_array[i][res_rarity] * (res_rarity/20) + 1)
+		amount = min(amount,  int(rand_range(breaking_strength[i].x, breaking_strength[i].y)))
+		organism.resources[i] += amount
+		ndices_array.append([i, res_rarity, amount])
+	return ndices_array
 
 func consume_resources(action):
 	organism.use_resources(action)
