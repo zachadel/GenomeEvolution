@@ -23,6 +23,8 @@ func _process(delta):
 	pass
 
 func check_if_resources():
+	UIPanel = get_node("../WorldMap_UI/UIPanel");
+	
 	for i in range(4):
 		if organism.resources[i] <= 0:
 			danger[i] = 1

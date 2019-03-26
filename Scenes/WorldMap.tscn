@@ -50,7 +50,6 @@ _sections_unfolded = [ "Rect" ]
 
 [node name="GridContainer" type="GridContainer" parent="WorldMap_UI/UIPanel" index="0"]
 
-editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 0.0
 anchor_right = 0.5
@@ -471,14 +470,15 @@ anchor_right = 0.5
 anchor_bottom = 1.0
 margin_left = 465.0
 margin_top = -85.0
-margin_bottom = -186.0
+margin_right = 241.0
+margin_bottom = -171.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-text = "Grace Period. Resources will begin depletion on round 2. Lose all of 2 types and you'll die!"
+text = "Lose all of 2 types and you'll die!"
 align = 1
 percent_visible = 1.0
 lines_skipped = 0
@@ -619,9 +619,9 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 alignment = 2
 
-[connection signal="player_done" from="." to="WorldMap_UI/ResourceStatsPanel" method="_on_WorldMapControl_player_done"]
-
 [connection signal="player_done" from="." to="WorldMap_UI/UIPanel" method="_on_WorldMapControl_player_done"]
+
+[connection signal="player_done" from="." to="WorldMap_UI/ResourceStatsPanel" method="_on_WorldMapControl_player_done"]
 
 [connection signal="tiles_done" from="." to="WorldMap_UI/ResourceStatsPanel" method="_on_World_Map_Control_tiles_done"]
 
