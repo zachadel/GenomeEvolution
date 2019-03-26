@@ -53,7 +53,7 @@ func _on_Organism_justnow_update(text):
 	justnow_label.text = text;
 
 func _on_Organism_updated_gaps(has_gaps, gap_text):
-	$btn_nxt.disabled = has_gaps;
+	$button_grid.get_node("btn_nxt").disabled = has_gaps;
 	criteria_label.text = gap_text;
 
 func _on_ilist_choices_item_activated(idx):
@@ -80,10 +80,10 @@ func _on_Organism_died(org):
 	$GameOver.popup_centered()
 	$GameOver.display()
 	Game.round_num = 0
-	$btn_nxt.disabled = true;
+	$button_grid.get_node("btn_nxt").disabled = true;
 
 func check_if_ready():
-	$btn_nxt.disabled = $Organism.is_dead() || wait_on_anim || wait_on_select;
+	$button_grid.get_node("btn_nxt").disabled = $Organism.is_dead() || wait_on_anim || wait_on_select;
 
 func _on_btn_energy_allocation_pressed():
 	$pnl_energy_allocation.visible = true;

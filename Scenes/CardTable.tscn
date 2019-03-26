@@ -9,7 +9,7 @@
 [ext_resource path="res://Scripts/pnl_energy_allocation.gd" type="Script" id=7]
 [ext_resource path="res://Scripts/GameOver.gd" type="Script" id=8]
 
-[node name="Control" type="Control"]
+[node name="Control" type="Control" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -30,33 +30,7 @@ margin_top = 1.0
 margin_right = 1.0
 margin_bottom = 551.0
 
-[node name="btn_nxt" type="Button" parent="." index="1"]
-
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -145.0
-margin_top = -67.0
-margin_right = -13.0
-margin_bottom = -13.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
-text = "Continue"
-flat = false
-align = 1
-_sections_unfolded = [ "Mouse" ]
-
-[node name="ChromosomeStatus" parent="." index="2" instance=ExtResource( 3 )]
+[node name="ChromosomeStatus" parent="." index="1" instance=ExtResource( 3 )]
 
 anchor_left = 0.5
 anchor_right = 0.5
@@ -67,33 +41,7 @@ margin_bottom = 583.0
 rect_min_size = Vector2( 0, 50 )
 _sections_unfolded = [ "Anchor", "Margin", "Rect", "Scroll" ]
 
-[node name="btn_energy_allocation" type="Button" parent="." index="3"]
-
-anchor_left = 0.0
-anchor_top = 1.0
-anchor_right = 0.0
-anchor_bottom = 1.0
-margin_left = 100.0
-margin_top = -220.0
-margin_right = 250.0
-margin_bottom = -145.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
-text = "Energy Allocation"
-flat = false
-align = 1
-_sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "Rect" ]
-
-[node name="lbl_turn" type="Label" parent="." index="4"]
+[node name="lbl_turn" type="Label" parent="." index="2"]
 
 anchor_left = 0.0
 anchor_top = 1.0
@@ -115,7 +63,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="sc_justnow" type="ScrollContainer" parent="." index="5"]
+[node name="sc_justnow" type="ScrollContainer" parent="." index="3"]
 
 editor/display_folded = true
 anchor_left = 0.5
@@ -162,7 +110,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Rect" ]
 
-[node name="sc_criteria" type="ScrollContainer" parent="." index="6"]
+[node name="sc_criteria" type="ScrollContainer" parent="." index="4"]
 
 editor/display_folded = true
 anchor_left = 1.0
@@ -210,7 +158,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Anchor", "Rect" ]
 
-[node name="pnl_repair_choices" type="Panel" parent="." index="7"]
+[node name="pnl_repair_choices" type="Panel" parent="." index="5"]
 
 editor/display_folded = true
 visible = false
@@ -362,7 +310,7 @@ text = "Repair"
 flat = false
 align = 1
 
-[node name="pnl_energy_allocation" type="Panel" parent="." index="8"]
+[node name="pnl_energy_allocation" type="Panel" parent="." index="6"]
 
 editor/display_folded = true
 visible = false
@@ -1101,7 +1049,7 @@ flat = false
 align = 1
 _sections_unfolded = [ "Anchor", "Margin" ]
 
-[node name="GameOver" type="PopupPanel" parent="." index="9"]
+[node name="GameOver" type="PopupPanel" parent="." index="7"]
 
 editor/display_folded = true
 visible = false
@@ -1238,11 +1186,82 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Anchor" ]
 
+[node name="button_grid" type="GridContainer" parent="." index="8"]
+
+editor/display_folded = true
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -140.0
+margin_top = -150.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_constants/vseparation = 20
+custom_constants/hseparation = 0
+columns = 1
+_sections_unfolded = [ "custom_constants" ]
+
+[node name="btn_energy_allocation" type="Button" parent="button_grid" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 122.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 120, 60 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Energy Allocation"
+flat = false
+align = 1
+_sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "Rect" ]
+
+[node name="btn_nxt" type="Button" parent="button_grid" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 80.0
+margin_right = 122.0
+margin_bottom = 140.0
+rect_min_size = Vector2( 120, 60 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Continue"
+flat = false
+align = 1
+_sections_unfolded = [ "Mouse" ]
+
 [connection signal="player_done" from="." to="pnl_energy_allocation" method="_on_Control_player_done"]
 
-[connection signal="died" from="Organism" to="GameOver" method="_on_Organism_died"]
-
 [connection signal="died" from="Organism" to="." method="_on_Organism_died"]
+
+[connection signal="died" from="Organism" to="GameOver" method="_on_Organism_died"]
 
 [connection signal="doing_work" from="Organism" to="." method="_on_Organism_doing_work"]
 
@@ -1251,10 +1270,6 @@ _sections_unfolded = [ "Anchor" ]
 [connection signal="show_repair_opts" from="Organism" to="." method="_on_Organism_show_repair_opts"]
 
 [connection signal="updated_gaps" from="Organism" to="." method="_on_Organism_updated_gaps"]
-
-[connection signal="pressed" from="btn_nxt" to="." method="_on_btn_nxt_pressed"]
-
-[connection signal="pressed" from="btn_energy_allocation" to="." method="_on_btn_energy_allocation_pressed"]
 
 [connection signal="item_activated" from="pnl_repair_choices/hsplit/ilist_choices" to="." method="_on_ilist_choices_item_activated"]
 
@@ -1291,5 +1306,9 @@ _sections_unfolded = [ "Anchor" ]
 [connection signal="pressed" from="GameOver/GridContainer/Reset" to="GameOver" method="_on_Reset_pressed"]
 
 [connection signal="pressed" from="GameOver/GridContainer/Exit" to="GameOver" method="_on_Exit_pressed"]
+
+[connection signal="pressed" from="button_grid/btn_energy_allocation" to="." method="_on_btn_energy_allocation_pressed"]
+
+[connection signal="pressed" from="button_grid/btn_nxt" to="." method="_on_btn_nxt_pressed"]
 
 
