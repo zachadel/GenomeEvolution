@@ -43,20 +43,20 @@ _sections_unfolded = [ "Anchor", "Margin", "Rect", "Scroll" ]
 
 [node name="lbl_turn" type="Label" parent="." index="2"]
 
-anchor_left = 0.0
+anchor_left = 1.0
 anchor_top = 1.0
-anchor_right = 0.0
+anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 25.0
-margin_top = -66.0
-margin_right = 262.0
-margin_bottom = -6.0
+margin_left = -397.0
+margin_top = -60.0
+margin_right = -160.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
+align = 2
 valign = 1
 autowrap = true
 percent_visible = 1.0
