@@ -349,3 +349,21 @@ func append_atelist(ate):
 
 func _on_cmsm_changed():
 	get_organism()
+
+# GENE SINE FUNCTION ANIMATION:
+	
+const SIN_AMP = 10;
+const SIN_FREQ = PI/2; # rad/s
+var sin_period = 2*PI / SIN_FREQ;
+var total_time = 0;
+const OFFSET_FACTOR = 0.5;
+
+func _process(delta):
+    total_time = total_time + delta;
+    
+    # I'm afraid of overflow
+    if (total_time >= sin_period):
+        total_time -= sin_period;
+    
+    for cmsm in get_cmsms(): for i in cmsm.get_child_count():
+    	cmsm.get_child(i).rect_position.y = SIN_AMP * sin(total_time * SIN_FREQ + OFFSET_FACTOR * i);

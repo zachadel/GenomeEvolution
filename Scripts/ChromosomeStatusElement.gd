@@ -16,7 +16,7 @@ func setup(_id, _mode, _ess_class = null, ate_personality = null, _count = 0):
 			if (_ess_class in Game.ESSENTIAL_CLASSES.values()):
 				ess_class = _ess_class;
 				tex = Game.ess_textures[_ess_class];
-				$HBoxContainer/ImageContainer/Image.self_modulate = Color(.15, .80, 0);
+				#$HBoxContainer/ImageContainer/Image.self_modulate = Color(.15, .80, 0); Commented out to remove green tint on the genes
 			else:
 				print("!! Trying to put ", name, " (", _id, ") in non-existent eclass (", _ess_class, ")");
 		"ate":

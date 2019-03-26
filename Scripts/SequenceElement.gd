@@ -96,7 +96,7 @@ func upd_display():
 					self_modulate = Color(.55, 0, 0);
 					#$lbl.text += " (Silenced)";
 				"essential":
-					self_modulate = Color(.15, .8, 0);
+					#self_modulate = Color(.15, .8, 0); Commented out to make the gene icons be shown with no green tint
 					if (ess_version > 1):
 						$lbl.text += "-" + str(ess_version);
 					#$lbl.text += " (Essential)";
@@ -122,7 +122,7 @@ func silence_ate():
 
 func disable(dis):
 	disabled = dis;
-	$GrayFilter.visible = dis;
+	#$GrayFilter.visible = dis; Commented out in order to remove the gray box around the elements in the chomosome
 	highlight_border(!dis);
 
 func highlight_border(on):
