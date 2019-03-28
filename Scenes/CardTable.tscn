@@ -9,7 +9,7 @@
 [ext_resource path="res://Scripts/pnl_energy_allocation.gd" type="Script" id=7]
 [ext_resource path="res://Scripts/GameOver.gd" type="Script" id=8]
 
-[node name="Control" type="Control" index="0"]
+[node name="Control" type="Control"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -29,6 +29,7 @@ margin_left = 1.0
 margin_top = 1.0
 margin_right = 1.0
 margin_bottom = 551.0
+_sections_unfolded = [ "Mouse", "Rect" ]
 
 [node name="ChromosomeStatus" parent="." index="1" instance=ExtResource( 3 )]
 
@@ -39,7 +40,6 @@ margin_top = 521.0
 margin_right = 550.0
 margin_bottom = 583.0
 rect_min_size = Vector2( 0, 50 )
-_sections_unfolded = [ "Anchor", "Margin", "Rect", "Scroll" ]
 
 [node name="lbl_turn" type="Label" parent="." index="2"]
 

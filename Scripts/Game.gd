@@ -2,6 +2,7 @@ extends Node
 
 var sqelm_textures = {"gene": load("res://Assets/Images/gene.png"), "break": load("res://Assets/Images/break.png")};
 var ess_textures = {};
+var ess_textures_noDNA = {};
 var default_te_texture = load("res://Assets/Images/tes/default_te.png");
 enum ESSENTIAL_CLASSES {Replication, Locomotion, Manipulation, Sensing, Construction, Deconstruction};
 enum TURN_TYPES {NewTEs, TEJump, RepairBreaks, EnvironmentalDamage, Recombination, Evolve, CheckViability};
@@ -32,6 +33,7 @@ func _ready():
 	
 	for c in ESSENTIAL_CLASSES.values():
 		ess_textures[c] = load("res://Assets/Images/genes/" + class_to_string(c) + ".png");
+		ess_textures_noDNA[c] = load("res://Assets/Images/genes_noDNA/" + class_to_string(c) + ".png"); #textures for genes w/o DNA background
 		essential_versions[c] = 1;
 	
 	# Import ATE Personalities
