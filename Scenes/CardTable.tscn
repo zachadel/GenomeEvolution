@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Scripts/CardTable.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Organism.tscn" type="PackedScene" id=2]
@@ -8,9 +8,10 @@
 [ext_resource path="res://Assets/Images/icons/join_ends.png" type="Texture" id=6]
 [ext_resource path="res://Scripts/pnl_energy_allocation.gd" type="Script" id=7]
 [ext_resource path="res://Scripts/GameOver.gd" type="Script" id=8]
-[ext_resource path="res://Assets/Images/half_radial_progress/under.png" type="Texture" id=9]
-[ext_resource path="res://Assets/Images/half_radial_progress/over.png" type="Texture" id=10]
-[ext_resource path="res://Assets/Images/half_radial_progress/progress.png" type="Texture" id=11]
+[ext_resource path="res://Scenes/resources_grid.gd" type="Script" id=9]
+[ext_resource path="res://Assets/Images/half_radial_progress/under.png" type="Texture" id=10]
+[ext_resource path="res://Assets/Images/half_radial_progress/over.png" type="Texture" id=11]
+[ext_resource path="res://Assets/Images/half_radial_progress/progress.png" type="Texture" id=12]
 
 [node name="Control" type="Control" index="0"]
 
@@ -1278,10 +1279,12 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
+script = ExtResource( 9 )
 _sections_unfolded = [ "Margin", "Visibility" ]
 
 [node name="GridContainer" type="GridContainer" parent="resources_grid" index="0"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -1323,13 +1326,40 @@ page = 0.0
 value = 20.0
 exp_edit = false
 rounded = false
-texture_under = ExtResource( 9 )
-texture_over = ExtResource( 10 )
-texture_progress = ExtResource( 11 )
+texture_under = ExtResource( 10 )
+texture_over = ExtResource( 11 )
+texture_progress = ExtResource( 12 )
 fill_mode = 4
 radial_fill_degrees = 180.0
 radial_center_offset = Vector2( -27, 0 )
 nine_patch_stretch = false
+
+[node name="Label" type="Label" parent="resources_grid/GridContainer/TextureProgress1" index="0"]
+
+self_modulate = Color( 0, 0.976563, 1, 1 )
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -34.0
+margin_top = -50.0
+margin_right = 33.0
+margin_bottom = -36.0
+rect_rotation = 90.0
+rect_scale = Vector2( 1.5, 1.5 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "20"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Margin", "Rect" ]
 
 [node name="TextureProgress2" type="TextureProgress" parent="resources_grid/GridContainer" index="1"]
 
@@ -1353,13 +1383,40 @@ page = 0.0
 value = 20.0
 exp_edit = false
 rounded = false
-texture_under = ExtResource( 9 )
-texture_over = ExtResource( 10 )
-texture_progress = ExtResource( 11 )
+texture_under = ExtResource( 10 )
+texture_over = ExtResource( 11 )
+texture_progress = ExtResource( 12 )
 fill_mode = 4
 radial_fill_degrees = 180.0
 radial_center_offset = Vector2( -27, 0 )
 nine_patch_stretch = false
+
+[node name="Label" type="Label" parent="resources_grid/GridContainer/TextureProgress2" index="0"]
+
+self_modulate = Color( 0, 0.976563, 1, 1 )
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -34.0
+margin_top = -50.0
+margin_right = 33.0
+margin_bottom = -36.0
+rect_rotation = 90.0
+rect_scale = Vector2( 1.5, 1.5 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "20"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Margin" ]
 
 [node name="TextureProgress3" type="TextureProgress" parent="resources_grid/GridContainer" index="2"]
 
@@ -1383,13 +1440,40 @@ page = 0.0
 value = 20.0
 exp_edit = false
 rounded = false
-texture_under = ExtResource( 9 )
-texture_over = ExtResource( 10 )
-texture_progress = ExtResource( 11 )
+texture_under = ExtResource( 10 )
+texture_over = ExtResource( 11 )
+texture_progress = ExtResource( 12 )
 fill_mode = 4
 radial_fill_degrees = 180.0
 radial_center_offset = Vector2( -27, 0 )
 nine_patch_stretch = false
+
+[node name="Label" type="Label" parent="resources_grid/GridContainer/TextureProgress3" index="0"]
+
+self_modulate = Color( 0, 0.976563, 1, 1 )
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -34.0
+margin_top = -50.0
+margin_right = 33.0
+margin_bottom = -36.0
+rect_rotation = 90.0
+rect_scale = Vector2( 1.5, 1.5 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "20"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Margin" ]
 
 [node name="TextureProgress4" type="TextureProgress" parent="resources_grid/GridContainer" index="3"]
 
@@ -1414,13 +1498,40 @@ page = 0.0
 value = 20.0
 exp_edit = false
 rounded = false
-texture_under = ExtResource( 9 )
-texture_over = ExtResource( 10 )
-texture_progress = ExtResource( 11 )
+texture_under = ExtResource( 10 )
+texture_over = ExtResource( 11 )
+texture_progress = ExtResource( 12 )
 fill_mode = 4
 radial_fill_degrees = 180.0
 radial_center_offset = Vector2( -27, 0 )
 nine_patch_stretch = false
+
+[node name="Label" type="Label" parent="resources_grid/GridContainer/TextureProgress4" index="0"]
+
+self_modulate = Color( 0, 0.976563, 1, 1 )
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -34.0
+margin_top = -50.0
+margin_right = 33.0
+margin_bottom = -36.0
+rect_rotation = 90.0
+rect_scale = Vector2( 1.5, 1.5 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "20"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Margin" ]
 
 [connection signal="player_done" from="." to="pnl_energy_allocation" method="_on_Control_player_done"]
 
@@ -1475,5 +1586,21 @@ nine_patch_stretch = false
 [connection signal="pressed" from="button_grid/btn_energy_allocation" to="." method="_on_btn_energy_allocation_pressed"]
 
 [connection signal="pressed" from="button_grid/btn_nxt" to="." method="_on_btn_nxt_pressed"]
+
+[connection signal="mouse_entered" from="resources_grid/GridContainer/TextureProgress1" to="resources_grid" method="_on_TextureProgress1_mouse_entered"]
+
+[connection signal="mouse_exited" from="resources_grid/GridContainer/TextureProgress1" to="resources_grid" method="_on_TextureProgress1_mouse_exited"]
+
+[connection signal="mouse_entered" from="resources_grid/GridContainer/TextureProgress2" to="resources_grid" method="_on_TextureProgress2_mouse_entered"]
+
+[connection signal="mouse_exited" from="resources_grid/GridContainer/TextureProgress2" to="resources_grid" method="_on_TextureProgress2_mouse_exited"]
+
+[connection signal="mouse_entered" from="resources_grid/GridContainer/TextureProgress3" to="resources_grid" method="_on_TextureProgress3_mouse_entered"]
+
+[connection signal="mouse_exited" from="resources_grid/GridContainer/TextureProgress3" to="resources_grid" method="_on_TextureProgress3_mouse_exited"]
+
+[connection signal="mouse_entered" from="resources_grid/GridContainer/TextureProgress4" to="resources_grid" method="_on_TextureProgress4_mouse_entered"]
+
+[connection signal="mouse_exited" from="resources_grid/GridContainer/TextureProgress4" to="resources_grid" method="_on_TextureProgress4_mouse_exited"]
 
 
