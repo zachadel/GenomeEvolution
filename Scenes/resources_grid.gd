@@ -13,12 +13,9 @@ func _ready():
 func _process(delta):
 	
 	for i in range(1, 5):
-		var path = "GridContainer/TextureProgress" + str(i) + "/Label"
-		get_node(path).text = str(org.resources[i - 1])
-#		$GridContainer/TextureProgress1/Label.text = ""
-#		$GridContainer/TextureProgress2/Label.text = ""
-#		$GridContainer/TextureProgress3/Label.text = ""
-#		$GridContainer/TextureProgress4/Label.text = ""
+		var path = "GridContainer/TextureProgress" + str(i)
+		get_node(path + "/Label").text = str(org.resources[i - 1])
+		get_node(path).value = org.resources[i - 1]
 
 
 func _on_TextureProgress1_mouse_entered():
