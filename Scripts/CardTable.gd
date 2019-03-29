@@ -95,3 +95,6 @@ func _on_WorldMap_player_done():
 
 func _on_btn_saveload_pressed():
 	$pnl_saveload.visible = !$pnl_saveload.visible;
+
+func _on_pnl_saveload_loaded():
+	_on_Organism_justnow_update("Loaded from a save.");

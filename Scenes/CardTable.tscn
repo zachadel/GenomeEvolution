@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Scripts/CardTable.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Organism.tscn" type="PackedScene" id=2]
@@ -7,7 +7,8 @@
 [ext_resource path="res://Assets/Images/icons/copy_repair.png" type="Texture" id=5]
 [ext_resource path="res://Assets/Images/icons/join_ends.png" type="Texture" id=6]
 [ext_resource path="res://Scripts/pnl_energy_allocation.gd" type="Script" id=7]
-[ext_resource path="res://Scripts/GameOver.gd" type="Script" id=8]
+[ext_resource path="res://Scripts/pnl_saveload.gd" type="Script" id=8]
+[ext_resource path="res://Scripts/GameOver.gd" type="Script" id=9]
 
 [node name="Control" type="Control" index="0"]
 
@@ -209,8 +210,35 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Anchor", "Rect" ]
 
-[node name="pnl_repair_choices" type="Panel" parent="." index="7"]
+[node name="btn_saveload" type="Button" parent="." index="7"]
 
+anchor_left = 0.0
+anchor_top = 1.0
+anchor_right = 0.0
+anchor_bottom = 1.0
+margin_left = 200.0
+margin_top = -122.0
+margin_right = 326.0
+margin_bottom = -67.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Save / Load"
+flat = false
+align = 1
+_sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "Rect" ]
+
+[node name="pnl_repair_choices" type="Panel" parent="." index="8"]
+
+editor/display_folded = true
 visible = false
 anchor_left = 0.5
 anchor_top = 1.0
@@ -360,7 +388,7 @@ text = "Repair"
 flat = false
 align = 1
 
-[node name="pnl_energy_allocation" type="Panel" parent="." index="8"]
+[node name="pnl_energy_allocation" type="Panel" parent="." index="9"]
 
 editor/display_folded = true
 visible = false
@@ -1099,7 +1127,105 @@ flat = false
 align = 1
 _sections_unfolded = [ "Anchor", "Margin" ]
 
-[node name="GameOver" type="PopupPanel" parent="." index="9"]
+[node name="pnl_saveload" type="Panel" parent="." index="10"]
+
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -791.0
+margin_top = -66.0
+margin_right = -231.0
+margin_bottom = 310.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+script = ExtResource( 8 )
+_sections_unfolded = [ "Anchor", "Margin", "Rect", "Visibility" ]
+
+[node name="tbox_save" type="TextEdit" parent="pnl_saveload" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -134.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+text = ""
+readonly = true
+highlight_current_line = false
+syntax_highlighting = false
+show_line_numbers = true
+highlight_all_occurrences = false
+override_selected_font_color = false
+context_menu_enabled = true
+smooth_scrolling = false
+v_scroll_speed = 80.0
+hiding_enabled = 0
+wrap_lines = true
+caret_block_mode = false
+caret_blink = false
+caret_blink_speed = 0.65
+caret_moving_by_right_click = true
+
+[node name="tbox_load" type="LineEdit" parent="pnl_saveload" index="1"]
+
+anchor_left = 0.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -99.0
+margin_bottom = -75.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 1
+size_flags_horizontal = 1
+size_flags_vertical = 1
+focus_mode = 2
+context_menu_enabled = true
+placeholder_alpha = 0.6
+caret_blink = false
+caret_blink_speed = 0.65
+caret_position = 0
+
+[node name="btn_load" type="Button" parent="pnl_saveload" index="2"]
+
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -96.0
+margin_top = -52.0
+margin_right = -14.0
+margin_bottom = -12.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "L O A D"
+flat = false
+align = 1
+
+[node name="GameOver" type="PopupPanel" parent="." index="11"]
 
 editor/display_folded = true
 visible = false
@@ -1119,7 +1245,7 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 popup_exclusive = false
-script = ExtResource( 8 )
+script = ExtResource( 9 )
 _sections_unfolded = [ "Size Flags" ]
 
 [node name="Label" type="Label" parent="GameOver" index="0"]
@@ -1239,9 +1365,9 @@ _sections_unfolded = [ "Anchor" ]
 
 [connection signal="player_done" from="." to="pnl_energy_allocation" method="_on_Control_player_done"]
 
-[connection signal="died" from="Organism" to="GameOver" method="_on_Organism_died"]
-
 [connection signal="died" from="Organism" to="." method="_on_Organism_died"]
+
+[connection signal="died" from="Organism" to="GameOver" method="_on_Organism_died"]
 
 [connection signal="doing_work" from="Organism" to="." method="_on_Organism_doing_work"]
 
@@ -1254,6 +1380,8 @@ _sections_unfolded = [ "Anchor" ]
 [connection signal="pressed" from="btn_nxt" to="." method="_on_btn_nxt_pressed"]
 
 [connection signal="pressed" from="btn_energy_allocation" to="." method="_on_btn_energy_allocation_pressed"]
+
+[connection signal="pressed" from="btn_saveload" to="." method="_on_btn_saveload_pressed"]
 
 [connection signal="item_activated" from="pnl_repair_choices/hsplit/ilist_choices" to="." method="_on_ilist_choices_item_activated"]
 
@@ -1286,6 +1414,10 @@ _sections_unfolded = [ "Anchor" ]
 [connection signal="pressed" from="pnl_energy_allocation/holder/Sensing_container/S-" to="pnl_energy_allocation" method="_on_sensing_minus_pressed"]
 
 [connection signal="pressed" from="pnl_energy_allocation/btn_exit" to="pnl_energy_allocation" method="_on_btn_exit_pressed"]
+
+[connection signal="loaded" from="pnl_saveload" to="." method="_on_pnl_saveload_loaded"]
+
+[connection signal="pressed" from="pnl_saveload/btn_load" to="pnl_saveload" method="_on_btn_load_pressed"]
 
 [connection signal="pressed" from="GameOver/GridContainer/Reset" to="GameOver" method="_on_Reset_pressed"]
 
