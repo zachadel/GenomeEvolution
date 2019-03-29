@@ -122,6 +122,14 @@ func get_turn_txt():
 		var _x:
 			return "Unknown turn type (#%d)" % _x;
 
+func get_save_str():
+	return "%s:%s" % [turn_idx, card_table.orgn.get_save()];
+
+func load_from_save(save):
+	var s = save.split(":");
+	turn_idx = int(s[0]) - 1;
+	card_table.orgn.load_from_save(s[1]);
+
 func copy_elm(elm):
 	var copy_elm = load("res://Scenes/SequenceElement.tscn").instance();
 	copy_elm.setup_copy(elm);

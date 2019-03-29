@@ -65,6 +65,13 @@ func get_center():
 	return Vector2(get_viewport().size.x / 2.0, 
 	get_begin().y + (get_size().y / 2.0));
 
+func get_chromes_save():
+	return "%s|%s" % [get_cmsm(0).get_elms_save(), get_cmsm(1).get_elms_save()];
+
+func load_from_save(left_cmsm, right_cmsm):
+	get_cmsm(0).load_from_save(left_cmsm);
+	get_cmsm(1).load_from_save(right_cmsm);
+
 # CHROMOSOME MODIFICATION FUNCTIONS
 
 func extract_elm(elm, place_gap = true):

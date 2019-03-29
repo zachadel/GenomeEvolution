@@ -51,6 +51,20 @@ func _ready():
 	perform_anims(true);
 	born_on_turn = Game.round_num;
 
+func get_save():
+	return "%s,%s|%s" % [born_on_turn, energy, $chromes.get_chromes_save()];
+
+func load_from_save(save):
+	perform_anims(false);
+	var s = save.split("|");
+	
+	var my_info = s[0].split(",");
+	born_on_turn = int(my_info[0]);
+	energy = int(my_info[1]);
+	
+	$chromes.load_from_save(s[1], s[2]);
+	perform_anims(true);
+
 func _input(ev):
 	if (ev.is_action_pressed("increment")):
 		update_energy(1);

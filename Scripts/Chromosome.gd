@@ -158,6 +158,38 @@ func get_cmsm_pair():
 		return get_parent().get_parent();
 	return null;
 
+func get_elms_save():
+	# An "array" denoted as follows:
+	# elm_0_const_arg_0,elm_0_const_arg_1,elm_0_const_arg_2.elm_1_const_arg_0,elm_1_const_arg_1,elm_1_const_arg_2
+	# Split by .s to get separate elms, then split by ,s to get separate constructor arguments
+	var data = "";
+	for g in get_children():
+		if (data != ""):
+			data += ".";
+		
+		var elm_data = "%s,%s,%s" % [g.type, g.id, g.mode];
+		if (g.ess_class != null):
+			elm_data += ",%s,%s" % [g.ess_class, g.ess_version];
+		
+		data += elm_data;
+	
+	return data;
+
+func load_from_save(save):
+	# Clear chromosome
+	for e in get_children():
+		get_cmsm_pair().remove_elm(e);
+	
+	# Parse & load
+	var elms = save.split(".");
+	for e in elms:
+		var args = e.split(",");
+		var nxt_gelm = load("res://Scenes/SequenceElement.tscn").instance();
+		nxt_gelm.callv("setup", args);
+		if (nxt_gelm.is_gap()):
+			get_cmsm_pair().append_gaplist(nxt_gelm);
+		add_elm(nxt_gelm);
+
 # CHROMOSOME MODIFICATION FUNCTIONS
 
 func create_gap(pos):
