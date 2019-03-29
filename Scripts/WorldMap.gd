@@ -170,9 +170,9 @@ func convert_res_to_energy():
 		tile_map[player.curr_tile.map_ndx.x][player.curr_tile.map_ndx.y].resource_2d_array[ndices[0]][ndices[1]] -= ndices[2]
 
 	#outdated mechanic for energy
-	if res_stack >= 4:
-		player.organism.update_energy(1)
-		res_stack -= 4;
+	#if res_stack >= 4:
+	player.organism.update_energy(1)
+
 
 
 func get_round_res(res_vec):

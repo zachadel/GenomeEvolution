@@ -43,7 +43,6 @@ func _on_Area2D_input_event(viewport, event, shape_idx):
 				player.prev_tile = player.curr_tile
 				player.curr_tile = self
 				get_tree().get_root().get_node("Control/WorldMap").has_moved = true
-				player.organism.update_energy(-distance)
 				for i in range(distance):
 					player.consume_resources("move")
 				print(biome_rank)
