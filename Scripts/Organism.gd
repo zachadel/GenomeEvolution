@@ -383,7 +383,6 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 				emit_signal("justnow_update", "Gap at %s, %d closed: collapsed %d genes and ended due to %s." % [cmsm.get_parent().name, g_idx, collapsed_so_far, ended_due_to]);
 			
 				get_tree().get_root().get_node("Control/WorldMap").player.consume_resources("repair_cd")
-				print("repair duplicates");
 			
 			1: # Copy Pattern
 				choice_info["left"].highlight_border(false);

@@ -9,7 +9,7 @@
 [ext_resource path="res://Assets/Images/Main Menu/Scenes/Buttons/ExitButton.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Assets/Images/Main Menu/Scenes/FadeIn.tscn" type="PackedScene" id=8]
 
-[node name="TitleScreen" type="Control"]
+[node name="TitleScreen" type="Control" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
