@@ -5,10 +5,17 @@ var org
 func _ready():
 	org = get_tree().get_root().get_node("Control/Canvas_CardTable/CardTable/Organism")
 	
-	$GridContainer/TextureProgress1/Label.hide()
-	$GridContainer/TextureProgress2/Label.hide()
-	$GridContainer/TextureProgress3/Label.hide()
-	$GridContainer/TextureProgress4/Label.hide()
+	for i in range(1, 5):
+		var path = "GridContainer/TextureProgress" + str(i)
+		get_node(path + "/Label").text = str(org.resources[i - 1])
+		get_node(path).value = 50
+		get_node(path).value = org.resources[i - 1]
+		get_node(path + "/Label").hide()
+	
+#	$GridContainer/TextureProgress1/Label.hide()
+#	$GridContainer/TextureProgress2/Label.hide()
+#	$GridContainer/TextureProgress3/Label.hide()
+#	$GridContainer/TextureProgress4/Label.hide()
 
 func _process(delta):
 	

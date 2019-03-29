@@ -126,6 +126,13 @@ func find_next_gap(start_idx, step = 1, end_at = -1):
 			return i;
 	return -1;
 
+func find_gene_count_of_type(class_type):
+	var count = 0
+	for i in range(get_child_count()):
+		if (get_child(i).ess_class == class_type):
+			count += 1
+	return count
+
 func find_gene(id):
 	for i in range(get_child_count()):
 		if (get_child(i).id == id):
