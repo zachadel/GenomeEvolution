@@ -383,7 +383,6 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 				emit_signal("justnow_update", "Gap at %s, %d closed: collapsed %d genes and ended due to %s." % [cmsm.get_parent().name, g_idx, collapsed_so_far, ended_due_to]);
 			
 				get_tree().get_root().get_node("Control/WorldMap").player.consume_resources("repair_cd")
-				print("repair duplicates");
 			
 			1: # Copy Pattern
 				choice_info["left"].highlight_border(false);
@@ -519,7 +518,7 @@ func evolve_candidates(candids):
 	if (candids.size() > 0):
 		var justnow = "";
 		for e in candids:
-			if (($chromes.get_cmsm(0).find_all_genes(e.id).size() + $chromes.get_cmsm(1).find_all_genes(e.id).size()) > 1):
+			if (($chromes.get_cmsm(0).find_all_genes(e.id).size() + $chromes.get_cmsm(1).find_all_genes(e.id).size()) > 2):
 				match (Game.rollEvolve()):
 					0:
 						justnow += "%s received a fatal mutation and has become a pseudogene.\n" % e.id;
