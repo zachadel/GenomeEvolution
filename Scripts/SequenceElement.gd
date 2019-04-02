@@ -28,15 +28,25 @@ func setup(_type, _id = "", _mode = "ate", _ess_class = -1, _ess_version = 1):
 	if (type == "gene"):
 		match (mode):
 			"essential":
+				# This will happen for saveloads
+				if (typeof(_ess_class) != TYPE_INT):
+					_ess_class = int(_ess_class);
+					_ess_version = int(_ess_version);
+				
 				if (_ess_class in Game.ESSENTIAL_CLASSES.values()):
 					ess_class = _ess_class;
 					ess_version = _ess_version;
 					tex = Game.ess_textures[_ess_class];
 				else:
 					print("!! Trying to put ", name, " (", _type, ", ", _id, ") in non-existent eclass (", _ess_class, ")");
+					print("Here are the valid values: ", Game.ESSENTIAL_CLASSES.values());
 			"ate":
-				ate_personality = Game.get_random_ate_personality();
-				id = ate_personality["title"];
+				if (id == ""):
+					ate_personality = Game.get_random_ate_personality();
+					id = ate_personality["title"];
+				else:
+					ate_personality = Game.get_ate_personality_by_name(id);
+				
 				tex = ate_personality["art"];
 	else:
 		tex = Game.sqelm_textures[_type];
@@ -114,6 +124,9 @@ func get_cmsm():
 
 func is_gap():
 	return type == "break";
+
+func is_ate():
+	return type == "gene" && mode == "ate";
 
 func silence_ate():
 	if (type == "gene" && mode == "ate"):

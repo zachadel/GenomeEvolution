@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Scripts/CardTable.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Organism.tscn" type="PackedScene" id=2]
@@ -7,13 +7,14 @@
 [ext_resource path="res://Assets/Images/icons/copy_repair.png" type="Texture" id=5]
 [ext_resource path="res://Assets/Images/icons/join_ends.png" type="Texture" id=6]
 [ext_resource path="res://Scripts/pnl_energy_allocation.gd" type="Script" id=7]
-[ext_resource path="res://Scripts/GameOver.gd" type="Script" id=8]
-[ext_resource path="res://Scripts/resources_grid.gd" type="Script" id=9]
-[ext_resource path="res://Assets/Images/half_radial_progress/under.png" type="Texture" id=10]
-[ext_resource path="res://Assets/Images/half_radial_progress/over.png" type="Texture" id=11]
-[ext_resource path="res://Assets/Images/half_radial_progress/progress.png" type="Texture" id=12]
+[ext_resource path="res://Scripts/pnl_saveload.gd" type="Script" id=8]
+[ext_resource path="res://Scripts/GameOver.gd" type="Script" id=9]
+[ext_resource path="res://Scripts/resources_grid.gd" type="Script" id=10]
+[ext_resource path="res://Assets/Images/half_radial_progress/under.png" type="Texture" id=11]
+[ext_resource path="res://Assets/Images/half_radial_progress/over.png" type="Texture" id=12]
+[ext_resource path="res://Assets/Images/half_radial_progress/progress.png" type="Texture" id=13]
 
-[node name="Control" type="Control"]
+[node name="Control" type="Control" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -68,7 +69,6 @@ max_lines_visible = -1
 
 [node name="sc_justnow" type="ScrollContainer" parent="." index="3"]
 
-editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -115,14 +115,13 @@ _sections_unfolded = [ "Rect" ]
 
 [node name="sc_criteria" type="ScrollContainer" parent="." index="4"]
 
-editor/display_folded = true
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -346.0
+margin_left = -476.0
 margin_top = -275.0
-margin_right = -14.0
+margin_right = -144.0
 margin_bottom = -75.0
 rect_min_size = Vector2( 320, 200 )
 rect_pivot_offset = Vector2( 0, 0 )
@@ -1052,7 +1051,106 @@ flat = false
 align = 1
 _sections_unfolded = [ "Anchor", "Margin" ]
 
-[node name="GameOver" type="PopupPanel" parent="." index="7"]
+[node name="pnl_saveload" type="Panel" parent="." index="7"]
+
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 262.0
+margin_top = -217.0
+margin_right = 776.0
+margin_bottom = 208.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+script = ExtResource( 8 )
+_sections_unfolded = [ "Anchor", "Margin", "Rect", "Visibility" ]
+
+[node name="btn_load" type="Button" parent="pnl_saveload" index="0"]
+
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -123.0
+margin_top = -36.0
+margin_right = -3.0
+margin_bottom = -6.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Load"
+flat = false
+align = 1
+_sections_unfolded = [ "Anchor", "Margin" ]
+
+[node name="tbox_load" type="LineEdit" parent="pnl_saveload" index="1"]
+
+anchor_left = 0.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -66.0
+margin_bottom = -42.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 1
+size_flags_horizontal = 1
+size_flags_vertical = 1
+focus_mode = 2
+context_menu_enabled = true
+placeholder_alpha = 0.6
+caret_blink = false
+caret_blink_speed = 0.65
+caret_position = 0
+
+[node name="tbox_save" type="TextEdit" parent="pnl_saveload" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -90.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+text = ""
+readonly = true
+highlight_current_line = false
+syntax_highlighting = false
+show_line_numbers = true
+highlight_all_occurrences = false
+override_selected_font_color = false
+context_menu_enabled = true
+smooth_scrolling = false
+v_scroll_speed = 80.0
+hiding_enabled = 0
+wrap_lines = false
+caret_block_mode = false
+caret_blink = false
+caret_blink_speed = 0.65
+caret_moving_by_right_click = true
+
+[node name="GameOver" type="PopupPanel" parent="." index="8"]
 
 editor/display_folded = true
 visible = false
@@ -1072,7 +1170,7 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 popup_exclusive = false
-script = ExtResource( 8 )
+script = ExtResource( 9 )
 
 [node name="Label" type="Label" parent="GameOver" index="0"]
 
@@ -1189,7 +1287,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Anchor" ]
 
-[node name="button_grid" type="GridContainer" parent="." index="8"]
+[node name="button_grid" type="GridContainer" parent="." index="9"]
 
 editor/display_folded = true
 anchor_left = 1.0
@@ -1197,7 +1295,8 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -140.0
-margin_top = -150.0
+margin_top = -230.0
+margin_bottom = -10.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -1209,7 +1308,7 @@ custom_constants/hseparation = 0
 columns = 1
 _sections_unfolded = [ "custom_constants" ]
 
-[node name="btn_energy_allocation" type="Button" parent="button_grid" index="0"]
+[node name="btn_saveload" type="Button" parent="button_grid" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -1229,12 +1328,12 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-text = "Energy Allocation"
+text = "Save/Load"
 flat = false
 align = 1
-_sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "Rect" ]
+_sections_unfolded = [ "Mouse" ]
 
-[node name="btn_nxt" type="Button" parent="button_grid" index="1"]
+[node name="btn_energy_allocation" type="Button" parent="button_grid" index="1"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -1255,12 +1354,38 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
+text = "Energy Allocation"
+flat = false
+align = 1
+_sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "Rect" ]
+
+[node name="btn_nxt" type="Button" parent="button_grid" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 160.0
+margin_right = 122.0
+margin_bottom = 220.0
+rect_min_size = Vector2( 120, 60 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
 text = "Continue"
 flat = false
 align = 1
 _sections_unfolded = [ "Mouse" ]
 
-[node name="resources_grid" type="Panel" parent="." index="9"]
+[node name="resources_grid" type="Panel" parent="." index="10"]
 
 self_modulate = Color( 1, 1, 1, 0.247059 )
 anchor_left = 0.0
@@ -1278,7 +1403,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-script = ExtResource( 9 )
+script = ExtResource( 10 )
 _sections_unfolded = [ "Margin", "Visibility" ]
 
 [node name="GridContainer" type="GridContainer" parent="resources_grid" index="0"]
@@ -1325,9 +1450,9 @@ page = 0.0
 value = 0.0
 exp_edit = false
 rounded = true
-texture_under = ExtResource( 10 )
-texture_over = ExtResource( 11 )
-texture_progress = ExtResource( 12 )
+texture_under = ExtResource( 11 )
+texture_over = ExtResource( 12 )
+texture_progress = ExtResource( 13 )
 radial_fill_degrees = 180.0
 radial_center_offset = Vector2( -27, 0 )
 nine_patch_stretch = false
@@ -1406,9 +1531,9 @@ page = 0.0
 value = 0.0
 exp_edit = false
 rounded = true
-texture_under = ExtResource( 10 )
-texture_over = ExtResource( 11 )
-texture_progress = ExtResource( 12 )
+texture_under = ExtResource( 11 )
+texture_over = ExtResource( 12 )
+texture_progress = ExtResource( 13 )
 radial_fill_degrees = 180.0
 radial_center_offset = Vector2( -27, 0 )
 nine_patch_stretch = false
@@ -1487,9 +1612,9 @@ page = 0.0
 value = 0.0
 exp_edit = false
 rounded = true
-texture_under = ExtResource( 10 )
-texture_over = ExtResource( 11 )
-texture_progress = ExtResource( 12 )
+texture_under = ExtResource( 11 )
+texture_over = ExtResource( 12 )
+texture_progress = ExtResource( 13 )
 radial_fill_degrees = 180.0
 radial_center_offset = Vector2( -27, 0 )
 nine_patch_stretch = false
@@ -1569,9 +1694,9 @@ page = 0.0
 value = 0.0
 exp_edit = false
 rounded = true
-texture_under = ExtResource( 10 )
-texture_over = ExtResource( 11 )
-texture_progress = ExtResource( 12 )
+texture_under = ExtResource( 11 )
+texture_over = ExtResource( 12 )
+texture_progress = ExtResource( 13 )
 radial_fill_degrees = 180.0
 radial_center_offset = Vector2( -27, 0 )
 nine_patch_stretch = false
@@ -1630,9 +1755,9 @@ _sections_unfolded = [ "Margin", "Visibility" ]
 
 [connection signal="player_done" from="." to="pnl_energy_allocation" method="_on_Control_player_done"]
 
-[connection signal="died" from="Organism" to="." method="_on_Organism_died"]
-
 [connection signal="died" from="Organism" to="GameOver" method="_on_Organism_died"]
+
+[connection signal="died" from="Organism" to="." method="_on_Organism_died"]
 
 [connection signal="doing_work" from="Organism" to="." method="_on_Organism_doing_work"]
 
@@ -1674,9 +1799,15 @@ _sections_unfolded = [ "Margin", "Visibility" ]
 
 [connection signal="pressed" from="pnl_energy_allocation/btn_exit" to="pnl_energy_allocation" method="_on_btn_exit_pressed"]
 
+[connection signal="loaded" from="pnl_saveload" to="." method="_on_pnl_saveload_loaded"]
+
+[connection signal="pressed" from="pnl_saveload/btn_load" to="pnl_saveload" method="_on_btn_load_pressed"]
+
 [connection signal="pressed" from="GameOver/GridContainer/Reset" to="GameOver" method="_on_Reset_pressed"]
 
 [connection signal="pressed" from="GameOver/GridContainer/Exit" to="GameOver" method="_on_Exit_pressed"]
+
+[connection signal="pressed" from="button_grid/btn_saveload" to="." method="_on_btn_saveload_pressed"]
 
 [connection signal="pressed" from="button_grid/btn_energy_allocation" to="." method="_on_btn_energy_allocation_pressed"]
 

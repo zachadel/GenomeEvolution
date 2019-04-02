@@ -85,6 +85,12 @@ func load_personalities(data_name, dict):
 func get_random_ate_personality():
 	return ate_personalities[ate_personalities.keys()[randi()%ate_personalities.size()]];
 
+func get_ate_personality_by_name(ate_name):
+	for k in ate_personalities:
+		if (ate_personalities[k]["title"] == ate_name):
+			return ate_personalities[k];
+	return {};
+
 # This is a little hack I've come up with to make bars in ScrollContainer controls larger
 func change_slider_width(scroll_cont, horiz = true, width = 30):
 	if (horiz):
@@ -123,6 +129,14 @@ func get_turn_txt():
 			return "Check Viability";
 		var _x:
 			return "Unknown turn type (#%d)" % _x;
+
+func get_save_str():
+	return "%s:%s" % [turn_idx, card_table.ognsm.get_save()];
+
+func load_from_save(save):
+	var s = save.split(":");
+	turn_idx = int(s[0]) - 1;
+	card_table.ognsm.load_from_save(s[1]);
 
 func copy_elm(elm):
 	var copy_elm = load("res://Scenes/SequenceElement.tscn").instance();
