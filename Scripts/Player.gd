@@ -25,10 +25,12 @@ func check_if_resources():
 	UIPanel = get_node("../WorldMap_UI/UIPanel");
 	
 	for i in range(4):
+		var res_string = "GridContainer/ResPanel" + str(i + 1) + "/Label"
 		if organism.resources[i] <= 0:
 			danger[i] = 1
-			var res_string = "GridContainer/ResPanel" + str(i + 1) + "/Label"
 			UIPanel.get_node(res_string).modulate = Color(1, 0, 0, 1)
+		else:
+			UIPanel.get_node(res_string).modulate = Color(1, 1, 1, 1)
 	if (danger[0] + danger[1] + danger[2] + danger[3]) <= 1:
 		danger = [0, 0, 0, 0]
 	else:
@@ -55,6 +57,7 @@ func acquire_resources():
 		
 		organism.resources[i] = min(100, organism.resources[i] + (amount * multiplier))
 		ndices_array.append([i, res_rarity, amount])
+	check_if_resources()
 	return ndices_array
 
 func consume_resources(action):
