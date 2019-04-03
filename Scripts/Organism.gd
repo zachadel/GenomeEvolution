@@ -43,11 +43,14 @@ func _ready():
 	
 	perform_anims(false);
 	for y in range(2):
+		var type = 0
 		for n in Game.ESSENTIAL_CLASSES:
 			# create gene
+			var code = "0x0" + str(type) + "80"
 			var nxt_gelm = load("res://Scenes/SequenceElement.tscn").instance();
-			nxt_gelm.setup("gene", n, "essential", Game.ESSENTIAL_CLASSES[n], 1);
+			nxt_gelm.setup(code, "gene", n, "essential", Game.ESSENTIAL_CLASSES[n], 1);
 			$chromes.get_cmsm(y).add_elm(nxt_gelm);
+			type += 1
 	gain_ates(1 + randi() % 6);
 	perform_anims(true);
 	born_on_turn = Game.round_num;
@@ -80,6 +83,11 @@ func get_card_table():
 func get_cmsm_pair():
 	return $chromes;
 
+
+
+
+
+###HERE IS WHERE THE ATEs ARE SUPPOSED TO BE INSERTED???###
 func gain_ates(count = 1):
 	var justnow = "";
 	for i in range(count):
@@ -519,15 +527,15 @@ func evolve_candidates(candids):
 		var justnow = "";
 		for e in candids:
 			if (($chromes.get_cmsm(0).find_all_genes(e.id).size() + $chromes.get_cmsm(1).find_all_genes(e.id).size()) > 2):
-				match (Game.rollEvolve()):
+				match (Game.rollEvolveIndy()):
 					0:
+						justnow += "%s did not evolve.\n" % e.id;
+					1:
 						justnow += "%s received a fatal mutation and has become a pseudogene.\n" % e.id;
 						e.evolve(false);
 						$chromes.evolve_candidates.erase(e);
-					1:
-						justnow += "%s did not evolve.\n" % e.id;
 					2:
-						justnow += "%s now performs a new function.\n" % e.id;
+						justnow += "%s received a major upgrade of [INSERT VALUE HERE].\n" % e.id;
 						e.evolve();
 						$chromes.evolve_candidates.erase(e);
 			else:

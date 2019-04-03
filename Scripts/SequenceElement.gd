@@ -6,6 +6,7 @@ var id;
 var ess_class = null;
 var ess_version;
 var ate_personality = {};
+var element_code
 
 var DEFAULT_SIZE = 200;
 var MIN_SIZE = 75;
@@ -20,10 +21,11 @@ signal elm_mouse_exited(elm);
 func _ready():
 	current_size = DEFAULT_SIZE;
 
-func setup(_type, _id = "", _mode = "ate", _ess_class = -1, _ess_version = 1):
+func setup(_code, _type, _id = "", _mode = "ate", _ess_class = -1, _ess_version = 1):
 	id = _id;
 	type = _type;
 	mode = _mode;
+	element_code = _code
 	var tex;
 	if (type == "gene"):
 		match (mode):
@@ -70,6 +72,9 @@ func setup_copy(ref_elm):
 	texture_disabled = tex;
 	
 	disable(true);
+	
+func evolve_indy():
+	pass
 
 func evolve(good = true):
 	if (good):
@@ -82,6 +87,8 @@ func evolve(good = true):
 	upd_display();
 	get_cmsm().emit_signal("cmsm_changed");
 
+
+#FUTURE CHANGES HERE TO ACTUALLY CHANGE THE +1 and so forth on the visual SPRITE
 func upd_display():
 	$lbl.text = id;
 	match(type):
