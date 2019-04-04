@@ -49,7 +49,7 @@ func get_pairs(left_id, right_id, minimal = false):
 
 func find_pair_right_idxs(left_idx, right_id):
 	var valid_rights = [];
-	for i in range(left_idx, get_child_count()):
+	for i in range(left_idx+1, get_child_count()):
 		var gene = get_child(i);
 		if (gene.is_gap()):
 			return valid_rights;
