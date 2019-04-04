@@ -143,6 +143,24 @@ func copy_elm(elm):
 	copy_elm.setup_copy(elm);
 	return copy_elm;
 
+func pretty_element_name_list(elms_array):
+	var list = "";
+	for i in range(elms_array.size()):
+		var put_comma = i < elms_array.size() - 1;
+		var elm = elms_array[i];
+		
+		if (elm.id == ""):
+			if (elm.is_gap()):
+				list += "Gap";
+			else:
+				put_comma = false;
+		else:
+			list += elm.id;
+		
+		if (put_comma):
+			list += ", ";
+	return list;
+
 func roll(n, d = null):
 	if (d == null):
 		var i = n.split("d");
@@ -182,15 +200,16 @@ func rollEvolve():
 	else:
 		return 2;
 
-# used Desmos to come up with a quick and dirty formula
 func collapseChance(segment_size, dist_from_gap):
-	return 2.0 * float(segment_size + dist_from_gap) / (segment_size * dist_from_gap * dist_from_gap)
+	return float(float(segment_size) / float(dist_from_gap + 0.5));
 
 func rollCollapse(segment_size, dist_from_gap):
+	if (dist_from_gap < 0):
+		dist_from_gap *= -1;
 	var roll = randf();
 	var need = collapseChance(segment_size, dist_from_gap);
+	print("--- Collapse Attempt ---");
 	print("need: ", need);
 	print("got: ", roll);
-	print("---");
 	return roll <= need;
 	#return randf() <= collapseChance(segment_size, dist_from_gap);

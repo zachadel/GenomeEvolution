@@ -158,6 +158,12 @@ func jump_ates():
 	else:
 		$chromes.collapse_gaps();
 
+func get_gene_selection():
+	if (gene_selection.size() > 0):
+		return gene_selection.back();
+	else:
+		return null;
+
 func _on_chromes_elm_clicked(elm):
 	match (elm.type):
 		"break":
@@ -176,7 +182,7 @@ func _on_chromes_elm_clicked(elm):
 				g.disable(selected_gap != null && g != selected_gap);
 		"gene":
 			if (elm in gene_selection):
-				gene_selection.append(elm); # The selection is accessed via gene_selection.back()
+				gene_selection.append(elm); # The selection is accessed via get_gene_selection()
 				emit_signal("gene_clicked");
 
 func _on_chromes_elm_mouse_entered(elm):
@@ -239,6 +245,7 @@ func make_repair_choices(gap, repair_idx):
 			
 			var blocks_dict = gap_cmsm.find_dupe_blocks(g_idx);
 			
+			emit_signal("justnow_update", "Select the leftmost element of the pattern you will collapse.");
 			gene_selection = [];
 			if (is_ai || blocks_dict.size() == 1):
 				choice_info["left"] = gap_cmsm.get_child(blocks_dict.keys()[0]);
@@ -248,42 +255,64 @@ func make_repair_choices(gap, repair_idx):
 					gene_selection.append(gene);
 					gene.disable(false);
 				yield(self, "gene_clicked");
-				choice_info["left"] = gene_selection.back();
+				choice_info["left"] = get_gene_selection();
 				for g in gene_selection:
 					g.disable(true);
+			if (choice_info["left"] == null):
+				return false;
 			var left_idx = choice_info["left"].get_index();
-			choice_info["left"].highlight_border(true);
+			choice_info["left"].highlight_border(true, true);
 			
+			emit_signal("justnow_update", "Select the rightmost element of the pattern you will collapse.\n\nThe leftmost element is %s." % choice_info["left"].id);
 			gene_selection = [];
-			if (is_ai):
+			var sel_size_gene = null;
+			if (is_ai || blocks_dict[left_idx].size() == 1):
 				choice_info["size"] = blocks_dict[left_idx].keys().back();
-			elif(blocks_dict[left_idx].size() == 1):
-				choice_info["size"] = blocks_dict[left_idx].keys()[0];
+				sel_size_gene = 0; # Just to make it non-null, fooling it into thinking a selection was made
 			else:
 				for sz in blocks_dict[left_idx].keys():
 					var gene = gap_cmsm.get_child(left_idx + sz - 1);
 					gene_selection.append(gene);
 					gene.disable(false);
 				yield(self, "gene_clicked");
-				choice_info["size"] = gene_selection.back().get_index() - left_idx + 1;
+				sel_size_gene = get_gene_selection();
 				for g in gene_selection:
-					g.disable(true);
-			for i in range(1, choice_info["size"]):
-				gap_cmsm.get_child(left_idx + i).highlight_border(true);
-			
-			gene_selection = [];
-			if (is_ai || blocks_dict.size() == 1):
-				choice_info["right"] = gap_cmsm.get_child(blocks_dict[left_idx][choice_info["size"]][0]);
+					if (g != choice_info["left"]):
+						g.disable(true);
+			if (sel_size_gene == null):
+				choice_info["left"].highlight_border(false);
+				return false;
 			else:
-				for i in blocks_dict[left_idx][choice_info["size"]]:
+				if (!choice_info.has("size")):
+					choice_info["size"] = sel_size_gene.get_index() - left_idx + 1;
+			
+			var pattern_array = [];
+			for i in range(0, choice_info["size"]):
+				gap_cmsm.get_child(left_idx + i).highlight_border(true, true);
+				pattern_array.append(gap_cmsm.get_child(left_idx + i));
+			
+			emit_signal("justnow_update", "Select the first element of the pattern you will collapse to the right of the gap.\n\nThe pattern is: %s" % Game.pretty_element_name_list(pattern_array));
+			gene_selection = [];
+			var right_choice_opts = blocks_dict[left_idx][choice_info["size"]];
+			if (is_ai || right_choice_opts.size() == 1):
+				choice_info["right"] = gap_cmsm.get_child(right_choice_opts[0]);
+			else:
+				for i in right_choice_opts:
 					var gene = gap_cmsm.get_child(i);
 					gene_selection.append(gene);
 					gene.disable(false);
 				yield(self, "gene_clicked");
-				choice_info["right"] = gene_selection.back();
+				choice_info["right"] = get_gene_selection();
 				for g in gene_selection:
 					g.disable(true);
 			
+			for i in range(1, choice_info["size"]):
+				gap_cmsm.get_child(left_idx + i).highlight_border(false);
+			choice_info["left"].highlight_border(false);
+			
+			if (choice_info["right"] == null):
+				return false;
+			emit_signal("justnow_update", "");
 		1: # Copy Pattern
 			var gap_cmsm = gap.get_parent();
 			var g_idx = gap.get_index();
@@ -294,6 +323,7 @@ func make_repair_choices(gap, repair_idx):
 			
 			var pairs_dict = template_cmsm.get_pairs(left_id, right_id);
 			
+			emit_signal("justnow_update", "Select the leftmost element of the pattern you will copy.");
 			gene_selection = [];
 			if (is_ai || pairs_dict.size() == 1):
 				choice_info["left"] = template_cmsm.get_child(pairs_dict.keys()[0]);
@@ -303,11 +333,14 @@ func make_repair_choices(gap, repair_idx):
 					gene_selection.append(gene);
 					gene.disable(false);
 				yield(self, "gene_clicked");
-				choice_info["left"] = gene_selection.back();
+				choice_info["left"] = get_gene_selection();
 				for g in gene_selection:
 					g.disable(true);
-			choice_info["left"].highlight_border(true);
+			if (choice_info["left"] == null):
+				return false;
+			choice_info["left"].highlight_border(true, true);
 			
+			emit_signal("justnow_update", "Select the rightmost element of the pattern you will copy.\n\nThe leftmost element is %s." % choice_info["left"].id);
 			gene_selection = [];
 			var right_idxs = pairs_dict[choice_info["left"].get_index()];
 			if (is_ai || right_idxs.size() == 1):
@@ -318,9 +351,13 @@ func make_repair_choices(gap, repair_idx):
 					gene_selection.append(gene);
 					gene.disable(false);
 				yield(self, "gene_clicked");
-				choice_info["right"] = gene_selection.back();
+				choice_info["right"] = get_gene_selection();
 				for g in gene_selection:
 					g.disable(true);
+			if (choice_info["right"] == null):
+				choice_info["left"].disable(true);
+				return false;
+			emit_signal("justnow_update", "");
 	repair_gap(gap, repair_idx, choice_info);
 
 var repair_canceled = false;
@@ -345,44 +382,34 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 				
 				# Find all the genes to remove before removing them
 				var remove_genes = [];
+				var left_rem_genes = [];
+				var right_rem_genes = [];
 				
-				var collapsed_so_far = 0;
-				var gap_dist = 1;
-				var alternating = true;
-				var right_side_collapse = true;
 				var max_collapse_count = right_idx - left_idx - 1;
-				var rightmost_idx = right_idx + choice_info["size"] - 1;
 				var continue_collapse = true;
 				var ended_due_to = "failure";
 				
-				# Alternate removing right, then left until either failure or finished
-				while (continue_collapse && collapsed_so_far < max_collapse_count):
-					continue_collapse = Game.rollCollapse(choice_info["size"], gap_dist);
-					
-					if (g_idx + gap_dist >= rightmost_idx):
-						alternating = false;
-						right_side_collapse = false;
-					if (g_idx - gap_dist <= left_idx):
-						alternating = false;
-						right_side_collapse = true;
-					
-					var remove_idx = g_idx;
-					if (right_side_collapse):
-						remove_idx += gap_dist;
+				for i in range(left_idx, g_idx):
+					left_rem_genes.append(cmsm.get_child(i));
+				for i in range(g_idx + 1, right_idx + choice_info["size"]):
+					right_rem_genes.append(cmsm.get_child(i));
+				
+				var removing_right = true;
+				while (continue_collapse && remove_genes.size() < max_collapse_count):
+					var chosen_gene;
+					if (removing_right):
+						chosen_gene = right_rem_genes[0];
+						right_rem_genes.remove(0);
 					else:
-						remove_idx -= gap_dist;
-						if (alternating):
-							gap_dist += 1;
+						chosen_gene = left_rem_genes.back();
+						left_rem_genes.remove(left_rem_genes.size() - 1);
+					remove_genes.append(chosen_gene);
+					removing_right = left_rem_genes.size() == 0 || right_rem_genes.size() != 0 && !removing_right;
 					
-					if (alternating):
-						right_side_collapse = !right_side_collapse;
-					else:
-						gap_dist += 1;
-					
-					remove_genes.append(cmsm.get_child(remove_idx));
-					
-					collapsed_so_far += 1;
-				if (collapsed_so_far == max_collapse_count):
+					continue_collapse = continue_collapse && Game.rollCollapse(choice_info["size"], chosen_gene.get_index() - g_idx);
+				
+				var remove_count = remove_genes.size();
+				if (remove_count == max_collapse_count):
 					ended_due_to = "completion";
 				
 				for g in remove_genes:
@@ -394,7 +421,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 					yield($chromes.close_gap(gap), "completed");
 				else:
 					$chromes.close_gap(gap);
-				emit_signal("justnow_update", "Gap at %s, %d closed: collapsed %d genes and ended due to %s." % [cmsm.get_parent().name, g_idx, collapsed_so_far, ended_due_to]);
+				emit_signal("justnow_update", "Gap at %s, %d closed: collapsed %d genes and ended due to %s." % [cmsm.get_parent().name, g_idx, remove_count, ended_due_to]);
 			
 				get_tree().get_root().get_node("Control/WorldMap").player.consume_resources("repair_cd")
 			
@@ -418,7 +445,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 							for r in gene_selection:
 								r.disable(true);
 							
-							var gene = gene_selection.back();
+							var gene = get_gene_selection();
 							var g_id = gene.id;
 							emit_signal("justnow_update", "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome, but a %s gene was lost." % [cmsm.get_parent().name, g_idx, left_id, right_id, g_id]);
 							if (do_yields):
@@ -481,7 +508,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 							for r in gene_selection:
 								r.disable(true);
 							
-							var gene = gene_selection.back();
+							var gene = get_gene_selection();
 							var g_id = gene.id; # Saved here cuz it'll free the gene in a bit
 							if (do_yields):
 								yield($chromes.remove_elm(gene, false), "completed");
@@ -563,13 +590,13 @@ func recombination():
 		# Because this step is optional, by the time a gene is clicked, it might be a different turn
 		if (Game.get_turn_type() == Game.TURN_TYPES.Recombination):
 			emit_signal("doing_work", true);
-			var first_elm = gene_selection.back();
+			var first_elm = get_gene_selection();
 			for g in gene_selection:
 				g.disable(true);
 				
 			gene_selection = $chromes.highlight_this_gene($chromes.get_other_cmsm(first_elm.get_parent()), first_elm.id);
 			yield(self, "gene_clicked");
-			var scnd_elm = gene_selection.back();
+			var scnd_elm = get_gene_selection();
 			for g in gene_selection:
 				g.disable(true);
 			

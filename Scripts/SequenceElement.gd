@@ -97,7 +97,7 @@ func upd_display():
 	match(type):
 		"gene":
 			toggle_mode = false;
-			$BorderRect.modulate = rect_clr[false];
+			$BorderRect.modulate = toggle_rect_clr[false];
 			match (mode):
 				"ate":
 					self_modulate = Color(.8, .15, 0);
@@ -135,11 +135,12 @@ func silence_ate():
 
 func disable(dis):
 	disabled = dis;
-	#$GrayFilter.visible = dis; Commented out in order to remove the gray box around the elements in the chomosome
+	#$GrayFilter.visible = dis; #Commented out in order to remove the gray box around the elements in the chomosome
 	highlight_border(!dis);
 
-func highlight_border(on):
+func highlight_border(on, special_color = false):
 	$BorderRect.visible = on;
+	$BorderRect.modulate = toggle_rect_clr[special_color];
 
 func is_highlighted():
 	return $BorderRect.visible;
@@ -183,9 +184,9 @@ func get_active_behavior(jump): #if jump==false, get the copy range
 				grab_dict[k] = Game.DEFAULT_ATE_RANGE_BEHAVIOR[k];
 	return grab_dict;
 
-var rect_clr = {true: Color(0.5, 0.5, 0), false: Color(1, 1, 1)};
+var toggle_rect_clr = {true: Color(0.5, 0.5, 0), false: Color(1, 1, 1)};
 func _on_SeqElm_toggled(on):
-	$BorderRect.modulate = rect_clr[on];
+	$BorderRect.modulate = toggle_rect_clr[on];
 
 func set_size(size = null):
 	if (size == null):
