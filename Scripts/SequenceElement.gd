@@ -21,7 +21,7 @@ signal elm_mouse_exited(elm);
 func _ready():
 	current_size = DEFAULT_SIZE;
 
-func setup(_code, _type, _id = "", _mode = "ate", _ess_class = -1, _ess_version = 1):
+func setup(_type, _id = "", _mode = "ate", _ess_class = -1, _ess_version = 1, _code = 0000):
 	id = _id;
 	type = _type;
 	mode = _mode;
@@ -39,6 +39,7 @@ func setup(_code, _type, _id = "", _mode = "ate", _ess_class = -1, _ess_version 
 			"ate":
 				ate_personality = Game.get_random_ate_personality();
 				id = ate_personality["title"];
+				element_code = ate_personality["code"]
 				tex = ate_personality["art"];
 	else:
 		tex = Game.sqelm_textures[_type];
@@ -61,10 +62,12 @@ func setup_copy(ref_elm):
 			"essential":
 				ess_class = ref_elm.ess_class;
 				ess_version = ref_elm.ess_version;
+				element_code = ref_elm.element_code;
 			"ate":
 				ate_personality = ref_elm.ate_personality;
 				id = ate_personality["title"];
 				tex = ate_personality["art"];
+				element_code = ate_personality["code"];
 	upd_display();
 	
 	texture_normal = tex;
@@ -72,18 +75,22 @@ func setup_copy(ref_elm):
 	texture_disabled = tex;
 	
 	disable(true);
-	
-func evolve_indy():
-	pass
 
-func evolve(good = true):
-	if (good):
-		ess_version = Game.essential_versions[ess_class] + 1;
-		Game.essential_versions[ess_class] += 1;
-	else:
-		id += "[p]";
-		mode = "pseudo";
-		ess_class = null;
+func evolve(ndx, good = true):
+	match(ndx):
+		1:
+			id += "[p]";
+			mode = "pseudo";
+			ess_class = null;
+		2:
+			ess_version = Game.essential_versions[ess_class];
+			Game.essential_versions[ess_class] += 1;
+			element_code = element_code.left(1) + str(int(element_code.right(1)) + 10);
+		3:
+			ess_version = Game.essential_versions[ess_class];
+			Game.essential_versions[ess_class] -= 1;
+			element_code = element_code.left(1) + str(int(element_code.right(1)) - 10);
+		
 	upd_display();
 	get_cmsm().emit_signal("cmsm_changed");
 
