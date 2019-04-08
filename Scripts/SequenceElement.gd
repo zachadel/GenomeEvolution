@@ -8,6 +8,15 @@ var ess_version;
 var ate_personality = {};
 var element_code
 
+var codes_dictionary = {
+	"Replication" : "005000",
+	"Locomotion" : "015000",
+	"Manipulation" : "025000",
+	"Sensing" : "035000",
+	"Construction" : "045000",
+	"Deconstruction" : "055000",
+}
+
 var DEFAULT_SIZE = 200;
 var MIN_SIZE = 75;
 var MAGNIFICATION_FACTOR = 1.5;
@@ -21,7 +30,7 @@ signal elm_mouse_exited(elm);
 func _ready():
 	current_size = DEFAULT_SIZE;
 
-func setup(_type, _id = "", _mode = "ate", _ess_class = -1, _ess_version = 1, _code = 0000):
+func setup(_type, _id = "", _mode = "ate", _ess_class = -1, _ess_version = 1, _code = 000000):
 	id = _id;
 	type = _type;
 	mode = _mode;
@@ -85,12 +94,22 @@ func evolve(ndx, good = true):
 		2:
 			ess_version = Game.essential_versions[ess_class];
 			Game.essential_versions[ess_class] += 1;
-			element_code = element_code.left(1) + str(int(element_code.right(1)) + 10);
+			element_code = element_code.left(2) + str(int(element_code.right(2)) + 10);
 		3:
 			ess_version = Game.essential_versions[ess_class];
-			Game.essential_versions[ess_class] -= 1;
-			element_code = element_code.left(1) + str(int(element_code.right(1)) - 10);
+			Game.essential_versions[ess_class] -= stepify(Game.essential_versions[ess_class] / 4, 0.01);
+			element_code = element_code.left(2) + str(int(element_code.right(2)) - 10);
+		4:
+			ess_version = Game.essential_versions[ess_class];
+			Game.essential_versions[ess_class] += 1;
+			element_code = element_code.left(2) + str(int(element_code.right(2)) - 1);
+		5:
+			ess_version = Game.essential_versions[ess_class];
+			Game.essential_versions[ess_class] -= stepify(Game.essential_versions[ess_class] / 10, 0.01);
+			element_code = element_code.left(2) + str(int(element_code.right(2)) - 1);
 		
+	print(element_code)
+	print("HI")
 	upd_display();
 	get_cmsm().emit_signal("cmsm_changed");
 

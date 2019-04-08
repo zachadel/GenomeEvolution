@@ -43,14 +43,13 @@ func _ready():
 	
 	perform_anims(false);
 	for y in range(2):
-		var type = 0
 		for n in Game.ESSENTIAL_CLASSES:
 			# create gene
-			var code = "0" + str(type) + "50"
+			#var code = "0" + str(type) + "50"
 			var nxt_gelm = load("res://Scenes/SequenceElement.tscn").instance();
+			var code = nxt_gelm.codes_dictionary[str(n)]
 			nxt_gelm.setup("gene", n, "essential", Game.ESSENTIAL_CLASSES[n], 1, code);
 			$chromes.get_cmsm(y).add_elm(nxt_gelm);
-			type += 1
 	gain_ates(1 + randi() % 6);
 	perform_anims(true);
 	born_on_turn = Game.round_num;
