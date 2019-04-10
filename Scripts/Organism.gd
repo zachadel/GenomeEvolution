@@ -45,10 +45,9 @@ func _ready():
 	for y in range(2):
 		for n in Game.ESSENTIAL_CLASSES:
 			# create gene
-			#var code = "0" + str(type) + "50"
 			var nxt_gelm = load("res://Scenes/SequenceElement.tscn").instance();
 			var code = nxt_gelm.codes_dictionary[str(n)]
-			nxt_gelm.setup("gene", n, "essential", Game.ESSENTIAL_CLASSES[n], 1, code);
+			nxt_gelm.setup("gene", n, "essential", Game.ESSENTIAL_CLASSES[n], 0, code);
 			$chromes.get_cmsm(y).add_elm(nxt_gelm);
 	gain_ates(1 + randi() % 6);
 	perform_anims(true);

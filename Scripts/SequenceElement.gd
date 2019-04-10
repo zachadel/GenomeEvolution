@@ -30,7 +30,7 @@ signal elm_mouse_exited(elm);
 func _ready():
 	current_size = DEFAULT_SIZE;
 
-func setup(_type, _id = "", _mode = "ate", _ess_class = -1, _ess_version = 1, _code = 000000):
+func setup(_type, _id = "", _mode = "ate", _ess_class = -1, _ess_version = 0, _code = 000000):
 	id = _id;
 	type = _type;
 	mode = _mode;
@@ -92,24 +92,23 @@ func evolve(ndx, good = true):
 			mode = "pseudo";
 			ess_class = null;
 		2:
-			ess_version = Game.essential_versions[ess_class];
-			Game.essential_versions[ess_class] += 1;
+			#ess_version = Game.essential_versions[ess_class];
+			ess_version += 1;
 			element_code = element_code.left(2) + str(int(element_code.right(2)) + 10);
 		3:
-			ess_version = Game.essential_versions[ess_class];
-			Game.essential_versions[ess_class] -= stepify(Game.essential_versions[ess_class] / 4, 0.01);
+			#ess_version = Game.essential_versions[ess_class];
+			ess_version -= 1;
 			element_code = element_code.left(2) + str(int(element_code.right(2)) - 10);
 		4:
-			ess_version = Game.essential_versions[ess_class];
-			Game.essential_versions[ess_class] += 1;
+			#ess_version = Game.essential_versions[ess_class];
+			ess_version += 0.1;
 			element_code = element_code.left(2) + str(int(element_code.right(2)) - 1);
 		5:
-			ess_version = Game.essential_versions[ess_class];
-			Game.essential_versions[ess_class] -= stepify(Game.essential_versions[ess_class] / 10, 0.01);
+			#ess_version = Game.essential_versions[ess_class];
+			ess_version -= 0.1;
 			element_code = element_code.left(2) + str(int(element_code.right(2)) - 1);
-		
+
 	print(element_code)
-	print("HI")
 	upd_display();
 	get_cmsm().emit_signal("cmsm_changed");
 
@@ -130,8 +129,10 @@ func upd_display():
 					#$lbl.text += " (Silenced)";
 				"essential":
 					#self_modulate = Color(.15, .8, 0); Commented out to make the gene icons be shown with no green tint
-					if (ess_version > 1):
-						$lbl.text += "-" + str(ess_version);
+					if (ess_version == 0):
+						$version/version_lbl.text = "B"
+					else:
+						$version/version_lbl.text = str(ess_version)
 					#$lbl.text += " (Essential)";
 				"pseudo":
 					self_modulate = Color(.5, .5, 0);
