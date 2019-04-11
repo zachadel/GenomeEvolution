@@ -19,6 +19,17 @@ var MAX_ALLOCATED_ENERGY = 10;
 var energy_allocations
 onready var energy_allocation_panel = get_node("../pnl_energy_allocation");
 
+var base_rolls = {
+	# Lose one, no complications, copy intervening, duplicate a gene at the site
+	"copy_repair": [1.6, 1.6, 5, 2],
+	
+	# Lose one, no complications, duplicate a gene at the site
+	"join_ends": [5, 3, 2],
+	
+	# Harmful, none, beneficial
+	"evolve": [3, 5, 2]
+}
+
 signal gene_clicked();
 
 signal doing_work(working);
@@ -447,7 +458,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 			1: # Copy Pattern
 				choice_info["left"].highlight_border(false);
 				if (!roll_storage[0].has(gap)):
-					roll_storage[0][gap] = Game.rollCopyRepair();
+					roll_storage[0][gap] = roll_chance("copy_repair");
 				if !check_resources(1):
 					roll_storage[0][gap] = 0
 				match (roll_storage[0][gap]):
@@ -512,7 +523,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 				print("repair copy pattern");
 			2: # Join Ends
 				if (!roll_storage[1].has(gap)):
-					roll_storage[1][gap] = Game.rollJoinEnds();
+					roll_storage[1][gap] = roll_chance("join_ends");
 				if !check_resources(2):
 					roll_storage[1][gap] = 0
 				match (roll_storage[1][gap]):
@@ -578,12 +589,24 @@ func highlight_gap_choices():
 		upd_repair_opts($chromes.gap_list[0]);
 		auto_repair();
 
+func roll_chance(type):
+	var mods = [];
+	for i in range(base_rolls[type].size()):
+		mods.append(1.0);
+	
+	for g in get_cmsm_pair().get_all_genes():
+		var g_mods = g.get_ess_mod_array(type);
+		for i in range(g_mods.size()):
+			mods[i] += g_mods[i];
+	
+	return Game.rollChances(base_rolls[type], mods);
+
 func evolve_candidates(candids):
 	if (candids.size() > 0):
 		var justnow = "";
 		for e in candids:
 			if (($chromes.get_cmsm(0).find_all_genes(e.id).size() + $chromes.get_cmsm(1).find_all_genes(e.id).size()) > 2):
-				match (Game.rollEvolveIndy()):
+				match (roll_chance("evolve")):
 					0:
 						justnow += "%s did not evolve.\n" % e.id;
 						e.evolve(0);

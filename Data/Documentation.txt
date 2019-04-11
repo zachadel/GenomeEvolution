@@ -9,33 +9,40 @@ a88aaaa8P' .d8888b. 88d888b. .d8888b. .d8888b. 88d888b. .d8888b. 88 dP d8888P dP
 
 
 The roll array describes the chances for each jump outcome, i.e.
-0: Nothing happens
-1: Excision
-2: Mobilization
-3: Copy-paste
-4: Copy-paste-silence
+0: silent
+1: excise
+2: jump
+3: copy
 
-The chances accumulate, and there is an implied 100% chance at the end of every array (do not ever explicitly enter a 1)
-so equal chances for any outcome would be
-[0.2, 0.4, 0.6, 0.8] (again, note that [0.2, 0.4, 0.6, 0.8, 1] would actually be wrong; don't ever put in a 1)
+The chances will automatically be normalized, so you can write them in whatever format you find intuitive. You can stop as early as you like; the program will fill in 0s until the array is large enough. If the array is empty, it will default to a 100% chance of the "silent" outcome.
+For example, each of the following arrays represent equal chances for each jump outcome:
+[1, 1, 1, 1]
+[3, 3, 3, 3]
+[.25, .25, .25, .25]
+[x, x, x, x]
 
 and a 100% chance for outcome 2 would be
-[0, 0] (because of the implied 1 (really, don't do an explicit 1))
+[0, 0, 1] (or [0, 0, x])
 
-and a 50% chance for outcome 2 and 50% chance for outcome 4 would be
-[0, 0, 0.5, 0] (or more accurately [0, 0, 0.5, x] where x is anything <= .5)
+and a 50% chance for outcome 1 and 50% chance for outcome 3 would be
+[0, 0.5, 0, 0.5] (or [0, x, 0, x])
 
 and a 100% chance for outcome 0 would be
 []
 
 
-The keys of the range dicts are floats that describe probability, behaving in the same way except:
-0 is not quite 0%, 1 is 100% (so explicit 1s are necessary; there is no use in defining a range with 0% chance anyway)
-Each element of the range dicts is another dict describing that movement
+The keys of the range dicts are floats that describe probability in a different way; the chances accumulate.
+Note that 0 is not quite 0%, but 1 is 100% (so explicit 1s are necessary; there is no use in defining a range with 0% chance anyway)
+Each element of the range dicts is another dict describing that movement, as described below
+For example, this range has 3 different jumping behaviors with equal chance of use:
+range={
+0.333: {"other_cmsm": false, "max_dist": 1},
+0.666: {"other_cmsm": false, "max_dist": 10},
+1: {"other_cmsm": true, "this_cmsm": false}
+}
 
 The movement dicts have the following default properties
-(Note that you do not need to explicitly state every property if you want to use the
-default values, e.g. you only have to put "this_cmsm" if you want it to be false)
+(Note that you do not need to explicitly state every property if you want to use the default values, e.g. you only have to put "this_cmsm" if you want it to be false)
 X:{
 "this_cmsm": true, #Can jump to another spot on this chromosome
 "other_cmsm": true, #Can jump to a spot on the other chromosome
