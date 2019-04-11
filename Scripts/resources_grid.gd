@@ -11,11 +11,6 @@ func _ready():
 		get_node(path).value = 50
 		get_node(path).value = org.resources[i - 1]
 		get_node(path + "/Label").hide()
-	
-#	$GridContainer/TextureProgress1/Label.hide()
-#	$GridContainer/TextureProgress2/Label.hide()
-#	$GridContainer/TextureProgress3/Label.hide()
-#	$GridContainer/TextureProgress4/Label.hide()
 
 func _process(delta):
 	
