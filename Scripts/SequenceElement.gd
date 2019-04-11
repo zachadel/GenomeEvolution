@@ -141,6 +141,7 @@ func upd_display():
 					#self_modulate = Color(.15, .8, 0); Commented out to make the gene icons be shown with no green tint
 					if (ess_version == 0):
 						$version/version_lbl.text = "B"
+						$version/version_lbl.self_modulate = Color(1, 1, 1)
 					else:
 						$version/version_lbl.text = str(ess_version)
 						if ess_version > 0:
