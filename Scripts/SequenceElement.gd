@@ -20,6 +20,17 @@ var ess_mods = {
 var ate_personality = {};
 var act_mods = {"silent": 1.0, "excise": 1.0, "jump": 1.0, "copy": 1.0};
 
+var element_code
+
+var codes_dictionary = {
+	"Replication" : "005000",
+	"Locomotion" : "015000",
+	"Manipulation" : "025000",
+	"Sensing" : "035000",
+	"Construction" : "045000",
+	"Deconstruction" : "055000",
+}
+
 var DEFAULT_SIZE = 200;
 var MIN_SIZE = 75;
 var MAGNIFICATION_FACTOR = 1.5;
@@ -33,10 +44,11 @@ signal elm_mouse_exited(elm);
 func _ready():
 	current_size = DEFAULT_SIZE;
 
-func setup(_type, _id = "", _mode = "ate", _ess_class = -1, _ess_version = 1):
+func setup(_type, _id = "", _mode = "ate", _ess_class = -1, _ess_version = 0, _code = 000000):
 	id = _id;
 	type = _type;
 	mode = _mode;
+	element_code = _code
 	var tex;
 	if (type == "gene"):
 		match (mode):
@@ -59,7 +71,7 @@ func setup(_type, _id = "", _mode = "ate", _ess_class = -1, _ess_version = 1):
 					id = ate_personality["title"];
 				else:
 					ate_personality = Game.get_ate_personality_by_name(id);
-				
+				element_code = ate_personality["code"]
 				tex = ate_personality["art"];
 	else:
 		tex = Game.sqelm_textures[_type];
@@ -82,10 +94,12 @@ func setup_copy(ref_elm):
 			"essential":
 				ess_class = ref_elm.ess_class;
 				ess_version = ref_elm.ess_version;
+				element_code = ref_elm.element_code;
 			"ate":
 				ate_personality = ref_elm.ate_personality;
 				id = ate_personality["title"];
 				tex = ate_personality["art"];
+				element_code = ate_personality["code"];
 	upd_display();
 	
 	texture_normal = tex;
@@ -94,17 +108,36 @@ func setup_copy(ref_elm):
 	
 	disable(true);
 
-func evolve(good = true):
-	if (good):
-		ess_version = Game.essential_versions[ess_class] + 1;
-		Game.essential_versions[ess_class] += 1;
-	else:
-		id += "[p]";
-		mode = "pseudo";
-		ess_class = null;
+func evolve(ndx, good = true):
+	match(ndx):
+		1:
+			id += "[p]";
+			mode = "pseudo";
+			ess_class = null;
+		2:
+			#ess_version = Game.essential_versions[ess_class];
+			ess_version += 1;
+			element_code = element_code.left(2) + str(int(element_code.right(2)) + 10);
+		3:
+			#ess_version = Game.essential_versions[ess_class];
+			ess_version -= 1;
+			element_code = element_code.left(2) + str(int(element_code.right(2)) - 10);
+		4:
+			#ess_version = Game.essential_versions[ess_class];
+			ess_version += 0.1;
+			element_code = element_code.left(2) + str(int(element_code.right(2)) - 1);
+		5:
+			#ess_version = Game.essential_versions[ess_class];
+			ess_version -= 0.1;
+			element_code = element_code.left(2) + str(int(element_code.right(2)) - 1);
+
+	print(element_code)
+	print()
 	upd_display();
 	get_cmsm().emit_signal("cmsm_changed");
 
+
+#FUTURE CHANGES HERE TO ACTUALLY CHANGE THE +1 and so forth on the visual SPRITE
 func upd_display():
 	$lbl.text = id;
 	match(type):
@@ -120,8 +153,15 @@ func upd_display():
 					#$lbl.text += " (Silenced)";
 				"essential":
 					#self_modulate = Color(.15, .8, 0); Commented out to make the gene icons be shown with no green tint
-					if (ess_version > 1):
-						$lbl.text += "-" + str(ess_version);
+					if (ess_version == 0):
+						$version/version_lbl.text = "B"
+						$version/version_lbl.self_modulate = Color(1, 1, 1)
+					else:
+						$version/version_lbl.text = str(ess_version)
+						if ess_version > 0:
+							$version/version_lbl.self_modulate = Color(.1, .8, .1)
+						else:
+							$version/version_lbl.self_modulate = Color(.8, .1, .1)
 					#$lbl.text += " (Essential)";
 				"pseudo":
 					self_modulate = Color(.5, .5, 0);

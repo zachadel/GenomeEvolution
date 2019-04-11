@@ -1755,9 +1755,9 @@ _sections_unfolded = [ "Margin", "Visibility" ]
 
 [connection signal="player_done" from="." to="pnl_energy_allocation" method="_on_Control_player_done"]
 
-[connection signal="died" from="Organism" to="GameOver" method="_on_Organism_died"]
-
 [connection signal="died" from="Organism" to="." method="_on_Organism_died"]
+
+[connection signal="died" from="Organism" to="GameOver" method="_on_Organism_died"]
 
 [connection signal="doing_work" from="Organism" to="." method="_on_Organism_doing_work"]
 

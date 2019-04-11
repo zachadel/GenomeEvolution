@@ -57,7 +57,8 @@ func _ready():
 		for n in Game.ESSENTIAL_CLASSES:
 			# create gene
 			var nxt_gelm = load("res://Scenes/SequenceElement.tscn").instance();
-			nxt_gelm.setup("gene", n, "essential", Game.ESSENTIAL_CLASSES[n], 1);
+			var code = nxt_gelm.codes_dictionary[str(n)]
+			nxt_gelm.setup("gene", n, "essential", Game.ESSENTIAL_CLASSES[n], 0, code);
 			$chromes.get_cmsm(y).add_elm(nxt_gelm);
 	gain_ates(1 + randi() % 6);
 	perform_anims(true);
@@ -209,6 +210,23 @@ var roll_storage = [{}, {}]; # When a player selects a gap, its roll is stored. 
 var repair_type_possible = [false, false, false];
 var sel_repair_idx = -1;
 var sel_repair_gap = null;
+
+func check_resources(x):
+	var repair = ""
+	match x:
+		0:
+			repair = "repair_cd"
+		1:
+			repair = "repair_cp"
+		2:
+			repair = "repair_je"
+		
+	for i in range(4):
+		if resources[i]  < costs[repair][i]:
+			print("NOT ENOUGH CASH! STRANGA!")
+			return false
+	return true
+
 func upd_repair_opts(gap):
 	sel_repair_gap = gap;
 	
@@ -397,7 +415,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 				var right_rem_genes = [];
 				
 				var max_collapse_count = right_idx - left_idx - 1;
-				var continue_collapse = true;
+				var continue_collapse = check_resources(0) && true;
 				var ended_due_to = "failure";
 				
 				for i in range(left_idx, g_idx):
@@ -406,7 +424,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 					right_rem_genes.append(cmsm.get_child(i));
 				
 				var removing_right = true;
-				while (continue_collapse && remove_genes.size() < max_collapse_count):
+				while (continue_collapse && (remove_genes.size() < max_collapse_count)):
 					var chosen_gene;
 					if (removing_right):
 						chosen_gene = right_rem_genes[0];
@@ -417,7 +435,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 					remove_genes.append(chosen_gene);
 					removing_right = left_rem_genes.size() == 0 || right_rem_genes.size() != 0 && !removing_right;
 					
-					continue_collapse = continue_collapse && Game.rollCollapse(choice_info["size"], chosen_gene.get_index() - g_idx);
+					continue_collapse = check_resources(0) && continue_collapse && Game.rollCollapse(choice_info["size"], chosen_gene.get_index() - g_idx);
 				
 				var remove_count = remove_genes.size();
 				if (remove_count == max_collapse_count):
@@ -434,12 +452,15 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 					$chromes.close_gap(gap);
 				emit_signal("justnow_update", "Gap at %s, %d closed: collapsed %d genes and ended due to %s." % [cmsm.get_parent().name, g_idx, remove_count, ended_due_to]);
 			
-				get_tree().get_root().get_node("Control/WorldMap").player.consume_resources("repair_cd")
+				for times in range(remove_count):
+					get_tree().get_root().get_node("Control/WorldMap").player.consume_resources("repair_cd")
 			
 			1: # Copy Pattern
 				choice_info["left"].highlight_border(false);
 				if (!roll_storage[0].has(gap)):
 					roll_storage[0][gap] = roll_chance("copy_repair");
+				if !check_resources(1):
+					roll_storage[0][gap] = 0
 				match (roll_storage[0][gap]):
 					0:
 						gene_selection = cmsm.get_elms_around_pos(g_idx, true);
@@ -503,6 +524,8 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 			2: # Join Ends
 				if (!roll_storage[1].has(gap)):
 					roll_storage[1][gap] = roll_chance("join_ends");
+				if !check_resources(2):
+					roll_storage[1][gap] = 0
 				match (roll_storage[1][gap]):
 					0:
 						gene_selection = cmsm.get_elms_around_pos(g_idx, true);
@@ -585,14 +608,27 @@ func evolve_candidates(candids):
 			if (($chromes.get_cmsm(0).find_all_genes(e.id).size() + $chromes.get_cmsm(1).find_all_genes(e.id).size()) > 2):
 				match (roll_chance("evolve")):
 					0:
-						justnow += "%s received a fatal mutation and has become a pseudogene.\n" % e.id;
-						e.evolve(false);
-						$chromes.evolve_candidates.erase(e);
-					1:
 						justnow += "%s did not evolve.\n" % e.id;
+						e.evolve(0);
+					1:
+						justnow += "%s received a fatal mutation and has become a pseudogene.\n" % e.id;
+						e.evolve(1);
+						$chromes.evolve_candidates.erase(e);
 					2:
-						justnow += "%s now performs a new function.\n" % e.id;
-						e.evolve();
+						justnow += "%s received a major upgrade of [INSERT VALUE HERE].\n" % e.id;
+						e.evolve(2);
+						$chromes.evolve_candidates.erase(e);
+					3:
+						justnow += "%s received a major downgrade of [INSERT VALUE HERE].\n" % e.id;
+						e.evolve(3);
+						$chromes.evolve_candidates.erase(e);
+					4:
+						justnow += "%s received a minor upgrade of [INSERT VALUE HERE].\n" % e.id;
+						e.evolve(4);
+						$chromes.evolve_candidates.erase(e);
+					5:
+						justnow += "%s received a minor downgrade of [INSERT VALUE HERE].\n" % e.id;
+						e.evolve(5);
 						$chromes.evolve_candidates.erase(e);
 			else:
 				$chromes.evolve_candidates.erase(e);
@@ -725,14 +761,14 @@ func update_energy_allocation(type, amount):
 	energy_allocation_panel.update_energy(energy);
 
 var costs = {
-	"move" : [10, 0, 0, 0],
 	"repair_cd" : [0, 1, 5, 0],
-	"repair_cp" : [0, 3, 3, 0],
-	"repair_je" : [0, 5, 1, 0]
+	"repair_cp" : [0, 2, 2, 8],
+	"repair_je" : [0, 5, 1, 0],
+	"move" : [10, 0, 0, 0]
 }
 
 func use_resources(action):
 	for i in range(4):
-		resources[i] -= costs[action][i]
+		resources[i] = max(0, resources[i] - costs[action][i])
 
 
