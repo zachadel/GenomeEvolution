@@ -46,7 +46,8 @@ func _ready():
 		for n in Game.ESSENTIAL_CLASSES:
 			# create gene
 			var nxt_gelm = load("res://Scenes/SequenceElement.tscn").instance();
-			nxt_gelm.setup("gene", n, "essential", Game.ESSENTIAL_CLASSES[n], 1);
+			var code = nxt_gelm.codes_dictionary[str(n)]
+			nxt_gelm.setup("gene", n, "essential", Game.ESSENTIAL_CLASSES[n], 0, code);
 			$chromes.get_cmsm(y).add_elm(nxt_gelm);
 	gain_ates(1 + randi() % 6);
 	perform_anims(true);
@@ -560,16 +561,29 @@ func evolve_candidates(candids):
 		var justnow = "";
 		for e in candids:
 			if (($chromes.get_cmsm(0).find_all_genes(e.id).size() + $chromes.get_cmsm(1).find_all_genes(e.id).size()) > 2):
-				match (Game.rollEvolve()):
+				match (Game.rollEvolveIndy()):
 					0:
-						justnow += "%s received a fatal mutation and has become a pseudogene.\n" % e.id;
-						e.evolve(false);
-						$chromes.evolve_candidates.erase(e);
-					1:
 						justnow += "%s did not evolve.\n" % e.id;
+						e.evolve(0);
+					1:
+						justnow += "%s received a fatal mutation and has become a pseudogene.\n" % e.id;
+						e.evolve(1);
+						$chromes.evolve_candidates.erase(e);
 					2:
-						justnow += "%s now performs a new function.\n" % e.id;
-						e.evolve();
+						justnow += "%s received a major upgrade of [INSERT VALUE HERE].\n" % e.id;
+						e.evolve(2);
+						$chromes.evolve_candidates.erase(e);
+					3:
+						justnow += "%s received a major downgrade of [INSERT VALUE HERE].\n" % e.id;
+						e.evolve(3);
+						$chromes.evolve_candidates.erase(e);
+					4:
+						justnow += "%s received a minor upgrade of [INSERT VALUE HERE].\n" % e.id;
+						e.evolve(4);
+						$chromes.evolve_candidates.erase(e);
+					5:
+						justnow += "%s received a minor downgrade of [INSERT VALUE HERE].\n" % e.id;
+						e.evolve(5);
 						$chromes.evolve_candidates.erase(e);
 			else:
 				$chromes.evolve_candidates.erase(e);

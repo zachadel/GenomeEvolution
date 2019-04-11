@@ -191,6 +191,27 @@ func rollJoinEnds():
 	else:
 		return 2;
 
+func rollEvolveIndy():
+	var chances = randf()
+	if chances < 0.05:
+		print("DEATH!")
+		return 1
+	elif chances < 0.15:
+		print("MAJOR UP")
+		return 2
+	elif chances < 0.25:
+		print("MAJOR DOWN")
+		return 3
+	elif chances < 0.40:
+		print("MINOR UP")
+		return 4
+	elif chances < 0.55:
+		print("MINOR DOWN")
+		return 5
+	else:
+		print("NOTHING")
+		return 0
+
 func rollEvolve():
 	var rand = randf();
 	if (rand <= 0.3334):
