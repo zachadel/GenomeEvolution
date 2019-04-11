@@ -253,6 +253,8 @@ func add_elm(elm, pos = null):
 		
 		add_child(elm);
 		move_child(elm, pos);
+		if (elm.is_ate()):
+			get_cmsm_pair().append_atelist(elm);
 		set_size();
 		
 		if (do_animations):

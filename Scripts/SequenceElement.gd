@@ -3,9 +3,22 @@ extends TextureButton
 var type;
 var mode;
 var id;
+
 var ess_class = null;
 var ess_version;
+var ess_mods = {
+	# Lose one, no complications, copy intervening, duplicate a gene at the site
+	"copy_repair": [0.0, 0.0, 0.0, 0.0],
+	
+	# Lose one, no complications, duplicate a gene at the site
+	"join_ends": [0.0, 0.0, 0.0],
+	
+	# Harmful, none, beneficial
+	"evolve": [0.0, 0.0, 0.0]
+};
+
 var ate_personality = {};
+var act_mods = {"silent": 1.0, "excise": 1.0, "jump": 1.0, "copy": 1.0};
 
 var DEFAULT_SIZE = 200;
 var MIN_SIZE = 75;
@@ -145,12 +158,19 @@ func highlight_border(on, special_color = false):
 func is_highlighted():
 	return $BorderRect.visible;
 
+func mod_act_behavior(type, chance_mod):
+	if (typeof(type) == TYPE_INT):
+		type = act_mods.keys()[type];
+	act_mods[type] += chance_mod;
+
+func mod_ess_roll(type, idx, chance_mod):
+	ess_mods[type][idx] += chance_mod;
+
+func get_ess_mod_array(type):
+	return ess_mods[type];
+
 func get_ate_jump_roll():
-	var idx = 0;
-	var roll = randf();
-	while (idx < ate_personality["roll"].size() && roll >= ate_personality["roll"][idx]):
-		idx += 1;
-	return idx;
+	return Game.rollChances(ate_personality["roll"], act_mods.values());
 
 func get_active_behavior(jump): #if jump==false, get the copy range
 	var grab_dict = {};

@@ -72,6 +72,9 @@ func load_from_save(left_cmsm, right_cmsm):
 	get_cmsm(0).load_from_save(left_cmsm);
 	get_cmsm(1).load_from_save(right_cmsm);
 
+func get_all_genes():
+	return get_cmsm(0).get_children() + get_cmsm(1).get_children();
+
 # CHROMOSOME MODIFICATION FUNCTIONS
 
 func extract_elm(elm, place_gap = true):
