@@ -615,19 +615,19 @@ func evolve_candidates(candids):
 					e.evolve(1);
 					$chromes.evolve_candidates.erase(e);
 				2:
-					justnow += "%s received a major upgrade of [INSERT VALUE HERE].\n" % e.id;
+					justnow += "%s received a major upgrade of +1.0\n" % e.id;
 					e.evolve(2);
 					$chromes.evolve_candidates.erase(e);
 				3:
-					justnow += "%s received a major downgrade of [INSERT VALUE HERE].\n" % e.id;
+					justnow += "%s received a major downgrade of -1.0\n" % e.id;
 					e.evolve(3);
 					$chromes.evolve_candidates.erase(e);
 				4:
-					justnow += "%s received a minor upgrade of [INSERT VALUE HERE].\n" % e.id;
+					justnow += "%s received a minor upgrade of +0.1\n" % e.id;
 					e.evolve(4);
 					$chromes.evolve_candidates.erase(e);
 				5:
-					justnow += "%s received a minor downgrade of [INSERT VALUE HERE].\n" % e.id;
+					justnow += "%s received a minor downgrade of -0.1\n" % e.id;
 					e.evolve(5);
 					$chromes.evolve_candidates.erase(e);
 			#else:
