@@ -191,6 +191,7 @@ func rollJoinEnds():
 	else:
 		return 2;
 
+#just adding a comment to make it merge
 func rollEvolveIndy():
 	var chances = randf()
 	if chances < 0.05:
