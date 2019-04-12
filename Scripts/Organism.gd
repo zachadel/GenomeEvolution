@@ -605,33 +605,33 @@ func evolve_candidates(candids):
 	if (candids.size() > 0):
 		var justnow = "";
 		for e in candids:
-			if (($chromes.get_cmsm(0).find_all_genes(e.id).size() + $chromes.get_cmsm(1).find_all_genes(e.id).size()) > 2):
-				match (roll_chance("evolve")):
-					0:
-						justnow += "%s did not evolve.\n" % e.id;
-						e.evolve(0);
-					1:
-						justnow += "%s received a fatal mutation and has become a pseudogene.\n" % e.id;
-						e.evolve(1);
-						$chromes.evolve_candidates.erase(e);
-					2:
-						justnow += "%s received a major upgrade of [INSERT VALUE HERE].\n" % e.id;
-						e.evolve(2);
-						$chromes.evolve_candidates.erase(e);
-					3:
-						justnow += "%s received a major downgrade of [INSERT VALUE HERE].\n" % e.id;
-						e.evolve(3);
-						$chromes.evolve_candidates.erase(e);
-					4:
-						justnow += "%s received a minor upgrade of [INSERT VALUE HERE].\n" % e.id;
-						e.evolve(4);
-						$chromes.evolve_candidates.erase(e);
-					5:
-						justnow += "%s received a minor downgrade of [INSERT VALUE HERE].\n" % e.id;
-						e.evolve(5);
-						$chromes.evolve_candidates.erase(e);
-			else:
-				$chromes.evolve_candidates.erase(e);
+			#if (($chromes.get_cmsm(0).find_all_genes(e.id).size() + $chromes.get_cmsm(1).find_all_genes(e.id).size()) > 2):
+			match (Game.rollEvolveIndy()):
+				0:
+					justnow += "%s did not evolve.\n" % e.id;
+					e.evolve(0);
+				1:
+					justnow += "%s received a fatal mutation and has become a pseudogene.\n" % e.id;
+					e.evolve(1);
+					$chromes.evolve_candidates.erase(e);
+				2:
+					justnow += "%s received a major upgrade of [INSERT VALUE HERE].\n" % e.id;
+					e.evolve(2);
+					$chromes.evolve_candidates.erase(e);
+				3:
+					justnow += "%s received a major downgrade of [INSERT VALUE HERE].\n" % e.id;
+					e.evolve(3);
+					$chromes.evolve_candidates.erase(e);
+				4:
+					justnow += "%s received a minor upgrade of [INSERT VALUE HERE].\n" % e.id;
+					e.evolve(4);
+					$chromes.evolve_candidates.erase(e);
+				5:
+					justnow += "%s received a minor downgrade of [INSERT VALUE HERE].\n" % e.id;
+					e.evolve(5);
+					$chromes.evolve_candidates.erase(e);
+			#else:
+			#	$chromes.evolve_candidates.erase(e);
 		emit_signal("justnow_update", justnow);
 	else:
 		emit_signal("justnow_update", "No essential genes were duplicated, so no genes evolve.");
@@ -723,7 +723,11 @@ func adv_turn(round_num, turn_idx):
 			for g in gene_selection:
 				g.disable(true);
 			emit_signal("justnow_update", "");
-			var _candidates = $chromes.evolve_candidates + [];
+			var _candidates = []
+			for cmsm in $chromes.get_cmsms():
+				for i in cmsm.get_child_count():
+					_candidates.append(cmsm.get_child(i))
+			print(_candidates.size())
 			evolve_candidates(_candidates);
 		elif (Game.get_turn_type() == Game.TURN_TYPES.CheckViability):
 			var viable = $chromes.validate_essentials(Game.ESSENTIAL_CLASSES.values());

@@ -49,6 +49,7 @@ func setup(_type, _id = "", _mode = "ate", _ess_class = -1, _ess_version = 0, _c
 	type = _type;
 	mode = _mode;
 	element_code = _code
+	ess_version = _ess_version
 	var tex;
 	if (type == "gene"):
 		match (mode):
@@ -56,11 +57,9 @@ func setup(_type, _id = "", _mode = "ate", _ess_class = -1, _ess_version = 0, _c
 				# This will happen for saveloads
 				if (typeof(_ess_class) != TYPE_INT):
 					_ess_class = int(_ess_class);
-					_ess_version = int(_ess_version);
 				
 				if (_ess_class in Game.ESSENTIAL_CLASSES.values()):
 					ess_class = _ess_class;
-					ess_version = _ess_version;
 					tex = Game.ess_textures[_ess_class];
 				else:
 					print("!! Trying to put ", name, " (", _type, ", ", _id, ") in non-existent eclass (", _ess_class, ")");
@@ -72,6 +71,7 @@ func setup(_type, _id = "", _mode = "ate", _ess_class = -1, _ess_version = 0, _c
 				else:
 					ate_personality = Game.get_ate_personality_by_name(id);
 				element_code = ate_personality["code"]
+				ess_version = 0
 				tex = ate_personality["art"];
 	else:
 		tex = Game.sqelm_textures[_type];
@@ -97,6 +97,7 @@ func setup_copy(ref_elm):
 				element_code = ref_elm.element_code;
 			"ate":
 				ate_personality = ref_elm.ate_personality;
+				ess_version = ref_elm.ess_version;
 				id = ate_personality["title"];
 				tex = ate_personality["art"];
 				element_code = ate_personality["code"];
@@ -131,8 +132,6 @@ func evolve(ndx, good = true):
 			ess_version -= 0.1;
 			element_code = element_code.left(2) + str(int(element_code.right(2)) - 1);
 
-	print(element_code)
-	print()
 	upd_display();
 	get_cmsm().emit_signal("cmsm_changed");
 
@@ -167,6 +166,7 @@ func upd_display():
 					self_modulate = Color(.5, .5, 0);
 					#$lbl.text += " (Pseudogene)";
 		"break":
+			$version.hide()
 			toggle_mode = true;
 			continue;
 		_:
