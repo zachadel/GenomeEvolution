@@ -181,6 +181,53 @@ func rollChances(chance_array, mods = []):
 			return i;
 		previous_range = now_range;
 	return roll_chances.size() - 1;
+#=======
+#	elif (rand <= .3334):
+#		return 1;
+#	elif (rand <= .8335):
+#		return 2;
+#	else:
+#		return 3;
+
+func rollJoinEnds():
+	var rand = randf();
+	if (rand <= .5001):
+		return 0;
+	elif (rand <= .8335):
+		return 1;
+	else:
+		return 2;
+
+#just adding a comment to make it merge
+func rollEvolveIndy():
+	var chances = randf()
+	if chances < 0.05:
+		print("DEATH!")
+		return 1
+	elif chances < 0.15:
+		print("MAJOR UP")
+		return 2
+	elif chances < 0.25:
+		print("MAJOR DOWN")
+		return 3
+	elif chances < 0.40:
+		print("MINOR UP")
+		return 4
+	elif chances < 0.55:
+		print("MINOR DOWN")
+		return 5
+	else:
+		print("NOTHING")
+		return 0
+
+func rollEvolve():
+	var rand = randf();
+	if (rand <= 0.3334):
+		return 0;
+	if (rand <= 0.8335):
+		return 1;
+	else:
+		return 2;
 
 func collapseChance(segment_size, dist_from_gap):
 	return float(float(segment_size) / float(dist_from_gap + 0.5));
