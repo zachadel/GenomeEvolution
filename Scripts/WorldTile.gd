@@ -13,6 +13,10 @@ var resources = {"x": 10, "y": 10, "z": 10, "w": 10}
 var resource_2d_array = [[],[],[],[]]
 var resource_group_types = 10
 
+var uv_index
+var temperature
+var oxygen_level
+
 func _ready():
 	$Area2D/Sprite.modulate = hidden_color
 	
@@ -61,6 +65,10 @@ func set_resources(step):
 	resources.y = round(curr_color.g * 100)
 	resources.z = round(curr_color.b * 100)
 	resources.w = round(curr_color.a * 10)
+	
+	temperature = curr_color.r * 100
+	uv_index = curr_color.b * 15
+	oxygen_level = curr_color.g * 100
 	
 	#set 4 resources here!
 	for i in range(0, 4):
