@@ -14,7 +14,7 @@ func _ready():
 func _on_World_Map_Control_tiles_done():
 	for i in range(0, 4):
 		res_tree[i].append($Tree.create_item(root))
-		res_tree[i][0].set_text(0, "Resource " + String(i))
+		res_tree[i][0].set_text(0, "Resource " + String(i + 1))
 		for j in range(1, 11):
 			res_tree[i].append($Tree.create_item(res_tree[i][0]))
 			res_tree[i][j].set_text(0, "Sub-Resource " + String(i) + "-" + String(j) + ": " + String(player.curr_tile.resource_2d_array[i][j - 1]))

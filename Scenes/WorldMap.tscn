@@ -487,7 +487,6 @@ _sections_unfolded = [ "Anchor", "Margin" ]
 
 [node name="ResourceStatsPanel" type="Panel" parent="WorldMap_UI" index="1"]
 
-editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -619,9 +618,9 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 alignment = 2
 
-[connection signal="player_done" from="." to="WorldMap_UI/UIPanel" method="_on_WorldMapControl_player_done"]
-
 [connection signal="player_done" from="." to="WorldMap_UI/ResourceStatsPanel" method="_on_WorldMapControl_player_done"]
+
+[connection signal="player_done" from="." to="WorldMap_UI/UIPanel" method="_on_WorldMapControl_player_done"]
 
 [connection signal="tiles_done" from="." to="WorldMap_UI/ResourceStatsPanel" method="_on_World_Map_Control_tiles_done"]
 
