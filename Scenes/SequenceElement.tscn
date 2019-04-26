@@ -32,7 +32,7 @@ anti_aliasing = true
 anti_aliasing_size = 1
 _sections_unfolded = [ "Corner Radius" ]
 
-[node name="SeqElm" type="TextureButton"]
+[node name="SeqElm" type="TextureButton" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
