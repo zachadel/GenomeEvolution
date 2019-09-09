@@ -255,7 +255,7 @@ func add_elm(elm, pos = null):
 		move_child(elm, pos);
 		if (elm.is_ate()):
 			get_cmsm_pair().append_atelist(elm);
-		set_size();
+		set_elms_size();
 		
 		if (do_animations):
 			if (!elm.is_gap()):
@@ -349,7 +349,7 @@ func remove_elm(elm):
 	if (elm.get_parent() != null):
 		elm.get_parent().remove_child(elm);
 	emit_signal("animating", false);
-	set_size();
+	set_elms_size();
 	yield(get_tree(), "idle_frame");
 	emit_signal("cmsm_changed");
 	queue_sort();
@@ -399,7 +399,7 @@ func remove_elm_create_gap(elm):
 	get_cmsm_pair().append_gaplist(gap);
 	
 	emit_signal("animating", false);
-	set_size();
+	set_elms_size();
 	yield(get_tree(), "idle_frame");
 	queue_sort();
 	emit_signal("cmsm_changed");
@@ -428,7 +428,7 @@ func has_essclass(sc):
 func _on_animating_changed(state):
 	animating = state;
 
-func set_size():
+func set_elms_size():
 #	var size = (get_parent().rect_size.x / get_child_count()) - \
 #		(get_child_count() * 5);
 	# TODO: fix this so it doesn't require a constant value

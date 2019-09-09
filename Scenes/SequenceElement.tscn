@@ -4,169 +4,64 @@
 [ext_resource path="res://Assets/Images/border.png" type="Texture" id=2]
 
 [sub_resource type="StyleBoxFlat" id=1]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
 bg_color = Color( 0.219608, 0.219608, 0.219608, 1 )
-draw_center = true
-border_width_left = 0
-border_width_top = 0
-border_width_right = 0
-border_width_bottom = 0
-border_color = Color( 0.8, 0.8, 0.8, 1 )
-border_blend = false
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
-corner_detail = 8
-expand_margin_left = 0.0
-expand_margin_right = 0.0
-expand_margin_top = 0.0
-expand_margin_bottom = 0.0
-shadow_color = Color( 0, 0, 0, 0.6 )
-shadow_size = 0
-anti_aliasing = true
-anti_aliasing_size = 1
-_sections_unfolded = [ "Corner Radius" ]
 
-[node name="SeqElm" type="TextureButton" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="SeqElm" type="TextureButton"]
 margin_right = 200.0
 margin_bottom = 200.0
 rect_min_size = Vector2( 200, 200 )
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
 size_flags_vertical = 4
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
 expand = true
 script = ExtResource( 1 )
-_sections_unfolded = [ "Anchor", "Focus", "Margin", "Mouse", "Rect", "Size Flags", "Textures", "Theme", "Visibility" ]
 
-[node name="BorderRect" type="TextureRect" parent="." index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
+[node name="BorderRect" type="TextureRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_min_size = Vector2( 200, 200 )
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
 texture = ExtResource( 2 )
 expand = true
-stretch_mode = 0
-_sections_unfolded = [ "Margin", "Material", "Mouse", "Rect", "Visibility" ]
 
-[node name="GrayFilter" type="ColorRect" parent="." index="1"]
-
+[node name="GrayFilter" type="ColorRect" parent="."]
 visible = false
-anchor_left = 0.0
-anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_min_size = Vector2( 200, 200 )
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
 color = Color( 0, 0, 0, 0.33 )
-_sections_unfolded = [ "Anchor", "Margin", "Mouse", "Rect", "Visibility" ]
 
-[node name="lbl" type="Label" parent="." index="2"]
-
-anchor_left = 0.0
+[node name="lbl" type="Label" parent="."]
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_bottom = 25.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
 text = "Dingaling"
 align = 1
 valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Mouse", "Rect" ]
 
-[node name="Tween" type="Tween" parent="." index="3"]
+[node name="Tween" type="Tween" parent="."]
 
-repeat = false
-playback_process_mode = 1
-playback_speed = 1.0
-playback/active = false
-playback/repeat = false
-playback/speed = 1.0
-
-[node name="version" type="PanelContainer" parent="." index="4"]
-
+[node name="version" type="PanelContainer" parent="."]
 anchor_left = 1.0
-anchor_top = 0.0
 anchor_right = 1.0
-anchor_bottom = 0.0
 margin_left = -45.0
 margin_top = 5.0
 margin_right = -15.0
 margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
 custom_styles/panel = SubResource( 1 )
 
-[node name="version_lbl" type="Label" parent="version" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="version_lbl" type="Label" parent="version"]
 margin_top = 8.0
 margin_right = 30.0
 margin_bottom = 22.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
 text = "B"
 align = 1
 valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
 [connection signal="mouse_entered" from="." to="." method="_on_SeqElm_mouse_entered"]
-
 [connection signal="mouse_exited" from="." to="." method="_on_SeqElm_mouse_exited"]
-
 [connection signal="pressed" from="." to="." method="_on_SeqElm_pressed"]
-
 [connection signal="toggled" from="." to="." method="_on_SeqElm_toggled"]
-
-

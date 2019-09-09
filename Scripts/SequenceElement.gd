@@ -140,7 +140,7 @@ func evolve(ndx, good = true):
 			#ess_version = Game.essential_versions[ess_class];
 			#ess_version -= 0.1;
 			element_code = element_code.left(2) + str(int(element_code.right(2)) - 1);
-
+	
 	upd_display();
 	get_cmsm().emit_signal("cmsm_changed");
 
