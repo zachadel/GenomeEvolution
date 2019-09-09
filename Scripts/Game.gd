@@ -21,6 +21,7 @@ var TE_jump_time_limit = 5
 var TE_insertion_time_limit = 0.8
 
 var ate_personalities = {};
+var resource_mult = 0.0;
 
 
 func _ready():
@@ -131,12 +132,12 @@ func get_turn_txt():
 			return "Unknown turn type (#%d)" % _x;
 
 func get_save_str():
-	return "%s:%s" % [turn_idx, card_table.ognsm.get_save()];
+	return "%s:%s" % [turn_idx, card_table.orgn.get_save()];
 
 func load_from_save(save):
 	var s = save.split(":");
 	turn_idx = int(s[0]) - 1;
-	card_table.ognsm.load_from_save(s[1]);
+	card_table.orgn.load_from_save(s[1]);
 
 func copy_elm(elm):
 	var copy_elm = load("res://Scenes/SequenceElement.tscn").instance();

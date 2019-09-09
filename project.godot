@@ -10,7 +10,7 @@ config_version=3
 
 [application]
 
-config/name="Genome Evolution [BRANCH VERSION] [DO NOT EDIT]"
+config/name="Genome Evolution"
 run/main_scene="res://Assets/Images/Main Menu/Scenes/TitleScreen.tscn"
 config/icon="res://icon.png"
 

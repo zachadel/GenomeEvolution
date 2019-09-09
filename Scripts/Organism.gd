@@ -773,6 +773,6 @@ var costs = {
 
 func use_resources(action):
 	for i in range(4):
-		resources[i] = max(0, resources[i] - costs[action][i])
+		resources[i] = max(0, resources[i] - (costs[action][i] * Game.resource_mult))
 
 
