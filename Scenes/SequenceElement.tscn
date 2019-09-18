@@ -43,6 +43,16 @@ text = "Dingaling"
 align = 1
 valign = 1
 
+[node name="DBGLBL" type="Label" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -26.0
+margin_bottom = -1.0
+text = "GENE"
+align = 1
+valign = 1
+
 [node name="Tween" type="Tween" parent="."]
 
 [node name="version" type="PanelContainer" parent="."]
