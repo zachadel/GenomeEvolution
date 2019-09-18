@@ -7,7 +7,6 @@ var default_te_texture = load("res://Assets/Images/tes/default_te.png");
 enum ESSENTIAL_CLASSES {Replication, Locomotion, Manipulation, Sensing, Construction, Deconstruction};
 enum TURN_TYPES {NewTEs, TEJump, RepairBreaks, EnvironmentalDamage, Recombination, Evolve, CheckViability};
 
-var essential_versions = {};
 var turns = [TURN_TYPES.NewTEs, TURN_TYPES.TEJump, TURN_TYPES.RepairBreaks, TURN_TYPES.EnvironmentalDamage, TURN_TYPES.RepairBreaks, TURN_TYPES.Recombination, TURN_TYPES.Evolve, TURN_TYPES.CheckViability];
 var turn_idx
 var round_num
@@ -23,11 +22,23 @@ var TE_insertion_time_limit = 0.8
 var ate_personalities = {};
 var resource_mult = 0.0;
 
+var code_elements = [];
+
+func get_code_num(_char):
+	return code_elements.find(_char);
+
+func get_code_char(_num):
+	return code_elements[_num];
 
 func _ready():
 	#initialization done in _ready for restarts
 	turn_idx = -1;
 	round_num = 1;
+	
+	for i in range(65, 91): # A to Z
+		code_elements.append(char(i));
+	for i in range(97, 122): # a to z
+		code_elements.append(char(i));
 	
 	#Generate a new seed for all rand calls
 	randomize();
@@ -35,7 +46,6 @@ func _ready():
 	for c in ESSENTIAL_CLASSES.values():
 		ess_textures[c] = load("res://Assets/Images/genes/" + class_to_string(c) + ".png");
 		ess_textures_noDNA[c] = load("res://Assets/Images/genes_noDNA/" + class_to_string(c) + ".png"); #textures for genes w/o DNA background
-		essential_versions[c] = 1;
 	
 	# Import ATE Personalities
 	load_personalities("ate_personalities", ate_personalities);
@@ -132,10 +142,10 @@ func get_turn_txt():
 			return "Unknown turn type (#%d)" % _x;
 
 func get_save_str():
-	return "%s:%s" % [turn_idx, card_table.orgn.get_save()];
+	return var2str([turn_idx, card_table.orgn.get_save()]).replace("\\\\\\", "^");
 
 func load_from_save(save):
-	var s = save.split(":");
+	var s = str2var(save.replace("^", "\\\\\\"));
 	turn_idx = int(s[0]) - 1;
 	card_table.orgn.load_from_save(s[1]);
 
@@ -182,53 +192,6 @@ func rollChances(chance_array, mods = []):
 			return i;
 		previous_range = now_range;
 	return roll_chances.size() - 1;
-#=======
-#	elif (rand <= .3334):
-#		return 1;
-#	elif (rand <= .8335):
-#		return 2;
-#	else:
-#		return 3;
-
-func rollJoinEnds():
-	var rand = randf();
-	if (rand <= .5001):
-		return 0;
-	elif (rand <= .8335):
-		return 1;
-	else:
-		return 2;
-
-#just adding a comment to make it merge
-func rollEvolveIndy():
-	var chances = randf()
-	if chances < 0.05:
-		print("DEATH!")
-		return 1
-	elif chances < 0.15:
-		print("MAJOR UP")
-		return 2
-	elif chances < 0.25:
-		print("MAJOR DOWN")
-		return 3
-	elif chances < 0.40:
-		print("MINOR UP")
-		return 4
-	elif chances < 0.55:
-		print("MINOR DOWN")
-		return 5
-	else:
-		print("NOTHING")
-		return 0
-
-func rollEvolve():
-	var rand = randf();
-	if (rand <= 0.3334):
-		return 0;
-	if (rand <= 0.8335):
-		return 1;
-	else:
-		return 2;
 
 func collapseChance(segment_size, dist_from_gap):
 	return float(float(segment_size) / float(dist_from_gap + 0.5));

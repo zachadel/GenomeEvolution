@@ -28,16 +28,16 @@ func setup(card_table):
 func perform_anims(perform):
 	do_animations = perform;
 
-var SequenceElement = preload("res://Scripts/SequenceElement.gd");
 
 # GETTER FUNCTIONS
 
-func get_pairs(left_id, right_id, minimal = false):
+func get_pairs(left_elm, right_elm, minimal = false):
 	var pairs = {}; # key is left_idx, value is an array of right_idxs
 	
 	for i in range(get_child_count()-1):
-		if (get_child(i).id == left_id):
-			var right_idxs = find_pair_right_idxs(i, right_id);
+		var candidate = get_child(i);
+		if (left_elm.is_equal(candidate, get_organism().get_max_gene_dist())):
+			var right_idxs = find_pair_right_idxs(i, right_elm);
 			if (right_idxs.size() > 0):
 				pairs[i] = right_idxs;
 				
@@ -47,26 +47,15 @@ func get_pairs(left_id, right_id, minimal = false):
 	
 	return pairs;
 
-func find_pair_right_idxs(left_idx, right_id):
+func find_pair_right_idxs(left_idx, right_elm):
 	var valid_rights = [];
 	for i in range(left_idx+1, get_child_count()):
 		var gene = get_child(i);
 		if (gene.is_gap()):
 			return valid_rights;
-		elif (gene.id == right_id):
+		elif (right_elm.is_equal(gene, get_organism().get_max_gene_dist())):
 			valid_rights.append(gene.get_index());
 	return valid_rights;
-
-# 0g123g0123g0
-# 0123456789ab
-# gap_idx = 5
-#
-# left_bound = 2
-# right_bound = a
-# right_start = 6
-# l_ch_sz = 3
-# r_ch_sz = 4
-# min_ch_sz = 3
 
 func find_dupe_blocks(gap_idx, minimal = false):
 	var left_bound = find_next_gap(gap_idx - 1, -1) + 1;
@@ -90,14 +79,14 @@ func find_dupe_blocks(gap_idx, minimal = false):
 		
 		# The size of the block is going to be in [1, max_block_size]; check all possible sizes
 		for sz in range(1, max_block_size+1):
-			var left_block_ids = [];
+			var left_block_elms = [];
 			for blk in range(sz):
-				left_block_ids.append(get_child(left_bound + left_idx + blk).id);
+				left_block_elms.append(get_child(left_bound + left_idx + blk));
 			
 			# Check for a matching block in the right chunk
 			var right_chunk_idxs = [];
-			for right_idx in range(right_chunk_size - left_block_ids.size() + 1):
-				if (block_exists(right_start + right_idx, left_block_ids)):
+			for right_idx in range(right_chunk_size - left_block_elms.size() + 1):
+				if (block_exists(right_start + right_idx, left_block_elms)):
 					right_chunk_idxs.append(right_start + right_idx);
 			if (right_chunk_idxs.size() > 0):
 				block_dict[sz] = right_chunk_idxs;
@@ -110,9 +99,9 @@ func find_dupe_blocks(gap_idx, minimal = false):
 				return dupe_blocks;
 	return dupe_blocks;
 
-func block_exists(start_idx, block_ids):
-	for i in range(block_ids.size()):
-		if (get_child(start_idx + i).id != block_ids[i]):
+func block_exists(start_idx, block_elms):
+	for i in range(block_elms.size()):
+		if !(get_child(start_idx + i).is_equal(block_elms[i], get_organism().get_max_gene_dist())):
 			return false;
 	return true;
 
@@ -165,22 +154,26 @@ func get_cmsm_pair():
 		return get_parent().get_parent();
 	return null;
 
+func get_organism():
+	var pair = get_cmsm_pair();
+	if (pair != null):
+		return pair.get_organism();
+	return null;
+
 func get_elms_save():
-	# An "array" denoted as follows:
-	# elm_0_const_arg_0,elm_0_const_arg_1,elm_0_const_arg_2.elm_1_const_arg_0,elm_1_const_arg_1,elm_1_const_arg_2
-	# Split by .s to get separate elms, then split by ,s to get separate constructor arguments
-	var data = "";
+	var data = [];
 	for g in get_children():
-		if (data != ""):
-			data += ".";
-		
-		var elm_data = "%s,%s,%s" % [g.type, g.id, g.mode];
+		var elm_data = ["type", "id", "mode"];
+		if (g.gene_code != null):
+			elm_data.append("gene_code");
 		if (g.ess_class != null):
-			elm_data += ",%s,%s" % [g.ess_class, g.ess_version];
+			elm_data.append("ess_class");
 		
-		data += elm_data;
+		for i in range(elm_data.size()):
+			elm_data[i] = g.get(elm_data[i]);
+		data.append([elm_data, g.get_ess_behavior()]);
 	
-	return data;
+	return var2str(data).replace("\n", "");
 
 func load_from_save(save):
 	# Clear chromosome
@@ -188,11 +181,11 @@ func load_from_save(save):
 		get_cmsm_pair().remove_elm(e);
 	
 	# Parse & load
-	var elms = save.split(".");
-	for e in elms:
-		var args = e.split(",");
+	var elms = str2var(save);
+	for args in elms:
 		var nxt_gelm = load("res://Scenes/SequenceElement.tscn").instance();
-		nxt_gelm.callv("setup", args);
+		nxt_gelm.callv("setup", args[0]);
+		nxt_gelm.set_ess_behavior(args[1]);
 		if (nxt_gelm.is_gap()):
 			get_cmsm_pair().append_gaplist(nxt_gelm);
 		if (nxt_gelm.is_ate()):
@@ -410,8 +403,8 @@ func remove_elm_create_gap(elm):
 func valid_gap_pos(idx):
 	return idx > 0 && idx < get_child_count()-1 && !get_child(idx - 1).is_gap() && !get_child(idx + 1).is_gap();
 
-func pair_exists(left_id, right_id):
-	return get_pairs(left_id, right_id, true).size() > 0;
+func pair_exists(left_elm, right_elm):
+	return get_pairs(left_elm, right_elm, true).size() > 0;
 
 func dupe_block_exists(gap_idx):
 	return find_dupe_blocks(gap_idx, true).size() > 0;

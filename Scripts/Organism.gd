@@ -2,7 +2,6 @@ extends Control
 
 func fix_bars():
 	$chromes.fix_bars();
-	# This is a little hack I've come up with to make bars in ScrollContainer controls larger
 
 var selected_gap# = null;
 
@@ -19,6 +18,8 @@ var MAX_ALLOCATED_ENERGY = 10;
 var energy_allocations
 onready var energy_allocation_panel = get_node("../pnl_energy_allocation");
 
+var max_equality_dist = 10 setget ,get_max_gene_dist;
+
 var base_rolls = {
 	# Lose one, no complications, copy intervening, duplicate a gene at the site
 	"copy_repair": [1.6, 1.6, 5, 2],
@@ -26,8 +27,8 @@ var base_rolls = {
 	# Lose one, no complications, duplicate a gene at the site
 	"join_ends": [5, 3, 2],
 	
-	# Harmful, none, beneficial
-	"evolve": [3, 5, 2]
+	# none, death, major up, major down, minor up, minor down
+	"evolve": [5, 0.5, 2, 1, 5, 4]
 }
 
 signal gene_clicked();
@@ -53,29 +54,31 @@ func _ready():
 	energy_allocations = {};
 	
 	perform_anims(false);
-	for y in range(2):
-		for n in Game.ESSENTIAL_CLASSES:
+	for n in Game.ESSENTIAL_CLASSES:
+		var code = "";
+		for y in range(2):
 			# create gene
 			var nxt_gelm = load("res://Scenes/SequenceElement.tscn").instance();
-			var code = nxt_gelm.codes_dictionary[str(n)]
-			nxt_gelm.setup("gene", n, "essential", Game.ESSENTIAL_CLASSES[n], 0, code);
+			nxt_gelm.setup("gene", n, "essential", code, Game.ESSENTIAL_CLASSES[n]);
+			nxt_gelm.set_ess_behavior({n: 50});
+			if (code == ""):
+				code = nxt_gelm.gene_code;
 			$chromes.get_cmsm(y).add_elm(nxt_gelm);
 	gain_ates(1 + randi() % 6);
 	perform_anims(true);
 	born_on_turn = Game.round_num;
 
 func get_save():
-	return "%s,%s|%s" % [born_on_turn, energy, $chromes.get_chromes_save()];
+	return var2str([born_on_turn, energy, $chromes.get_chromes_save()]);
 
 func load_from_save(save):
 	perform_anims(false);
-	var s = save.split("|");
 	
-	var my_info = s[0].split(",");
+	var my_info = str2var(save);
 	born_on_turn = int(my_info[0]);
 	energy = int(my_info[1]);
+	$chromes.load_from_save(my_info[2]);
 	
-	$chromes.load_from_save(s[1], s[2]);
 	perform_anims(true);
 
 func _input(ev):
@@ -105,6 +108,9 @@ func get_card_table():
 
 func get_cmsm_pair():
 	return $chromes;
+
+func get_max_gene_dist():
+	return max_equality_dist;
 
 func gain_ates(count = 1):
 	var justnow = "";
@@ -238,11 +244,11 @@ func upd_repair_opts(gap):
 		else:
 			$chromes.close_gap(gap);
 	else:
-		var left_id = cmsm.get_child(g_idx-1).id;
-		var right_id = cmsm.get_child(g_idx+1).id;
+		var left_elm = cmsm.get_child(g_idx-1);
+		var right_elm = cmsm.get_child(g_idx+1);
 		
 		repair_type_possible[0] = cmsm.dupe_block_exists(g_idx);
-		repair_type_possible[1] = $chromes.get_other_cmsm(cmsm).pair_exists(left_id, right_id);
+		repair_type_possible[1] = $chromes.get_other_cmsm(cmsm).pair_exists(left_elm, right_elm);
 		repair_type_possible[2] = true;
 		
 		sel_repair_idx = 0;
@@ -345,12 +351,12 @@ func make_repair_choices(gap, repair_idx):
 		1: # Copy Pattern
 			var gap_cmsm = gap.get_parent();
 			var g_idx = gap.get_index();
-			var left_id = gap_cmsm.get_child(g_idx-1).id;
-			var right_id = gap_cmsm.get_child(g_idx+1).id;
+			var left_elm = gap_cmsm.get_child(g_idx-1);
+			var right_elm = gap_cmsm.get_child(g_idx+1);
 			
 			var template_cmsm = $chromes.get_other_cmsm(gap_cmsm);
 			
-			var pairs_dict = template_cmsm.get_pairs(left_id, right_id);
+			var pairs_dict = template_cmsm.get_pairs(left_elm, right_elm);
 			
 			emit_signal("justnow_update", "Select the leftmost element of the pattern you will copy.");
 			gene_selection = [];
@@ -606,7 +612,7 @@ func evolve_candidates(candids):
 		var justnow = "";
 		for e in candids:
 			#if (($chromes.get_cmsm(0).find_all_genes(e.id).size() + $chromes.get_cmsm(1).find_all_genes(e.id).size()) > 2):
-			match (Game.rollEvolveIndy()):
+			match (roll_chance("evolve")):
 				0:
 					justnow += "%s did not evolve.\n" % e.id;
 					e.evolve(0);

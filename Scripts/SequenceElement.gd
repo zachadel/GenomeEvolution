@@ -5,7 +5,6 @@ var mode;
 var id;
 
 var ess_class = null;
-var ess_version;
 var ess_mods = {
 	# Lose one, no complications, copy intervening, duplicate a gene at the site
 	"copy_repair": [0.0, 0.0, 0.0, 0.0],
@@ -13,31 +12,23 @@ var ess_mods = {
 	# Lose one, no complications, duplicate a gene at the site
 	"join_ends": [0.0, 0.0, 0.0],
 	
-	# Harmful, none, beneficial
-	"evolve": [0.0, 0.0, 0.0]
+	# none, death, major up, major down, minor up, minor down
+	"evolve": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+};
+var ess_behavior = {
+	"Replication": 0,
+	"Locomotion": 0,
+	"Manipulation": 0,
+	"Sensing": 0,
+	"Construction": 0,
+	"Deconstruction": 0
 };
 
 var ate_personality = {};
 var act_mods = {"silent": 1.0, "excise": 1.0, "jump": 1.0, "copy": 1.0};
 
-var element_code
-
-var codes_array = [
-	"Replication",
-	"Locomotion",
-	"Manipulation",
-	"Sensing",
-	"Construction",
-	"Deconstruction"
-]
-var codes_dictionary = {
-	"Replication" : "005000",
-	"Locomotion" : "015000",
-	"Manipulation" : "025000",
-	"Sensing" : "035000",
-	"Construction" : "045000",
-	"Deconstruction" : "055000",
-}
+const CODE_LENGTH = 7;
+var gene_code = "";
 
 var DEFAULT_SIZE = 200;
 var MIN_SIZE = 75;
@@ -52,12 +43,14 @@ signal elm_mouse_exited(elm);
 func _ready():
 	current_size = DEFAULT_SIZE;
 
-func setup(_type, _id = "", _mode = "ate", _ess_class = -1, _ess_version = 0, _code = 000000):
+func setup(_type, _id = "", _mode = "ate", _code = "", _ess_class = -1):
 	id = _id;
 	type = _type;
 	mode = _mode;
-	element_code = _code
-	ess_version = _ess_version
+	if (_code == ""):
+		randomize_code();
+	else:
+		gene_code = _code;
 	var tex;
 	if (type == "gene"):
 		match (mode):
@@ -78,12 +71,15 @@ func setup(_type, _id = "", _mode = "ate", _ess_class = -1, _ess_version = 0, _c
 					id = ate_personality["title"];
 				else:
 					ate_personality = Game.get_ate_personality_by_name(id);
-				element_code = ate_personality["code"]
-				ess_version = 0
 				tex = ate_personality["art"];
+			"pseudo":
+				if (id in Game.ate_personalities):
+					tex = Game.get_ate_personality_by_name(id)["art"];
+				else:
+					tex = Game.ess_textures[Game.ESSENTIAL_CLASSES[id]];
 	else:
 		tex = Game.sqelm_textures[_type];
-		element_code = "-1"
+		gene_code = "";
 	
 	upd_display();
 	
@@ -97,19 +93,17 @@ func setup_copy(ref_elm):
 	id = ref_elm.id;
 	type = ref_elm.type;
 	mode = ref_elm.mode;
+	gene_code = ref_elm.gene_code;
 	var tex = ref_elm.texture_normal;
 	if (ref_elm.type == "gene"):
 		match (ref_elm.mode):
 			"essential":
 				ess_class = ref_elm.ess_class;
-				ess_version = ref_elm.ess_version;
-				element_code = ref_elm.element_code;
+				ess_behavior = ref_elm.ess_behavior;
 			"ate":
 				ate_personality = ref_elm.ate_personality;
-				ess_version = ref_elm.ess_version;
 				id = ate_personality["title"];
 				tex = ate_personality["art"];
-				element_code = ate_personality["code"];
 	upd_display();
 	
 	texture_normal = tex;
@@ -118,41 +112,129 @@ func setup_copy(ref_elm):
 	
 	disable(true);
 
+func set_ess_behavior(dict):
+	for k in dict:
+		ess_behavior[k] = dict[k];
+
+func get_ess_behavior():
+	var d = {};
+	for k in ess_behavior:
+		if (ess_behavior[k] > 0):
+			d[k] = ess_behavior[k];
+	return d;
+
+func get_random_code():
+	var _code = "";
+	for i in range(CODE_LENGTH):
+		_code += Game.get_code_char(randi() % Game.code_elements.size());
+	return _code;
+
+func randomize_code():
+	gene_code = get_random_code();
+
+func modify_code(spaces = 1, min_mag = 1, allow_negative = false):
+	for i in range(spaces):
+		var _idx = randi() % gene_code.length();
+		var _change = min_mag;
+		if (allow_negative && randi() % 2):
+			_change *= -1;
+		var _char = Game.get_code_num(gene_code[_idx]);
+		
+		_char = (_char + _change) % Game.code_elements.size();
+		gene_code[_idx] = Game.get_code_char(_char);
+
+func get_code_elm_dist(elm0, elm1):
+	var _dist = abs(Game.get_code_num(elm0) - Game.get_code_num(elm1));
+	return min(_dist, Game.code_elements.size() - _dist);
+
+func get_code_dist(other_cd, my_cd = ""):
+	if (my_cd == ""):
+		my_cd = gene_code;
+	
+	var _dist = 0;
+	for i in range(other_cd.length()):
+		var cd = get_code_elm_dist(other_cd[i], my_cd[i]);
+		_dist += cd;
+	
+	return _dist;
+
+func can_compare_elm(other_elm):
+	return gene_code.length() > 0 && other_elm.gene_code.length() > 0 && other_elm.type == type;
+
+func get_gene_distance(other_elm):
+	return get_code_dist(other_elm.gene_code, gene_code);
+
+func is_equal(other_elm, max_dist = -1):
+	if (max_dist < 0):
+		return can_compare_elm(other_elm);
+	else:
+		return can_compare_elm(other_elm) && get_gene_distance(other_elm) <= max_dist;
+
+const NEW_BEHAVIOR_CHANCE = 0.1;
+func evolve_behavior(amt):
+	match (mode):
+		"essential":
+			var pos_keys = [];
+			for k in ess_behavior.keys():
+				if (ess_behavior[k] > 0):
+					pos_keys.append(k);
+			
+			var behave_key = "";
+			if (amt > 0 && randf() <= NEW_BEHAVIOR_CHANCE):
+				behave_key = ess_behavior.keys()[randi() % ess_behavior.keys().size()];
+			else:
+				behave_key = pos_keys[randi() % pos_keys.size()];
+			
+			if (pos_keys.size() > 0):
+				ess_behavior[behave_key] = max(0, ess_behavior[behave_key] + amt);
+			
+			if (pos_keys.size() == 0 || ess_behavior[behave_key] <= 0 && pos_keys.size() == 1):
+				kill_elm();
+				upd_display();
+
+func kill_elm():
+	mode = "pseudo";
+	ess_class = null;
+	
+	var cm_pair = get_cmsm().get_cmsm_pair();
+	if (self in cm_pair.ate_list):
+		cm_pair.ate_list.erase(self);
+	
+	for k in ess_behavior:
+		ess_behavior[k] = 0;
+
 func evolve(ndx, good = true):
 	match(ndx):
-		1:
-			id += "[p]";
-			mode = "pseudo";
-			ess_class = null;
-		2:
-			#ess_version = Game.essential_versions[ess_class];
-			#ess_version += 1;
-			element_code = element_code.left(2) + str(int(element_code.right(2)) + 10);
-		3:
-			#ess_version = Game.essential_versions[ess_class];
-			#ess_version -= 1;
-			element_code = element_code.left(2) + str(int(element_code.right(2)) - 10);
-		4:
-			#ess_version = Game.essential_versions[ess_class];
-			#ess_version += 0.1;
-			element_code = element_code.left(2) + str(int(element_code.right(2)) - 1);
-		5:
-			#ess_version = Game.essential_versions[ess_class];
-			#ess_version -= 0.1;
-			element_code = element_code.left(2) + str(int(element_code.right(2)) - 1);
+		1: # Gene death
+			modify_code(5, -5);
+			kill_elm();
+		2: # Major Upgrade
+			modify_code(2, 2);
+			evolve_behavior(10);
+		3: # Major Downgrade
+			modify_code(2, -2);
+			evolve_behavior(-10);
+		4: # Minor Upgrade
+			modify_code(1, 1);
+			evolve_behavior(3);
+		5: # Minor Downgrade
+			modify_code(1, -1);
+			evolve_behavior(-3);
 	
 	upd_display();
 	get_cmsm().emit_signal("cmsm_changed");
 
-
 #FUTURE CHANGES HERE TO ACTUALLY CHANGE THE +1 and so forth on the visual SPRITE
 func upd_display():
-	if (type != "break" && int(element_code) - int(codes_dictionary[codes_array[int(element_code[1])]]) == 0):
+	$DBGLBL.text = gene_code;
+	if (type != "break"):
 		$version/version_lbl.text = "B"
 		$version.hide()
 	else:
 		$version.show()
 	$lbl.text = id;
+	if (mode == "pseudo"):
+		$lbl.text += " [p]";
 	match(type):
 		"gene":
 			toggle_mode = false;
@@ -160,13 +242,13 @@ func upd_display():
 			match (mode):
 				"ate":
 					self_modulate = Color(.8, .15, 0);
-					if (int(element_code) - int(Game.get_ate_personality_by_name(id)["code"]) == 0):
+					if (true):
 						$version.hide()
 						$version/version_lbl.text = "B"
 						$version/version_lbl.self_modulate = Color(1, 1, 1)
 					else:
-						$version/version_lbl.text = str(int(element_code) - int(Game.get_ate_personality_by_name(id)["code"]))
-						if int(element_code) - int(codes_dictionary[codes_array[int(element_code[1])]]) > 0:
+						$version/version_lbl.text = "";
+						if false:
 							$version/version_lbl.self_modulate = Color(.1, .8, .1)
 						else:
 							$version/version_lbl.self_modulate = Color(.8, .1, .1)
@@ -176,13 +258,13 @@ func upd_display():
 					#$lbl.text += " (Silenced)";
 				"essential":
 					#self_modulate = Color(.15, .8, 0); Commented out to make the gene icons be shown with no green tint
-					if (int(element_code) - int(codes_dictionary[codes_array[int(element_code[1])]]) == 0):
+					if (false):
 						$version.hide()
 						$version/version_lbl.text = "B"
 						$version/version_lbl.self_modulate = Color(1, 1, 1)
 					else:
-						$version/version_lbl.text = str(int(element_code) - int(codes_dictionary[codes_array[int(element_code[1])]]))
-						if int(element_code) - int(codes_dictionary[codes_array[int(element_code[1])]]) > 0:
+						$version/version_lbl.text = ""
+						if false:
 							$version/version_lbl.self_modulate = Color(.1, .8, .1)
 						else:
 							$version/version_lbl.self_modulate = Color(.8, .1, .1)
