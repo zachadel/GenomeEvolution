@@ -159,7 +159,7 @@ func learn(center_tile, strength):
 var grace_period = 1
 #energy after turn is given here
 func _on_CardTable_next_turn(turn_text, round_num):
-	if round_num >= 7:
+	if Game.get_turn_type() == Game.TURN_TYPES.Map:
 		convert_res_to_energy()
 
 var res_stack = 0

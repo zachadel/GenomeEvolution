@@ -5,9 +5,10 @@ var ess_textures = {};
 var ess_textures_noDNA = {};
 var default_te_texture = load("res://Assets/Images/tes/default_te.png");
 enum ESSENTIAL_CLASSES {Replication, Locomotion, Manipulation, Sensing, Construction, Deconstruction};
-enum TURN_TYPES {NewTEs, TEJump, RepairBreaks, EnvironmentalDamage, Recombination, Evolve, CheckViability};
+enum TURN_TYPES {Map, NewTEs, TEJump, RepairBreaks, EnvironmentalDamage, Recombination, Evolve, CheckViability, Replication};
 
-var turns = [TURN_TYPES.NewTEs, TURN_TYPES.TEJump, TURN_TYPES.RepairBreaks, TURN_TYPES.EnvironmentalDamage, TURN_TYPES.RepairBreaks, TURN_TYPES.Recombination, TURN_TYPES.Evolve, TURN_TYPES.CheckViability];
+var turns = [TURN_TYPES.Map, TURN_TYPES.NewTEs, TURN_TYPES.TEJump, TURN_TYPES.RepairBreaks, TURN_TYPES.EnvironmentalDamage,
+	TURN_TYPES.RepairBreaks, TURN_TYPES.Evolve, TURN_TYPES.Recombination, TURN_TYPES.Replication, TURN_TYPES.CheckViability];
 var turn_idx
 var round_num
 
@@ -32,7 +33,7 @@ func get_code_char(_num):
 
 func _ready():
 	#initialization done in _ready for restarts
-	turn_idx = -1;
+	turn_idx = 0;
 	round_num = 1;
 	
 	for i in range(65, 91): # A to Z
@@ -138,16 +139,21 @@ func get_turn_txt():
 			return "Evolve";
 		TURN_TYPES.CheckViability:
 			return "Check Viability";
+		TURN_TYPES.Replication:
+			return "Replication";
+		TURN_TYPES.Map:
+			return "End of Map Turn";
 		var _x:
 			return "Unknown turn type (#%d)" % _x;
 
 func get_save_str():
-	return var2str([turn_idx, card_table.orgn.get_save()]).replace("\\\\\\", "^");
+	return var2str([turn_idx, card_table.orgn.get_save(), var2str(card_table.orgn.get_gene_pool())]).replace("\\\\\\", "^");
 
 func load_from_save(save):
 	var s = str2var(save.replace("^", "\\\\\\"));
 	turn_idx = int(s[0]) - 1;
 	card_table.orgn.load_from_save(s[1]);
+	card_table.orgn.gene_pool = str2var(s[2]);
 
 func copy_elm(elm):
 	var copy_elm = load("res://Scenes/SequenceElement.tscn").instance();
