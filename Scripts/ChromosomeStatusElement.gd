@@ -4,7 +4,7 @@ var mode;
 var id;
 var ess_class = null;
 var ate_personality = {};
-var count = 0;
+var count = 0 setget update_count;
 
 func setup(_id, _mode, _ess_class = null, ate_personality = null, _count = 0):
 	id = _id;
