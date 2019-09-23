@@ -73,7 +73,7 @@ func setup(_type, _id = "", _mode = "ate", _code = "", _ess_class = -1):
 					ate_personality = Game.get_ate_personality_by_name(id);
 				tex = ate_personality["art"];
 			"pseudo":
-				if (id in Game.ate_personalities):
+				if (id.to_lower() in Game.ate_personalities):
 					tex = Game.get_ate_personality_by_name(id)["art"];
 				else:
 					tex = Game.ess_textures[Game.ESSENTIAL_CLASSES[id]];

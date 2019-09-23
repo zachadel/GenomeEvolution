@@ -147,13 +147,14 @@ func get_turn_txt():
 			return "Unknown turn type (#%d)" % _x;
 
 func get_save_str():
-	return var2str([turn_idx, card_table.orgn.get_save(), var2str(card_table.orgn.get_gene_pool())]).replace("\\\\\\", "^");
+	return var2str([turn_idx, round_num, card_table.orgn.get_save(), var2str(card_table.orgn.get_gene_pool())]).replace("\\\\\\", "^");
 
 func load_from_save(save):
 	var s = str2var(save.replace("^", "\\\\\\"));
 	turn_idx = int(s[0]) - 1;
-	card_table.orgn.load_from_save(s[1]);
-	card_table.orgn.gene_pool = str2var(s[2]);
+	round_num = int(s[1]);
+	card_table.orgn.load_from_save(s[2]);
+	card_table.orgn.reproduct_gene_pool = str2var(s[3]);
 
 func copy_elm(elm):
 	var copy_elm = load("res://Scenes/SequenceElement.tscn").instance();

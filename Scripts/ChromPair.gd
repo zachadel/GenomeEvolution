@@ -320,15 +320,17 @@ func highlight_gaps():
 	for g in gap_list:
 		g.disable(false);
 
-func highlight_common_genes():
+func highlight_common_genes(highlight_first_cmsm = true, highlight_scnd_cmsm = true):
 	var append_to = [];
 	for x in get_cmsm(0).get_children():
 		for y in get_cmsm(1).find_matching_genes(x):
-			y.disable(false);
-			x.disable(false);
+			if (highlight_first_cmsm):
+				x.disable(false);
+				append_to.append(x);
 			
-			append_to.append(y);
-			append_to.append(x);
+			if (highlight_scnd_cmsm):
+				y.disable(false);
+				append_to.append(y);
 	return append_to;
 
 func highlight_all_genes():

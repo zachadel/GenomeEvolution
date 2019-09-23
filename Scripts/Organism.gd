@@ -667,7 +667,8 @@ func recombination():
 	if (is_ai):
 		gene_selection = [];
 	else:
-		gene_selection = $chromes.highlight_common_genes();
+		# For some reason, this func bugs out when picking from the first cmsm (see comment at get_other_cmsm below)
+		gene_selection = $chromes.highlight_common_genes(false, true);
 		yield(self, "gene_clicked");
 		# Because this step is optional, by the time a gene is clicked, it might be a different turn
 		if (Game.get_turn_type() == Game.TURN_TYPES.Recombination):
@@ -675,7 +676,8 @@ func recombination():
 			var first_elm = get_gene_selection();
 			for g in gene_selection:
 				g.disable(true);
-				
+			
+			# When first_elm lies on the top cmsm, this line breaks and only highlights genes on the top cmsm
 			gene_selection = $chromes.highlight_this_gene($chromes.get_other_cmsm(first_elm.get_parent()), first_elm);
 			yield(self, "gene_clicked");
 			var scnd_elm = get_gene_selection();
@@ -704,10 +706,10 @@ func recombination():
 
 func replicate(idx):
 	var rep_type = "some unknown freaky deaky shiznaz";
-	add_to_gene_pool();
 	match idx:
 		0: # Mitosis
 			rep_type = "mitosis";
+			add_to_gene_pool();
 		1: # Meiosis
 			rep_type = "meiosis";
 			emit_signal("justnow_update", "Choose which chromosome to discard.");
@@ -721,7 +723,9 @@ func replicate(idx):
 				for g in gene_selection:
 					g.disable(true);
 			
-			set_cmsm_from_pool(discard_chrome);
+			var new_cmsm = get_random_gene_from_pool();
+			add_to_gene_pool();
+			set_cmsm_from_pool(discard_chrome, new_cmsm);
 	emit_signal("doing_work", false);
 	emit_signal("justnow_update", "Reproduced by %s." % rep_type);
 
