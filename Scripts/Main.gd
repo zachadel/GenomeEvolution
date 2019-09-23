@@ -37,6 +37,6 @@ func switch_mode():
 
 
 func _on_CardTable_next_turn(turn_text, round_num):
-	if(round_num >= 7):
+	if(Game.get_turn_type() == Game.TURN_TYPES.Map):
 		gstate = GSTATE.MAP
 		switch_mode()

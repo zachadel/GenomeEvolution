@@ -19,6 +19,7 @@ var energy_allocations
 onready var energy_allocation_panel = get_node("../pnl_energy_allocation");
 
 var max_equality_dist = 10 setget ,get_max_gene_dist;
+var reproduct_gene_pool = [] setget ,get_gene_pool;
 
 var base_rolls = {
 	# Lose one, no complications, copy intervening, duplicate a gene at the site
@@ -38,6 +39,7 @@ signal doing_work(working);
 signal updated_gaps(has_gaps, gap_text);
 signal justnow_update(text);
 signal show_repair_opts(show);
+signal show_reprod_opts(show);
 
 signal died(org);
 
@@ -74,6 +76,7 @@ func get_save():
 func load_from_save(save):
 	perform_anims(false);
 	
+	gene_selection = [];
 	var my_info = str2var(save);
 	born_on_turn = int(my_info[0]);
 	energy = int(my_info[1]);
@@ -595,6 +598,27 @@ func highlight_gap_choices():
 		upd_repair_opts($chromes.gap_list[0]);
 		auto_repair();
 
+func get_gene_pool():
+	return reproduct_gene_pool;
+
+func can_meiosis():
+	return get_gene_pool().size() > 0;
+
+func add_to_gene_pool(chrome_pair = null):
+	if (chrome_pair == null):
+		chrome_pair = $chromes;
+	get_gene_pool().append($chromes.get_chromes_save());
+
+func get_random_gene_from_pool():
+	return str2var(get_gene_pool()[randi() % get_gene_pool().size()])[randi() % 2];
+
+func set_cmsm_from_pool(cmsm, pool_info = ""):
+	perform_anims(false);
+	if (pool_info == ""):
+		pool_info = get_random_gene_from_pool();
+	cmsm.load_from_save(pool_info);
+	perform_anims(true);
+
 func roll_chance(type):
 	var mods = [];
 	for i in range(base_rolls[type].size()):
@@ -619,25 +643,18 @@ func evolve_candidates(candids):
 				1:
 					justnow += "%s received a fatal mutation and has become a pseudogene.\n" % e.id;
 					e.evolve(1);
-					$chromes.evolve_candidates.erase(e);
 				2:
 					justnow += "%s received a major upgrade of +1.0\n" % e.id;
 					e.evolve(2);
-					$chromes.evolve_candidates.erase(e);
 				3:
 					justnow += "%s received a major downgrade of -1.0\n" % e.id;
 					e.evolve(3);
-					$chromes.evolve_candidates.erase(e);
 				4:
 					justnow += "%s received a minor upgrade of +0.1\n" % e.id;
 					e.evolve(4);
-					$chromes.evolve_candidates.erase(e);
 				5:
 					justnow += "%s received a minor downgrade of -0.1\n" % e.id;
 					e.evolve(5);
-					$chromes.evolve_candidates.erase(e);
-			#else:
-			#	$chromes.evolve_candidates.erase(e);
 		emit_signal("justnow_update", justnow);
 	else:
 		emit_signal("justnow_update", "No essential genes were duplicated, so no genes evolve.");
@@ -650,7 +667,8 @@ func recombination():
 	if (is_ai):
 		gene_selection = [];
 	else:
-		gene_selection = $chromes.highlight_common_genes();
+		# For some reason, this func bugs out when picking from the first cmsm (see comment at get_other_cmsm below)
+		gene_selection = $chromes.highlight_common_genes(false, true);
 		yield(self, "gene_clicked");
 		# Because this step is optional, by the time a gene is clicked, it might be a different turn
 		if (Game.get_turn_type() == Game.TURN_TYPES.Recombination):
@@ -658,8 +676,9 @@ func recombination():
 			var first_elm = get_gene_selection();
 			for g in gene_selection:
 				g.disable(true);
-				
-			gene_selection = $chromes.highlight_this_gene($chromes.get_other_cmsm(first_elm.get_parent()), first_elm.id);
+			
+			# When first_elm lies on the top cmsm, this line breaks and only highlights genes on the top cmsm
+			gene_selection = $chromes.highlight_this_gene($chromes.get_other_cmsm(first_elm.get_parent()), first_elm);
 			yield(self, "gene_clicked");
 			var scnd_elm = get_gene_selection();
 			for g in gene_selection:
@@ -685,68 +704,97 @@ func recombination():
 				cont_recombo = false
 				emit_signal("doing_work", false);
 
+func replicate(idx):
+	var rep_type = "some unknown freaky deaky shiznaz";
+	match idx:
+		0: # Mitosis
+			rep_type = "mitosis";
+			add_to_gene_pool();
+		1: # Meiosis
+			rep_type = "meiosis";
+			emit_signal("justnow_update", "Choose which chromosome to discard.");
+			var discard_chrome = null;
+			if (is_ai):
+				discard_chrome = $chromes.get_cmsm(randi() % 2);
+			else:
+				gene_selection = $chromes.highlight_all_genes();
+				yield(self, "gene_clicked");
+				discard_chrome = get_gene_selection().get_cmsm();
+				for g in gene_selection:
+					g.disable(true);
+			
+			var new_cmsm = get_random_gene_from_pool();
+			add_to_gene_pool();
+			set_cmsm_from_pool(discard_chrome, new_cmsm);
+	emit_signal("doing_work", false);
+	emit_signal("justnow_update", "Reproduced by %s." % rep_type);
+
 func adv_turn(round_num, turn_idx):
 	if (died_on_turn == -1):
-		if (Game.get_turn_type() == Game.TURN_TYPES.NewTEs):
-			emit_signal("justnow_update", "");
-			if (do_yields):
-				yield(gain_ates(1), "completed");
-			else:
-				gain_ates(1);
-		elif (Game.get_turn_type() == Game.TURN_TYPES.TEJump):
-			emit_signal("justnow_update", "");
-			if (do_yields):
-				yield(jump_ates(), "completed");
-			else:
-				jump_ates();
-		elif (Game.get_turn_type() == Game.TURN_TYPES.RepairBreaks):
-			roll_storage = [{}, {}];
-			var num_gaps = $chromes.gap_list.size();
-			if (num_gaps == 0):
-				emit_signal("justnow_update", "No gaps present.");
-			elif (num_gaps == 1):
-				emit_signal("justnow_update", "1 gap needs repair.");
-			else:
-				emit_signal("justnow_update", "%d gaps need repair." % num_gaps);
-			highlight_gap_choices();
-		elif (Game.get_turn_type() == Game.TURN_TYPES.EnvironmentalDamage):
-			var rand;
-			if (do_yields):
-				rand = yield(gain_gaps(1+randi()%3), "completed");
-			else:
-				rand = gain_gaps(1+randi()%3);
-			var plrl = "s";
-			if (rand == 1):
-				plrl = "";
-			emit_signal("justnow_update", "%d gap%s appeared due to environmental damage." % [rand, plrl]);
-		elif (Game.get_turn_type() == Game.TURN_TYPES.Recombination):
-			emit_signal("justnow_update", "If you want, you can select a gene that is common to both chromosomes. Those genes and every gene to their right swap chromosomes.\nThis recombination has a %d%% chance of success." % (100*recombo_chance));
-			if (do_yields):
-				yield(recombination(), "completed");
-			else:
-				recombination();
-		elif (Game.get_turn_type() == Game.TURN_TYPES.Evolve):
-			for g in gene_selection:
-				g.disable(true);
-			emit_signal("justnow_update", "");
-			var _candidates = []
-			for cmsm in $chromes.get_cmsms():
-				for i in cmsm.get_child_count():
-					_candidates.append(cmsm.get_child(i))
-			print(_candidates.size())
-			evolve_candidates(_candidates);
-		elif (Game.get_turn_type() == Game.TURN_TYPES.CheckViability):
-			var viable = $chromes.validate_essentials(Game.ESSENTIAL_CLASSES.values());
-			if (viable):
-				emit_signal("justnow_update", "You're still kicking!");
-				cont_recombo = true
-				recombo_chance = 1
-			else:
-				died_on_turn = Game.round_num;
-				#$lbl_dead.text = "Died after %d rounds." % (died_on_turn - born_on_turn);
-				#$lbl_dead.visible = true;
-				emit_signal("justnow_update", "Nope! You're dead!");
-				emit_signal("died", self);
+		match (Game.get_turn_type()):
+			Game.TURN_TYPES.NewTEs:
+				emit_signal("justnow_update", "");
+				if (do_yields):
+					yield(gain_ates(1), "completed");
+				else:
+					gain_ates(1);
+			Game.TURN_TYPES.TEJump:
+				emit_signal("justnow_update", "");
+				if (do_yields):
+					yield(jump_ates(), "completed");
+				else:
+					jump_ates();
+			Game.TURN_TYPES.RepairBreaks:
+				roll_storage = [{}, {}];
+				var num_gaps = $chromes.gap_list.size();
+				if (num_gaps == 0):
+					emit_signal("justnow_update", "No gaps present.");
+				elif (num_gaps == 1):
+					emit_signal("justnow_update", "1 gap needs repair.");
+				else:
+					emit_signal("justnow_update", "%d gaps need repair." % num_gaps);
+				highlight_gap_choices();
+			Game.TURN_TYPES.EnvironmentalDamage:
+				var rand;
+				if (do_yields):
+					rand = yield(gain_gaps(1+randi()%3), "completed");
+				else:
+					rand = gain_gaps(1+randi()%3);
+				var plrl = "s";
+				if (rand == 1):
+					plrl = "";
+				emit_signal("justnow_update", "%d gap%s appeared due to environmental damage." % [rand, plrl]);
+			Game.TURN_TYPES.Recombination:
+				emit_signal("justnow_update", "If you want, you can select a gene that is common to both chromosomes. Those genes and every gene to their right swap chromosomes.\nThis recombination has a %d%% chance of success." % (100*recombo_chance));
+				if (do_yields):
+					yield(recombination(), "completed");
+				else:
+					recombination();
+			Game.TURN_TYPES.Evolve:
+				emit_signal("justnow_update", "");
+				var _candidates = []
+				for cmsm in $chromes.get_cmsms():
+					for i in cmsm.get_child_count():
+						_candidates.append(cmsm.get_child(i))
+				print(_candidates.size())
+				evolve_candidates(_candidates);
+			Game.TURN_TYPES.CheckViability:
+				var viable = $chromes.validate_essentials(Game.ESSENTIAL_CLASSES.values());
+				if (viable):
+					emit_signal("justnow_update", "You're still kicking!");
+					cont_recombo = true
+					recombo_chance = 1
+				else:
+					died_on_turn = Game.round_num;
+					#$lbl_dead.text = "Died after %d rounds." % (died_on_turn - born_on_turn);
+					#$lbl_dead.visible = true;
+					emit_signal("justnow_update", "Nope! You're dead!");
+					emit_signal("died", self);
+			Game.TURN_TYPES.Replication:
+				emit_signal("justnow_update", "Choose replication method.");
+				emit_signal("_on_Organism_show_reprod_opts", true);
+				emit_signal("doing_work", true);
+				emit_signal("show_reprod_opts", true);
 
 func is_dead():
 	return died_on_turn > -1;

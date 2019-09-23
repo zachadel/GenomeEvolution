@@ -9,15 +9,47 @@ onready var criteria_label = $sc_criteria/lbl_criteria;
 onready var orgn = $Organism;
 onready var nxt_btn = $button_grid/btn_nxt;
 
+var has_gaps = false;
+var wait_on_anim = false;
+var wait_on_select = false;
+
 func _ready():
 	Game.card_table = self;
 	orgn.setup(self);
 	
-	$lbl_turn.text = "Click \"Continue\" to start.";
+	$lbl_turn.text = Game.get_turn_txt();
 	connect("next_turn", orgn, "adv_turn");
 
 func get_cmsm_status():
 	return $ChromosomeStatus;
+
+# Replication
+
+func show_replicate_opts(show):
+	$pnl_reproduce.visible = show;
+	if (show):
+		$pnl_reproduce/hsplit/ilist_choices.select(0);
+		upd_replicate_desc(0);
+
+func upd_replicate_desc(idx):
+	$pnl_reproduce/hsplit/vsplit/btn_apply_replic.disabled = idx == 1 && !orgn.can_meiosis();
+	match (idx):
+		0:
+			$pnl_reproduce/hsplit/vsplit/scroll/lbl_choice_desc.text = "Create an exact duplicate of yourself.";
+		1:
+			$pnl_reproduce/hsplit/vsplit/scroll/lbl_choice_desc.text = "Discard one chromosome and get one randomly from your gene pool.";
+		var _err_idx:
+			$pnl_reproduce/hsplit/vsplit/scroll/lbl_choice_desc.text = "This is an error! You picked an option (#%d) we are not familiar with!" % _err_idx;
+
+func _on_replic_choices_item_activated(idx):
+	do_replicate(idx);
+
+func _on_btn_apply_replic_pressed():
+	do_replicate($pnl_reproduce/hsplit/ilist_choices.get_selected_items()[0]);
+
+func do_replicate(idx):
+	show_replicate_opts(false);
+	orgn.replicate(idx);
 
 # Gaps and repairs
 
@@ -55,9 +87,10 @@ func _on_Organism_justnow_update(text):
 		justnow_label = $sc_justnow/lbl_justnow;
 	justnow_label.text = text;
 
-func _on_Organism_updated_gaps(has_gaps, gap_text):
-	nxt_btn.disabled = has_gaps;
+func _on_Organism_updated_gaps(gaps_exist, gap_text):
+	has_gaps = gaps_exist;
 	criteria_label.text = gap_text;
+	check_if_ready();
 
 func _on_ilist_choices_item_activated(idx):
 	orgn.apply_repair_choice(idx);
@@ -65,13 +98,14 @@ func _on_ilist_choices_item_activated(idx):
 # Next Turn button and availability
 
 func _on_btn_nxt_pressed():
+	if (Game.get_turn_type() == Game.TURN_TYPES.Recombination):
+		for g in orgn.gene_selection:
+			g.disable(true);
 	Game.adv_turn();
-	$lbl_turn.text = "Round " + str(Game.round_num) + "\n" + Game.get_turn_txt();
+	$lbl_turn.text = "Generation " + str(Game.round_num) + "\nProgeny: " + str(Game.round_num) + "\n" + Game.get_turn_txt();
 	emit_signal("next_turn", Game.round_num, Game.turn_idx);
 	$pnl_saveload.new_save(Game.get_save_str());
 
-var wait_on_anim = false;
-var wait_on_select = false;
 func _on_animating_changed(state):
 	wait_on_anim = state;
 	check_if_ready();
@@ -87,7 +121,7 @@ func _on_Organism_died(org):
 	nxt_btn.disabled = true;
 
 func check_if_ready():
-	nxt_btn.disabled = orgn.is_dead() || wait_on_anim || wait_on_select;
+	nxt_btn.disabled = orgn.is_dead() || wait_on_anim || wait_on_select || has_gaps;
 
 func _on_btn_energy_allocation_pressed():
 	$pnl_energy_allocation.visible = true;
@@ -100,3 +134,6 @@ func _on_btn_saveload_pressed():
 
 func _on_pnl_saveload_loaded():
 	_on_Organism_justnow_update("Loaded from a save.");
+
+func _on_Organism_show_reprod_opts(show):
+	show_replicate_opts(show);

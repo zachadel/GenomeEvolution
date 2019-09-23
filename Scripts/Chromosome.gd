@@ -3,7 +3,6 @@ extends HBoxContainer
 signal elm_clicked(elm);
 signal elm_mouse_entered(elm);
 signal elm_mouse_exited(elm);
-signal got_dupe_essgene(elm);
 signal animating(state);
 signal cmsm_changed();
 
@@ -122,20 +121,14 @@ func find_gene_count_of_type(class_type):
 			count += 1
 	return count
 
-func find_gene(id):
-	for i in range(get_child_count()):
-		if (get_child(i).id == id):
-			return i;
-	return -1;
-
-func find_all_genes(id, left_idx_limit = -1, right_idx_limit = -1):
+func find_matching_genes(elm, left_idx_limit = -1, right_idx_limit = -1):
 	var matched = [];
 	if (right_idx_limit < 0):
 		right_idx_limit = get_child_count();
 	for i in range(get_child_count()):
 		if (i > left_idx_limit && i < right_idx_limit):
 			var gene = get_child(i);
-			if (gene.id == id):
+			if (elm.is_equal(gene, get_organism().get_max_gene_dist())):
 				matched.append(gene);
 	return matched;
 
@@ -209,8 +202,6 @@ func add_elm(elm, pos = null):
 		pos = get_child_count();
 	# element not in this chromosome
 	if (!(elm in get_children())):
-		if (has_gene(elm.id) && elm.mode == "essential"):
-			emit_signal("got_dupe_essgene", elm);
 		# remove element from other chromosome
 		if (elm.get_cmsm() != null):
 			if (do_animations):
@@ -408,9 +399,6 @@ func pair_exists(left_elm, right_elm):
 
 func dupe_block_exists(gap_idx):
 	return find_dupe_blocks(gap_idx, true).size() > 0;
-
-func has_gene(id):
-	return bool(1+find_gene(id));
 
 func has_essclass(sc):
 	for g in get_children():

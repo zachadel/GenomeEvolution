@@ -2,7 +2,6 @@ extends VBoxContainer
 
 var ate_list = [];
 var gap_list = [];
-var evolve_candidates = [];
 var recombining = false;  # Used to prevent recombination from triggering evolution conditions
 var do_yields = false;
 
@@ -155,8 +154,6 @@ func remove_elm(elm, place_gap = true):
 		ate_list.erase(elm);
 	if (elm in gap_list):
 		gap_list.erase(elm);
-	if (elm in evolve_candidates):
-		evolve_candidates.erase(elm);
 	
 	var displaced;
 	if (do_yields):
@@ -323,27 +320,33 @@ func highlight_gaps():
 	for g in gap_list:
 		g.disable(false);
 
-func highlight_common_genes():
+func highlight_common_genes(highlight_first_cmsm = true, highlight_scnd_cmsm = true):
 	var append_to = [];
 	for x in get_cmsm(0).get_children():
-		for y in get_cmsm(1).find_all_genes(x.id):
-			y.disable(false);
-			x.disable(false);
+		for y in get_cmsm(1).find_matching_genes(x):
+			if (highlight_first_cmsm):
+				x.disable(false);
+				append_to.append(x);
 			
-			append_to.append(y);
-			append_to.append(x);
+			if (highlight_scnd_cmsm):
+				y.disable(false);
+				append_to.append(y);
 	return append_to;
 
-func highlight_this_gene(cmsm, id):
+func highlight_all_genes():
 	var append_to = [];
-	for g in cmsm.find_all_genes(id):
+	for c in get_cmsms():
+		for g in c.get_children():
+			g.disable(false);
+			append_to.append(g);
+	return append_to;
+
+func highlight_this_gene(cmsm, elm):
+	var append_to = [];
+	for g in cmsm.find_matching_genes(elm):
 		g.disable(false);
 		append_to.append(g);
 	return append_to;
-
-func _on_cmsm_got_dupe_essgene(elm):
-	if (!recombining && !(elm in evolve_candidates)):
-		evolve_candidates.append(elm);
 
 func validate_essentials(ess_classes):
 	for e in ess_classes:
