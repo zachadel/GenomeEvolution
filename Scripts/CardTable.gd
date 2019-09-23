@@ -102,7 +102,11 @@ func _on_btn_nxt_pressed():
 		for g in orgn.gene_selection:
 			g.disable(true);
 	Game.adv_turn();
-	$lbl_turn.text = "Generation " + str(Game.round_num) + "\nProgeny: " + str(Game.round_num) + "\n" + Game.get_turn_txt();
+	$lbl_turn.text = "%s\n%s\n%s" % [
+		"Generation %d" % Game.round_num,
+		Game.get_turn_txt(),
+		"Progeny: %d" % (Game.round_num - 1)
+	];
 	emit_signal("next_turn", Game.round_num, Game.turn_idx);
 	$pnl_saveload.new_save(Game.get_save_str());
 
@@ -115,10 +119,12 @@ func _on_Organism_doing_work(working):
 	check_if_ready();
 
 func _on_Organism_died(org):
-	$GameOver.popup_centered()
-	$GameOver.display()
 	Game.round_num = 0
 	nxt_btn.disabled = true;
+	$button_grid/btn_energy_allocation.visible = false;
+	$button_grid/btn_dead_menu.visible = true;
+	$button_grid/btn_dead_restart.visible = true;
+	$button_grid/hsep_dead.visible = true;
 
 func check_if_ready():
 	nxt_btn.disabled = orgn.is_dead() || wait_on_anim || wait_on_select || has_gaps;
@@ -137,3 +143,9 @@ func _on_pnl_saveload_loaded():
 
 func _on_Organism_show_reprod_opts(show):
 	show_replicate_opts(show);
+
+func _on_btn_dead_menu_pressed():
+	get_tree().change_scene("res://Assets/Images/Main Menu/Scenes/TitleScreen.tscn");
+
+func _on_btn_dead_restart_pressed():
+	get_tree().reload_current_scene();
