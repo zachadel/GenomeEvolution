@@ -71,16 +71,15 @@ func _ready():
 	born_on_turn = Game.round_num;
 
 func get_save():
-	return var2str([born_on_turn, energy, $chromes.get_chromes_save()]);
+	return [born_on_turn, energy, $chromes.get_chromes_save()];
 
-func load_from_save(save):
+func load_from_save(orgn_info):
 	perform_anims(false);
 	
 	gene_selection = [];
-	var my_info = str2var(save);
-	born_on_turn = int(my_info[0]);
-	energy = int(my_info[1]);
-	$chromes.load_from_save(my_info[2]);
+	born_on_turn = int(orgn_info[0]);
+	energy = int(orgn_info[1]);
+	$chromes.load_from_save(orgn_info[2]);
 	
 	perform_anims(true);
 

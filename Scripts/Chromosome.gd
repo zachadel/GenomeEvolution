@@ -166,15 +166,14 @@ func get_elms_save():
 			elm_data[i] = g.get(elm_data[i]);
 		data.append([elm_data, g.get_ess_behavior()]);
 	
-	return var2str(data).replace("\n", "");
+	return data;
 
-func load_from_save(save):
+func load_from_save(elms):
 	# Clear chromosome
 	for e in get_children():
 		get_cmsm_pair().remove_elm(e);
 	
 	# Parse & load
-	var elms = str2var(save);
 	for args in elms:
 		var nxt_gelm = load("res://Scenes/SequenceElement.tscn").instance();
 		nxt_gelm.callv("setup", args[0]);

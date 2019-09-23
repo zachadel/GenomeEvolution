@@ -65,12 +65,11 @@ func get_center():
 	get_begin().y + (get_size().y / 2.0));
 
 func get_chromes_save():
-	return var2str([get_cmsm(0).get_elms_save(), get_cmsm(1).get_elms_save()]);
+	return [get_cmsm(0).get_elms_save(), get_cmsm(1).get_elms_save()];
 
 func load_from_save(cmsms):
-	var c = str2var(cmsms);
-	for i in range(c.size()):
-		get_cmsm(i).load_from_save(c[i]);
+	for i in range(cmsms.size()):
+		get_cmsm(i).load_from_save(cmsms[i]);
 
 func get_all_genes():
 	return get_cmsm(0).get_children() + get_cmsm(1).get_children();

@@ -147,10 +147,10 @@ func get_turn_txt():
 			return "Unknown turn type (#%d)" % _x;
 
 func get_save_str():
-	return var2str([turn_idx, round_num, card_table.orgn.get_save(), var2str(card_table.orgn.get_gene_pool())]).replace("\\\\\\", "^");
+	return var2str([turn_idx, round_num, card_table.orgn.get_save(), card_table.orgn.get_gene_pool()]).replace("\n", "");
 
 func load_from_save(save):
-	var s = str2var(save.replace("^", "\\\\\\"));
+	var s = str2var(save);
 	turn_idx = int(s[0]) - 1;
 	round_num = int(s[1]);
 	card_table.orgn.load_from_save(s[2]);
