@@ -528,7 +528,6 @@ margin_bottom = -10.0
 text = "x"
 
 [node name="pnl_saveload" type="Panel" parent="."]
-editor/display_folded = true
 visible = false
 anchor_left = 0.5
 anchor_top = 0.5
