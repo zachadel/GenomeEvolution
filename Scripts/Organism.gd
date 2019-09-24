@@ -609,11 +609,11 @@ func add_to_gene_pool(chrome_pair = null):
 	get_gene_pool().append($chromes.get_chromes_save());
 
 func get_random_gene_from_pool():
-	return str2var(get_gene_pool()[randi() % get_gene_pool().size()])[randi() % 2];
+	return get_gene_pool()[randi() % get_gene_pool().size()][randi() % 2];
 
 func set_cmsm_from_pool(cmsm, pool_info = ""):
 	perform_anims(false);
-	if (pool_info == ""):
+	if (typeof(pool_info) == TYPE_STRING && pool_info == ""):
 		pool_info = get_random_gene_from_pool();
 	cmsm.load_from_save(pool_info);
 	perform_anims(true);

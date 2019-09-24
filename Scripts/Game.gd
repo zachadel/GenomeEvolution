@@ -154,7 +154,7 @@ func load_from_save(save):
 	turn_idx = int(s[0]) - 1;
 	round_num = int(s[1]);
 	card_table.orgn.load_from_save(s[2]);
-	card_table.orgn.reproduct_gene_pool = str2var(s[3]);
+	card_table.orgn.reproduct_gene_pool = s[3];
 
 func copy_elm(elm):
 	var copy_elm = load("res://Scenes/SequenceElement.tscn").instance();
