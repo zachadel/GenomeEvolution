@@ -34,7 +34,6 @@ valign = 1
 autowrap = true
 
 [node name="sc_justnow" type="ScrollContainer" parent="."]
-editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -54,7 +53,6 @@ valign = 1
 autowrap = true
 
 [node name="sc_criteria" type="ScrollContainer" parent="."]
-editor/display_folded = true
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -75,12 +73,11 @@ valign = 1
 autowrap = true
 
 [node name="button_grid" type="VBoxContainer" parent="."]
-editor/display_folded = true
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -132.0
-margin_top = 567.0
+margin_top = 647.0
 margin_right = -10.0
 margin_bottom = -9.0
 custom_constants/separation = 20
@@ -108,39 +105,36 @@ margin_right = 122.0
 margin_bottom = 164.0
 
 [node name="btn_saveload" type="Button" parent="button_grid"]
-margin_top = 104.0
+margin_top = 24.0
 margin_right = 122.0
-margin_bottom = 164.0
+margin_bottom = 84.0
 rect_min_size = Vector2( 120, 60 )
 text = "Save/Load"
 
 [node name="btn_energy_allocation" type="Button" parent="button_grid"]
-margin_top = 184.0
+margin_top = 104.0
 margin_right = 122.0
-margin_bottom = 244.0
+margin_bottom = 164.0
 rect_min_size = Vector2( 120, 60 )
 text = "Energy Allocation"
 
 [node name="btn_nxt" type="Button" parent="button_grid"]
-margin_top = 264.0
+margin_top = 184.0
 margin_right = 122.0
-margin_bottom = 324.0
+margin_bottom = 244.0
 rect_min_size = Vector2( 120, 60 )
 text = "Continue"
 
 [node name="Organism" parent="." instance=ExtResource( 2 )]
-margin_left = 1.0
-margin_top = 1.0
-margin_right = 1.0
-margin_bottom = 551.0
+margin_bottom = 600.0
 
 [node name="ChromosomeStatus" parent="." instance=ExtResource( 3 )]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -550.0
-margin_top = 521.0
-margin_right = 550.0
-margin_bottom = 583.0
+margin_left = -775.106
+margin_top = 630.503
+margin_right = 324.894
+margin_bottom = 692.503
 rect_min_size = Vector2( 0, 50 )
 
 [node name="pnl_repair_choices" type="Panel" parent="."]

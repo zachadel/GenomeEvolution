@@ -1,0 +1,28 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scripts/BehaviorIndicator.gd" type="Script" id=1]
+
+[node name="Control" type="Control"]
+modulate = Color( 0, 0.678431, 0.0117647, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -1540.0
+margin_bottom = -840.0
+rect_min_size = Vector2( 60, 60 )
+script = ExtResource( 1 )
+
+[node name="TexRect" type="TextureRect" parent="."]
+anchor_bottom = 1.0
+margin_right = 30.0
+rect_min_size = Vector2( 30, 40 )
+expand = true
+stretch_mode = 6
+
+[node name="Lbl" type="Label" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 30.0
+text = "1.0"
+valign = 1
+autowrap = true
+clip_text = true

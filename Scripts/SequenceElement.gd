@@ -115,6 +115,7 @@ func setup_copy(ref_elm):
 func set_ess_behavior(dict):
 	for k in dict:
 		ess_behavior[k] = dict[k];
+		upd_behavior_disp(k);
 
 func get_ess_behavior():
 	var d = {};
@@ -202,6 +203,7 @@ func kill_elm():
 	
 	for k in ess_behavior:
 		ess_behavior[k] = 0;
+		upd_behavior_disp(k);
 
 func evolve(ndx, good = true):
 	match(ndx):
@@ -210,21 +212,23 @@ func evolve(ndx, good = true):
 			kill_elm();
 		2: # Major Upgrade
 			modify_code(2, 2);
-			evolve_behavior(10);
+			evolve_behavior(1);
 		3: # Major Downgrade
 			modify_code(2, -2);
-			evolve_behavior(-10);
+			evolve_behavior(-1);
 		4: # Minor Upgrade
 			modify_code(1, 1);
-			evolve_behavior(3);
+			evolve_behavior(0.1);
 		5: # Minor Downgrade
 			modify_code(1, -1);
-			evolve_behavior(-3);
+			evolve_behavior(-0.1);
 	
 	upd_display();
 	get_cmsm().emit_signal("cmsm_changed");
 
-#FUTURE CHANGES HERE TO ACTUALLY CHANGE THE +1 and so forth on the visual SPRITE
+func upd_behavior_disp(behavior):
+	get_node("Indic" + behavior).set_value(ess_behavior[behavior]);
+
 func upd_display():
 	$DBGLBL.text = gene_code;
 	if (type != "break"):
@@ -242,33 +246,12 @@ func upd_display():
 			match (mode):
 				"ate":
 					self_modulate = Color(.8, .15, 0);
-					if (true):
-						$version.hide()
-						$version/version_lbl.text = "B"
-						$version/version_lbl.self_modulate = Color(1, 1, 1)
-					else:
-						$version/version_lbl.text = "";
-						if false:
-							$version/version_lbl.self_modulate = Color(.1, .8, .1)
-						else:
-							$version/version_lbl.self_modulate = Color(.8, .1, .1)
-					#$lbl.text += " (Active)";
 				"ste":
 					self_modulate = Color(.55, 0, 0);
-					#$lbl.text += " (Silenced)";
 				"essential":
-					#self_modulate = Color(.15, .8, 0); Commented out to make the gene icons be shown with no green tint
-					if (false):
-						$version.hide()
-						$version/version_lbl.text = "B"
-						$version/version_lbl.self_modulate = Color(1, 1, 1)
-					else:
-						$version/version_lbl.text = ""
-						if false:
-							$version/version_lbl.self_modulate = Color(.1, .8, .1)
-						else:
-							$version/version_lbl.self_modulate = Color(.8, .1, .1)
-					#$lbl.text += " (Essential)";
+					$version/version_lbl.text = "";
+					for k in ess_behavior:
+						upd_behavior_disp(k);
 				"pseudo":
 					self_modulate = Color(.5, .5, 0);
 					#$lbl.text += " (Pseudogene)";
@@ -369,6 +352,11 @@ func set_size(size = null):
 	$BorderRect.rect_size = Vector2(size, size);
 	$GrayFilter.rect_size = Vector2(size, size);
 	current_size = size;
+	
+	var scale = size / DEFAULT_SIZE;
+	for k in ess_behavior:
+		get_node("Indic" + k).rescale(scale);
+	
 
 func _on_SeqElm_pressed():
 	emit_signal("elm_clicked", self);

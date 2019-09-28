@@ -62,7 +62,7 @@ func _ready():
 			# create gene
 			var nxt_gelm = load("res://Scenes/SequenceElement.tscn").instance();
 			nxt_gelm.setup("gene", n, "essential", code, Game.ESSENTIAL_CLASSES[n]);
-			nxt_gelm.set_ess_behavior({n: 50});
+			nxt_gelm.set_ess_behavior({n: 1.0});
 			if (code == ""):
 				code = nxt_gelm.gene_code;
 			$chromes.get_cmsm(y).add_elm(nxt_gelm);
