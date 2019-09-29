@@ -171,27 +171,31 @@ func is_equal(other_elm, max_dist = -1):
 	else:
 		return can_compare_elm(other_elm) && get_gene_distance(other_elm) <= max_dist;
 
-const NEW_BEHAVIOR_CHANCE = 0.1;
-func evolve_behavior(amt):
-	match (mode):
-		"essential":
-			var pos_keys = [];
-			for k in ess_behavior.keys():
-				if (ess_behavior[k] > 0):
-					pos_keys.append(k);
-			
-			var behave_key = "";
-			if (amt > 0 && randf() <= NEW_BEHAVIOR_CHANCE):
-				behave_key = ess_behavior.keys()[randi() % ess_behavior.keys().size()];
-			else:
-				behave_key = pos_keys[randi() % pos_keys.size()];
-			
-			if (pos_keys.size() > 0):
-				ess_behavior[behave_key] = max(0, ess_behavior[behave_key] + amt);
-			
-			if (pos_keys.size() == 0 || ess_behavior[behave_key] <= 0 && pos_keys.size() == 1):
-				kill_elm();
-				upd_display();
+func evolve_current_behavior(amt):
+	if (ess_behavior.values().max() > 0):
+		var behave_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
+		ess_behavior[behave_key] = max(0, ess_behavior[behave_key] + amt);
+		
+		check_for_death();
+
+const GAIN_AMT = 0.2;
+func evolve_new_behavior(gain):
+	var behave_key = "";
+	if (gain):
+		var key_candids = [];
+		for k in ess_behavior:
+			if (ess_behavior[k] == 0):
+				key_candids.append(k);
+		behave_key = key_candids[randi() % key_candids.size()];
+	else:
+		behave_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
+	
+	ess_behavior[behave_key] = int(gain) * GAIN_AMT;
+	check_for_death();
+
+func check_for_death():
+	if (ess_behavior.values().max() == 0):
+		kill_elm();
 
 func kill_elm():
 	mode = "pseudo";
@@ -206,25 +210,26 @@ func kill_elm():
 		upd_behavior_disp(k);
 
 func evolve(ndx, good = true):
-	match(ndx):
-		1: # Gene death
-			modify_code(5, -5);
-			kill_elm();
-		2: # Major Upgrade
-			modify_code(2, 2);
-			evolve_behavior(1);
-		3: # Major Downgrade
-			modify_code(2, -2);
-			evolve_behavior(-1);
-		4: # Minor Upgrade
-			modify_code(1, 1);
-			evolve_behavior(0.1);
-		5: # Minor Downgrade
-			modify_code(1, -1);
-			evolve_behavior(-0.1);
-	
-	upd_display();
-	get_cmsm().emit_signal("cmsm_changed");
+	if (type == "gene" && mode == "essential"):
+		match(ndx):
+			1: # Gene death
+				modify_code(5, -5);
+				kill_elm();
+			2: # Major Upgrade
+				modify_code(2, 2);
+				evolve_new_behavior(true);
+			3: # Major Downgrade
+				modify_code(2, -2);
+				evolve_new_behavior(false);
+			4: # Minor Upgrade
+				modify_code(1, 1);
+				evolve_current_behavior(0.1);
+			5: # Minor Downgrade
+				modify_code(1, -1);
+				evolve_current_behavior(-0.1);
+		
+		upd_display();
+		get_cmsm().emit_signal("cmsm_changed");
 
 func upd_behavior_disp(behavior):
 	get_node("Indic" + behavior).set_value(ess_behavior[behavior]);
@@ -300,7 +305,7 @@ func get_ess_mod_array(type):
 	return ess_mods[type];
 
 func get_ate_jump_roll():
-	return Game.rollChances(ate_personality["roll"], act_mods.values());
+	return Chance.roll_chances(ate_personality["roll"], act_mods.values());
 
 func get_active_behavior(jump): #if jump==false, get the copy range
 	var grab_dict = {};

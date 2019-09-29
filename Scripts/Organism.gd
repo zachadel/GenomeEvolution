@@ -21,17 +21,6 @@ onready var energy_allocation_panel = get_node("../pnl_energy_allocation");
 var max_equality_dist = 10 setget ,get_max_gene_dist;
 var reproduct_gene_pool = [] setget ,get_gene_pool;
 
-var base_rolls = {
-	# Lose one, no complications, copy intervening, duplicate a gene at the site
-	"copy_repair": [1.6, 1.6, 5, 2],
-	
-	# Lose one, no complications, duplicate a gene at the site
-	"join_ends": [5, 3, 2],
-	
-	# none, death, major up, major down, minor up, minor down
-	"evolve": [5, 0.5, 2, 1, 5, 4]
-}
-
 signal gene_clicked();
 
 signal doing_work(working);
@@ -443,7 +432,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 					remove_genes.append(chosen_gene);
 					removing_right = left_rem_genes.size() == 0 || right_rem_genes.size() != 0 && !removing_right;
 					
-					continue_collapse = check_resources(0) && continue_collapse && Game.rollCollapse(choice_info["size"], chosen_gene.get_index() - g_idx);
+					continue_collapse = check_resources(0) && continue_collapse && Chance.roll_collapse(choice_info["size"], chosen_gene.get_index() - g_idx);
 				
 				var remove_count = remove_genes.size();
 				if (remove_count == max_collapse_count):
@@ -466,6 +455,8 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 			1: # Copy Pattern
 				choice_info["left"].highlight_border(false);
 				if (!roll_storage[0].has(gap)):
+					var roll_result = roll_chance("copy_repair");
+					print("roll: ", roll_result);
 					roll_storage[0][gap] = roll_chance("copy_repair");
 				if !check_resources(1):
 					roll_storage[0][gap] = 0
@@ -619,16 +610,17 @@ func set_cmsm_from_pool(cmsm, pool_info = ""):
 	perform_anims(true);
 
 func roll_chance(type):
-	var mods = [];
-	for i in range(base_rolls[type].size()):
-		mods.append(1.0);
+	var behavior_profile = {};
 	
 	for g in get_cmsm_pair().get_all_genes():
-		var g_mods = g.get_ess_mod_array(type);
-		for i in range(g_mods.size()):
-			mods[i] += g_mods[i];
+		var g_behave = g.get_ess_behavior();
+		for k in g_behave:
+			if (behavior_profile.has(k)):
+				behavior_profile[k] += g_behave[k];
+			else:
+				behavior_profile[k] = g_behave[k];
 	
-	return Game.rollChances(base_rolls[type], mods);
+	return Chance.roll_chance_type(type, behavior_profile);
 
 func evolve_candidates(candids):
 	if (candids.size() > 0):
