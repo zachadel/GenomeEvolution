@@ -609,9 +609,8 @@ func set_cmsm_from_pool(cmsm, pool_info = ""):
 	cmsm.load_from_save(pool_info);
 	perform_anims(true);
 
-func roll_chance(type):
+func get_behavior_profile():
 	var behavior_profile = {};
-	
 	for g in get_cmsm_pair().get_all_genes():
 		var g_behave = g.get_ess_behavior();
 		for k in g_behave:
@@ -619,8 +618,10 @@ func roll_chance(type):
 				behavior_profile[k] += g_behave[k];
 			else:
 				behavior_profile[k] = g_behave[k];
-	
-	return Chance.roll_chance_type(type, behavior_profile);
+	return behavior_profile;
+
+func roll_chance(type):
+	return Chance.roll_chance_type(type, get_behavior_profile());
 
 func evolve_candidates(candids):
 	if (candids.size() > 0):
@@ -720,6 +721,14 @@ func replicate(idx):
 	emit_signal("doing_work", false);
 	emit_signal("justnow_update", "Reproduced by %s." % rep_type);
 
+func get_missing_ess_classes():
+	var b_prof = get_behavior_profile();
+	var missing = [];
+	for k in Game.ESSENTIAL_CLASSES:
+		if (!b_prof.has(k) || b_prof[k] == 0):
+			missing.append(k);
+	return missing;
+
 func adv_turn(round_num, turn_idx):
 	if (died_on_turn == -1):
 		match (Game.get_turn_type()):
@@ -770,8 +779,8 @@ func adv_turn(round_num, turn_idx):
 				print(_candidates.size())
 				evolve_candidates(_candidates);
 			Game.TURN_TYPES.CheckViability:
-				var viable = $chromes.validate_essentials(Game.ESSENTIAL_CLASSES.values());
-				if (viable):
+				var missing = get_missing_ess_classes();
+				if (missing.size() == 0):
 					emit_signal("justnow_update", "You're still kicking!");
 					cont_recombo = true
 					recombo_chance = 1
@@ -779,7 +788,7 @@ func adv_turn(round_num, turn_idx):
 					died_on_turn = Game.round_num;
 					#$lbl_dead.text = "Died after %d rounds." % (died_on_turn - born_on_turn);
 					#$lbl_dead.visible = true;
-					emit_signal("justnow_update", "Nope! You're dead!");
+					emit_signal("justnow_update", "You're missing essential behavior: %s" % PoolStringArray(missing).join(", "));
 					emit_signal("died", self);
 			Game.TURN_TYPES.Replication:
 				emit_signal("justnow_update", "Choose replication method.");

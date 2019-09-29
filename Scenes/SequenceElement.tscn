@@ -33,6 +33,34 @@ mouse_filter = 2
 texture = ExtResource( 2 )
 expand = true
 
+[node name="GrayFilter" type="ColorRect" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 200, 200 )
+mouse_filter = 2
+color = Color( 0, 0, 0, 0.33 )
+
+[node name="lbl" type="Label" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -25.0
+margin_bottom = -1.0
+text = "ERROR_name"
+align = 1
+valign = 1
+
+[node name="DBGLBL" type="Label" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -49.0
+margin_bottom = -28.0
+text = "ERROR_code"
+align = 1
+valign = 1
+
 [node name="IndicReplication" parent="." instance=ExtResource( 3 )]
 visible = false
 anchor_right = 0.0
@@ -93,37 +121,10 @@ margin_right = 0.0
 margin_bottom = 37.0
 image_texture = ExtResource( 9 )
 
-[node name="GrayFilter" type="ColorRect" parent="."]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-rect_min_size = Vector2( 200, 200 )
-mouse_filter = 2
-color = Color( 0, 0, 0, 0.33 )
-
-[node name="lbl" type="Label" parent="."]
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_top = -25.0
-margin_bottom = -1.0
-text = "ERROR_name"
-align = 1
-valign = 1
-
-[node name="DBGLBL" type="Label" parent="."]
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_top = -49.0
-margin_bottom = -28.0
-text = "ERROR_code"
-align = 1
-valign = 1
-
 [node name="Tween" type="Tween" parent="."]
 
 [node name="version" type="PanelContainer" parent="."]
+editor/display_folded = true
 visible = false
 anchor_left = 1.0
 anchor_right = 1.0

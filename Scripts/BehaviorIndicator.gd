@@ -1,8 +1,12 @@
 extends Control
 tool
 
-const DEFAULT_SIZE = 60;
+const DEFAULT_SIZE = 50.0;
+var default_pos = Vector2();
 export var image_texture : Texture setget set_tex;
+
+func _ready():
+	default_pos = rect_position;
 
 func set_tex(t):
 	$TexRect.texture = t;

@@ -5,16 +5,6 @@ var mode;
 var id;
 
 var ess_class = null;
-var ess_mods = {
-	# Lose one, no complications, copy intervening, duplicate a gene at the site
-	"copy_repair": [0.0, 0.0, 0.0, 0.0],
-	
-	# Lose one, no complications, duplicate a gene at the site
-	"join_ends": [0.0, 0.0, 0.0],
-	
-	# none, death, major up, major down, minor up, minor down
-	"evolve": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-};
 var ess_behavior = {
 	"Replication": 0,
 	"Locomotion": 0,
@@ -31,7 +21,7 @@ const CODE_LENGTH = 7;
 var gene_code = "";
 
 var DEFAULT_SIZE = 200;
-var MIN_SIZE = 75;
+var MIN_SIZE = 125;
 var MAGNIFICATION_FACTOR = 1.5;
 var MAGNIFICATION_DROPOFF = 0.9;
 var current_size;
@@ -242,8 +232,6 @@ func upd_display():
 	else:
 		$version.show()
 	$lbl.text = id;
-	if (mode == "pseudo"):
-		$lbl.text += " [p]";
 	match(type):
 		"gene":
 			toggle_mode = false;
@@ -254,12 +242,13 @@ func upd_display():
 				"ste":
 					self_modulate = Color(.55, 0, 0);
 				"essential":
+					$lbl.visible = false;
 					$version/version_lbl.text = "";
 					for k in ess_behavior:
 						upd_behavior_disp(k);
 				"pseudo":
+					$lbl.text += " [p]";
 					self_modulate = Color(.5, .5, 0);
-					#$lbl.text += " (Pseudogene)";
 		"break":
 			$version.hide()
 			toggle_mode = true;
@@ -297,12 +286,6 @@ func mod_act_behavior(type, chance_mod):
 	if (typeof(type) == TYPE_INT):
 		type = act_mods.keys()[type];
 	act_mods[type] += chance_mod;
-
-func mod_ess_roll(type, idx, chance_mod):
-	ess_mods[type][idx] += chance_mod;
-
-func get_ess_mod_array(type):
-	return ess_mods[type];
 
 func get_ate_jump_roll():
 	return Chance.roll_chances(ate_personality["roll"], act_mods.values());
@@ -358,7 +341,7 @@ func set_size(size = null):
 	$GrayFilter.rect_size = Vector2(size, size);
 	current_size = size;
 	
-	var scale = size / DEFAULT_SIZE;
+	var scale = size / float(DEFAULT_SIZE);
 	for k in ess_behavior:
 		get_node("Indic" + k).rescale(scale);
 	

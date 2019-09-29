@@ -126,15 +126,14 @@ rect_min_size = Vector2( 120, 60 )
 text = "Continue"
 
 [node name="Organism" parent="." instance=ExtResource( 2 )]
-margin_bottom = 600.0
 
 [node name="ChromosomeStatus" parent="." instance=ExtResource( 3 )]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -775.106
-margin_top = 630.503
-margin_right = 324.894
-margin_bottom = 692.503
+margin_left = -788.106
+margin_top = 617.503
+margin_right = 311.894
+margin_bottom = 679.503
 rect_min_size = Vector2( 0, 50 )
 
 [node name="pnl_repair_choices" type="Panel" parent="."]
