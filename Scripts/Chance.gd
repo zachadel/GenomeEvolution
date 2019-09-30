@@ -8,7 +8,7 @@ var base_rolls = {
 	"join_ends": [5, 3, 2],
 	
 	# none, death, major up, major down, minor up, minor down
-	"evolve": [5, 0, 2, 1, 5, 4]
+	"evolve": [10, 0, 5, 4, 15, 14]
 }
 
 # These are added together, multiplied by the value from the behavior profile (e.g. the overall Replication value)
