@@ -559,7 +559,6 @@ readonly = true
 show_line_numbers = true
 
 [node name="resources_grid" type="Panel" parent="."]
-editor/display_folded = true
 self_modulate = Color( 1, 1, 1, 0.247059 )
 anchor_top = 1.0
 anchor_bottom = 1.0

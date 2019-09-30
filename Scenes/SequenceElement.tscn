@@ -124,7 +124,6 @@ image_texture = ExtResource( 9 )
 [node name="Tween" type="Tween" parent="."]
 
 [node name="version" type="PanelContainer" parent="."]
-editor/display_folded = true
 visible = false
 anchor_left = 1.0
 anchor_right = 1.0
