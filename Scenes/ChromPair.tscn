@@ -5,29 +5,34 @@
 
 [node name="ChromPair" type="VBoxContainer"]
 anchor_right = 1.0
-margin_bottom = 550.0
-rect_min_size = Vector2( 0, 550 )
+margin_bottom = 600.0
+rect_min_size = Vector2( 0, 600 )
 rect_clip_content = true
+custom_constants/separation = 25
+alignment = 2
 script = ExtResource( 1 )
 
 [node name="cmsm0" type="ScrollContainer" parent="."]
+margin_top = 45.0
 margin_right = 1600.0
-margin_bottom = 250.0
-rect_min_size = Vector2( 200, 250 )
+margin_bottom = 310.0
+rect_min_size = Vector2( 200, 265 )
 rect_clip_content = false
 
 [node name="cmsm" parent="cmsm0" instance=ExtResource( 2 )]
 anchor_right = 0.0
+margin_bottom = 250.0
 
 [node name="cmsm1" type="ScrollContainer" parent="."]
-margin_top = 254.0
+margin_top = 335.0
 margin_right = 1600.0
-margin_bottom = 504.0
-rect_min_size = Vector2( 200, 250 )
+margin_bottom = 600.0
+rect_min_size = Vector2( 200, 265 )
 rect_clip_content = false
 
 [node name="cmsm" parent="cmsm1" instance=ExtResource( 2 )]
 anchor_right = 0.0
+margin_bottom = 250.0
 [connection signal="elm_clicked" from="cmsm0/cmsm" to="." method="_propogate_click"]
 [connection signal="elm_mouse_entered" from="cmsm0/cmsm" to="." method="_propagate_mouse_entered"]
 [connection signal="elm_mouse_exited" from="cmsm0/cmsm" to="." method="_propagate_mouse_exited"]

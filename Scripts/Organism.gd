@@ -21,17 +21,6 @@ onready var energy_allocation_panel = get_node("../pnl_energy_allocation");
 var max_equality_dist = 10 setget ,get_max_gene_dist;
 var reproduct_gene_pool = [] setget ,get_gene_pool;
 
-var base_rolls = {
-	# Lose one, no complications, copy intervening, duplicate a gene at the site
-	"copy_repair": [1.6, 1.6, 5, 2],
-	
-	# Lose one, no complications, duplicate a gene at the site
-	"join_ends": [5, 3, 2],
-	
-	# none, death, major up, major down, minor up, minor down
-	"evolve": [5, 0.5, 2, 1, 5, 4]
-}
-
 signal gene_clicked();
 
 signal doing_work(working);
@@ -62,7 +51,7 @@ func _ready():
 			# create gene
 			var nxt_gelm = load("res://Scenes/SequenceElement.tscn").instance();
 			nxt_gelm.setup("gene", n, "essential", code, Game.ESSENTIAL_CLASSES[n]);
-			nxt_gelm.set_ess_behavior({n: 50});
+			nxt_gelm.set_ess_behavior({n: 1.0});
 			if (code == ""):
 				code = nxt_gelm.gene_code;
 			$chromes.get_cmsm(y).add_elm(nxt_gelm);
@@ -443,7 +432,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 					remove_genes.append(chosen_gene);
 					removing_right = left_rem_genes.size() == 0 || right_rem_genes.size() != 0 && !removing_right;
 					
-					continue_collapse = check_resources(0) && continue_collapse && Game.rollCollapse(choice_info["size"], chosen_gene.get_index() - g_idx);
+					continue_collapse = check_resources(0) && continue_collapse && Chance.roll_collapse(choice_info["size"], chosen_gene.get_index() - g_idx);
 				
 				var remove_count = remove_genes.size();
 				if (remove_count == max_collapse_count):
@@ -466,6 +455,8 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 			1: # Copy Pattern
 				choice_info["left"].highlight_border(false);
 				if (!roll_storage[0].has(gap)):
+					var roll_result = roll_chance("copy_repair");
+					print("roll: ", roll_result);
 					roll_storage[0][gap] = roll_chance("copy_repair");
 				if !check_resources(1):
 					roll_storage[0][gap] = 0
@@ -618,17 +609,19 @@ func set_cmsm_from_pool(cmsm, pool_info = ""):
 	cmsm.load_from_save(pool_info);
 	perform_anims(true);
 
-func roll_chance(type):
-	var mods = [];
-	for i in range(base_rolls[type].size()):
-		mods.append(1.0);
-	
+func get_behavior_profile():
+	var behavior_profile = {};
 	for g in get_cmsm_pair().get_all_genes():
-		var g_mods = g.get_ess_mod_array(type);
-		for i in range(g_mods.size()):
-			mods[i] += g_mods[i];
-	
-	return Game.rollChances(base_rolls[type], mods);
+		var g_behave = g.get_ess_behavior();
+		for k in g_behave:
+			if (behavior_profile.has(k)):
+				behavior_profile[k] += g_behave[k];
+			else:
+				behavior_profile[k] = g_behave[k];
+	return behavior_profile;
+
+func roll_chance(type):
+	return Chance.roll_chance_type(type, get_behavior_profile());
 
 func evolve_candidates(candids):
 	if (candids.size() > 0):
@@ -728,6 +721,14 @@ func replicate(idx):
 	emit_signal("doing_work", false);
 	emit_signal("justnow_update", "Reproduced by %s." % rep_type);
 
+func get_missing_ess_classes():
+	var b_prof = get_behavior_profile();
+	var missing = [];
+	for k in Game.ESSENTIAL_CLASSES:
+		if (!b_prof.has(k) || b_prof[k] == 0):
+			missing.append(k);
+	return missing;
+
 func adv_turn(round_num, turn_idx):
 	if (died_on_turn == -1):
 		match (Game.get_turn_type()):
@@ -778,8 +779,8 @@ func adv_turn(round_num, turn_idx):
 				print(_candidates.size())
 				evolve_candidates(_candidates);
 			Game.TURN_TYPES.CheckViability:
-				var viable = $chromes.validate_essentials(Game.ESSENTIAL_CLASSES.values());
-				if (viable):
+				var missing = get_missing_ess_classes();
+				if (missing.size() == 0):
 					emit_signal("justnow_update", "You're still kicking!");
 					cont_recombo = true
 					recombo_chance = 1
@@ -787,7 +788,7 @@ func adv_turn(round_num, turn_idx):
 					died_on_turn = Game.round_num;
 					#$lbl_dead.text = "Died after %d rounds." % (died_on_turn - born_on_turn);
 					#$lbl_dead.visible = true;
-					emit_signal("justnow_update", "Nope! You're dead!");
+					emit_signal("justnow_update", "You're missing essential behavior: %s" % PoolStringArray(missing).join(", "));
 					emit_signal("died", self);
 			Game.TURN_TYPES.Replication:
 				emit_signal("justnow_update", "Choose replication method.");

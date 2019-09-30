@@ -178,38 +178,3 @@ func pretty_element_name_list(elms_array):
 		if (put_comma):
 			list += ", ";
 	return list;
-
-func rollChances(chance_array, mods = []):
-	# Modify the chances, then find their sum for normalizing
-	var roll_chances = chance_array + [];
-	var chance_sum = 0;
-	for i in range(roll_chances.size()):
-		if (i < mods.size()):
-			roll_chances[i] *= mods[i];
-		chance_sum += roll_chances[i];
-	if (chance_sum <= 0):
-		return 0;
-    
-	# Add up the normalized chances, checking against the roll
-	var roll = randf();
-	var previous_range = 0;
-	for i in range(roll_chances.size() - 1):
-		var now_range = previous_range + (roll_chances[i] / chance_sum);
-		if (roll <= now_range):
-			return i;
-		previous_range = now_range;
-	return roll_chances.size() - 1;
-
-func collapseChance(segment_size, dist_from_gap):
-	return float(float(segment_size) / float(dist_from_gap + 0.5));
-
-func rollCollapse(segment_size, dist_from_gap):
-	if (dist_from_gap < 0):
-		dist_from_gap *= -1;
-	var roll = randf();
-	var need = collapseChance(segment_size, dist_from_gap);
-	print("--- Collapse Attempt ---");
-	print("need: ", need);
-	print("got: ", roll);
-	return roll <= need;
-	#return randf() <= collapseChance(segment_size, dist_from_gap);

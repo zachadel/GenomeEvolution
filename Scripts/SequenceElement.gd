@@ -5,16 +5,6 @@ var mode;
 var id;
 
 var ess_class = null;
-var ess_mods = {
-	# Lose one, no complications, copy intervening, duplicate a gene at the site
-	"copy_repair": [0.0, 0.0, 0.0, 0.0],
-	
-	# Lose one, no complications, duplicate a gene at the site
-	"join_ends": [0.0, 0.0, 0.0],
-	
-	# none, death, major up, major down, minor up, minor down
-	"evolve": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-};
 var ess_behavior = {
 	"Replication": 0,
 	"Locomotion": 0,
@@ -31,7 +21,7 @@ const CODE_LENGTH = 7;
 var gene_code = "";
 
 var DEFAULT_SIZE = 200;
-var MIN_SIZE = 75;
+var MIN_SIZE = 125;
 var MAGNIFICATION_FACTOR = 1.5;
 var MAGNIFICATION_DROPOFF = 0.9;
 var current_size;
@@ -115,6 +105,7 @@ func setup_copy(ref_elm):
 func set_ess_behavior(dict):
 	for k in dict:
 		ess_behavior[k] = dict[k];
+		upd_behavior_disp(k);
 
 func get_ess_behavior():
 	var d = {};
@@ -170,27 +161,31 @@ func is_equal(other_elm, max_dist = -1):
 	else:
 		return can_compare_elm(other_elm) && get_gene_distance(other_elm) <= max_dist;
 
-const NEW_BEHAVIOR_CHANCE = 0.1;
-func evolve_behavior(amt):
-	match (mode):
-		"essential":
-			var pos_keys = [];
-			for k in ess_behavior.keys():
-				if (ess_behavior[k] > 0):
-					pos_keys.append(k);
-			
-			var behave_key = "";
-			if (amt > 0 && randf() <= NEW_BEHAVIOR_CHANCE):
-				behave_key = ess_behavior.keys()[randi() % ess_behavior.keys().size()];
-			else:
-				behave_key = pos_keys[randi() % pos_keys.size()];
-			
-			if (pos_keys.size() > 0):
-				ess_behavior[behave_key] = max(0, ess_behavior[behave_key] + amt);
-			
-			if (pos_keys.size() == 0 || ess_behavior[behave_key] <= 0 && pos_keys.size() == 1):
-				kill_elm();
-				upd_display();
+func evolve_current_behavior(amt):
+	if (ess_behavior.values().max() > 0):
+		var behave_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
+		ess_behavior[behave_key] = max(0, ess_behavior[behave_key] + amt);
+		
+		check_for_death();
+
+const GAIN_AMT = 0.2;
+func evolve_new_behavior(gain):
+	var behave_key = "";
+	if (gain):
+		var key_candids = [];
+		for k in ess_behavior:
+			if (ess_behavior[k] == 0):
+				key_candids.append(k);
+		behave_key = key_candids[randi() % key_candids.size()];
+	else:
+		behave_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
+	
+	ess_behavior[behave_key] = int(gain) * GAIN_AMT;
+	check_for_death();
+
+func check_for_death():
+	if (ess_behavior.values().max() == 0):
+		kill_elm();
 
 func kill_elm():
 	mode = "pseudo";
@@ -202,29 +197,33 @@ func kill_elm():
 	
 	for k in ess_behavior:
 		ess_behavior[k] = 0;
+		upd_behavior_disp(k);
 
 func evolve(ndx, good = true):
-	match(ndx):
-		1: # Gene death
-			modify_code(5, -5);
-			kill_elm();
-		2: # Major Upgrade
-			modify_code(2, 2);
-			evolve_behavior(10);
-		3: # Major Downgrade
-			modify_code(2, -2);
-			evolve_behavior(-10);
-		4: # Minor Upgrade
-			modify_code(1, 1);
-			evolve_behavior(3);
-		5: # Minor Downgrade
-			modify_code(1, -1);
-			evolve_behavior(-3);
-	
-	upd_display();
-	get_cmsm().emit_signal("cmsm_changed");
+	if (type == "gene" && mode == "essential"):
+		match(ndx):
+			1: # Gene death
+				modify_code(5, -5);
+				kill_elm();
+			2: # Major Upgrade
+				modify_code(2, 2);
+				evolve_new_behavior(true);
+			3: # Major Downgrade
+				modify_code(2, -2);
+				evolve_new_behavior(false);
+			4: # Minor Upgrade
+				modify_code(1, 1);
+				evolve_current_behavior(0.1);
+			5: # Minor Downgrade
+				modify_code(1, -1);
+				evolve_current_behavior(-0.1);
+		
+		upd_display();
+		get_cmsm().emit_signal("cmsm_changed");
 
-#FUTURE CHANGES HERE TO ACTUALLY CHANGE THE +1 and so forth on the visual SPRITE
+func upd_behavior_disp(behavior):
+	get_node("Indic" + behavior).set_value(ess_behavior[behavior]);
+
 func upd_display():
 	$DBGLBL.text = gene_code;
 	if (type != "break"):
@@ -233,8 +232,6 @@ func upd_display():
 	else:
 		$version.show()
 	$lbl.text = id;
-	if (mode == "pseudo"):
-		$lbl.text += " [p]";
 	match(type):
 		"gene":
 			toggle_mode = false;
@@ -242,36 +239,16 @@ func upd_display():
 			match (mode):
 				"ate":
 					self_modulate = Color(.8, .15, 0);
-					if (true):
-						$version.hide()
-						$version/version_lbl.text = "B"
-						$version/version_lbl.self_modulate = Color(1, 1, 1)
-					else:
-						$version/version_lbl.text = "";
-						if false:
-							$version/version_lbl.self_modulate = Color(.1, .8, .1)
-						else:
-							$version/version_lbl.self_modulate = Color(.8, .1, .1)
-					#$lbl.text += " (Active)";
 				"ste":
 					self_modulate = Color(.55, 0, 0);
-					#$lbl.text += " (Silenced)";
 				"essential":
-					#self_modulate = Color(.15, .8, 0); Commented out to make the gene icons be shown with no green tint
-					if (false):
-						$version.hide()
-						$version/version_lbl.text = "B"
-						$version/version_lbl.self_modulate = Color(1, 1, 1)
-					else:
-						$version/version_lbl.text = ""
-						if false:
-							$version/version_lbl.self_modulate = Color(.1, .8, .1)
-						else:
-							$version/version_lbl.self_modulate = Color(.8, .1, .1)
-					#$lbl.text += " (Essential)";
+					$lbl.visible = false;
+					$version/version_lbl.text = "";
+					for k in ess_behavior:
+						upd_behavior_disp(k);
 				"pseudo":
+					$lbl.text += " [p]";
 					self_modulate = Color(.5, .5, 0);
-					#$lbl.text += " (Pseudogene)";
 		"break":
 			$version.hide()
 			toggle_mode = true;
@@ -310,14 +287,8 @@ func mod_act_behavior(type, chance_mod):
 		type = act_mods.keys()[type];
 	act_mods[type] += chance_mod;
 
-func mod_ess_roll(type, idx, chance_mod):
-	ess_mods[type][idx] += chance_mod;
-
-func get_ess_mod_array(type):
-	return ess_mods[type];
-
 func get_ate_jump_roll():
-	return Game.rollChances(ate_personality["roll"], act_mods.values());
+	return Chance.roll_chances(ate_personality["roll"], act_mods.values());
 
 func get_active_behavior(jump): #if jump==false, get the copy range
 	var grab_dict = {};
@@ -369,6 +340,11 @@ func set_size(size = null):
 	$BorderRect.rect_size = Vector2(size, size);
 	$GrayFilter.rect_size = Vector2(size, size);
 	current_size = size;
+	
+	var scale = size / float(DEFAULT_SIZE);
+	for k in ess_behavior:
+		get_node("Indic" + k).rescale(scale);
+	
 
 func _on_SeqElm_pressed():
 	emit_signal("elm_clicked", self);

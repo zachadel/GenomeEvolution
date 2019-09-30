@@ -22,6 +22,7 @@ config/icon="res://icon.png"
 [autoload]
 
 Game="*res://Scripts/Game.gd"
+Chance="*res://Scripts/Chance.gd"
 
 [display]
 

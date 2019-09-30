@@ -120,7 +120,7 @@ func _on_Organism_doing_work(working):
 
 func _on_Organism_died(org):
 	Game.round_num = 0
-	nxt_btn.disabled = true;
+	nxt_btn.visible = false;
 	$button_grid/btn_energy_allocation.visible = false;
 	$button_grid/btn_dead_menu.visible = true;
 	$button_grid/btn_dead_restart.visible = true;

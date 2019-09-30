@@ -1,7 +1,14 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scripts/SequenceElement.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Images/border.png" type="Texture" id=2]
+[ext_resource path="res://Scenes/BehaviorIndicator.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/R.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/L.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/M.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/S.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/C.png" type="Texture" id=8]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/D.png" type="Texture" id=9]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.219608, 0.219608, 0.219608, 1 )
@@ -38,8 +45,9 @@ color = Color( 0, 0, 0, 0.33 )
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_bottom = 25.0
-text = "Dingaling"
+margin_top = -25.0
+margin_bottom = -1.0
+text = "ERROR_name"
 align = 1
 valign = 1
 
@@ -47,15 +55,77 @@ valign = 1
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = -26.0
-margin_bottom = -1.0
-text = "GENE"
+margin_top = -49.0
+margin_bottom = -28.0
+text = "ERROR_code"
 align = 1
 valign = 1
+
+[node name="IndicReplication" parent="." instance=ExtResource( 3 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = -35.0
+margin_right = 60.0
+margin_bottom = 25.0
+image_texture = ExtResource( 4 )
+
+[node name="IndicLocomotion" parent="." instance=ExtResource( 3 )]
+visible = false
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.0
+margin_left = -30.0
+margin_top = -35.0
+margin_right = 30.0
+margin_bottom = 25.0
+image_texture = ExtResource( 5 )
+
+[node name="IndicManipulation" parent="." instance=ExtResource( 3 )]
+visible = false
+anchor_left = 1.0
+anchor_bottom = 0.0
+margin_left = -60.0
+margin_top = -35.0
+margin_right = 0.0
+margin_bottom = 25.0
+image_texture = ExtResource( 6 )
+
+[node name="IndicSensing" parent="." instance=ExtResource( 3 )]
+visible = false
+anchor_top = 1.0
+anchor_right = 0.0
+margin_top = -23.0
+margin_right = 60.0
+margin_bottom = 37.0
+image_texture = ExtResource( 7 )
+
+[node name="IndicConstruction" parent="." instance=ExtResource( 3 )]
+visible = false
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+margin_left = -30.0
+margin_top = -23.0
+margin_right = 30.0
+margin_bottom = 37.0
+image_texture = ExtResource( 8 )
+
+[node name="IndicDeconstruction" parent="." instance=ExtResource( 3 )]
+visible = false
+anchor_left = 1.0
+anchor_top = 1.0
+margin_left = -60.0
+margin_top = -23.0
+margin_right = 0.0
+margin_bottom = 37.0
+image_texture = ExtResource( 9 )
 
 [node name="Tween" type="Tween" parent="."]
 
 [node name="version" type="PanelContainer" parent="."]
+editor/display_folded = true
+visible = false
 anchor_left = 1.0
 anchor_right = 1.0
 margin_left = -45.0
