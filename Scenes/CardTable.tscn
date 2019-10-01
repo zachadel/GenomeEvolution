@@ -80,6 +80,8 @@ margin_left = -132.0
 margin_top = 647.0
 margin_right = -10.0
 margin_bottom = -9.0
+grow_horizontal = 0
+grow_vertical = 0
 custom_constants/separation = 20
 alignment = 2
 
