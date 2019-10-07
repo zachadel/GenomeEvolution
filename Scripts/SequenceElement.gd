@@ -14,8 +14,8 @@ var ess_behavior = {
 	"Deconstruction": 0
 };
 
+var ate_activity = 1.0;
 var ate_personality = {};
-var act_mods = {"silent": 1.0, "excise": 1.0, "jump": 1.0, "copy": 1.0};
 
 const CODE_LENGTH = 7;
 var gene_code = "";
@@ -91,6 +91,7 @@ func setup_copy(ref_elm):
 				ess_class = ref_elm.ess_class;
 				ess_behavior = ref_elm.ess_behavior;
 			"ate":
+				ate_activity = ref_elm.ate_activity;
 				ate_personality = ref_elm.ate_personality;
 				id = ate_personality["title"];
 				tex = ate_personality["art"];
@@ -104,7 +105,10 @@ func setup_copy(ref_elm):
 
 func set_ess_behavior(dict):
 	for k in dict:
-		ess_behavior[k] = dict[k];
+		if (k == "ate"):
+			ate_activity = dict[k];
+		else:
+			ess_behavior[k] = dict[k];
 		upd_behavior_disp(k);
 
 func get_ess_behavior():
@@ -112,6 +116,8 @@ func get_ess_behavior():
 	for k in ess_behavior:
 		if (ess_behavior[k] > 0):
 			d[k] = ess_behavior[k];
+	if (type == "gene" && mode == "ate"):
+		d["ate"] = ate_activity;
 	return d;
 
 func get_random_code():
@@ -162,30 +168,45 @@ func is_equal(other_elm, max_dist = -1):
 		return can_compare_elm(other_elm) && get_gene_distance(other_elm) <= max_dist;
 
 func evolve_current_behavior(amt):
-	if (ess_behavior.values().max() > 0):
-		var behave_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
-		ess_behavior[behave_key] = max(0, ess_behavior[behave_key] + amt);
-		
-		check_for_death();
+	match mode:
+		"essential":
+			if (ess_behavior.values().max() > 0):
+				var behave_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
+				ess_behavior[behave_key] = max(0, ess_behavior[behave_key] + amt);
+		"ate":
+			ate_activity += amt;
+	check_for_death();
 
-const GAIN_AMT = 0.2;
+const GAIN_AMT = 0.3;
 func evolve_new_behavior(gain):
-	var behave_key = "";
-	if (gain):
-		var key_candids = [];
-		for k in ess_behavior:
-			if (ess_behavior[k] == 0):
-				key_candids.append(k);
-		behave_key = key_candids[randi() % key_candids.size()];
-	else:
-		behave_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
-	
-	ess_behavior[behave_key] = int(gain) * GAIN_AMT;
+	match mode:
+		"essential":
+			var behave_key = "";
+			if (gain):
+				var key_candids = [];
+				for k in ess_behavior:
+					if (ess_behavior[k] == 0):
+						key_candids.append(k);
+				behave_key = key_candids[randi() % key_candids.size()];
+			else:
+				behave_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
+			
+			ess_behavior[behave_key] = int(gain) * GAIN_AMT;
+		"ate":
+			if (gain):
+				ate_activity += GAIN_AMT;
+			else:
+				ate_activity -= GAIN_AMT;
 	check_for_death();
 
 func check_for_death():
-	if (ess_behavior.values().max() == 0):
-		kill_elm();
+	match mode:
+		"essential":
+			if (ess_behavior.values().max() == 0):
+				kill_elm();
+		"ate":
+			if (ate_activity <= 0):
+				kill_elm();
 
 func kill_elm():
 	mode = "pseudo";
@@ -200,8 +221,8 @@ func kill_elm():
 		upd_behavior_disp(k);
 
 func evolve(ndx, good = true):
-	if (type == "gene" && mode == "essential"):
-		match(ndx):
+	if (type == "gene"):
+		match ndx:
 			1: # Gene death
 				modify_code(5, -5);
 				kill_elm();
@@ -221,8 +242,16 @@ func evolve(ndx, good = true):
 		upd_display();
 		get_cmsm().emit_signal("cmsm_changed");
 
-func upd_behavior_disp(behavior):
-	get_node("Indic" + behavior).set_value(ess_behavior[behavior]);
+func upd_behavior_disp(behavior = ""):
+	match mode:
+		"essential":
+			if (behavior != ""):
+				get_node("Indic" + behavior).set_value(ess_behavior[behavior]);
+			else:
+				for b in ess_behavior:
+					get_node("Indic" + b).set_value(ess_behavior[b]);
+		"ate":
+			get_node("IndicATE").set_value(ate_activity);
 
 func upd_display():
 	$DBGLBL.text = gene_code;
@@ -239,13 +268,13 @@ func upd_display():
 			match (mode):
 				"ate":
 					self_modulate = Color(.8, .15, 0);
+					upd_behavior_disp();
 				"ste":
 					self_modulate = Color(.55, 0, 0);
 				"essential":
 					$lbl.visible = false;
 					$version/version_lbl.text = "";
-					for k in ess_behavior:
-						upd_behavior_disp(k);
+					upd_behavior_disp();
 				"pseudo":
 					$lbl.text += " [p]";
 					self_modulate = Color(.5, .5, 0);
@@ -282,13 +311,11 @@ func highlight_border(on, special_color = false):
 func is_highlighted():
 	return $BorderRect.visible;
 
-func mod_act_behavior(type, chance_mod):
-	if (typeof(type) == TYPE_INT):
-		type = act_mods.keys()[type];
-	act_mods[type] += chance_mod;
-
 func get_ate_jump_roll():
-	return Chance.roll_chances(ate_personality["roll"], act_mods.values());
+	var mods = [0.75 / ate_activity];
+	for i in range(3):
+		mods.append(ate_activity);
+	return Chance.roll_chances(ate_personality["roll"], mods);
 
 func get_active_behavior(jump): #if jump==false, get the copy range
 	var grab_dict = {};

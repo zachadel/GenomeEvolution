@@ -48,7 +48,7 @@ func roll_chances(chance_array, mods = []):
 		chance_sum += roll_chances[i];
 	if (chance_sum <= 0):
 		return 0;
-	
+	print("chances: ", roll_chances);
 	# Add up the normalized chances, checking against the roll
 	var roll = randf();
 	var previous_range = 0;
