@@ -7,7 +7,6 @@ func _ready():
 	butt_array.pop_back()
 	for button in butt_array:
 		button.connect("pressed", self, "_on_Button_pressed", [button.scene_to_load])
-	
 	$nudResRate.value = Game.resource_mult;
 
 func _on_Button_pressed(scene_to_load):
