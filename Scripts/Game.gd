@@ -32,9 +32,7 @@ func get_code_char(_num):
 	return code_elements[_num];
 
 func _ready():
-	#initialization done in _ready for restarts
-	turn_idx = 0;
-	round_num = 1;
+	restart_game();
 	
 	for i in range(65, 91): # A to Z
 		code_elements.append(char(i));
@@ -50,6 +48,10 @@ func _ready():
 	
 	# Import ATE Personalities
 	load_personalities("ate_personalities", ate_personalities);
+
+func restart_game():
+	turn_idx = 0;
+	round_num = 1;
 
 func cfg_sec_to_dict(cfg, sec):
 	var build = {};

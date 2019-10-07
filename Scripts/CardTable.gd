@@ -139,6 +139,7 @@ func _on_btn_saveload_pressed():
 	$pnl_saveload.visible = !$pnl_saveload.visible;
 
 func _on_pnl_saveload_loaded():
+	nxt_btn.disabled = false;
 	_on_Organism_justnow_update("Loaded from a save.");
 
 func _on_Organism_show_reprod_opts(show):
@@ -148,4 +149,5 @@ func _on_btn_dead_menu_pressed():
 	get_tree().change_scene("res://Assets/Images/Main Menu/Scenes/TitleScreen.tscn");
 
 func _on_btn_dead_restart_pressed():
+	Game.restart_game();
 	get_tree().reload_current_scene();
