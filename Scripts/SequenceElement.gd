@@ -111,9 +111,8 @@ func setup_copy(ref_elm):
 		@mode: This is 'essential' for an essential gene, 'ate' for a
 			transposon, or 'psuedo' for a pseudogene 
 		@mode_class: For 'essential' this is one of the ESSENTIAL_CLASSES
-			in Game.gd.  For 'ate', this has yet to be defined how it can
-			vary.  For 'pseudogene', this value is not needed and will not
-			be used.
+			in Game.gd.  For 'ate' and 'pseudo', these values are not
+			used.
 	Output: Current gene is changed to have a particular tooltip
 		@If Replication: 'This is a replication gene.  It increases the 
 			probability for successful gene modifications.'
@@ -131,8 +130,7 @@ func setup_copy(ref_elm):
 			turns.'
 		@If Deconstruction: 'This is a deconstruction gene.  It aids with the 
 			breaking down of complicated resources into simpler, usable ones.'
-		@If Transposon: 'This is a transposon.  It is a genetic parasite that
-			can modify genes in various unpredictable ways.'
+		@If Transposon: See ate_personalities.cfg.
 		@If Psuedogene: 'This is a pseudogene. It can still mutate, but it is 
 			currently damaged to the point of inactivity.'
 """
