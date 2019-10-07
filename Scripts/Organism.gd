@@ -704,20 +704,20 @@ func replicate(idx):
 			add_to_gene_pool();
 		1: # Meiosis
 			rep_type = "meiosis";
-			emit_signal("justnow_update", "Choose which chromosome to discard.");
-			var discard_chrome = null;
+			emit_signal("justnow_update", "Choose which chromosome to keep.");
+			var keep_cmsm = null;
 			if (is_ai):
-				discard_chrome = $chromes.get_cmsm(randi() % 2);
+				keep_cmsm = $chromes.get_cmsm(randi() % 2);
 			else:
 				gene_selection = $chromes.highlight_all_genes();
 				yield(self, "gene_clicked");
-				discard_chrome = get_gene_selection().get_cmsm();
+				keep_cmsm = get_gene_selection().get_cmsm();
 				for g in gene_selection:
 					g.disable(true);
 			
 			var new_cmsm = get_random_gene_from_pool();
 			add_to_gene_pool();
-			set_cmsm_from_pool(discard_chrome, new_cmsm);
+			set_cmsm_from_pool($chromes.get_other_cmsm(keep_cmsm), new_cmsm);
 	emit_signal("doing_work", false);
 	emit_signal("justnow_update", "Reproduced by %s." % rep_type);
 
