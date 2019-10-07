@@ -158,7 +158,7 @@ func set_hint_tooltip(_type, _mode, _ess_class):
 							hint_tooltip = ''
 							print('ERROR: Invalid gene class of ', _x)
 				"ate":
-					hint_tooltip = 'This is a transposon. It is a genetic parasite that\ncan modify genes in various unpredictable ways.'
+					hint_tooltip = ate_personality['hint_tooltip']
 				"pseudo":
 					hint_tooltip = 'This is a pseudogene. It can still mutate, but it is\ncurrently damaged to the point of inactivity.'
 		"break":
