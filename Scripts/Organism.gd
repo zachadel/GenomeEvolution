@@ -824,9 +824,19 @@ var costs = {
 	"repair_je" : [0, 5, 1, 0],
 	"move" : [10, 0, 0, 0]
 }
-
+const BEHAVIOR_TO_COST_MULT = {
+	"Locomotion": {
+		"move": -0.05
+	}
+}
 func use_resources(action):
+	var cost_mult = 1.0;
+	var bprof = get_behavior_profile();
+	for k in bprof:
+		if (BEHAVIOR_TO_COST_MULT.has(k) && BEHAVIOR_TO_COST_MULT[k].has(action)):
+			cost_mult += BEHAVIOR_TO_COST_MULT[k][action] * bprof[k];
+	cost_mult = max(0.05, cost_mult);
 	for i in range(4):
-		resources[i] = max(0, resources[i] - (costs[action][i] * Game.resource_mult))
+		resources[i] = max(0, resources[i] - (costs[action][i] * cost_mult * Game.resource_mult))
 
 
