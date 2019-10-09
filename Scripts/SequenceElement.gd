@@ -15,7 +15,7 @@ var ess_behavior = {
 	"Deconstruction": 0
 };
 
-var ate_activity = 1.0;
+var ate_activity = 0.0;
 var ate_personality = {};
 
 const CODE_LENGTH = 7;
@@ -57,6 +57,7 @@ func setup(_type, _id = "", _mode = "ate", _code = "", _ess_class = -1):
 					print("!! Trying to put ", name, " (", _type, ", ", _id, ") in non-existent eclass (", _ess_class, ")");
 					print("Here are the valid values: ", Game.ESSENTIAL_CLASSES.values());
 			"ate":
+				ate_activity = 1.0;
 				if (id == ""):
 					ate_personality = Game.get_random_ate_personality();
 					id = ate_personality["title"];
@@ -307,13 +308,14 @@ func evolve(ndx, good = true):
 
 func upd_behavior_disp(behavior = ""):
 	match mode:
-		"essential":
+		"essential", "pseudo":
 			if (behavior != ""):
 				get_node("Indic" + behavior).set_value(ess_behavior[behavior]);
 			else:
 				for b in ess_behavior:
 					get_node("Indic" + b).set_value(ess_behavior[b]);
-		"ate":
+			continue;
+		"ate", "pseudo":
 			get_node("IndicATE").set_value(ate_activity);
 
 func upd_display():
@@ -328,24 +330,26 @@ func upd_display():
 		"gene":
 			toggle_mode = false;
 			$BorderRect.modulate = toggle_rect_clr[false];
+			var start_mode = mode;
 			match (mode):
 				"ate":
 					self_modulate = Color(.8, .15, 0);
-					upd_behavior_disp();
 				"ste":
 					self_modulate = Color(.55, 0, 0);
 				"essential":
 					$lbl.visible = false;
 					$version/version_lbl.text = "";
-					upd_behavior_disp();
 				"pseudo":
-					$lbl.text += " [p]";
+					$lbl.visible = false;
+					#$lbl.text += " [p]";
 					self_modulate = Color(.5, .5, 0);
-					
+			upd_behavior_disp();
 			
 		#NOTE: This is broken.  It enables you to click on a break in the
 		#chromosome, select collapse/copy/join, see the behavior, then
 		#deselect it
+		
+		# That's actually expected behavior, but it does crash sometimes
 		"break":
 			$version.hide()
 			toggle_mode = true;
