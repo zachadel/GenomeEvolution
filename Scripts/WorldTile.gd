@@ -49,7 +49,7 @@ func _on_Area2D_input_event(viewport, event, shape_idx):
 				get_tree().get_root().get_node("Control/WorldMap").has_moved = true
 				for i in range(distance):
 					player.consume_resources("move")
-				print(biome_rank)
+				#print(biome_rank)
 
 
 #We populate the resources here using the color

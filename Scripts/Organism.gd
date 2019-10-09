@@ -86,7 +86,7 @@ func setup(card_table):
 	is_ai = false;
 	do_yields = true;
 	for type in Game.ESSENTIAL_CLASSES.values():
-		print("type: " + str(type));
+		#print("type: " + str(type));
 		energy_allocations[type] = 0;
 	$chromes.setup(card_table);
 
@@ -220,7 +220,7 @@ func check_resources(x):
 		
 	for i in range(4):
 		if resources[i]  < costs[repair][i]:
-			print("NOT ENOUGH CASH! STRANGA!")
+			#print("NOT ENOUGH CASH! STRANGA!")
 			return false
 	return true
 
@@ -456,7 +456,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 				choice_info["left"].highlight_border(false);
 				if (!roll_storage[0].has(gap)):
 					var roll_result = roll_chance("copy_repair");
-					print("roll: ", roll_result);
+					#print("roll: ", roll_result);
 					roll_storage[0][gap] = roll_chance("copy_repair");
 				if !check_resources(1):
 					roll_storage[0][gap] = 0
@@ -519,7 +519,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 							$chromes.close_gap(gap);
 							
 				get_tree().get_root().get_node("Control/WorldMap").player.consume_resources("repair_cp")
-				print("repair copy pattern");
+				#print("repair copy pattern");
 			2: # Join Ends
 				if (!roll_storage[1].has(gap)):
 					roll_storage[1][gap] = roll_chance("join_ends");
@@ -571,7 +571,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 						emit_signal("justnow_update", "Joined ends for the gap at %s, %d; duplicated a %s gene in the repair." % [cmsm.get_parent().name, g_idx, copy_elm.id]);
 				
 				get_tree().get_root().get_node("Control/WorldMap").player.consume_resources("repair_je")
-				print("repair join ends")
+				#print("repair join ends")
 		
 		gene_selection.erase(gap);
 		highlight_gap_choices();
@@ -776,7 +776,7 @@ func adv_turn(round_num, turn_idx):
 				for cmsm in $chromes.get_cmsms():
 					for i in cmsm.get_child_count():
 						_candidates.append(cmsm.get_child(i))
-				print(_candidates.size())
+				#print(_candidates.size())
 				evolve_candidates(_candidates);
 			Game.TURN_TYPES.CheckViability:
 				var missing = get_missing_ess_classes();
@@ -792,7 +792,6 @@ func adv_turn(round_num, turn_idx):
 					emit_signal("died", self);
 			Game.TURN_TYPES.Replication:
 				emit_signal("justnow_update", "Choose replication method.");
-				emit_signal("_on_Organism_show_reprod_opts", true);
 				emit_signal("doing_work", true);
 				emit_signal("show_reprod_opts", true);
 
@@ -808,7 +807,7 @@ func update_energy(amount):
 	energy_allocation_panel.update_energy(energy);
 
 func update_energy_allocation(type, amount):
-	print(type);
+	#print(type);
 	if (energy - amount < MIN_ENERGY || energy - amount > MAX_ENERGY):
 		return;
 	if (energy_allocations[type] + amount < 0 || energy_allocations[type] + amount > MAX_ALLOCATED_ENERGY):
