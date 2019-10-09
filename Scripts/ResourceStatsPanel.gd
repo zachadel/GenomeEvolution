@@ -34,7 +34,7 @@ func _on_Button_pressed():
 		tween_node.interpolate_property(self, "rect_position", get_position(), Vector2(-250, 0), 0.5, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
 		tween_node.start()
 		hidden = true
-	print(hidden)
+	#print(hidden)
 
 
 func _on_WorldMapControl_player_done():
