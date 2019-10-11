@@ -1,14 +1,24 @@
 extends Node2D
 
-var curr_color = Color(0, 0.75, 0, .5)
-var natural_tile_color = Color(0, 0.75, 0, 1)
+signal tile_selected
+
+#Colors for the various states of the tile
+const selected_color = Color.white
+var curr_color = Color.darkgreen
+var natural_tile_color = Color.darkgreen
+var hidden_color = Color.darkgray
+
+#Determines whether the tile is on or not
+var hidden = true
+
+#Index of tile into the collection of tiles in the world map
 var map_ndx = Vector2(0.0, 0.0)
+
 var biome_set = false
 var biome_rank = -2
 var strength_from_poi = 0
 var player_rank = -1
-var hidden_color = Color(0, 0, 0, 0)
-var hidden = true
+
 var resources = {"x": 10, "y": 10, "z": 10, "w": 10}
 var resource_2d_array = [[],[],[],[]]
 var resource_group_types = 10
@@ -37,38 +47,47 @@ func tile_distance(curr, prev):
 	var diameter = get_node("Area2D/Sprite").get_texture().get_size().x
 	return round(distance / diameter)
 
+"""
+	Name: _on_Area2D_input_event
+	Purpose: sends signal communicating that the tile has been clicked by the
+		player
+	Input: these are defined by Godot
+	Output: color of tile is changed to selected_color or natural_color
+		depending on what the current color is
+"""
 func _on_Area2D_input_event(viewport, event, shape_idx):
-	var player = get_tree().get_root().get_node("Control/WorldMap/Player")
-	var distance = tile_distance(player.curr_tile.position, position)
-	if player.move_enabled:
-		if event.is_action_pressed("mouse_left") and !hidden and (map_ndx != player.curr_tile.map_ndx):
-			if player.organism.resources[0] >= (player.organism.costs["move"][0] * distance):
-				player.position = position
-				player.prev_tile = player.curr_tile
-				player.curr_tile = self
-				get_tree().get_root().get_node("Control/WorldMap").has_moved = true
-				for i in range(distance):
-					player.consume_resources("move")
-				print(biome_rank)
+	if event.is_action_pressed("mouse_left"):
+		emit_signal("tile_selected", map_ndx)
+		
+		if curr_color == selected_color:
+			change_color(natural_tile_color)
+			show_color()
+		elif !hidden:
+			change_color(selected_color)
+			show_color()
 
 
 #We populate the resources here using the color
 func change_color(color):
-	curr_color = natural_tile_color + color
+	curr_color = color
+	
+func change_resources():
 	if strength_from_poi > 0:
 		set_resources(1)
 	elif strength_from_poi == -1:
 		set_resources(-1)
 
+#Temporary function, this will need to be improved once infinite maps
+#are introduced
 func set_resources(step):
-	resources.x = round(curr_color.r * 100)
-	resources.y = round(curr_color.g * 100)
-	resources.z = round(curr_color.b * 100)
-	resources.w = round(curr_color.a * 10)
+	resources.x = round(natural_tile_color.r * 100)
+	resources.y = round(natural_tile_color.g * 100)
+	resources.z = round(natural_tile_color.b * 100)
+	resources.w = round(natural_tile_color.a * 10)
 	
-	temperature = curr_color.r * 100
-	uv_index = curr_color.b * 15
-	oxygen_level = curr_color.g * 100
+	temperature = natural_tile_color.r * 100
+	uv_index = natural_tile_color.b * 15
+	oxygen_level = natural_tile_color.g * 100
 	
 	#set 4 resources here!
 	for i in range(0, 4):

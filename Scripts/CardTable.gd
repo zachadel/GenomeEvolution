@@ -6,15 +6,14 @@ signal next_turn(turn_text, round_num);
 
 onready var justnow_label = $sc_justnow/lbl_justnow;
 onready var criteria_label = $sc_criteria/lbl_criteria;
-onready var orgn = $Organism;
 onready var nxt_btn = $button_grid/btn_nxt;
 
 var has_gaps = false;
 var wait_on_anim = false;
 var wait_on_select = false;
+var orgn;
 
 func _ready():
-	Game.card_table = self;
 	orgn.setup(self);
 	
 	$lbl_turn.text = Game.get_turn_txt();
@@ -131,9 +130,6 @@ func check_if_ready():
 
 func _on_btn_energy_allocation_pressed():
 	$pnl_energy_allocation.visible = true;
-
-func _on_WorldMap_player_done():
-	emit_signal("player_done");
 
 func _on_btn_saveload_pressed():
 	$pnl_saveload.visible = !$pnl_saveload.visible;

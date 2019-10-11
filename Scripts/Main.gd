@@ -1,12 +1,13 @@
 extends Node
 
 enum GSTATE {
+	TITLE,
 	TABLE,
 	MAP
 };
 
-var gstate = GSTATE.MAP
-var state_label = ["Map", "Table"]
+var gstate = GSTATE.TITLE
+var state_label = ["Title", "Map", "Table"]
 
 func _ready(): 
 	switch_mode()
@@ -20,6 +21,10 @@ func _on_modeSwitch_pressed():
 	
 func switch_mode():
 	match(gstate):
+		GSTATE.TITLE:
+			$Canvas_CardTable/CardTable.hide()
+			$WorldMap.hide()
+			$TitleScreen.show()
 		GSTATE.MAP:
 			$Canvas_CardTable/CardTable.hide()
 			$WorldMap.show()

@@ -1,5 +1,9 @@
 extends Control
+"""
+	Notes:
+		-Every organism is in the 'organism' group.
 
+"""
 func fix_bars():
 	$chromes.fix_bars();
 
@@ -696,6 +700,7 @@ func recombination():
 				cont_recombo = false
 				emit_signal("doing_work", false);
 
+#NOTE: Here is where hooks for instancing new organisms should go
 func replicate(idx):
 	var rep_type = "some unknown freaky deaky shiznaz";
 	match idx:

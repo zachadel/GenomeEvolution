@@ -3,7 +3,6 @@ extends Panel
 var org
 
 func _ready():
-	org = get_tree().get_root().get_node("Control/Canvas_CardTable/CardTable/Organism")
 	
 	for i in range(1, 5):
 		var path = "GridContainer/TextureProgress" + str(i)

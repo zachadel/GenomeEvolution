@@ -1,6 +1,11 @@
 extends Node2D
-
+"""
+	Notes:
+		-Every player is in the 'players' group
+		-Once a player is ready or has taken their turn a signal is emitted and the count of those signals received is compared to the total number of players
+"""
 signal changed
+signal player_ready
 
 onready var curr_tile
 var prev_tile
@@ -17,6 +22,8 @@ var UIPanel
 func _ready():
 	sensing_strength = 2
 	organism = get_tree().get_root().get_node("Control/Canvas_CardTable/CardTable/Organism")
+	add_to_group("players")
+	emit_signal("player_ready")
 
 func _process(delta):
 	pass

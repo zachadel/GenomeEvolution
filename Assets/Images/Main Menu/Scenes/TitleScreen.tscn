@@ -93,6 +93,24 @@ custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_as_outline = 1
 text = "Resource Consumption Rate"
 
+[node name="numPlayers" type="SpinBox" parent="."]
+margin_left = 996.0
+margin_top = 501.401
+margin_right = 1099.0
+margin_bottom = 525.401
+min_value = 1.0
+max_value = 10.0
+value = 1.0
+
+[node name="Label" type="Label" parent="numPlayers"]
+margin_left = -3.0
+margin_top = -19.0
+margin_right = 199.0
+margin_bottom = -1.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 1
+text = "Number of Players"
+
 [node name="FadeIn" parent="." instance=ExtResource( 8 )]
 visible = false
 [connection signal="value_changed" from="nudResRate" to="." method="_on_nudResRate_value_changed"]

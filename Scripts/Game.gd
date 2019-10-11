@@ -7,12 +7,20 @@ var default_te_texture = load("res://Assets/Images/tes/default_te.png");
 enum ESSENTIAL_CLASSES {Replication, Locomotion, Manipulation, Sensing, Construction, Deconstruction};
 enum TURN_TYPES {Map, NewTEs, TEJump, RepairBreaks, EnvironmentalDamage, Recombination, Evolve, CheckViability, Replication};
 
+enum BIOMES {fire, ocean, snow, shallow, sand, grass, dirt, mountain, hidden}
+enum RESOURCES {vitamin, lipid, carb, protein}
+const BIOME_RANGES = [[-1, BIOMES.ocean], [-.5, BIOMES.shallow], [-.4, BIOMES.sand], [-.2, BIOMES.dirt],
+					[0, BIOMES.grass], [.3, BIOMES.dirt], [.5, BIOMES.mountain], [.7, BIOMES.snow], 
+					[.85, BIOMES.fire]]
+					
+const TOLERANCE = .0001
+
 var turns = [TURN_TYPES.Map, TURN_TYPES.NewTEs, TURN_TYPES.TEJump, TURN_TYPES.RepairBreaks, TURN_TYPES.EnvironmentalDamage,
 	TURN_TYPES.RepairBreaks, TURN_TYPES.Evolve, TURN_TYPES.Recombination, TURN_TYPES.Replication, TURN_TYPES.CheckViability];
 var turn_idx
 var round_num
 
-var card_table
+#var card_table
 
 var animation_speed = 600
 var animation_ease = Tween.EASE_IN
@@ -146,15 +154,16 @@ func get_turn_txt():
 		var _x:
 			return "Unknown turn type (#%d)" % _x;
 
-func get_save_str():
-	return var2str([turn_idx, round_num, card_table.orgn.get_save(), card_table.orgn.get_gene_pool()]).replace("\n", "");
-
-func load_from_save(save):
-	var s = str2var(save);
-	turn_idx = int(s[0]) - 1;
-	round_num = int(s[1]);
-	card_table.orgn.load_from_save(s[2]);
-	card_table.orgn.reproduct_gene_pool = s[3];
+#NOTE: Need to be rewritten from the ground up
+#func get_save_str():
+#	return var2str([turn_idx, round_num, card_table.orgn.get_save(), card_table.orgn.get_gene_pool()]).replace("\n", "");
+#
+#func load_from_save(save):
+#	var s = str2var(save);
+#	turn_idx = int(s[0]) - 1;
+#	round_num = int(s[1]);
+#	card_table.orgn.load_from_save(s[2]);
+#	card_table.orgn.reproduct_gene_pool = s[3];
 
 func copy_elm(elm):
 	var copy_elm = load("res://Scenes/SequenceElement.tscn").instance();

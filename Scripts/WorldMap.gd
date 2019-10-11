@@ -8,7 +8,6 @@ var tile_col = 32
 var tile_rows = 32
 var POIs = {}
 var world_tile_scene = preload("res://Scenes/WorldTile.tscn")
-var player_scene = preload("res://Scenes/Player.tscn")
 var player
 var tile_sprite_size
 var has_moved = false
@@ -18,20 +17,27 @@ func _ready():
 	tile_sprite_size = temp_node.get_node("Area2D").get_node("Sprite").get_texture().get_size()
 	temp_node.queue_free()
 	
-	player = player_scene.instance()
-	player.set_name("Player")
-	add_child(player)
-	var player_size = player.get_node("Sprite").get_texture().get_size()
-	player.get_node("Camera2D").make_current()
-	emit_signal("player_done");
-	
+#	player = player_scene.instance()
+#	player.set_name("Player")
+#	add_child(player)
+#	var player_size = player.get_node("Sprite").get_texture().get_size()
+#	player.get_node("Camera2D").make_current()
+#	emit_signal("player_done");
+	print('started spawning map')
 	spawn_map()
-	player.position = tile_map[ceil(tile_col/2)][ceil(tile_rows / 2)].position
-	player.curr_tile = tile_map[ceil(tile_col/2)][ceil(tile_rows / 2)]
-	player.prev_tile = tile_map[ceil(tile_col/2)][ceil(tile_rows / 2)]
-	learn(tile_map[ceil(tile_col/2)][ceil(tile_rows / 2)], player.sensing_strength)
+	print('finished spawning map')
+	print('started calculating biomes')
+	calc_biomes()
+	print('finished calculating biomes')
+	print('starting learning starting area')
+	learn(tile_map[ceil(tile_col/2)][ceil(tile_rows / 2)], 1)
+	print('finished learning starting area')
+#	player.position = tile_map[ceil(tile_col/2)][ceil(tile_rows / 2)].position
+#	player.curr_tile = tile_map[ceil(tile_col/2)][ceil(tile_rows / 2)]
+#	player.prev_tile = tile_map[ceil(tile_col/2)][ceil(tile_rows / 2)]
+#	learn(tile_map[ceil(tile_col/2)][ceil(tile_rows / 2)], player.sensing_strength)
 	
-	emit_signal("tiles_done")
+	emit_signal("tiles_done", tile_map[ceil(tile_col/2)][ceil(tile_rows / 2)])
 
 func spawn_map():
 	var current_ndx
@@ -44,13 +50,11 @@ func spawn_map():
 			tile_map[i][j].map_ndx = Vector2(i, j)
 			
 			if (i % 2) == 0:
-				tile_map[i][j].position.x = tile_sprite_size.x * i
-				tile_map[i][j].position.y = tile_sprite_size.y * j
+				tile_map[i][j].position.x = tile_sprite_size.x * i - tile_sprite_size.x * i/4
+				tile_map[i][j].position.y = tile_sprite_size.y * j 
 			else:
-				tile_map[i][j].position.x = tile_sprite_size.x * i
-				tile_map[i][j].position.y = tile_sprite_size.y * j + (tile_sprite_size.y / 2)
-
-	calc_biomes()
+				tile_map[i][j].position.x = tile_sprite_size.x * i - (tile_sprite_size.x / 4 * i)
+				tile_map[i][j].position.y = tile_sprite_size.y * j + (tile_sprite_size.y - .5) / 2 
 
 func calc_biomes():
 	var n = int(ceil(sqrt(tile_col)))
@@ -59,14 +63,16 @@ func calc_biomes():
 	for i in range(number_of_pois):
 		var info = Quat(randi()%tile_col, randi()%tile_rows, (randi()%n + 3), i)
 		POIs[info] = Color(randf() +.2, randf()*.25 - .5, randf() + .2, randf() + .5)
-		
+		print(POIs[info])
 		tile_map[info.x][info.y].strength_from_poi = -1
-		tile_map[info.x][info.y].change_color(POIs[info])
+		tile_map[info.x][info.y].natural_tile_color = POIs[info]
+		#tile_map[info.x][info.y].change_color(POIs[info])
 		tile_map[info.x][info.y].biome_set = true
 		tile_map[info.x][info.y].biome_rank = info.z
 		
 		
 		spread_neighbors(tile_map[info.x][info.y], POIs[info], info.z-1, info.z)
+		print('calculated a biome')
 
 var hex_positions_odd = [Vector2(1, 0), Vector2(1, 1), Vector2(0, 1), Vector2(-1, 1), Vector2(-1, 0), Vector2(0, -1)]
 var hex_positions_even = [Vector2(1, -1), Vector2(1, 0), Vector2(0, 1), Vector2(-1, 0), Vector2(-1, -1), Vector2(0, -1)]
@@ -95,16 +101,18 @@ func spread_neighbors(center_tile, tile_influence_color, strength, orig_stren):
 		spread_neighbors(tile_map[curr_vec2.x][curr_vec2.y], tile_influence_color, strength - 1, orig_stren)
 
 func _process(delta):
-	if has_moved:
-		forget(tile_map[player.prev_tile.map_ndx.x][player.prev_tile.map_ndx.y], max(2, floor(player.sensing_strength / 2) + 1))
-		learn(tile_map[player.curr_tile.map_ndx.x][player.curr_tile.map_ndx.y], max(2, floor(player.sensing_strength / 2) + 1))
-		has_moved = false
-	if (player.update_sensing):
-		forget(tile_map[player.prev_tile.map_ndx.x][player.prev_tile.map_ndx.y], max(2, floor(player.prev_sensing_strength / 2) + 1))
-		learn(tile_map[player.curr_tile.map_ndx.x][player.curr_tile.map_ndx.y], max(2, floor(player.sensing_strength / 2) + 1))
-		player.prev_sensing_strength = player.sensing_strength
-		player.update_sensing = false
-	update_energy_allocation(player.organism.energy)
+	#print(tile_map[16][16].curr_color)
+	pass
+#	if has_moved:
+#		forget(tile_map[player.prev_tile.map_ndx.x][player.prev_tile.map_ndx.y], max(2, floor(player.sensing_strength / 2) + 1))
+#		learn(tile_map[player.curr_tile.map_ndx.x][player.curr_tile.map_ndx.y], max(2, floor(player.sensing_strength / 2) + 1))
+#		has_moved = false
+#	if (player.update_sensing):
+#		forget(tile_map[player.prev_tile.map_ndx.x][player.prev_tile.map_ndx.y], max(2, floor(player.prev_sensing_strength / 2) + 1))
+#		learn(tile_map[player.curr_tile.map_ndx.x][player.curr_tile.map_ndx.y], max(2, floor(player.sensing_strength / 2) + 1))
+#		player.prev_sensing_strength = player.sensing_strength
+#		player.update_sensing = false
+#	update_energy_allocation(player.organism.energy)
 
 func create_energy_label():
 	var label = ColorRect.new();
@@ -153,8 +161,9 @@ func learn(center_tile, strength):
 			curr_vec2 = center_tile.map_ndx + hex_positions_odd[t]
 		if curr_vec2.x == 32 or curr_vec2.y == 32:
 			continue
-		tile_map[curr_vec2.x][curr_vec2.y].show_color()
+#		tile_map[curr_vec2.x][curr_vec2.y].show_color()
 		learn(tile_map[curr_vec2.x][curr_vec2.y], strength - 1)
+		tile_map[curr_vec2.x][curr_vec2.y].show_color()
 
 var grace_period = 1
 #energy after turn is given here
