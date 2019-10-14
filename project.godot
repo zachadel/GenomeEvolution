@@ -21,8 +21,8 @@ config/icon="res://icon.png"
 
 [autoload]
 
-Game="*res://Scripts/Game.gd"
-Chance="*res://Scripts/Chance.gd"
+Game="*res://Scripts/Globals/Game.gd"
+Chance="*res://Scripts/Globals/Chance.gd"
 
 [display]
 

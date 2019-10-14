@@ -1,0 +1,148 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Scripts/CardTable/SequenceElement.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Images/border.png" type="Texture" id=2]
+[ext_resource path="res://Scenes/CardTable/BehaviorIndicator.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/R.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/L.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/M.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/S.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/C.png" type="Texture" id=8]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/D.png" type="Texture" id=9]
+
+
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.219608, 0.219608, 0.219608, 1 )
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="SeqElm" type="TextureButton"]
+margin_right = 200.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 200, 200 )
+size_flags_vertical = 4
+expand = true
+script = ExtResource( 1 )
+
+[node name="BorderRect" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 200, 200 )
+mouse_filter = 2
+texture = ExtResource( 2 )
+expand = true
+
+[node name="GrayFilter" type="ColorRect" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 200, 200 )
+mouse_filter = 2
+color = Color( 0, 0, 0, 0.33 )
+
+[node name="lbl" type="Label" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -25.0
+margin_bottom = -1.0
+text = "ERROR_name"
+align = 1
+valign = 1
+
+[node name="DBGLBL" type="Label" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -49.0
+margin_bottom = -28.0
+text = "ERROR_code"
+align = 1
+valign = 1
+
+[node name="IndicReplication" parent="." instance=ExtResource( 3 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = -35.0
+margin_right = 60.0
+margin_bottom = 25.0
+image_texture = ExtResource( 4 )
+
+[node name="IndicLocomotion" parent="." instance=ExtResource( 3 )]
+visible = false
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.0
+margin_left = -30.0
+margin_top = -35.0
+margin_right = 30.0
+margin_bottom = 25.0
+image_texture = ExtResource( 5 )
+
+[node name="IndicManipulation" parent="." instance=ExtResource( 3 )]
+visible = false
+anchor_left = 1.0
+anchor_bottom = 0.0
+margin_left = -60.0
+margin_top = -35.0
+margin_right = 0.0
+margin_bottom = 25.0
+image_texture = ExtResource( 6 )
+
+[node name="IndicSensing" parent="." instance=ExtResource( 3 )]
+visible = false
+anchor_top = 1.0
+anchor_right = 0.0
+margin_top = -23.0
+margin_right = 60.0
+margin_bottom = 37.0
+image_texture = ExtResource( 7 )
+
+[node name="IndicConstruction" parent="." instance=ExtResource( 3 )]
+visible = false
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+margin_left = -30.0
+margin_top = -23.0
+margin_right = 30.0
+margin_bottom = 37.0
+image_texture = ExtResource( 8 )
+
+[node name="IndicDeconstruction" parent="." instance=ExtResource( 3 )]
+visible = false
+anchor_left = 1.0
+anchor_top = 1.0
+margin_left = -60.0
+margin_top = -23.0
+margin_right = 0.0
+margin_bottom = 37.0
+image_texture = ExtResource( 9 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="version" type="PanelContainer" parent="."]
+visible = false
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -45.0
+margin_top = 5.0
+margin_right = -15.0
+margin_bottom = 35.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="version_lbl" type="Label" parent="version"]
+margin_top = 8.0
+margin_right = 30.0
+margin_bottom = 22.0
+text = "B"
+align = 1
+valign = 1
+[connection signal="mouse_entered" from="." to="." method="_on_SeqElm_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_SeqElm_mouse_exited"]
+[connection signal="pressed" from="." to="." method="_on_SeqElm_pressed"]
+[connection signal="toggled" from="." to="." method="_on_SeqElm_toggled"]

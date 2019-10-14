@@ -1,0 +1,52 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scripts/Player/Organism.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/CardTable/ChromPair.tscn" type="PackedScene" id=2]
+
+
+
+[sub_resource type="Animation" id=1]
+resource_name = "correction"
+length = 0.1
+tracks/0/type = "method"
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.1 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "fix_bars"
+} ]
+}
+
+[node name="Organism" type="Control"]
+anchor_right = 1.0
+margin_bottom = 600.0
+rect_min_size = Vector2( 200, 600 )
+mouse_filter = 1
+script = ExtResource( 1 )
+
+[node name="slider_correct" type="AnimationPlayer" parent="."]
+autoplay = "correction"
+anims/correction = SubResource( 1 )
+
+[node name="chromes" parent="." instance=ExtResource( 2 )]
+
+[node name="lbl_dead" type="Label" parent="."]
+visible = false
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_top = -7.0
+margin_bottom = 7.0
+text = "Died on Round 5"
+align = 1
+valign = 1
+autowrap = true
+[connection signal="elm_clicked" from="chromes" to="." method="_on_chromes_elm_clicked"]
+[connection signal="elm_mouse_entered" from="chromes" to="." method="_on_chromes_elm_mouse_entered"]
+[connection signal="elm_mouse_exited" from="chromes" to="." method="_on_chromes_elm_mouse_exited"]
