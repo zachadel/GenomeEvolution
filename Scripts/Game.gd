@@ -59,6 +59,19 @@ func cfg_sec_to_dict(cfg, sec):
 		build[k] = cfg.get_value(sec, k);
 	return build;
 
+func add_int_dicts(dict0, dict1):
+	var all_keys = dict0.keys() + dict1.keys();
+	var added_dict = {};
+	for k in all_keys:
+		if !(k in added_dict):
+			if (k in dict0 && k in dict1):
+				added_dict[k] = dict0[k] + dict1[k];
+			elif (k in dict0):
+				added_dict[k] = dict0[k];
+			else:
+				added_dict[k] = dict1[k];
+	return added_dict;
+
 func class_to_string(type):
 	match (type):
 		ESSENTIAL_CLASSES.Replication:

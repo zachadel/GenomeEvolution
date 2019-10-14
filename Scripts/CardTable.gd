@@ -19,6 +19,9 @@ func _ready():
 	
 	$lbl_turn.text = Game.get_turn_txt();
 	connect("next_turn", orgn, "adv_turn");
+	
+	$ChromosomeStatus.add_cmsm(orgn.get_cmsm(0));
+	$ChromosomeStatus.add_cmsm(orgn.get_cmsm(1));
 
 func get_cmsm_status():
 	return $ChromosomeStatus;

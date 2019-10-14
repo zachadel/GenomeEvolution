@@ -30,6 +30,20 @@ func perform_anims(perform):
 
 # GETTER FUNCTIONS
 
+func get_genes():
+	return get_children();
+
+func get_behavior_profile():
+	var behavior_profile = {};
+	for g in get_genes():
+		var g_behave = g.get_ess_behavior();
+		for k in g_behave:
+			if (behavior_profile.has(k)):
+				behavior_profile[k] += g_behave[k];
+			else:
+				behavior_profile[k] = g_behave[k];
+	return behavior_profile;
+
 func get_pairs(left_elm, right_elm, minimal = false):
 	var pairs = {}; # key is left_idx, value is an array of right_idxs
 	

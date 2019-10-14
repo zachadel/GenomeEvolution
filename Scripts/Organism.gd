@@ -100,6 +100,9 @@ func get_card_table():
 func get_cmsm_pair():
 	return $chromes;
 
+func get_cmsm(idx):
+	return get_cmsm_pair().get_cmsm(idx);
+
 func get_max_gene_dist():
 	return max_equality_dist;
 
@@ -610,15 +613,17 @@ func set_cmsm_from_pool(cmsm, pool_info = ""):
 	perform_anims(true);
 
 func get_behavior_profile():
-	var behavior_profile = {};
-	for g in get_cmsm_pair().get_all_genes():
-		var g_behave = g.get_ess_behavior();
-		for k in g_behave:
-			if (behavior_profile.has(k)):
-				behavior_profile[k] += g_behave[k];
-			else:
-				behavior_profile[k] = g_behave[k];
-	return behavior_profile;
+	return Game.add_int_dicts(get_cmsm_pair().get_cmsm(0).get_behavior_profile(),\
+							  get_cmsm_pair().get_cmsm(1).get_behavior_profile());
+#	var behavior_profile = {};
+#	for g in get_cmsm_pair().get_all_genes():
+#		var g_behave = g.get_ess_behavior();
+#		for k in g_behave:
+#			if (behavior_profile.has(k)):
+#				behavior_profile[k] += g_behave[k];
+#			else:
+#				behavior_profile[k] = g_behave[k];
+#	return behavior_profile;
 
 func roll_chance(type):
 	return Chance.roll_chance_type(type, get_behavior_profile());
