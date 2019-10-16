@@ -8,9 +8,37 @@ var do_yields = false;
 signal elm_clicked(elm);
 signal elm_mouse_entered(elm);
 signal elm_mouse_exited(elm);
+signal cmsm_picked(cmsm);
 signal on_cmsm_changed();
 
-func _propogate_click(elm):
+const SIGNAL_PROPAGATION = {
+	"cmsm_picked": "_propagate_cmsm_pick",
+	"elm_clicked": "_propagate_click",
+	"elm_mouse_entered": "_propagate_mouse_entered",
+	"elm_mouse_exited": "_propagate_mouse_exited"
+	};
+
+func _ready():
+	add_cmsm();
+	add_cmsm();
+
+func add_cmsm(cmsm_save = ""):
+	var nxt_cmsm = load("res://Scenes/DispChromosome.tscn").instance();
+	for k in SIGNAL_PROPAGATION:
+		nxt_cmsm.connect(k, self, SIGNAL_PROPAGATION[k]);
+	
+	if (cmsm_save != ""):
+		nxt_cmsm.get_cmsm().load_from_save(cmsm_save);
+	
+	if (get_child_count() >= 2):
+		nxt_cmsm.hide_cmsm(true);
+	
+	add_child(nxt_cmsm);
+
+func _propagate_cmsm_pick(cmsm):
+	emit_signal("cmsm_picked", cmsm);
+
+func _propagate_click(elm):
 	emit_signal("elm_clicked", elm);
 
 func _propagate_mouse_entered(elm):
@@ -36,7 +64,7 @@ func perform_anims(perform):
 # GETTER FUNCTIONS
 
 func get_cmsm(idx):
-	return get_node("cmsm" + str(idx) + "/cmsm");
+	return get_child(idx).get_cmsm();
 
 func get_cmsms():
 	var to_return = [];

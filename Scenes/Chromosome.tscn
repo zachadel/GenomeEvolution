@@ -5,6 +5,6 @@
 [node name="Chromosome" type="HBoxContainer"]
 anchor_right = 1.0
 margin_bottom = 200.0
-rect_min_size = Vector2( 0, 250 )
+rect_min_size = Vector2( 0, 225 )
 custom_constants/separation = 0
 script = ExtResource( 1 )

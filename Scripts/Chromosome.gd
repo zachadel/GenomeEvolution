@@ -156,10 +156,15 @@ func get_elms_around_pos(idx, clickable = false):
 		elms.append(get_child(idx+1));
 	return elms;
 
+func get_disp_control():
+	if (get_parent() == null):
+		return null;
+	return get_parent().get_parent().get_parent();
+
 func get_cmsm_pair():
-	if (get_parent() != null):
-		return get_parent().get_parent();
-	return null;
+	if (get_parent() == null):
+		return null;
+	return get_disp_control().get_cmsm_list();
 
 func get_organism():
 	var pair = get_cmsm_pair();
@@ -258,7 +263,7 @@ func add_elm(elm, pos = null):
 			if (!elm.is_gap()):
 				# animate insertion
 				var center = elm.get_cmsm().get_cmsm_pair().get_center();
-				var offset = center - elm.get_cmsm().get_parent().get_begin() - \
+				var offset = center - elm.get_cmsm().get_cmsm_pair().get_begin() - \
 				(elm.get_size() / 2.0);
 				var end_pos = Vector2(pos * elm.get_size().x + 3, 0);
 				var distance = offset.distance_to(end_pos);
@@ -299,7 +304,7 @@ func remove_elm(elm):
 			# animate element moving to center
 			var current_pos = elm.get_cmsm().get_begin() + elm.get_begin();
 			var center = get_cmsm_pair().get_center();
-			var end_pos = center - elm.get_cmsm().get_parent().get_begin() - \
+			var end_pos = center - elm.get_cmsm().get_cmsm_pair().get_begin() - \
 			(elm.get_size() / 2.0);
 			var distance = current_pos.distance_to(end_pos);
 			var duration = 0.5;
@@ -362,7 +367,7 @@ func remove_elm_create_gap(elm):
 		if (!elm.is_gap()):
 			var current_pos = elm.get_cmsm().get_begin() + elm.get_begin();
 			var center = get_cmsm_pair().get_center();
-			var end_pos = center - elm.get_cmsm().get_parent().get_begin() - \
+			var end_pos = center - elm.get_cmsm().get_cmsm_pair().get_begin() - \
 			(elm.get_size() / 2.0);
 			var distance = current_pos.distance_to(end_pos);
 			var duration = 0.5;
