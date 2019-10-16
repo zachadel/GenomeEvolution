@@ -53,3 +53,20 @@ func _on_TitleScreen_begin_new_game():
 	$Player.setup(0, 0)
 	$WorldMapTest.setup()
 	pass # Replace with function body.
+
+
+###########################WORLD MAP SIGNAL HANDLING###########################
+
+func _on_MainMenu_change_to_world_map():
+	$MainMenu.queue_free()
+	pass # Replace with function body.
+
+
+func _on_WorldMapTest_change_to_main_menu():
+	$WorldMap.hide()
+	
+	pass # Replace with function body.
+
+
+func _on_WorldMap_end_map_turn():
+	pass # Replace with function body.

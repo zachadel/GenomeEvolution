@@ -7,9 +7,11 @@ var default_te_texture = load("res://Assets/Images/tes/default_te.png");
 enum ESSENTIAL_CLASSES {Replication, Locomotion, Manipulation, Sensing, Construction, Deconstruction};
 enum TURN_TYPES {Map, NewTEs, TEJump, RepairBreaks, EnvironmentalDamage, Recombination, Evolve, CheckViability, Replication};
 
+var biomes = {}
+
 enum BIOMES {fire, ocean, snow, shallow, sand, grass, dirt, mountain, hidden}
 enum RESOURCES {vitamin, lipid, carb, protein}
-const BIOME_RANGES = [[-1, BIOMES.ocean], [-.5, BIOMES.shallow], [-.4, BIOMES.sand], [-.2, BIOMES.dirt],
+var BIOME_RANGES = [[-1, BIOMES.ocean], [-.5, BIOMES.shallow], [-.4, BIOMES.sand], [-.2, BIOMES.dirt],
 					[0, BIOMES.grass], [.3, BIOMES.dirt], [.5, BIOMES.mountain], [.7, BIOMES.snow], 
 					[.85, BIOMES.fire]]
 					
@@ -19,6 +21,62 @@ var turns = [TURN_TYPES.Map, TURN_TYPES.NewTEs, TURN_TYPES.TEJump, TURN_TYPES.Re
 	TURN_TYPES.RepairBreaks, TURN_TYPES.Evolve, TURN_TYPES.Recombination, TURN_TYPES.Replication, TURN_TYPES.CheckViability];
 var turn_idx
 var round_num
+
+#################################SETTINGS VALUES###############################
+const default_settings = {
+	#Settings for the WorldMap scene
+	"WorldMap": {
+		#Settings pertaining to the BiomeMap
+		"BiomeMap": {
+			#Parameters governing the noise generator
+			"Generator": {
+				"seed":  0,
+				"octaves": 3,
+				"period": 20,
+				"persistence": .1,
+				"lacunarity": .7
+			},
+			#
+			"number_of_biomes": 8,
+			"Biome_Ranges": {
+				"fire": [-1, -.7]
+			}
+		},
+		
+		"ResourceMap": {
+			"Generator": {
+				"seed":  0,
+				"octaves": 8,
+				"period": 5,
+				"persistence": .1,
+				"lacunarity": .7
+			},
+			"number_of_resources": 4,
+			"Resource_Biomes":{
+				RESOURCES.vitamin: BIOMES.mountain,
+				RESOURCES.lipid: BIOMES.shallow,
+				RESOURCES.carb: BIOMES.grass,
+				RESOURCES.protein: BIOMES.ocean
+			}
+		}
+	},
+	"Chance": {
+		"base_rolls": {
+			# Lose one, no complications, copy intervening, duplicate a gene at the site
+			"copy_repair": [1.6, 1.6, 5, 2],
+	
+			# Lose one, no complications, duplicate a gene at the site
+			"join_ends": [5, 3, 2],
+	
+			# none, death, major up, major down, minor up, minor down
+			"evolve": [10, 0, 5, 4, 15, 14]
+		}
+		
+	}
+}
+
+var settings = default_settings
+###############################################################################
 
 #var card_table
 
@@ -58,6 +116,9 @@ func _ready():
 	
 	# Import ATE Personalities
 	load_personalities("ate_personalities", ate_personalities);
+	
+	# Load up biome information
+	load_cfg("biomes", biomes)
 
 func cfg_sec_to_dict(cfg, sec):
 	var build = {};
@@ -187,3 +248,13 @@ func pretty_element_name_list(elms_array):
 		if (put_comma):
 			list += ", ";
 	return list;
+
+func load_cfg(data_name, dict):
+	var file = ConfigFile.new()
+	var err = file.load("res://Data/" + data_name + ".cfg")
+	
+	if err == OK:
+		for s in file.get_sections():
+			dict[s] = Game.cfg_sec_to_dict(file, s)
+	else:
+		print(err)

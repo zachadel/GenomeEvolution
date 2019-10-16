@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Scripts/WorldMap/WorldMapTest.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/WorldMap/WorldMap.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/WorldMap/BiomeMap.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/WorldMap/ResourceMap.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Assets/Images/Tiles/highlight_tile.png" type="Texture" id=4]
+[ext_resource path="res://Scenes/WorldMap/CursorHighlight.gd" type="Script" id=4]
 
 [node name="WorldMapTest" type="Control"]
 anchor_right = 1.0
@@ -18,4 +18,4 @@ script = ExtResource( 1 )
 
 [node name="CursorHighlight" type="Sprite" parent="."]
 visible = false
-texture = ExtResource( 4 )
+script = ExtResource( 4 )
