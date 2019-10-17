@@ -9,6 +9,7 @@ var MIN_ZOOM = .5
 var ZOOM_UPDATE = .1
 
 var biome_generator
+var tiebreak_generator
 var resource_generator
 var chunk_size = 64
 
@@ -16,13 +17,20 @@ var tile_sprite_size = Vector2(0,0)
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	biome_generator = OpenSimplexNoise.new()
+	tiebreak_generator = OpenSimplexNoise.new()
 	resource_generator = OpenSimplexNoise.new()
 	
 	biome_generator.seed = randi()
 	biome_generator.octaves = 3
 	biome_generator.period = 20
-	biome_generator.persistence = .1
+	biome_generator.persistence = .5
 	biome_generator.lacunarity = .7
+	
+	tiebreak_generator.seed = randi()
+	tiebreak_generator.octaves = 3
+	tiebreak_generator.period = 40
+	tiebreak_generator.persistence = 1
+	tiebreak_generator.lacunarity = 1
 	
 	resource_generator.seed = randi()
 	resource_generator.octaves = 8
@@ -31,8 +39,8 @@ func _ready():
 	resource_generator.lacunarity = .7
 	
 	tile_sprite_size = $BiomeMap.tile_texture_size
-	$BiomeMap.setup(biome_generator, chunk_size)
-	$ResourceMap.setup(biome_generator, resource_generator, chunk_size)
+	$BiomeMap.setup(biome_generator, tiebreak_generator, chunk_size)
+	$ResourceMap.setup(biome_generator, resource_generator, tiebreak_generator, chunk_size)
 	$Camera2D.make_current()
 	$Camera2D.position = Vector2(800, 400)
 	pass
@@ -44,7 +52,7 @@ func setup(biome_seed, resource_seed, chunk_size, player):
 	biome_generator.seed = randi()
 	biome_generator.octaves = 3
 	biome_generator.period = 20
-	biome_generator.persistence = .1
+	biome_generator.persistence = 1
 	biome_generator.lacunarity = .7
 	
 	resource_generator.seed = randi()
@@ -80,6 +88,7 @@ func _input(event):
 			emit_signal("tile_clicked", tile_index)
 			print('Biome: ', $BiomeMap.get_biome(tile_position.x, tile_position.y))
 			print('Resource: ', $ResourceMap.get_resource(tile_position.x, tile_position.y))
+			print('Biome Random Value: ', biome_generator.get_noise_2d(tile_position.x, tile_position.y) * $BiomeMap.GEN_SCALING)
 	
 		if event.is_action("zoom_in"):
 			$Camera2D.zoom.x = clamp($Camera2D.zoom.x - ZOOM_UPDATE, MIN_ZOOM, MAX_ZOOM)

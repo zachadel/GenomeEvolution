@@ -8,12 +8,10 @@ enum ESSENTIAL_CLASSES {Replication, Locomotion, Manipulation, Sensing, Construc
 enum TURN_TYPES {Map, NewTEs, TEJump, RepairBreaks, EnvironmentalDamage, Recombination, Evolve, CheckViability, Replication};
 
 var biomes = {}
+var resources = {}
 
-enum BIOMES {fire, ocean, snow, shallow, sand, grass, dirt, mountain, hidden}
-enum RESOURCES {vitamin, lipid, carb, protein}
-var BIOME_RANGES = [[-1, BIOMES.ocean], [-.5, BIOMES.shallow], [-.4, BIOMES.sand], [-.2, BIOMES.dirt],
-					[0, BIOMES.grass], [.3, BIOMES.dirt], [.5, BIOMES.mountain], [.7, BIOMES.snow], 
-					[.85, BIOMES.fire]]
+#allows for integers in the biome.cfg file, since there is currently a bug in Godot which prevents reading in floats from nested arrays
+const GEN_SCALING = 100 
 					
 const TOLERANCE = .0001
 
@@ -23,59 +21,67 @@ var turn_idx
 var round_num
 
 #################################SETTINGS VALUES###############################
-const default_settings = {
-	#Settings for the WorldMap scene
-	"WorldMap": {
-		#Settings pertaining to the BiomeMap
-		"BiomeMap": {
-			#Parameters governing the noise generator
-			"Generator": {
-				"seed":  0,
-				"octaves": 3,
-				"period": 20,
-				"persistence": .1,
-				"lacunarity": .7
-			},
-			#
-			"number_of_biomes": 8,
-			"Biome_Ranges": {
-				"fire": [-1, -.7]
-			}
-		},
-		
-		"ResourceMap": {
-			"Generator": {
-				"seed":  0,
-				"octaves": 8,
-				"period": 5,
-				"persistence": .1,
-				"lacunarity": .7
-			},
-			"number_of_resources": 4,
-			"Resource_Biomes":{
-				RESOURCES.vitamin: BIOMES.mountain,
-				RESOURCES.lipid: BIOMES.shallow,
-				RESOURCES.carb: BIOMES.grass,
-				RESOURCES.protein: BIOMES.ocean
-			}
-		}
-	},
-	"Chance": {
-		"base_rolls": {
-			# Lose one, no complications, copy intervening, duplicate a gene at the site
-			"copy_repair": [1.6, 1.6, 5, 2],
-	
-			# Lose one, no complications, duplicate a gene at the site
-			"join_ends": [5, 3, 2],
-	
-			# none, death, major up, major down, minor up, minor down
-			"evolve": [10, 0, 5, 4, 15, 14]
-		}
-		
-	}
-}
-
-var settings = default_settings
+#const default_settings = {
+#	#Settings for the WorldMap scene
+#	"WorldMap": {
+#		#Settings pertaining to the BiomeMap
+#		"BiomeMap": {
+#			#Parameters governing the noise generator
+#			"Generator": {
+#				"seed":  0,
+#				"octaves": 3,
+#				"period": 20,
+#				"persistence": .1,
+#				"lacunarity": .7
+#			},
+#			#
+#			"number_of_biomes": 8,
+#			"Biome_Ranges": {
+#				"fire": [-1, -.7]
+#			}
+#		},
+#
+#		"ResourceMap": {
+#			"Generator": {
+#				"seed":  0,
+#				"octaves": 8,
+#				"period": 5,
+#				"persistence": .1,
+#				"lacunarity": .7
+#			},
+#			"number_of_resources": 4,
+#			"Resource_Biomes":{
+#				RESOURCES.vitamin: BIOMES.mountain,
+#				RESOURCES.lipid: BIOMES.shallow,
+#				RESOURCES.carb: BIOMES.grass,
+#				RESOURCES.protein: BIOMES.ocean
+#			}
+#		},
+#
+#		"TiebreakGenerator": {
+#			"seed": 0,
+#			"octaves": 3,
+#			"period": 40,
+#			"persistence": 1,
+#			"lacunarity": 1
+#		}
+#	},
+#	"Chance": {
+#		"base_rolls": {
+#			# Lose one, no complications, copy intervening, duplicate a gene at the site
+#			"copy_repair": [1.6, 1.6, 5, 2],
+#
+#			# Lose one, no complications, duplicate a gene at the site
+#			"join_ends": [5, 3, 2],
+#
+#			# none, death, major up, major down, minor up, minor down
+#			"evolve": [10, 0, 5, 4, 15, 14]
+#		}
+#
+#	}
+#}
+#
+#var settings = default_settings
 ###############################################################################
 
 #var card_table
@@ -119,6 +125,9 @@ func _ready():
 	
 	# Load up biome information
 	load_cfg("biomes", biomes)
+	
+	# Load up resource information
+	load_cfg("resources", resources)
 
 func cfg_sec_to_dict(cfg, sec):
 	var build = {};
@@ -258,3 +267,6 @@ func load_cfg(data_name, dict):
 			dict[s] = Game.cfg_sec_to_dict(file, s)
 	else:
 		print(err)
+		
+func find_resource_biome_index(resource_index, biome_index):
+	return Game.resources[Game.resources.keys()[resource_index]]["biomes"].find(Game.biomes.keys()[biome_index])

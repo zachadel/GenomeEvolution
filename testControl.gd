@@ -27,7 +27,28 @@ func _ready():
 #	var sprite = Sprite.new()
 #	sprite.set_texture(tile_tex)
 #	add_child(sprite)
-	print(pow(2.4, 2.5))
+#	var gen = OpenSimplexNoise.new()
+#	randomize()
+#	gen.seed = randi()
+#	gen.octaves = 8
+#	gen.period = 5
+#	gen.persistence = .1
+#	gen.lacunarity = .7
+#	for x in range(0, 5):
+#		for y in range(0, 5):
+#			for i in range(10):
+#				print(("(%f, %f)_%d: %f") % [float(x)/2, float(y)/2, i, gen.get_noise_3d(float(x)/2, float(y)/2, i)])
+#			print(("(%f, %f): %f") % [float(x)/2, float(y)/2, gen.get_noise_2d(float(x)/ 2, float(y)/2)])
+#			print('---------------')
+#
+#	for i in range(10):
+#		for x in range(0, 5):
+#			for y in range(0, 5):
+#				print(("(%f, %f)_%d: %f") % [float(x)/2, float(y)/2, i, gen.get_noise_3d(float(x)/2, float(y)/2, i)])
+#				print(("(%f, %f): %f") % [float(x)/2, float(y)/2, gen.get_noise_2d(float(x)/ 2, float(y)/2)])
+#		print('---------------')
+
+	print(Game.resources)
 	
 	pass # Replace with function body.
 
