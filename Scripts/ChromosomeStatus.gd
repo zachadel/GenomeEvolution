@@ -15,5 +15,8 @@ func update():
 	for c in chromes:
 		behavior = Game.add_int_dicts(behavior, c.get_behavior_profile());
 	
-	for k in behavior:
-		container.get_node(k).set_value(behavior[k]);
+	for n in container.get_children():
+		if (n.name in behavior):
+			n.set_value(behavior[n.name]);
+		else:
+			n.set_value(0);

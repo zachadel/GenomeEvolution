@@ -1,7 +1,10 @@
 extends VBoxContainer
 
+const MAX_NUM_VISIBLE_CMSM = 2;
+
 var ate_list = [];
 var gap_list = [];
+var visible_cmsm = [];
 var recombining = false;  # Used to prevent recombination from triggering evolution conditions
 var do_yields = false;
 
@@ -13,6 +16,7 @@ signal on_cmsm_changed();
 
 const SIGNAL_PROPAGATION = {
 	"cmsm_picked": "_propagate_cmsm_pick",
+	"cmsm_hide": "_on_hide_cmsm",
 	"elm_clicked": "_propagate_click",
 	"elm_mouse_entered": "_propagate_mouse_entered",
 	"elm_mouse_exited": "_propagate_mouse_exited"
@@ -26,14 +30,32 @@ func add_cmsm(cmsm_save = ""):
 	var nxt_cmsm = load("res://Scenes/DispChromosome.tscn").instance();
 	for k in SIGNAL_PROPAGATION:
 		nxt_cmsm.connect(k, self, SIGNAL_PROPAGATION[k]);
+	add_child(nxt_cmsm);
 	
 	if (cmsm_save != ""):
 		nxt_cmsm.get_cmsm().load_from_save(cmsm_save);
 	
-	if (get_child_count() >= 2):
-		nxt_cmsm.hide_cmsm(true);
+	if (get_child_count() <= MAX_NUM_VISIBLE_CMSM):
+		nxt_cmsm.hide_cmsm(false);
 	
-	add_child(nxt_cmsm);
+	return nxt_cmsm;
+
+func collapse_all():
+	for c in get_children():
+		c.hide_cmsm(true);
+
+func show_choice_buttons(show):
+	for c in get_children():
+		c.show_choice_buttons(show);
+
+func _on_hide_cmsm(cmsm, hidden):
+	if (hidden):
+		if (cmsm in visible_cmsm):
+			visible_cmsm.erase(cmsm);
+	else:
+		visible_cmsm.append(cmsm);
+		if (visible_cmsm.size() > MAX_NUM_VISIBLE_CMSM):
+			visible_cmsm[0].hide_cmsm(true);
 
 func _propagate_cmsm_pick(cmsm):
 	emit_signal("cmsm_picked", cmsm);
@@ -73,7 +95,9 @@ func get_cmsms():
 	return to_return;
 
 func get_organism():
-	return get_parent();
+	if (get_parent() == null):
+		return null;
+	return get_parent().get_parent();
 
 func get_other_cmsm(cmsm):
 	if (cmsm == get_cmsm(0)):

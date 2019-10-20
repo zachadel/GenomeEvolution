@@ -38,9 +38,9 @@ func upd_replicate_desc(idx):
 	$pnl_reproduce/hsplit/vsplit/btn_apply_replic.disabled = idx == 1 && !orgn.can_meiosis();
 	match (idx):
 		0:
-			$pnl_reproduce/hsplit/vsplit/scroll/lbl_choice_desc.text = "Create an exact duplicate of yourself.";
+			$pnl_reproduce/hsplit/vsplit/scroll/lbl_choice_desc.text = "Replicate both chromosomes and choose one pair.";
 		1:
-			$pnl_reproduce/hsplit/vsplit/scroll/lbl_choice_desc.text = "Discard one chromosome and get one randomly from your gene pool.";
+			$pnl_reproduce/hsplit/vsplit/scroll/lbl_choice_desc.text = "Replicate and separate both chromosomes; choose two to keep, including a random one from the gene pool.";
 		var _err_idx:
 			$pnl_reproduce/hsplit/vsplit/scroll/lbl_choice_desc.text = "This is an error! You picked an option (#%d) we are not familiar with!" % _err_idx;
 

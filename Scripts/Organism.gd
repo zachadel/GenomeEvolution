@@ -1,7 +1,10 @@
 extends Control
 
+onready var cmsms = $scroll/chromes
+
 func fix_bars():
-	$chromes.fix_bars();
+	cmsms.fix_bars();
+	Game.change_slider_width($scroll, false);
 
 var selected_gap# = null;
 
@@ -54,13 +57,13 @@ func _ready():
 			nxt_gelm.set_ess_behavior({n: 1.0});
 			if (code == ""):
 				code = nxt_gelm.gene_code;
-			$chromes.get_cmsm(y).add_elm(nxt_gelm);
+			cmsms.get_cmsm(y).add_elm(nxt_gelm);
 	gain_ates(1 + randi() % 6);
 	perform_anims(true);
 	born_on_turn = Game.round_num;
 
 func get_save():
-	return [born_on_turn, energy, $chromes.get_chromes_save()];
+	return [born_on_turn, energy, cmsms.get_chromes_save()];
 
 func load_from_save(orgn_info):
 	perform_anims(false);
@@ -68,7 +71,7 @@ func load_from_save(orgn_info):
 	gene_selection = [];
 	born_on_turn = int(orgn_info[0]);
 	energy = int(orgn_info[1]);
-	$chromes.load_from_save(orgn_info[2]);
+	cmsms.load_from_save(orgn_info[2]);
 	
 	perform_anims(true);
 
@@ -88,17 +91,17 @@ func setup(card_table):
 	for type in Game.ESSENTIAL_CLASSES.values():
 		#print("type: " + str(type));
 		energy_allocations[type] = 0;
-	$chromes.setup(card_table);
+	cmsms.setup(card_table);
 
 func perform_anims(perform):
 	do_yields = perform;
-	$chromes.perform_anims(perform);
+	cmsms.perform_anims(perform);
 
 func get_card_table():
 	return get_parent();
 
 func get_cmsm_pair():
-	return $chromes;
+	return cmsms;
 
 func get_cmsm(idx):
 	return get_cmsm_pair().get_cmsm(idx);
@@ -113,25 +116,25 @@ func gain_ates(count = 1):
 		nxt_te.setup("gene");
 		var pos;
 		if (do_yields):
-			pos = yield($chromes.insert_ate(nxt_te), "completed");
+			pos = yield(cmsms.insert_ate(nxt_te), "completed");
 		else:
-			pos = $chromes.insert_ate(nxt_te);
+			pos = cmsms.insert_ate(nxt_te);
 		justnow += "Inserted %s into position %d (%s, %d).\n" % [nxt_te.id, pos, nxt_te.get_parent().get_parent().name, nxt_te.get_index()];
 	emit_signal("justnow_update", justnow);
 
 func gain_gaps(count = 1):
 	for i in range(count):
 		if (do_yields):
-			yield($chromes.create_gap(), "completed");
+			yield(cmsms.create_gap(), "completed");
 		else:
-			$chromes.create_gap();
+			cmsms.create_gap();
 	if (do_yields):
-		return yield($chromes.collapse_gaps(), "completed");
+		return yield(cmsms.collapse_gaps(), "completed");
 	else:
-		return $chromes.collapse_gaps();
+		return cmsms.collapse_gaps();
 
 func jump_ates():
-	var _actives = $chromes.ate_list + [];
+	var _actives = cmsms.ate_list + [];
 	var justnow = "";
 	for ate in _actives:
 		match (ate.get_ate_jump_roll()):
@@ -142,33 +145,33 @@ func jump_ates():
 				var old_par = ate.get_parent().get_parent().name;
 				var old_id = ate.id;
 				if (do_yields):
-					yield($chromes.remove_elm(ate), "completed");
+					yield(cmsms.remove_elm(ate), "completed");
 				else:
-					$chromes.remove_elm(ate);
+					cmsms.remove_elm(ate);
 				justnow += "%s removed from (%s, %d); left a gap.\n" % [old_id, old_par, old_idx];
 			2:
 				var old_idx = ate.get_index();
 				var old_par = ate.get_parent().get_parent().name;
 				
 				if (do_yields):
-					yield($chromes.jump_ate(ate), "completed");
+					yield(cmsms.jump_ate(ate), "completed");
 				else:
-					$chromes.jump_ate(ate);
+					cmsms.jump_ate(ate);
 				justnow += "%s jumped from (%s, %d) to (%s, %d); left a gap.\n" % \
 					[ate.id, old_par, old_idx, ate.get_parent().get_parent().name, ate.get_index()];
 			3:
 				var copy_ate;
 				if (do_yields):
-					copy_ate = yield($chromes.copy_ate(ate), "completed");
+					copy_ate = yield(cmsms.copy_ate(ate), "completed");
 				else:
-					copy_ate = $chromes.copy_ate(ate);
+					copy_ate = cmsms.copy_ate(ate);
 				justnow += "%s copied itself to (%s, %d); left no gap.\n" % \
 					[ate.id, copy_ate.get_parent().get_parent().name, copy_ate.get_index()];
 	emit_signal("justnow_update", justnow);
 	if (do_yields):
-		yield($chromes.collapse_gaps(), "completed");
+		yield(cmsms.collapse_gaps(), "completed");
 	else:
-		$chromes.collapse_gaps();
+		cmsms.collapse_gaps();
 
 func get_gene_selection():
 	if (gene_selection.size() > 0):
@@ -190,7 +193,7 @@ func _on_chromes_elm_clicked(elm):
 			else:
 				selected_gap = elm;
 				upd_repair_opts(elm);
-			for g in $chromes.gap_list:
+			for g in cmsms.gap_list:
 				g.disable(selected_gap != null && g != selected_gap);
 		"gene":
 			if (elm in gene_selection):
@@ -234,15 +237,15 @@ func upd_repair_opts(gap):
 	var g_idx = gap.get_index();
 	if (g_idx == 0 || g_idx == cmsm.get_child_count()-1):
 		if (do_yields):
-			yield($chromes.close_gap(gap), "completed");
+			yield(cmsms.close_gap(gap), "completed");
 		else:
-			$chromes.close_gap(gap);
+			cmsms.close_gap(gap);
 	else:
 		var left_elm = cmsm.get_child(g_idx-1);
 		var right_elm = cmsm.get_child(g_idx+1);
 		
 		repair_type_possible[0] = cmsm.dupe_block_exists(g_idx);
-		repair_type_possible[1] = $chromes.get_other_cmsm(cmsm).pair_exists(left_elm, right_elm);
+		repair_type_possible[1] = cmsms.get_other_cmsm(cmsm).pair_exists(left_elm, right_elm);
 		repair_type_possible[2] = true;
 		
 		sel_repair_idx = 0;
@@ -348,7 +351,7 @@ func make_repair_choices(gap, repair_idx):
 			var left_elm = gap_cmsm.get_child(g_idx-1);
 			var right_elm = gap_cmsm.get_child(g_idx+1);
 			
-			var template_cmsm = $chromes.get_other_cmsm(gap_cmsm);
+			var template_cmsm = cmsms.get_other_cmsm(gap_cmsm);
 			
 			var pairs_dict = template_cmsm.get_pairs(left_elm, right_elm);
 			
@@ -396,7 +399,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 		var cmsm = gap.get_parent();
 		var g_idx = gap.get_index();
 		
-		var other_cmsm = $chromes.get_other_cmsm(cmsm);
+		var other_cmsm = cmsms.get_other_cmsm(cmsm);
 		
 		var left_id = cmsm.get_child(g_idx-1).id;
 		var right_id = cmsm.get_child(g_idx+1).id;
@@ -443,13 +446,13 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 				
 				for g in remove_genes:
 					if (do_yields):
-						yield($chromes.remove_elm(g, false), "completed");
+						yield(cmsms.remove_elm(g, false), "completed");
 					else:
-						$chromes.remove_elm(g, false);
+						cmsms.remove_elm(g, false);
 				if (do_yields):
-					yield($chromes.close_gap(gap), "completed");
+					yield(cmsms.close_gap(gap), "completed");
 				else:
-					$chromes.close_gap(gap);
+					cmsms.close_gap(gap);
 				emit_signal("justnow_update", "Gap at %s, %d closed: collapsed %d genes and ended due to %s." % [cmsm.get_parent().name, g_idx, remove_count, ended_due_to]);
 			
 				for times in range(remove_count):
@@ -483,29 +486,29 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 							var g_id = gene.id;
 							emit_signal("justnow_update", "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome, but a %s gene was lost." % [cmsm.get_parent().name, g_idx, left_id, right_id, g_id]);
 							if (do_yields):
-								yield($chromes.remove_elm(gene, false), "completed");
-								yield($chromes.close_gap(gap), "completed");
+								yield(cmsms.remove_elm(gene, false), "completed");
+								yield(cmsms.close_gap(gap), "completed");
 							else:
-								$chromes.remove_elm(gene, false);
-								$chromes.close_gap(gap);
+								cmsms.remove_elm(gene, false);
+								cmsms.close_gap(gap);
 					1:
 						emit_signal("justnow_update", "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome without complications." % [cmsm.get_parent().name, g_idx, left_id, right_id]);
 						if (do_yields):
-							yield($chromes.close_gap(gap), "completed");
+							yield(cmsms.close_gap(gap), "completed");
 						else:
-							$chromes.close_gap(gap);
+							cmsms.close_gap(gap);
 					2:
 						emit_signal("justnow_update", "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome along with intervening genes." % [cmsm.get_parent().name, g_idx, left_id, right_id]);
 						if (do_yields):
 							for i in range(choice_info["left"].get_index()+1, choice_info["right"].get_index()):
 								var copy_elm = Game.copy_elm(other_cmsm.get_child(i));
 								yield(cmsm.add_elm(copy_elm, gap.get_index()), "completed");
-							yield($chromes.close_gap(gap), "completed");
+							yield(cmsms.close_gap(gap), "completed");
 						else:
 							for i in range(choice_info["left"].get_index()+1, choice_info["right"].get_index()):
 								var copy_elm = Game.copy_elm(other_cmsm.get_child(i));
 								cmsm.add_elm(copy_elm, gap.get_index());
-							$chromes.close_gap(gap);
+							cmsms.close_gap(gap);
 					3:
 						var copy_elm;
 						if (randi()%2):
@@ -515,11 +518,11 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 						
 						emit_signal("justnow_update", "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome, but a %s gene was copied." % [cmsm.get_parent().name, g_idx, left_id, right_id, copy_elm.id]);
 						if (do_yields):
-							yield($chromes.dupe_elm(copy_elm), "completed");
-							yield($chromes.close_gap(gap), "completed");
+							yield(cmsms.dupe_elm(copy_elm), "completed");
+							yield(cmsms.close_gap(gap), "completed");
 						else:
-							$chromes.dupe_elm(copy_elm);
-							$chromes.close_gap(gap);
+							cmsms.dupe_elm(copy_elm);
+							cmsms.close_gap(gap);
 							
 				get_tree().get_root().get_node("Control/WorldMap").player.consume_resources("repair_cp")
 				#print("repair copy pattern");
@@ -547,17 +550,17 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 							var gene = get_gene_selection();
 							var g_id = gene.id; # Saved here cuz it'll free the gene in a bit
 							if (do_yields):
-								yield($chromes.remove_elm(gene, false), "completed");
-								yield($chromes.close_gap(gap), "completed");
+								yield(cmsms.remove_elm(gene, false), "completed");
+								yield(cmsms.close_gap(gap), "completed");
 							else:
-								$chromes.remove_elm(gene, false);
-								$chromes.close_gap(gap);
+								cmsms.remove_elm(gene, false);
+								cmsms.close_gap(gap);
 							emit_signal("justnow_update", "Joined ends for the gap at %s, %d; lost a %s gene in the repair." % [cmsm.get_parent().name, g_idx, g_id]);
 					1:
 						if (do_yields):
-							yield($chromes.close_gap(gap), "completed");
+							yield(cmsms.close_gap(gap), "completed");
 						else:
-							$chromes.close_gap(gap);
+							cmsms.close_gap(gap);
 						emit_signal("justnow_update", "Joined ends for the gap at %s, %d without complications." % [cmsm.get_parent().name, g_idx]);
 					2:
 						var copy_elm;
@@ -566,11 +569,11 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 						else:
 							copy_elm = cmsm.get_child(g_idx+1);
 						if (do_yields):
-							yield($chromes.dupe_elm(copy_elm), "completed");
-							yield($chromes.close_gap(gap), "completed");
+							yield(cmsms.dupe_elm(copy_elm), "completed");
+							yield(cmsms.close_gap(gap), "completed");
 						else:
-							$chromes.dupe_elm(copy_elm);
-							$chromes.close_gap(gap)
+							cmsms.dupe_elm(copy_elm);
+							cmsms.close_gap(gap)
 						emit_signal("justnow_update", "Joined ends for the gap at %s, %d; duplicated a %s gene in the repair." % [cmsm.get_parent().name, g_idx, copy_elm.id]);
 				
 				get_tree().get_root().get_node("Control/WorldMap").player.consume_resources("repair_je")
@@ -582,13 +585,13 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 func highlight_gap_choices():
 	reset_repair_opts();
 	selected_gap = null;
-	$chromes.highlight_gaps();
+	cmsms.highlight_gaps();
 	var gap_text = "";
-	for g in $chromes.gap_list:
+	for g in cmsms.gap_list:
 		gap_text += "Chromosome %s needs a repair at %d.\n" % [g.get_parent().get_parent().name, g.get_index()];
-	emit_signal("updated_gaps", $chromes.gap_list.size() > 0, gap_text);
-	if (is_ai && $chromes.gap_list.size() > 0):
-		upd_repair_opts($chromes.gap_list[0]);
+	emit_signal("updated_gaps", cmsms.gap_list.size() > 0, gap_text);
+	if (is_ai && cmsms.gap_list.size() > 0):
+		upd_repair_opts(cmsms.gap_list[0]);
 		auto_repair();
 
 func get_gene_pool():
@@ -599,8 +602,8 @@ func can_meiosis():
 
 func add_to_gene_pool(chrome_pair = null):
 	if (chrome_pair == null):
-		chrome_pair = $chromes;
-	get_gene_pool().append($chromes.get_chromes_save());
+		chrome_pair = cmsms;
+	get_gene_pool().append(cmsms.get_chromes_save());
 
 func get_random_gene_from_pool():
 	return get_gene_pool()[randi() % get_gene_pool().size()][randi() % 2];
@@ -632,7 +635,7 @@ func evolve_candidates(candids):
 	if (candids.size() > 0):
 		var justnow = "";
 		for e in candids:
-			#if (($chromes.get_cmsm(0).find_all_genes(e.id).size() + $chromes.get_cmsm(1).find_all_genes(e.id).size()) > 2):
+			#if ((cmsms.get_cmsm(0).find_all_genes(e.id).size() + cmsms.get_cmsm(1).find_all_genes(e.id).size()) > 2):
 			match (roll_chance("evolve")):
 				0:
 					justnow += "%s did not evolve.\n" % e.id;
@@ -665,7 +668,7 @@ func recombination():
 		gene_selection = [];
 	else:
 		# For some reason, this func bugs out when picking from the first cmsm (see comment at get_other_cmsm below)
-		gene_selection = $chromes.highlight_common_genes(false, true);
+		gene_selection = cmsms.highlight_common_genes(false, true);
 		yield(self, "gene_clicked");
 		# Because this step is optional, by the time a gene is clicked, it might be a different turn
 		if (Game.get_turn_type() == Game.TURN_TYPES.Recombination):
@@ -675,7 +678,7 @@ func recombination():
 				g.disable(true);
 			
 			# When first_elm lies on the top cmsm, this line breaks and only highlights genes on the top cmsm
-			gene_selection = $chromes.highlight_this_gene($chromes.get_other_cmsm(first_elm.get_parent()), first_elm);
+			gene_selection = cmsms.highlight_this_gene(cmsms.get_other_cmsm(first_elm.get_parent()), first_elm);
 			yield(self, "gene_clicked");
 			var scnd_elm = get_gene_selection();
 			for g in gene_selection:
@@ -685,9 +688,9 @@ func recombination():
 				perform_anims(false);
 				var idxs;
 				if (do_yields):
-					idxs = yield($chromes.recombine(first_elm, scnd_elm), "completed");
+					idxs = yield(cmsms.recombine(first_elm, scnd_elm), "completed");
 				else:
-					idxs = $chromes.recombine(first_elm, scnd_elm);
+					idxs = cmsms.recombine(first_elm, scnd_elm);
 				recombo_chance *= RECOMBO_COMPOUND;
 				perform_anims(true);
 				emit_signal("justnow_update", "Recombination success: swapped %s genes at positions %d and %d.\nNext recombination has a %d%% chance of success." % ([first_elm.id] + idxs + [100*recombo_chance]));
@@ -712,9 +715,9 @@ func replicate(idx):
 			emit_signal("justnow_update", "Choose which chromosome to keep.");
 			var keep_cmsm = null;
 			if (is_ai):
-				keep_cmsm = $chromes.get_cmsm(randi() % 2);
+				keep_cmsm = cmsms.get_cmsm(randi() % 2);
 			else:
-				gene_selection = $chromes.highlight_all_genes();
+				gene_selection = cmsms.highlight_all_genes();
 				yield(self, "gene_clicked");
 				keep_cmsm = get_gene_selection().get_cmsm();
 				for g in gene_selection:
@@ -722,7 +725,7 @@ func replicate(idx):
 			
 			var new_cmsm = get_random_gene_from_pool();
 			add_to_gene_pool();
-			set_cmsm_from_pool($chromes.get_other_cmsm(keep_cmsm), new_cmsm);
+			set_cmsm_from_pool(cmsms.get_other_cmsm(keep_cmsm), new_cmsm);
 	emit_signal("doing_work", false);
 	emit_signal("justnow_update", "Reproduced by %s." % rep_type);
 
@@ -751,7 +754,7 @@ func adv_turn(round_num, turn_idx):
 					jump_ates();
 			Game.TURN_TYPES.RepairBreaks:
 				roll_storage = [{}, {}];
-				var num_gaps = $chromes.gap_list.size();
+				var num_gaps = cmsms.gap_list.size();
 				if (num_gaps == 0):
 					emit_signal("justnow_update", "No gaps present.");
 				elif (num_gaps == 1):
@@ -778,7 +781,7 @@ func adv_turn(round_num, turn_idx):
 			Game.TURN_TYPES.Evolve:
 				emit_signal("justnow_update", "");
 				var _candidates = []
-				for cmsm in $chromes.get_cmsms():
+				for cmsm in cmsms.get_cmsms():
 					for i in cmsm.get_child_count():
 						_candidates.append(cmsm.get_child(i))
 				#print(_candidates.size())
