@@ -13,3 +13,7 @@ script = ExtResource( 1 )
 
 [node name="Settings" parent="." instance=ExtResource( 3 )]
 visible = false
+[connection signal="begin_new_game" from="TitleScreen" to="." method="_on_TitleScreen_begin_new_game"]
+[connection signal="exit_game" from="TitleScreen" to="." method="_on_TitleScreen_exit_game"]
+[connection signal="go_to_settings" from="TitleScreen" to="." method="_on_TitleScreen_go_to_settings"]
+[connection signal="return_to_title" from="Settings" to="." method="_on_Settings_return_to_title"]

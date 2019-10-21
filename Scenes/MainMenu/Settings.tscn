@@ -1,20 +1,24 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Assets/Fonts/OpenSans-64.tres" type="DynamicFont" id=1]
-[ext_resource path="res://Assets/Fonts/OpenSans-Bold.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://Scenes/MainMenu/Settings.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Fonts/OpenSans-64.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Assets/Fonts/OpenSans-Bold.ttf" type="DynamicFontData" id=3]
 
 [sub_resource type="DynamicFont" id=1]
 size = 32
 use_filter = true
-font_data = ExtResource( 2 )
+font_data = ExtResource( 3 )
 
 [node name="Settings" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+script = ExtResource( 1 )
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_left = 1.0
 anchor_right = 1.0
-anchor_bottom = 1.0
+margin_left = -1600.0
+margin_bottom = 900.0
 custom_constants/margin_right = 30
 custom_constants/margin_top = 30
 custom_constants/margin_left = 30
@@ -29,7 +33,7 @@ margin_bottom = 870.0
 [node name="Settings Header" type="Label" parent="MarginContainer/VBoxContainer"]
 margin_right = 1540.0
 margin_bottom = 103.0
-custom_fonts/font = ExtResource( 1 )
+custom_fonts/font = ExtResource( 2 )
 text = "Settings"
 align = 1
 
@@ -284,3 +288,15 @@ size_flags_horizontal = 3
 size_flags_vertical = 6
 text = "These are some basic world presets."
 align = 1
+
+[node name="Button" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = 83.6344
+margin_top = -308.53
+margin_right = 545.634
+margin_bottom = -54.5297
+text = "Return to Title"
+[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]

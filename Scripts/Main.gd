@@ -9,10 +9,23 @@ enum GSTATE {
 var gstate = GSTATE.TITLE
 var state_label = ["Title", "Map", "Table"]
 
+var chunk_size = 64
+
+#Players will never be scene in the editor as a child node
+#They are passed around and implicitly defined as children
+#of Main
+const Player = preload("res://Scenes/Player/Player.tscn")
+
+#NOTE: $Player should NEVER be called. Ever.  For any reason.
+#Eventually, I will put documentation in here explaining the workflow that
+#allows for multiplayer
+
 func _ready(): 
-	$WorldMapTest.hide()
-	$Canvas_CardTable.hide()
-	pass
+	$MainMenu.show()
+	
+	$WorldMap.hide()
+	
+#	$Canvas_CardTable.hide()
 
 func _on_modeSwitch_pressed():
 	if gstate == GSTATE.TABLE:
@@ -24,49 +37,77 @@ func _on_modeSwitch_pressed():
 func switch_mode():
 	match(gstate):
 		GSTATE.TITLE:
-			$Canvas_CardTable/CardTable.hide()
+#			$Canvas_CardTable/CardTable.hide()
 			$WorldMap.hide()
 			$TitleScreen.show()
 		GSTATE.MAP:
-			$Canvas_CardTable/CardTable.hide()
+#			$Canvas_CardTable/CardTable.hide()
 			$WorldMap.show()
-			$WorldMap/WorldMap_UI/UIPanel.show()
-			$WorldMap/WorldMap_UI/ResourceStatsPanel.show()
-			$WorldMap/WorldMap_UI/EnergyBar.show()
+#			$WorldMap/WorldMap_UI/UIPanel.show()
+#			$WorldMap/WorldMap_UI/ResourceStatsPanel.show()
+#			$WorldMap/WorldMap_UI/EnergyBar.show()
 			gstate = GSTATE.MAP
 		GSTATE.TABLE:
 			$WorldMap.hide()
-			$WorldMap/WorldMap_UI/UIPanel.hide()
-			$WorldMap/WorldMap_UI/ResourceStatsPanel.hide()
-			$WorldMap/WorldMap_UI/EnergyBar.hide()
-			$Canvas_CardTable/CardTable.show()
+#			$WorldMap/WorldMap_UI/UIPanel.hide()
+#			$WorldMap/WorldMap_UI/ResourceStatsPanel.hide()
+#			$WorldMap/WorldMap_UI/EnergyBar.hide()
+#			$Canvas_CardTable/CardTable.show()
 			gstate = GSTATE.TABLE
 
 
-func _on_CardTable_next_turn(turn_text, round_num):
-	if(Game.get_turn_type() == Game.TURN_TYPES.Map):
-		gstate = GSTATE.MAP
-		switch_mode()
-
-func _on_TitleScreen_begin_new_game():
-	$TitleScreen.hide()
-	$Player.setup(0, 0)
-	$WorldMapTest.setup()
-	pass # Replace with function body.
+#func _on_CardTable_next_turn(turn_text, round_num):
+#	if(Game.get_turn_type() == Game.TURN_TYPES.Map):
+#		gstate = GSTATE.MAP
+#		switch_mode()
 
 
 ###########################WORLD MAP SIGNAL HANDLING###########################
 
 func _on_MainMenu_change_to_world_map():
-	$MainMenu.queue_free()
-	pass # Replace with function body.
+	$MainMenu.hide()
+	
+	#Add looping after first_player if there are multiple players, but only give the first
+	#player to the WorldMap for setup
+	#If there is character creation, then that should go here before creating the player
+	var first_player = create_player()
+	print(get_tree().get_nodes_in_group("players"))
+	
+	#This order enables the WorldMap to make its camera the current one
+	$WorldMap.show()
+	$WorldMap.setup(randi(), randi(), randi(), chunk_size, first_player)
 
 
-func _on_WorldMapTest_change_to_main_menu():
+func _on_WorldMap_change_to_main_menu():
 	$WorldMap.hide()
+	$MainMenu.show()
 	
 	pass # Replace with function body.
 
 
 func _on_WorldMap_end_map_turn():
 	pass # Replace with function body.
+
+############################MULTIPLAYER HANDLING###############################
+
+func create_player():
+	var player = Player.instance()
+	
+	add_to_group("players")
+	
+	player.name = "player_" + str(Game.all_time_players)
+	add_child(player)
+	player.setup()
+	
+	Game.all_time_players += 1
+	Game.current_players += 1
+	
+	return player
+
+func delete_player(id):
+	var player = get_node("player_" + str(id))
+	
+	player.remove_from_group("players")
+	player.queue_free()
+	
+	Game.current_players -= 1

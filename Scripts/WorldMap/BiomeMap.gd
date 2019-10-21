@@ -89,3 +89,8 @@ func get_biome(x, y):
 		print('ERROR: Unhandled biome type at (%d, %d)', x, y)
 
 	return biome
+
+func hide_all_tiles_except(indices):
+	var visible_cells = get_used_cells()
+	
+	

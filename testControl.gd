@@ -48,13 +48,19 @@ func _ready():
 #				print(("(%f, %f): %f") % [float(x)/2, float(y)/2, gen.get_noise_2d(float(x)/ 2, float(y)/2)])
 #		print('---------------')
 
-	print(Game.resources)
+	#print(Game.resources)
+	var A = {}
+	A[[0,0]] = 7
+	A[[1,-2]] = 'yes'
+	print(A)
 	
+	for x in range(-10, 10):
+		print(x)
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _process(delta):
+	pass
 
 
 func _on_Button_pressed():

@@ -1,35 +1,23 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scripts/Main.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/MainMenu/MainMenu.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Scenes/Player/Player.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Scenes/WorldMap/WorldMap.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Scenes/CardTable/CardTable.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scenes/WorldMap/WorldMap.tscn" type="PackedScene" id=3]
 
 [node name="Main" type="Control"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_right = -1600.0
-margin_bottom = -900.0
+margin_right = 1600.0
+margin_bottom = 900.0
 mouse_filter = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource( 1 )
 
 [node name="MainMenu" parent="." instance=ExtResource( 2 )]
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="Player" parent="." instance=ExtResource( 3 )]
+[node name="WorldMap" parent="." instance=ExtResource( 3 )]
 visible = false
-
-[node name="WorldMap" parent="." instance=ExtResource( 4 )]
-visible = false
-
-[node name="Canvas_CardTable" type="CanvasLayer" parent="."]
-layer = 2
-
-[node name="CardTable" parent="Canvas_CardTable" instance=ExtResource( 5 )]
-visible = false
-margin_left = 1.0
-margin_right = 1.0
 [connection signal="change_to_world_map" from="MainMenu" to="." method="_on_MainMenu_change_to_world_map"]
-[connection signal="change_to_main_menu" from="WorldMap" to="." method="_on_WorldMapTest_change_to_main_menu"]
+[connection signal="change_to_main_menu" from="WorldMap" to="." method="_on_WorldMap_change_to_main_menu"]
 [connection signal="end_map_turn" from="WorldMap" to="." method="_on_WorldMap_end_map_turn"]
-[connection signal="next_turn" from="Canvas_CardTable/CardTable" to="." method="_on_CardTable_next_turn"]

@@ -20,6 +20,9 @@ var turns = [TURN_TYPES.Map, TURN_TYPES.NewTEs, TURN_TYPES.TEJump, TURN_TYPES.Re
 var turn_idx
 var round_num
 
+#This value includes any AI that have spawned
+var all_time_players = 0
+var current_players = 0
 #################################SETTINGS VALUES###############################
 #const default_settings = {
 #	#Settings for the WorldMap scene
