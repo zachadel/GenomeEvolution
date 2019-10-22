@@ -8,7 +8,7 @@ enum ESSENTIAL_CLASSES {Replication, Locomotion, Manipulation, Sensing, Construc
 enum TURN_TYPES {Map, NewTEs, TEJump, RepairBreaks, EnvironmentalDamage, Recombination, Evolve, CheckViability, Replication};
 
 var turns = [TURN_TYPES.Map, TURN_TYPES.NewTEs, TURN_TYPES.TEJump, TURN_TYPES.RepairBreaks, TURN_TYPES.EnvironmentalDamage,
-	TURN_TYPES.RepairBreaks, TURN_TYPES.Evolve, TURN_TYPES.Recombination, TURN_TYPES.Replication, TURN_TYPES.CheckViability];
+	TURN_TYPES.RepairBreaks, TURN_TYPES.Recombination, TURN_TYPES.Replication, TURN_TYPES.CheckViability];
 var turn_idx
 var round_num
 

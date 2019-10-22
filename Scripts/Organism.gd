@@ -25,11 +25,14 @@ var max_equality_dist = 10 setget ,get_max_gene_dist;
 var reproduct_gene_pool = [] setget ,get_gene_pool;
 
 signal gene_clicked();
+signal cmsm_picked(cmsm);
 
 signal doing_work(working);
+signal finished_replication();
 
 signal updated_gaps(has_gaps, gap_text);
 signal justnow_update(text);
+
 signal show_repair_opts(show);
 signal show_reprod_opts(show);
 
@@ -199,6 +202,9 @@ func _on_chromes_elm_clicked(elm):
 			if (elm in gene_selection):
 				gene_selection.append(elm); # The selection is accessed via get_gene_selection()
 				emit_signal("gene_clicked");
+
+func _on_chromes_cmsm_picked(cmsm):
+	emit_signal("cmsm_picked", cmsm);
 
 func _on_chromes_elm_mouse_entered(elm):
 	pass;
@@ -600,20 +606,21 @@ func get_gene_pool():
 func can_meiosis():
 	return get_gene_pool().size() > 0;
 
-func add_to_gene_pool(chrome_pair = null):
-	if (chrome_pair == null):
-		chrome_pair = cmsms;
-	get_gene_pool().append(cmsms.get_chromes_save());
+func add_to_gene_pool(cmsm):
+	get_gene_pool().append(cmsm.get_elms_save());
 
 func get_random_gene_from_pool():
-	return get_gene_pool()[randi() % get_gene_pool().size()][randi() % 2];
+	return get_gene_pool()[randi() % get_gene_pool().size()];
 
-func set_cmsm_from_pool(cmsm, pool_info = ""):
+func set_cmsm_from_save(cmsm, save_info):
 	perform_anims(false);
-	if (typeof(pool_info) == TYPE_STRING && pool_info == ""):
-		pool_info = get_random_gene_from_pool();
-	cmsm.load_from_save(pool_info);
+	cmsm.load_from_save(save_info);
 	perform_anims(true);
+
+func set_cmsm_from_pool(cmsm, pool_info = null):
+	if (pool_info == null):
+		pool_info = get_random_gene_from_pool();
+	set_cmsm_from_save(cmsm, pool_info);
 
 func get_behavior_profile():
 	return Game.add_int_dicts(get_cmsm_pair().get_cmsm(0).get_behavior_profile(),\
@@ -631,6 +638,9 @@ func get_behavior_profile():
 func roll_chance(type):
 	return Chance.roll_chance_type(type, get_behavior_profile());
 
+func evolve_cmsm(cmsm):
+	evolve_candidates(cmsm.get_genes());
+
 func evolve_candidates(candids):
 	if (candids.size() > 0):
 		var justnow = "";
@@ -644,16 +654,16 @@ func evolve_candidates(candids):
 					justnow += "%s received a fatal mutation and has become a pseudogene.\n" % e.id;
 					e.evolve(1);
 				2:
-					justnow += "%s received a major upgrade of +1.0\n" % e.id;
+					justnow += "%s received a major upgrade!\n" % e.id;
 					e.evolve(2);
 				3:
-					justnow += "%s received a major downgrade of -1.0\n" % e.id;
+					justnow += "%s received a major downgrade!\n" % e.id;
 					e.evolve(3);
 				4:
-					justnow += "%s received a minor upgrade of +0.1\n" % e.id;
+					justnow += "%s received a minor upgrade.\n" % e.id;
 					e.evolve(4);
 				5:
-					justnow += "%s received a minor downgrade of -0.1\n" % e.id;
+					justnow += "%s received a minor downgrade.\n" % e.id;
 					e.evolve(5);
 		emit_signal("justnow_update", justnow);
 	else:
@@ -704,30 +714,55 @@ func recombination():
 				cont_recombo = false
 				emit_signal("doing_work", false);
 
+func prune_cmsms(final_num, add_to_pool = true):
+	while (cmsms.get_cmsms().size() > final_num):
+		if (add_to_pool):
+			add_to_gene_pool(cmsms.get_cmsm(final_num));
+		cmsms.remove_cmsm(final_num);
+
 func replicate(idx):
 	var rep_type = "some unknown freaky deaky shiznaz";
+	
+	perform_anims(false);
+	cmsms.replicate_cmsms([0, 1]);
+	cmsms.hide_all(true);
+	cmsms.show_all_choice_buttons(true);
+	perform_anims(true);
+	
 	match idx:
 		0: # Mitosis
 			rep_type = "mitosis";
-			add_to_gene_pool();
+			
+			cmsms.lock_cmsm(1, true);
+			cmsms.lock_cmsm(3, true);
+			
+			emit_signal("justnow_update", "Choose which chromosome pair (top two or bottom two) to keep.");
+			var keep_idx = yield(self, "cmsm_picked");
+			
+			cmsms.move_cmsm(keep_idx, 0);
+			cmsms.move_cmsm(keep_idx+1, 1);
+			
+			prune_cmsms(2);
+			
+			
 		1: # Meiosis
 			rep_type = "meiosis";
-			emit_signal("justnow_update", "Choose which chromosome to keep.");
-			var keep_cmsm = null;
-			if (is_ai):
-				keep_cmsm = cmsms.get_cmsm(randi() % 2);
-			else:
-				gene_selection = cmsms.highlight_all_genes();
-				yield(self, "gene_clicked");
-				keep_cmsm = get_gene_selection().get_cmsm();
-				for g in gene_selection:
-					g.disable(true);
 			
-			var new_cmsm = get_random_gene_from_pool();
-			add_to_gene_pool();
-			set_cmsm_from_pool(cmsms.get_other_cmsm(keep_cmsm), new_cmsm);
+			emit_signal("justnow_update", "Choose one chromosome to keep; the others go into the gene pool. Then, receive one randomly from the gene pool.");
+			var keep_idx = yield(self, "cmsm_picked");
+			cmsms.move_cmsm(keep_idx, 0);
+			
+			prune_cmsms(1);
+			
+			cmsms.add_cmsm(get_random_gene_from_pool(), true);
+	
+	cmsms.show_all_choice_buttons(false);
+	cmsms.hide_all(false);
+	
+	emit_signal("finished_replication");
 	emit_signal("doing_work", false);
 	emit_signal("justnow_update", "Reproduced by %s." % rep_type);
+	perform_anims(true);
 
 func get_missing_ess_classes():
 	var b_prof = get_behavior_profile();
@@ -780,12 +815,8 @@ func adv_turn(round_num, turn_idx):
 					recombination();
 			Game.TURN_TYPES.Evolve:
 				emit_signal("justnow_update", "");
-				var _candidates = []
 				for cmsm in cmsms.get_cmsms():
-					for i in cmsm.get_child_count():
-						_candidates.append(cmsm.get_child(i))
-				#print(_candidates.size())
-				evolve_candidates(_candidates);
+					evolve_cmsm(cmsm);
 			Game.TURN_TYPES.CheckViability:
 				var missing = get_missing_ess_classes();
 				if (missing.size() == 0):
@@ -845,5 +876,3 @@ func use_resources(action):
 	cost_mult = max(0.05, cost_mult);
 	for i in range(4):
 		resources[i] = max(0, resources[i] - (costs[action][i] * cost_mult * Game.resource_mult))
-
-

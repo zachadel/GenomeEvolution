@@ -53,7 +53,7 @@ func acquire_resources():
 
 		amount = min(init_amount,  int(rand_range(breaking_strength[i].x, breaking_strength[i].y)))
 		
-		var multiplier = 1 + (organism.get_node("chromes").get_cmsm(0).find_gene_count_of_type(Game.ESSENTIAL_CLASSES.Deconstruction) + organism.get_node("chromes").get_cmsm(1).find_gene_count_of_type(Game.ESSENTIAL_CLASSES.Deconstruction))
+		var multiplier = 1 + (organism.cmsms.get_cmsm(0).find_gene_count_of_type(Game.ESSENTIAL_CLASSES.Deconstruction) + organism.cmsms.get_cmsm(1).find_gene_count_of_type(Game.ESSENTIAL_CLASSES.Deconstruction))
 		
 		organism.resources[i] = min(100, organism.resources[i] + (amount * multiplier))
 		ndices_array.append([i, res_rarity, amount])

@@ -19,10 +19,10 @@ func set_value(v):
 	if (v >= VALUE_STEP):
 		v = stepify(v, VALUE_STEP);
 		visible = true;
-		$Lbl.text = "%.1f" % v;
 	else:
 		v = 0.0;
 		visible = always_show;
+	$Lbl.text = "%.1f" % v;
 
 func rescale(scale):
 	var scale_size = DEFAULT_SIZE * scale;

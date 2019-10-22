@@ -8,6 +8,7 @@ onready var justnow_label = $sc_justnow/lbl_justnow;
 onready var criteria_label = $sc_criteria/lbl_criteria;
 onready var orgn = $Organism;
 onready var nxt_btn = $button_grid/btn_nxt;
+onready var status_bar = $ChromosomeStatus;
 
 var has_gaps = false;
 var wait_on_anim = false;
@@ -20,17 +21,23 @@ func _ready():
 	$lbl_turn.text = Game.get_turn_txt();
 	connect("next_turn", orgn, "adv_turn");
 	
-	$ChromosomeStatus.add_cmsm(orgn.get_cmsm(0));
-	$ChromosomeStatus.add_cmsm(orgn.get_cmsm(1));
+	reset_status_bar();
+
+func reset_status_bar():
+	status_bar.clear_cmsms();
+	status_bar.add_cmsm(orgn.get_cmsm(0));
+	status_bar.add_cmsm(orgn.get_cmsm(1));
+	status_bar.update();
 
 func get_cmsm_status():
-	return $ChromosomeStatus;
+	return status_bar;
 
 # Replication
 
 func show_replicate_opts(show):
 	$pnl_reproduce.visible = show;
 	if (show):
+		status_bar.visible = false;
 		$pnl_reproduce/hsplit/ilist_choices.select(0);
 		upd_replicate_desc(0);
 
@@ -154,3 +161,7 @@ func _on_btn_dead_menu_pressed():
 func _on_btn_dead_restart_pressed():
 	Game.restart_game();
 	get_tree().reload_current_scene();
+
+func _on_Organism_finished_replication():
+	reset_status_bar();
+	status_bar.visible = true;

@@ -53,6 +53,7 @@ text = "Died on Round 5"
 align = 1
 valign = 1
 autowrap = true
+[connection signal="cmsm_picked" from="scroll/chromes" to="." method="_on_chromes_cmsm_picked"]
 [connection signal="elm_clicked" from="scroll/chromes" to="." method="_on_chromes_elm_clicked"]
 [connection signal="elm_mouse_entered" from="scroll/chromes" to="." method="_on_chromes_elm_mouse_entered"]
 [connection signal="elm_mouse_exited" from="scroll/chromes" to="." method="_on_chromes_elm_mouse_exited"]

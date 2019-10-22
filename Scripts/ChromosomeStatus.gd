@@ -10,6 +10,9 @@ func _ready():
 func add_cmsm(cmsm):
 	chromes.append(cmsm);
 
+func clear_cmsms():
+	chromes.clear();
+
 func update():
 	var behavior = {};
 	for c in chromes:
