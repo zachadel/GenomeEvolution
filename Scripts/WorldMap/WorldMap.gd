@@ -12,61 +12,60 @@ var CAMERA_MOVEMENT = 10
 #this will be the case if the player sprite and the tiles are the same size
 var player_sprite_offset = Vector2(0,0)
 
-var modified_tiles
-
 var current_player
 
-var default_start = Vector2(800,400)
+var default_start = Vector2(0,0)
 
 var biome_generator
 var tiebreak_generator
 var resource_generator
 
-var chunk_size = 64
+var chunk_size = 16
+var starting_pos = Vector2(0,0)
+
+var map_offset = Vector2(0,0)
 
 var tile_sprite_size = Vector2(0,0)
 
 #If you want to test this scene apart from others, just uncomment this block
 func _ready():
-#	biome_generator = OpenSimplexNoise.new()
-#	tiebreak_generator = OpenSimplexNoise.new()
-#	resource_generator = OpenSimplexNoise.new()
-#
-#	biome_generator.seed = randi()
-#	biome_generator.octaves = 3
-#	biome_generator.period = 20
-#	biome_generator.persistence = .5
-#	biome_generator.lacunarity = .7
-#
-#	tiebreak_generator.seed = randi()
-#	tiebreak_generator.octaves = 3
-#	tiebreak_generator.period = 40
-#	tiebreak_generator.persistence = 1
-#	tiebreak_generator.lacunarity = 1
-#
-#	resource_generator.seed = randi()
-#	resource_generator.octaves = 8
-#	resource_generator.period = 5
-#	resource_generator.persistence = .1
-#	resource_generator.lacunarity = .7
-#
-#	tile_sprite_size = $BiomeMap.tile_texture_size
-#	$BiomeMap.setup(biome_generator, tiebreak_generator, chunk_size)
-#	$ResourceMap.setup(biome_generator, resource_generator, tiebreak_generator, chunk_size)
-#
-#	current_player = load("res://Scenes/Player/Player.tscn")
-#	current_player.position = $BiomeMap.map_to_world($BiomeMap.world_to_map(default_start)) + tile_sprite_size / 2 + player_sprite_offset
-#
-#	$MapCamera.position = current_player.position
-#
-#	if is_visible_in_tree():
-#		$MapCamera.make_current()
+	biome_generator = OpenSimplexNoise.new()
+	tiebreak_generator = OpenSimplexNoise.new()
+	resource_generator = OpenSimplexNoise.new()
+
+	biome_generator.seed = randi()
+	biome_generator.octaves = 3
+	biome_generator.period = 20
+	biome_generator.persistence = .5
+	biome_generator.lacunarity = .7
+
+	tiebreak_generator.seed = randi()
+	tiebreak_generator.octaves = 3
+	tiebreak_generator.period = 40
+	tiebreak_generator.persistence = 1
+	tiebreak_generator.lacunarity = 1
+
+	resource_generator.seed = randi()
+	resource_generator.octaves = 8
+	resource_generator.period = 5
+	resource_generator.persistence = .1
+	resource_generator.lacunarity = .7
+
+	tile_sprite_size = $BiomeMap.tile_texture_size
+	$BiomeMap.setup(biome_generator, tiebreak_generator, chunk_size, starting_pos)
+	$ResourceMap.setup(biome_generator, resource_generator, tiebreak_generator, chunk_size, starting_pos)
+
+	current_player = load("res://Scenes/Player/Player.tscn").instance()
+	current_player.position = $BiomeMap.map_to_world($BiomeMap.world_to_map(default_start)) + tile_sprite_size / 2 + player_sprite_offset
+
+	$MapCamera.position = current_player.position
+
+	if is_visible_in_tree():
+		$MapCamera.make_current()
 	
 	pass
 
 func setup(biome_seed, resource_seed, tiebreak_seed, _chunk_size, player):
-	modified_tiles = {}
-	
 	chunk_size = _chunk_size
 	
 	biome_generator = OpenSimplexNoise.new()
@@ -92,8 +91,8 @@ func setup(biome_seed, resource_seed, tiebreak_seed, _chunk_size, player):
 	resource_generator.lacunarity = .7
 	
 	tile_sprite_size = $BiomeMap.tile_texture_size
-	$BiomeMap.setup(biome_generator, tiebreak_generator, chunk_size)
-	$ResourceMap.setup(biome_generator, resource_generator, tiebreak_generator, chunk_size)
+	$BiomeMap.setup(biome_generator, tiebreak_generator, chunk_size, starting_pos)
+	$ResourceMap.setup(biome_generator, resource_generator, tiebreak_generator, chunk_size, starting_pos)
 
 	#we assume that the player sprite is smaller than the tiles
 	current_player = player
@@ -124,21 +123,55 @@ func _process(delta):
 	#This if statement prevents the world map from "stealing" inputs from other places
 	#NOTE: This is absolutely necessary.  I've tried it without this, and only input
 	#that would be handled in _input is stopped when .hide() is called.  To be consistent
-	#however, I have used if is_visible_in_tree().
+	#however, I have used if is_visible_in_tree() in _input as well.
 	if is_visible_in_tree():
 		var tile_position = $BiomeMap.world_to_map(get_global_mouse_position())
 		var tile_index = $BiomeMap.get_cellv(tile_position)
 
 		$CursorHighlight.position = $BiomeMap.map_to_world(tile_position) + tile_sprite_size / 2
 		
+		var camera_change = false
+		var shift = Vector2(0,0)
+		
 		if Input.is_action_pressed("ui_up"):
 			$MapCamera.offset.y -= CAMERA_MOVEMENT*$MapCamera.zoom.y
+			map_offset.y -= CAMERA_MOVEMENT*$MapCamera.zoom.y
+
 		if Input.is_action_pressed("ui_right"):
 			$MapCamera.offset.x += CAMERA_MOVEMENT*$MapCamera.zoom.x
+			map_offset.x += CAMERA_MOVEMENT*$MapCamera.zoom.x
+
 		if Input.is_action_pressed("ui_down"):
 			$MapCamera.offset.y += CAMERA_MOVEMENT*$MapCamera.zoom.y
+			map_offset.y += CAMERA_MOVEMENT*$MapCamera.zoom.y
+
 		if Input.is_action_pressed("ui_left"):
 			$MapCamera.offset.x -= CAMERA_MOVEMENT*$MapCamera.zoom.x
+			map_offset.x -= CAMERA_MOVEMENT*$MapCamera.zoom.x
+
+		#Need to modify 
+		#Notice that the size of the tiles change as you zoom in and out
+		#This must be factored into the threshold in some way
+		#Weird speed issues are due to the way that the camera moves
+		#Since the camera moves in blocks of 10, there's a natural
+		#gap of 4 pixes of shift that gets lost, maybe?
+		if abs(map_offset.x) > tile_sprite_size.x or abs(map_offset.y) > tile_sprite_size.y:
+			if map_offset.x < -Game.TOLERANCE:
+				shift.x = -2
+				map_offset.x += tile_sprite_size.x
+			elif map_offset.x > Game.TOLERANCE:
+				shift.x = 2
+				map_offset.x -= tile_sprite_size.x
+				
+			if map_offset.y < -Game.TOLERANCE:
+				shift.y = -2
+				map_offset.y += tile_sprite_size.y
+			elif map_offset.y > Game.TOLERANCE:
+				shift.y = 2
+				map_offset.y -= tile_sprite_size.y
+				
+			shift_maps(shift)
+
 	
 func _input(event):
 	#This if statement prevents the world map from "stealing" inputs from other places
@@ -148,15 +181,18 @@ func _input(event):
 		if event.is_action_pressed("mouse_left"):
 			var tile_position = $BiomeMap.world_to_map(get_global_mouse_position())
 			var tile_index = $BiomeMap.get_cellv(tile_position)
-			var updated_position = $BiomeMap.map_to_world(tile_position) + tile_sprite_size / 2
 			
+			var old_position = current_player.position
 			var new_position = $BiomeMap.map_to_world(tile_position) + tile_sprite_size/2 + player_sprite_offset
+			
 			current_player.rotate_sprite((new_position - current_player.position).angle())
 			current_player.position = new_position
 			
 			$MapCamera.position = new_position
 			$MapCamera.offset = Vector2(0,0)
-			#Prevents weird interpolation/snapping of camera
+			
+			shift_maps(new_position - old_position)
+			#Prevents weird interpolation/snapping of camera if smoothing is desired
 #			if $MapCamera.offset.length_squared() > 0:
 #				$MapCamera.position = $MapCamera.position
 #				$MapCamera.reset_smoothing()
@@ -164,8 +200,10 @@ func _input(event):
 			emit_signal("tile_clicked", tile_index)
 			print('Biome: ', $BiomeMap.get_biome(tile_position.x, tile_position.y))
 			print('Resource: ', $ResourceMap.get_resource(tile_position.x, tile_position.y))
-			print('Biome Random Value: ', biome_generator.get_noise_2d(tile_position.x, tile_position.y) * $BiomeMap.GEN_SCALING)
+			print('Biome Random Value: ', biome_generator.get_noise_2d(tile_position.x, tile_position.y) * Game.GEN_SCALING)
 			print('Tile location: ', tile_position)
+			print('Camera position: ', $MapCamera.position)
+			print('Camera offset: ', $MapCamera.offset)
 	
 		if event.is_action("zoom_in"):
 			$MapCamera.zoom.x = clamp($MapCamera.zoom.x - ZOOM_UPDATE, MIN_ZOOM, MAX_ZOOM)
@@ -177,6 +215,11 @@ func _input(event):
 		if event.is_action("center_camera"):
 			$MapCamera.offset = Vector2(0,0)
 
+#Expects shifts in terms of the tile maps coordinates
+func shift_maps(position):
+	$BiomeMap.shift_map(int(position.x), int(position.y))
+	$ResourceMap.shift_map(int(position.x), int(position.y))
+	
 #center_tile: Vector2
 #observation_radius: integer radius
 func observe_tiles(center_tile, observation_radius):

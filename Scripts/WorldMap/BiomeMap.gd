@@ -8,7 +8,7 @@ extends TileMap
 #to the current code.
 
 #Formula to calculate size reduction of tiles: offset = x - floor(.5*sqrt(x^2 - y^2))
-
+var center_indices = Vector2(0,0)
 
 var chunk_size = 32
 
@@ -16,7 +16,7 @@ var biome_generator
 var tiebreak_generator
 var tile_texture_size = Vector2(0, 0)
 
-const GEN_SCALING = 100 #allows for integers in the biome.cfg file, since there is currently a bug in Godot which prevents reading in floats from nested arrays
+var modified_tiles
 
 func _ready():
 	var i = 0
@@ -40,14 +40,45 @@ func _ready():
 	cell_size.x = tile_texture_size.x - floor(.5 * sqrt(pow(tile_texture_size.x, 2) - pow(tile_texture_size.y, 2)))
 	cell_half_offset = TileMap.HALF_OFFSET_Y 
 	
-func setup(_biome_generator, _tiebreak_generator, _chunk_size = 32):
+func setup(_biome_generator, _tiebreak_generator, _chunk_size = 32, starting_pos = Vector2(0,0)):
+	modified_tiles = {}
+	
 	biome_generator = _biome_generator
 	tiebreak_generator = _tiebreak_generator
 	chunk_size = _chunk_size
 	
-	for i in range(-chunk_size, chunk_size):
-		for j in range(-chunk_size, chunk_size):
+	center_indices = starting_pos
+	
+	for i in range(-chunk_size + center_indices.x, chunk_size + center_indices.x + 1):
+		for j in range(-chunk_size + center_indices.y, chunk_size + center_indices.y + 1):
 			set_cell(i, j, get_biome(i, j))
+
+#These shifts should be in terms of coordinates (so integers)
+#NOTE: Currentlly this assumes that any shift is smaller than the chunk_size
+func shift_map(shift_x, shift_y):
+
+	if abs(shift_x) > 0:
+		var unit_x = int(shift_x / abs(shift_x))
+		
+		#Shift the number of times necessary for the x coordinate
+		for i in range(abs(shift_x)):
+			center_indices.x += unit_x
+			
+			for j in range(-chunk_size, chunk_size + 1):
+				set_cell(center_indices.x + chunk_size * unit_x, j + center_indices.y, get_biome(center_indices.x + chunk_size*unit_x, j + center_indices.y))
+				set_cell(center_indices.x - (chunk_size + 1) * unit_x, j + center_indices.y, -1)
+	
+	if abs(shift_y) > 0:
+		var unit_y = int(shift_y / abs(shift_y))
+		
+		#Shift the number of times necessary for the x coordinate
+		for i in range(abs(shift_y)):
+			center_indices.y += unit_y
+			
+			for j in range(-chunk_size, chunk_size + 1):
+				set_cell(j + center_indices.x, center_indices.y + chunk_size * unit_y, get_biome(j + center_indices.x, center_indices.y + chunk_size * unit_y))
+				set_cell(j + center_indices.x, center_indices.y - (chunk_size + 1) * unit_y, -1)
+
 """
 
 	Notes: The input to this function MUST be in terms of the tile_map

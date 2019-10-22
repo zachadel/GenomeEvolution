@@ -2,11 +2,15 @@ extends TileMap
 
 var chunk_size = 32
 
+var center_indices = Vector2(0,0)
+
 var biome_generator
 var tiebreak_generator
 var resource_generator
 
 var tile_texture_size
+
+var modified_tiles
 
 func _ready():
 	var i = 0
@@ -31,17 +35,54 @@ func _ready():
 	cell_half_offset = TileMap.HALF_OFFSET_Y 
 	pass
 	
-func setup(_biome_generator, _resource_generator, _tiebreak_generator, _chunk_size = 32):
+func setup(_biome_generator, _resource_generator, _tiebreak_generator, _chunk_size = 32, starting_pos = Vector2(0,0)):
 	biome_generator = _biome_generator
 	resource_generator = _resource_generator
 	tiebreak_generator = _tiebreak_generator
 	
 	chunk_size = _chunk_size
 	
-	for i in range(-chunk_size, chunk_size):
-		for j in range(-chunk_size, chunk_size):
+	center_indices = starting_pos
+	
+	for i in range(-chunk_size + center_indices.x, chunk_size + center_indices.x + 1):
+		for j in range(-chunk_size + center_indices.y, chunk_size + center_indices.y + 1):
 			set_cell(i, j, get_resource(i, j))
 
+func draw_map_at(indices):
+#	var cells = get_used_cells()
+#
+#	for cell in cells:
+#		set_cellv(cell, -1)
+	#Note that graphics are from the top left, so to iterate over
+	#rows, then columns, you iterate through y, then through x
+	for i in range(-chunk_size + indices.x, chunk_size + indices.x + 1):
+		for j in range(-chunk_size + indices.y, chunk_size + indices.y + 1):
+			set_cell(i, j, get_resource(i, j))
+
+func shift_map(shift_x, shift_y):
+
+	if abs(shift_x) > 0:
+		var unit_x = int(shift_x / abs(shift_x))
+		
+		#Shift the number of times necessary for the x coordinate
+		for i in range(abs(shift_x)):
+			center_indices.x += unit_x
+			
+			for j in range(-chunk_size, chunk_size + 1):
+				set_cell(center_indices.x + chunk_size * unit_x, j + center_indices.y, get_resource(center_indices.x + chunk_size*unit_x, j + center_indices.y))
+				set_cell(center_indices.x - (chunk_size + 1) * unit_x, j + center_indices.y, -1)
+	
+	if abs(shift_y) > 0:
+		var unit_y = int(shift_y / abs(shift_y))
+		
+		#Shift the number of times necessary for the x coordinate
+		for i in range(abs(shift_y)):
+			center_indices.y += unit_y
+			
+			for j in range(-chunk_size, chunk_size + 1):
+				set_cell(j + center_indices.x, center_indices.y + chunk_size * unit_y, get_resource(j + center_indices.x, center_indices.y + chunk_size * unit_y))
+				set_cell(j + center_indices.x, center_indices.y - (chunk_size + 1) * unit_y, -1)
+	
 """
 	Notes: The input to this function MUST be in terms of the tile_map
 		integer indices i, j.
