@@ -84,8 +84,13 @@ func _on_WorldMap_end_map_turn():
 	pass # Replace with function body.
 	
 func _on_WorldMap_change_to_main_menu():
-	$WorldMap.hide()
-	$MainMenu.show()
+#	get_viewport().set_attach_to_screen_rect(Rect2(Vector2(100,100), Vector2(1600, 900)))
+#	$MainMenu.show()
+#	$MainMenu/TitleScreen.show()
+#	$WorldMap.hide()
+#
+#	for player in get_tree().get_nodes_in_group("players"):
+#		player.enable_sprite(false)
 	
 	pass # Replace with function body.
 
@@ -94,7 +99,7 @@ func _on_WorldMap_change_to_main_menu():
 func create_player():
 	var player = Player.instance()
 	
-	add_to_group("players")
+	player.add_to_group("players")
 	
 	player.name = "player_" + str(Game.all_time_players)
 	player.setup()

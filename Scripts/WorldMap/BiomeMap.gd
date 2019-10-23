@@ -16,8 +16,6 @@ var biome_generator
 var tiebreak_generator
 var tile_texture_size = Vector2(0, 0)
 
-var modified_tiles
-
 func _ready():
 	var i = 0
 
@@ -41,7 +39,6 @@ func _ready():
 	cell_half_offset = TileMap.HALF_OFFSET_Y 
 	
 func setup(_biome_generator, _tiebreak_generator, _chunk_size = 32, starting_pos = Vector2(0,0)):
-	modified_tiles = {}
 	
 	biome_generator = _biome_generator
 	tiebreak_generator = _tiebreak_generator
@@ -109,36 +106,43 @@ func hide_all_tiles_except(indices):
 			overlapping ranges.
 """	
 func get_biome(x, y):
-	var random_biome = biome_generator.get_noise_2d(x, y) * Game.GEN_SCALING
-	var random_tiebreak = tiebreak_generator.get_noise_2d(x, y) * Game.GEN_SCALING
+	var biome = -1
 	
-	var possible_biomes = [] 
-	var biome = -1 #undefined/hidden biome
-	var biome_names = Game.biomes.keys()
-	
-	var index = 0
-
-	#loop through and establish all possible biomes this random value could
-	#fall into
-	for biome_name in biome_names:
-		for biome_range in Game.biomes[biome_name]["ranges"]:
-			if random_biome >= biome_range[0] and random_biome < biome_range[1]:
-				possible_biomes.append(index)
-		index += 1
-	
-#	print(x, y, possible_biomes)
-	#if the random value is in multiple biome ranges, we assume there is a
-	#tiebreaker array associated with the biome we can use
-	if len(possible_biomes) > 1:
-		for value in possible_biomes:
-			if random_tiebreak >= Game.biomes[biome_names[value]]["tie_break_range"][0] and random_tiebreak < Game.biomes[biome_names[value]]["tie_break_range"][1]:
-				biome = value
-				break
-	elif len(possible_biomes) == 1:
-		biome = possible_biomes[0]
-
+	#Check that the index is not in the modified tiles
+	if not [int(x), int(y)] in Game.modified_tiles:
+		var random_biome = biome_generator.get_noise_2d(x, y) * Game.GEN_SCALING
+		var random_tiebreak = tiebreak_generator.get_noise_2d(x, y) * Game.GEN_SCALING
+		
+		var possible_biomes = [] 
+		var biome_names = Game.biomes.keys()
+		
+		var index = 0
+		
+		#loop through and establish all possible biomes this random value could
+		#fall into
+		for biome_name in biome_names:
+			for biome_range in Game.biomes[biome_name]["ranges"]:
+				if random_biome >= biome_range[0] and random_biome < biome_range[1]:
+					possible_biomes.append(index)
+			index += 1
+		
+		#	print(x, y, possible_biomes)
+		#if the random value is in multiple biome ranges, we assume there is a
+		#tiebreaker array associated with the biome we can use
+		if len(possible_biomes) > 1:
+			for value in possible_biomes:
+				if random_tiebreak >= Game.biomes[biome_names[value]]["tie_break_range"][0] and random_tiebreak < Game.biomes[biome_names[value]]["tie_break_range"][1]:
+					biome = value
+					break
+		elif len(possible_biomes) == 1:
+			biome = possible_biomes[0]
+		
+		else:
+			print('ERROR: Unhandled biome type at (%d, %d)', x, y)
+			
+	#if it is in the modified tiles, then use that biome instead
 	else:
-		print('ERROR: Unhandled biome type at (%d, %d)', x, y)
+		biome = Game.modified_tiles[[int(x), int(y)]]["biome"]
 
 	return biome
 	

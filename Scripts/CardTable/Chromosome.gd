@@ -30,6 +30,20 @@ func perform_anims(perform):
 
 # GETTER FUNCTIONS
 
+func get_genes():
+	return get_children();
+
+func get_behavior_profile():
+	var behavior_profile = {};
+	for g in get_genes():
+		var g_behave = g.get_ess_behavior();
+		for k in g_behave:
+			if (behavior_profile.has(k)):
+				behavior_profile[k] += g_behave[k];
+			else:
+				behavior_profile[k] = g_behave[k];
+	return behavior_profile;
+
 func get_pairs(left_elm, right_elm, minimal = false):
 	var pairs = {}; # key is left_idx, value is an array of right_idxs
 	
@@ -142,10 +156,15 @@ func get_elms_around_pos(idx, clickable = false):
 		elms.append(get_child(idx+1));
 	return elms;
 
+func get_disp_control():
+	if (get_parent() == null):
+		return null;
+	return get_parent().get_parent().get_parent();
+
 func get_cmsm_pair():
-	if (get_parent() != null):
-		return get_parent().get_parent();
-	return null;
+	if (get_parent() == null):
+		return null;
+	return get_disp_control().get_cmsm_list();
 
 func get_organism():
 	var pair = get_cmsm_pair();
@@ -175,7 +194,7 @@ func load_from_save(elms):
 	
 	# Parse & load
 	for args in elms:
-		var nxt_gelm = load("res://Scenes/CardTableSequenceElement.tscn").instance();
+		var nxt_gelm = load("res://Scenes/SequenceElement.tscn").instance();
 		nxt_gelm.callv("setup", args[0]);
 		nxt_gelm.set_ess_behavior(args[1]);
 		if (nxt_gelm.is_gap()):
@@ -187,7 +206,7 @@ func load_from_save(elms):
 # CHROMOSOME MODIFICATION FUNCTIONS
 
 func create_gap(pos):
-	var gap = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
+	var gap = load("res://Scenes/SequenceElement.tscn").instance();
 	gap.setup("break");
 	get_cmsm_pair().append_gaplist(gap);
 	if (do_animations):
@@ -244,7 +263,7 @@ func add_elm(elm, pos = null):
 			if (!elm.is_gap()):
 				# animate insertion
 				var center = elm.get_cmsm().get_cmsm_pair().get_center();
-				var offset = center - elm.get_cmsm().get_parent().get_begin() - \
+				var offset = center - elm.get_cmsm().get_cmsm_pair().get_begin() - \
 				(elm.get_size() / 2.0);
 				var end_pos = Vector2(pos * elm.get_size().x + 3, 0);
 				var distance = offset.distance_to(end_pos);
@@ -285,7 +304,7 @@ func remove_elm(elm):
 			# animate element moving to center
 			var current_pos = elm.get_cmsm().get_begin() + elm.get_begin();
 			var center = get_cmsm_pair().get_center();
-			var end_pos = center - elm.get_cmsm().get_parent().get_begin() - \
+			var end_pos = center - elm.get_cmsm().get_cmsm_pair().get_begin() - \
 			(elm.get_size() / 2.0);
 			var distance = current_pos.distance_to(end_pos);
 			var duration = 0.5;
@@ -348,7 +367,7 @@ func remove_elm_create_gap(elm):
 		if (!elm.is_gap()):
 			var current_pos = elm.get_cmsm().get_begin() + elm.get_begin();
 			var center = get_cmsm_pair().get_center();
-			var end_pos = center - elm.get_cmsm().get_parent().get_begin() - \
+			var end_pos = center - elm.get_cmsm().get_cmsm_pair().get_begin() - \
 			(elm.get_size() / 2.0);
 			var distance = current_pos.distance_to(end_pos);
 			var duration = 0.5;
@@ -372,7 +391,7 @@ func remove_elm_create_gap(elm):
 	
 	elm.get_parent().remove_child(elm);
 	
-	var gap = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
+	var gap = load("res://Scenes/SequenceElement.tscn").instance();
 	gap.setup("break");
 	add_child(gap);
 	move_child(gap, index);

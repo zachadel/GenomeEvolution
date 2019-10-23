@@ -4,6 +4,8 @@ signal tile_clicked
 signal change_to_main_menu
 signal end_map_turn
 
+signal player_resources_changed
+
 var MAX_ZOOM = 3
 var MIN_ZOOM = .5
 var ZOOM_UPDATE = .1
@@ -26,6 +28,8 @@ var starting_pos = Vector2(0,0)
 var map_offset = Vector2(0,0)
 
 var tile_sprite_size = Vector2(0,0)
+
+enum player_vision {HIDDEN, NOT_VISIBLE, VISIBLE}
 
 #If you want to test this scene apart from others, just uncomment this block
 #func _ready():
@@ -66,6 +70,7 @@ var tile_sprite_size = Vector2(0,0)
 #	pass
 
 func setup(biome_seed, resource_seed, tiebreak_seed, _chunk_size, player):
+	Game.modified_tiles = {}
 	chunk_size = _chunk_size
 	
 	biome_generator = OpenSimplexNoise.new()
@@ -93,12 +98,13 @@ func setup(biome_seed, resource_seed, tiebreak_seed, _chunk_size, player):
 	tile_sprite_size = $BiomeMap.tile_texture_size
 	$BiomeMap.setup(biome_generator, tiebreak_generator, chunk_size, starting_pos)
 	$ResourceMap.setup(biome_generator, resource_generator, tiebreak_generator, chunk_size, starting_pos)
-
+	
 	#we assume that the player sprite is smaller than the tiles
 	current_player = player
 	player_sprite_offset = (tile_sprite_size - current_player.get_texture_size()) / 2
-
 	current_player.position = $BiomeMap.map_to_world($BiomeMap.world_to_map(default_start)) + tile_sprite_size / 2 + player_sprite_offset
+	
+	$WorldMap_UI/ResourceStatsPanel.set_resources($ResourceMap.get_tile_resources($BiomeMap.world_to_map(default_start).x, $BiomeMap.world_to_map(default_start).y))
 	
 	$MapCamera.position = current_player.position
 	
@@ -121,21 +127,29 @@ func _process(delta):
 		var camera_change = false
 		var input_found = false
 		var shift = Vector2(0,0)
+	
+		if Input.is_action_pressed("highlight_tile"):
+			$WorldMap_UI/ResourceStatsPanel.change_tree_name("Tile Resources at " + str(tile_position))
+			$WorldMap_UI/ResourceStatsPanel.set_resources($ResourceMap.get_tile_resources(tile_position.x, tile_position.y))
 		
-		if Input.is_action_pressed("ui_up"):
+		if Input.is_action_just_released("highlight_tile"):
+			var player_tile = $BiomeMap.world_to_map(current_player.position)
+			$WorldMap_UI/ResourceStatsPanel.change_tree_name("Tile Resources at Player Location")
+			$WorldMap_UI/ResourceStatsPanel.set_resources($ResourceMap.get_tile_resources(player_tile.x, player_tile.y))
+		
+		if Input.is_action_pressed("pan_up"):
 			$MapCamera.offset.y -= CAMERA_MOVEMENT*$MapCamera.zoom.y
 			map_offset.y -= CAMERA_MOVEMENT*$MapCamera.zoom.y
-			
-
-		if Input.is_action_pressed("ui_right"):
+		
+		if Input.is_action_pressed("pan_right"):
 			$MapCamera.offset.x += CAMERA_MOVEMENT*$MapCamera.zoom.x
 			map_offset.x += CAMERA_MOVEMENT*$MapCamera.zoom.x
 
-		if Input.is_action_pressed("ui_down"):
+		if Input.is_action_pressed("pan_down"):
 			$MapCamera.offset.y += CAMERA_MOVEMENT*$MapCamera.zoom.y
 			map_offset.y += CAMERA_MOVEMENT*$MapCamera.zoom.y
 
-		if Input.is_action_pressed("ui_left"):
+		if Input.is_action_pressed("pan_left"):
 			$MapCamera.offset.x -= CAMERA_MOVEMENT*$MapCamera.zoom.x
 			map_offset.x -= CAMERA_MOVEMENT*$MapCamera.zoom.x
 
@@ -165,8 +179,9 @@ func _process(delta):
 		if camera_change:
 			shift_maps(shift)
 
-	
-func _input(event):
+#We use unhandled input here so the GUI is processed first and we don't
+#accidentally click on the map while interacting with the UI
+func _unhandled_input(event):
 	#This if statement prevents the world map from "stealing" inputs from other places
 	#NOTE: This may not be necessary.  Calling $WorldMap.hide() from main should be 
 	#sufficient.
@@ -184,16 +199,20 @@ func _input(event):
 			$MapCamera.position = new_position
 			$MapCamera.offset = Vector2(0,0)
 			
+			$WorldMap_UI/ResourceStatsPanel.set_resources($ResourceMap.get_tile_resources(tile_position.x, tile_position.y))
+			
 			var tile_shift = tile_position - $BiomeMap.center_indices
 			shift_maps(tile_shift)
+			
 			#Prevents weird interpolation/snapping of camera if smoothing is desired
 #			if $MapCamera.offset.length_squared() > 0:
 #				$MapCamera.position = $MapCamera.position
 #				$MapCamera.reset_smoothing()
 			
 			emit_signal("tile_clicked", tile_index)
+			
 			print('Biome: ', $BiomeMap.get_biome(tile_position.x, tile_position.y))
-			print('Resource: ', $ResourceMap.get_resource(tile_position.x, tile_position.y))
+			print('Resource: ', $ResourceMap.get_tile_resources(tile_position.x, tile_position.y))
 			print('Biome Random Value: ', biome_generator.get_noise_2d(tile_position.x, tile_position.y) * Game.GEN_SCALING)
 			print('Tile location: ', tile_position)
 			print('Camera position: ', $MapCamera.position)
@@ -205,13 +224,15 @@ func _input(event):
 		if event.is_action("zoom_out"):
 			$MapCamera.zoom.x = clamp($MapCamera.zoom.x + ZOOM_UPDATE, MIN_ZOOM, MAX_ZOOM)
 			$MapCamera.zoom.y = clamp($MapCamera.zoom.y + ZOOM_UPDATE, MIN_ZOOM, MAX_ZOOM)
-		
-		if event.is_action("center_camera"):
-			erase_current_maps()
-			draw_and_center_maps_to($BiomeMap.world_to_map($MapCamera.position))
-			
-			$MapCamera.offset = Vector2(0,0)
 
+func _input(event):
+	if event.is_action("center_camera"):
+		erase_current_maps()
+		draw_and_center_maps_to($BiomeMap.world_to_map($MapCamera.position))
+		
+		$MapCamera.offset = Vector2(0,0)
+		get_tree().set_input_as_handled()
+	
 func change_player(new_player):
 	#Hide the map while the map is updated
 	hide()
@@ -280,4 +301,11 @@ func cube_coords_to_offset(x, y, z):
 func _on_WorldMap_UI_end_map_pressed():
 	emit_signal("end_map_turn")
 	$WorldMap_UI.hide()
+	pass # Replace with function body.
+
+
+func _on_WorldMap_UI_quit_to_title():
+#	$WorldMap_UI.hide()
+#	$MapCamera.clear_current()
+#	emit_signal("change_to_main_menu")
 	pass # Replace with function body.

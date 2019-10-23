@@ -7,8 +7,12 @@ var default_te_texture = load("res://Assets/Images/tes/default_te.png");
 enum ESSENTIAL_CLASSES {Replication, Locomotion, Manipulation, Sensing, Construction, Deconstruction};
 enum TURN_TYPES {Map, NewTEs, TEJump, RepairBreaks, EnvironmentalDamage, Recombination, Evolve, CheckViability, Replication};
 
+#NOTE: It may be worthwhile to store dicts which go from biome_index -> string
+#and string -> biome_index, since both operations are needed frequently
 var biomes = {}
 var resources = {}
+var modified_tiles = {}
+
 
 #allows for integers in the biome.cfg file, since there is currently a bug in Godot which prevents reading in floats from nested arrays
 const GEN_SCALING = 100 

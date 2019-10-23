@@ -49,13 +49,18 @@ func _ready():
 #		print('---------------')
 
 	#print(Game.resources)
-	var A = {}
-	A[[0,0]] = 7
-	A[[1,-2]] = 'yes'
-	print(A)
+#	var A = {}
+#	A[[0,0]] = 7
+#	A[[1,-2]] = 'yes'
+#	print(A)
+#
+#	for x in range(-10, 10):
+#		print(x)
+
+	var A = {[1,2]: 'a', [-2,4]: 'b', [6, 7]: 'c'}
 	
-	for x in range(-10, 10):
-		print(x)
+	if [1,2] in A:
+		print(len(A))
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

@@ -1,16 +1,109 @@
 extends VBoxContainer
 
-var ate_list = [];
-var gap_list = [];
+const MAX_NUM_VISIBLE_CMSM = 2;
+
+var ate_list = [] setget ,get_ate_list;
+var gap_list = [] setget ,get_gap_list;
+var visible_cmsm = [];
 var recombining = false;  # Used to prevent recombination from triggering evolution conditions
 var do_yields = false;
 
 signal elm_clicked(elm);
 signal elm_mouse_entered(elm);
 signal elm_mouse_exited(elm);
+signal cmsm_picked(cmsm_idx);
 signal on_cmsm_changed();
 
-func _propogate_click(elm):
+const SIGNAL_PROPAGATION = {
+	"cmsm_picked": "_propagate_cmsm_pick",
+	"cmsm_hide": "_on_hide_cmsm",
+	"elm_clicked": "_propagate_click",
+	"elm_mouse_entered": "_propagate_mouse_entered",
+	"elm_mouse_exited": "_propagate_mouse_exited"
+	};
+
+func _ready():
+	add_cmsm();
+	add_cmsm();
+
+func add_cmsm(cmsm_save = null, force_show = false):
+	var nxt_cmsm = load("res://Scenes/DispChromosome.tscn").instance();
+	
+	for k in SIGNAL_PROPAGATION:
+		nxt_cmsm.connect(k, self, SIGNAL_PROPAGATION[k]);
+	
+	add_child(nxt_cmsm);
+	
+	if (force_show || get_child_count() <= MAX_NUM_VISIBLE_CMSM):
+		nxt_cmsm.hide_cmsm(false);
+	
+	if (cmsm_save != null):
+		nxt_cmsm.get_cmsm().load_from_save(cmsm_save);
+	
+	return nxt_cmsm;
+
+func remove_cmsm(cmsm_idx):
+	var c = get_child(cmsm_idx);
+	if (c in visible_cmsm):
+		visible_cmsm.erase(c);
+	c.free();
+
+func move_cmsm(from_idx, to_idx):
+	move_child(get_child(from_idx), to_idx);
+
+func replicate_cmsms(cmsm_idxs):
+	var cmsm_children = [];
+	for i in cmsm_idxs:
+		cmsm_children.append(replicate_cmsm(i, false));
+	for i in cmsm_idxs:
+		move_child(cmsm_children[i], i+1);
+
+func replicate_cmsm(cmsm_idx, move_to_parent = true):
+	var new_disp_cmsm = add_cmsm(get_cmsm(cmsm_idx).get_elms_save());
+	get_organism().evolve_cmsm(new_disp_cmsm.get_cmsm());
+	if (move_to_parent):
+		move_child(new_disp_cmsm, cmsm_idx + 1);
+	return new_disp_cmsm;
+
+func lock_cmsm(idx, l):
+	get_child(idx).lock(l);
+
+func hide_cmsm(idx, h):
+	get_child(idx).hide_cmsm(h);
+
+func hide_all(h):
+	for c in get_children():
+		c.hide_cmsm(h, false);
+
+func show_choice_buttons(cmsm_idx, show):
+	var disp_cmsm = get_child(cmsm_idx);
+	disp_cmsm.show_choice_buttons(show);
+	if (!show && get_child_count() <= MAX_NUM_VISIBLE_CMSM):
+		disp_cmsm.hide_cmsm(false);
+
+func show_all_choice_buttons(show):
+	for i in range(get_child_count()):
+		show_choice_buttons(i, show);
+
+func _on_hide_cmsm(cmsm, hidden):
+	if (hidden):
+		if (cmsm in visible_cmsm):
+			visible_cmsm.erase(cmsm);
+	else:
+		visible_cmsm.append(cmsm);
+		if (visible_cmsm.size() > MAX_NUM_VISIBLE_CMSM):
+			visible_cmsm[0].hide_cmsm(true);
+
+func find_cmsm_idx(cmsm):
+	for i in range(get_child_count()):
+		if (get_child(i) == cmsm):
+			return i;
+	return -1;
+
+func _propagate_cmsm_pick(cmsm):
+	emit_signal("cmsm_picked", find_cmsm_idx(cmsm));
+
+func _propagate_click(elm):
 	emit_signal("elm_clicked", elm);
 
 func _propagate_mouse_entered(elm):
@@ -36,7 +129,7 @@ func perform_anims(perform):
 # GETTER FUNCTIONS
 
 func get_cmsm(idx):
-	return get_node("cmsm" + str(idx) + "/cmsm");
+	return get_child(idx).get_cmsm();
 
 func get_cmsms():
 	var to_return = [];
@@ -45,13 +138,29 @@ func get_cmsms():
 	return to_return;
 
 func get_organism():
-	return get_parent();
+	if (get_parent() == null):
+		return null;
+	return get_parent().get_parent();
 
 func get_other_cmsm(cmsm):
 	if (cmsm == get_cmsm(0)):
 		return get_cmsm(1);
 	else:
 		return get_cmsm(0);
+
+func get_ate_list():
+	ate_list.clear();
+	for g in get_all_genes():
+		if (g.is_ate()):
+			ate_list.append(g);
+	return ate_list;
+
+func get_gap_list():
+	gap_list.clear();
+	for g in get_all_genes():
+		if (g.is_gap()):
+			gap_list.append(g);
+	return gap_list;
 
 func get_max_pos(ends = true):
 	var sum = get_cmsm(0).get_child_count() + get_cmsm(1).get_child_count();
@@ -68,8 +177,11 @@ func get_chromes_save():
 	return [get_cmsm(0).get_elms_save(), get_cmsm(1).get_elms_save()];
 
 func load_from_save(cmsms):
-	for i in range(cmsms.size()):
-		get_cmsm(i).load_from_save(cmsms[i]);
+	for i in range(get_child_count()):
+		if (i < cmsms.size()):
+			get_cmsm(i).load_from_save(cmsms[i]);
+		else:
+			remove_cmsm(i);
 
 func get_all_genes():
 	return get_cmsm(0).get_children() + get_cmsm(1).get_children();
@@ -270,7 +382,7 @@ func jump_ate(ate_elm):
 		insert_from_behavior(ate_elm, old_cmsm, old_idx, ate_elm.get_active_behavior(true));
 
 func copy_ate(original_ate):
-	var copy_ate = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
+	var copy_ate = load("res://Scenes/SequenceElement.tscn").instance();
 	copy_ate.setup_copy(original_ate);
 	if (do_yields):
 		yield(insert_from_behavior(copy_ate, original_ate.get_parent(), original_ate.get_index(),\
@@ -364,7 +476,7 @@ func _on_cmsm_changed():
 	get_organism()
 
 # GENE SINE FUNCTION ANIMATION:
-	
+
 const SIN_AMP = 10;
 const SIN_FREQ = PI/2; # rad/s
 var sin_period = 2*PI / SIN_FREQ;
@@ -372,11 +484,12 @@ var total_time = 0;
 const OFFSET_FACTOR = 0.5;
 
 func _process(delta):
-    total_time = total_time + delta;
-    
-    # I'm afraid of overflow
-    if (total_time >= sin_period):
-        total_time -= sin_period;
-    
-    for cmsm in get_cmsms(): for i in cmsm.get_child_count():
-    	cmsm.get_child(i).rect_position.y = SIN_AMP * sin(total_time * SIN_FREQ + OFFSET_FACTOR * i);
+	total_time = total_time + delta;
+	
+	# I'm afraid of overflow
+	if (total_time >= sin_period):
+	    total_time -= sin_period;
+	
+	for c in get_cmsms():
+		for i in c.get_child_count():
+			c.get_child(i).rect_position.y = SIN_AMP * sin(total_time * SIN_FREQ + OFFSET_FACTOR * i);

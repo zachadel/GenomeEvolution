@@ -6,27 +6,38 @@ signal next_turn(turn_text, round_num);
 
 onready var justnow_label = $sc_justnow/lbl_justnow;
 onready var criteria_label = $sc_criteria/lbl_criteria;
+onready var orgn = $Organism;
 onready var nxt_btn = $button_grid/btn_nxt;
+onready var status_bar = $ChromosomeStatus;
 
 var has_gaps = false;
 var wait_on_anim = false;
 var wait_on_select = false;
-var orgn;
 
 func _ready():
+	Game.card_table = self;
 	orgn.setup(self);
 	
 	$lbl_turn.text = Game.get_turn_txt();
 	connect("next_turn", orgn, "adv_turn");
+	
+	reset_status_bar();
+
+func reset_status_bar():
+	status_bar.clear_cmsms();
+	status_bar.add_cmsm(orgn.get_cmsm(0));
+	status_bar.add_cmsm(orgn.get_cmsm(1));
+	status_bar.update();
 
 func get_cmsm_status():
-	return $ChromosomeStatus;
+	return status_bar;
 
 # Replication
 
 func show_replicate_opts(show):
 	$pnl_reproduce.visible = show;
 	if (show):
+		status_bar.visible = false;
 		$pnl_reproduce/hsplit/ilist_choices.select(0);
 		upd_replicate_desc(0);
 
@@ -34,9 +45,9 @@ func upd_replicate_desc(idx):
 	$pnl_reproduce/hsplit/vsplit/btn_apply_replic.disabled = idx == 1 && !orgn.can_meiosis();
 	match (idx):
 		0:
-			$pnl_reproduce/hsplit/vsplit/scroll/lbl_choice_desc.text = "Create an exact duplicate of yourself.";
+			$pnl_reproduce/hsplit/vsplit/scroll/lbl_choice_desc.text = "Replicate both chromosomes and choose one pair.";
 		1:
-			$pnl_reproduce/hsplit/vsplit/scroll/lbl_choice_desc.text = "Discard one chromosome and get one randomly from your gene pool.";
+			$pnl_reproduce/hsplit/vsplit/scroll/lbl_choice_desc.text = "Replicate and separate both chromosomes; choose two to keep, including a random one from the gene pool.";
 		var _err_idx:
 			$pnl_reproduce/hsplit/vsplit/scroll/lbl_choice_desc.text = "This is an error! You picked an option (#%d) we are not familiar with!" % _err_idx;
 
@@ -131,10 +142,14 @@ func check_if_ready():
 func _on_btn_energy_allocation_pressed():
 	$pnl_energy_allocation.visible = true;
 
+func _on_WorldMap_player_done():
+	emit_signal("player_done");
+
 func _on_btn_saveload_pressed():
 	$pnl_saveload.visible = !$pnl_saveload.visible;
 
 func _on_pnl_saveload_loaded():
+	nxt_btn.disabled = false;
 	_on_Organism_justnow_update("Loaded from a save.");
 
 func _on_Organism_show_reprod_opts(show):
@@ -144,4 +159,9 @@ func _on_btn_dead_menu_pressed():
 	get_tree().change_scene("res://Assets/Images/Main Menu/Scenes/TitleScreen.tscn");
 
 func _on_btn_dead_restart_pressed():
+	Game.restart_game();
 	get_tree().reload_current_scene();
+
+func _on_Organism_finished_replication():
+	reset_status_bar();
+	status_bar.visible = true;
