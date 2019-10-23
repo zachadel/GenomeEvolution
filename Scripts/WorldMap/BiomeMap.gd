@@ -53,6 +53,8 @@ func setup(_biome_generator, _tiebreak_generator, _chunk_size = 32, starting_pos
 		for j in range(-chunk_size + center_indices.y, chunk_size + center_indices.y + 1):
 			set_cell(i, j, get_biome(i, j))
 
+###############################DRAWING FUNCTIONS###############################
+
 #These shifts should be in terms of coordinates (so integers)
 #NOTE: Currentlly this assumes that any shift is smaller than the chunk_size
 func shift_map(shift_x, shift_y):
@@ -79,8 +81,27 @@ func shift_map(shift_x, shift_y):
 				set_cell(j + center_indices.x, center_indices.y + chunk_size * unit_y, get_biome(j + center_indices.x, center_indices.y + chunk_size * unit_y))
 				set_cell(j + center_indices.x, center_indices.y - (chunk_size + 1) * unit_y, -1)
 
-"""
+func erase_current_map():
+	for i in range(-chunk_size + center_indices.x, chunk_size + 1 + center_indices.x):
+		for j in range(-chunk_size + center_indices.y, chunk_size + 1 + center_indices.y):
+			set_cell(i, j, -1)
+			
+#Draw a map at the tile coordinates (x, y) and center the tileMap there
+func draw_and_center_at(x, y):
+	center_indices.x = x
+	center_indices.y = y
+	
+	for i in range(-chunk_size + center_indices.x, chunk_size + 1 + center_indices.x):
+		for j in range(-chunk_size + center_indices.y, chunk_size + 1 + center_indices.y):
+			set_cell(i, j, get_biome(i, j))
 
+func hide_all_tiles_except(indices):
+	var visible_cells = get_used_cells()
+	
+
+###############################################################################
+	
+"""
 	Notes: The input to this function MUST be in terms of the tile_map
 		integer indices i, j.
 		-It is assumed that in the biomes.cfg file that the tiebreaker 
@@ -120,8 +141,5 @@ func get_biome(x, y):
 		print('ERROR: Unhandled biome type at (%d, %d)', x, y)
 
 	return biome
-
-func hide_all_tiles_except(indices):
-	var visible_cells = get_used_cells()
 	
 	

@@ -4,7 +4,7 @@ signal tile_clicked
 signal change_to_main_menu
 signal end_map_turn
 
-var MAX_ZOOM = 4
+var MAX_ZOOM = 3
 var MIN_ZOOM = .5
 var ZOOM_UPDATE = .1
 var CAMERA_MOVEMENT = 10
@@ -14,13 +14,13 @@ var player_sprite_offset = Vector2(0,0)
 
 var current_player
 
-var default_start = Vector2(0,0)
+var default_start = Vector2(-20,0)
 
 var biome_generator
 var tiebreak_generator
 var resource_generator
 
-var chunk_size = 16
+var chunk_size = 36
 var starting_pos = Vector2(0,0)
 
 var map_offset = Vector2(0,0)
@@ -28,42 +28,43 @@ var map_offset = Vector2(0,0)
 var tile_sprite_size = Vector2(0,0)
 
 #If you want to test this scene apart from others, just uncomment this block
-func _ready():
-	biome_generator = OpenSimplexNoise.new()
-	tiebreak_generator = OpenSimplexNoise.new()
-	resource_generator = OpenSimplexNoise.new()
-
-	biome_generator.seed = randi()
-	biome_generator.octaves = 3
-	biome_generator.period = 20
-	biome_generator.persistence = .5
-	biome_generator.lacunarity = .7
-
-	tiebreak_generator.seed = randi()
-	tiebreak_generator.octaves = 3
-	tiebreak_generator.period = 40
-	tiebreak_generator.persistence = 1
-	tiebreak_generator.lacunarity = 1
-
-	resource_generator.seed = randi()
-	resource_generator.octaves = 8
-	resource_generator.period = 5
-	resource_generator.persistence = .1
-	resource_generator.lacunarity = .7
-
-	tile_sprite_size = $BiomeMap.tile_texture_size
-	$BiomeMap.setup(biome_generator, tiebreak_generator, chunk_size, starting_pos)
-	$ResourceMap.setup(biome_generator, resource_generator, tiebreak_generator, chunk_size, starting_pos)
-
-	current_player = load("res://Scenes/Player/Player.tscn").instance()
-	current_player.position = $BiomeMap.map_to_world($BiomeMap.world_to_map(default_start)) + tile_sprite_size / 2 + player_sprite_offset
-
-	$MapCamera.position = current_player.position
-
-	if is_visible_in_tree():
-		$MapCamera.make_current()
-	
-	pass
+#func _ready():
+#	biome_generator = OpenSimplexNoise.new()
+#	tiebreak_generator = OpenSimplexNoise.new()
+#	resource_generator = OpenSimplexNoise.new()
+#
+#	biome_generator.seed = randi()
+#	biome_generator.octaves = 3
+#	biome_generator.period = 20
+#	biome_generator.persistence = .5
+#	biome_generator.lacunarity = .7
+#
+#	tiebreak_generator.seed = randi()
+#	tiebreak_generator.octaves = 3
+#	tiebreak_generator.period = 40
+#	tiebreak_generator.persistence = 1
+#	tiebreak_generator.lacunarity = 1
+#
+#	resource_generator.seed = randi()
+#	resource_generator.octaves = 8
+#	resource_generator.period = 5
+#	resource_generator.persistence = .1
+#	resource_generator.lacunarity = .7
+#
+#	tile_sprite_size = $BiomeMap.tile_texture_size
+#	$BiomeMap.setup(biome_generator, tiebreak_generator, chunk_size, starting_pos)
+#	$ResourceMap.setup(biome_generator, resource_generator, tiebreak_generator, chunk_size, starting_pos)
+#
+#	current_player = load("res://Scenes/Player/Player.tscn").instance()
+#	current_player.position = $BiomeMap.map_to_world($BiomeMap.world_to_map(default_start)) + tile_sprite_size / 2 + player_sprite_offset
+#	add_child(current_player)
+#
+#	$MapCamera.position = current_player.position
+#
+#	if is_visible_in_tree():
+#		$MapCamera.make_current()
+#
+#	pass
 
 func setup(biome_seed, resource_seed, tiebreak_seed, _chunk_size, player):
 	chunk_size = _chunk_size
@@ -97,25 +98,13 @@ func setup(biome_seed, resource_seed, tiebreak_seed, _chunk_size, player):
 	#we assume that the player sprite is smaller than the tiles
 	current_player = player
 	player_sprite_offset = (tile_sprite_size - current_player.get_texture_size()) / 2
+
 	current_player.position = $BiomeMap.map_to_world($BiomeMap.world_to_map(default_start)) + tile_sprite_size / 2 + player_sprite_offset
 	
 	$MapCamera.position = current_player.position
 	
 	if is_visible_in_tree():
 		$MapCamera.make_current()
-	
-	pass
-
-func change_player(new_player):
-	#Hide the map while the map is updated
-	hide()
-	
-	current_player = new_player
-	
-	$MapCamera.position = current_player.position
-	$MapCamera.offset = Vector2(0,0)
-	
-	#update_visible_tiles(current_player.observed_tiles)
 	
 	pass
 	
@@ -131,11 +120,13 @@ func _process(delta):
 		$CursorHighlight.position = $BiomeMap.map_to_world(tile_position) + tile_sprite_size / 2
 		
 		var camera_change = false
+		var input_found = false
 		var shift = Vector2(0,0)
 		
 		if Input.is_action_pressed("ui_up"):
 			$MapCamera.offset.y -= CAMERA_MOVEMENT*$MapCamera.zoom.y
 			map_offset.y -= CAMERA_MOVEMENT*$MapCamera.zoom.y
+			
 
 		if Input.is_action_pressed("ui_right"):
 			$MapCamera.offset.x += CAMERA_MOVEMENT*$MapCamera.zoom.x
@@ -149,27 +140,30 @@ func _process(delta):
 			$MapCamera.offset.x -= CAMERA_MOVEMENT*$MapCamera.zoom.x
 			map_offset.x -= CAMERA_MOVEMENT*$MapCamera.zoom.x
 
-		#Need to modify 
-		#Notice that the size of the tiles change as you zoom in and out
-		#This must be factored into the threshold in some way
-		#Weird speed issues are due to the way that the camera moves
-		#Since the camera moves in blocks of 10, there's a natural
-		#gap of 4 pixes of shift that gets lost, maybe?
-		if abs(map_offset.x) > tile_sprite_size.x or abs(map_offset.y) > tile_sprite_size.y:
-			if map_offset.x < -Game.TOLERANCE:
-				shift.x = -2
-				map_offset.x += tile_sprite_size.x
-			elif map_offset.x > Game.TOLERANCE:
-				shift.x = 2
-				map_offset.x -= tile_sprite_size.x
+		#NOTE: Cell size is used here to shift the map instead of tile_sprite_size
+		#I'm not totally sure why this works, but I suspect it's due to the grid
+		#itself being computed in terms of cell_size instead of texture_size, and
+		#since those two are different, the map won't track the camera properly
+		#if sprite size is used instead
+		if abs(map_offset.x) >= $BiomeMap.cell_size.x:
+			if map_offset.x < 0:
+				shift.x = -1
+				map_offset.x += $BiomeMap.cell_size.x
+			elif map_offset.x > 0:
+				shift.x = 1
+				map_offset.x -= $BiomeMap.cell_size.x
+			camera_change = true
 				
-			if map_offset.y < -Game.TOLERANCE:
-				shift.y = -2
-				map_offset.y += tile_sprite_size.y
-			elif map_offset.y > Game.TOLERANCE:
-				shift.y = 2
-				map_offset.y -= tile_sprite_size.y
+		if abs(map_offset.y) >= $BiomeMap.cell_size.y:
+			if map_offset.y < 0:
+				shift.y = -1
+				map_offset.y += $BiomeMap.cell_size.y
+			elif map_offset.y > 0:
+				shift.y = 1
+				map_offset.y -= $BiomeMap.cell_size.y
+			camera_change = true
 				
+		if camera_change:
 			shift_maps(shift)
 
 	
@@ -191,7 +185,8 @@ func _input(event):
 			$MapCamera.position = new_position
 			$MapCamera.offset = Vector2(0,0)
 			
-			shift_maps(new_position - old_position)
+			var tile_shift = tile_position - $BiomeMap.center_indices
+			shift_maps(tile_shift)
 			#Prevents weird interpolation/snapping of camera if smoothing is desired
 #			if $MapCamera.offset.length_squared() > 0:
 #				$MapCamera.position = $MapCamera.position
@@ -213,12 +208,36 @@ func _input(event):
 			$MapCamera.zoom.y = clamp($MapCamera.zoom.y + ZOOM_UPDATE, MIN_ZOOM, MAX_ZOOM)
 		
 		if event.is_action("center_camera"):
+			erase_current_maps()
+			draw_and_center_maps_to($BiomeMap.world_to_map($MapCamera.position))
+			
 			$MapCamera.offset = Vector2(0,0)
 
+func change_player(new_player):
+	#Hide the map while the map is updated
+	hide()
+	
+	remove_child(current_player)
+	current_player = new_player
+	
+	$MapCamera.position = current_player.position
+	$MapCamera.offset = Vector2(0,0)
+	
+	#update_visible_tiles(current_player.observed_tiles)
+	
+	pass
 #Expects shifts in terms of the tile maps coordinates
 func shift_maps(position):
 	$BiomeMap.shift_map(int(position.x), int(position.y))
 	$ResourceMap.shift_map(int(position.x), int(position.y))
+	
+func erase_current_maps():
+	$BiomeMap.erase_current_map()
+	$ResourceMap.erase_current_map()
+	
+func draw_and_center_maps_to(position):
+	$BiomeMap.draw_and_center_at(position.x, position.y)
+	$ResourceMap.draw_and_center_at(position.x, position.y)
 	
 #center_tile: Vector2
 #observation_radius: integer radius

@@ -34,6 +34,9 @@ func setup(x = STARTING_POS.x, y = STARTING_POS.y):
 	position.x = x
 	position.y = y
 	pass
+
+func enable_sprite(enable: bool):
+	$Sprite.visible = enable
 	
 func get_texture_size():
 	return $Sprite.texture.get_size()

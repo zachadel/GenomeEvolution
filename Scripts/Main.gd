@@ -71,7 +71,6 @@ func _on_MainMenu_change_to_world_map():
 	#player to the WorldMap for setup
 	#If there is character creation, then that should go here before creating the player
 	var first_player = create_player()
-	print(get_tree().get_nodes_in_group("players"))
 	
 	#This order enables the WorldMap to make its camera the current one
 	$WorldMap.show()
@@ -96,8 +95,8 @@ func create_player():
 	add_to_group("players")
 	
 	player.name = "player_" + str(Game.all_time_players)
-	add_child(player)
 	player.setup()
+	add_child(player)
 	
 	Game.all_time_players += 1
 	Game.current_players += 1

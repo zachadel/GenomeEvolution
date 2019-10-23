@@ -48,15 +48,18 @@ func setup(_biome_generator, _resource_generator, _tiebreak_generator, _chunk_si
 		for j in range(-chunk_size + center_indices.y, chunk_size + center_indices.y + 1):
 			set_cell(i, j, get_resource(i, j))
 
-func draw_map_at(indices):
-#	var cells = get_used_cells()
-#
-#	for cell in cells:
-#		set_cellv(cell, -1)
-	#Note that graphics are from the top left, so to iterate over
-	#rows, then columns, you iterate through y, then through x
-	for i in range(-chunk_size + indices.x, chunk_size + indices.x + 1):
-		for j in range(-chunk_size + indices.y, chunk_size + indices.y + 1):
+func erase_current_map():
+	for i in range(-chunk_size + center_indices.x, chunk_size + 1 + center_indices.x):
+		for j in range(-chunk_size + center_indices.y, chunk_size + 1 + center_indices.y):
+			set_cell(i, j, -1)
+			
+#Draw a map at the tile coordinates (x, y) and center the tileMap there
+func draw_and_center_at(x, y):
+	center_indices.x = x
+	center_indices.y = y
+	
+	for i in range(-chunk_size + center_indices.x, chunk_size + 1 + center_indices.x):
+		for j in range(-chunk_size + center_indices.y, chunk_size + 1 + center_indices.y):
 			set_cell(i, j, get_resource(i, j))
 
 func shift_map(shift_x, shift_y):
