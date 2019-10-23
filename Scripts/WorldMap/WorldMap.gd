@@ -57,7 +57,6 @@ var tile_sprite_size = Vector2(0,0)
 #
 #	current_player = load("res://Scenes/Player/Player.tscn").instance()
 #	current_player.position = $BiomeMap.map_to_world($BiomeMap.world_to_map(default_start)) + tile_sprite_size / 2 + player_sprite_offset
-#	add_child(current_player)
 #
 #	$MapCamera.position = current_player.position
 #
@@ -277,3 +276,8 @@ func cube_coords_to_offset(x, y, z):
 	hex_coords[1] = cube_z + (cube_x - (cube_x % 2)) / 2
 	
 	return hex_coords
+
+func _on_WorldMap_UI_end_map_pressed():
+	emit_signal("end_map_turn")
+	$WorldMap_UI.hide()
+	pass # Replace with function body.

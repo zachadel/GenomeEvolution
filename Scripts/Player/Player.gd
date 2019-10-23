@@ -83,10 +83,6 @@ func rotate_sprite(radians):
 #	check_if_resources()
 #	return ndices_array
 
-
-
-func _exit_tree():
-	Game.current_players -= 1
 	
 
 

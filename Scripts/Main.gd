@@ -9,7 +9,7 @@ enum GSTATE {
 var gstate = GSTATE.TITLE
 var state_label = ["Title", "Map", "Table"]
 
-var chunk_size = 64
+var chunk_size = 36
 
 #Players will never be scene in the editor as a child node
 #They are passed around and implicitly defined as children
@@ -24,6 +24,7 @@ func _ready():
 	$MainMenu.show()
 	
 	$WorldMap.hide()
+	$WorldMap/WorldMap_UI.hide()
 	
 #	$Canvas_CardTable.hide()
 
@@ -74,17 +75,18 @@ func _on_MainMenu_change_to_world_map():
 	
 	#This order enables the WorldMap to make its camera the current one
 	$WorldMap.show()
+	$WorldMap/WorldMap_UI.show()
 	$WorldMap.setup(randi(), randi(), randi(), chunk_size, first_player)
 
-
+func _on_WorldMap_end_map_turn():
+	$WorldMap.hide()
+	
+	pass # Replace with function body.
+	
 func _on_WorldMap_change_to_main_menu():
 	$WorldMap.hide()
 	$MainMenu.show()
 	
-	pass # Replace with function body.
-
-
-func _on_WorldMap_end_map_turn():
 	pass # Replace with function body.
 
 ############################MULTIPLAYER HANDLING###############################

@@ -26,7 +26,7 @@ func _process(delta):
 #		for j in range(1, 11):
 #			res_tree[i][j].set_text(0, "Sub-Resource " + String(i) + "-" + String(j) + ": " + String(player.curr_tile.resource_2d_array[i][j - 1]))
 
-func _on_Button_pressed():
+func _on_Stats_pressed():
 	if hidden:
 		tween_node.interpolate_property(self, "rect_position", get_position(), Vector2(0, 0), 0.5, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
 		tween_node.start()
@@ -35,8 +35,3 @@ func _on_Button_pressed():
 		tween_node.interpolate_property(self, "rect_position", get_position(), Vector2(-250, 0), 0.5, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
 		tween_node.start()
 		hidden = true
-	print(hidden)
-
-
-func _on_WorldMapControl_player_done():
-	player = get_tree().get_root().get_node("Control/WorldMap/Player")
