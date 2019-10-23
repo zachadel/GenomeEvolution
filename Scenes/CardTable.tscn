@@ -73,6 +73,7 @@ valign = 1
 autowrap = true
 
 [node name="button_grid" type="VBoxContainer" parent="."]
+editor/display_folded = true
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -754,6 +755,7 @@ valign = 1
 [connection signal="pressed" from="button_grid/btn_nxt" to="." method="_on_btn_nxt_pressed"]
 [connection signal="died" from="Organism" to="." method="_on_Organism_died"]
 [connection signal="doing_work" from="Organism" to="." method="_on_Organism_doing_work"]
+[connection signal="finished_replication" from="Organism" to="." method="_on_Organism_finished_replication"]
 [connection signal="justnow_update" from="Organism" to="." method="_on_Organism_justnow_update"]
 [connection signal="show_repair_opts" from="Organism" to="." method="_on_Organism_show_repair_opts"]
 [connection signal="show_reprod_opts" from="Organism" to="." method="_on_Organism_show_reprod_opts"]

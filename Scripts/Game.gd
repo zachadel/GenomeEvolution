@@ -8,7 +8,7 @@ enum ESSENTIAL_CLASSES {Replication, Locomotion, Manipulation, Sensing, Construc
 enum TURN_TYPES {Map, NewTEs, TEJump, RepairBreaks, EnvironmentalDamage, Recombination, Evolve, CheckViability, Replication};
 
 var turns = [TURN_TYPES.Map, TURN_TYPES.NewTEs, TURN_TYPES.TEJump, TURN_TYPES.RepairBreaks, TURN_TYPES.EnvironmentalDamage,
-	TURN_TYPES.RepairBreaks, TURN_TYPES.Evolve, TURN_TYPES.Recombination, TURN_TYPES.Replication, TURN_TYPES.CheckViability];
+	TURN_TYPES.RepairBreaks, TURN_TYPES.Recombination, TURN_TYPES.Replication, TURN_TYPES.CheckViability];
 var turn_idx
 var round_num
 
@@ -58,6 +58,19 @@ func cfg_sec_to_dict(cfg, sec):
 	for k in cfg.get_section_keys(sec):
 		build[k] = cfg.get_value(sec, k);
 	return build;
+
+func add_int_dicts(dict0, dict1):
+	var all_keys = dict0.keys() + dict1.keys();
+	var added_dict = {};
+	for k in all_keys:
+		if !(k in added_dict):
+			if (k in dict0 && k in dict1):
+				added_dict[k] = dict0[k] + dict1[k];
+			elif (k in dict0):
+				added_dict[k] = dict0[k];
+			else:
+				added_dict[k] = dict1[k];
+	return added_dict;
 
 func class_to_string(type):
 	match (type):
