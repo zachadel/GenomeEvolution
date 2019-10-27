@@ -18,7 +18,8 @@ var animation_speed = 600
 var animation_ease = Tween.EASE_IN
 var animation_trans = Tween.TRANS_LINEAR
 var TE_jump_time_limit = 5
-var TE_insertion_time_limit = 0.8
+var TE_insertion_time_limit = 0.75
+var SeqElm_time_limit = 0.75
 
 var ate_personalities = {};
 var resource_mult = 0.0;
