@@ -241,7 +241,15 @@ func evolve_current_behavior(amt):
 			ate_activity += amt;
 	check_for_death();
 
-const GAIN_AMT = 0.3;
+const GAIN_AMT = 0.4;
+const ATE_LOSS_AMT = 2.0;
+
+func get_gain_chance(num_missing_behaviors, num_max_behaviors):
+	var num_current_behaves = num_max_behaviors - num_missing_behaviors;
+	var log_b10 = log(2.25 * num_current_behaves / float(num_max_behaviors)) / log(10);
+	# log() is actually ln
+	return -1.25 * log_b10 + .25;
+
 func evolve_new_behavior(gain):
 	match mode:
 		"essential":
@@ -251,7 +259,11 @@ func evolve_new_behavior(gain):
 				for k in ess_behavior:
 					if (ess_behavior[k] == 0):
 						key_candids.append(k);
-				behave_key = key_candids[randi() % key_candids.size()];
+				
+				if (randf() <= get_gain_chance(key_candids.size(), ess_behavior.size())):
+					behave_key = key_candids[randi() % key_candids.size()];
+				else:
+					behave_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
 			else:
 				behave_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
 			
@@ -260,7 +272,7 @@ func evolve_new_behavior(gain):
 			if (gain):
 				ate_activity += GAIN_AMT;
 			else:
-				ate_activity -= GAIN_AMT;
+				ate_activity -= ATE_LOSS_AMT;
 	check_for_death();
 
 func check_for_death():
@@ -283,6 +295,7 @@ func kill_elm():
 	for k in ess_behavior:
 		ess_behavior[k] = 0;
 		upd_behavior_disp(k);
+	ate_activity = 0;
 
 func evolve(ndx, good = true):
 	if (type == "gene"):

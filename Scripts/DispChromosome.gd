@@ -53,6 +53,8 @@ func hide_cmsm(h = null, only_two = true):
 func show_choice_buttons(show):
 	$container/BtnChoose.visible = show;
 	$container/BtnCollapse.visible = show;
+	lock(false);
+	upd_size();
 
 func lock(lock):
 	$container/BtnChoose.disabled = lock;
