@@ -543,8 +543,10 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 					roll_storage[1][gap] = 0
 				match (roll_storage[1][gap]):
 					0:
+						emit_signal("justnow_update", "Joined ends for the gap at %s, %d without complications." % [cmsm.get_parent().name, g_idx]);
+					1, 2, 3:
 						gene_selection = cmsm.get_elms_around_pos(g_idx, true);
-						emit_signal("justnow_update", "Joining ends as a last-ditch effort, but must lose a gene; choose which.");
+						emit_signal("justnow_update", "Joining ends as a last-ditch effort, but a gene is harmed; choose which.");
 						if (is_ai):
 							if (gene_selection[0].mode == "ate" || gene_selection[1].mode == "te"):
 								gene_selection.append(gene_selection[0]);
@@ -559,33 +561,46 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 							
 							var gene = get_gene_selection();
 							var g_id = gene.id; # Saved here cuz it'll free the gene in a bit
-							if (do_yields):
-								yield(cmsms.remove_elm(gene, false), "completed");
-								yield(cmsms.close_gap(gap), "completed");
-							else:
-								cmsms.remove_elm(gene, false);
-								cmsms.close_gap(gap);
-							emit_signal("justnow_update", "Joined ends for the gap at %s, %d; lost a %s gene in the repair." % [cmsm.get_parent().name, g_idx, g_id]);
-					1:
-						if (do_yields):
-							yield(cmsms.close_gap(gap), "completed");
-						else:
-							cmsms.close_gap(gap);
-						emit_signal("justnow_update", "Joined ends for the gap at %s, %d without complications." % [cmsm.get_parent().name, g_idx]);
-					2:
-						var copy_elm;
+							var damage_str = "";
+							match (roll_storage[1][gap]):
+								1: # Lose gene
+									damage_str = "was lost"
+									if (do_yields):
+										yield(cmsms.remove_elm(gene, false), "completed");
+									else:
+										cmsms.remove_elm(gene, false);
+								2: # Major down
+									damage_str = "received a major downgrade"
+									gene.evolve_specific(true, false);
+								3: # Minor down
+									damage_str = "received a minor downgrade"
+									gene.evolve_specific(false, false);
+							emit_signal("justnow_update", "Joined ends for the gap at %s, %d; a %s gene %s in the repair." % [cmsm.get_parent().name, g_idx, g_id, damage_str]);
+					4, 5, 6:
+						var gene = right_break_gene;
 						if (randi()%2):
-							copy_elm = cmsm.get_child(g_idx-1);
-						else:
-							copy_elm = cmsm.get_child(g_idx+1);
-						if (do_yields):
-							yield(cmsms.dupe_elm(copy_elm), "completed");
-							yield(cmsms.close_gap(gap), "completed");
-						else:
-							cmsms.dupe_elm(copy_elm);
-							cmsms.close_gap(gap)
-						emit_signal("justnow_update", "Joined ends for the gap at %s, %d; duplicated a %s gene in the repair." % [cmsm.get_parent().name, g_idx, copy_elm.id]);
+							gene = left_break_gene;
+						
+						var boon_str = "";
+						match (roll_storage[1][gap]):
+							4: # Copy gene
+								boon_str = "was duplicated"
+								if (do_yields):
+									yield(cmsms.dupe_elm(gene), "completed");
+								else:
+									cmsms.dupe_elm(gene);
+							5: # Major up
+								boon_str = "received a major upgrade"
+								gene.evolve_specific(true, true);
+							6: # Minor up
+								boon_str = "received a minor upgrade"
+								gene.evolve_specific(false, true);
+						emit_signal("justnow_update", "Joined ends for the gap at %s, %d; a %s gene %s in the repair." % [cmsm.get_parent().name, g_idx, gene.id, boon_str]);
 				
+				if (do_yields):
+					yield(cmsms.close_gap(gap), "completed");
+				else:
+					cmsms.close_gap(gap);
 				get_tree().get_root().get_node("Control/WorldMap").player.consume_resources("repair_je")
 				#print("repair join ends")
 		

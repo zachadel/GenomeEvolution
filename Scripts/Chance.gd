@@ -8,7 +8,7 @@ var base_rolls = {
 	"copy_repair_correction": [2, 1],
 	
 	# no complications, lose a gene, major down gene, minor down gene, dupe a gene, major up gene, minor up gene
-	"join_ends": [5, 3, 2],
+	"join_ends": [3, 3, 2, 1, 0.25, 0.5, 1.25],
 	
 	# none, death, major up, major down, minor up, minor down
 	"evolve": [10, 0, 5, 4, 15, 14]

@@ -297,6 +297,24 @@ func kill_elm():
 		upd_behavior_disp(k);
 	ate_activity = 0;
 
+func evolve_specific(major, up):
+	var code_change = 2;
+	
+	var up_sign = -1;
+	if (up):
+		up_sign = 1;
+	
+	if (major):
+		evolve_new_behavior(up);
+	else:
+		code_change = 1;
+		evolve_current_behavior(0.1 * up_sign);
+	
+	modify_code(code_change, code_change * up_sign);
+	
+	upd_display();
+	get_cmsm().emit_signal("cmsm_changed");
+
 func evolve(ndx, good = true):
 	if (type == "gene"):
 		match ndx:
@@ -304,20 +322,13 @@ func evolve(ndx, good = true):
 				modify_code(5, -5);
 				kill_elm();
 			2: # Major Upgrade
-				modify_code(2, 2);
-				evolve_new_behavior(true);
+				evolve_specific(true, true);
 			3: # Major Downgrade
-				modify_code(2, -2);
-				evolve_new_behavior(false);
+				evolve_specific(true, false);
 			4: # Minor Upgrade
-				modify_code(1, 1);
-				evolve_current_behavior(0.1);
+				evolve_specific(false, true);
 			5: # Minor Downgrade
-				modify_code(1, -1);
-				evolve_current_behavior(-0.1);
-		
-		upd_display();
-		get_cmsm().emit_signal("cmsm_changed");
+				evolve_specific(false, false);
 
 func upd_behavior_disp(behavior = ""):
 	match mode:
