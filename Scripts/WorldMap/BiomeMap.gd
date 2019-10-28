@@ -19,18 +19,14 @@ var tile_texture_size = Vector2(0, 0)
 
 func _ready():
 	var i = 0
-
+	var tile_texture
+	
 	tile_set = TileSet.new()
 	
 	for biome in Game.biomes.keys():
-		var tile_image
-		var tile_texture
 		tile_set.create_tile(i)
 		
-		tile_image = Image.new()
-		tile_image.load(Game.biomes[biome]['tile_image'])
-		tile_texture = ImageTexture.new()
-		tile_texture.create_from_image(tile_image)
+		tile_texture = load(Game.biomes[biome]['tile_image'])
 		
 		tile_set.tile_set_texture(i, tile_texture)
 		i += 1
@@ -149,4 +145,15 @@ func get_biome(x, y):
 	return biome
 	
 func get_hazards(x, y):
-	pass
+	var biome = get_biome(x, y)
+	biome = Game.biomes.keys()[biome]
+	
+	#shift hazard value to proper range
+	var noise = hazard_generator.get_noise_2d(x, y)
+	var hazards = {}
+	for hazard in Game.hazards.keys():
+		
+		#normalize noise value to be in proper range
+		hazards[hazard] = Game.hazards[hazard][biome][1]/2 *(noise + 1) - Game.hazards[hazard][biome][0]/2 * (noise - 1)
+	
+	return hazards

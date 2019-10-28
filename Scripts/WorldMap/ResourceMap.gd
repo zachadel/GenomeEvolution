@@ -17,19 +17,14 @@ const SECONDARY_RESOURCE_MIN = 0
 
 func _ready():
 	var i = 0
-	var tile_image
 	var tile_texture
 
 	tile_set = TileSet.new()
-	print(Game.resources.keys())
 	for resource in Game.resources.keys():
 
 		tile_set.create_tile(i)
-		
-		tile_image = Image.new()
-		tile_image.load(Game.resources[resource]['tile_image'])
-		tile_texture = ImageTexture.new()
-		tile_texture.create_from_image(tile_image)
+
+		tile_texture = load(Game.resources[resource]['tile_image'])
 		
 		tile_set.tile_set_texture(i, tile_texture)
 		i += 1

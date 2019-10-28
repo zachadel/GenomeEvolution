@@ -16,12 +16,12 @@ func _ready():
 
 func hide():
 	$UIPanel.hide()
-	$ResourceStatsPanel.hide()
+	$ResourceHazardPanel.hide()
 	$EnergyBar.hide()
 	
 func show():
 	$UIPanel.show()
-	$ResourceStatsPanel.show()
+	$ResourceHazardPanel.show()
 	$EnergyBar.show()
 
 func _on_Switch_Button_pressed():

@@ -119,7 +119,8 @@ func setup(biome_seed, hazard_seed, resource_seed, tiebreak_seed, _chunk_size, p
 	player_sprite_offset = (tile_sprite_size - current_player.get_texture_size()) / 2
 	current_player.position = $BiomeMap.map_to_world($BiomeMap.world_to_map(default_start)) + tile_sprite_size / 2 + player_sprite_offset
 	
-	#$WorldMap_UI/ResourceStatsPanel.set_resources($ResourceMap.get_tile_resources($BiomeMap.world_to_map(default_start).x, $BiomeMap.world_to_map(default_start).y))
+	$WorldMap_UI/ResourceHazardPanel.set_resources($ResourceMap.get_tile_resources($BiomeMap.world_to_map(default_start).x, $BiomeMap.world_to_map(default_start).y))
+	$WorldMap_UI/ResourceHazardPanel.set_hazards($BiomeMap.get_hazards($BiomeMap.world_to_map(default_start).x, $BiomeMap.world_to_map(default_start).y))
 	
 	$MapCamera.position = current_player.position
 
@@ -145,8 +146,8 @@ func _process(delta):
 		var shift = Vector2(0,0)
 	
 		if Input.is_action_pressed("highlight_tile"):
-			$WorldMap_UI/ResourceStatsPanel.change_tree_name("Tile Resources at " + str(tile_position))
-			$WorldMap_UI/ResourceStatsPanel.set_resources($ResourceMap.get_tile_resources(tile_position.x, tile_position.y))
+			$WorldMap_UI/ResourceHazardPanel.set_resources($ResourceMap.get_tile_resources(tile_position.x, tile_position.y))
+			$WorldMap_UI/ResourceHazardPanel.set_hazards($BiomeMap.get_hazards(tile_position.x, tile_position.y))
 		
 		if Input.is_action_just_released("highlight_tile"):
 			var player_tile = $BiomeMap.world_to_map(current_player.position)
@@ -216,7 +217,8 @@ func _unhandled_input(event):
 			$MapCamera.position = new_position
 			$MapCamera.offset = Vector2(0,0)
 			
-	#		$WorldMap_UI/ResourceStatsPanel.set_resources($ResourceMap.get_tile_resources(tile_position.x, tile_position.y))
+			$WorldMap_UI/ResourceHazardPanel.set_resources($ResourceMap.get_tile_resources(tile_position.x, tile_position.y))
+			$WorldMap_UI/ResourceHazardPanel.set_hazards($BiomeMap.get_hazards(tile_position.x, tile_position.y))
 			
 			var tile_shift = tile_position - $BiomeMap.center_indices
 			shift_maps(tile_shift)

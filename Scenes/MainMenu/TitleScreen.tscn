@@ -40,24 +40,26 @@ texture = ExtResource( 3 )
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/LogoAndButtonSeparator"]
 margin_top = 254.0
 margin_right = 1540.0
-margin_bottom = 702.0
+margin_bottom = 840.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="LeftEmptyColumn" type="VBoxContainer" parent="MarginContainer/LogoAndButtonSeparator/HBoxContainer"]
 margin_right = 510.0
-margin_bottom = 448.0
+margin_bottom = 586.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ButtonContainer" type="VBoxContainer" parent="MarginContainer/LogoAndButtonSeparator/HBoxContainer"]
 margin_left = 514.0
 margin_right = 1024.0
-margin_bottom = 448.0
+margin_bottom = 586.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="NewGame" type="Button" parent="MarginContainer/LogoAndButtonSeparator/HBoxContainer/ButtonContainer"]
 margin_right = 510.0
-margin_bottom = 109.0
+margin_bottom = 51.0
 focus_mode = 0
 custom_fonts/font = ExtResource( 4 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -67,9 +69,9 @@ text = "New Game"
 flat = true
 
 [node name="Tutorial" type="Button" parent="MarginContainer/LogoAndButtonSeparator/HBoxContainer/ButtonContainer"]
-margin_top = 113.0
+margin_top = 55.0
 margin_right = 510.0
-margin_bottom = 222.0
+margin_bottom = 106.0
 focus_mode = 0
 custom_fonts/font = ExtResource( 4 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -79,9 +81,9 @@ text = "Tutorial"
 flat = true
 
 [node name="Settings" type="Button" parent="MarginContainer/LogoAndButtonSeparator/HBoxContainer/ButtonContainer"]
-margin_top = 226.0
+margin_top = 110.0
 margin_right = 510.0
-margin_bottom = 335.0
+margin_bottom = 161.0
 focus_mode = 0
 custom_fonts/font = ExtResource( 4 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -91,9 +93,9 @@ text = "Settings"
 flat = true
 
 [node name="Exit" type="Button" parent="MarginContainer/LogoAndButtonSeparator/HBoxContainer/ButtonContainer"]
-margin_top = 339.0
+margin_top = 165.0
 margin_right = 510.0
-margin_bottom = 448.0
+margin_bottom = 216.0
 focus_mode = 0
 custom_fonts/font = ExtResource( 4 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -105,7 +107,7 @@ flat = true
 [node name="RightEmptyColumn" type="VBoxContainer" parent="MarginContainer/LogoAndButtonSeparator/HBoxContainer"]
 margin_left = 1028.0
 margin_right = 1540.0
-margin_bottom = 448.0
+margin_bottom = 586.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 

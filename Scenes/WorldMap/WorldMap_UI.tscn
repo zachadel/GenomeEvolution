@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Scripts/WorldMap/WorldMap_UI.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/WorldMap/UIPanel.gd" type="Script" id=2]
-[ext_resource path="res://Scripts/WorldMap/ResourceStatsPanel.gd" type="Script" id=3]
+[ext_resource path="res://Scenes/WorldMap/ResourceHazardPanel.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scripts/WorldMap/EnergyBar.gd" type="Script" id=4]
 
 [node name="WorldMap_UI" type="CanvasLayer"]
@@ -180,25 +180,9 @@ margin_bottom = -171.0
 text = "Lose all of 2 types and you'll die!"
 align = 1
 
-[node name="ResourceStatsPanel" type="Panel" parent="."]
-editor/display_folded = true
-margin_left = -250.0
-margin_right = 50.0
-margin_bottom = 900.0
-script = ExtResource( 3 )
-
-[node name="Tree" type="Tree" parent="ResourceStatsPanel"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_right = -50.0
-
-[node name="Tween" type="Tween" parent="ResourceStatsPanel"]
-
-[node name="Stats" type="Button" parent="ResourceStatsPanel"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 250.0
-text = "Stats"
+[node name="ResourceHazardPanel" parent="." instance=ExtResource( 3 )]
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="EnergyBar" type="Panel" parent="."]
 editor/display_folded = true
@@ -230,4 +214,3 @@ grow_horizontal = 0
 alignment = 2
 [connection signal="pressed" from="UIPanel/ActionsPanel/GridContainer/Quit_To_Title_Button" to="." method="_on_Quit_To_Title_Button_pressed"]
 [connection signal="pressed" from="UIPanel/ActionsPanel/GridContainer/Switch_Button" to="." method="_on_Switch_Button_pressed"]
-[connection signal="pressed" from="ResourceStatsPanel/Stats" to="ResourceStatsPanel" method="_on_Stats_pressed"]

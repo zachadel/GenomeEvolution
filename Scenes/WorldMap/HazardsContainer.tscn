@@ -1,26 +1,26 @@
 [gd_scene load_steps=18 format=2]
 
-[ext_resource path="res://Scenes/WorldMap/HazardsContainer.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/WorldMap/HazardsContainer.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Images/Hazards/temp_empty.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Images/Hazards/temp_full.png" type="Texture" id=3]
 [ext_resource path="res://Scripts/WorldMap/TemperatureBar.gd" type="Script" id=4]
 [ext_resource path="res://Scripts/WorldMap/TemperatureLabel.gd" type="Script" id=5]
 [ext_resource path="res://Assets/Images/Hazards/ph_empty.png" type="Texture" id=6]
 [ext_resource path="res://Assets/Images/Hazards/ph_full.png" type="Texture" id=7]
-[ext_resource path="res://Scenes/WorldMap/pHBar.gd" type="Script" id=8]
-[ext_resource path="res://Scenes/WorldMap/pHLabel.gd" type="Script" id=9]
+[ext_resource path="res://Scripts/WorldMap/pHBar.gd" type="Script" id=8]
+[ext_resource path="res://Scripts/WorldMap/pHLabel.gd" type="Script" id=9]
 [ext_resource path="res://Assets/Images/Hazards/sun_empty.png" type="Texture" id=10]
 [ext_resource path="res://Assets/Images/Hazards/sun_full.png" type="Texture" id=11]
-[ext_resource path="res://Scenes/WorldMap/UVBar.gd" type="Script" id=12]
-[ext_resource path="res://Scenes/WorldMap/UVLabel.gd" type="Script" id=13]
+[ext_resource path="res://Scripts/WorldMap/UVBar.gd" type="Script" id=12]
+[ext_resource path="res://Scripts/WorldMap/UVLabel.gd" type="Script" id=13]
 [ext_resource path="res://Assets/Images/Hazards/oxygen_empty.png" type="Texture" id=14]
 [ext_resource path="res://Assets/Images/Hazards/oxygen_full.png" type="Texture" id=15]
-[ext_resource path="res://Scenes/WorldMap/OxygenBar.gd" type="Script" id=16]
-[ext_resource path="res://Scenes/WorldMap/OxygenLabel.gd" type="Script" id=17]
+[ext_resource path="res://Scripts/WorldMap/OxygenBar.gd" type="Script" id=16]
+[ext_resource path="res://Scripts/WorldMap/OxygenLabel.gd" type="Script" id=17]
 
 [node name="HazardsContainer" type="GridContainer"]
-margin_right = 40.0
-margin_bottom = 40.0
+margin_right = 296.0
+margin_bottom = 191.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/vseparation = 20
@@ -29,13 +29,14 @@ columns = 2
 script = ExtResource( 1 )
 
 [node name="TemperatureBar" type="TextureProgress" parent="."]
-margin_left = 12.0
-margin_right = 62.0
+margin_left = 44.0
+margin_right = 94.0
 margin_bottom = 96.0
 hint_tooltip = "This measures the temperature in Celsius of a given tile."
-size_flags_horizontal = 4
-size_flags_vertical = 4
+size_flags_horizontal = 6
+size_flags_vertical = 6
 min_value = -40.0
+step = 0.1
 value = -40.0
 texture_over = ExtResource( 2 )
 texture_progress = ExtResource( 3 )
@@ -52,13 +53,14 @@ valign = 1
 script = ExtResource( 5 )
 
 [node name="pHBar" type="TextureProgress" parent="."]
-margin_left = 104.0
-margin_right = 154.0
+margin_left = 202.0
+margin_right = 252.0
 margin_bottom = 96.0
 hint_tooltip = "This measures the pH of a given tile."
-size_flags_horizontal = 4
-size_flags_vertical = 4
+size_flags_horizontal = 6
+size_flags_vertical = 6
 max_value = 14.0
+step = 0.1
 texture_over = ExtResource( 6 )
 texture_progress = ExtResource( 7 )
 fill_mode = 3
@@ -77,12 +79,14 @@ valign = 1
 script = ExtResource( 9 )
 
 [node name="UVBar" type="TextureProgress" parent="."]
+margin_left = 31.0
 margin_top = 116.0
-margin_right = 75.0
+margin_right = 106.0
 margin_bottom = 191.0
 hint_tooltip = "This measures the Ultraviolet Radiation Index for a given tile."
-size_flags_horizontal = 4
-size_flags_vertical = 4
+size_flags_horizontal = 6
+size_flags_vertical = 6
+step = 0.1
 texture_over = ExtResource( 10 )
 texture_progress = ExtResource( 11 )
 fill_mode = 3
@@ -98,13 +102,14 @@ valign = 1
 script = ExtResource( 13 )
 
 [node name="OxygenBar" type="TextureProgress" parent="."]
-margin_left = 95.0
+margin_left = 192.0
 margin_top = 116.0
-margin_right = 164.0
+margin_right = 261.0
 margin_bottom = 191.0
 hint_tooltip = "This measures the oxygen levels of a given tile."
-size_flags_horizontal = 4
-size_flags_vertical = 4
+size_flags_horizontal = 6
+size_flags_vertical = 6
+step = 0.1
 texture_over = ExtResource( 14 )
 texture_progress = ExtResource( 15 )
 fill_mode = 3

@@ -14,10 +14,13 @@ var resources = {}
 var hazards = {}
 var modified_tiles = {}
 
+const MAX_RESOURCE = 10
+const MIN_RESOURCE = 0
+
+var resource_groups = []
 
 #allows for integers in the biome.cfg file, since there is currently a bug in Godot which prevents reading in floats from nested arrays
 const GEN_SCALING = 100 
-					
 const TOLERANCE = .0001
 
 var turns = [TURN_TYPES.Map, TURN_TYPES.NewTEs, TURN_TYPES.TEJump, TURN_TYPES.RepairBreaks, TURN_TYPES.EnvironmentalDamage,
@@ -136,6 +139,9 @@ func _ready():
 	
 	# Load up resource information
 	load_cfg("resources", resources)
+	for resource in resources.keys():
+		if resource_groups.find(resources[resource]["group"]) == -1:
+			resource_groups.append(resources[resource]["group"])
 	
 	# Load up hazard information
 	load_cfg("hazards", hazards)

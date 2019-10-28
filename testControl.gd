@@ -6,6 +6,9 @@ extends Control
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
+	
+	
 #	var biomes_file = ConfigFile.new()
 #	var err = biomes_file.load("res://Data/biomes.cfg")
 #	var biomes = {}
@@ -63,9 +66,3 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
-
-
-func _on_Button_pressed():
-	print('Button pressed!')
-	$Button.hide()
-	pass # Replace with function body.
