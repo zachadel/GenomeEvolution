@@ -407,8 +407,10 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 		
 		var other_cmsm = cmsms.get_other_cmsm(cmsm);
 		
-		var left_id = cmsm.get_child(g_idx-1).id;
-		var right_id = cmsm.get_child(g_idx+1).id;
+		var left_break_gene = cmsm.get_child(g_idx - 1);
+		var right_break_gene = cmsm.get_child(g_idx + 1);
+		var left_id = left_break_gene.id;
+		var right_id = right_break_gene.id;
 		
 		repair_canceled = false;
 		match (repair_idx):
@@ -467,11 +469,14 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 			1: # Copy Pattern
 				choice_info["left"].highlight_border(false);
 				if (!roll_storage[0].has(gap)):
-					var roll_result = roll_chance("copy_repair");
-					#print("roll: ", roll_result);
 					roll_storage[0][gap] = roll_chance("copy_repair");
 				if !check_resources(1):
 					roll_storage[0][gap] = 0
+				
+				var do_correction = bool(roll_chance("copy_repair_correction"));
+				var correct_str = "";
+				if (do_correction):
+					correct_str = " One of the genes at the repair site was corrected to match its template gene.";
 				match (roll_storage[0][gap]):
 					0:
 						gene_selection = cmsm.get_elms_around_pos(g_idx, true);
@@ -490,46 +495,45 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 							
 							var gene = get_gene_selection();
 							var g_id = gene.id;
-							emit_signal("justnow_update", "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome, but a %s gene was lost." % [cmsm.get_parent().name, g_idx, left_id, right_id, g_id]);
+							emit_signal("justnow_update", "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome, but a %s gene was lost.%s" % [cmsm.get_parent().name, g_idx, left_id, right_id, g_id, correct_str]);
 							if (do_yields):
 								yield(cmsms.remove_elm(gene, false), "completed");
-								yield(cmsms.close_gap(gap), "completed");
 							else:
 								cmsms.remove_elm(gene, false);
-								cmsms.close_gap(gap);
 					1:
-						emit_signal("justnow_update", "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome without complications." % [cmsm.get_parent().name, g_idx, left_id, right_id]);
-						if (do_yields):
-							yield(cmsms.close_gap(gap), "completed");
-						else:
-							cmsms.close_gap(gap);
+						emit_signal("justnow_update", "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome without complications.%s" % [cmsm.get_parent().name, g_idx, left_id, right_id, correct_str]);
 					2:
-						emit_signal("justnow_update", "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome along with intervening genes." % [cmsm.get_parent().name, g_idx, left_id, right_id]);
+						emit_signal("justnow_update", "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome along with intervening genes.%s" % [cmsm.get_parent().name, g_idx, left_id, right_id, correct_str]);
 						if (do_yields):
 							for i in range(choice_info["left"].get_index()+1, choice_info["right"].get_index()):
 								var copy_elm = Game.copy_elm(other_cmsm.get_child(i));
 								yield(cmsm.add_elm(copy_elm, gap.get_index()), "completed");
-							yield(cmsms.close_gap(gap), "completed");
 						else:
 							for i in range(choice_info["left"].get_index()+1, choice_info["right"].get_index()):
 								var copy_elm = Game.copy_elm(other_cmsm.get_child(i));
 								cmsm.add_elm(copy_elm, gap.get_index());
-							cmsms.close_gap(gap);
 					3:
-						var copy_elm;
-						if (randi()%2):
-							copy_elm = cmsm.get_child(g_idx-1);
-						else:
-							copy_elm = cmsm.get_child(g_idx+1);
+						var copy_elm = right_break_gene;
+						if (randi() % 2):
+							copy_elm = left_break_gene;
 						
-						emit_signal("justnow_update", "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome, but a %s gene was copied." % [cmsm.get_parent().name, g_idx, left_id, right_id, copy_elm.id]);
+						emit_signal("justnow_update", "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome, but a %s gene was copied.%s" % [cmsm.get_parent().name, g_idx, left_id, right_id, copy_elm.id, correct_str]);
 						if (do_yields):
 							yield(cmsms.dupe_elm(copy_elm), "completed");
-							yield(cmsms.close_gap(gap), "completed");
 						else:
 							cmsms.dupe_elm(copy_elm);
-							cmsms.close_gap(gap);
-							
+				if (do_correction):
+					var correct_targ = right_break_gene;
+					var correct_src = choice_info["right"];
+					if (correct_targ == null || randi() % 2):
+						correct_targ = left_break_gene;
+						correct_src = choice_info["left"];
+					correct_targ.setup_copy(correct_src);
+				
+				if (do_yields):
+					yield(cmsms.close_gap(gap), "completed");
+				else:
+					cmsms.close_gap(gap);
 				get_tree().get_root().get_node("Control/WorldMap").player.consume_resources("repair_cp")
 				#print("repair copy pattern");
 			2: # Join Ends

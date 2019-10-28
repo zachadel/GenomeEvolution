@@ -120,15 +120,16 @@ func get_ate_personality_by_name(ate_name):
 	return {};
 
 # This is a little hack I've come up with to make bars in ScrollContainer controls larger
-func change_slider_width(scroll_cont, horiz = true, width = 30):
-	if (horiz):
-		var slider = scroll_cont.get_node("_h_scroll");
-		slider.margin_top = -width;
-		slider.rect_size.y = width;
-	else:
-		var slider = scroll_cont.get_node("_v_scroll");
-		slider.margin_left = -width;
-		slider.rect_size.x = width;
+func change_slider_width(_scroll_cont, _horiz = true, _width = 30):
+	pass;
+#	if (horiz):
+#		var slider = scroll_cont.get_node("_h_scroll");
+#		slider.margin_top = -width;
+#		slider.rect_size.y = width;
+#	else:
+#		var slider = scroll_cont.get_node("_v_scroll");
+#		slider.margin_left = -width;
+#		slider.rect_size.x = width;
 
 func adv_turn():
 	turn_idx += 1;

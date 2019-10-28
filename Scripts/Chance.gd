@@ -1,10 +1,13 @@
 extends Node
 
 var base_rolls = {
-	# Lose one, no complications, copy intervening, duplicate a gene at the site
+	# lose one, no complications, copy intervening, duplicate a gene at the site
 	"copy_repair": [1.6, 1.6, 5, 2],
 	
-	# Lose one, no complications, duplicate a gene at the site
+	# no correction, yes correction
+	"copy_repair_correction": [2, 1],
+	
+	# no complications, lose a gene, major down gene, minor down gene, dupe a gene, major up gene, minor up gene
 	"join_ends": [5, 3, 2],
 	
 	# none, death, major up, major down, minor up, minor down
