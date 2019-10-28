@@ -57,10 +57,7 @@ func _ready():
 #	for x in range(-10, 10):
 #		print(x)
 
-	var A = {[1,2]: 'a', [-2,4]: 'b', [6, 7]: 'c'}
-	
-	if [1,2] in A:
-		print(len(A))
+
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

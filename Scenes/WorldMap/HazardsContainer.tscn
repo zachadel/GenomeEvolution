@@ -1,0 +1,124 @@
+[gd_scene load_steps=18 format=2]
+
+[ext_resource path="res://Scenes/WorldMap/HazardsContainer.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Images/Hazards/temp_empty.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Images/Hazards/temp_full.png" type="Texture" id=3]
+[ext_resource path="res://Scripts/WorldMap/TemperatureBar.gd" type="Script" id=4]
+[ext_resource path="res://Scripts/WorldMap/TemperatureLabel.gd" type="Script" id=5]
+[ext_resource path="res://Assets/Images/Hazards/ph_empty.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Images/Hazards/ph_full.png" type="Texture" id=7]
+[ext_resource path="res://Scenes/WorldMap/pHBar.gd" type="Script" id=8]
+[ext_resource path="res://Scenes/WorldMap/pHLabel.gd" type="Script" id=9]
+[ext_resource path="res://Assets/Images/Hazards/sun_empty.png" type="Texture" id=10]
+[ext_resource path="res://Assets/Images/Hazards/sun_full.png" type="Texture" id=11]
+[ext_resource path="res://Scenes/WorldMap/UVBar.gd" type="Script" id=12]
+[ext_resource path="res://Scenes/WorldMap/UVLabel.gd" type="Script" id=13]
+[ext_resource path="res://Assets/Images/Hazards/oxygen_empty.png" type="Texture" id=14]
+[ext_resource path="res://Assets/Images/Hazards/oxygen_full.png" type="Texture" id=15]
+[ext_resource path="res://Scenes/WorldMap/OxygenBar.gd" type="Script" id=16]
+[ext_resource path="res://Scenes/WorldMap/OxygenLabel.gd" type="Script" id=17]
+
+[node name="HazardsContainer" type="GridContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/vseparation = 20
+custom_constants/hseparation = 20
+columns = 2
+script = ExtResource( 1 )
+
+[node name="TemperatureBar" type="TextureProgress" parent="."]
+margin_left = 12.0
+margin_right = 62.0
+margin_bottom = 96.0
+hint_tooltip = "This measures the temperature in Celsius of a given tile."
+size_flags_horizontal = 4
+size_flags_vertical = 4
+min_value = -40.0
+value = -40.0
+texture_over = ExtResource( 2 )
+texture_progress = ExtResource( 3 )
+fill_mode = 3
+script = ExtResource( 4 )
+
+[node name="TemperatureLabel" type="Label" parent="TemperatureBar"]
+margin_left = 11.0
+margin_top = 68.0
+margin_right = 39.0
+margin_bottom = 96.0
+align = 1
+valign = 1
+script = ExtResource( 5 )
+
+[node name="pHBar" type="TextureProgress" parent="."]
+margin_left = 104.0
+margin_right = 154.0
+margin_bottom = 96.0
+hint_tooltip = "This measures the pH of a given tile."
+size_flags_horizontal = 4
+size_flags_vertical = 4
+max_value = 14.0
+texture_over = ExtResource( 6 )
+texture_progress = ExtResource( 7 )
+fill_mode = 3
+script = ExtResource( 8 )
+
+[node name="pHLabel" type="Label" parent="pHBar"]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -24.0
+margin_top = -7.0
+margin_bottom = 7.0
+align = 1
+valign = 1
+script = ExtResource( 9 )
+
+[node name="UVBar" type="TextureProgress" parent="."]
+margin_top = 116.0
+margin_right = 75.0
+margin_bottom = 191.0
+hint_tooltip = "This measures the Ultraviolet Radiation Index for a given tile."
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_over = ExtResource( 10 )
+texture_progress = ExtResource( 11 )
+fill_mode = 3
+script = ExtResource( 12 )
+
+[node name="UVLabel" type="Label" parent="UVBar"]
+margin_left = 20.0
+margin_top = 19.0
+margin_right = 55.0
+margin_bottom = 56.0
+align = 1
+valign = 1
+script = ExtResource( 13 )
+
+[node name="OxygenBar" type="TextureProgress" parent="."]
+margin_left = 95.0
+margin_top = 116.0
+margin_right = 164.0
+margin_bottom = 191.0
+hint_tooltip = "This measures the oxygen levels of a given tile."
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_over = ExtResource( 14 )
+texture_progress = ExtResource( 15 )
+fill_mode = 3
+script = ExtResource( 16 )
+
+[node name="OxygenLabel" type="Label" parent="OxygenBar"]
+margin_left = 9.0
+margin_top = 15.2718
+margin_right = 55.0
+margin_bottom = 51.2718
+align = 1
+valign = 1
+script = ExtResource( 17 )
+[connection signal="value_changed" from="TemperatureBar" to="TemperatureBar/TemperatureLabel" method="_on_TemperatureBar_value_changed"]
+[connection signal="value_changed" from="pHBar" to="pHBar/pHLabel" method="_on_pHBar_value_changed"]
+[connection signal="value_changed" from="UVBar" to="UVBar/UVLabel" method="_on_UVBar_value_changed"]
+[connection signal="value_changed" from="OxygenBar" to="OxygenBar/OxygenLabel" method="_on_OxygenBar_value_changed"]

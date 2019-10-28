@@ -14,6 +14,7 @@ var chunk_size = 32
 
 var biome_generator
 var tiebreak_generator
+var hazard_generator
 var tile_texture_size = Vector2(0, 0)
 
 func _ready():
@@ -38,10 +39,11 @@ func _ready():
 	cell_size.x = tile_texture_size.x - floor(.5 * sqrt(pow(tile_texture_size.x, 2) - pow(tile_texture_size.y, 2)))
 	cell_half_offset = TileMap.HALF_OFFSET_Y 
 	
-func setup(_biome_generator, _tiebreak_generator, _chunk_size = 32, starting_pos = Vector2(0,0)):
+func setup(_biome_generator, _tiebreak_generator, _hazard_generator, _chunk_size = 32, starting_pos = Vector2(0,0)):
 	
 	biome_generator = _biome_generator
 	tiebreak_generator = _tiebreak_generator
+	hazard_generator = _hazard_generator
 	chunk_size = _chunk_size
 	
 	center_indices = starting_pos
@@ -146,4 +148,5 @@ func get_biome(x, y):
 
 	return biome
 	
-	
+func get_hazards(x, y):
+	pass

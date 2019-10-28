@@ -5,12 +5,11 @@
 [ext_resource path="res://Scripts/WorldMap/ResourceStatsPanel.gd" type="Script" id=3]
 [ext_resource path="res://Scripts/WorldMap/EnergyBar.gd" type="Script" id=4]
 
-
-
 [node name="WorldMap_UI" type="CanvasLayer"]
 script = ExtResource( 1 )
 
 [node name="UIPanel" type="Panel" parent="."]
+editor/display_folded = true
 self_modulate = Color( 1, 1, 1, 0.313726 )
 anchor_top = 1.0
 anchor_right = 1.0
@@ -182,6 +181,7 @@ text = "Lose all of 2 types and you'll die!"
 align = 1
 
 [node name="ResourceStatsPanel" type="Panel" parent="."]
+editor/display_folded = true
 margin_left = -250.0
 margin_right = 50.0
 margin_bottom = 900.0
@@ -201,6 +201,7 @@ margin_left = 250.0
 text = "Stats"
 
 [node name="EnergyBar" type="Panel" parent="."]
+editor/display_folded = true
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0

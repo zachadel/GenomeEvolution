@@ -21,6 +21,7 @@ var default_start = Vector2(-20,0)
 var biome_generator
 var tiebreak_generator
 var resource_generator
+var hazard_generator
 
 var chunk_size = 36
 var starting_pos = Vector2(0,0)
@@ -32,50 +33,58 @@ var tile_sprite_size = Vector2(0,0)
 enum player_vision {HIDDEN, NOT_VISIBLE, VISIBLE}
 
 #If you want to test this scene apart from others, just uncomment this block
-#func _ready():
-#	biome_generator = OpenSimplexNoise.new()
-#	tiebreak_generator = OpenSimplexNoise.new()
-#	resource_generator = OpenSimplexNoise.new()
-#
-#	biome_generator.seed = randi()
-#	biome_generator.octaves = 3
-#	biome_generator.period = 20
-#	biome_generator.persistence = .5
-#	biome_generator.lacunarity = .7
-#
-#	tiebreak_generator.seed = randi()
-#	tiebreak_generator.octaves = 3
-#	tiebreak_generator.period = 40
-#	tiebreak_generator.persistence = 1
-#	tiebreak_generator.lacunarity = 1
-#
-#	resource_generator.seed = randi()
-#	resource_generator.octaves = 8
-#	resource_generator.period = 5
-#	resource_generator.persistence = .1
-#	resource_generator.lacunarity = .7
-#
-#	tile_sprite_size = $BiomeMap.tile_texture_size
-#	$BiomeMap.setup(biome_generator, tiebreak_generator, chunk_size, starting_pos)
-#	$ResourceMap.setup(biome_generator, resource_generator, tiebreak_generator, chunk_size, starting_pos)
-#
-#	current_player = load("res://Scenes/Player/Player.tscn").instance()
-#	current_player.position = $BiomeMap.map_to_world($BiomeMap.world_to_map(default_start)) + tile_sprite_size / 2 + player_sprite_offset
-#
-#	$MapCamera.position = current_player.position
-#
-#	if is_visible_in_tree():
-#		$MapCamera.make_current()
-#
-#	pass
+func _ready():
+	biome_generator = OpenSimplexNoise.new()
+	tiebreak_generator = OpenSimplexNoise.new()
+	resource_generator = OpenSimplexNoise.new()
+	hazard_generator = OpenSimplexNoise.new()
 
-func setup(biome_seed, resource_seed, tiebreak_seed, _chunk_size, player):
+	biome_generator.seed = randi()
+	biome_generator.octaves = 3
+	biome_generator.period = 20
+	biome_generator.persistence = .5
+	biome_generator.lacunarity = .7
+
+	hazard_generator.seed = randi()
+	hazard_generator.octaves = 3
+	hazard_generator.period = 20
+	hazard_generator.persistence = .5
+	hazard_generator.lacunarity = .7
+
+	tiebreak_generator.seed = randi()
+	tiebreak_generator.octaves = 3
+	tiebreak_generator.period = 80
+	tiebreak_generator.persistence = 1
+	tiebreak_generator.lacunarity = 1
+
+	resource_generator.seed = randi()
+	resource_generator.octaves = 8
+	resource_generator.period = 5
+	resource_generator.persistence = .1
+	resource_generator.lacunarity = .7
+
+	tile_sprite_size = $BiomeMap.tile_texture_size
+	$BiomeMap.setup(biome_generator, tiebreak_generator, hazard_generator, chunk_size, starting_pos)
+	$ResourceMap.setup(biome_generator, resource_generator, tiebreak_generator, chunk_size, starting_pos)
+
+	current_player = load("res://Scenes/Player/Player.tscn").instance()
+	current_player.position = $BiomeMap.map_to_world($BiomeMap.world_to_map(default_start)) + tile_sprite_size / 2 + player_sprite_offset
+
+	$MapCamera.position = current_player.position
+
+	if is_visible_in_tree():
+		$MapCamera.make_current()
+
+	pass
+
+func setup(biome_seed, hazard_seed, resource_seed, tiebreak_seed, _chunk_size, player):
 	Game.modified_tiles = {}
 	chunk_size = _chunk_size
 	
 	biome_generator = OpenSimplexNoise.new()
 	tiebreak_generator = OpenSimplexNoise.new()
 	resource_generator = OpenSimplexNoise.new()
+	hazard_generator = OpenSimplexNoise.new()
 	
 	biome_generator.seed = biome_seed
 	biome_generator.octaves = 3
@@ -83,20 +92,26 @@ func setup(biome_seed, resource_seed, tiebreak_seed, _chunk_size, player):
 	biome_generator.persistence = .5
 	biome_generator.lacunarity = .7
 	
-	tiebreak_generator.seed = resource_seed
+	hazard_generator.seed = hazard_seed
+	hazard_generator.octaves = 3
+	hazard_generator.period = 20
+	hazard_generator.persistence = .5
+	hazard_generator.lacunarity = .7
+	
+	tiebreak_generator.seed = tiebreak_seed
 	tiebreak_generator.octaves = 3
-	tiebreak_generator.period = 40
+	tiebreak_generator.period = 80
 	tiebreak_generator.persistence = 1
 	tiebreak_generator.lacunarity = 1
 	
-	resource_generator.seed = tiebreak_seed
+	resource_generator.seed = resource_seed
 	resource_generator.octaves = 8
 	resource_generator.period = 5
 	resource_generator.persistence = .1
 	resource_generator.lacunarity = .7
 	
 	tile_sprite_size = $BiomeMap.tile_texture_size
-	$BiomeMap.setup(biome_generator, tiebreak_generator, chunk_size, starting_pos)
+	$BiomeMap.setup(biome_generator, tiebreak_generator, hazard_generator, chunk_size, starting_pos)
 	$ResourceMap.setup(biome_generator, resource_generator, tiebreak_generator, chunk_size, starting_pos)
 	
 	#we assume that the player sprite is smaller than the tiles
@@ -104,10 +119,10 @@ func setup(biome_seed, resource_seed, tiebreak_seed, _chunk_size, player):
 	player_sprite_offset = (tile_sprite_size - current_player.get_texture_size()) / 2
 	current_player.position = $BiomeMap.map_to_world($BiomeMap.world_to_map(default_start)) + tile_sprite_size / 2 + player_sprite_offset
 	
-	$WorldMap_UI/ResourceStatsPanel.set_resources($ResourceMap.get_tile_resources($BiomeMap.world_to_map(default_start).x, $BiomeMap.world_to_map(default_start).y))
+	#$WorldMap_UI/ResourceStatsPanel.set_resources($ResourceMap.get_tile_resources($BiomeMap.world_to_map(default_start).x, $BiomeMap.world_to_map(default_start).y))
 	
 	$MapCamera.position = current_player.position
-	
+
 	if is_visible_in_tree():
 		$MapCamera.make_current()
 	
@@ -118,6 +133,7 @@ func _process(delta):
 	#NOTE: This is absolutely necessary.  I've tried it without this, and only input
 	#that would be handled in _input is stopped when .hide() is called.  To be consistent
 	#however, I have used if is_visible_in_tree() in _input as well.
+	
 	if is_visible_in_tree():
 		var tile_position = $BiomeMap.world_to_map(get_global_mouse_position())
 		var tile_index = $BiomeMap.get_cellv(tile_position)
@@ -185,6 +201,7 @@ func _unhandled_input(event):
 	#This if statement prevents the world map from "stealing" inputs from other places
 	#NOTE: This may not be necessary.  Calling $WorldMap.hide() from main should be 
 	#sufficient.
+
 	if is_visible_in_tree():
 		if event.is_action_pressed("mouse_left"):
 			var tile_position = $BiomeMap.world_to_map(get_global_mouse_position())
@@ -199,7 +216,7 @@ func _unhandled_input(event):
 			$MapCamera.position = new_position
 			$MapCamera.offset = Vector2(0,0)
 			
-			$WorldMap_UI/ResourceStatsPanel.set_resources($ResourceMap.get_tile_resources(tile_position.x, tile_position.y))
+	#		$WorldMap_UI/ResourceStatsPanel.set_resources($ResourceMap.get_tile_resources(tile_position.x, tile_position.y))
 			
 			var tile_shift = tile_position - $BiomeMap.center_indices
 			shift_maps(tile_shift)
@@ -211,7 +228,7 @@ func _unhandled_input(event):
 			
 			emit_signal("tile_clicked", tile_index)
 			
-			print('Biome: ', $BiomeMap.get_biome(tile_position.x, tile_position.y))
+			print('Biome: ', Game.biomes.keys()[$BiomeMap.get_biome(tile_position.x, tile_position.y)])
 			print('Resource: ', $ResourceMap.get_tile_resources(tile_position.x, tile_position.y))
 			print('Biome Random Value: ', biome_generator.get_noise_2d(tile_position.x, tile_position.y) * Game.GEN_SCALING)
 			print('Tile location: ', tile_position)
@@ -224,14 +241,20 @@ func _unhandled_input(event):
 		if event.is_action("zoom_out"):
 			$MapCamera.zoom.x = clamp($MapCamera.zoom.x + ZOOM_UPDATE, MIN_ZOOM, MAX_ZOOM)
 			$MapCamera.zoom.y = clamp($MapCamera.zoom.y + ZOOM_UPDATE, MIN_ZOOM, MAX_ZOOM)
+	
+	else:
+		print('WorldMap not visible!')
 
 func _input(event):
 	if event.is_action("center_camera"):
 		erase_current_maps()
 		draw_and_center_maps_to($BiomeMap.world_to_map($MapCamera.position))
-		
+
 		$MapCamera.offset = Vector2(0,0)
 		get_tree().set_input_as_handled()
+
+	if event.is_action_pressed("mouse_left"):
+		print("Mouse left in WorldMapInput")
 	
 func change_player(new_player):
 	#Hide the map while the map is updated

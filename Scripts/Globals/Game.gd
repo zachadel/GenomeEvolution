@@ -11,6 +11,7 @@ enum TURN_TYPES {Map, NewTEs, TEJump, RepairBreaks, EnvironmentalDamage, Recombi
 #and string -> biome_index, since both operations are needed frequently
 var biomes = {}
 var resources = {}
+var hazards = {}
 var modified_tiles = {}
 
 
@@ -135,6 +136,9 @@ func _ready():
 	
 	# Load up resource information
 	load_cfg("resources", resources)
+	
+	# Load up hazard information
+	load_cfg("hazards", hazards)
 
 func cfg_sec_to_dict(cfg, sec):
 	var build = {};

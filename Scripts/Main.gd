@@ -21,6 +21,7 @@ const Player = preload("res://Scenes/Player/Player.tscn")
 #allows for multiplayer
 
 func _ready(): 
+	
 	$MainMenu.show()
 	
 	$WorldMap.hide()
@@ -66,7 +67,7 @@ func switch_mode():
 ###########################WORLD MAP SIGNAL HANDLING###########################
 
 func _on_MainMenu_change_to_world_map():
-	$MainMenu.hide()
+	$MainMenu.queue_free()
 	
 	#Add looping after first_player if there are multiple players, but only give the first
 	#player to the WorldMap for setup
@@ -76,7 +77,7 @@ func _on_MainMenu_change_to_world_map():
 	#This order enables the WorldMap to make its camera the current one
 	$WorldMap.show()
 	$WorldMap/WorldMap_UI.show()
-	$WorldMap.setup(randi(), randi(), randi(), chunk_size, first_player)
+	$WorldMap.setup(randi(), randi(), randi(), randi(), chunk_size, first_player)
 
 func _on_WorldMap_end_map_turn():
 	$WorldMap.hide()

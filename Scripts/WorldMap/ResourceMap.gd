@@ -21,6 +21,7 @@ func _ready():
 	var tile_texture
 
 	tile_set = TileSet.new()
+	print(Game.resources.keys())
 	for resource in Game.resources.keys():
 
 		tile_set.create_tile(i)
