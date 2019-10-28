@@ -132,7 +132,7 @@ func get_biome(x, y):
 			print('ERROR: Unhandled biome type at (%d, %d)', x, y)
 	else:
 		biome = Game.modified_tiles[[int(x), int(y)]]["biome"]
-
+		
 	return biome
 	
 """
@@ -180,6 +180,7 @@ func get_primary_resource(x, y):
 		#tiebreaker array associated with the biome we can use
 	else:
 		resource = Game.modified_tiles[[int(x), int(y)]]["primary_resource"]
+		
 	return resource
 
 func get_tile_resources(x, y):

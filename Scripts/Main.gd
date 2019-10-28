@@ -67,7 +67,7 @@ func switch_mode():
 ###########################WORLD MAP SIGNAL HANDLING###########################
 
 func _on_MainMenu_change_to_world_map():
-	$MainMenu.queue_free()
+	$MainMenu.hide()
 	
 	#Add looping after first_player if there are multiple players, but only give the first
 	#player to the WorldMap for setup

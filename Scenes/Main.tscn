@@ -5,14 +5,14 @@
 [ext_resource path="res://Scenes/WorldMap/WorldMap.tscn" type="PackedScene" id=3]
 
 [node name="Main" type="Control"]
-margin_right = 1600.0
-margin_bottom = 900.0
 mouse_filter = 1
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 1 )
 
 [node name="MainMenu" parent="." instance=ExtResource( 2 )]
+margin_right = -1600.0
+margin_bottom = -900.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
