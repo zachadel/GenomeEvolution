@@ -55,7 +55,7 @@ func _ready():
 		var code = "";
 		for y in range(2):
 			# create gene
-			var nxt_gelm = load("res://Scenes/SequenceElement.tscn").instance();
+			var nxt_gelm = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
 			nxt_gelm.setup("gene", n, "essential", code, Game.ESSENTIAL_CLASSES[n]);
 			nxt_gelm.set_ess_behavior({n: 1.0});
 			if (code == ""):
@@ -78,6 +78,8 @@ func load_from_save(orgn_info):
 	
 	perform_anims(true);
 
+#This may need to be modified so as not to steal inputs from other
+#nodes like the WorldMap and MainMenu (maybe)
 func _input(ev):
 	if (ev.is_action_pressed("increment")):
 		update_energy(1);
@@ -115,7 +117,7 @@ func get_max_gene_dist():
 func gain_ates(count = 1):
 	var justnow = "";
 	for i in range(count):
-		var nxt_te = load("res://Scenes/SequenceElement.tscn").instance();
+		var nxt_te = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
 		nxt_te.setup("gene");
 		var pos;
 		if (do_yields):
@@ -233,6 +235,7 @@ func check_resources(x):
 	for i in range(4):
 		if resources[i]  < costs[repair][i]:
 			#print("NOT ENOUGH CASH! STRANGA!")
+			#I'm quite sad I never got to see this message printed
 			return false
 	return true
 
@@ -460,9 +463,9 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 				else:
 					cmsms.close_gap(gap);
 				emit_signal("justnow_update", "Gap at %s, %d closed: collapsed %d genes and ended due to %s." % [cmsm.get_parent().name, g_idx, remove_count, ended_due_to]);
-			
+########################NOTE: This will need to be changed#####################3							
 				for times in range(remove_count):
-					get_tree().get_root().get_node("Control/WorldMap").player.consume_resources("repair_cd")
+					get_tree().get_root().get_node("Main/WorldMap").current_player.consume_resources("repair_cd")
 			
 			1: # Copy Pattern
 				choice_info["left"].highlight_border(false);
@@ -529,8 +532,9 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 						else:
 							cmsms.dupe_elm(copy_elm);
 							cmsms.close_gap(gap);
-							
-				get_tree().get_root().get_node("Control/WorldMap").player.consume_resources("repair_cp")
+
+########################NOTE: This will need to be changed#####################3							
+				get_tree().get_root().get_node("Main/WorldMap").current_player.consume_resources("repair_cp")
 				#print("repair copy pattern");
 			2: # Join Ends
 				if (!roll_storage[1].has(gap)):
@@ -582,7 +586,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 							cmsms.close_gap(gap)
 						emit_signal("justnow_update", "Joined ends for the gap at %s, %d; duplicated a %s gene in the repair." % [cmsm.get_parent().name, g_idx, copy_elm.id]);
 				
-				get_tree().get_root().get_node("Control/WorldMap").player.consume_resources("repair_je")
+				get_tree().get_root().get_node("Main/WorldMap").current_player.consume_resources("repair_je")
 				#print("repair join ends")
 		
 		gene_selection.erase(gap);
@@ -600,6 +604,9 @@ func highlight_gap_choices():
 		upd_repair_opts(cmsms.gap_list[0]);
 		auto_repair();
 
+#All of these functions may need to be modified for AI players
+#or maybe reproduct_gene_pool is just modified by the WorldMap.
+#That seems like a fairly reasonable solution.
 func get_gene_pool():
 	return reproduct_gene_pool;
 
@@ -714,6 +721,7 @@ func recombination():
 				cont_recombo = false
 				emit_signal("doing_work", false);
 
+#Will need to be reworked eventually to work around AI players
 func prune_cmsms(final_num, add_to_pool = true):
 	while (cmsms.get_cmsms().size() > final_num):
 		if (add_to_pool):
@@ -721,6 +729,7 @@ func prune_cmsms(final_num, add_to_pool = true):
 		cmsms.remove_cmsm(final_num);
 
 func replicate(idx):
+	#classic
 	var rep_type = "some unknown freaky deaky shiznaz";
 	
 	perform_anims(false);
@@ -867,6 +876,7 @@ const BEHAVIOR_TO_COST_MULT = {
 		"move": -0.05
 	}
 }
+
 func use_resources(action):
 	var cost_mult = 1.0;
 	var bprof = get_behavior_profile();

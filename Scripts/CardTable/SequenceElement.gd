@@ -15,8 +15,8 @@ var ess_behavior = {
 	"Deconstruction": 0
 };
 
+var ate_activity = 0.0;
 var ate_personality = {};
-var act_mods = {"silent": 1.0, "excise": 1.0, "jump": 1.0, "copy": 1.0};
 
 const CODE_LENGTH = 7;
 var gene_code = "";
@@ -57,6 +57,7 @@ func setup(_type, _id = "", _mode = "ate", _code = "", _ess_class = -1):
 					print("!! Trying to put ", name, " (", _type, ", ", _id, ") in non-existent eclass (", _ess_class, ")");
 					print("Here are the valid values: ", Game.ESSENTIAL_CLASSES.values());
 			"ate":
+				ate_activity = 1.0;
 				if (id == ""):
 					ate_personality = Game.get_random_ate_personality();
 					id = ate_personality["title"];
@@ -93,6 +94,7 @@ func setup_copy(ref_elm):
 				ess_class = ref_elm.ess_class;
 				ess_behavior = ref_elm.ess_behavior;
 			"ate":
+				ate_activity = ref_elm.ate_activity;
 				ate_personality = ref_elm.ate_personality;
 				id = ate_personality["title"];
 				tex = ate_personality["art"];
@@ -111,8 +113,9 @@ func setup_copy(ref_elm):
 		@mode: This is 'essential' for an essential gene, 'ate' for a
 			transposon, or 'psuedo' for a pseudogene 
 		@mode_class: For 'essential' this is one of the ESSENTIAL_CLASSES
-			in Game.gd.  For 'ate' and 'pseudo', these values are not
-			used.
+			in Game.gd.  For 'ate', this has yet to be defined how it can
+			vary.  For 'pseudogene', this value is not needed and will not
+			be used.
 	Output: Current gene is changed to have a particular tooltip
 		@If Replication: 'This is a replication gene.  It increases the 
 			probability for successful gene modifications.'
@@ -130,7 +133,8 @@ func setup_copy(ref_elm):
 			turns.'
 		@If Deconstruction: 'This is a deconstruction gene.  It aids with the 
 			breaking down of complicated resources into simpler, usable ones.'
-		@If Transposon: See ate_personalities.cfg.
+		@If Transposon: 'This is a transposon.  It is a genetic parasite that
+			can modify genes in various unpredictable ways.'
 		@If Psuedogene: 'This is a pseudogene. It can still mutate, but it is 
 			currently damaged to the point of inactivity.'
 """
@@ -156,7 +160,7 @@ func set_hint_tooltip(_type, _mode, _ess_class):
 							hint_tooltip = ''
 							print('ERROR: Invalid gene class of ', _x)
 				"ate":
-					hint_tooltip = ate_personality['hint_tooltip']
+					hint_tooltip = 'This is a transposon. It is a genetic parasite that\ncan modify genes in various unpredictable ways.'
 				"pseudo":
 					hint_tooltip = 'This is a pseudogene. It can still mutate, but it is\ncurrently damaged to the point of inactivity.'
 		"break":
@@ -165,7 +169,10 @@ func set_hint_tooltip(_type, _mode, _ess_class):
 	
 func set_ess_behavior(dict):
 	for k in dict:
-		ess_behavior[k] = dict[k];
+		if (k == "ate"):
+			ate_activity = dict[k];
+		else:
+			ess_behavior[k] = dict[k];
 		upd_behavior_disp(k);
 
 func get_ess_behavior():
@@ -173,6 +180,8 @@ func get_ess_behavior():
 	for k in ess_behavior:
 		if (ess_behavior[k] > 0):
 			d[k] = ess_behavior[k];
+	if (type == "gene" && mode == "ate"):
+		d["ate"] = ate_activity;
 	return d;
 
 func get_random_code():
@@ -223,30 +232,57 @@ func is_equal(other_elm, max_dist = -1):
 		return can_compare_elm(other_elm) && get_gene_distance(other_elm) <= max_dist;
 
 func evolve_current_behavior(amt):
-	if (ess_behavior.values().max() > 0):
-		var behave_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
-		ess_behavior[behave_key] = max(0, ess_behavior[behave_key] + amt);
-		
-		check_for_death();
+	match mode:
+		"essential":
+			if (ess_behavior.values().max() > 0):
+				var behave_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
+				ess_behavior[behave_key] = max(0, ess_behavior[behave_key] + amt);
+		"ate":
+			ate_activity += amt;
+	check_for_death();
 
-const GAIN_AMT = 0.2;
+const GAIN_AMT = 0.4;
+const ATE_LOSS_AMT = 2.0;
+
+func get_gain_chance(num_missing_behaviors, num_max_behaviors):
+	var num_current_behaves = num_max_behaviors - num_missing_behaviors;
+	var log_b10 = log(2.25 * num_current_behaves / float(num_max_behaviors)) / log(10);
+	# log() is actually ln
+	return -1.25 * log_b10 + .25;
+
 func evolve_new_behavior(gain):
-	var behave_key = "";
-	if (gain):
-		var key_candids = [];
-		for k in ess_behavior:
-			if (ess_behavior[k] == 0):
-				key_candids.append(k);
-		behave_key = key_candids[randi() % key_candids.size()];
-	else:
-		behave_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
-	
-	ess_behavior[behave_key] = int(gain) * GAIN_AMT;
+	match mode:
+		"essential":
+			var behave_key = "";
+			if (gain):
+				var key_candids = [];
+				for k in ess_behavior:
+					if (ess_behavior[k] == 0):
+						key_candids.append(k);
+				
+				if (randf() <= get_gain_chance(key_candids.size(), ess_behavior.size())):
+					behave_key = key_candids[randi() % key_candids.size()];
+				else:
+					behave_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
+			else:
+				behave_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
+			
+			ess_behavior[behave_key] = int(gain) * GAIN_AMT;
+		"ate":
+			if (gain):
+				ate_activity += GAIN_AMT;
+			else:
+				ate_activity -= ATE_LOSS_AMT;
 	check_for_death();
 
 func check_for_death():
-	if (ess_behavior.values().max() == 0):
-		kill_elm();
+	match mode:
+		"essential":
+			if (ess_behavior.values().max() == 0):
+				kill_elm();
+		"ate":
+			if (ate_activity <= 0):
+				kill_elm();
 
 func kill_elm():
 	mode = "pseudo";
@@ -259,31 +295,52 @@ func kill_elm():
 	for k in ess_behavior:
 		ess_behavior[k] = 0;
 		upd_behavior_disp(k);
+	ate_activity = 0;
+
+func evolve_specific(major, up):
+	var code_change = 2;
+	
+	var up_sign = -1;
+	if (up):
+		up_sign = 1;
+	
+	if (major):
+		evolve_new_behavior(up);
+	else:
+		code_change = 1;
+		evolve_current_behavior(0.1 * up_sign);
+	
+	modify_code(code_change, code_change * up_sign);
+	
+	upd_display();
+	get_cmsm().emit_signal("cmsm_changed");
 
 func evolve(ndx, good = true):
-	if (type == "gene" && mode == "essential"):
-		match(ndx):
+	if (type == "gene"):
+		match ndx:
 			1: # Gene death
 				modify_code(5, -5);
 				kill_elm();
 			2: # Major Upgrade
-				modify_code(2, 2);
-				evolve_new_behavior(true);
+				evolve_specific(true, true);
 			3: # Major Downgrade
-				modify_code(2, -2);
-				evolve_new_behavior(false);
+				evolve_specific(true, false);
 			4: # Minor Upgrade
-				modify_code(1, 1);
-				evolve_current_behavior(0.1);
+				evolve_specific(false, true);
 			5: # Minor Downgrade
-				modify_code(1, -1);
-				evolve_current_behavior(-0.1);
-		
-		upd_display();
-		get_cmsm().emit_signal("cmsm_changed");
+				evolve_specific(false, false);
 
-func upd_behavior_disp(behavior):
-	get_node("Indic" + behavior).set_value(ess_behavior[behavior]);
+func upd_behavior_disp(behavior = ""):
+	match mode:
+		"essential", "pseudo":
+			if (behavior != ""):
+				get_node("Indic" + behavior).set_value(ess_behavior[behavior]);
+			else:
+				for b in ess_behavior:
+					get_node("Indic" + b).set_value(ess_behavior[b]);
+			continue;
+		"ate", "pseudo":
+			get_node("IndicATE").set_value(ate_activity);
 
 func upd_display():
 	$DBGLBL.text = gene_code;
@@ -297,6 +354,7 @@ func upd_display():
 		"gene":
 			toggle_mode = false;
 			$BorderRect.modulate = toggle_rect_clr[false];
+			var start_mode = mode;
 			match (mode):
 				"ate":
 					self_modulate = Color(.8, .15, 0);
@@ -305,16 +363,17 @@ func upd_display():
 				"essential":
 					$lbl.visible = false;
 					$version/version_lbl.text = "";
-					for k in ess_behavior:
-						upd_behavior_disp(k);
 				"pseudo":
-					$lbl.text += " [p]";
+					$lbl.visible = false;
+					#$lbl.text += " [p]";
 					self_modulate = Color(.5, .5, 0);
-					
+			upd_behavior_disp();
 			
 		#NOTE: This is broken.  It enables you to click on a break in the
 		#chromosome, select collapse/copy/join, see the behavior, then
 		#deselect it
+		
+		# That's actually expected behavior, but it does crash sometimes
 		"break":
 			$version.hide()
 			toggle_mode = true;
@@ -349,13 +408,11 @@ func highlight_border(on, special_color = false):
 func is_highlighted():
 	return $BorderRect.visible;
 
-func mod_act_behavior(type, chance_mod):
-	if (typeof(type) == TYPE_INT):
-		type = act_mods.keys()[type];
-	act_mods[type] += chance_mod;
-
 func get_ate_jump_roll():
-	return Chance.roll_chances(ate_personality["roll"], act_mods.values());
+	var mods = [0.75 / ate_activity];
+	for i in range(3):
+		mods.append(ate_activity);
+	return Chance.roll_chances(ate_personality["roll"], mods);
 
 func get_active_behavior(jump): #if jump==false, get the copy range
 	var grab_dict = {};

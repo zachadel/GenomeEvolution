@@ -1,6 +1,6 @@
 extends ScrollContainer
 
-var StatusElement = preload("res://Scenes/ChromosomeStatusElement.tscn");
+var StatusElement = preload("res://Scenes/CardTable/ChromosomeStatusElement.tscn");
 onready var container = $HBoxContainer;
 var chromes = [];
 

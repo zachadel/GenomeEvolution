@@ -1,8 +1,9 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Scenes/MainMenu/Settings.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/MainMenu/Settings.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Fonts/OpenSans-64.tres" type="DynamicFont" id=2]
 [ext_resource path="res://Assets/Fonts/OpenSans-Bold.ttf" type="DynamicFontData" id=3]
+
 
 [sub_resource type="DynamicFont" id=1]
 size = 32

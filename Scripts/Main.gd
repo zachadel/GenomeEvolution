@@ -22,12 +22,12 @@ const Player = preload("res://Scenes/Player/Player.tscn")
 
 func _ready(): 
 	
-	$MainMenu.show()
+	$MainMenuLayer/MainMenu.show()
 	
 	$WorldMap.hide()
 	$WorldMap/WorldMap_UI.hide()
 	
-#	$Canvas_CardTable.hide()
+	$Canvas_CardTable/CardTable.hide()
 
 func _on_modeSwitch_pressed():
 	if gstate == GSTATE.TABLE:
@@ -39,22 +39,23 @@ func _on_modeSwitch_pressed():
 func switch_mode():
 	match(gstate):
 		GSTATE.TITLE:
-#			$Canvas_CardTable/CardTable.hide()
+			$Canvas_CardTable/CardTable.hide()
+			
 			$WorldMap.hide()
-			$TitleScreen.show()
+			
+			$MainMenuLayer/MainMenu.show()
 		GSTATE.MAP:
-#			$Canvas_CardTable/CardTable.hide()
+			$Canvas_CardTable/CardTable.hide()
+			
 			$WorldMap.show()
-#			$WorldMap/WorldMap_UI/UIPanel.show()
-#			$WorldMap/WorldMap_UI/ResourceStatsPanel.show()
-#			$WorldMap/WorldMap_UI/EnergyBar.show()
+			$WorldMap/WorldMap_UI.show()
+
 			gstate = GSTATE.MAP
 		GSTATE.TABLE:
 			$WorldMap.hide()
-#			$WorldMap/WorldMap_UI/UIPanel.hide()
-#			$WorldMap/WorldMap_UI/ResourceStatsPanel.hide()
-#			$WorldMap/WorldMap_UI/EnergyBar.hide()
-#			$Canvas_CardTable/CardTable.show()
+			$WorldMap/WorldMap_UI.hide()
+
+			$Canvas_CardTable/CardTable.show()
 			gstate = GSTATE.TABLE
 
 
@@ -67,7 +68,7 @@ func switch_mode():
 ###########################WORLD MAP SIGNAL HANDLING###########################
 
 func _on_MainMenu_change_to_world_map():
-	$MainMenu.hide()
+	$MainMenuLayer/MainMenu.hide()
 	
 	#Add looping after first_player if there are multiple players, but only give the first
 	#player to the WorldMap for setup
@@ -81,6 +82,9 @@ func _on_MainMenu_change_to_world_map():
 
 func _on_WorldMap_end_map_turn():
 	$WorldMap.hide()
+	$WorldMap/WorldMap_UI.hide()
+	$Canvas_CardTable/CardTable.show()
+	Game.adv_turn()
 	
 	pass # Replace with function body.
 	
@@ -118,3 +122,12 @@ func delete_player(id):
 	player.queue_free()
 	
 	Game.current_players -= 1
+
+
+func _on_CardTable_next_turn(turn_text, round_num):
+	if Game.turn_idx == Game.TURN_TYPES.Map:
+		$Canvas_CardTable/CardTable.hide()
+		$WorldMap.show()
+		$WorldMap/WorldMap_UI.show()
+		$WorldMap.current_player.enable_sprite(true)
+	pass # Replace with function body.

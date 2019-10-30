@@ -11,13 +11,12 @@ enum TURN_TYPES {Map, NewTEs, TEJump, RepairBreaks, EnvironmentalDamage, Recombi
 #and string -> biome_index, since both operations are needed frequently
 var biomes = {}
 var resources = {}
+var resource_groups = {}
 var hazards = {}
 var modified_tiles = {}
 
 const MAX_RESOURCE = 10
 const MIN_RESOURCE = 0
-
-var resource_groups = []
 
 #allows for integers in the biome.cfg file, since there is currently a bug in Godot which prevents reading in floats from nested arrays
 const GEN_SCALING = 100 
@@ -95,13 +94,14 @@ var current_players = 0
 #var settings = default_settings
 ###############################################################################
 
-#var card_table
+var card_table
 
 var animation_speed = 600
 var animation_ease = Tween.EASE_IN
 var animation_trans = Tween.TRANS_LINEAR
 var TE_jump_time_limit = 5
-var TE_insertion_time_limit = 0.8
+var TE_insertion_time_limit = 0.75
+var SeqElm_time_limit = .75
 
 var ate_personalities = {};
 var resource_mult = 0.0;
@@ -115,10 +115,8 @@ func get_code_char(_num):
 	return code_elements[_num];
 
 func _ready():
-	#initialization done in _ready for restarts
-	turn_idx = 0;
-	round_num = 1;
-	
+	restart_game()
+
 	for i in range(65, 91): # A to Z
 		code_elements.append(char(i));
 	for i in range(97, 122): # a to z
@@ -139,18 +137,33 @@ func _ready():
 	
 	# Load up resource information
 	load_cfg("resources", resources)
-	for resource in resources.keys():
-		if resource_groups.find(resources[resource]["group"]) == -1:
-			resource_groups.append(resources[resource]["group"])
+	resource_groups = sort_resources_by_group_then_tier(resources)
 	
 	# Load up hazard information
 	load_cfg("hazards", hazards)
+
+func restart_game():
+	turn_idx = 0
+	round_num = 1
 
 func cfg_sec_to_dict(cfg, sec):
 	var build = {};
 	for k in cfg.get_section_keys(sec):
 		build[k] = cfg.get_value(sec, k);
 	return build;
+
+func add_int_dicts(dict0, dict1):
+	var all_keys = dict0.keys() + dict1.keys()
+	var added_dict = {}
+	for k in all_keys:
+		if not k in added_dict:
+			if (k in dict0 and k in dict1):
+				added_dict[k] = dict0[k] + dict1[k]
+			elif (k in dict0):
+				added_dict[k] = dict0[k]
+			else:
+				added_dict[k] = dict1[k]
+	return added_dict
 
 func class_to_string(type):
 	match (type):
@@ -252,6 +265,19 @@ func get_turn_txt():
 #	card_table.orgn.load_from_save(s[2]);
 #	card_table.orgn.reproduct_gene_pool = s[3];
 
+func get_save_str():
+	var savestr = var2str([turn_idx, round_num, card_table.orgn.get_save(), card_table.orgn.get_gene_pool()]).replace("\n", "")
+	OS.set_clipboard(savestr)
+	return savestr
+
+func load_from_save(save):
+	var s = str2var(save)
+	turn_idx = int(s[0]) - 1
+	round_num = int(s[1])
+	card_table.orgn.load_from_save(s[2])
+	card_table.orgn.reproduct_gene_pool = s[3]
+
+
 func copy_elm(elm):
 	var copy_elm = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
 	copy_elm.setup_copy(elm);
@@ -287,3 +313,24 @@ func load_cfg(data_name, dict):
 		
 func find_resource_biome_index(resource_index, biome_index):
 	return Game.resources[Game.resources.keys()[resource_index]]["biomes"].find(Game.biomes.keys()[biome_index])
+	
+func sort_resources_by_group_then_tier(resources_dict):
+	var resource_keys = resources_dict.keys()
+	var group_dict = {}
+	
+	for key in resource_keys:
+		if not resources_dict[key]["group"] in group_dict:
+			group_dict[resources_dict[key]["group"]] = { #group
+				resources_dict[key]["tier"]: { #tier
+					key: resources_dict[key]["factor"] #factor at resource
+				}
+			}
+		else:
+			if not resources_dict[key]["tier"] in group_dict[resources_dict[key]["group"]]:
+				group_dict[resources_dict[key]["group"]][resources_dict[key]["tier"]] = {
+					key: resources_dict[key]["factor"]	
+				}
+			else:
+				group_dict[resources_dict[key]["group"]][resources_dict[key]["tier"]][key]=resources_dict[key]["factor"]
+	
+	return group_dict

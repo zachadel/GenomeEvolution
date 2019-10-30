@@ -11,7 +11,6 @@
 [ext_resource path="res://Assets/Images/icons/ess_behaviors/D.png" type="Texture" id=9]
 
 
-
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.219608, 0.219608, 0.219608, 1 )
 corner_radius_top_left = 10
@@ -62,6 +61,17 @@ margin_bottom = -28.0
 text = "ERROR_code"
 align = 1
 valign = 1
+
+[node name="IndicATE" parent="." instance=ExtResource( 3 )]
+visible = false
+modulate = Color( 0.75, 0.4, 0, 1 )
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.0
+margin_left = -30.0
+margin_top = -35.0
+margin_right = 30.0
+margin_bottom = 25.0
 
 [node name="IndicReplication" parent="." instance=ExtResource( 3 )]
 visible = false

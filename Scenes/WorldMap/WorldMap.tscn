@@ -27,3 +27,4 @@ drag_margin_bottom = 0.0
 
 [node name="CursorHighlight" type="Sprite" parent="."]
 script = ExtResource( 5 )
+[connection signal="end_map_pressed" from="WorldMap_UI" to="." method="_on_WorldMap_UI_end_map_pressed"]

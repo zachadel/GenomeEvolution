@@ -27,7 +27,7 @@ func _ready():
 	add_cmsm();
 
 func add_cmsm(cmsm_save = null, force_show = false):
-	var nxt_cmsm = load("res://Scenes/DispChromosome.tscn").instance();
+	var nxt_cmsm = load("res://Scenes/CardTable/DispChromosome.tscn").instance();
 	
 	for k in SIGNAL_PROPAGATION:
 		nxt_cmsm.connect(k, self, SIGNAL_PROPAGATION[k]);
@@ -382,7 +382,7 @@ func jump_ate(ate_elm):
 		insert_from_behavior(ate_elm, old_cmsm, old_idx, ate_elm.get_active_behavior(true));
 
 func copy_ate(original_ate):
-	var copy_ate = load("res://Scenes/SequenceElement.tscn").instance();
+	var copy_ate = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
 	copy_ate.setup_copy(original_ate);
 	if (do_yields):
 		yield(insert_from_behavior(copy_ate, original_ate.get_parent(), original_ate.get_index(),\

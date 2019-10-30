@@ -317,9 +317,17 @@ func cube_coords_to_offset(x, y, z):
 	
 	return hex_coords
 
+func get_player_line_of_sight():
+	var player_pos = $BiomeMap.world_to_map(current_player.position)
+	var cube_coords = offset_coords_to_cube(player_pos.x, player_pos.y)
+	
+	
+	pass
+
 func _on_WorldMap_UI_end_map_pressed():
 	emit_signal("end_map_turn")
 	$WorldMap_UI.hide()
+	current_player.enable_sprite(false)
 	pass # Replace with function body.
 
 
