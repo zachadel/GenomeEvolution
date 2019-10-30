@@ -326,6 +326,14 @@ func get_player_line_of_sight():
 
 func _on_WorldMap_UI_end_map_pressed():
 	emit_signal("end_map_turn")
+	var player_pos = $BiomeMap.world_to_map(current_player.position)
+	
+	current_player.current_tile = {
+		"resources": $ResourceMap.get_tile_resources(player_pos.x, player_pos.y),
+		"hazards": $BiomeMap.get_hazards(player_pos.x, player_pos.y),
+		"biome": $BiomeMap.get_biome(player_pos.x, player_pos.y)
+	}
+	
 	$WorldMap_UI.hide()
 	current_player.enable_sprite(false)
 	pass # Replace with function body.

@@ -9,6 +9,7 @@ signal changed
 
 var update_sensing = false
 var move_enabled = false
+var current_tile = {}
 
 var organism
 

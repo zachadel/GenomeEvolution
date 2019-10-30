@@ -11,7 +11,7 @@ var state_label = ["Title", "Map", "Table"]
 
 var chunk_size = 36
 
-#Players will never be scene in the editor as a child node
+#Players will never be seen in the editor as a child node
 #They are passed around and implicitly defined as children
 #of Main
 const Player = preload("res://Scenes/Player/Player.tscn")
@@ -28,42 +28,6 @@ func _ready():
 	$WorldMap/WorldMap_UI.hide()
 	
 	$Canvas_CardTable/CardTable.hide()
-
-func _on_modeSwitch_pressed():
-	if gstate == GSTATE.TABLE:
-		gstate = GSTATE.MAP
-	else:
-		gstate = GSTATE.TABLE
-	switch_mode()
-	
-func switch_mode():
-	match(gstate):
-		GSTATE.TITLE:
-			$Canvas_CardTable/CardTable.hide()
-			
-			$WorldMap.hide()
-			
-			$MainMenuLayer/MainMenu.show()
-		GSTATE.MAP:
-			$Canvas_CardTable/CardTable.hide()
-			
-			$WorldMap.show()
-			$WorldMap/WorldMap_UI.show()
-
-			gstate = GSTATE.MAP
-		GSTATE.TABLE:
-			$WorldMap.hide()
-			$WorldMap/WorldMap_UI.hide()
-
-			$Canvas_CardTable/CardTable.show()
-			gstate = GSTATE.TABLE
-
-
-#func _on_CardTable_next_turn(turn_text, round_num):
-#	if(Game.get_turn_type() == Game.TURN_TYPES.Map):
-#		gstate = GSTATE.MAP
-#		switch_mode()
-
 
 ###########################WORLD MAP SIGNAL HANDLING###########################
 
@@ -86,18 +50,18 @@ func _on_WorldMap_end_map_turn():
 	$Canvas_CardTable/CardTable.show()
 	Game.adv_turn()
 	
-	pass # Replace with function body.
+	pass
 	
 func _on_WorldMap_change_to_main_menu():
-#	get_viewport().set_attach_to_screen_rect(Rect2(Vector2(100,100), Vector2(1600, 900)))
-#	$MainMenu.show()
-#	$MainMenu/TitleScreen.show()
-#	$WorldMap.hide()
-#
-#	for player in get_tree().get_nodes_in_group("players"):
-#		player.enable_sprite(false)
+	$MainMenuLayer/MainMenu.show()
+	$MainMenuLayer/MainMenu/TitleScreen.show()
+	$WorldMap.hide()
+	$WorldMap/WorldMap_UI.hide()
+
+	for player in get_tree().get_nodes_in_group("players"):
+		player.enable_sprite(false)
 	
-	pass # Replace with function body.
+	pass
 
 ############################MULTIPLAYER HANDLING###############################
 
@@ -123,6 +87,7 @@ func delete_player(id):
 	
 	Game.current_players -= 1
 
+########################CARD TABLE SIGNAL HANDLING#############################
 
 func _on_CardTable_next_turn(turn_text, round_num):
 	if Game.turn_idx == Game.TURN_TYPES.Map:
@@ -130,4 +95,3 @@ func _on_CardTable_next_turn(turn_text, round_num):
 		$WorldMap.show()
 		$WorldMap/WorldMap_UI.show()
 		$WorldMap.current_player.enable_sprite(true)
-	pass # Replace with function body.

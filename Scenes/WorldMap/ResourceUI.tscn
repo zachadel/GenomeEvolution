@@ -3,8 +3,8 @@
 [ext_resource path="res://Scripts/WorldMap/ResourceUI.gd" type="Script" id=1]
 
 [node name="ResourceUI" type="VBoxContainer"]
-margin_right = 40.0
-margin_bottom = 40.0
+margin_right = 310.0
+margin_bottom = 320.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 40

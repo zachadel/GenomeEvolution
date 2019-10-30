@@ -60,7 +60,8 @@ func _ready():
 #	for x in range(-10, 10):
 #		print(x)
 
-
+	var a = 'TemperatureBar'
+	print(a.rstrip("Bar"))
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

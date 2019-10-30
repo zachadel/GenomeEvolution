@@ -1,16 +1,9 @@
 extends VBoxContainer
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var bar_tex = load("res://Assets/Images/Hazards/bar.png")
-	var bar_label = load("res://Scenes/WorldMap/ResourceLabel.tscn")
-	
 	#Organize resources by group
-	for group in Game.resource_groups:
+	for group in Game.resource_groups.keys():
 		var resource_label = Label.new()
 		resource_label.text = group
 		resource_label.align = Label.ALIGN_CENTER
@@ -22,40 +15,28 @@ func _ready():
 		add_child(resource_hbox)
 		for resource in Game.resources.keys():
 			if Game.resources[resource]["group"] == group:
-				var Bar = TextureProgress.new()
-				var Bar_value_label = bar_label.instance()
-				var Bar_label = Label.new()
+				var Bar = load("res://Scenes/WorldMap/ResourceBar.tscn").instance()
+				var resource_image = Bar.get_node("ResourceImage")
+				resource_image.texture = load(Game.resources[resource]["tile_image"])
+				resource_image.rect_scale = Vector2(.4167, .4167)
 				
 				Bar.name = resource + 'Bar'
-				Bar.fill_mode = TextureProgress.FILL_BOTTOM_TO_TOP
-				Bar.texture_progress = bar_tex
 				
 				Bar.max_value = Game.MAX_RESOURCE
 				Bar.min_value = Game.MIN_RESOURCE
 				Bar.value = randi() % 10 #For testing
 				
 				Bar.size_flags_horizontal = SIZE_EXPAND_FILL
-				Bar.connect("value_changed", Bar_value_label, "on_" + "ResourceBar" + "_value_changed")
 
-				Bar_label.text = resource
-				
-				Bar_label.rect_position = Vector2(-5, 100)
-				Bar_label.rect_size = Vector2(50, 10)
-				
-				Bar_label.align = Label.ALIGN_CENTER
-				Bar_label.name = Bar.name + 'Label'
-
-				Bar_value_label.rect_position = Vector2(-5, 120)
-				Bar_value_label.rect_size = Vector2(50, 10)
-				
-				Bar_value_label.align = Label.ALIGN_CENTER
-				Bar_value_label.name = Bar.name + 'ValueLabel'
-				Bar_value_label.text = str(Bar.value)
-				
-				Bar.add_child(Bar_value_label)
-				Bar.add_child(Bar_label)
+				Bar.get_node("ResourceAmount").text = str(Bar.value)
+			
 				resource_hbox.add_child(Bar)
-		
+				
+	#This is a hack because scroll bars don't work well in Godot
+	var resource_hbox = HBoxContainer.new()
+	resource_hbox.size_flags_vertical = SIZE_EXPAND_FILL
+	resource_hbox.size_flags_vertical = SIZE_EXPAND_FILL
+	add_child(resource_hbox)
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -63,4 +44,6 @@ func set_resources(resource_values):
 	for child in get_children():
 		if child is HBoxContainer:
 			for node in child.get_children():
-				node.value = resource_values[Game.resources.keys().find(node.get_node(node.name + 'Label').text)]
+				print(node.name)
+				print(node.name.substr(0, len(node.name) - 3))
+				node.value = resource_values[Game.resources.keys().find(node.name.substr(0, len(node.name) - 3))]

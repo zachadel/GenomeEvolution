@@ -78,8 +78,6 @@ func load_from_save(orgn_info):
 	
 	perform_anims(true);
 
-#This may need to be modified so as not to steal inputs from other
-#nodes like the WorldMap and MainMenu (maybe)
 func _input(ev):
 	if (ev.is_action_pressed("increment")):
 		update_energy(1);
@@ -235,7 +233,6 @@ func check_resources(x):
 	for i in range(4):
 		if resources[i]  < costs[repair][i]:
 			#print("NOT ENOUGH CASH! STRANGA!")
-			#I'm quite sad I never got to see this message printed
 			return false
 	return true
 
@@ -410,8 +407,10 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 		
 		var other_cmsm = cmsms.get_other_cmsm(cmsm);
 		
-		var left_id = cmsm.get_child(g_idx-1).id;
-		var right_id = cmsm.get_child(g_idx+1).id;
+		var left_break_gene = cmsm.get_child(g_idx - 1);
+		var right_break_gene = cmsm.get_child(g_idx + 1);
+		var left_id = left_break_gene.id;
+		var right_id = right_break_gene.id;
 		
 		repair_canceled = false;
 		match (repair_idx):
@@ -463,18 +462,21 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 				else:
 					cmsms.close_gap(gap);
 				emit_signal("justnow_update", "Gap at %s, %d closed: collapsed %d genes and ended due to %s." % [cmsm.get_parent().name, g_idx, remove_count, ended_due_to]);
-########################NOTE: This will need to be changed#####################3							
+			
 				for times in range(remove_count):
 					get_tree().get_root().get_node("Main/WorldMap").current_player.consume_resources("repair_cd")
 			
 			1: # Copy Pattern
 				choice_info["left"].highlight_border(false);
 				if (!roll_storage[0].has(gap)):
-					var roll_result = roll_chance("copy_repair");
-					#print("roll: ", roll_result);
 					roll_storage[0][gap] = roll_chance("copy_repair");
 				if !check_resources(1):
 					roll_storage[0][gap] = 0
+				
+				var do_correction = bool(roll_chance("copy_repair_correction"));
+				var correct_str = "";
+				if (do_correction):
+					correct_str = " One of the genes at the repair site was corrected to match its template gene.";
 				match (roll_storage[0][gap]):
 					0:
 						gene_selection = cmsm.get_elms_around_pos(g_idx, true);
@@ -493,47 +495,45 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 							
 							var gene = get_gene_selection();
 							var g_id = gene.id;
-							emit_signal("justnow_update", "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome, but a %s gene was lost." % [cmsm.get_parent().name, g_idx, left_id, right_id, g_id]);
+							emit_signal("justnow_update", "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome, but a %s gene was lost.%s" % [cmsm.get_parent().name, g_idx, left_id, right_id, g_id, correct_str]);
 							if (do_yields):
 								yield(cmsms.remove_elm(gene, false), "completed");
-								yield(cmsms.close_gap(gap), "completed");
 							else:
 								cmsms.remove_elm(gene, false);
-								cmsms.close_gap(gap);
 					1:
-						emit_signal("justnow_update", "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome without complications." % [cmsm.get_parent().name, g_idx, left_id, right_id]);
-						if (do_yields):
-							yield(cmsms.close_gap(gap), "completed");
-						else:
-							cmsms.close_gap(gap);
+						emit_signal("justnow_update", "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome without complications.%s" % [cmsm.get_parent().name, g_idx, left_id, right_id, correct_str]);
 					2:
-						emit_signal("justnow_update", "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome along with intervening genes." % [cmsm.get_parent().name, g_idx, left_id, right_id]);
+						emit_signal("justnow_update", "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome along with intervening genes.%s" % [cmsm.get_parent().name, g_idx, left_id, right_id, correct_str]);
 						if (do_yields):
 							for i in range(choice_info["left"].get_index()+1, choice_info["right"].get_index()):
 								var copy_elm = Game.copy_elm(other_cmsm.get_child(i));
 								yield(cmsm.add_elm(copy_elm, gap.get_index()), "completed");
-							yield(cmsms.close_gap(gap), "completed");
 						else:
 							for i in range(choice_info["left"].get_index()+1, choice_info["right"].get_index()):
 								var copy_elm = Game.copy_elm(other_cmsm.get_child(i));
 								cmsm.add_elm(copy_elm, gap.get_index());
-							cmsms.close_gap(gap);
 					3:
-						var copy_elm;
-						if (randi()%2):
-							copy_elm = cmsm.get_child(g_idx-1);
-						else:
-							copy_elm = cmsm.get_child(g_idx+1);
+						var copy_elm = right_break_gene;
+						if (randi() % 2):
+							copy_elm = left_break_gene;
 						
-						emit_signal("justnow_update", "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome, but a %s gene was copied." % [cmsm.get_parent().name, g_idx, left_id, right_id, copy_elm.id]);
+						emit_signal("justnow_update", "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome, but a %s gene was copied.%s" % [cmsm.get_parent().name, g_idx, left_id, right_id, copy_elm.id, correct_str]);
 						if (do_yields):
 							yield(cmsms.dupe_elm(copy_elm), "completed");
-							yield(cmsms.close_gap(gap), "completed");
 						else:
 							cmsms.dupe_elm(copy_elm);
-							cmsms.close_gap(gap);
-
-########################NOTE: This will need to be changed#####################3							
+				if (do_correction):
+					var correct_targ = right_break_gene;
+					var correct_src = choice_info["right"];
+					if (correct_targ == null || randi() % 2):
+						correct_targ = left_break_gene;
+						correct_src = choice_info["left"];
+					correct_targ.setup_copy(correct_src);
+				
+				if (do_yields):
+					yield(cmsms.close_gap(gap), "completed");
+				else:
+					cmsms.close_gap(gap);
 				get_tree().get_root().get_node("Main/WorldMap").current_player.consume_resources("repair_cp")
 				#print("repair copy pattern");
 			2: # Join Ends
@@ -543,8 +543,10 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 					roll_storage[1][gap] = 0
 				match (roll_storage[1][gap]):
 					0:
+						emit_signal("justnow_update", "Joined ends for the gap at %s, %d without complications." % [cmsm.get_parent().name, g_idx]);
+					1, 2, 3:
 						gene_selection = cmsm.get_elms_around_pos(g_idx, true);
-						emit_signal("justnow_update", "Joining ends as a last-ditch effort, but must lose a gene; choose which.");
+						emit_signal("justnow_update", "Joining ends as a last-ditch effort, but a gene is harmed; choose which.");
 						if (is_ai):
 							if (gene_selection[0].mode == "ate" || gene_selection[1].mode == "te"):
 								gene_selection.append(gene_selection[0]);
@@ -559,33 +561,46 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 							
 							var gene = get_gene_selection();
 							var g_id = gene.id; # Saved here cuz it'll free the gene in a bit
-							if (do_yields):
-								yield(cmsms.remove_elm(gene, false), "completed");
-								yield(cmsms.close_gap(gap), "completed");
-							else:
-								cmsms.remove_elm(gene, false);
-								cmsms.close_gap(gap);
-							emit_signal("justnow_update", "Joined ends for the gap at %s, %d; lost a %s gene in the repair." % [cmsm.get_parent().name, g_idx, g_id]);
-					1:
-						if (do_yields):
-							yield(cmsms.close_gap(gap), "completed");
-						else:
-							cmsms.close_gap(gap);
-						emit_signal("justnow_update", "Joined ends for the gap at %s, %d without complications." % [cmsm.get_parent().name, g_idx]);
-					2:
-						var copy_elm;
+							var damage_str = "";
+							match (roll_storage[1][gap]):
+								1: # Lose gene
+									damage_str = "was lost"
+									if (do_yields):
+										yield(cmsms.remove_elm(gene, false), "completed");
+									else:
+										cmsms.remove_elm(gene, false);
+								2: # Major down
+									damage_str = "received a major downgrade"
+									gene.evolve_specific(true, false);
+								3: # Minor down
+									damage_str = "received a minor downgrade"
+									gene.evolve_specific(false, false);
+							emit_signal("justnow_update", "Joined ends for the gap at %s, %d; a %s gene %s in the repair." % [cmsm.get_parent().name, g_idx, g_id, damage_str]);
+					4, 5, 6:
+						var gene = right_break_gene;
 						if (randi()%2):
-							copy_elm = cmsm.get_child(g_idx-1);
-						else:
-							copy_elm = cmsm.get_child(g_idx+1);
-						if (do_yields):
-							yield(cmsms.dupe_elm(copy_elm), "completed");
-							yield(cmsms.close_gap(gap), "completed");
-						else:
-							cmsms.dupe_elm(copy_elm);
-							cmsms.close_gap(gap)
-						emit_signal("justnow_update", "Joined ends for the gap at %s, %d; duplicated a %s gene in the repair." % [cmsm.get_parent().name, g_idx, copy_elm.id]);
+							gene = left_break_gene;
+						
+						var boon_str = "";
+						match (roll_storage[1][gap]):
+							4: # Copy gene
+								boon_str = "was duplicated"
+								if (do_yields):
+									yield(cmsms.dupe_elm(gene), "completed");
+								else:
+									cmsms.dupe_elm(gene);
+							5: # Major up
+								boon_str = "received a major upgrade"
+								gene.evolve_specific(true, true);
+							6: # Minor up
+								boon_str = "received a minor upgrade"
+								gene.evolve_specific(false, true);
+						emit_signal("justnow_update", "Joined ends for the gap at %s, %d; a %s gene %s in the repair." % [cmsm.get_parent().name, g_idx, gene.id, boon_str]);
 				
+				if (do_yields):
+					yield(cmsms.close_gap(gap), "completed");
+				else:
+					cmsms.close_gap(gap);
 				get_tree().get_root().get_node("Main/WorldMap").current_player.consume_resources("repair_je")
 				#print("repair join ends")
 		
@@ -604,9 +619,6 @@ func highlight_gap_choices():
 		upd_repair_opts(cmsms.gap_list[0]);
 		auto_repair();
 
-#All of these functions may need to be modified for AI players
-#or maybe reproduct_gene_pool is just modified by the WorldMap.
-#That seems like a fairly reasonable solution.
 func get_gene_pool():
 	return reproduct_gene_pool;
 
@@ -721,7 +733,6 @@ func recombination():
 				cont_recombo = false
 				emit_signal("doing_work", false);
 
-#Will need to be reworked eventually to work around AI players
 func prune_cmsms(final_num, add_to_pool = true):
 	while (cmsms.get_cmsms().size() > final_num):
 		if (add_to_pool):
@@ -729,7 +740,6 @@ func prune_cmsms(final_num, add_to_pool = true):
 		cmsms.remove_cmsm(final_num);
 
 func replicate(idx):
-	#classic
 	var rep_type = "some unknown freaky deaky shiznaz";
 	
 	perform_anims(false);
@@ -876,7 +886,6 @@ const BEHAVIOR_TO_COST_MULT = {
 		"move": -0.05
 	}
 }
-
 func use_resources(action):
 	var cost_mult = 1.0;
 	var bprof = get_behavior_profile();
