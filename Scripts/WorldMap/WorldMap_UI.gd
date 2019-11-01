@@ -10,18 +10,16 @@ signal quit_to_title
 func _ready():
 	pass # Replace with function body.
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
-
 func hide():
 	$UIPanel.hide()
 	$ResourceHazardPanel.hide()
+	$ResourceBank.hide()
 	$EnergyBar.hide()
 	
 func show():
 	$UIPanel.show()
 	$ResourceHazardPanel.show()
+	$ResourceBank.show()
 	$EnergyBar.show()
 
 func _on_Switch_Button_pressed():
