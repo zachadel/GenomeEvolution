@@ -48,7 +48,7 @@ func _on_WorldMap_end_map_turn():
 	$WorldMap.hide()
 	$WorldMap/WorldMap_UI.hide()
 	$Canvas_CardTable/CardTable.show()
-	Game.adv_turn()
+	#Game.adv_turn() # Do this within the CardTable, otherwise you're skipping a turn
 	
 	pass
 	

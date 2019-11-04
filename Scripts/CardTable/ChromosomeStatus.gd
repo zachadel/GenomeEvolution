@@ -16,25 +16,20 @@ const COLORS = {
 	"ate_dead": Color(0.66, 0.15, 0)
 	};
 
-func color_comparison(compare_status_bar = null):
-	var compare_behavior = null;
-	if (compare_status_bar != null):
-		compare_behavior = compare_status_bar.get_behavior();
-	
+func color_comparison(compare_status_bar = null):	
 	for n in container.get_children():
 		var key = n.name;
 		
 		var comparison = 0;
-		if (compare_behavior != null):
-			comparison = 1;
-			if (key in compare_behavior):
-				var behave_value = stepify(compare_behavior[key], 0.1);
-				
-				if (n.get_value() == behave_value):
-					comparison = 0;
-				elif (n.get_value() == 0.0):
-					comparison = -2;
-				elif (n.get_value() < behave_value):
+		if (compare_status_bar != null):
+			var my_val = n.get_value();
+			if (my_val == 0.0):
+				comparison = -2;
+			else:
+				var comp_val = compare_status_bar.get_value_of(key);
+				if (my_val > comp_val):
+					comparison = 1;
+				elif (my_val < comp_val):
 					comparison = -1;
 		
 		var color_type = "essential";
@@ -50,6 +45,9 @@ func color_comparison(compare_status_bar = null):
 				color_comp = "up";
 		
 		n.modulate = COLORS["%s_%s" % [color_type, color_comp]];
+
+func get_value_of(key):
+	return container.get_node(key).get_value();
 
 func add_cmsm(cmsm):
 	chromes.append(cmsm);
