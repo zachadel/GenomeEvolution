@@ -44,6 +44,7 @@ func add_cmsm(cmsm_save = null, force_show = false):
 
 func remove_cmsm(cmsm_idx):
 	var c = get_child(cmsm_idx);
+	c.clear_link();
 	if (c in visible_cmsm):
 		visible_cmsm.erase(c);
 	c.free();
@@ -66,8 +67,8 @@ func replicate_cmsm(cmsm_idx):
 	move_child(new_disp_cmsm, cmsm_idx + 1);
 	return new_disp_cmsm;
 
-func lock_cmsm(idx, l):
-	get_child(idx).lock(l);
+func link_cmsms(par, child):
+	get_child(par).set_link(get_child(child));
 
 func hide_cmsm(idx, h):
 	get_child(idx).hide_cmsm(h);

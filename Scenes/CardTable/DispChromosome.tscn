@@ -34,24 +34,29 @@ margin_top = -7.0
 margin_right = 200.0
 margin_bottom = 256.0
 
-[node name="BtnCollapse" type="Button" parent="container/ChoiceButtons/zIndexEnforce/BackColor"]
+[node name="Sizer" type="Control" parent="container/ChoiceButtons/zIndexEnforce"]
+margin_top = -7.0
+margin_right = 200.0
+margin_bottom = 256.0
+
+[node name="BtnCollapse" type="Button" parent="container/ChoiceButtons/zIndexEnforce/Sizer"]
 anchor_left = 0.5
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -71.0
+margin_left = -90.0
 margin_top = 7.0
-margin_right = 4.0
+margin_right = -15.0
 margin_bottom = -6.0
 rect_min_size = Vector2( 75, 50 )
 text = "Show"
 
-[node name="BtnChoose" type="Button" parent="container/ChoiceButtons/zIndexEnforce/BackColor"]
+[node name="BtnChoose" type="Button" parent="container/ChoiceButtons/zIndexEnforce/Sizer"]
 anchor_left = 0.5
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = 34.0
+margin_left = 15.0
 margin_top = 7.0
-margin_right = 109.0
+margin_right = 90.0
 margin_bottom = -6.0
 rect_min_size = Vector2( 75, 50 )
 text = "  Keep  "
@@ -76,10 +81,15 @@ margin_bottom = 225.0
 [node name="update_delay" type="Timer" parent="."]
 wait_time = 0.01
 one_shot = true
-[connection signal="pressed" from="container/ChoiceButtons/zIndexEnforce/BackColor/BtnCollapse" to="." method="_on_BtnCollapse_pressed"]
-[connection signal="pressed" from="container/ChoiceButtons/zIndexEnforce/BackColor/BtnChoose" to="." method="_on_BtnChoose_pressed"]
+
+[node name="update_link_delay" type="Timer" parent="."]
+wait_time = 0.01
+one_shot = true
+[connection signal="pressed" from="container/ChoiceButtons/zIndexEnforce/Sizer/BtnCollapse" to="." method="_on_BtnCollapse_pressed"]
+[connection signal="pressed" from="container/ChoiceButtons/zIndexEnforce/Sizer/BtnChoose" to="." method="_on_BtnChoose_pressed"]
 [connection signal="cmsm_changed" from="container/scroll/cmsm" to="." method="_on_cmsm_cmsm_changed"]
 [connection signal="elm_clicked" from="container/scroll/cmsm" to="." method="_propogate_click"]
 [connection signal="elm_mouse_entered" from="container/scroll/cmsm" to="." method="_propagate_mouse_entered"]
 [connection signal="elm_mouse_exited" from="container/scroll/cmsm" to="." method="_propagate_mouse_exited"]
 [connection signal="timeout" from="update_delay" to="." method="_on_update_delay_timeout"]
+[connection signal="timeout" from="update_link_delay" to="." method="_on_update_link_delay_timeout"]

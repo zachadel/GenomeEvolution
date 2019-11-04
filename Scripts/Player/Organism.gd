@@ -752,8 +752,8 @@ func replicate(idx):
 		0: # Mitosis
 			rep_type = "mitosis";
 			
-			cmsms.lock_cmsm(1, true);
-			cmsms.lock_cmsm(3, true);
+			cmsms.link_cmsms(0, 1);
+			cmsms.link_cmsms(2, 3);
 			
 			emit_signal("justnow_update", "Choose which chromosome pair (top two or bottom two) to keep.");
 			var keep_idx = yield(self, "cmsm_picked");

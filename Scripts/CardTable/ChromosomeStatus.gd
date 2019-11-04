@@ -8,7 +8,7 @@ const COLORS = {
 	"essential_norm": Color(0, 0.66, 0),
 	"essential_up": Color(0, 1, 0.5),
 	"essential_down": Color(0.66, 0.66, 0),
-	"essential_dead": Color(0.75, 0.5, 0),
+	"essential_dead": Color(0.75, 0.33, 0),
 	
 	"ate_norm": Color(1, .33, 0),
 	"ate_up": Color(1, 0.66, 0),
@@ -28,11 +28,13 @@ func color_comparison(compare_status_bar = null):
 		if (compare_behavior != null):
 			comparison = 1;
 			if (key in compare_behavior):
-				if (n.get_value() == compare_behavior[key]):
+				var behave_value = stepify(compare_behavior[key], 0.1);
+				
+				if (n.get_value() == behave_value):
 					comparison = 0;
 				elif (n.get_value() == 0.0):
 					comparison = -2;
-				elif (n.get_value() < compare_behavior[key]):
+				elif (n.get_value() < behave_value):
 					comparison = -1;
 		
 		var color_type = "essential";

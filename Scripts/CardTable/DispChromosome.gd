@@ -4,11 +4,14 @@ onready var cmsm = $container/scroll/cmsm setget ,get_cmsm;
 var hidden = true;
 
 onready var ChoiceBtnsCtl = $container/ChoiceButtons;
-onready var ChoiceBtnsSizer = $container/ChoiceButtons/zIndexEnforce/BackColor;
-onready var BtnCollapse = $container/ChoiceButtons/zIndexEnforce/BackColor/BtnCollapse;
-onready var BtnChoose = $container/ChoiceButtons/zIndexEnforce/BackColor/BtnChoose;
+onready var ChoiceBtnsBg = $container/ChoiceButtons/zIndexEnforce/BackColor;
+onready var ChoiceBtnsSizer = $container/ChoiceButtons/zIndexEnforce/Sizer;
+onready var BtnCollapse = $container/ChoiceButtons/zIndexEnforce/Sizer/BtnCollapse;
+onready var BtnChoose = $container/ChoiceButtons/zIndexEnforce/Sizer/BtnChoose;
 
 onready var StatusBar = $container/StatusBar;
+
+var linked_cmsm = null setget set_link;
 
 signal elm_clicked(elm);
 signal elm_mouse_entered(elm);
@@ -62,6 +65,7 @@ func show_choice_buttons(show):
 	$container/ChoiceButtons.visible = show;
 	lock(false);
 	if (!show):
+		clear_link();
 		color_compare();
 	upd_size();
 
@@ -83,10 +87,50 @@ func upd_size(delay = true):
 		if ($container/scroll.visible):
 			$container/scroll.rect_min_size.x = SCROLL_MAX_WIDTH - $container/scroll.rect_position.x;
 		if (ChoiceBtnsSizer.visible):
-			ChoiceBtnsSizer.rect_size.y = $container.rect_size.y + SIZER_OFFSET;
+			var sizer_y = $container.rect_size.y + SIZER_OFFSET;
+			ChoiceBtnsSizer.rect_size.y = sizer_y;
+			
+			if (linked_cmsm == null):
+				ChoiceBtnsBg.rect_size.y = sizer_y;
+			else:
+				upd_link_vis();
+
+func upd_link_vis(delay = true):
+	if (delay):
+		$update_link_delay.start();
+	else:
+		if (ChoiceBtnsBg.visible):
+			ChoiceBtnsBg.rect_size.y = linked_cmsm.get_global_bottom() - ChoiceBtnsBg.get_global_rect().position.y;
+		else:
+			linked_cmsm.upd_link_vis();
+
+func clear_link():
+	if (linked_cmsm != null):
+		linked_cmsm.set_link(null);
+	set_link(null);
+
+func set_link(cmsm):
+	ChoiceBtnsBg.visible = true;
+	linked_cmsm = cmsm;
+	if (cmsm != null):
+		cmsm._child_link(self);
+		upd_link_vis();
+
+func _child_link(cmsm):
+	ChoiceBtnsBg.visible = false;
+	linked_cmsm = cmsm;
+	lock(true);
+	upd_link_vis();
+
+func get_global_bottom():
+	var r = ChoiceBtnsSizer.get_global_rect();
+	return r.position.y + r.size.y;
 
 func _on_update_delay_timeout():
 	upd_size(false);
+
+func _on_update_link_delay_timeout():
+	upd_link_vis(false);
 
 func _on_cmsm_cmsm_changed():
 	StatusBar.update();
