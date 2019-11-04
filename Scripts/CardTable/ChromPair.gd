@@ -59,8 +59,10 @@ func replicate_cmsms(cmsm_idxs):
 		replicate_cmsm(find_cmsm_idx(c));
 
 func replicate_cmsm(cmsm_idx):
-	var new_disp_cmsm = add_cmsm(get_cmsm(cmsm_idx).get_elms_save());
+	var par_disp_cmsm = get_child(cmsm_idx);
+	var new_disp_cmsm = add_cmsm(par_disp_cmsm.get_cmsm().get_elms_save());
 	get_organism().evolve_cmsm(new_disp_cmsm.get_cmsm());
+	new_disp_cmsm.color_compare(par_disp_cmsm);
 	move_child(new_disp_cmsm, cmsm_idx + 1);
 	return new_disp_cmsm;
 

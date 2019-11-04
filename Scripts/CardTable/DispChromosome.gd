@@ -8,6 +8,8 @@ onready var ChoiceBtnsSizer = $container/ChoiceButtons/zIndexEnforce/BackColor;
 onready var BtnCollapse = $container/ChoiceButtons/zIndexEnforce/BackColor/BtnCollapse;
 onready var BtnChoose = $container/ChoiceButtons/zIndexEnforce/BackColor/BtnChoose;
 
+onready var StatusBar = $container/StatusBar;
+
 signal elm_clicked(elm);
 signal elm_mouse_entered(elm);
 signal elm_mouse_exited(elm);
@@ -27,8 +29,8 @@ func _propagate_mouse_exited(elm):
 	emit_signal("elm_mouse_exited", elm);
 
 func _ready():
-	$container/StatusBar.add_cmsm(cmsm);
-	$container/StatusBar.update();
+	StatusBar.add_cmsm(cmsm);
+	StatusBar.update();
 	upd_size();
 
 func get_cmsm_list():
@@ -43,7 +45,7 @@ func hide_cmsm(h = null, only_two = true):
 	else:
 		hidden = h;
 	
-	$container/StatusBar.visible = hidden;
+	StatusBar.visible = hidden;
 	$container/scroll.visible = !hidden;
 	
 	if (hidden):
@@ -59,6 +61,8 @@ func hide_cmsm(h = null, only_two = true):
 func show_choice_buttons(show):
 	$container/ChoiceButtons.visible = show;
 	lock(false);
+	if (!show):
+		color_compare();
 	upd_size();
 
 func lock(lock):
@@ -85,7 +89,7 @@ func _on_update_delay_timeout():
 	upd_size(false);
 
 func _on_cmsm_cmsm_changed():
-	$container/StatusBar.update();
+	StatusBar.update();
 	upd_size();
 
 func _on_BtnCollapse_pressed():
@@ -94,3 +98,8 @@ func _on_BtnCollapse_pressed():
 func _on_BtnChoose_pressed():
 	emit_signal("cmsm_picked", self);
 
+func color_compare(other_cmsm = null):
+	if (other_cmsm == null):
+		StatusBar.color_comparison(null);
+	else:
+		StatusBar.color_comparison(other_cmsm.StatusBar);
