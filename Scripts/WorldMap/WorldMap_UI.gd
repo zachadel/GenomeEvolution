@@ -2,9 +2,6 @@ extends CanvasLayer
 
 signal end_map_pressed
 signal quit_to_title
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -27,7 +24,11 @@ func _on_Switch_Button_pressed():
 	pass # Replace with function body.
 
 
-func _on_WorldMap_player_resources_changed():
+#At some point, error checking should be added here, where an error message
+#is printed if the player tries to store too many resources
+func _on_WorldMap_player_resources_changed(carbs, fats, proteins, minerals):
+	$ResourceBank.update_cfp_values(carbs, fats, proteins)
+	$ResourceBank.update_mineral_values(minerals)
 	pass # Replace with function body.
 
 func _on_Quit_To_Title_Button_pressed():

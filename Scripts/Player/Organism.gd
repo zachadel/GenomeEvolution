@@ -14,7 +14,7 @@ var born_on_turn
 var died_on_turn
 
 var energy
-var resources = [100, 100, 100, 100] #the 4 resource groups
+var resources = {"carbs": 10, "fats": 5, "proteins": 20, "minerals": 20} #the 4 resource groups
 var MIN_ENERGY = 0;
 var MAX_ENERGY = 10;
 var MAX_ALLOCATED_ENERGY = 10;
@@ -37,6 +37,7 @@ signal show_repair_opts(show);
 signal show_reprod_opts(show);
 
 signal died(org);
+signal resources_changed(carbs, fats, proteins, minerals);
 
 func _ready():
 	#initialization done in _ready for restarts
@@ -876,9 +877,24 @@ func update_energy_allocation(type, amount):
 	energy_allocation_panel.update_energy(energy);
 
 var costs = {
-	"repair_cd" : [0, 1, 5, 0],
-	"repair_cp" : [0, 2, 2, 8],
-	"repair_je" : [0, 5, 1, 0],
+	"repair_cd" : {
+		"carbs": 0, 
+		"fats": 1, 
+		"proteins": 5, 
+		"minerals": 0
+	},
+	"repair_cp" : {
+		"carbs": 0, 
+		"fats": 2,
+		"proteins": 2,
+		"minerals": 8
+	},
+	"repair_je" : {
+		"carbs": 0, 
+		"fats": 5, 
+		"proteins": 1, 
+		"minerals": 0
+	},
 	"move" : [10, 0, 0, 0]
 }
 const BEHAVIOR_TO_COST_MULT = {

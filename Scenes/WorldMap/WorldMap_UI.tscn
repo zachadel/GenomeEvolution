@@ -117,9 +117,9 @@ grow_horizontal = 0
 alignment = 2
 
 [node name="ResourceBank" parent="." instance=ExtResource( 5 )]
-margin_left = 460.0
+margin_left = 380.0
 margin_top = 740.0
-margin_right = 1060.0
+margin_right = 980.0
 margin_bottom = 870.0
 [connection signal="pressed" from="UIPanel/ActionsPanel/GridContainer/Quit_To_Title_Button" to="." method="_on_Quit_To_Title_Button_pressed"]
 [connection signal="pressed" from="UIPanel/ActionsPanel/GridContainer/Switch_Button" to="." method="_on_Switch_Button_pressed"]

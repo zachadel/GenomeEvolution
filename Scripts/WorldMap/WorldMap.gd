@@ -4,7 +4,7 @@ signal tile_clicked
 signal change_to_main_menu
 signal end_map_turn
 
-signal player_resources_changed
+signal player_resources_changed(carbs, fats, proteins, minerals)
 
 var MAX_ZOOM = 3
 var MIN_ZOOM = .5
@@ -121,6 +121,8 @@ func setup(biome_seed, hazard_seed, resource_seed, tiebreak_seed, _chunk_size, p
 	
 	$WorldMap_UI/ResourceHazardPanel.set_resources($ResourceMap.get_tile_resources($BiomeMap.world_to_map(default_start).x, $BiomeMap.world_to_map(default_start).y))
 	$WorldMap_UI/ResourceHazardPanel.set_hazards($BiomeMap.get_hazards($BiomeMap.world_to_map(default_start).x, $BiomeMap.world_to_map(default_start).y))
+	$WorldMap_UI/ResourceBank.update_cfp_values(current_player.organism.resources["carbs"], current_player.organism.resources["fats"], current_player.organism.resources["proteins"])
+	$WorldMap_UI/ResourceBank.update_mineral_values(current_player.organism.resources["minerals"])
 	
 	$MapCamera.position = current_player.position
 
