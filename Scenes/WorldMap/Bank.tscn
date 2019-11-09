@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scripts/WorldMap/Bank.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Images/Tiles/Resources/resources_border.png" type="Texture" id=2]
+
+[node name="Bank" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -1600.0
+margin_bottom = -900.0
+script = ExtResource( 1 )
+
+[node name="Border" type="TextureRect" parent="."]
+margin_right = 600.0
+margin_bottom = 60.0
+texture = ExtResource( 2 )
+expand = true

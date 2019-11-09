@@ -14,7 +14,27 @@ var born_on_turn
 var died_on_turn
 
 var energy
-var resources = {"carbs": 10, "fats": 5, "proteins": 20, "minerals": 20} #the 4 resource groups
+#the 4 resource groups with initial tiers of compression
+#tier 0 is immediately useable
+#tier 1 must be broken down into tier 0 using the tier stats
+var resources = {
+	"carbs": {
+		0: 10, 
+		1: 5
+	},
+	"fats": {
+		0: 5,
+		1: 2
+	},
+	"proteins": {
+		0: 20,
+		1: 5
+	},
+	"minerals": {
+		0: 20
+	}
+} 
+
 var MIN_ENERGY = 0;
 var MAX_ENERGY = 10;
 var MAX_ALLOCATED_ENERGY = 10;
@@ -37,7 +57,7 @@ signal show_repair_opts(show);
 signal show_reprod_opts(show);
 
 signal died(org);
-signal resources_changed(carbs, fats, proteins, minerals);
+signal resources_changed(carbs_dict, fats_dict, proteins_dict, minerals_dict);
 
 func _ready():
 	#initialization done in _ready for restarts
@@ -221,6 +241,8 @@ var repair_type_possible = [false, false, false];
 var sel_repair_idx = -1;
 var sel_repair_gap = null;
 
+#It's likely this will need to be updated to take into account converting resources
+#This also only checks against internal resources, not total available resources
 func check_resources(x):
 	var repair = ""
 	match x:
@@ -231,8 +253,8 @@ func check_resources(x):
 		2:
 			repair = "repair_je"
 		
-	for i in range(4):
-		if resources[i]  < costs[repair][i]:
+	for i in range(len(resources)):
+		if resources[i][0]  < costs[repair][i]:
 			#print("NOT ENOUGH CASH! STRANGA!")
 			return false
 	return true

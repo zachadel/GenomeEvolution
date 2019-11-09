@@ -121,8 +121,8 @@ func setup(biome_seed, hazard_seed, resource_seed, tiebreak_seed, _chunk_size, p
 	
 	$WorldMap_UI/ResourceHazardPanel.set_resources($ResourceMap.get_tile_resources($BiomeMap.world_to_map(default_start).x, $BiomeMap.world_to_map(default_start).y))
 	$WorldMap_UI/ResourceHazardPanel.set_hazards($BiomeMap.get_hazards($BiomeMap.world_to_map(default_start).x, $BiomeMap.world_to_map(default_start).y))
-	$WorldMap_UI/ResourceBank.update_cfp_values(current_player.organism.resources["carbs"], current_player.organism.resources["fats"], current_player.organism.resources["proteins"])
-	$WorldMap_UI/ResourceBank.update_mineral_values(current_player.organism.resources["minerals"])
+	$WorldMap_UI/CFPBank.update_resources_values({"carbs": current_player.organism.resources["carbs"], "fats": current_player.organism.resources["fats"], "proteins": current_player.organism.resources["proteins"]})
+	$WorldMap_UI/MineralBank.update_resources_values({"minerals": current_player.organism.resources["minerals"]})
 	
 	$MapCamera.position = current_player.position
 
@@ -327,7 +327,6 @@ func get_player_line_of_sight():
 	pass
 
 func _on_WorldMap_UI_end_map_pressed():
-	emit_signal("end_map_turn")
 	var player_pos = $BiomeMap.world_to_map(current_player.position)
 	
 	current_player.current_tile = {
@@ -338,6 +337,7 @@ func _on_WorldMap_UI_end_map_pressed():
 	
 	$WorldMap_UI.hide()
 	current_player.enable_sprite(false)
+	emit_signal("end_map_turn")
 	pass # Replace with function body.
 
 

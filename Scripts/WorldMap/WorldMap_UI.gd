@@ -10,14 +10,16 @@ func _ready():
 func hide():
 	$UIPanel.hide()
 	$ResourceHazardPanel.hide()
-	$ResourceBank.hide()
 	$EnergyBar.hide()
+	$CFPBank.hide()
+	$MineralBank.hide()
 	
 func show():
 	$UIPanel.show()
 	$ResourceHazardPanel.show()
-	$ResourceBank.show()
 	$EnergyBar.show()
+	$CFPBank.show()
+	$MineralBank.show()
 
 func _on_Switch_Button_pressed():
 	emit_signal("end_map_pressed")
@@ -27,8 +29,8 @@ func _on_Switch_Button_pressed():
 #At some point, error checking should be added here, where an error message
 #is printed if the player tries to store too many resources
 func _on_WorldMap_player_resources_changed(carbs, fats, proteins, minerals):
-	$ResourceBank.update_cfp_values(carbs, fats, proteins)
-	$ResourceBank.update_mineral_values(minerals)
+	$UIPanel/CFPBank.update_resources_values({"carbs": carbs, "fats": fats, "proteins": proteins})
+	$UIPanel/MineralBank.update_resources_values({"minerals": minerals})
 	pass # Replace with function body.
 
 func _on_Quit_To_Title_Button_pressed():

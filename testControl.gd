@@ -87,11 +87,10 @@ func _ready():
 #		subBars[i].self_modulate = Color(1 - float(i)/resource_tiers, 0, 0)
 #		add_child(subBars[i])
 
-	var A = [-1, 1, 4, 5, 6]
-	var B = A
-	B[0] = 4
-	print(A[0])
-	print(B[0])
+	var cfp_bank = load('res://Scripts/WorldMap/CFPBank.gd')
+	print(cfp_bank)
+	print(cfp_bank.max_complexity_tiers)
+	print(cfp_bank.resources)
 	
 	pass # Replace with function body.
 
