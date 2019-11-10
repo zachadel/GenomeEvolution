@@ -87,16 +87,19 @@ func _ready():
 #		subBars[i].self_modulate = Color(1 - float(i)/resource_tiers, 0, 0)
 #		add_child(subBars[i])
 
-	var cfp_bank = load('res://Scripts/WorldMap/CFPBank.gd')
-	print(cfp_bank)
-	print(cfp_bank.max_complexity_tiers)
-	print(cfp_bank.resources)
-	
+	var A = [22,11,54,8,4,8,98,5]
+	for x in A:
+		print(x)
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
 	
+	
 func test_function(a = 1, b = 2):
 	print(a, b)
+
+func _on_Control_mouse_entered():
+	print('hello')
+	pass # Replace with function body.

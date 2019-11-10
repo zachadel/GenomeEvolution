@@ -10,11 +10,6 @@ var resource_generator
 
 var tile_texture_size
 
-const PRIMARY_RESOURCE_MAX = 10
-const PRIMARY_RESOURCE_MIN = 5
-const SECONDARY_RESOURCE_MAX = 2
-const SECONDARY_RESOURCE_MIN = 0
-
 func _ready():
 	var i = 0
 	var tile_texture
@@ -178,6 +173,7 @@ func get_primary_resource(x, y):
 		
 	return resource
 
+#resources[i] = value
 func get_tile_resources(x, y):
 	var resources = {}
 	
@@ -186,10 +182,14 @@ func get_tile_resources(x, y):
 		
 		for i in range(len(Game.resources)):
 			if i != primary_resource:
-				resources[i] = int(abs(floor(resource_generator.get_noise_3d(x, y, i) * Game.GEN_SCALING))) % (SECONDARY_RESOURCE_MAX - SECONDARY_RESOURCE_MIN) + SECONDARY_RESOURCE_MIN
+				resources[i] = int(abs(floor(resource_generator.get_noise_3d(x, y, i) * Game.GEN_SCALING))) % (Game.SECONDARY_RESOURCE_MAX - Game.SECONDARY_RESOURCE_MIN) + Game.SECONDARY_RESOURCE_MIN
 			else:
-				resources[i] = int(abs(floor(resource_generator.get_noise_3d(x, y, i) * Game.GEN_SCALING))) % (PRIMARY_RESOURCE_MAX - PRIMARY_RESOURCE_MIN) + PRIMARY_RESOURCE_MIN
+				resources[i] = int(abs(floor(resource_generator.get_noise_3d(x, y, i) * Game.GEN_SCALING))) % (Game.PRIMARY_RESOURCE_MAX - Game.PRIMARY_RESOURCE_MIN) + Game.PRIMARY_RESOURCE_MIN
 	else:
-		resources = Game.modified_tiles[[int(x), int(y)]]["tile_resources"]
+		resources = Game.modified_tiles[[int(x), int(y)]]["resources"]
 	
 	return resources
+
+func update_tile_resource(x, y, primary_resource_index):
+	set_cell(int(x), int(y), primary_resource_index)
+	

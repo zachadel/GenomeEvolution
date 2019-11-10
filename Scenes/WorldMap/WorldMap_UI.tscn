@@ -39,12 +39,13 @@ custom_constants/vseparation = 20
 custom_constants/hseparation = 20
 columns = 2
 
-[node name="Move_Button" type="Button" parent="UIPanel/ActionsPanel/GridContainer"]
+[node name="Acquire_Button" type="Button" parent="UIPanel/ActionsPanel/GridContainer"]
 margin_right = 155.0
 margin_bottom = 55.0
 rect_min_size = Vector2( 150, 50 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
+text = "Acquire Resources"
 
 [node name="Energy_Button" type="Button" parent="UIPanel/ActionsPanel/GridContainer"]
 margin_left = 175.0
@@ -118,15 +119,16 @@ grow_horizontal = 0
 alignment = 2
 
 [node name="CFPBank" parent="." instance=ExtResource( 5 )]
-margin_left = 420.0
-margin_top = 750.0
-margin_right = -1180.0
-margin_bottom = -150.0
+margin_left = 460.0
+margin_top = 740.0
+margin_right = -1140.0
+margin_bottom = -160.0
 
 [node name="MineralBank" parent="." instance=ExtResource( 6 )]
-margin_left = 420.0
-margin_top = 806.272
-margin_right = -1180.0
-margin_bottom = -93.7282
+margin_left = 460.0
+margin_top = 820.0
+margin_right = -1140.0
+margin_bottom = -80.0
+[connection signal="pressed" from="UIPanel/ActionsPanel/GridContainer/Acquire_Button" to="." method="_on_Acquire_Button_pressed"]
 [connection signal="pressed" from="UIPanel/ActionsPanel/GridContainer/Quit_To_Title_Button" to="." method="_on_Quit_To_Title_Button_pressed"]
 [connection signal="pressed" from="UIPanel/ActionsPanel/GridContainer/Switch_Button" to="." method="_on_Switch_Button_pressed"]

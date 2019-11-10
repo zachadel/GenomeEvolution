@@ -562,12 +562,14 @@ margin_left = 11.894
 margin_top = 751.0
 margin_right = -1588.11
 margin_bottom = -149.0
+rect_scale = Vector2( 0.8, 1 )
 
 [node name="MineralBank" parent="." instance=ExtResource( 12 )]
 margin_left = 11.894
 margin_top = 810.0
 margin_right = -1588.11
 margin_bottom = -90.0
+rect_scale = Vector2( 0.8, 1 )
 [connection signal="player_done" from="." to="pnl_energy_allocation" method="_on_Control_player_done"]
 [connection signal="pressed" from="button_grid/btn_dead_menu" to="." method="_on_btn_dead_menu_pressed"]
 [connection signal="pressed" from="button_grid/btn_dead_restart" to="." method="_on_btn_dead_restart_pressed"]

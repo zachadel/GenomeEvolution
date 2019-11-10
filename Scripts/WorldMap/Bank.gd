@@ -86,6 +86,8 @@ func setup(_BASIC_RESOURCES, _resources, _max_complexity_tiers, _max_stored, _re
 			label.text = BASIC_RESOURCES[j] + '_' + str(i) + ': ' + str(resources[i][BASIC_RESOURCES[j]])
 			label.rect_size = subBar.rect_size
 			
+			subBar.hint_tooltip = label.text
+			
 			add_child(subBar)
 
 func shift_single_value(resource, tier, shift):
@@ -118,7 +120,7 @@ func shift_single_resources_resource(resource, resource_dict):
 	else:
 		return false
 
-#array_of_dicts[resources][tier] = value
+#array_of_dicts[resource][tier] = value
 func update_resources_values(array_of_dicts):
 	var new_resources_dict = construct_resources_dict_from_array_of_dicts(array_of_dicts)
 	
@@ -180,6 +182,8 @@ func update_resources_bar_positions():
 			var label = subBar.get_node('Label')
 			label.text = BASIC_RESOURCES[j] + '_' + str(i) + ': ' + str(resources[i][BASIC_RESOURCES[j]])
 			label.rect_size = subBar.rect_size
+			
+			subBar.hint_tooltip = label.text
 
 #Function for traversing resources dictionaries or tier dictionaries
 func sum_resources_dict(resources_dict):

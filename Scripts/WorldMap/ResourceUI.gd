@@ -22,8 +22,8 @@ func _ready():
 				
 				Bar.name = resource + 'Bar'
 				
-				Bar.max_value = Game.MAX_RESOURCE
-				Bar.min_value = Game.MIN_RESOURCE
+				Bar.max_value = Game.PRIMARY_RESOURCE_MAX
+				Bar.min_value = 0
 				Bar.value = randi() % 10 #For testing
 				
 				Bar.size_flags_horizontal = SIZE_EXPAND_FILL
@@ -39,11 +39,9 @@ func _ready():
 	add_child(resource_hbox)
 	pass # Replace with function body.
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+#resource_values[resource_index] = values
 func set_resources(resource_values):
 	for child in get_children():
 		if child is HBoxContainer:
 			for node in child.get_children():
-				print(node.name)
-				print(node.name.substr(0, len(node.name) - 3))
 				node.value = resource_values[Game.resources.keys().find(node.name.substr(0, len(node.name) - 3))]

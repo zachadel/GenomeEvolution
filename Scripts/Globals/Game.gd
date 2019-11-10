@@ -10,13 +10,24 @@ enum TURN_TYPES {Map, NewTEs, TEJump, RepairBreaks, EnvironmentalDamage, Recombi
 #NOTE: It may be worthwhile to store dicts which go from biome_index -> string
 #and string -> biome_index, since both operations are needed frequently
 var biomes = {}
+#resources['resource']['tier/biome/etc']
 var resources = {}
+#resources['group'][]
 var resource_groups = {}
 var hazards = {}
+#modified_tiles[[int(x), int(y)]] = {
+#								"resources": resources_array,
+#								"biome": biome,
+#								"primary_resource": primary_resource,
+#								"hazards": hazards_dict
+#							}
+#
 var modified_tiles = {}
 
-const MAX_RESOURCE = 10
-const MIN_RESOURCE = 0
+const PRIMARY_RESOURCE_MAX = 10
+const PRIMARY_RESOURCE_MIN = 5
+const SECONDARY_RESOURCE_MAX = 2
+const SECONDARY_RESOURCE_MIN = 0
 
 #allows for integers in the biome.cfg file, since there is currently a bug in Godot which prevents reading in floats from nested arrays
 const GEN_SCALING = 100 

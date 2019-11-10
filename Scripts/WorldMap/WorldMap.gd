@@ -32,51 +32,6 @@ var tile_sprite_size = Vector2(0,0)
 
 enum player_vision {HIDDEN, NOT_VISIBLE, VISIBLE}
 
-#If you want to test this scene apart from others, just uncomment this block
-#func _ready():
-#	biome_generator = OpenSimplexNoise.new()
-#	tiebreak_generator = OpenSimplexNoise.new()
-#	resource_generator = OpenSimplexNoise.new()
-#	hazard_generator = OpenSimplexNoise.new()
-#
-#	biome_generator.seed = randi()
-#	biome_generator.octaves = 3
-#	biome_generator.period = 20
-#	biome_generator.persistence = .5
-#	biome_generator.lacunarity = .7
-#
-#	hazard_generator.seed = randi()
-#	hazard_generator.octaves = 3
-#	hazard_generator.period = 20
-#	hazard_generator.persistence = .5
-#	hazard_generator.lacunarity = .7
-#
-#	tiebreak_generator.seed = randi()
-#	tiebreak_generator.octaves = 3
-#	tiebreak_generator.period = 80
-#	tiebreak_generator.persistence = 1
-#	tiebreak_generator.lacunarity = 1
-#
-#	resource_generator.seed = randi()
-#	resource_generator.octaves = 8
-#	resource_generator.period = 5
-#	resource_generator.persistence = .1
-#	resource_generator.lacunarity = .7
-#
-#	tile_sprite_size = $BiomeMap.tile_texture_size
-#	$BiomeMap.setup(biome_generator, tiebreak_generator, hazard_generator, chunk_size, starting_pos)
-#	$ResourceMap.setup(biome_generator, resource_generator, tiebreak_generator, chunk_size, starting_pos)
-#
-#	current_player = load("res://Scenes/Player/Player.tscn").instance()
-#	current_player.position = $BiomeMap.map_to_world($BiomeMap.world_to_map(default_start)) + tile_sprite_size / 2 + player_sprite_offset
-#
-#	$MapCamera.position = current_player.position
-#
-#	if is_visible_in_tree():
-#		$MapCamera.make_current()
-#
-#	pass
-
 func setup(biome_seed, hazard_seed, resource_seed, tiebreak_seed, _chunk_size, player):
 	Game.modified_tiles = {}
 	chunk_size = _chunk_size
@@ -245,6 +200,8 @@ func _unhandled_input(event):
 		if event.is_action("zoom_out"):
 			$MapCamera.zoom.x = clamp($MapCamera.zoom.x + ZOOM_UPDATE, MIN_ZOOM, MAX_ZOOM)
 			$MapCamera.zoom.y = clamp($MapCamera.zoom.y + ZOOM_UPDATE, MIN_ZOOM, MAX_ZOOM)
+			
+			
 
 func _input(event):
 	if event.is_action("center_camera"):
@@ -328,12 +285,15 @@ func get_player_line_of_sight():
 
 func _on_WorldMap_UI_end_map_pressed():
 	var player_pos = $BiomeMap.world_to_map(current_player.position)
-	
-	current_player.current_tile = {
+	var curr_tile = {
 		"resources": $ResourceMap.get_tile_resources(player_pos.x, player_pos.y),
 		"hazards": $BiomeMap.get_hazards(player_pos.x, player_pos.y),
-		"biome": $BiomeMap.get_biome(player_pos.x, player_pos.y)
+		"biome": $BiomeMap.get_biome(player_pos.x, player_pos.y),
+		"primary_resource": $ResourceMap.get_primary_resource(player_pos.x, player_pos.y),
+		"location": [int(player_pos.x), int(player_pos.y)]
 	}
+	
+	current_player.set_current_tile(curr_tile) 
 	
 	$WorldMap_UI.hide()
 	current_player.enable_sprite(false)
@@ -345,4 +305,23 @@ func _on_WorldMap_UI_quit_to_title():
 #	$WorldMap_UI.hide()
 #	$MapCamera.clear_current()
 #	emit_signal("change_to_main_menu")
+	pass # Replace with function body.
+
+
+func _on_WorldMap_UI_acquire_resources():
+	var player_pos = $BiomeMap.world_to_map(current_player.position)
+	var curr_tile = {
+		"resources": $ResourceMap.get_tile_resources(player_pos.x, player_pos.y),
+		"hazards": $BiomeMap.get_hazards(player_pos.x, player_pos.y),
+		"biome": $BiomeMap.get_biome(player_pos.x, player_pos.y),
+		"primary_resource": $ResourceMap.get_primary_resource(player_pos.x, player_pos.y),
+		"location": [int(player_pos.x), int(player_pos.y)]
+	}
+	
+	current_player.set_current_tile(curr_tile) 
+	current_player.acquire_resources()
+	$WorldMap_UI/CFPBank.update_resources_values({"carbs": current_player.organism.resources["carbs"], "fats": current_player.organism.resources["fats"], "proteins": current_player.organism.resources["proteins"]})
+	$WorldMap_UI/MineralBank.update_resources_values({"minerals": current_player.organism.resources["minerals"]})
+	$ResourceMap.update_tile_resource(int(player_pos.x), int(player_pos.y), current_player.get_current_tile()["primary_resource"])
+	$WorldMap_UI/ResourceHazardPanel.set_resources(current_player.get_current_tile()["resources"])
 	pass # Replace with function body.

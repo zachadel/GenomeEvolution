@@ -2,6 +2,7 @@ extends CanvasLayer
 
 signal end_map_pressed
 signal quit_to_title
+signal acquire_resources
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -35,4 +36,9 @@ func _on_WorldMap_player_resources_changed(carbs, fats, proteins, minerals):
 
 func _on_Quit_To_Title_Button_pressed():
 	emit_signal("quit_to_title")
+	pass # Replace with function body.
+
+
+func _on_Acquire_Button_pressed():
+	emit_signal("acquire_resources")
 	pass # Replace with function body.
