@@ -29,9 +29,9 @@ func _on_Switch_Button_pressed():
 
 #At some point, error checking should be added here, where an error message
 #is printed if the player tries to store too many resources
-func _on_WorldMap_player_resources_changed(carbs, fats, proteins, minerals):
-	$UIPanel/CFPBank.update_resources_values({"carbs": carbs, "fats": fats, "proteins": proteins})
-	$UIPanel/MineralBank.update_resources_values({"minerals": minerals})
+func _on_WorldMap_player_resources_changed(resources):
+	$CFPBank.update_resources_values(resources)
+	$MineralBank.update_resources_values(resources)
 	pass # Replace with function body.
 
 func _on_Quit_To_Title_Button_pressed():
@@ -41,4 +41,10 @@ func _on_Quit_To_Title_Button_pressed():
 
 func _on_Acquire_Button_pressed():
 	emit_signal("acquire_resources")
+	pass # Replace with function body.
+
+
+func _on_WorldMap_tile_changed(tile_dict):
+	$ResourceHazardPanel.set_hazards(tile_dict["hazards"])
+	$ResourceHazardPanel.set_resources(tile_dict["resources"])
 	pass # Replace with function body.

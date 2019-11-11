@@ -204,6 +204,7 @@ func sum_resources_dict(resources_dict):
 	return sum
 	
 #array_dicts[resource][tier] = value
+#only checks resources in BASIC_RESOURCES
 func construct_resources_dict_from_array_of_dicts(array_of_dicts):
 	var resources_dict = {}
 	

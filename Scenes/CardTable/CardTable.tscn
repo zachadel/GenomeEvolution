@@ -580,6 +580,8 @@ rect_scale = Vector2( 0.8, 1 )
 [connection signal="doing_work" from="Organism" to="." method="_on_Organism_doing_work"]
 [connection signal="finished_replication" from="Organism" to="." method="_on_Organism_finished_replication"]
 [connection signal="justnow_update" from="Organism" to="." method="_on_Organism_justnow_update"]
+[connection signal="resources_changed" from="Organism" to="CFPBank" method="_on_Organism_resources_changed"]
+[connection signal="resources_changed" from="Organism" to="MineralBank" method="_on_Organism_resources_changed"]
 [connection signal="show_repair_opts" from="Organism" to="." method="_on_Organism_show_repair_opts"]
 [connection signal="show_reprod_opts" from="Organism" to="." method="_on_Organism_show_reprod_opts"]
 [connection signal="updated_gaps" from="Organism" to="." method="_on_Organism_updated_gaps"]

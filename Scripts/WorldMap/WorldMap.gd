@@ -4,8 +4,20 @@ signal tile_clicked
 signal change_to_main_menu
 signal end_map_turn
 
-signal player_resources_changed(carbs, fats, proteins, minerals)
+signal player_resources_changed(resources)
+signal tile_changed(tile_dict)
 
+"""
+A tile dict should always look like this: 
+curr_tile = {
+		'resources': [resource_0, resource_1, ..., resource_n]
+		'hazards': {'hazard_0': value, ..., 'hazard_n': value}
+		'biome': biome_index,
+		'primary_resource': resource_index,
+		'location': [int(x), int(y)]
+	}
+
+"""
 var MAX_ZOOM = 3
 var MIN_ZOOM = .5
 var ZOOM_UPDATE = .1
@@ -320,8 +332,8 @@ func _on_WorldMap_UI_acquire_resources():
 	
 	current_player.set_current_tile(curr_tile) 
 	current_player.acquire_resources()
-	$WorldMap_UI/CFPBank.update_resources_values({"carbs": current_player.organism.resources["carbs"], "fats": current_player.organism.resources["fats"], "proteins": current_player.organism.resources["proteins"]})
-	$WorldMap_UI/MineralBank.update_resources_values({"minerals": current_player.organism.resources["minerals"]})
+	emit_signal("player_resources_changed", current_player.organism.resources)
+	
 	$ResourceMap.update_tile_resource(int(player_pos.x), int(player_pos.y), current_player.get_current_tile()["primary_resource"])
-	$WorldMap_UI/ResourceHazardPanel.set_resources(current_player.get_current_tile()["resources"])
+	emit_signal("tile_changed", current_player.get_current_tile())
 	pass # Replace with function body.

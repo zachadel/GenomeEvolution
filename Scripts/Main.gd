@@ -99,3 +99,5 @@ func _on_CardTable_next_turn(turn_text, round_num):
 		$WorldMap.show()
 		$WorldMap/WorldMap_UI.show()
 		$WorldMap.current_player.enable_sprite(true)
+		$WorldMap/WorldMap_UI/CFPBank.update_resources_values($WorldMap.current_player.organism.resources)
+		$WorldMap/WorldMap_UI/MineralBank.update_resources_values($WorldMap.current_player.organism.resources)

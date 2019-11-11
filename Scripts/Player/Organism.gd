@@ -105,7 +105,7 @@ signal show_repair_opts(show);
 signal show_reprod_opts(show);
 
 signal died(org);
-signal resources_changed(carbs_dict, fats_dict, proteins_dict, minerals_dict);
+signal resources_changed(resources);
 
 func _ready():
 	#initialization done in _ready for restarts
@@ -998,11 +998,12 @@ const BEHAVIOR_TO_COST_MULT = {
 		"tier_downgrade": -0.05
 	}
 }
-#NOTE: This is not currently hooked into the resource bar.
+
 func use_resources(action):
 	var cost_mult = get_cost_mult(action)
 	for resource in resources.keys():
 		resources[resource][0] = max(0, resources[resource][0] - (costs[action][resource] * cost_mult * Game.resource_mult))
+	emit_signal("resources_changed", resources)
 
 func acquire_resources():
 	var total_cfp_resources = get_total_cfp_stored()
@@ -1064,6 +1065,7 @@ func acquire_resources():
 						
 						if current_tile["primary_resource"] == index and current_tile["resources"][index] < Game.PRIMARY_RESOURCE_MIN:
 							current_tile["primary_resource"] = -1
+		emit_signal("resources_changed", resources)
 			
 	else:
 		modified = false		
@@ -1072,15 +1074,12 @@ func acquire_resources():
 	if modified and Game.modified_tiles.has(current_tile["location"]):
 		for property in Game.modified_tiles[current_tile["location"]].keys():
 			Game.modified_tiles[current_tile["location"]][property] = current_tile[property]
-	else:
+	elif modified:
 		Game.modified_tiles[current_tile["location"]] = {}
 		
 		for property in current_tile.keys():
 			if property != "location":
 				Game.modified_tiles[current_tile["location"]][property] = current_tile[property]
-
-	if modified == false:
-		print('wait...')
 	return
 
 func get_cost_mult(action):
