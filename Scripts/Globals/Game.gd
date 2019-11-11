@@ -220,7 +220,7 @@ func get_ate_personality_by_name(ate_name):
 	for k in ate_personalities:
 		if (ate_personalities[k]["title"] == ate_name):
 			return ate_personalities[k];
-	return {};
+	return null;
 
 # This is a little hack I've come up with to make bars in ScrollContainer controls larger
 func change_slider_width(scroll_cont, horiz = true, width = 30):
