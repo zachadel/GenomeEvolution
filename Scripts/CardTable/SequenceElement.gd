@@ -65,10 +65,11 @@ func setup(_type, _id = "", _mode = "ate", _code = "", _ess_class = -1):
 					ate_personality = Game.get_ate_personality_by_name(id);
 				tex = ate_personality["art"];
 			"pseudo":
-				if (id.to_lower() in Game.ate_personalities):
-					tex = Game.get_ate_personality_by_name(id)["art"];
-				else:
+				var ate_personality = Game.get_ate_personality_by_name(id);
+				if (ate_personality == null):
 					tex = Game.ess_textures[Game.ESSENTIAL_CLASSES[id]];
+				else:
+					tex = ate_personality["art"];
 		#Sets the hover tooltip based on the mode and _ess_class
 	else:
 		tex = Game.sqelm_textures[_type];
@@ -143,26 +144,29 @@ func set_hint_tooltip(_type, _mode, _ess_class):
 		"gene":
 			match(_mode):
 				"essential":
-					match (_ess_class):
-						Game.ESSENTIAL_CLASSES.Replication:
-							hint_tooltip = 'This is a replication gene. It increases the\nprobability for successful gene modifications.'
-						Game.ESSENTIAL_CLASSES.Locomotion:
-							hint_tooltip = 'This is a locomotion gene. It aids with\nmovement amount in the world map.'
-						Game.ESSENTIAL_CLASSES.Manipulation:
-							hint_tooltip = 'This is a manipulation gene. It aids with the\nmanagement of resources i.e. how efficiently\nyou can use resources for various cellular functions\nlike movement and replication.'
-						Game.ESSENTIAL_CLASSES.Sensing:
-							hint_tooltip = 'This is a sensing gene. It aids with the ability\nto sense where resources are in the world map\nas well as the ability to perceive quantities within\nthe cell such as gene modification success rates.'
-						Game.ESSENTIAL_CLASSES.Construction:
-							hint_tooltip = 'This is a construction gene. It increases the amount\nof energy and resources which can be banked\nfor subsequent turns.'
-						Game.ESSENTIAL_CLASSES.Deconstruction:
-							hint_tooltip = 'This is a deconstruction gene. It aids with the breaking\ndown of complicated resources into simpler, usable ones.'
-						var _x:
-							hint_tooltip = ''
-							print('ERROR: Invalid gene class of ', _x)
+					hint_tooltip = Tooltips.get_gene_ttip(Game.ESSENTIAL_CLASSES.keys()[_ess_class]);
+#					match (_ess_class):
+#						Game.ESSENTIAL_CLASSES.Replication:
+#							hint_tooltip = 'This is a replication gene. It increases the\nprobability for successful gene modifications.'
+#						Game.ESSENTIAL_CLASSES.Locomotion:
+#							hint_tooltip = 'This is a locomotion gene. It aids with\nmovement amount in the world map.'
+#						Game.ESSENTIAL_CLASSES.Manipulation:
+#							hint_tooltip = 'This is a manipulation gene. It aids with the\nmanagement of resources i.e. how efficiently\nyou can use resources for various cellular functions\nlike movement and replication.'
+#						Game.ESSENTIAL_CLASSES.Sensing:
+#							hint_tooltip = 'This is a sensing gene. It aids with the ability\nto sense where resources are in the world map\nas well as the ability to perceive quantities within\nthe cell such as gene modification success rates.'
+#						Game.ESSENTIAL_CLASSES.Construction:
+#							hint_tooltip = 'This is a construction gene. It increases the amount\nof energy and resources which can be banked\nfor subsequent turns.'
+#						Game.ESSENTIAL_CLASSES.Deconstruction:
+#							hint_tooltip = 'This is a deconstruction gene. It aids with the breaking\ndown of complicated resources into simpler, usable ones.'
+#						var _x:
+#							hint_tooltip = ''
+#							print('ERROR: Invalid gene class of ', _x)
 				"ate":
-					hint_tooltip = 'This is a transposon. It is a genetic parasite that\ncan modify genes in various unpredictable ways.'
+					hint_tooltip = Tooltips.get_gene_ttip("Transposon");
+					#hint_tooltip = 'This is a transposon. It is a genetic parasite that\ncan modify genes in various unpredictable ways.'
 				"pseudo":
-					hint_tooltip = 'This is a pseudogene. It can still mutate, but it is\ncurrently damaged to the point of inactivity.'
+					hint_tooltip = Tooltips.get_gene_ttip("Pseudogene");
+					#hint_tooltip = 'This is a pseudogene. It can still mutate, but it is\ncurrently damaged to the point of inactivity.'
 		"break":
 			hint_tooltip = 'This is a break in the chromosome.  It will need to be\nrepaired before more actions can be taken.'
 	
@@ -267,7 +271,13 @@ func evolve_new_behavior(gain):
 			else:
 				behave_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
 			
-			ess_behavior[behave_key] = int(gain) * GAIN_AMT;
+			if (gain):
+				if (ess_behavior.has(behave_key)):
+					ess_behavior[behave_key] += GAIN_AMT;
+				else:
+					ess_behavior[behave_key] = GAIN_AMT;
+			else:
+				ess_behavior[behave_key] = 0.0;
 		"ate":
 			if (gain):
 				ate_activity += GAIN_AMT;

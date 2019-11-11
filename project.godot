@@ -28,6 +28,7 @@ config/icon="res://icon.png"
 
 Game="*res://Scripts/Globals/Game.gd"
 Chance="*res://Scripts/Globals/Chance.gd"
+Tooltips="*res://Scripts/Globals/Tooltips.gd"
 
 [display]
 

@@ -2,7 +2,6 @@
 
 [ext_resource path="res://Scripts/CardTable/BehaviorIndicator.gd" type="Script" id=1]
 
-
 [node name="Control" type="Control"]
 modulate = Color( 0, 0.678431, 0.0117647, 1 )
 anchor_right = 1.0
