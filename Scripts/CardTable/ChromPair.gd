@@ -44,6 +44,7 @@ func add_cmsm(cmsm_save = null, force_show = false):
 
 func remove_cmsm(cmsm_idx):
 	var c = get_child(cmsm_idx);
+	c.clear_link();
 	if (c in visible_cmsm):
 		visible_cmsm.erase(c);
 	c.free();
@@ -52,21 +53,22 @@ func move_cmsm(from_idx, to_idx):
 	move_child(get_child(from_idx), to_idx);
 
 func replicate_cmsms(cmsm_idxs):
-	var cmsm_children = [];
+	var cmsm_parents = [];
 	for i in cmsm_idxs:
-		cmsm_children.append(replicate_cmsm(i, false));
-	for i in cmsm_idxs:
-		move_child(cmsm_children[i], i+1);
+		cmsm_parents.append(get_cmsm(i));
+	for c in cmsm_parents:
+		replicate_cmsm(find_cmsm_idx(c));
 
-func replicate_cmsm(cmsm_idx, move_to_parent = true):
-	var new_disp_cmsm = add_cmsm(get_cmsm(cmsm_idx).get_elms_save());
+func replicate_cmsm(cmsm_idx):
+	var par_disp_cmsm = get_child(cmsm_idx);
+	var new_disp_cmsm = add_cmsm(par_disp_cmsm.get_cmsm().get_elms_save());
 	get_organism().evolve_cmsm(new_disp_cmsm.get_cmsm());
-	if (move_to_parent):
-		move_child(new_disp_cmsm, cmsm_idx + 1);
+	new_disp_cmsm.color_compare(par_disp_cmsm);
+	move_child(new_disp_cmsm, cmsm_idx + 1);
 	return new_disp_cmsm;
 
-func lock_cmsm(idx, l):
-	get_child(idx).lock(l);
+func link_cmsms(par, child):
+	get_child(par).set_link(get_child(child));
 
 func hide_cmsm(idx, h):
 	get_child(idx).hide_cmsm(h);
@@ -74,6 +76,7 @@ func hide_cmsm(idx, h):
 func hide_all(h):
 	for c in get_children():
 		c.hide_cmsm(h, false);
+	visible_cmsm.clear();
 
 func show_choice_buttons(cmsm_idx, show):
 	var disp_cmsm = get_child(cmsm_idx);
@@ -96,12 +99,18 @@ func _on_hide_cmsm(cmsm, hidden):
 
 func find_cmsm_idx(cmsm):
 	for i in range(get_child_count()):
-		if (get_child(i) == cmsm):
+		if (get_cmsm(i) == cmsm):
+			return i;
+	return -1;
+
+func find_disp_cmsm_idx(disp_cmsm):
+	for i in range(get_child_count()):
+		if (get_child(i) == disp_cmsm):
 			return i;
 	return -1;
 
 func _propagate_cmsm_pick(cmsm):
-	emit_signal("cmsm_picked", find_cmsm_idx(cmsm));
+	emit_signal("cmsm_picked", find_disp_cmsm_idx(cmsm));
 
 func _propagate_click(elm):
 	emit_signal("elm_clicked", elm);

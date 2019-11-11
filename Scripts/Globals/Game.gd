@@ -224,14 +224,15 @@ func get_ate_personality_by_name(ate_name):
 
 # This is a little hack I've come up with to make bars in ScrollContainer controls larger
 func change_slider_width(scroll_cont, horiz = true, width = 30):
-	if (horiz):
-		var slider = scroll_cont.get_node("_h_scroll");
-		slider.margin_top = -width;
-		slider.rect_size.y = width;
-	else:
-		var slider = scroll_cont.get_node("_v_scroll");
-		slider.margin_left = -width;
-		slider.rect_size.x = width;
+	pass; # But nobody likes larger scroll bars :(
+#	if (horiz):
+#		var slider = scroll_cont.get_node("_h_scroll");
+#		slider.margin_top = -width;
+#		slider.rect_size.y = width;
+#	else:
+#		var slider = scroll_cont.get_node("_v_scroll");
+#		slider.margin_left = -width;
+#		slider.rect_size.x = width;
 
 func adv_turn():
 	turn_idx += 1;
@@ -311,6 +312,9 @@ func pretty_element_name_list(elms_array):
 		if (put_comma):
 			list += ", ";
 	return list;
+
+func is_node_in_tree(n):
+	return get_tree().get_root().has_node(n.get_path());
 
 func load_cfg(data_name, dict):
 	var file = ConfigFile.new()

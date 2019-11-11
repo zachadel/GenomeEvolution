@@ -8,6 +8,8 @@ var default_pos = Vector2();
 export var image_texture : Texture setget set_tex;
 export var always_show = false;
 
+var val := 0.0 setget set_value, get_value;
+
 func _ready():
 	default_pos = rect_position;
 
@@ -16,6 +18,7 @@ func set_tex(t):
 	image_texture = t;
 
 func set_value(v):
+	val = v;
 	if (v >= VALUE_STEP):
 		v = stepify(v, VALUE_STEP);
 		visible = true;
@@ -23,6 +26,9 @@ func set_value(v):
 		v = 0.0;
 		visible = always_show;
 	$Lbl.text = "%.1f" % v;
+
+func get_value():
+	return val;
 
 func rescale(scale):
 	var scale_size = DEFAULT_SIZE * scale;

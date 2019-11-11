@@ -40,7 +40,7 @@ scroll_horizontal_enabled = false
 
 [node name="chromes" parent="scroll" instance=ExtResource( 2 )]
 anchor_right = 0.0
-margin_right = 1600.0
+margin_right = 1550.0
 
 [node name="lbl_dead" type="Label" parent="."]
 visible = false

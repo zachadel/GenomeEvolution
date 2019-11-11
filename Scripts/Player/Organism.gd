@@ -140,7 +140,7 @@ func get_save():
 func load_from_save(orgn_info):
 	perform_anims(false);
 	
-	gene_selection = [];
+	gene_selection.clear();
 	born_on_turn = int(orgn_info[0]);
 	energy = int(orgn_info[1]);
 	cmsms.load_from_save(orgn_info[2]);
@@ -256,9 +256,10 @@ func _on_chromes_elm_clicked(elm):
 		"break":
 			if (elm == selected_gap):
 				for r in gene_selection:
-					r.disable(true);
+					if Game.is_node_in_tree(r):
+						r.disable(true);
 				highlight_gap_choices();
-				gene_selection = [];
+				gene_selection.clear();
 				repair_canceled = true;
 				emit_signal("gene_clicked"); # Used to continue the yields
 				emit_signal("justnow_update", "");
@@ -356,7 +357,7 @@ func make_repair_choices(gap, repair_idx):
 			var blocks_dict = gap_cmsm.find_dupe_blocks(g_idx);
 			
 			emit_signal("justnow_update", "Select the leftmost element of the pattern you will collapse.");
-			gene_selection = [];
+			gene_selection.clear();
 			if (is_ai || blocks_dict.size() == 1):
 				choice_info["left"] = gap_cmsm.get_child(blocks_dict.keys()[0]);
 			else:
@@ -374,7 +375,7 @@ func make_repair_choices(gap, repair_idx):
 			choice_info["left"].highlight_border(true, true);
 			
 			emit_signal("justnow_update", "Select the rightmost element of the pattern you will collapse.\n\nThe leftmost element is %s." % choice_info["left"].id);
-			gene_selection = [];
+			gene_selection.clear();
 			var sel_size_gene = null;
 			if (is_ai || blocks_dict[left_idx].size() == 1):
 				choice_info["size"] = blocks_dict[left_idx].keys().back();
@@ -402,7 +403,7 @@ func make_repair_choices(gap, repair_idx):
 				pattern_array.append(gap_cmsm.get_child(left_idx + i));
 			
 			emit_signal("justnow_update", "Select the first element of the pattern you will collapse to the right of the gap.\n\nThe pattern is: %s" % Game.pretty_element_name_list(pattern_array));
-			gene_selection = [];
+			gene_selection.clear();
 			var right_choice_opts = blocks_dict[left_idx][choice_info["size"]];
 			if (is_ai || right_choice_opts.size() == 1):
 				choice_info["right"] = gap_cmsm.get_child(right_choice_opts[0]);
@@ -434,7 +435,7 @@ func make_repair_choices(gap, repair_idx):
 			var pairs_dict = template_cmsm.get_pairs(left_elm, right_elm);
 			
 			emit_signal("justnow_update", "Select the leftmost element of the pattern you will copy.");
-			gene_selection = [];
+			gene_selection.clear();
 			if (is_ai || pairs_dict.size() == 1):
 				choice_info["left"] = template_cmsm.get_child(pairs_dict.keys()[0]);
 			else:
@@ -451,7 +452,7 @@ func make_repair_choices(gap, repair_idx):
 			choice_info["left"].highlight_border(true, true);
 			
 			emit_signal("justnow_update", "Select the rightmost element of the pattern you will copy.\n\nThe leftmost element is %s." % choice_info["left"].id);
-			gene_selection = [];
+			gene_selection.clear();
 			var right_idxs = pairs_dict[choice_info["left"].get_index()];
 			if (is_ai || right_idxs.size() == 1):
 				choice_info["right"] = template_cmsm.get_child(right_idxs[0]);
@@ -483,6 +484,8 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 		var right_break_gene = cmsm.get_child(g_idx + 1);
 		var left_id = left_break_gene.id;
 		var right_id = right_break_gene.id;
+		
+		var original_select = gene_selection;
 		
 		repair_canceled = false;
 		match (repair_idx):
@@ -676,6 +679,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 				get_tree().get_root().get_node("Main/WorldMap").current_player.consume_resources("repair_je")
 				#print("repair join ends")
 		
+		gene_selection = original_select;
 		gene_selection.erase(gap);
 		highlight_gap_choices();
 
@@ -766,7 +770,7 @@ var cont_recombo = true
 var recom_justnow = ""
 func recombination():
 	if (is_ai):
-		gene_selection = [];
+		gene_selection.clear();
 	else:
 		# For some reason, this func bugs out when picking from the first cmsm (see comment at get_other_cmsm below)
 		gene_selection = cmsms.highlight_common_genes(false, true);
@@ -824,8 +828,8 @@ func replicate(idx):
 		0: # Mitosis
 			rep_type = "mitosis";
 			
-			cmsms.lock_cmsm(1, true);
-			cmsms.lock_cmsm(3, true);
+			cmsms.link_cmsms(0, 1);
+			cmsms.link_cmsms(2, 3);
 			
 			emit_signal("justnow_update", "Choose which chromosome pair (top two or bottom two) to keep.");
 			var keep_idx = yield(self, "cmsm_picked");
@@ -866,6 +870,8 @@ func get_missing_ess_classes():
 func adv_turn(round_num, turn_idx):
 	if (died_on_turn == -1):
 		match (Game.get_turn_type()):
+			Game.TURN_TYPES.Map:
+				emit_signal("justnow_update", "Welcome back!");
 			Game.TURN_TYPES.NewTEs:
 				emit_signal("justnow_update", "");
 				if (do_yields):

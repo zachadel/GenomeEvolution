@@ -4,7 +4,6 @@
 [ext_resource path="res://Scenes/CardTable/ChromosomeStatus.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/CardTable/Chromosome.tscn" type="PackedScene" id=3]
 
-
 [node name="DispChromosome" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -19,23 +18,53 @@ margin_right = 1607.5
 margin_bottom = 290.0
 custom_constants/separation = 25
 
-[node name="BtnCollapse" type="Button" parent="container"]
+[node name="ChoiceButtons" type="Control" parent="container"]
 visible = false
-margin_right = 75.0
+margin_right = 200.0
 margin_bottom = 250.0
+rect_min_size = Vector2( 200, 0 )
+
+[node name="zIndexEnforce" type="Node2D" parent="container/ChoiceButtons"]
+editor/display_folded = true
+z_index = 10
+
+[node name="BackColor" type="Panel" parent="container/ChoiceButtons/zIndexEnforce"]
+margin_left = -38.0
+margin_top = -7.0
+margin_right = 200.0
+margin_bottom = 256.0
+
+[node name="Sizer" type="Control" parent="container/ChoiceButtons/zIndexEnforce"]
+margin_top = -7.0
+margin_right = 200.0
+margin_bottom = 256.0
+
+[node name="BtnCollapse" type="Button" parent="container/ChoiceButtons/zIndexEnforce/Sizer"]
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -90.0
+margin_top = 7.0
+margin_right = -15.0
+margin_bottom = -6.0
 rect_min_size = Vector2( 75, 50 )
 text = "Show"
 
-[node name="BtnChoose" type="Button" parent="container"]
-visible = false
-margin_left = 100.0
-margin_right = 175.0
-margin_bottom = 250.0
+[node name="BtnChoose" type="Button" parent="container/ChoiceButtons/zIndexEnforce/Sizer"]
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = 15.0
+margin_top = 7.0
+margin_right = 90.0
+margin_bottom = -6.0
 rect_min_size = Vector2( 75, 50 )
 text = "  Keep  "
 
 [node name="StatusBar" parent="container" instance=ExtResource( 2 )]
 visible = false
+margin_left = 225.0
+margin_right = 1025.0
 margin_bottom = 250.0
 
 [node name="scroll" type="ScrollContainer" parent="container"]
@@ -48,9 +77,19 @@ scroll_vertical_enabled = false
 [node name="cmsm" parent="container/scroll" instance=ExtResource( 3 )]
 anchor_right = 0.0
 margin_bottom = 225.0
-[connection signal="pressed" from="container/BtnCollapse" to="." method="_on_BtnCollapse_pressed"]
-[connection signal="pressed" from="container/BtnChoose" to="." method="_on_BtnChoose_pressed"]
+
+[node name="update_delay" type="Timer" parent="."]
+wait_time = 0.01
+one_shot = true
+
+[node name="update_link_delay" type="Timer" parent="."]
+wait_time = 0.01
+one_shot = true
+[connection signal="pressed" from="container/ChoiceButtons/zIndexEnforce/Sizer/BtnCollapse" to="." method="_on_BtnCollapse_pressed"]
+[connection signal="pressed" from="container/ChoiceButtons/zIndexEnforce/Sizer/BtnChoose" to="." method="_on_BtnChoose_pressed"]
 [connection signal="cmsm_changed" from="container/scroll/cmsm" to="." method="_on_cmsm_cmsm_changed"]
 [connection signal="elm_clicked" from="container/scroll/cmsm" to="." method="_propogate_click"]
 [connection signal="elm_mouse_entered" from="container/scroll/cmsm" to="." method="_propagate_mouse_entered"]
 [connection signal="elm_mouse_exited" from="container/scroll/cmsm" to="." method="_propagate_mouse_exited"]
+[connection signal="timeout" from="update_delay" to="." method="_on_update_delay_timeout"]
+[connection signal="timeout" from="update_link_delay" to="." method="_on_update_link_delay_timeout"]
