@@ -13,8 +13,76 @@ var do_yields
 var born_on_turn
 var died_on_turn
 
+#This is the dictionary that stores how resources are converted
+#from one tier into another.  For example, if you want to go
+#from fats_1 to fats_0, take the number of fats_1 and multiply
+#it by the value in TIER_CONVERSION["fats"][1], to get the
+#new result.  From there, you can assess penalties based on the
+#manipulation gene.
+const TIER_CONVERSIONS = {
+	"carbs": {
+		0: 1,
+		1: 3, 
+		2: 3,
+		3: 3
+		},
+	"fats": {
+		0: 1,
+		1: 9,
+		2: 9,
+		3: 9
+	},
+	"proteins": {
+		0: 1,
+		1: 3, 
+		2: 3,
+		3: 3
+		},
+	"minerals": {
+		0: 1,
+		1: 3,
+		2: 3, 
+		3: 3
+	}
+}
 var energy
-var resources = [100, 100, 100, 100] #the 4 resource groups
+#the 4 resource groups with initial tiers of compression
+#tier 0 is immediately useable
+#tier 1 must be broken down into tier 0 using the tier stats
+#Eventually, I suspect this will have to broken into energy_resources
+#and mineral_resources, since mineral resources are currently very 
+#poorly defined
+var resources = {
+	"carbs": {
+		0: 10, 
+		1: 5
+	},
+	"fats": {
+		0: 5,
+		1: 2
+	},
+	"proteins": {
+		0: 20,
+		1: 5
+	},
+	"minerals": {
+		0: 20
+	}
+}
+"""
+	current_tile = {
+		'biome': value (index of biome, use Game.biomes to get the true value),
+		'hazards': hazards_dict,
+		'resources': resources_array,
+		'primary_resource': biome_index
+		'location': [int(x), int(y)]	
+	}
+
+"""
+var current_tile = {}
+var max_cfp_stored = 100
+var max_minerals_stored = 50
+
 var MIN_ENERGY = 0;
 var MAX_ENERGY = 10;
 var MAX_ALLOCATED_ENERGY = 10;
@@ -37,6 +105,7 @@ signal show_repair_opts(show);
 signal show_reprod_opts(show);
 
 signal died(org);
+signal resources_changed(resources);
 
 func _ready():
 	#initialization done in _ready for restarts
@@ -221,6 +290,9 @@ var repair_type_possible = [false, false, false];
 var sel_repair_idx = -1;
 var sel_repair_gap = null;
 
+#It's likely this will need to be updated to take into account converting resources
+#This also only checks against internal resources, not total available resources
+#
 func check_resources(x):
 	var repair = ""
 	match x:
@@ -231,8 +303,8 @@ func check_resources(x):
 		2:
 			repair = "repair_je"
 		
-	for i in range(4):
-		if resources[i]  < costs[repair][i]:
+	for resource in resources.keys():
+		if get_total_tier0_resources(resource)  < costs[repair][resource]:
 			#print("NOT ENOUGH CASH! STRANGA!")
 			return false
 	return true
@@ -882,22 +954,178 @@ func update_energy_allocation(type, amount):
 	energy_allocation_panel.update_energy(energy);
 
 var costs = {
-	"repair_cd" : [0, 1, 5, 0],
-	"repair_cp" : [0, 2, 2, 8],
-	"repair_je" : [0, 5, 1, 0],
-	"move" : [10, 0, 0, 0]
+	"repair_cd" : {
+		"carbs": 0, 
+		"fats": 1, 
+		"proteins": 5, 
+		"minerals": 0
+	},
+	"repair_cp" : {
+		"carbs": 0, 
+		"fats": 2,
+		"proteins": 2,
+		"minerals": 8
+	},
+	"repair_je" : {
+		"carbs": 0, 
+		"fats": 5, 
+		"proteins": 1, 
+		"minerals": 0
+	},
+	"move" : {
+		"carbs": 10, 
+		"fats": 0, 
+		"proteins": 0, 
+		"minerals": 0
+	},
+	
+	#Percentage of resources lost in conversion
+	"tier_downgrade": {
+		"carbs": .2,
+		"fats": .2,
+		"proteins": .2,
+		"minerals": .2	
+	}
 }
+#Currently unsure about what breaking down higher tier resources inside
+#the cell would fall into, in terms of behavior
 const BEHAVIOR_TO_COST_MULT = {
 	"Locomotion": {
 		"move": -0.05
+	}, 
+	"Deconstruction": {
+		"resource_breakdown": -0.05,
+		"tier_downgrade": -.05
+	},
+	"Construction": {
+		"tier_upgrade": -0.05
+	},
+	"Manipulation": {
+		"tier_downgrade": -0.05
 	}
 }
+
 func use_resources(action):
+	var cost_mult = get_cost_mult(action)
+	for resource in resources.keys():
+		resources[resource][0] = max(0, resources[resource][0] - (costs[action][resource] * cost_mult * Game.resource_mult))
+	emit_signal("resources_changed", resources)
+
+func acquire_resources():
+	var total_cfp_resources = get_total_cfp_stored()
+	var total_mineral_resources = get_total_minerals_stored()
+	var modified = false
+	#Check if any room to store more stuff
+	if total_cfp_resources < max_cfp_stored or total_mineral_resources < max_minerals_stored:
+		#Run through all resources on the tile
+		for index in range(len(current_tile["resources"])):
+			#grab the resour
+			var resource = Game.resources.keys()[index]
+			
+			#Can only acquire tier 0 resources
+			if Game.resources[resource]['tier'] == 0 and current_tile["resources"][index] != 0:
+				#strips _# from the right side of the group and grabs the resource group used by the organism
+				var resource_group = Game.resources[resource]['group'].left(Game.resources[resource]['group'].length() - 2)
+				
+				if resource_group == "minerals": 
+					#If you can store the total amount, store the total amount
+					if total_mineral_resources + current_tile["resources"][index] <= max_minerals_stored:
+						modified = true
+						
+						total_mineral_resources += current_tile["resources"][index]
+						resources[resource_group][0] += current_tile["resources"][index]
+						current_tile["resources"][index] = 0
+						
+						if current_tile["primary_resource"] == index:
+							current_tile["primary_resource"] = -1
+							
+					#if you can't store the total amount, store all that you can
+					elif total_mineral_resources < max_minerals_stored:
+						modified = true
+						
+						resources[resource_group][0] += (max_minerals_stored - total_mineral_resources)
+						current_tile["resources"][index] -= (max_minerals_stored - total_mineral_resources)
+						total_mineral_resources = max_minerals_stored
+						
+						if current_tile["primary_resource"] == index and current_tile["resources"][index] < Game.PRIMARY_RESOURCE_MIN:
+							current_tile["primary_resource"] = -1
+				else:
+					#If you can store the total amount, store the total amount
+					if total_cfp_resources + current_tile["resources"][index] <= max_cfp_stored:
+						modified = true
+						
+						total_cfp_resources += current_tile["resources"][index]
+						resources[resource_group][0] += current_tile["resources"][index]
+						current_tile["resources"][index] = 0
+						
+						if current_tile["primary_resource"] == index:
+							current_tile["primary_resource"] = -1
+							
+					#if you can't store the total amount, store all that you can
+					elif total_cfp_resources < max_cfp_stored:
+						modified = true
+						
+						resources[resource_group][0] += (max_cfp_stored - total_cfp_resources)
+						current_tile["resources"][index] -= (max_cfp_stored - total_cfp_resources)
+						total_cfp_resources = max_cfp_stored
+						
+						if current_tile["primary_resource"] == index and current_tile["resources"][index] < Game.PRIMARY_RESOURCE_MIN:
+							current_tile["primary_resource"] = -1
+		emit_signal("resources_changed", resources)
+			
+	else:
+		modified = false		
+		
+	#Make sure these changes are reflected in modified_tiles
+	if modified and Game.modified_tiles.has(current_tile["location"]):
+		for property in Game.modified_tiles[current_tile["location"]].keys():
+			Game.modified_tiles[current_tile["location"]][property] = current_tile[property]
+	elif modified:
+		Game.modified_tiles[current_tile["location"]] = {}
+		
+		for property in current_tile.keys():
+			if property != "location":
+				Game.modified_tiles[current_tile["location"]][property] = current_tile[property]
+	return
+
+func get_cost_mult(action):
 	var cost_mult = 1.0;
 	var bprof = get_behavior_profile();
 	for k in bprof:
 		if (BEHAVIOR_TO_COST_MULT.has(k) && BEHAVIOR_TO_COST_MULT[k].has(action)):
 			cost_mult += BEHAVIOR_TO_COST_MULT[k][action] * bprof[k];
 	cost_mult = max(0.05, cost_mult);
-	for i in range(4):
-		resources[i] = max(0, resources[i] - (costs[action][i] * cost_mult * Game.resource_mult))
+	
+	return cost_mult
+#Converts all higher tier resources into lower tier resources
+#Includes calculations for penalties
+func get_total_tier0_resources(resource):
+	var sum = 0
+	var tier_converted_value = 0
+	var cost_mult = get_cost_mult("tier_downgrade")
+	
+	for tier in range(len(resources[resource])):
+		tier_converted_value = 0
+		for j in range(tier, -1, -1):
+			#(percent you get after costs) * (resources at this tier + previously downgraded resources) * (tier conversion factor)
+			tier_converted_value += (1 - costs["tier_downgrade"][resource] * cost_mult * Game.resource_mult) * (resources[resource][tier] + tier_converted_value) * TIER_CONVERSIONS[resource][tier]
+		
+		sum += tier_converted_value
+		
+	return sum
+
+func get_total_cfp_stored():
+	var sum = 0
+	for resource in resources.keys():
+		if resource != "minerals":
+			for tier in range(len(resources[resource])):
+				sum += resources[resource][tier]
+			
+	return sum
+
+func get_total_minerals_stored():
+	var sum = 0
+	for tier in resources["minerals"]:
+		sum += resources["minerals"][tier]
+		
+	return sum

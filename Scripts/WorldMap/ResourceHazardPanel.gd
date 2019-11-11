@@ -8,6 +8,7 @@ extends Panel
 func _ready():
 	pass # Replace with function body.
 
+#resource_values[resource_index] = value
 func set_resources(resource_values):
 	$MarginContainer/VBoxContainer/ScrollContainer/ResourceUI.set_resources(resource_values)
 	

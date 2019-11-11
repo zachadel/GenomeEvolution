@@ -2,9 +2,7 @@ extends CanvasLayer
 
 signal end_map_pressed
 signal quit_to_title
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+signal acquire_resources
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -13,23 +11,40 @@ func _ready():
 func hide():
 	$UIPanel.hide()
 	$ResourceHazardPanel.hide()
-	$ResourceBank.hide()
 	$EnergyBar.hide()
+	$CFPBank.hide()
+	$MineralBank.hide()
 	
 func show():
 	$UIPanel.show()
 	$ResourceHazardPanel.show()
-	$ResourceBank.show()
 	$EnergyBar.show()
+	$CFPBank.show()
+	$MineralBank.show()
 
 func _on_Switch_Button_pressed():
 	emit_signal("end_map_pressed")
 	pass # Replace with function body.
 
 
-func _on_WorldMap_player_resources_changed():
+#At some point, error checking should be added here, where an error message
+#is printed if the player tries to store too many resources
+func _on_WorldMap_player_resources_changed(resources):
+	$CFPBank.update_resources_values(resources)
+	$MineralBank.update_resources_values(resources)
 	pass # Replace with function body.
 
 func _on_Quit_To_Title_Button_pressed():
 	emit_signal("quit_to_title")
+	pass # Replace with function body.
+
+
+func _on_Acquire_Button_pressed():
+	emit_signal("acquire_resources")
+	pass # Replace with function body.
+
+
+func _on_WorldMap_tile_changed(tile_dict):
+	$ResourceHazardPanel.set_hazards(tile_dict["hazards"])
+	$ResourceHazardPanel.set_resources(tile_dict["resources"])
 	pass # Replace with function body.

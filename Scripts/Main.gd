@@ -48,7 +48,12 @@ func _on_WorldMap_end_map_turn():
 	$WorldMap.hide()
 	$WorldMap/WorldMap_UI.hide()
 	$Canvas_CardTable/CardTable.show()
-	#Game.adv_turn() # Do this within the CardTable, otherwise you're skipping a turn
+	
+	var resources = $WorldMap.current_player.organism.resources
+	$Canvas_CardTable/CardTable/CFPBank.update_resources_values({"carbs": resources["carbs"], "fats": resources["fats"], "proteins": resources["proteins"]})
+	$Canvas_CardTable/CardTable/MineralBank.update_resources_values({"minerals": resources["minerals"]})
+	
+  #Game.adv_turn() # Do this within the CardTable, otherwise you're skipping a turn
 	
 	pass
 	
@@ -95,3 +100,5 @@ func _on_CardTable_next_turn(turn_text, round_num):
 		$WorldMap.show()
 		$WorldMap/WorldMap_UI.show()
 		$WorldMap.current_player.enable_sprite(true)
+		$WorldMap/WorldMap_UI/CFPBank.update_resources_values($WorldMap.current_player.organism.resources)
+		$WorldMap/WorldMap_UI/MineralBank.update_resources_values($WorldMap.current_player.organism.resources)

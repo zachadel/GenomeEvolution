@@ -59,13 +59,47 @@ func _ready():
 #
 #	for x in range(-10, 10):
 #		print(x)
+#	var A = {
+#		'yes': {
+#			0: 10,
+#			1: 12
+#		},
+#		'no': {
+#			0: 5,
+#			1: -2
+#		}
+#	}
+#	print(A.values())
+#	print(A.keys())
+#	print(Game.resource_groups)
+#	var subBar = load("res://Scenes/WorldMap/ResourceBank_SubBar.tscn")
+#	var subBars = [subBar.instance()]
+#	add_child(subBars[0])
+#
+#	var color = Color(1,0,0)
+#	subBars[0].self_modulate = color
+#
+#	var resource_tiers = 5
+#
+#	for i in range(1, resource_tiers):
+#		subBars.append(subBar.instance())
+#		subBars[i].rect_position.x = subBars[i - 1].rect_position.x + subBars[i - 1].rect_size.x
+#		subBars[i].self_modulate = Color(1 - float(i)/resource_tiers, 0, 0)
+#		add_child(subBars[i])
 
-	print(a.rstrip("Bar"))
+	var A = [22,11,54,8,4,8,98,5]
+	for x in A:
+		print(x)
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
 	
+	
 func test_function(a = 1, b = 2):
 	print(a, b)
+
+func _on_Control_mouse_entered():
+	print('hello')
+	pass # Replace with function body.

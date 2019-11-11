@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Assets/Images/Tiles/Resources/default_bar.png" type="Texture" id=1]
+
+[node name="Resource" type="TextureRect"]
+show_behind_parent = true
+margin_right = 370.0
+margin_bottom = 60.0
+texture = ExtResource( 1 )
+expand = true
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Label" type="Label" parent="."]
+self_modulate = Color( 0, 0, 0, 1 )
+margin_right = 370.0
+margin_bottom = 60.0
+text = "Resource:"
+align = 1
+valign = 1
