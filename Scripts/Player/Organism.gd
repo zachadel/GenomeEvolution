@@ -192,7 +192,7 @@ func gain_ates(count = 1):
 			pos = yield(cmsms.insert_ate(nxt_te), "completed");
 		else:
 			pos = cmsms.insert_ate(nxt_te);
-		justnow += "Inserted %s into position %d (%s, %d).\n" % [nxt_te.id, pos, nxt_te.get_parent().get_parent().name, nxt_te.get_index()];
+		justnow += "Inserted %s into position %d (%s, %d).\n" % ([nxt_te.id, pos] + nxt_te.get_position_display());
 	emit_signal("justnow_update", justnow);
 
 func gain_gaps(count = 1):
@@ -214,24 +214,22 @@ func jump_ates():
 			0:
 				justnow += "%s did not do anything.\n" % ate.id;
 			1:
-				var old_idx = ate.get_index();
-				var old_par = ate.get_parent().get_parent().name;
+				var old_loc = ate.get_position_display();
 				var old_id = ate.id;
 				if (do_yields):
 					yield(cmsms.remove_elm(ate), "completed");
 				else:
 					cmsms.remove_elm(ate);
-				justnow += "%s removed from (%s, %d); left a gap.\n" % [old_id, old_par, old_idx];
+				justnow += "%s removed from (%s, %d); left a gap.\n" % ([old_id] + old_loc);
 			2:
-				var old_idx = ate.get_index();
-				var old_par = ate.get_parent().get_parent().name;
+				var old_loc = ate.get_position_display();
 				
 				if (do_yields):
 					yield(cmsms.jump_ate(ate), "completed");
 				else:
 					cmsms.jump_ate(ate);
 				justnow += "%s jumped from (%s, %d) to (%s, %d); left a gap.\n" % \
-					[ate.id, old_par, old_idx, ate.get_parent().get_parent().name, ate.get_index()];
+					([ate.id] + old_loc + ate.get_position_display());
 			3:
 				var copy_ate;
 				if (do_yields):
@@ -239,7 +237,7 @@ func jump_ates():
 				else:
 					copy_ate = cmsms.copy_ate(ate);
 				justnow += "%s copied itself to (%s, %d); left no gap.\n" % \
-					[ate.id, copy_ate.get_parent().get_parent().name, copy_ate.get_index()];
+					([ate.id] + copy_ate.get_position_display());
 	emit_signal("justnow_update", justnow);
 	if (do_yields):
 		yield(cmsms.collapse_gaps(), "completed");
@@ -690,7 +688,7 @@ func highlight_gap_choices():
 	cmsms.highlight_gaps();
 	var gap_text = "";
 	for g in cmsms.gap_list:
-		gap_text += "Chromosome %s needs a repair at %d.\n" % [g.get_parent().get_parent().name, g.get_index()];
+		gap_text += "Chromosome %s needs a repair at %d.\n" % g.get_position_display();
 	emit_signal("updated_gaps", cmsms.gap_list.size() > 0, gap_text);
 	if (is_ai && cmsms.gap_list.size() > 0):
 		upd_repair_opts(cmsms.gap_list[0]);
