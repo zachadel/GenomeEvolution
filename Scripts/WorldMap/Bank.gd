@@ -8,11 +8,11 @@ class_name Bank
 #NOTE: I seem unable to figure out how to reasonably cut this into two instances of one class, my apologies
 var max_stored = 100.0
 
+var bar_size
+
 var max_complexity_tiers = 2
 
 var ResourceSubBar = load("res://Scenes/WorldMap/ResourceBank_SubBar.tscn")
-
-var bar_size
 
 var BASIC_RESOURCES = []
 #const TIER_CONVERSIONS = {BASIC_RESOURCES[0]: 3, BASIC_RESOURCES[1]: 9, BASIC_RESOURCES[2]: 3}
@@ -80,7 +80,8 @@ func setup(_BASIC_RESOURCES, _resources, _max_complexity_tiers, _max_stored, _re
 			else:
 				subBar.self_modulate = resource_to_colors[BASIC_RESOURCES[j]][0].linear_interpolate(resource_to_colors[BASIC_RESOURCES[j]][1], float(i)/max_complexity_tiers)
 			#Change the size of the bar based on the total allowed number of resources
-			subBar.rect_size = Vector2(ceil(resources[i][BASIC_RESOURCES[j]]/float(max_stored) * $Border.rect_size.x), $Border.rect_size.y)
+			var x = clamp(ceil(resources[i][BASIC_RESOURCES[j]]/float(max_stored) * $Border.rect_size.x), 0, $Border.rect_position.x + $Border.rect_size.x - subBar.rect_position.x)
+			subBar.rect_size = Vector2(x, $Border.rect_size.y)
 			
 			var label = subBar.get_node('Label')
 			label.text = BASIC_RESOURCES[j] + '_' + str(i) + ': ' + str(resources[i][BASIC_RESOURCES[j]])
@@ -177,7 +178,8 @@ func update_resources_bar_positions():
 				subBar.self_modulate = resource_to_colors[BASIC_RESOURCES[j]][0].linear_interpolate(resource_to_colors[BASIC_RESOURCES[j]][1], float(i)/max_complexity_tiers)
 				
 			#Change the size of the bar based on the total allowed number of resources
-			subBar.rect_size = Vector2(ceil(resources[i][BASIC_RESOURCES[j]]/float(max_stored) * $Border.rect_size.x), $Border.rect_size.y)
+			var x = clamp(ceil(resources[i][BASIC_RESOURCES[j]]/float(max_stored) * $Border.rect_size.x), 0, $Border.rect_position.x + $Border.rect_size.x - subBar.rect_position.x)
+			subBar.rect_size = Vector2(x, $Border.rect_size.y)
 			
 			var label = subBar.get_node('Label')
 			label.text = BASIC_RESOURCES[j] + '_' + str(i) + ': ' + str(resources[i][BASIC_RESOURCES[j]])
