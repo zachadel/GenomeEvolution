@@ -18,22 +18,22 @@ var died_on_turn
 #from fats_1 to fats_0, take the number of fats_1 and multiply
 #it by the value in TIER_CONVERSION["fats"][1], to get the
 #new result.  From there, you can assess penalties based on the
-#manipulation gene.
+#manipulation gene.  tier_0 -> energy credits
 const TIER_CONVERSIONS = {
 	"carbs": {
-		0: 1,
+		0: 3,
 		1: 3, 
 		2: 3,
 		3: 3
 		},
 	"fats": {
-		0: 1,
+		0: 5,
 		1: 9,
 		2: 9,
 		3: 9
 	},
 	"proteins": {
-		0: 1,
+		0: 5,
 		1: 3, 
 		2: 3,
 		3: 3
@@ -45,6 +45,7 @@ const TIER_CONVERSIONS = {
 		3: 3
 	}
 }
+
 var energy
 #the 4 resource groups with initial tiers of compression
 #tier 0 is immediately useable
