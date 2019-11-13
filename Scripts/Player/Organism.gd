@@ -192,7 +192,7 @@ func gain_ates(count = 1):
 			pos = yield(cmsms.insert_ate(nxt_te), "completed");
 		else:
 			pos = cmsms.insert_ate(nxt_te);
-		justnow += "Inserted %s into position %d (%s, %d).\n" % ([nxt_te.id, pos] + nxt_te.get_position_display());
+		justnow += "Inserted %s into position %d (%d, %d).\n" % ([nxt_te.id, pos] + nxt_te.get_position_display());
 	emit_signal("justnow_update", justnow);
 
 func gain_gaps(count = 1):
@@ -220,7 +220,7 @@ func jump_ates():
 					yield(cmsms.remove_elm(ate), "completed");
 				else:
 					cmsms.remove_elm(ate);
-				justnow += "%s removed from (%s, %d); left a gap.\n" % ([old_id] + old_loc);
+				justnow += "%s removed from (%d, %d); left a gap.\n" % ([old_id] + old_loc);
 			2:
 				var old_loc = ate.get_position_display();
 				
@@ -228,7 +228,7 @@ func jump_ates():
 					yield(cmsms.jump_ate(ate), "completed");
 				else:
 					cmsms.jump_ate(ate);
-				justnow += "%s jumped from (%s, %d) to (%s, %d); left a gap.\n" % \
+				justnow += "%s jumped from (%d, %d) to (%d, %d); left a gap.\n" % \
 					([ate.id] + old_loc + ate.get_position_display());
 			3:
 				var copy_ate;
@@ -236,7 +236,7 @@ func jump_ates():
 					copy_ate = yield(cmsms.copy_ate(ate), "completed");
 				else:
 					copy_ate = cmsms.copy_ate(ate);
-				justnow += "%s copied itself to (%s, %d); left no gap.\n" % \
+				justnow += "%s copied itself to (%d, %d); left no gap.\n" % \
 					([ate.id] + copy_ate.get_position_display());
 	emit_signal("justnow_update", justnow);
 	if (do_yields):
@@ -484,6 +484,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 		repair_type_possible = [false, false, false];
 		var cmsm = gap.get_parent();
 		var g_idx = gap.get_index();
+		var gap_pos_disp = gap.get_position_display();
 		
 		var other_cmsm = cmsms.get_other_cmsm(cmsm);
 		
@@ -543,7 +544,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 					yield(cmsms.close_gap(gap), "completed");
 				else:
 					cmsms.close_gap(gap);
-				emit_signal("justnow_update", "Gap at %s, %d closed: collapsed %d genes and ended due to %s." % [cmsm.get_parent().name, g_idx, remove_count, ended_due_to]);
+				emit_signal("justnow_update", "Gap at %d, %d closed: collapsed %d genes and ended due to %s." % (gap_pos_disp + [remove_count, ended_due_to]));
 			
 				for times in range(remove_count):
 					get_tree().get_root().get_node("Main/WorldMap").current_player.consume_resources("repair_cd")
@@ -577,15 +578,15 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 							
 							var gene = get_gene_selection();
 							var g_id = gene.id;
-							emit_signal("justnow_update", "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome, but a %s gene was lost.%s" % [cmsm.get_parent().name, g_idx, left_id, right_id, g_id, correct_str]);
+							emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome, but a %s gene was lost.%s" % (gap_pos_disp + [left_id, right_id, g_id, correct_str]));
 							if (do_yields):
 								yield(cmsms.remove_elm(gene, false), "completed");
 							else:
 								cmsms.remove_elm(gene, false);
 					1:
-						emit_signal("justnow_update", "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome without complications.%s" % [cmsm.get_parent().name, g_idx, left_id, right_id, correct_str]);
+						emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome without complications.%s" % (gap_pos_disp + [left_id, right_id, correct_str]));
 					2:
-						emit_signal("justnow_update", "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome along with intervening genes.%s" % [cmsm.get_parent().name, g_idx, left_id, right_id, correct_str]);
+						emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome along with intervening genes.%s" % (gap_pos_disp + [left_id, right_id, correct_str]));
 						if (do_yields):
 							for i in range(choice_info["left"].get_index()+1, choice_info["right"].get_index()):
 								var copy_elm = Game.copy_elm(other_cmsm.get_child(i));
@@ -599,7 +600,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 						if (randi() % 2):
 							copy_elm = left_break_gene;
 						
-						emit_signal("justnow_update", "Gap at %s, %d closed: copied the pattern (%s, %s) from the other chromosome, but a %s gene was copied.%s" % [cmsm.get_parent().name, g_idx, left_id, right_id, copy_elm.id, correct_str]);
+						emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome, but a %s gene was copied.%s" % (gap_pos_disp + [left_id, right_id, copy_elm.id, correct_str]));
 						if (do_yields):
 							yield(cmsms.dupe_elm(copy_elm), "completed");
 						else:
@@ -625,7 +626,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 					roll_storage[1][gap] = 0
 				match (roll_storage[1][gap]):
 					0:
-						emit_signal("justnow_update", "Joined ends for the gap at %s, %d without complications." % [cmsm.get_parent().name, g_idx]);
+						emit_signal("justnow_update", "Joined ends for the gap at %d, %d without complications." % gap_pos_disp);
 					1, 2, 3:
 						gene_selection = cmsm.get_elms_around_pos(g_idx, true);
 						emit_signal("justnow_update", "Joining ends as a last-ditch effort, but a gene is harmed; choose which.");
@@ -657,7 +658,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 								3: # Minor down
 									damage_str = "received a minor downgrade"
 									gene.evolve_specific(false, false);
-							emit_signal("justnow_update", "Joined ends for the gap at %s, %d; a %s gene %s in the repair." % [cmsm.get_parent().name, g_idx, g_id, damage_str]);
+							emit_signal("justnow_update", "Joined ends for the gap at %d, %d; a %s gene %s in the repair." % (gap_pos_disp + [g_id, damage_str]));
 					4, 5, 6:
 						var gene = right_break_gene;
 						if (randi()%2):
@@ -677,7 +678,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 							6: # Minor up
 								boon_str = "received a minor upgrade"
 								gene.evolve_specific(false, true);
-						emit_signal("justnow_update", "Joined ends for the gap at %s, %d; a %s gene %s in the repair." % [cmsm.get_parent().name, g_idx, gene.id, boon_str]);
+						emit_signal("justnow_update", "Joined ends for the gap at %d, %d; a %s gene %s in the repair." % (gap_pos_disp + [gene.id, boon_str]));
 				
 				if (do_yields):
 					yield(cmsms.close_gap(gap), "completed");
@@ -696,7 +697,7 @@ func highlight_gap_choices():
 	cmsms.highlight_gaps();
 	var gap_text = "";
 	for g in cmsms.gap_list:
-		gap_text += "Chromosome %s needs a repair at %d.\n" % g.get_position_display();
+		gap_text += "Chromosome %d needs a repair at %d.\n" % g.get_position_display();
 	emit_signal("updated_gaps", cmsms.gap_list.size() > 0, gap_text);
 	if (is_ai && cmsms.gap_list.size() > 0):
 		upd_repair_opts(cmsms.gap_list[0]);
