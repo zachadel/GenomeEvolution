@@ -29,9 +29,9 @@ func _on_Switch_Button_pressed():
 
 #At some point, error checking should be added here, where an error message
 #is printed if the player tries to store too many resources
-func _on_WorldMap_player_resources_changed(resources):
-	$CFPBank.update_resources_values(resources)
-	$MineralBank.update_resources_values(resources)
+func _on_WorldMap_player_resources_changed(cfp_resources, mineral_resources):
+	$CFPBank.update_resources_values(cfp_resources)
+	$MineralBank.update_resources_values(mineral_resources)
 	pass # Replace with function body.
 
 func _on_Quit_To_Title_Button_pressed():

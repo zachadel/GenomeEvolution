@@ -4,7 +4,7 @@ signal tile_clicked
 signal change_to_main_menu
 signal end_map_turn
 
-signal player_resources_changed(resources)
+signal player_resources_changed(cfp_resources, mineral_resources)
 signal tile_changed(tile_dict)
 
 """
@@ -88,8 +88,8 @@ func setup(biome_seed, hazard_seed, resource_seed, tiebreak_seed, _chunk_size, p
 	
 	$WorldMap_UI/ResourceHazardPanel.set_resources($ResourceMap.get_tile_resources($BiomeMap.world_to_map(default_start).x, $BiomeMap.world_to_map(default_start).y))
 	$WorldMap_UI/ResourceHazardPanel.set_hazards($BiomeMap.get_hazards($BiomeMap.world_to_map(default_start).x, $BiomeMap.world_to_map(default_start).y))
-	$WorldMap_UI/CFPBank.update_resources_values({"carbs": current_player.organism.resources["carbs"], "fats": current_player.organism.resources["fats"], "proteins": current_player.organism.resources["proteins"]})
-	$WorldMap_UI/MineralBank.update_resources_values({"minerals": current_player.organism.resources["minerals"]})
+	$WorldMap_UI/CFPBank.update_resources_values(current_player.organism.cfp_resources)
+	$WorldMap_UI/MineralBank.update_resources_values(current_player.organism.mineral_resources)
 	
 	$MapCamera.position = current_player.position
 
@@ -295,15 +295,20 @@ func get_player_line_of_sight():
 	
 	pass
 
+#expects x and y to be integers
+func get_tile_at_pos(x, y):
+	var tile_info = {
+		"resources": $ResourceMap.get_tile_resources(x, y),
+		"hazards": $BiomeMap.get_hazards(x, y),
+		"biome": $BiomeMap.get_biome(x, y),
+		"primary_resource": $ResourceMap.get_primary_resource(x, y),
+		"location": [int(x), int(y)]
+	}
+	return tile_info
+
 func _on_WorldMap_UI_end_map_pressed():
 	var player_pos = $BiomeMap.world_to_map(current_player.position)
-	var curr_tile = {
-		"resources": $ResourceMap.get_tile_resources(player_pos.x, player_pos.y),
-		"hazards": $BiomeMap.get_hazards(player_pos.x, player_pos.y),
-		"biome": $BiomeMap.get_biome(player_pos.x, player_pos.y),
-		"primary_resource": $ResourceMap.get_primary_resource(player_pos.x, player_pos.y),
-		"location": [int(player_pos.x), int(player_pos.y)]
-	}
+	var curr_tile = get_tile_at_pos(player_pos.x, player_pos.y)
 	
 	current_player.set_current_tile(curr_tile) 
 	
@@ -319,20 +324,13 @@ func _on_WorldMap_UI_quit_to_title():
 #	emit_signal("change_to_main_menu")
 	pass # Replace with function body.
 
-
 func _on_WorldMap_UI_acquire_resources():
 	var player_pos = $BiomeMap.world_to_map(current_player.position)
-	var curr_tile = {
-		"resources": $ResourceMap.get_tile_resources(player_pos.x, player_pos.y),
-		"hazards": $BiomeMap.get_hazards(player_pos.x, player_pos.y),
-		"biome": $BiomeMap.get_biome(player_pos.x, player_pos.y),
-		"primary_resource": $ResourceMap.get_primary_resource(player_pos.x, player_pos.y),
-		"location": [int(player_pos.x), int(player_pos.y)]
-	}
+	var curr_tile = get_tile_at_pos(player_pos.x, player_pos.y)
 	
 	current_player.set_current_tile(curr_tile) 
 	current_player.acquire_resources()
-	emit_signal("player_resources_changed", current_player.organism.resources)
+	emit_signal("player_resources_changed", current_player.organism.cfp_resources, current_player.organism.mineral_resources)
 	
 	$ResourceMap.update_tile_resource(int(player_pos.x), int(player_pos.y), current_player.get_current_tile()["primary_resource"])
 	emit_signal("tile_changed", current_player.get_current_tile())

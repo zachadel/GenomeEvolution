@@ -51,18 +51,17 @@ func is_alive_resource_check():
 	var mineral_alive = false
 	var cfp_alive = false
 	
-	for resource in organism.resources.keys():
-		if resource == "minerals":
-			for tier in organism.resources[resource]:
-				if organism.resources[resource][tier] != 0:
-					mineral_alive = true
-					break
-		else:
-			for tier in organism.resources[resource]:
-				if organism.resources[resource][tier] != 0:
-					cfp_alive = true
-					break
-	
+	for mineral in organism.mineral_resources:
+		for tier in organism.mineral_resources[mineral]:
+			if organism.mineral_resources[mineral][tier] != 0:
+				mineral_alive = true
+				break
+		
+	for resource in organism.cfp_resources:
+		for tier in organism.cfp_resources[resource]:
+			if organism.cfp_resources[resource][tier] != 0:
+				cfp_alive = true
+				break
 	
 	return (mineral_alive and cfp_alive)
 #		organism.get_parent()._on_Organism_died(organism)
@@ -79,11 +78,15 @@ func acquire_resources():
 	organism.acquire_resources()
 	return
 
-#resource_group should be "carbs", "fats", "proteins", "minerals"
-#tier should be greater than 0, since tier 0 resources are free to consume/use
-func breakdown_resources(resource_group, tier):
+#resource should be "carbs", "fats", "proteins", or a mineral
+func downgrade_internal_cfp_resource(resource, tier, amount = 1):
+	organism.downgrade_internal_cfp_resource(resource, tier, amount)
+	pass
+	
+func breakdown_external_resource(resource_index, amount = 1):
 	pass
 
+#It might be better here to emit a player signal rather than an organism signal
 func consume_resources(action):
 	organism.use_resources(action)
 	if not is_alive_resource_check():

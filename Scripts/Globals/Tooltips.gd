@@ -19,6 +19,12 @@ const COMPARE_TTIPS = {
 	"base": ""
 };
 
+const WORLDMAP_UI_TTIPS = {
+	"acquire": "Acquire as many resources as you can on your current tile for %s energy.",
+	"title": "Exit to the title screen.",
+	"end_turn": "End the current map turn and proceed to the chromosome screen."
+};
+
 const GENE_TYPE_DESC = "This is a %s%s.";
 const UNNAMED_GENES = ["Transposon", "Pseudogene"];
 const GENE_TTIP_FORMAT = "%s\n\n%s";
