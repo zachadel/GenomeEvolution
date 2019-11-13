@@ -250,13 +250,21 @@ func get_gene_selection():
 	else:
 		return null;
 
+# Band-aid fix for the mystery crash that results from deselecting gaps
+func seq_elm_deleted(elm):
+	var is_gap = elm.is_gap();
+	if (elm in gene_selection):
+		gene_selection.erase(elm);
+	elm.queue_free();
+	if (is_gap):
+		get_cmsm_pair().collapse_gaps();
+
 func _on_chromes_elm_clicked(elm):
 	match (elm.type):
 		"break":
 			if (elm == selected_gap):
-				for r in gene_selection:
-					if Game.is_node_in_tree(r):
-						r.disable(true);
+				for g in gene_selection:
+					g.disable(true);
 				highlight_gap_choices();
 				gene_selection.clear();
 				repair_canceled = true;
