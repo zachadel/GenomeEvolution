@@ -874,17 +874,21 @@ func adv_turn(round_num, turn_idx):
 			Game.TURN_TYPES.Map:
 				emit_signal("justnow_update", "Welcome back!");
 			Game.TURN_TYPES.NewTEs:
+				emit_signal("doing_work", true);
 				emit_signal("justnow_update", "");
 				if (do_yields):
 					yield(gain_ates(1), "completed");
 				else:
 					gain_ates(1);
+				emit_signal("doing_work", false);
 			Game.TURN_TYPES.TEJump:
+				emit_signal("doing_work", true);
 				emit_signal("justnow_update", "");
 				if (do_yields):
 					yield(jump_ates(), "completed");
 				else:
 					jump_ates();
+				emit_signal("doing_work", false);
 			Game.TURN_TYPES.RepairBreaks:
 				roll_storage = [{}, {}];
 				var num_gaps = cmsms.gap_list.size();
@@ -896,6 +900,7 @@ func adv_turn(round_num, turn_idx):
 					emit_signal("justnow_update", "%d gaps need repair." % num_gaps);
 				highlight_gap_choices();
 			Game.TURN_TYPES.EnvironmentalDamage:
+				emit_signal("doing_work", true);
 				var rand;
 				if (do_yields):
 					rand = yield(gain_gaps(1+randi()%3), "completed");
@@ -905,6 +910,7 @@ func adv_turn(round_num, turn_idx):
 				if (rand == 1):
 					plrl = "";
 				emit_signal("justnow_update", "%d gap%s appeared due to environmental damage." % [rand, plrl]);
+				emit_signal("doing_work", false);
 			Game.TURN_TYPES.Recombination:
 				emit_signal("justnow_update", "If you want, you can select a gene that is common to both chromosomes. Those genes and every gene to their right swap chromosomes.\nThis recombination has a %d%% chance of success." % (100*recombo_chance));
 				if (do_yields):
