@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Scripts/CardTable/CardTable.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player/Organism.tscn" type="PackedScene" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://Scripts/CardTable/pnl_saveload.gd" type="Script" id=10]
 [ext_resource path="res://Scenes/WorldMap/CFPBank.tscn" type="PackedScene" id=11]
 [ext_resource path="res://Scenes/WorldMap/MineralBank.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Scenes/WorldMap/EnergyBar.tscn" type="PackedScene" id=13]
 
 [node name="CardTable" type="Control"]
 anchor_right = 1.0
@@ -570,6 +571,13 @@ margin_top = 810.0
 margin_right = -1588.11
 margin_bottom = -90.0
 rect_scale = Vector2( 0.8, 1 )
+
+[node name="EnergyBar" parent="." instance=ExtResource( 13 )]
+margin_left = 11.894
+margin_top = 692.0
+margin_right = -988.106
+margin_bottom = -148.0
+rect_scale = Vector2( 0.8, 1 )
 [connection signal="player_done" from="." to="pnl_energy_allocation" method="_on_Control_player_done"]
 [connection signal="pressed" from="button_grid/btn_dead_menu" to="." method="_on_btn_dead_menu_pressed"]
 [connection signal="pressed" from="button_grid/btn_dead_restart" to="." method="_on_btn_dead_restart_pressed"]
@@ -578,6 +586,7 @@ rect_scale = Vector2( 0.8, 1 )
 [connection signal="pressed" from="button_grid/btn_nxt" to="." method="_on_btn_nxt_pressed"]
 [connection signal="died" from="Organism" to="." method="_on_Organism_died"]
 [connection signal="doing_work" from="Organism" to="." method="_on_Organism_doing_work"]
+[connection signal="energy_changed" from="Organism" to="EnergyBar" method="_on_Organism_energy_changed"]
 [connection signal="finished_replication" from="Organism" to="." method="_on_Organism_finished_replication"]
 [connection signal="justnow_update" from="Organism" to="." method="_on_Organism_justnow_update"]
 [connection signal="resources_changed" from="Organism" to="CFPBank" method="_on_Organism_resources_changed"]
@@ -606,3 +615,4 @@ rect_scale = Vector2( 0.8, 1 )
 [connection signal="pressed" from="pnl_energy_allocation/btn_exit" to="pnl_energy_allocation" method="_on_btn_exit_pressed"]
 [connection signal="loaded" from="pnl_saveload" to="." method="_on_pnl_saveload_loaded"]
 [connection signal="pressed" from="pnl_saveload/btn_load" to="pnl_saveload" method="_on_btn_load_pressed"]
+[connection signal="resource_clicked" from="CFPBank" to="." method="_on_CFPBank_resource_clicked"]

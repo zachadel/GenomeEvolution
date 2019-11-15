@@ -28,7 +28,7 @@ func _ready():
 				
 				Bar.size_flags_horizontal = SIZE_EXPAND_FILL
 
-				Bar.get_node("ResourceAmount").text = str(Bar.value)
+				#Bar.get_node("ResourceAmount").text = str(Bar.value)
 			
 				resource_hbox.add_child(Bar)
 				

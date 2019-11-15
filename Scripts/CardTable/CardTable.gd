@@ -21,6 +21,7 @@ func _ready():
 	$lbl_turn.text = Game.get_turn_txt();
 	connect("next_turn", orgn, "adv_turn");
 	
+	$EnergyBar.MAX_ENERGY = orgn.MAX_ENERGY
 	reset_status_bar();
 
 func reset_status_bar():
@@ -172,3 +173,13 @@ func _on_btn_dead_restart_pressed():
 func _on_Organism_finished_replication():
 	reset_status_bar();
 	status_bar.visible = true;
+
+
+func _on_CFPBank_resource_clicked(resource):
+	var resource_group = resource.split('_')[0]
+	var tier = resource.split('_')[1]
+	
+	if resource_group in $Organism.cfp_resources:
+		var change = $Organism.downgrade_internal_cfp_resource(resource_group, int(tier))
+		
+	pass # Replace with function body.

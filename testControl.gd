@@ -87,19 +87,24 @@ func _ready():
 #		subBars[i].self_modulate = Color(1 - float(i)/resource_tiers, 0, 0)
 #		add_child(subBars[i])
 
-	var A = [22,11,54,8,4,8,98,5]
-	for x in A:
-		print(x)
+#	var grad = Gradient.new()
+#	grad.set_color(0, Color(1,0,0))
+#	grad.add_point(.25, Color(1,1,0))
+#	grad.set_color(1, Color(0,1,0))
+#
+#	var grad_text = GradientTexture.new()
+#	grad_text.set_gradient(grad)
+#	grad_text.set_width(100)
+#	#grad_text.rect_size = Vector2(600,60)
+#	$TextureRect.texture = grad_text
+#	$TextureRect.rect_size = Vector2(600, 60)
+
+	var A = "carbs_0"
+	print(A.split('_'))
+
+	
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
-	
-	
-func test_function(a = 1, b = 2):
-	print(a, b)
-
-func _on_Control_mouse_entered():
-	print('hello')
-	pass # Replace with function body.
