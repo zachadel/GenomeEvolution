@@ -46,7 +46,7 @@ const TIER_CONVERSIONS = {
 	}
 }
 
-var energy
+var energy = 10
 #the 4 resource groups with initial tiers of compression
 #tier 0 is immediately useable
 #tier 1 must be broken down into tier 0 using the tier stats
@@ -105,7 +105,7 @@ var max_cfp_stored = 100
 var max_minerals_stored = 50
 
 var MIN_ENERGY = 0;
-var MAX_ENERGY = 10;
+var MAX_ENERGY = 25;
 var MAX_ALLOCATED_ENERGY = 10;
 var energy_allocations
 onready var energy_allocation_panel = get_node("../pnl_energy_allocation");
@@ -139,7 +139,7 @@ func _ready():
 	born_on_turn = -1;
 	died_on_turn = -1;
 
-	energy = 5;
+	energy = 10;
 	energy_allocations = {};
 	
 	perform_anims(false);
@@ -1050,7 +1050,7 @@ var costs = {
 		"zinc": 0,
 		"manganese": 0,
 		"potassium": 0,
-		"energy": 15
+		"energy": 8
 	},
 	
 	"replicate_mitosis": {
@@ -1118,7 +1118,7 @@ func acquire_resources():
 	var cost_mult = get_cost_mult("acquire_resources")
 	var modified = false
 	#Check if any room to store more stuff
-	if total_cfp_resources < max_cfp_stored or total_mineral_resources < max_minerals_stored:
+	if (total_cfp_resources < max_cfp_stored or total_mineral_resources < max_minerals_stored) and energy >= costs["acquire_resources"]["energy"] * cost_mult * Game.resource_mult:
 		#Run through all resources on the tile
 		for index in range(len(current_tile["resources"])):
 			#grab the resource
@@ -1193,7 +1193,7 @@ func acquire_resources():
 	if modified:
 		use_resources("acquire_resources")
 		
-	return
+	return modified
 
 #downgrades cfp_resources[resource][tier] to cfp_resources[resource][tier - 1]
 #or energy if tier = 0
@@ -1208,19 +1208,22 @@ func downgrade_internal_cfp_resource(resource, tier, amount = 1):
 		downgraded_amount = (1 - costs["tier_downgrade"][resource] * cost_mult * Game.resource_mult) * amount * TIER_CONVERSIONS[resource][tier]
 		
 		if tier == 0:
-			if downgraded_amount + energy < MAX_ENERGY:
+			if downgraded_amount + energy <= MAX_ENERGY:
 				energy += downgraded_amount
 				cfp_resources[resource][tier] -= amount
 			else:
 				downgraded_amount = 0
-		else:
+		elif energy >= costs["tier_downgrade"]["energy"] * cost_mult * Game.resource_mult * amount:
 			if downgraded_amount - amount + get_total_cfp_stored() <= max_cfp_stored:
 				cfp_resources[resource][tier] -= amount
 				cfp_resources[resource][tier - 1] += downgraded_amount
+				energy -= costs["tier_downgrade"]["energy"] * cost_mult * Game.resource_mult * amount
 			else:
 				downgraded_amount = 0
 				
-	
+	if downgraded_amount > 0:
+		emit_signal("energy_changed", energy)
+		emit_signal("resources_changed", cfp_resources, mineral_resources)
 	return downgraded_amount		
 
 #Returns true or false 

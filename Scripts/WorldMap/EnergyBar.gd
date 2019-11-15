@@ -1,33 +1,34 @@
-extends Panel
+extends Control
 
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
 
-const MAX_ENERGY = 18
+const MAX_ENERGY_UNITS = 25
+const MAX_RECT_SIZE = Vector2(500, 45)
+
+var energy = 28
+var MAX_ENERGY = 100
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	update_energy_allocation(MAX_ENERGY)
+	update_energy_allocation(energy)
 	pass # Replace with function body.
 
-func create_energy_label():
-	var label = ColorRect.new();
-	label.color = Color(0, 1, 0);
-	label.rect_min_size = Vector2(0, 20);
-	return label;
-
 func update_energy_allocation(amount):
-	var container = $VBoxContainer
-	if (amount > container.get_child_count()):
-		for i in range(amount - container.get_child_count()):
-			var label = create_energy_label();
-			container.add_child(label);
-	elif(amount < container.get_child_count()):
-		for i in range(container.get_child_count() - amount):
-			var to_remove = container.get_child(0);
-			container.remove_child(to_remove);
-			to_remove.queue_free()
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+	var children = $HBoxContainer.get_children()
+	var energy_per_unit = MAX_ENERGY / float(MAX_ENERGY_UNITS)
+	
+	energy = amount
+	
+	for i in len(children):
+		if i * energy_per_unit < amount: 
+			children[i].self_modulate = Color(1,1,1,1)
+		else:
+			children[i].self_modulate = Color(1,1,1,0)
+	
+	hint_tooltip = Tooltips.WORLDMAP_UI_TTIPS["energy"] % energy
+
+func _on_Organism_energy_changed(energy):
+	update_energy_allocation(energy)
+	pass # Replace with function body.

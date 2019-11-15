@@ -99,7 +99,8 @@ func _ready():
 #	$TextureRect.texture = grad_text
 #	$TextureRect.rect_size = Vector2(600, 60)
 
-	print(8 + true)
+	var A = "carbs_0"
+	print(A.split('_'))
 
 	
 	pass # Replace with function body.

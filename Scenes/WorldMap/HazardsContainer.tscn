@@ -19,22 +19,22 @@
 [ext_resource path="res://Scripts/WorldMap/OxygenLabel.gd" type="Script" id=17]
 
 [node name="HazardsContainer" type="GridContainer"]
-margin_right = 296.0
+margin_right = 164.0
 margin_bottom = 191.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
+size_flags_horizontal = 0
+size_flags_vertical = 0
 custom_constants/vseparation = 20
 custom_constants/hseparation = 20
 columns = 2
 script = ExtResource( 1 )
 
 [node name="TemperatureBar" type="TextureProgress" parent="."]
-margin_left = 44.0
-margin_right = 94.0
+margin_left = 12.0
+margin_right = 62.0
 margin_bottom = 96.0
 hint_tooltip = "This measures the temperature in Celsius of a given tile."
-size_flags_horizontal = 6
-size_flags_vertical = 6
+size_flags_horizontal = 4
+size_flags_vertical = 4
 min_value = -40.0
 step = 0.1
 value = -40.0
@@ -42,6 +42,9 @@ texture_over = ExtResource( 2 )
 texture_progress = ExtResource( 3 )
 fill_mode = 3
 script = ExtResource( 4 )
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="TemperatureLabel" type="Label" parent="TemperatureBar"]
 margin_left = 11.0
@@ -53,18 +56,21 @@ valign = 1
 script = ExtResource( 5 )
 
 [node name="pHBar" type="TextureProgress" parent="."]
-margin_left = 202.0
-margin_right = 252.0
+margin_left = 104.0
+margin_right = 154.0
 margin_bottom = 96.0
 hint_tooltip = "This measures the pH of a given tile."
-size_flags_horizontal = 6
-size_flags_vertical = 6
+size_flags_horizontal = 4
+size_flags_vertical = 4
 max_value = 14.0
 step = 0.1
 texture_over = ExtResource( 6 )
 texture_progress = ExtResource( 7 )
 fill_mode = 3
 script = ExtResource( 8 )
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="pHLabel" type="Label" parent="pHBar"]
 anchor_left = 1.0
@@ -79,20 +85,23 @@ valign = 1
 script = ExtResource( 9 )
 
 [node name="UVBar" type="TextureProgress" parent="."]
-margin_left = 31.0
 margin_top = 116.0
-margin_right = 106.0
+margin_right = 75.0
 margin_bottom = 191.0
 hint_tooltip = "This measures the Ultraviolet Radiation Index for a given tile."
-size_flags_horizontal = 6
-size_flags_vertical = 6
+size_flags_horizontal = 4
+size_flags_vertical = 4
 step = 0.1
 texture_over = ExtResource( 10 )
 texture_progress = ExtResource( 11 )
 fill_mode = 3
 script = ExtResource( 12 )
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="UVLabel" type="Label" parent="UVBar"]
+self_modulate = Color( 0, 0, 0, 1 )
 margin_left = 20.0
 margin_top = 19.0
 margin_right = 55.0
@@ -102,18 +111,21 @@ valign = 1
 script = ExtResource( 13 )
 
 [node name="OxygenBar" type="TextureProgress" parent="."]
-margin_left = 192.0
+margin_left = 95.0
 margin_top = 116.0
-margin_right = 261.0
+margin_right = 164.0
 margin_bottom = 191.0
 hint_tooltip = "This measures the oxygen levels of a given tile."
-size_flags_horizontal = 6
-size_flags_vertical = 6
+size_flags_horizontal = 4
+size_flags_vertical = 4
 step = 0.1
 texture_over = ExtResource( 14 )
 texture_progress = ExtResource( 15 )
 fill_mode = 3
 script = ExtResource( 16 )
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="OxygenLabel" type="Label" parent="OxygenBar"]
 margin_left = 9.0

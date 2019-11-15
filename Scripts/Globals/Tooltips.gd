@@ -22,7 +22,8 @@ const COMPARE_TTIPS = {
 const WORLDMAP_UI_TTIPS = {
 	"acquire": "Acquire as many resources as you can on your current tile for %s energy.",
 	"title": "Exit to the title screen.",
-	"end_turn": "End the current map turn and proceed to the chromosome screen."
+	"end_turn": "End the current map turn and proceed to the chromosome screen.",
+	"energy": "Energy: %.2f"
 };
 
 const GENE_TYPE_DESC = "This is a %s%s.";

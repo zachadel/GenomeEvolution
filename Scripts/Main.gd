@@ -53,6 +53,8 @@ func _on_WorldMap_end_map_turn():
 	var mineral_resources = $WorldMap.current_player.organism.mineral_resources
 	$Canvas_CardTable/CardTable/CFPBank.update_resources_values(cfp_resources)
 	$Canvas_CardTable/CardTable/MineralBank.update_resources_values(mineral_resources)
+	$Canvas_CardTable/CardTable/EnergyBar.MAX_ENERGY = $WorldMap.current_player.organism.MAX_ENERGY
+	$Canvas_CardTable/CardTable/EnergyBar.update_energy_allocation($WorldMap.current_player.organism.energy)
 	
   #Game.adv_turn() # Do this within the CardTable, otherwise you're skipping a turn
 	
@@ -103,3 +105,4 @@ func _on_CardTable_next_turn(turn_text, round_num):
 		$WorldMap.current_player.enable_sprite(true)
 		$WorldMap/WorldMap_UI/CFPBank.update_resources_values($WorldMap.current_player.organism.cfp_resources)
 		$WorldMap/WorldMap_UI/MineralBank.update_resources_values($WorldMap.current_player.organism.mineral_resources)
+		$WorldMap/WorldMap_UI/EnergyBar.update_energy_allocation($WorldMap.current_player.organism.energy)

@@ -3,6 +3,7 @@ extends CanvasLayer
 signal end_map_pressed
 signal quit_to_title
 signal acquire_resources
+signal resource_clicked(resource)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -47,4 +48,15 @@ func _on_Acquire_Button_pressed():
 func _on_WorldMap_tile_changed(tile_dict):
 	$ResourceHazardPanel.set_hazards(tile_dict["hazards"])
 	$ResourceHazardPanel.set_resources(tile_dict["resources"])
+	pass # Replace with function body.
+
+
+func _on_CFPBank_resource_clicked(resource):
+	emit_signal("resource_clicked", resource)
+	
+	pass # Replace with function body.
+
+
+func _on_WorldMap_player_energy_changed(energy):
+	$EnergyBar.update_energy_allocation(energy)
 	pass # Replace with function body.

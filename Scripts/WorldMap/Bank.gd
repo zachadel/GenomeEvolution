@@ -1,11 +1,14 @@
 extends Control
 
 class_name Bank
+
+signal resource_clicked(resource)
+
+
 #NOTE: It is the job of the nodes using this Bank to ensure
 #that the carbs, fats, and proteins do not exceed the 
 #proper amounts.
 #NOTE: resources stands for carbs, fats, proteins
-#NOTE: I seem unable to figure out how to reasonably cut this into two instances of one class, my apologies
 var max_stored = 100.0
 
 var bar_size
@@ -84,12 +87,13 @@ func setup(_BASIC_RESOURCES, _resources, _max_complexity_tiers, _max_stored, _re
 			subBar.rect_size = Vector2(x, $Border.rect_size.y)
 			
 			var label = subBar.get_node('Label')
-			label.text = BASIC_RESOURCES[j] + '_' + str(i) + ': ' + str(resources[i][BASIC_RESOURCES[j]])
+			label.text = ""
 			label.rect_size = subBar.rect_size
 			
-			subBar.hint_tooltip = label.text
+			subBar.hint_tooltip = BASIC_RESOURCES[j] + '_' + str(i) + ': ' + str(resources[i][BASIC_RESOURCES[j]])
 			
 			add_child(subBar)
+			subBar.connect("pressed", self, "_on_SubBar_pressed", [subBar.name])
 
 func shift_single_value(resource, tier, shift):
 	var new_resources_dict = resources.duplicate(true)
@@ -182,10 +186,10 @@ func update_resources_bar_positions():
 			subBar.rect_size = Vector2(x, $Border.rect_size.y)
 			
 			var label = subBar.get_node('Label')
-			label.text = BASIC_RESOURCES[j] + '_' + str(i) + ': ' + str(resources[i][BASIC_RESOURCES[j]])
+			label.text = ""
 			label.rect_size = subBar.rect_size
 			
-			subBar.hint_tooltip = label.text
+			subBar.hint_tooltip = BASIC_RESOURCES[j] + '_' + str(i) + ': ' + str(resources[i][BASIC_RESOURCES[j]])
 
 #Function for traversing resources dictionaries or tier dictionaries
 func sum_resources_dict(resources_dict):
@@ -216,3 +220,7 @@ func construct_resources_dict_from_array_of_dicts(array_of_dicts):
 			resources_dict[i][resource] = array_of_dicts[resource][i]
 		
 	return resources_dict
+	
+func _on_SubBar_pressed(resource):
+	emit_signal("resource_clicked", resource)
+	print(resource)
