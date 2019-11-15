@@ -314,9 +314,8 @@ var sel_repair_idx = -1;
 var sel_repair_gap = null;
 
 #This also only checks against internal resources, not total available resources
-#Changed from < to <=.  Hopefully that doesn't break anything.
 #Now returns array of deficiencies, rather than true or false
-func check_resources(action):
+func check_resources(action, amount = 1):
 #	var repair = ""
 #	match x:
 #		0:
@@ -326,17 +325,18 @@ func check_resources(action):
 #		2:
 #			repair = "repair_je"
 	var deficiencies = []
+	var cost_mult = get_cost_mult(action)
 	
 	for resource in cfp_resources.keys():
-		if cfp_resources[resource][0] <= costs[action][resource]:
+		if cfp_resources[resource][0] < costs[action][resource] * cost_mult * Game.resource_mult * amount:
 			#print("NOT ENOUGH CASH! STRANGA!")
 			deficiencies.append(resource)
 			
 	for mineral in mineral_resources.keys():
-		if mineral_resources[mineral][0] <= costs[action][mineral]:
+		if mineral_resources[mineral][0] < costs[action][mineral] * cost_mult * Game.resource_mult * amount:
 			deficiencies.append(mineral)
 	
-	if energy < costs[action]["energy"]:
+	if energy < costs[action]["energy"] * cost_mult * Game.resource_mult * amount:
 		deficiencies.append("energy")
 		
 	return deficiencies
