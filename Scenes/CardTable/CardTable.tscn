@@ -10,8 +10,8 @@
 [ext_resource path="res://Assets/Images/icons/meiosis.png" type="Texture" id=8]
 [ext_resource path="res://Scripts/CardTable/pnl_energy_allocation.gd" type="Script" id=9]
 [ext_resource path="res://Scripts/CardTable/pnl_saveload.gd" type="Script" id=10]
-[ext_resource path="res://Scenes/WorldMap/CFPBank.tscn" type="PackedScene" id=11]
-[ext_resource path="res://Scenes/WorldMap/MineralBank.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Scenes/WorldMap/MineralLevels.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Scenes/WorldMap/CFPBank.tscn" type="PackedScene" id=12]
 [ext_resource path="res://Scenes/WorldMap/EnergyBar.tscn" type="PackedScene" id=13]
 
 [node name="CardTable" type="Control"]
@@ -131,10 +131,10 @@ text = "Continue"
 [node name="ChromosomeStatus" parent="." instance=ExtResource( 3 )]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -788.106
-margin_top = 617.503
-margin_right = 311.894
-margin_bottom = 679.503
+margin_left = -786.519
+margin_top = 577.836
+margin_right = 313.481
+margin_bottom = 639.836
 rect_min_size = Vector2( 0, 50 )
 
 [node name="pnl_repair_choices" type="Panel" parent="."]
@@ -558,26 +558,25 @@ mouse_default_cursor_shape = 0
 readonly = true
 show_line_numbers = true
 
-[node name="CFPBank" parent="." instance=ExtResource( 11 )]
-margin_left = 11.894
-margin_top = 751.0
-margin_right = -1588.11
-margin_bottom = -149.0
-rect_scale = Vector2( 0.8, 1 )
+[node name="MineralLevels" parent="." instance=ExtResource( 11 )]
+margin_left = 139.563
+margin_top = 731.388
+margin_right = -1195.44
+margin_bottom = -40.6124
 
-[node name="MineralBank" parent="." instance=ExtResource( 12 )]
-margin_left = 11.894
-margin_top = 810.0
-margin_right = -1588.11
-margin_bottom = -90.0
-rect_scale = Vector2( 0.8, 1 )
+[node name="CFPBank" parent="." instance=ExtResource( 12 )]
+margin_left = 11.5742
+margin_top = 686.729
+margin_right = -1588.43
+margin_bottom = -213.271
+rect_scale = Vector2( 0.8, 0.75 )
 
 [node name="EnergyBar" parent="." instance=ExtResource( 13 )]
 margin_left = 11.894
-margin_top = 692.0
+margin_top = 643.426
 margin_right = -988.106
-margin_bottom = -148.0
-rect_scale = Vector2( 0.8, 1 )
+margin_bottom = -196.574
+rect_scale = Vector2( 0.8, 0.75 )
 [connection signal="player_done" from="." to="pnl_energy_allocation" method="_on_Control_player_done"]
 [connection signal="pressed" from="button_grid/btn_dead_menu" to="." method="_on_btn_dead_menu_pressed"]
 [connection signal="pressed" from="button_grid/btn_dead_restart" to="." method="_on_btn_dead_restart_pressed"]
@@ -590,7 +589,6 @@ rect_scale = Vector2( 0.8, 1 )
 [connection signal="finished_replication" from="Organism" to="." method="_on_Organism_finished_replication"]
 [connection signal="justnow_update" from="Organism" to="." method="_on_Organism_justnow_update"]
 [connection signal="resources_changed" from="Organism" to="CFPBank" method="_on_Organism_resources_changed"]
-[connection signal="resources_changed" from="Organism" to="MineralBank" method="_on_Organism_resources_changed"]
 [connection signal="show_repair_opts" from="Organism" to="." method="_on_Organism_show_repair_opts"]
 [connection signal="show_reprod_opts" from="Organism" to="." method="_on_Organism_show_reprod_opts"]
 [connection signal="updated_gaps" from="Organism" to="." method="_on_Organism_updated_gaps"]

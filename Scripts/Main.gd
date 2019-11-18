@@ -52,7 +52,7 @@ func _on_WorldMap_end_map_turn():
 	var cfp_resources = $WorldMap.current_player.organism.cfp_resources
 	var mineral_resources = $WorldMap.current_player.organism.mineral_resources
 	$Canvas_CardTable/CardTable/CFPBank.update_resources_values(cfp_resources)
-	$Canvas_CardTable/CardTable/MineralBank.update_resources_values(mineral_resources)
+	$Canvas_CardTable/CardTable/MineralLevels.update_resources_values(mineral_resources)
 	$Canvas_CardTable/CardTable/EnergyBar.MAX_ENERGY = $WorldMap.current_player.organism.MAX_ENERGY
 	$Canvas_CardTable/CardTable/EnergyBar.update_energy_allocation($WorldMap.current_player.organism.energy)
 	
@@ -81,18 +81,34 @@ func create_player():
 	player.name = "player_" + str(Game.all_time_players)
 	player.setup()
 	add_child(player)
+	player.connect("player_died", self, "_on_Player_died", [player])
 	
 	Game.all_time_players += 1
 	Game.current_players += 1
 	
 	return player
 
-func delete_player(id):
-	var player = get_node("player_" + str(id))
+func delete_player(node_name):
+	var player = get_node(node_name)
 	
 	player.remove_from_group("players")
 	player.queue_free()
 	
+	Game.current_players -= 1
+	
+func _on_Player_died(player):
+	if player.organism.is_ai:
+		delete_player(player.name)
+		player.queue_free()
+		
+	else:
+		Game.round_num = 0
+		$GameOverLayer/GameOver.popup()
+		
+		if $Canvas_CardTable/CardTable.is_visible_in_tree():
+			$Canvas_CardTable/CardTable._on_Organism_died()
+		else:
+			$WorldMap/WorldMap_UI/UIPanel/ActionsPanel.hide()
 	Game.current_players -= 1
 
 ########################CARD TABLE SIGNAL HANDLING#############################
@@ -103,6 +119,12 @@ func _on_CardTable_next_turn(turn_text, round_num):
 		$WorldMap.show()
 		$WorldMap/WorldMap_UI.show()
 		$WorldMap.current_player.enable_sprite(true)
-		$WorldMap/WorldMap_UI/CFPBank.update_resources_values($WorldMap.current_player.organism.cfp_resources)
-		$WorldMap/WorldMap_UI/MineralBank.update_resources_values($WorldMap.current_player.organism.mineral_resources)
-		$WorldMap/WorldMap_UI/EnergyBar.update_energy_allocation($WorldMap.current_player.organism.energy)
+		$WorldMap/WorldMap_UI/UI_Panel/CFPBank.update_resources_values($WorldMap.current_player.organism.cfp_resources)
+		$WorldMap/WorldMap_UI/UI_Panel/MineralLevels.update_resources_values($WorldMap.current_player.organism.mineral_resources)
+		$WorldMap/WorldMap_UI/UI_Panel/EnergyBar.update_energy_allocation($WorldMap.current_player.organism.energy)
+
+func _on_GameOver_confirmed():
+	Game.restart_game()
+	get_tree().reload_current_scene()
+	
+	pass # Replace with function body.

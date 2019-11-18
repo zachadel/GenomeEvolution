@@ -147,13 +147,16 @@ func get_biome(x, y):
 func get_hazards(x, y):
 	var biome = get_biome(x, y)
 	biome = Game.biomes.keys()[biome]
-	
-	#shift hazard value to proper range
-	var noise = hazard_generator.get_noise_2d(x, y)
 	var hazards = {}
-	for hazard in Game.hazards.keys():
-		
-		#normalize noise value to be in proper range
-		hazards[hazard] = Game.hazards[hazard][biome][1]/2 *(noise + 1) - Game.hazards[hazard][biome][0]/2 * (noise - 1)
 	
+	if not [int(x), int(y)] in Game.modified_tiles:
+	
+		#shift hazard value to proper range
+		var noise = hazard_generator.get_noise_2d(x, y)
+		for hazard in Game.hazards.keys():
+			
+			#normalize noise value to be in proper range
+			hazards[hazard] = Game.hazards[hazard][biome][1]/2 *(noise + 1) - Game.hazards[hazard][biome][0]/2 * (noise - 1)
+	else:
+		hazards = Game.modified_tiles[[int(x), int(y)]]["hazards"]
 	return hazards

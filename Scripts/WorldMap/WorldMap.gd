@@ -86,13 +86,14 @@ func setup(biome_seed, hazard_seed, resource_seed, tiebreak_seed, _chunk_size, p
 	current_player = player
 	player_sprite_offset = (tile_sprite_size - current_player.get_texture_size()) / 2
 	current_player.position = $BiomeMap.map_to_world($BiomeMap.world_to_map(default_start)) + tile_sprite_size / 2 + player_sprite_offset
+	current_player.organism.current_tile = get_tile_at_pos($BiomeMap.world_to_map(default_start).x, $BiomeMap.world_to_map(default_start).y)
 	
-	$WorldMap_UI/ResourceHazardPanel.set_resources($ResourceMap.get_tile_resources($BiomeMap.world_to_map(default_start).x, $BiomeMap.world_to_map(default_start).y))
-	$WorldMap_UI/ResourceHazardPanel.set_hazards($BiomeMap.get_hazards($BiomeMap.world_to_map(default_start).x, $BiomeMap.world_to_map(default_start).y))
-	$WorldMap_UI/CFPBank.update_resources_values(current_player.organism.cfp_resources)
-	$WorldMap_UI/MineralBank.update_resources_values(current_player.organism.mineral_resources)
-	$WorldMap_UI/EnergyBar.MAX_ENERGY = current_player.organism.MAX_ENERGY
-	$WorldMap_UI/EnergyBar.update_energy_allocation(current_player.organism.energy)
+	$WorldMap_UI/ResourceHazardPanel.set_resources(current_player.organism.current_tile["resources"])
+	$WorldMap_UI/ResourceHazardPanel.set_hazards(current_player.organism.current_tile["hazards"])
+	$WorldMap_UI/UIPanel/CFPBank.update_resources_values(current_player.organism.cfp_resources)
+	$WorldMap_UI/UIPanel/MineralLevels.update_resources_values(current_player.organism.mineral_resources)
+	$WorldMap_UI/UIPanel/EnergyBar.MAX_ENERGY = current_player.organism.MAX_ENERGY
+	$WorldMap_UI/UIPanel/EnergyBar.update_energy_allocation(current_player.organism.energy)
 	
 	$MapCamera.position = current_player.position
 
@@ -123,8 +124,8 @@ func _process(delta):
 		
 		if Input.is_action_just_released("highlight_tile"):
 			var player_tile = $BiomeMap.world_to_map(current_player.position)
-			$WorldMap_UI/ResourceStatsPanel.change_tree_name("Tile Resources at Player Location")
-			$WorldMap_UI/ResourceStatsPanel.set_resources($ResourceMap.get_tile_resources(player_tile.x, player_tile.y))
+			$WorldMap_UI/ResourceHazardPanel.set_resources($ResourceMap.get_tile_resources(player_tile.x, player_tile.y))
+			$WorldMap_UI/ResourceHazardPanel.set_hazards($BiomeMap.get_hazards(player_tile.x, player_tile.y))
 		
 		if Input.is_action_pressed("pan_up"):
 			$MapCamera.offset.y -= CAMERA_MOVEMENT*$MapCamera.zoom.y
@@ -185,12 +186,13 @@ func _unhandled_input(event):
 			
 			current_player.rotate_sprite((new_position - current_player.position).angle())
 			current_player.position = new_position
+			current_player.organism.current_tile = get_tile_at_pos(tile_position.x, tile_position.y)
 			
 			$MapCamera.position = new_position
 			$MapCamera.offset = Vector2(0,0)
 			
-			$WorldMap_UI/ResourceHazardPanel.set_resources($ResourceMap.get_tile_resources(tile_position.x, tile_position.y))
-			$WorldMap_UI/ResourceHazardPanel.set_hazards($BiomeMap.get_hazards(tile_position.x, tile_position.y))
+			$WorldMap_UI/ResourceHazardPanel.set_resources(current_player.organism.current_tile["resources"])
+			$WorldMap_UI/ResourceHazardPanel.set_hazards(current_player.organism.current_tile["hazards"])
 			
 			var tile_shift = tile_position - $BiomeMap.center_indices
 			shift_maps(tile_shift)
@@ -202,12 +204,7 @@ func _unhandled_input(event):
 			
 			emit_signal("tile_clicked", tile_index)
 			
-			print('Biome: ', Game.biomes.keys()[$BiomeMap.get_biome(tile_position.x, tile_position.y)])
-			print('Resource: ', $ResourceMap.get_tile_resources(tile_position.x, tile_position.y))
-			print('Biome Random Value: ', biome_generator.get_noise_2d(tile_position.x, tile_position.y) * Game.GEN_SCALING)
-			print('Tile location: ', tile_position)
-			print('Camera position: ', $MapCamera.position)
-			print('Camera offset: ', $MapCamera.offset)
+			print(current_player.organism.current_tile)
 	
 		if event.is_action("zoom_in"):
 			$MapCamera.zoom.x = clamp($MapCamera.zoom.x - ZOOM_UPDATE, MIN_ZOOM, MAX_ZOOM)
@@ -351,4 +348,19 @@ func _on_WorldMap_UI_resource_clicked(resource):
 		if change > 0:
 			emit_signal("player_energy_changed", current_player.organism.energy)
 			emit_signal("player_resources_changed", current_player.organism.cfp_resources, current_player.organism.mineral_resources)
+	pass # Replace with function body.
+
+func _on_WorldMap_UI_eject_resource(resource, value):
+	var player_pos = $BiomeMap.world_to_map(current_player.position)
+	var curr_tile = get_tile_at_pos(player_pos.x, player_pos.y)
+	
+	current_player.set_current_tile(curr_tile) 
+	
+	current_player.eject_mineral_resource(resource)
+	
+	emit_signal("player_resources_changed", current_player.organism.cfp_resources, current_player.organism.mineral_resources)
+	emit_signal("player_energy_changed", current_player.organism.energy)
+	
+	$ResourceMap.update_tile_resource(int(player_pos.x), int(player_pos.y), current_player.get_current_tile()["primary_resource"])
+	emit_signal("tile_changed", current_player.get_current_tile())
 	pass # Replace with function body.

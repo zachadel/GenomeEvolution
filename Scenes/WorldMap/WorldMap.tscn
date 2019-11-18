@@ -31,5 +31,6 @@ script = ExtResource( 5 )
 [connection signal="player_resources_changed" from="." to="WorldMap_UI" method="_on_WorldMap_player_resources_changed"]
 [connection signal="tile_changed" from="." to="WorldMap_UI" method="_on_WorldMap_tile_changed"]
 [connection signal="acquire_resources" from="WorldMap_UI" to="." method="_on_WorldMap_UI_acquire_resources"]
+[connection signal="eject_resource" from="WorldMap_UI" to="." method="_on_WorldMap_UI_eject_resource"]
 [connection signal="end_map_pressed" from="WorldMap_UI" to="." method="_on_WorldMap_UI_end_map_pressed"]
 [connection signal="resource_clicked" from="WorldMap_UI" to="." method="_on_WorldMap_UI_resource_clicked"]

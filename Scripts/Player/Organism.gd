@@ -50,9 +50,6 @@ var energy = 10
 #the 4 resource groups with initial tiers of compression
 #tier 0 is immediately useable
 #tier 1 must be broken down into tier 0 using the tier stats
-#Eventually, I suspect this will have to broken into energy_resources
-#and mineral_resources, since mineral resources are currently very 
-#poorly defined
 var cfp_resources = {
 	"carbs": {
 		0: 10, 
@@ -70,7 +67,7 @@ var cfp_resources = {
 
 var mineral_resources = {
 	"iron": {
-		0: 10
+		0: 15
 	},
 	
 	"manganese": {
@@ -89,7 +86,7 @@ var mineral_resources = {
 #Enables iteration over only those minerals which can be used for construction
 #eventually mineral_resources will have all possible minerals inside of it,
 #including the dangerous ones.
-var USEABLE_MINERALS = ["iron", "manganese", "potassium", "zinc"]
+var USEABLE_MINERALS_RANGES = ["iron", "manganese", "potassium", "zinc"]
 
 """
 	current_tile = {
@@ -102,7 +99,6 @@ var USEABLE_MINERALS = ["iron", "manganese", "potassium", "zinc"]
 """
 var current_tile = {}
 var max_cfp_stored = 100
-var max_minerals_stored = 50
 
 var MIN_ENERGY = 0;
 var MAX_ENERGY = 25;
@@ -156,6 +152,44 @@ func _ready():
 	gain_ates(1 + randi() % 6);
 	perform_anims(true);
 	born_on_turn = Game.round_num;
+
+func reset():
+	energy = 10
+#the 4 resource groups with initial tiers of compression
+#tier 0 is immediately useable
+#tier 1 must be broken down into tier 0 using the tier stats
+	cfp_resources = {
+	"carbs": {
+		0: 10, 
+		1: 5
+	},
+	"fats": {
+		0: 5,
+		1: 2
+	},
+	"proteins": {
+		0: 20,
+		1: 5
+	},
+}
+
+	mineral_resources = {
+	"iron": {
+		0: 10
+	},
+	
+	"manganese": {
+		0: 10
+	},
+	
+	"potassium": {
+		0: 10
+	},
+	
+	"zinc": {
+		0: 10	
+	}
+}
 
 func get_save():
 	return [born_on_turn, energy, cmsms.get_chromes_save()];
@@ -1018,14 +1052,25 @@ var costs = {
 		"energy": 2
 	},
 	"move" : {
-		"carbs": 10, 
+		"carbs": 0, 
 		"fats": 0, 
 		"proteins": 0, 
 		"iron": 0,
 		"zinc": 0,
 		"manganese": 0,
 		"potassium": 0,
-		"energy": 2
+		"energy": 5
+	},
+	
+	"mineral_ejection": {
+		"carbs": 0, 
+		"fats": 0, 
+		"proteins": 0, 
+		"iron": 0,
+		"zinc": 0,
+		"manganese": 0,
+		"potassium": 0,
+		"energy": 5
 	},
 	
 	#Percentage of internal resources lost in conversion
@@ -1041,6 +1086,19 @@ var costs = {
 		"energy": 2
 	},
 	
+	#Unsure whether this is how it should be or not...
+	"tier_upgrade": {
+		"carbs": .2,
+		"fats": .2,
+		"proteins": .2,
+		"iron": .2,
+		"zinc": .2,
+		"manganese": .2,
+		"potassium": .2,
+		"energy": 2
+	},
+	
+	
 	#Cost per tile
 	"acquire_resources": {
 		"carbs": 0, 
@@ -1051,6 +1109,17 @@ var costs = {
 		"manganese": 0,
 		"potassium": 0,
 		"energy": 8
+	},
+	
+	"breakdown_ext_resource": {
+		"carbs": 0, 
+		"fats": 0, 
+		"proteins": 0, 
+		"iron": 0,
+		"zinc": 0,
+		"manganese": 0,
+		"potassium": 0,
+		"energy": 5
 	},
 	
 	"replicate_mitosis": {
@@ -1092,7 +1161,8 @@ const BEHAVIOR_TO_COST_MULT = {
 		"tier_downgrade": -0.05,
 		"acquire_resources": -0.05,
 		"tier_upgrade": -0.05,
-		"resource_breakdown": -0.05
+		"resource_breakdown": -0.05,
+		"mineral_ejection": -0.05
 	}
 }
 
@@ -1118,7 +1188,7 @@ func acquire_resources():
 	var cost_mult = get_cost_mult("acquire_resources")
 	var modified = false
 	#Check if any room to store more stuff
-	if (total_cfp_resources < max_cfp_stored or total_mineral_resources < max_minerals_stored) and energy >= costs["acquire_resources"]["energy"] * cost_mult * Game.resource_mult:
+	if energy >= costs["acquire_resources"]["energy"] * cost_mult * Game.resource_mult:
 		#Run through all resources on the tile
 		for index in range(len(current_tile["resources"])):
 			#grab the resource
@@ -1132,27 +1202,15 @@ func acquire_resources():
 				#NOTE: If the resource is a mineral and tier 0, we assume the internal and external name are the same
 				#NOTE: This may need to change, depending on how much we restructure how the cell handles minerals
 				if resource_group == "minerals": 
-					#If you can store the total amount, store the total amount
-					if total_mineral_resources + current_tile["resources"][index] <= max_minerals_stored:
-						modified = true
-						
-						total_mineral_resources += current_tile["resources"][index]
-						mineral_resources[resource][0] += current_tile["resources"][index]
-						current_tile["resources"][index] = 0
-						
-						if current_tile["primary_resource"] == index:
-							current_tile["primary_resource"] = -1
+					modified = true
+					
+					total_mineral_resources += current_tile["resources"][index]
+					mineral_resources[resource][0] += current_tile["resources"][index]
+					current_tile["resources"][index] = 0
+					
+					if current_tile["primary_resource"] == index:
+						current_tile["primary_resource"] = -1
 							
-					#if you can't store the total amount, store all that you can
-					elif total_mineral_resources < max_minerals_stored:
-						modified = true
-						
-						mineral_resources[resource][0] += (max_minerals_stored - total_mineral_resources)
-						current_tile["resources"][index] -= (max_minerals_stored - total_mineral_resources)
-						total_mineral_resources = max_minerals_stored
-						
-						if current_tile["primary_resource"] == index and current_tile["resources"][index] < Game.PRIMARY_RESOURCE_MIN:
-							current_tile["primary_resource"] = -1
 				else:
 					#If you can store the total amount, store the total amount
 					if total_cfp_resources + current_tile["resources"][index] <= max_cfp_stored:
@@ -1208,7 +1266,8 @@ func downgrade_internal_cfp_resource(resource, tier, amount = 1):
 		downgraded_amount = (1 - costs["tier_downgrade"][resource] * cost_mult * Game.resource_mult) * amount * TIER_CONVERSIONS[resource][tier]
 		
 		if tier == 0:
-			if downgraded_amount + energy <= MAX_ENERGY:
+			if downgraded_amount * (1 + current_tile["hazards"]["oxygen"] / Game.hazards["oxygen"]["max"]) + energy <= MAX_ENERGY:
+				downgraded_amount = downgraded_amount * (1 + current_tile["hazards"]["oxygen"] / Game.hazards["oxygen"]["max"])
 				energy += downgraded_amount
 				cfp_resources[resource][tier] -= amount
 			else:
@@ -1234,6 +1293,39 @@ func convert_cfp_resource_to_energy(resource, amount = 1):
 #upgrades cfp_resources[resource][tier] to cfp_resources[resource][tier + 1]
 func upgrade_cfp_resource(resource, tier, amount = 1):
 	
+	pass
+	
+
+func eject_mineral_resource(resource, amount = 1):
+
+	var resource_index = Game.get_index_from_resource(resource)
+	if mineral_resources[resource][0] >= amount and !check_resources("mineral_ejection", amount):
+		current_tile["resources"][resource_index] += amount
+		mineral_resources[resource][0] -= amount
+		use_resources("mineral_ejection", amount)
+		
+		emit_signal("energy_changed", energy)
+		emit_signal("resources_changed", cfp_resources, mineral_resources)
+		
+		#If suddenly competing for highest value on tile
+		if current_tile["resources"][resource_index] >= Game.PRIMARY_RESOURCE_MIN:
+			if current_tile["primary_resource"] == -1:
+				current_tile["primary_resource"] = resource_index
+				
+			else:
+				for resource in current_tile["resources"]:
+					
+					if current_tile["resources"][resource] > current_tile["resources"][current_tile["primary_resource"]]:
+						current_tile["primary_resource"] = resource
+		
+		Game.modified_tiles[current_tile["location"]] = {
+								"resources": current_tile["resources"],
+								"biome": current_tile["biome"],
+								"primary_resource": current_tile["primary_resource"],
+								"hazards": current_tile["hazards"]
+							}
+							
+
 	pass
 
 func get_cost_mult(action):

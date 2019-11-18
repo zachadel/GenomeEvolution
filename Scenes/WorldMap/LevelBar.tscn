@@ -1,0 +1,61 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Scripts/WorldMap/LevelBar.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Images/Tiles/Resources/nails.png" type="Texture" id=2]
+
+[sub_resource type="Gradient" id=1]
+offsets = PoolRealArray( 0, 0.25, 0.5, 0.75, 1 )
+colors = PoolColorArray( 1, 0, 0, 1, 1, 0.815686, 0, 1, 0, 1, 0, 1, 0.729412, 1, 0, 1, 1, 0, 0, 1 )
+
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
+width = 10
+
+[node name="LevelBar" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -1555.0
+margin_bottom = -880.0
+script = ExtResource( 1 )
+
+[node name="Outline" type="ColorRect" parent="."]
+margin_left = 7.62939e-006
+margin_top = 1.31134e-006
+margin_right = 45.0
+margin_bottom = 100.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="Bar" type="MarginContainer" parent="."]
+margin_left = 45.0
+margin_right = 145.0
+margin_bottom = 45.0
+rect_rotation = 90.0
+custom_constants/margin_right = 2
+custom_constants/margin_top = 2
+custom_constants/margin_left = 2
+custom_constants/margin_bottom = 2
+
+[node name="Meter" type="TextureRect" parent="Bar"]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 98.0
+margin_bottom = 43.0
+texture = SubResource( 2 )
+expand = true
+
+[node name="Level" type="ColorRect" parent="."]
+margin_left = 2.0
+margin_top = 51.0
+margin_right = 43.0
+margin_bottom = 53.0
+
+[node name="Icon" type="TextureRect" parent="."]
+margin_top = 100.0
+margin_right = 45.0
+margin_bottom = 141.0
+texture = ExtResource( 2 )
+expand = true
+[connection signal="gui_input" from="." to="." method="_on_LevelBar_gui_input"]
+[connection signal="gui_input" from="Outline" to="." method="_on_LevelBar_gui_input"]
+[connection signal="gui_input" from="Bar" to="." method="_on_LevelBar_gui_input"]
+[connection signal="gui_input" from="Level" to="." method="_on_LevelBar_gui_input"]

@@ -6,6 +6,7 @@ extends Node2D
 		-Once a player is ready or has taken their turn a signal is emitted and the count of those signals received is compared to the total number of players
 """
 signal changed
+signal player_died(player)
 
 var update_sensing = false
 var move_enabled = false
@@ -48,14 +49,13 @@ func get_current_tile():
 #It is the responsibility of the calling function to determine what to do
 #with this information
 func is_alive_resource_check():
-	var mineral_alive = false
+	var mineral_alive = true
 	var cfp_alive = false
 	
 	for mineral in organism.mineral_resources:
-		for tier in organism.mineral_resources[mineral]:
-			if organism.mineral_resources[mineral][tier] != 0:
-				mineral_alive = true
-				break
+		if organism.mineral_resources[mineral][0] < Game.resources[mineral]["safe_range"][0] or organism.mineral_resources[mineral][0] > Game.resources[mineral]["safe_range"][1]:
+			mineral_alive = false
+			break
 		
 	for resource in organism.cfp_resources:
 		for tier in organism.cfp_resources[resource]:
@@ -72,18 +72,34 @@ func is_alive_resource_check():
 
 #Modify these lines with a function if you need to hide certain resources from the player or modify their acquisition
 #Any time that you call this function from the WorldMap, also make sure to update
-#WorldMap_UI/CFPBank and WorldMap_UI/MineralBank
+#WorldMap_UI/UI_Panel/CFPBank and WorldMap_UI/UI_Panel/MineralLevels
 #This seems to imply a rework of the way we view Organism/Player needs to be reconsidered
 func acquire_resources():
 	organism.acquire_resources()
+	
+	if not is_alive_resource_check():
+		organism.emit_signal("died", organism)
+		emit_signal("player_died")
 	return
 
 #resource should be "carbs", "fats", "proteins", or a mineral
 func downgrade_internal_cfp_resource(resource, tier, amount = 1):
 	organism.downgrade_internal_cfp_resource(resource, tier, amount)
+	
+	if not is_alive_resource_check():
+		organism.emit_signal("died", organism)
+		emit_signal("player_died")
 	pass
 	
 func breakdown_external_resource(resource_index, amount = 1):
+	pass
+	
+func eject_mineral_resource(resource, amount = 1):
+	organism.eject_mineral_resource(resource, amount)
+	
+	if not is_alive_resource_check():
+		organism.emit_signal("died", organism)
+		emit_signal("player_died")
 	pass
 
 #It might be better here to emit a player signal rather than an organism signal
@@ -91,3 +107,4 @@ func consume_resources(action):
 	organism.use_resources(action)
 	if not is_alive_resource_check():
 		organism.emit_signal("died", organism)
+		emit_signal("player_died")

@@ -1,14 +1,22 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://testControl.gd" type="Script" id=1]
+[ext_resource path="res://AcceptDialog.gd" type="Script" id=2]
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 1 )
 
+[node name="AcceptDialog" type="AcceptDialog" parent="."]
+margin_right = 90.0
+margin_bottom = 58.0
+dialog_text = "Game over!"
+script = ExtResource( 2 )
+
 [node name="TextureRect" type="TextureRect" parent="."]
 margin_right = 550.0
 margin_bottom = 280.0
 expand = true
+[connection signal="game_over" from="." to="AcceptDialog" method="_on_Control_game_over"]
 [connection signal="mouse_entered" from="." to="." method="_on_Control_mouse_entered"]

@@ -164,7 +164,8 @@ func _on_Organism_show_reprod_opts(show):
 	show_replicate_opts(show);
 
 func _on_btn_dead_menu_pressed():
-	get_tree().change_scene("res://Scenes/MainMenu/TitleScreen.tscn");
+	Game.restart_game()
+	get_tree().reload_current_scene()
 
 func _on_btn_dead_restart_pressed():
 	Game.restart_game();

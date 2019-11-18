@@ -23,7 +23,13 @@ const WORLDMAP_UI_TTIPS = {
 	"acquire": "Acquire as many resources as you can on your current tile for %s energy.",
 	"title": "Exit to the title screen.",
 	"end_turn": "End the current map turn and proceed to the chromosome screen.",
-	"energy": "Energy: %.2f"
+	"energy": "Energy: %.2f",
+	"resource": "%s: %.2f",
+	"mineral_level": "Current: %.2f\nMaximum: %.2f\nMinimum: %.2f"
+};
+
+const WORLDMAP_TTIPS = {
+	"resource_on_tile": "This is %s and it is a %s."
 };
 
 const GENE_TYPE_DESC = "This is a %s%s.";

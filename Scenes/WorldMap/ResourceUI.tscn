@@ -7,5 +7,5 @@ margin_right = 310.0
 margin_bottom = 320.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_constants/separation = 40
+custom_constants/separation = 28
 script = ExtResource( 1 )

@@ -22,6 +22,6 @@ func _ready():
 #	pass
 
 
-func _on_Organism_resources_changed(resources):
-	update_resources_values(resources)
+func _on_Organism_resources_changed(cfp_resources, mineral_resources):
+	update_resources_values(cfp_resources)
 	pass # Replace with function body.

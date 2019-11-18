@@ -11,6 +11,19 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 1 )
 
+[node name="GameOverLayer" type="CanvasLayer" parent="."]
+
+[node name="GameOver" type="AcceptDialog" parent="GameOverLayer"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = 709.787
+margin_top = -91.1203
+margin_right = -522.213
+margin_bottom = -33.1203
+window_title = "Game Over!"
+dialog_text = "You died! Please press OK to return to the Title Screen."
+
 [node name="MainMenuLayer" type="CanvasLayer" parent="."]
 layer = 0
 
@@ -25,6 +38,7 @@ visible = false
 layer = 2
 
 [node name="CardTable" parent="Canvas_CardTable" instance=ExtResource( 4 )]
+[connection signal="confirmed" from="GameOverLayer/GameOver" to="." method="_on_GameOver_confirmed"]
 [connection signal="change_to_world_map" from="MainMenuLayer/MainMenu" to="." method="_on_MainMenu_change_to_world_map"]
 [connection signal="change_to_main_menu" from="WorldMap" to="." method="_on_WorldMap_change_to_main_menu"]
 [connection signal="end_map_turn" from="WorldMap" to="." method="_on_WorldMap_end_map_turn"]

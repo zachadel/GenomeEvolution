@@ -26,7 +26,7 @@ var modified_tiles = {}
 
 const PRIMARY_RESOURCE_MAX = 10
 const PRIMARY_RESOURCE_MIN = 5
-const SECONDARY_RESOURCE_MAX = 2
+const SECONDARY_RESOURCE_MAX = 4
 const SECONDARY_RESOURCE_MIN = 0
 
 #allows for integers in the biome.cfg file, since there is currently a bug in Godot which prevents reading in floats from nested arrays
@@ -148,6 +148,7 @@ func _ready():
 	
 	# Load up resource information
 	load_cfg("resources", resources)
+	print(resources.keys())
 	resource_groups = sort_resources_by_group_then_tier(resources)
 	
 	# Load up hazard information
@@ -156,6 +157,8 @@ func _ready():
 func restart_game():
 	turn_idx = 0
 	round_num = 1
+	current_players = 0
+	all_time_players = 0
 
 func cfg_sec_to_dict(cfg, sec):
 	var build = {};
@@ -325,7 +328,13 @@ func load_cfg(data_name, dict):
 			dict[s] = Game.cfg_sec_to_dict(file, s)
 	else:
 		print(err)
-		
+
+func get_resource_from_index(resource_index):
+	return Game.resources.keys()[resource_index]
+	
+func get_index_from_resource(resource):
+	return Game.resources.keys().find(resource)
+
 func find_resource_biome_index(resource_index, biome_index):
 	return Game.resources[Game.resources.keys()[resource_index]]["biomes"].find(Game.biomes.keys()[biome_index])
 	
@@ -333,6 +342,7 @@ func sort_resources_by_group_then_tier(resources_dict):
 	var resource_keys = resources_dict.keys()
 	var group_dict = {}
 	
+	#loop through all resources
 	for key in resource_keys:
 		if not resources_dict[key]["group"] in group_dict:
 			group_dict[resources_dict[key]["group"]] = { #group
