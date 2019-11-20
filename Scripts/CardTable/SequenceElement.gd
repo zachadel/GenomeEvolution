@@ -377,6 +377,9 @@ func upd_display():
 func get_cmsm():
 	return get_parent();
 
+func get_position_display():
+	return [get_cmsm().get_disp_control().get_index() + 1, get_index() + 1];
+
 func is_gap():
 	return type == "break";
 

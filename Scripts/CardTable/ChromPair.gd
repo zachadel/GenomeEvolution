@@ -280,7 +280,8 @@ func remove_elm(elm, place_gap = true):
 		displaced = yield(extract_elm(elm, place_gap), "completed");
 	else:
 		displaced = extract_elm(elm, place_gap);
-	displaced.queue_free();
+	
+	get_organism().seq_elm_deleted(displaced);
 
 func close_gap(gap):
 	if (gap in gap_list):
@@ -290,8 +291,8 @@ func close_gap(gap):
 			yield(gap.get_cmsm().remove_elm(gap), "completed");
 		else:
 			gap.get_cmsm().remove_elm(gap);
-	gap.queue_free();
-	collapse_gaps();
+	
+	get_organism().seq_elm_deleted(gap);
 
 func collapse_gaps():
 	var _close = [];

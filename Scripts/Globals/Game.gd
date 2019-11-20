@@ -316,9 +316,6 @@ func pretty_element_name_list(elms_array):
 			list += ", ";
 	return list;
 
-func is_node_in_tree(n):
-	return get_tree().get_root().has_node(n.get_path());
-
 func load_cfg(data_name, dict):
 	var file = ConfigFile.new()
 	var err = file.load("res://Data/" + data_name + ".cfg")
