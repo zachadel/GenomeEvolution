@@ -9,9 +9,14 @@ export var image_texture : Texture setget set_tex;
 export var always_show = false;
 
 var val := 0.0 setget set_value, get_value;
+var ttip_data := [];
 
 func _ready():
 	default_pos = rect_position;
+	Tooltips.setup_delayed_tooltip(self);
+
+func get_tooltip_data():
+	return ["disp_status_ttip", ttip_data];
 
 func set_tex(t):
 	$TexRect.texture = t;
