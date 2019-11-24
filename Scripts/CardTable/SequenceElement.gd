@@ -34,6 +34,8 @@ signal elm_mouse_exited(elm);
 func _ready():
 	current_size = DEFAULT_SIZE;
 	Tooltips.setup_delayed_tooltip(self);
+	for k in ess_behavior:
+		get_node("Indic%s" % k).ttip_data = [k, "base"];
 
 func setup(_type, _id = "", _mode = "ate", _code = "", _ess_class = -1):
 	id = _id;
@@ -288,9 +290,9 @@ func get_tooltip_data():
 					key = "Transposon";
 				"pseudo":
 					key = "Pseudogene";
-			return ["disp_gene_ttip", [key]];
+			return ["set_gene_ttip", [key]];
 		"break":
-			return ["disp_tooltip", ["This will need to be repaired before more actions can be taken.", "Break"]];
+			return ["This will need to be repaired before more actions can be taken.", "Break"];
 
 func upd_behavior_disp(behavior = ""):
 	match mode:

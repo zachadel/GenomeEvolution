@@ -68,60 +68,74 @@ func get_status_ttip(type, compare):
 #	                      88                        .88 
 #	                      dP                    d8888P  
 
+# This is the element that currently "drives" the tooltip
+var tt_element = null;
+
+func _on_mouse_entered():
+	show(tt_element);
+func _on_mouse_exited():
+	hide();
+
 onready var TooltipPanel := $PnlTooltip;
 onready var TooltipTitle := $PnlTooltip/LblTitle;
 onready var TooltipBody := $PnlTooltip/LblDesc;
-onready var DelayTimer := $TooltipDelayTimer;
+onready var Anim := $anim;
 
-var delay_payload = [];
-# callback is the func here in Tooltips.gd that will be called after the delay finishes
-# args is an array of the arguments to be sent to that callback func
-func delay_disp_cb(callback : String, args : Array, delay := -1.0):
-	delay_payload = [callback, args];
-	DelayTimer.start(delay);
+func _perf_hide(): # Called in the animation "BeginHide"
+	tt_element = null;
+	Anim.play("DoHide");
 
-func _on_DelayTimer_timeout():
-	callv(delay_payload[0], delay_payload[1]);
+func hide():
+	if (Anim.current_animation == "Show"):
+		tt_element = null;
+		Anim.play("HideNow");
+	else:
+		Anim.play("BeginHide");
 
-func cancel_delay_disp():
-	delay_payload.clear();
-	DelayTimer.stop();
-	TooltipPanel.visible = false;
+var set_pos_on_show := true;
+var anim_pos_node : CanvasItem = null;
+func show(for_node : CanvasItem = null):
+	set_pos_on_show = true;
+	anim_pos_node = for_node;
+	if (for_node == null || for_node == tt_element):
+		Anim.play("ShowNow");
+		if (for_node == tt_element):
+			set_pos_on_show = false;
+	else:
+		tt_element = for_node;
+		Anim.play("Show");
 
-func delay_disp(body : String, title : String = "", pos = null):
-	delay_disp_cb("disp_tooltip", [body, title, pos]);
+func _anim_set_pos():
+	set_pos(anim_pos_node);
 
+func set_pos(for_node : CanvasItem = null):
+	if (set_pos_on_show):
+		var pos : Vector2;
+		if (for_node == null):
+			pos = TooltipPanel.get_global_mouse_position();
+		else:
+			if ("position" in for_node):
+				pos = for_node.get_global_transform().get_origin() + Vector2(for_node.size.x, for_node.size.y / 2);
+			if ("rect_position" in for_node):
+				pos = for_node.get_global_rect().position + Vector2(for_node.rect_size.x, for_node.rect_size.y / 2);
+		#pos.y -= TooltipPanel.rect_size.y / 2;
+		
+		var _px = clamp(pos.x, 0, get_viewport().size.x - TooltipPanel.rect_size.x);
+		var _py = clamp(pos.y, 0, get_viewport().size.y - TooltipPanel.rect_size.y);
+		TooltipPanel.rect_position = Vector2(_px, _py);
 
-# Body is the body text, title is the title text, pos is where it appears
-# Pos can be either a Node2D, a Control, or null to use the current mouse position
-func disp_tooltip(body : String, title : String = "", pos = null):
+func set_tooltip_text(body : String, title : String = ""):
 	if (body == "" && title == ""):
 		TooltipPanel.visible = false;
 	else:
 		TooltipPanel.visible = true;
 		TooltipBody.text = body;
 		TooltipTitle.text = title;
-		if (pos == null):
-			pos = TooltipPanel.get_global_mouse_position();
-		elif (typeof(pos) != TYPE_VECTOR2):
-			if ("position" in pos):
-				var fn : Node2D;
-				pos = pos.get_global_transform().get_origin() + Vector2(pos.size.x, 0);
-			if ("rect_position" in pos):
-				pos = pos.get_global_rect().position + Vector2(pos.rect_size.x, 0);
-		
-		var _px = clamp(pos.x, 0, get_viewport().size.x - TooltipPanel.rect_size.x);
-		var _py = clamp(pos.y, TooltipPanel.rect_size.y, get_viewport().size.y) - TooltipPanel.rect_size.y;
-		TooltipPanel.rect_position = Vector2(_px, _py);
 
-func disp_gene_ttip(type, pos = null):
-	var gene_title = "%s Gene";
-	if (type in UNNAMED_GENES):
-		gene_title = "%s";
-	disp_tooltip(BASE_TTIPS[type], gene_title % type, pos);
-
-func disp_status_ttip(type, compare, pos = null):
-	disp_tooltip(STATUS_TTIP_FORMAT % [BASE_TTIPS[type], COMPARE_TTIPS[compare]], type, pos);
+# Don't use this one for the auto-handled tooltips
+func disp_ttip_text(for_node : CanvasItem, body : String, title : String = ""):
+	show(for_node);
+	set_tooltip_text(body, title);
 
 #	dP     dP           dP                                     
 #	88     88           88                                     
@@ -132,21 +146,47 @@ func disp_status_ttip(type, compare, pos = null):
 #	                       88                                  
 #	                       dP                                  
 
-# Rather than setting up mouse_entered and mouse_exited signals on every single node,
-# just call setup_delay_handler(self) and include a get_tooltip_data() func
-# get_tooltip_data() should return an array [callback, args, delay] (delay is optional)
-# i.e. get_tooltip_data() is used as the args for delay_disp_cb
-var handled_controls = {};
-func setup_delayed_tooltip(for_node : Control):
-	for_node.connect("mouse_entered", self, "_handle_mouse_enter", [for_node]);
-	for_node.connect("mouse_exited", self, "_handle_mouse_exit");
+func set_gene_ttip(type):
+	var gene_title = "%s Gene";
+	if (type in UNNAMED_GENES):
+		gene_title = "%s";
+	set_tooltip_text(BASE_TTIPS[type], gene_title % type);
 
-func _handle_mouse_enter(for_node : Control):
-	if for_node.has_method("get_tooltip_data"):
-		callv("delay_disp_cb", for_node.get_tooltip_data());
-	elif "tooltip_text" in for_node:
-		delay_disp(for_node.tooltip_text);
+func set_status_ttip(type, compare):
+	set_tooltip_text(STATUS_TTIP_FORMAT % [BASE_TTIPS[type], COMPARE_TTIPS[compare]], type);
+
+
+
+# Rather than setting up mouse_entered and mouse_exited signals on every single node,
+# just call setup_delay_handler(self) and include either a get_tooltip_data() func (which is preferred) or a tooltip_text String
+
+# get_tooltip_data() should return an array [callback : String, args : Array]
+# it can also just return an args array, and it will assume a set_tooltip_text callback
+
+func setup_delayed_tooltip(for_node : Control):
+	setup_delayed_tooltip_special(for_node, "mouse_entered", "mouse_exited");
+
+func setup_delayed_tooltip_special(for_node : CanvasItem, enter_signal : String, exit_signal : String):
+	for_node.connect(enter_signal, self, "_handle_mouse_enter", [for_node]);
+	for_node.connect(exit_signal, self, "_handle_mouse_exit");
+
+const DISP_DATA_FUNC_NAME = "get_tooltip_data";
+const DISP_DATA_STR_NAME = "tooltip_text";
+
+func _handle_mouse_enter(for_node : CanvasItem):
+	if for_node.has_method(DISP_DATA_FUNC_NAME):
+		# If the handled node has the get_tooltip_data() method, use it to determine what to display
+		show(for_node);
+		var data = for_node.call(DISP_DATA_FUNC_NAME);
+		if (data.size() != 2 || typeof(data[0]) != TYPE_STRING || typeof(data[1]) != TYPE_ARRAY):
+			# If the data is just the array of args, assume a default callback
+			callv("set_tooltip_text", data);
+		else:
+			# Otherwise, use the explicit callback
+			callv(data[0], data[1]);
+	elif DISP_DATA_STR_NAME in for_node:
+		disp_ttip_text(for_node, for_node.get(DISP_DATA_STR_NAME));
 	else:
-		disp_tooltip("You need to include either String tooltip_text or func get_tooltip_data() in nodes that make use of the delayed tooltip handler.", "No data!");
+		disp_ttip_text(null, "You need to include either String %s or func %s() in nodes that make use of the tooltip auto-handler." % [DISP_DATA_STR_NAME, DISP_DATA_FUNC_NAME], "No data!");
 func _handle_mouse_exit():
-	cancel_delay_disp();
+	hide();

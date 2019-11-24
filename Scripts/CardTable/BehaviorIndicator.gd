@@ -16,7 +16,7 @@ func _ready():
 	Tooltips.setup_delayed_tooltip(self);
 
 func get_tooltip_data():
-	return ["disp_status_ttip", ttip_data];
+	return ["set_status_ttip", ttip_data];
 
 func set_tex(t):
 	$TexRect.texture = t;
