@@ -45,7 +45,7 @@ func color_comparison(compare_status_bar = null):
 			ttip_type = "Transposon";
 		
 		n.modulate = COLORS["%s_%s" % [color_type, compare_result]];
-		n.hint_tooltip = Tooltips.get_status_ttip(ttip_type, compare_result);
+		n.ttip_data = [ttip_type, compare_result];
 
 func get_value_of(key):
 	return container.get_node(key).get_value();

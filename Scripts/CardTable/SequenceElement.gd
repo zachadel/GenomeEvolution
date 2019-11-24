@@ -33,6 +33,9 @@ signal elm_mouse_exited(elm);
 
 func _ready():
 	current_size = DEFAULT_SIZE;
+	Tooltips.setup_delayed_tooltip(self);
+	for k in ess_behavior:
+		get_node("Indic%s" % k).ttip_data = [k, "base"];
 
 func setup(_type, _id = "", _mode = "ate", _code = "", _ess_class = -1):
 	id = _id;
@@ -107,52 +110,6 @@ func setup_copy(ref_elm):
 	
 	disable(true);
 
-"""
-	Name: set_hint_tooltip
-	Purpose: Sets the hover tooltip for the particular gene/transposon/break
-	Input: mode and mode class/personality
-		@mode: This is 'essential' for an essential gene, 'ate' for a
-			transposon, or 'psuedo' for a pseudogene 
-		@mode_class: For 'essential' this is one of the ESSENTIAL_CLASSES
-			in Game.gd.  For 'ate', this has yet to be defined how it can
-			vary.  For 'pseudogene', this value is not needed and will not
-			be used.
-	Output: Current gene is changed to have a particular tooltip
-		@If Replication: 'This is a replication gene.  It increases the 
-			probability for successful gene modifications.'
-		@If Locomotion: 'This is a locomotion gene. It aids with movement 
-			amount in the world map.'
-		@If Manipulation: 'This is a manipulation gene.  It aids with the 
-			management of resources i.e. how efficiently you can use resources
-			for various cellular functions like movement and replication.'	
-		@If Sensing: 'This is a sensing gene.  It aids with the ability to
-			sense where resources are in the world map as well as the ability
-			to perceive quantities within the cell such as gene modification
-			success rates.'
-		@If Construction: 'This is a construction gene. It increases the 
-			amount of energy and resources which can be banked for subsequent
-			turns.'
-		@If Deconstruction: 'This is a deconstruction gene.  It aids with the 
-			breaking down of complicated resources into simpler, usable ones.'
-		@If Transposon: 'This is a transposon.  It is a genetic parasite that
-			can modify genes in various unpredictable ways.'
-		@If Psuedogene: 'This is a pseudogene. It can still mutate, but it is 
-			currently damaged to the point of inactivity.'
-"""
-func set_hint_tooltip(_type, _mode, _ess_class):
-	match(_type):
-		"gene":
-			match(_mode):
-				"essential":
-					hint_tooltip = Tooltips.get_gene_ttip(Game.ESSENTIAL_CLASSES.keys()[_ess_class]);
-				"ate":
-					hint_tooltip = Tooltips.get_gene_ttip("Transposon");
-				"pseudo":
-					hint_tooltip = Tooltips.get_gene_ttip("Pseudogene");
-		"break":
-			hint_tooltip = 'This is a break in the chromosome.  It will need to be\nrepaired before more actions can be taken.'
-	
-	
 func set_ess_behavior(dict):
 	for k in dict:
 		if (k == "ate"):
@@ -322,6 +279,21 @@ func evolve(ndx, good = true):
 			5: # Minor Downgrade
 				evolve_specific(false, false);
 
+func get_tooltip_data():
+	match type:
+		"gene":
+			var key = "";
+			match(mode):
+				"essential":
+					key = Game.ESSENTIAL_CLASSES.keys()[ess_class];
+				"ate":
+					key = "Transposon";
+				"pseudo":
+					key = "Pseudogene";
+			return ["set_gene_ttip", [key]];
+		"break":
+			return ["This will need to be repaired before more actions can be taken.", "Break"];
+
 func upd_behavior_disp(behavior = ""):
 	match mode:
 		"essential", "pseudo":
@@ -372,7 +344,6 @@ func upd_display():
 			continue;
 		_:
 			self_modulate = Color(1, 1, 1);
-	set_hint_tooltip(type, mode, ess_class)
 
 func get_cmsm():
 	return get_parent();
