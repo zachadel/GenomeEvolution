@@ -142,12 +142,13 @@ func get_tile_and_cost_from_to(from:Vector3, to: Vector3):
 			path_and_cost["total_cost"] += path_and_cost[i]["cost"]
 		
 	return path_and_cost
-	
-func get_cost_from_to(from: Vector3, to: Vector3):
-	from -= offset
-	to -= offset
-	
-	return _compute_cost(map_ZxZ_to_N(from.x, from.y), map_ZxZ_to_N(to.x, to.y))
+
+# This isn't used, causes a crash because _compute_cost(...) is not defined
+#func get_cost_from_to(from: Vector3, to: Vector3):
+#	from -= offset
+#	to -= offset
+#	
+#	return _compute_cost(map_ZxZ_to_N(from.x, from.y), map_ZxZ_to_N(to.x, to.y))
 	
 func get_positions_from_to(from: Vector3, to: Vector3):
 	from -= offset
