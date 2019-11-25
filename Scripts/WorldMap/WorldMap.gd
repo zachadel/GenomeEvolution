@@ -205,25 +205,25 @@ func _unhandled_input(event):
 			
 			if tile_position != player_tile:
 				
-				move_player(tile_position)
+				if move_player(tile_position) > 0:
 				
-				current_player.add_observed_tiles(astar.get_tiles_inside_radius(player_tile))
-				
-				$MapCamera.position = Game.map_to_world(tile_position)
-				$MapCamera.offset = Vector2(0,0)
-				
-				$WorldMap_UI/ResourceHazardPanel.set_resources(current_player.organism.current_tile["resources"])
-				$WorldMap_UI/ResourceHazardPanel.set_hazards(current_player.organism.current_tile["hazards"])
-				
-				var tile_shift = Game.cube_coords_to_offsetv(tile_position) - $BiomeMap.center_indices
-				shift_maps(tile_shift)
+					current_player.add_observed_tiles(astar.get_tiles_inside_radius(player_tile))
+					
+					$MapCamera.position = Game.map_to_world(tile_position)
+					$MapCamera.offset = Vector2(0,0)
+					
+					$WorldMap_UI/ResourceHazardPanel.set_resources(current_player.organism.current_tile["resources"])
+					$WorldMap_UI/ResourceHazardPanel.set_hazards(current_player.organism.current_tile["hazards"])
+					
+					var tile_shift = Game.cube_coords_to_offsetv(tile_position) - $BiomeMap.center_indices
+					shift_maps(tile_shift)
 				
 				#Prevents weird interpolation/snapping of camera if smoothing is desired
 	#			if $MapCamera.offset.length_squared() > 0:
 	#				$MapCamera.position = $MapCamera.position
 	#				$MapCamera.reset_smoothing()
 			
-			emit_signal("tile_clicked", tile_index)
+					emit_signal("tile_clicked", tile_index)
 	
 		if event.is_action("zoom_in"):
 			$MapCamera.zoom.x = clamp($MapCamera.zoom.x - ZOOM_UPDATE, MIN_ZOOM, MAX_ZOOM)
