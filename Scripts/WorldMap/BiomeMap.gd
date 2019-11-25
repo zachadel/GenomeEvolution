@@ -95,7 +95,7 @@ func draw_and_center_at(pos):
 	
 	for i in range(-chunk_size + center_indices.x, chunk_size + 1 + center_indices.x):
 		for j in range(-chunk_size + center_indices.y, chunk_size + 1 + center_indices.y):
-			set_cell(i, j, get_biome(pos))
+			set_cell(i, j, get_biome(Vector2(i, j)))
 
 func hide_all_tiles_except(indices):
 	var visible_cells = get_used_cells()
