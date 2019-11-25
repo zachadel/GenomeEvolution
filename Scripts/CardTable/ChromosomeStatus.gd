@@ -64,7 +64,7 @@ func get_behavior():
 
 func update():
 	var behavior = get_behavior();
-	
+	print(behavior);
 	for n in container.get_children():
 		var key = n.name;
 		

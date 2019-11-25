@@ -128,6 +128,7 @@ signal energy_changed(energy);
 
 func _ready():
 	#initialization done in _ready for restarts
+	behavior_profile = BehaviorProfile.new();
 	selected_gap = null;
 	
 	is_ai = true;
@@ -790,9 +791,16 @@ func set_cmsm_from_pool(cmsm, pool_info = null):
 		pool_info = get_random_gene_from_pool();
 	set_cmsm_from_save(cmsm, pool_info);
 
+var behavior_profile : BehaviorProfile setget ,get_behavior_profile;
+var refresh_bprof := true;
 func get_behavior_profile():
-	return Game.add_int_dicts(get_cmsm_pair().get_cmsm(0).get_behavior_profile(),\
-							  get_cmsm_pair().get_cmsm(1).get_behavior_profile());
+	if (refresh_bprof):
+		behavior_profile.set_bhv_prof(get_cmsm_pair().get_cmsm(0).get_behavior_profile(),\
+									 get_cmsm_pair().get_cmsm(1).get_behavior_profile());
+		behavior_profile.set_res_prof(get_cmsm_pair().get_cmsm(0).get_resource_spec_profile(),\
+									 get_cmsm_pair().get_cmsm(1).get_resource_spec_profile());
+		refresh_bprof = false;
+	return behavior_profile;
 #	var behavior_profile = {};
 #	for g in get_cmsm_pair().get_all_genes():
 #		var g_behave = g.get_ess_behavior();
@@ -936,7 +944,7 @@ func get_missing_ess_classes():
 	var b_prof = get_behavior_profile();
 	var missing = [];
 	for k in Game.ESSENTIAL_CLASSES:
-		if (!b_prof.has(k) || b_prof[k] == 0):
+		if !b_prof.has_behavior(k):
 			missing.append(k);
 	return missing;
 
@@ -1344,7 +1352,7 @@ func eject_mineral_resource(resource, amount = 1):
 func get_cost_mult(action):
 	var cost_mult = 1.0;
 	var bprof = get_behavior_profile();
-	for k in bprof:
+	for k in bprof.BEHAVIORS:
 		if (BEHAVIOR_TO_COST_MULT.has(k) && BEHAVIOR_TO_COST_MULT[k].has(action)):
 			cost_mult += BEHAVIOR_TO_COST_MULT[k][action] * bprof[k];
 	cost_mult = max(0.05, cost_mult);
@@ -1411,3 +1419,6 @@ func get_total_minerals_stored():
 			sum += mineral_resources[resource][tier]
 		
 	return sum
+
+func _on_chromes_on_cmsm_changed():
+	refresh_bprof = true;

@@ -7,12 +7,38 @@ var id;   #holds unique identifier
 
 var ess_class = null; #holds essential gene class
 var ess_behavior = {
-	"Replication": 0,
-	"Locomotion": 0,
-	"Manipulation": 0,
-	"Sensing": 0,
-	"Construction": 0,
-	"Deconstruction": 0
+	"Replication": 0.0,
+	"Locomotion": 0.0,
+	"Manipulation": 0.0,
+	"Sensing": 0.0,
+	"Construction": 0.0,
+	"Deconstruction": 0.0
+};
+var resource_specialization = {
+	"carbs": {
+		0: 1.0,
+		1: 1.0, 
+		2: 1.0,
+		3: 1.0
+		},
+	"fats": {
+		0: 1.0,
+		1: 1.0,
+		2: 1.0,
+		3: 1.0
+	},
+	"proteins": {
+		0: 1.0,
+		1: 1.0, 
+		2: 1.0,
+		3: 1.0
+		},
+	"minerals": {
+		0: 1.0,
+		1: 1.0,
+		2: 1.0, 
+		3: 1.0
+	}
 };
 
 var ate_activity = 0.0;
@@ -97,6 +123,7 @@ func setup_copy(ref_elm):
 			"essential":
 				ess_class = ref_elm.ess_class;
 				ess_behavior = ref_elm.ess_behavior;
+				resource_specialization = ref_elm.resource_specialization;
 			"ate":
 				ate_activity = ref_elm.ate_activity;
 				ate_personality = ref_elm.ate_personality;
@@ -123,8 +150,19 @@ func get_ess_behavior():
 	for k in ess_behavior:
 		if (ess_behavior[k] > 0):
 			d[k] = ess_behavior[k];
-	if (type == "gene" && mode == "ate"):
+	if is_ate():
 		d["ate"] = ate_activity;
+	return d;
+
+func get_res_specialization():
+	var d = {};
+	if !is_ate():
+		for r in resource_specialization:
+			for t in resource_specialization[r]:
+				if (resource_specialization[r][t] != 1.0):
+					if !(r in d):
+						d[r] = {};
+					d[r][t] = resource_specialization[r][t];
 	return d;
 
 func get_random_code():
@@ -358,7 +396,7 @@ func is_ate():
 	return type == "gene" && mode == "ate";
 
 func silence_ate():
-	if (type == "gene" && mode == "ate"):
+	if is_ate():
 		mode = "ste";
 		upd_display();
 
