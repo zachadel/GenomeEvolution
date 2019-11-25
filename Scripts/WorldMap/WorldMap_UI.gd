@@ -5,6 +5,7 @@ signal quit_to_title
 signal acquire_resources
 signal eject_resource(resource, value)
 signal resource_clicked(resource)
+signal breakdown_resource(resource, amount)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -65,4 +66,8 @@ func _on_WorldMap_player_energy_changed(energy):
 
 func _on_MineralLevels_eject_resource(resource, value):
 	emit_signal("eject_resource", resource, value)
+	pass # Replace with function body.
+
+
+func _on_Breakdown_Button_pressed():
 	pass # Replace with function body.

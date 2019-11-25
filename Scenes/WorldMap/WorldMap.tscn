@@ -1,10 +1,35 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Scripts/WorldMap/WorldMap.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/WorldMap/WorldMap_UI.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/WorldMap/BiomeMap.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/WorldMap/ResourceMap.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Scripts/WorldMap/CursorHighlight.gd" type="Script" id=5]
+[ext_resource path="res://Assets/Images/Tiles/Biomes/hidden_tile.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Images/Tiles/Biomes/cloud_tile.png" type="Texture" id=6]
+[ext_resource path="res://Scripts/WorldMap/ObscurityMap.gd" type="Script" id=7]
+[ext_resource path="res://Scripts/WorldMap/CursorHighlight.gd" type="Script" id=8]
+
+[sub_resource type="TileSet" id=1]
+0/name = "hidden_tile.png 0"
+0/texture = ExtResource( 5 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 0, 0, 96, 82 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shapes = [  ]
+0/z_index = 0
+1/name = "cloud_tile.png 1"
+1/texture = ExtResource( 6 )
+1/tex_offset = Vector2( 0, 0 )
+1/modulate = Color( 1, 1, 1, 1 )
+1/region = Rect2( 0, 0, 96, 82 )
+1/tile_mode = 0
+1/occluder_offset = Vector2( 0, 0 )
+1/navigation_offset = Vector2( 0, 0 )
+1/shapes = [  ]
+1/z_index = 0
 
 [node name="WorldMap" type="Control"]
 size_flags_horizontal = 3
@@ -25,8 +50,18 @@ drag_margin_bottom = 0.0
 
 [node name="ResourceMap" parent="." instance=ExtResource( 4 )]
 
+[node name="ObscurityMap" type="TileMap" parent="."]
+tile_set = SubResource( 1 )
+cell_size = Vector2( 72, 82 )
+cell_half_offset = 1
+format = 1
+script = ExtResource( 7 )
+
 [node name="CursorHighlight" type="Sprite" parent="."]
-script = ExtResource( 5 )
+script = ExtResource( 8 )
+
+[node name="Path" type="Line2D" parent="."]
+texture_mode = 0
 [connection signal="player_energy_changed" from="." to="WorldMap_UI" method="_on_WorldMap_player_energy_changed"]
 [connection signal="player_resources_changed" from="." to="WorldMap_UI" method="_on_WorldMap_player_resources_changed"]
 [connection signal="tile_changed" from="." to="WorldMap_UI" method="_on_WorldMap_tile_changed"]
