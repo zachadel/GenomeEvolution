@@ -11,7 +11,6 @@ signal player_died(player)
 var update_sensing = false
 var move_enabled = false
 
-
 var organism
 
 var observed_tiles = {}
@@ -44,6 +43,13 @@ func set_current_tile(tile):
 
 func get_current_tile():
 	return organism.current_tile
+	
+func get_vision_radius():
+	return organism.get_vision_radius()
+	
+func add_observed_tiles(tiles):
+	pass
+		
 
 #Checks if still alive based solely on resources
 #It is the responsibility of the calling function to determine what to do
@@ -66,9 +72,8 @@ func is_alive_resource_check():
 	return (mineral_alive and cfp_alive)
 #		organism.get_parent()._on_Organism_died(organism)
 
-#func on_Timer_Timout(ndx):
-#	consume_resources(ndx)
-#	emit_signal("changed")
+func get_observed_tiles():
+	return observed_tiles
 
 #Modify these lines with a function if you need to hide certain resources from the player or modify their acquisition
 #Any time that you call this function from the WorldMap, also make sure to update
@@ -92,6 +97,11 @@ func downgrade_internal_cfp_resource(resource, tier, amount = 1):
 	pass
 	
 func breakdown_external_resource(resource_index, amount = 1):
+	organism.breakdown_resource(resource_index, amount)
+	
+	if not is_alive_resource_check():
+		organism.emit_signal("died", organism)
+		emit_signal("player_died")
 	pass
 	
 func eject_mineral_resource(resource, amount = 1):

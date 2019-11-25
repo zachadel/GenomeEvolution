@@ -1124,7 +1124,7 @@ var costs = {
 		"energy": 8
 	},
 	
-	"breakdown_ext_resource": {
+	"breakdown_resource": {
 		"carbs": 0, 
 		"fats": 0, 
 		"proteins": 0, 
@@ -1164,7 +1164,7 @@ const BEHAVIOR_TO_COST_MULT = {
 		"move": -0.05
 	}, 
 	"Deconstruction": {
-		"resource_breakdown": -0.05,
+		"breakdown_resource": -0.05,
 		"tier_downgrade": -0.05
 	},
 	"Construction": {
@@ -1174,7 +1174,7 @@ const BEHAVIOR_TO_COST_MULT = {
 		"tier_downgrade": -0.05,
 		"acquire_resources": -0.05,
 		"tier_upgrade": -0.05,
-		"resource_breakdown": -0.05,
+		"breakdown_resource": -0.05,
 		"mineral_ejection": -0.05
 	}
 }
@@ -1308,7 +1308,9 @@ func upgrade_cfp_resource(resource, tier, amount = 1):
 	
 	pass
 	
-
+func breakdown_resource(ext_resource, amount = 1):
+	pass
+	
 func eject_mineral_resource(resource, amount = 1):
 
 	var resource_index = Game.get_index_from_resource(resource)
@@ -1411,3 +1413,18 @@ func get_total_minerals_stored():
 			sum += mineral_resources[resource][tier]
 		
 	return sum
+	
+####################################SENSING AND LOCOMOTION#####################
+#This is what you can directly see, not counting the cone system
+func get_vision_radius():
+	return 5
+
+#Cost to move over a particular tile type
+#biome is an integer
+func get_locomotion_cost(biome):
+	if typeof(biome) == TYPE_INT:
+		return Game.biomes[Game.biomes.keys()[biome]]["base_cost"]
+	elif typeof(biome) == TYPE_STRING:
+		return Game.biomes[biome]["base_cost"]
+	else:
+		return -1

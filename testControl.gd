@@ -6,105 +6,88 @@ extends Control
 
 signal game_over
 
+var astar = load("res://Scripts/WorldMap/HexAStar.gd").new()
+const COST = 10
+const tile_offset = Vector2(48, 41)
+
+var cube_directions = [
+   Vector3(1, -1, 0), Vector3(1, 0, -1), Vector3(0, 1, -1), 
+    Vector3(-1, 1, 0), Vector3(-1, 0, 1), Vector3(0, -1, 1)
+]
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	
-	
-	
-#	var biomes_file = ConfigFile.new()
-#	var err = biomes_file.load("res://Data/biomes.cfg")
-#	var biomes = {}
-#
-#	if err == OK:
-#		for s in biomes_file.get_sections():
-#			biomes[s] = Game.cfg_sec_to_dict(biomes_file, s)
-#	else:
-#		print('ERROR')
-#		print(err)
-#
-#	print(biomes)
-#
-#	var tile_image = Image.new()
-#	tile_image.load(biomes['shallow']['tile_image'])
-#	var tile_tex = ImageTexture.new()
-#	tile_tex.create_from_image(tile_image)
-#	tile_tex.draw(get_viewport(), Vector2(0,0))
-#	var sprite = Sprite.new()
-#	sprite.set_texture(tile_tex)
-#	add_child(sprite)
-#	var gen = OpenSimplexNoise.new()
-#	randomize()
-#	gen.seed = randi()
-#	gen.octaves = 8
-#	gen.period = 5
-#	gen.persistence = .1
-#	gen.lacunarity = .7
-#	for x in range(0, 5):
-#		for y in range(0, 5):
-#			for i in range(10):
-#				print(("(%f, %f)_%d: %f") % [float(x)/2, float(y)/2, i, gen.get_noise_3d(float(x)/2, float(y)/2, i)])
-#			print(("(%f, %f): %f") % [float(x)/2, float(y)/2, gen.get_noise_2d(float(x)/ 2, float(y)/2)])
-#			print('---------------')
-#
-#	for i in range(10):
-#		for x in range(0, 5):
-#			for y in range(0, 5):
-#				print(("(%f, %f)_%d: %f") % [float(x)/2, float(y)/2, i, gen.get_noise_3d(float(x)/2, float(y)/2, i)])
-#				print(("(%f, %f): %f") % [float(x)/2, float(y)/2, gen.get_noise_2d(float(x)/ 2, float(y)/2)])
-#		print('---------------')
-
-	#print(Game.resources)
-#	var A = {}
-#	A[[0,0]] = 7
-#	A[[1,-2]] = 'yes'
-#	print(A)
-#
-#	for x in range(-10, 10):
-#		print(x)
-#	var A = {
-#		'yes': {
-#			0: 10,
-#			1: 12
-#		},
-#		'no': {
-#			0: 5,
-#			1: -2
-#		}
-#	}
-#	print(A.values())
-#	print(A.keys())
-#	print(Game.resource_groups)
-#	var subBar = load("res://Scenes/WorldMap/ResourceBank_SubBar.tscn")
-#	var subBars = [subBar.instance()]
-#	add_child(subBars[0])
-#
-#	var color = Color(1,0,0)
-#	subBars[0].self_modulate = color
-#
-#	var resource_tiers = 5
-#
-#	for i in range(1, resource_tiers):
-#		subBars.append(subBar.instance())
-#		subBars[i].rect_position.x = subBars[i - 1].rect_position.x + subBars[i - 1].rect_size.x
-#		subBars[i].self_modulate = Color(1 - float(i)/resource_tiers, 0, 0)
-#		add_child(subBars[i])
-
-#	var grad = Gradient.new()
-#	grad.set_color(0, Color(1,0,0))
-#	grad.add_point(.25, Color(1,1,0))
-#	grad.set_color(1, Color(0,1,0))
-#
-#	var grad_text = GradientTexture.new()
-#	grad_text.set_gradient(grad)
-#	grad_text.set_width(100)
-#	#grad_text.rect_size = Vector2(600,60)
-#	$TextureRect.texture = grad_text
-#	$TextureRect.rect_size = Vector2(600, 60)
-	
+	astar.initialize_astar(10, funcref(self, "costs"))
+	var tiles = astar.get_tiles_inside_radius(Vector3(0,0,0), 10)
+	for tile in tiles:
+		var label = Label.new()
+		label.text = str(tile) + '\n' + str(Game.cube_coords_to_offsetv(tile))
+		label.rect_position = Game.map_to_world(tile) - tile_offset
+		label.rect_size = tile_offset*2
+		label.valign = Label.VALIGN_CENTER
+		label.align = Label.ALIGN_CENTER
+		add_child(label)
 	pass # Replace with function body.
+	
+func _process(delta):
+	$Line2D.clear_points()
+	var mouse_tile = $TileMap.world_to_map_cube(get_global_mouse_position())
+	var sprite_tile = $TileMap.world_to_map_cube($Sprite.position)
+
+	var path = astar.get_tile_path_from_to(sprite_tile, mouse_tile)
+
+	if path:
+		path = convert_path_to_pos(path)
+		for point in path:
+			$Line2D.add_point(point)
+	pass
+func costs(tile: Vector3):
+	return 1.5
+#Note: This code is adapted largely from https://www.redblobgames.com/grids/hexagons/#distances
+#If you would like to learn more, I recommend that you read that blog post.
+#It turns out that offset coordinates (the ones used by default in Godot)
+#are severely lacking in functionality and make many operations much harder.
+#As such, this converter just makes life substantially simpler.	
+#I leave this final note for posterity: no sane human should ever have to work
+#in hexagonal coordinates.  It's an affront to the dignity of man.	
+func convert_path_to_pos(path: Array):
+	var positions = []
+	
+	for point in path:
+		positions.append(Game.map_to_world(point))
+		
+	return positions
+	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _input(event):
 	if event.is_action_pressed("mouse_left"):
-		if get_global_mouse_position().x < 500:
-			emit_signal("game_over")
+		print("Mouse position: ", get_global_mouse_position())
+		print("Mouse tile: ", Game.world_to_map(get_global_mouse_position()))
+		print("Mouse pixel: ", Game.map_to_world(Game.world_to_map(get_global_mouse_position())))
+		print("Mouse tile to offset: ", Game.cube_coords_to_offsetv(Game.world_to_map(get_global_mouse_position())))
+		print("Mouse tileMap tile: ", $TileMap.world_to_map(get_global_mouse_position()))
+		print("Mouse tileMap pixel: ", $TileMap.map_to_world($TileMap.world_to_map(get_global_mouse_position())) + tile_offset, '\n')
+		
+	if event.is_action_pressed("mouse_right"):
+		astar.change_radius(astar.radius + 1, funcref(self, "costs"))
+#		$Line2D.hide()
+#		$Line2D.clear_points()
+#		var mouse_tile = offset_coords_to_cubev($TileMap.world_to_map(get_global_mouse_position()))
+#		var sprite_tile = offset_coords_to_cubev($TileMap.world_to_map($Sprite.position))
+#
+#		print("mouse: ", mouse_tile, $TileMap.world_to_map(get_global_mouse_position()))
+#		print("sprite: ", sprite_tile)
+#		print("astar point: ", astar.get_point_position(map_ZxZ_to_N(mouse_tile.x, mouse_tile.y)))
+#
+#		print("sprite exists: ", astar.has_point(map_ZxZ_to_N(sprite_tile.x, sprite_tile.y)))
+#		print("mouse exists: ", astar.has_point(map_ZxZ_to_N(mouse_tile.x, mouse_tile.y)))
+#		var path = astar.get_point_path(map_ZxZ_to_N(sprite_tile.x, sprite_tile.y), map_ZxZ_to_N(mouse_tile.x, mouse_tile.y))
+#		print(path)
+#		path = convert_path_to_pos(path)
+#		for point in path:
+#			$Line2D.add_point(point)
+#		print(path)
+#
+#		$Line2D.show()
+	pass

@@ -122,6 +122,7 @@ margin_right = 190.0
 grow_horizontal = 2
 grow_vertical = 2
 [connection signal="pressed" from="UIPanel/ActionsPanel/GridContainer/Acquire_Button" to="." method="_on_Acquire_Button_pressed"]
+[connection signal="pressed" from="UIPanel/ActionsPanel/GridContainer/Breakdown_Button" to="." method="_on_Breakdown_Button_pressed"]
 [connection signal="pressed" from="UIPanel/ActionsPanel/GridContainer/Quit_To_Title_Button" to="." method="_on_Quit_To_Title_Button_pressed"]
 [connection signal="pressed" from="UIPanel/ActionsPanel/GridContainer/Switch_Button" to="." method="_on_Switch_Button_pressed"]
 [connection signal="resource_clicked" from="UIPanel/CFPBank" to="." method="_on_CFPBank_resource_clicked"]
