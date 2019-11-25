@@ -21,6 +21,7 @@ margin_top = -210.0
 script = ExtResource( 2 )
 
 [node name="ActionsPanel" type="Panel" parent="UIPanel"]
+editor/display_folded = true
 margin_left = 1200.0
 margin_top = 35.0
 margin_right = 1540.0
