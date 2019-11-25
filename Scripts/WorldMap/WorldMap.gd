@@ -19,7 +19,7 @@ curr_tile = {
 	}
 
 """
-var MAX_ZOOM = 3
+var MAX_ZOOM = 2
 var MIN_ZOOM = .5
 var ZOOM_UPDATE = .1
 var CAMERA_MOVEMENT = 10
@@ -82,12 +82,15 @@ func setup(biome_seed, hazard_seed, resource_seed, tiebreak_seed, _chunk_size, p
 	tile_sprite_size = $BiomeMap.tile_texture_size
 	$BiomeMap.setup(biome_generator, tiebreak_generator, hazard_generator, chunk_size, starting_pos)
 	$ResourceMap.setup(biome_generator, resource_generator, tiebreak_generator, chunk_size, starting_pos)
+	$ObscurityMap.setup(chunk_size, starting_pos)
 	
 	#we assume that the player sprite is smaller than the tiles
 	current_player = player
 	player_sprite_offset = (tile_sprite_size - current_player.get_texture_size()) / 2
 	current_player.position = Game.map_to_world(Game.world_to_map(default_start))
 	current_player.organism.current_tile = get_tile_at_pos(Game.world_to_map(default_start))
+	
+	observe_tiles(Game.world_to_map(default_start), current_player.organism.get_vision_radius())
 	
 	astar.initialize_astar(current_player.organism.get_vision_radius(), funcref(self, "costs"))
 	
@@ -188,7 +191,7 @@ func _process(delta):
 			camera_change = true
 				
 		if camera_change:
-			shift_maps(shift)
+			shift_maps(shift, current_player.observed_tiles)
 
 #We use unhandled input here so the GUI is processed first and we don't
 #accidentally click on the map while interacting with the UI
@@ -207,7 +210,8 @@ func _unhandled_input(event):
 				
 				if move_player(tile_position) > 0:
 				
-					current_player.add_observed_tiles(astar.get_tiles_inside_radius(player_tile))
+					hide_tiles(player_tile, current_player.organism.get_vision_radius())
+					observe_tiles(tile_position, current_player.organism.get_vision_radius())
 					
 					$MapCamera.position = Game.map_to_world(tile_position)
 					$MapCamera.offset = Vector2(0,0)
@@ -216,7 +220,7 @@ func _unhandled_input(event):
 					$WorldMap_UI/ResourceHazardPanel.set_hazards(current_player.organism.current_tile["hazards"])
 					
 					var tile_shift = Game.cube_coords_to_offsetv(tile_position) - $BiomeMap.center_indices
-					shift_maps(tile_shift)
+					shift_maps(tile_shift, current_player.observed_tiles)
 				
 				#Prevents weird interpolation/snapping of camera if smoothing is desired
 	#			if $MapCamera.offset.length_squared() > 0:
@@ -237,7 +241,7 @@ func _unhandled_input(event):
 func _input(event):
 	if event.is_action("center_camera"):
 		erase_current_maps()
-		draw_and_center_maps_to(Game.world_to_map($MapCamera.position))
+		draw_and_center_maps_to(Game.world_to_map(current_player.position), current_player.observed_tiles)
 
 		$MapCamera.offset = Vector2(0,0)
 		get_tree().set_input_as_handled()
@@ -280,23 +284,42 @@ func move_player(pos: Vector3):
 	return tiles_moved
 	
 #Expects shifts in terms of the tile maps coordinates
-func shift_maps(position):
+func shift_maps(position, observed_dict: Dictionary):
 	$BiomeMap.shift_map(position)
 	$ResourceMap.shift_map(position)
+	$ObscurityMap.shift_map(position, observed_dict)
 	
 func erase_current_maps():
 	$BiomeMap.erase_current_map()
 	$ResourceMap.erase_current_map()
+	$ObscurityMap.erase_current_map()
 	
-func draw_and_center_maps_to(position):
+func draw_and_center_maps_to(position, observed_tiles: Dictionary):
 	$BiomeMap.draw_and_center_at(position)
 	$ResourceMap.draw_and_center_at(position)
+	$ObscurityMap.draw_and_center_at(position, observed_tiles)
 	
-#center_tile: Vector2
+#center_tile: Vector3
 #observation_radius: integer radius
 func observe_tiles(center_tile, observation_radius):
-	for column in range(-observation_radius, observation_radius + 1):
-		current_player.observed_tiles[[int(center_tile.x), int(center_tile.y)]] = 7
+	var temp_vec = Vector2(0,0)
+	
+	for a in range(-observation_radius, observation_radius + 1):
+		for b in range(int(max(-observation_radius, -a-observation_radius)), int(min(observation_radius, observation_radius-a) + 1)):
+			temp_vec = Game.cube_coords_to_offsetv(Vector3(a, b, -a-b) + center_tile)
+			current_player.observed_tiles[[int(temp_vec.x), int(temp_vec.y)]] = $ObscurityMap.VISION.CLEAR
+			$ObscurityMap.set_cellv(temp_vec, $ObscurityMap.VISION.CLEAR)
+	
+	pass
+	
+func hide_tiles(center_tile, observation_radius):
+	var temp_vec = Vector2(0,0)
+	
+	for a in range(-observation_radius, observation_radius + 1):
+		for b in range(int(max(-observation_radius, -a-observation_radius)), int(min(observation_radius, observation_radius-a) + 1)):
+			temp_vec = Game.cube_coords_to_offsetv(Vector3(a, b, -a-b) + center_tile)
+			current_player.observed_tiles[[int(temp_vec.x), int(temp_vec.y)]] = $ObscurityMap.VISION.HIDDEN
+			$ObscurityMap.set_cellv(temp_vec, $ObscurityMap.VISION.HIDDEN)
 	
 	pass
 
