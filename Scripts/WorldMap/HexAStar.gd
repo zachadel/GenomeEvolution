@@ -133,13 +133,13 @@ func get_tile_and_cost_from_to(from:Vector3, to: Vector3):
 	
 	if has_point(map_ZxZ_to_N(from.x, from.y)) and has_point(map_ZxZ_to_N(to.x, to.y)):
 		path = get_point_path(map_ZxZ_to_N(from.x, from.y), map_ZxZ_to_N(to.x, to.y))
-		path_and_cost["sum"] = 0
+		path_and_cost["total_cost"] = 0
 		for i in range(len(path)):
 			path_and_cost[i] = {
 				"location": path[i] + offset,
 				"cost": get_point_weight_scale(map_ZxZ_to_N(path[i].x, path[i].y))
 			}
-			path_and_cost["sum"] += path_and_cost[i]["cost"]
+			path_and_cost["total_cost"] += path_and_cost[i]["cost"]
 		
 	return path_and_cost
 	
@@ -149,7 +149,7 @@ func get_cost_from_to(from: Vector3, to: Vector3):
 	
 	return _compute_cost(map_ZxZ_to_N(from.x, from.y), map_ZxZ_to_N(to.x, to.y))
 	
-func get_positions_path_from_to(from: Vector3, to: Vector3):
+func get_positions_from_to(from: Vector3, to: Vector3):
 	from -= offset
 	to -= offset
 	
@@ -159,6 +159,25 @@ func get_positions_path_from_to(from: Vector3, to: Vector3):
 		points.append(Game.map_to_world(tiles[i] + offset))
 		
 	return points
+	
+func get_positions_and_costs_from_to(from: Vector3, to: Vector3):
+	from -= offset
+	to -= offset
+	
+	var path = []
+	var path_and_cost = {}
+	
+	if has_point(map_ZxZ_to_N(from.x, from.y)) and has_point(map_ZxZ_to_N(to.x, to.y)):
+		path = get_point_path(map_ZxZ_to_N(from.x, from.y), map_ZxZ_to_N(to.x, to.y))
+		path_and_cost["total_cost"] = 0
+		for i in range(len(path)):
+			path_and_cost[i] = {
+				"location": Game.map_to_world(path[i] + offset),
+				"cost": get_point_weight_scale(map_ZxZ_to_N(path[i].x, path[i].y))
+			}
+			path_and_cost["total_cost"] += path_and_cost[i]["cost"]
+		
+	return path_and_cost
 	
 func get_weight_from_point(point: Vector3):
 	point -= offset

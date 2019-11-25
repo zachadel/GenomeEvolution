@@ -99,6 +99,8 @@ func setup(biome_seed, hazard_seed, resource_seed, tiebreak_seed, _chunk_size, p
 	$WorldMap_UI/UIPanel/EnergyBar.update_energy_allocation(current_player.organism.energy)
 	
 	$MapCamera.position = current_player.position
+	
+	$Path.default_color = Color(0,0,1)
 
 	if is_visible_in_tree():
 		$MapCamera.make_current()
@@ -121,11 +123,16 @@ func _process(delta):
 			
 			$Path.clear_points()
 			
-			var path = astar.get_positions_path_from_to(player_tile, tile_position)
+			var path = astar.get_positions_and_costs_from_to(player_tile, tile_position)
 		
-			if path:
-				for point in path:
-					$Path.add_point(point)
+			if len(path) > 0:
+				if path["total_cost"] <= current_player.organism.energy:
+					$Path.default_color = Color(0,0,1)
+				else:
+					$Path.default_color = Color(1,0,0)
+					
+				for i in range(len(path) - 1):
+					$Path.add_point(path[i]["location"])
 
 		$CursorHighlight.position = Game.map_to_world(tile_position)# + tile_sprite_size / 2
 		
@@ -256,9 +263,9 @@ func move_player(pos: Vector3):
 	if player_tile != pos and Game.get_distance_cubev(player_tile, pos) <= current_player.organism.get_vision_radius():
 		var path_and_cost = astar.get_tile_and_cost_from_to(player_tile, pos)
 		
-		if len(path_and_cost) > 0 and path_and_cost["sum"] <= current_player.organism.energy:
+		if len(path_and_cost) > 0 and path_and_cost["total_cost"] <= current_player.organism.energy:
 			tiles_moved = len(path_and_cost) - 1
-			current_player.organism.energy -= path_and_cost["sum"]*Game.resource_mult
+			current_player.organism.energy -= path_and_cost["total_cost"]*Game.resource_mult
 			
 			var new_position = Game.map_to_world(pos)
 		
