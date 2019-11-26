@@ -77,7 +77,7 @@ func get_observed_tiles():
 
 #Modify these lines with a function if you need to hide certain resources from the player or modify their acquisition
 #Any time that you call this function from the WorldMap, also make sure to update
-#WorldMap_UI/UI_Panel/CFPBank and WorldMap_UI/UI_Panel/MineralLevels
+#WorldMap_UI/UIPanel/CFPBank and WorldMap_UI/UIPanel/MineralLevels
 #This seems to imply a rework of the way we view Organism/Player needs to be reconsidered
 func acquire_resources():
 	organism.acquire_resources()
