@@ -320,6 +320,14 @@ func pretty_element_name_list(elms_array):
 			list += ", ";
 	return list;
 
+func list_array_string(array):
+	var list = "";
+	for e in array:
+		list += ", %s" % e;
+	if (list.size() < 2):
+		return "";
+	return list.substr(2, list.length() - 2);
+
 func load_cfg(data_name, dict):
 	var file = ConfigFile.new()
 	var err = file.load("res://Data/" + data_name + ".cfg")

@@ -12,6 +12,7 @@ var is_ai
 var do_yields
 var born_on_turn
 var died_on_turn
+var num_progeny = 0;
 
 #This is the dictionary that stores how resources are converted
 #from one tier into another.  For example, if you want to go
@@ -320,11 +321,12 @@ func _on_chromes_elm_clicked(elm):
 	match (elm.type):
 		"break":
 			if (elm == selected_gap):
+				repair_canceled = true;
 				for g in gene_selection:
 					g.disable(true);
 				highlight_gap_choices();
 				gene_selection.clear();
-				repair_canceled = true;
+				
 				emit_signal("gene_clicked"); # Used to continue the yields
 				emit_signal("justnow_update", "");
 			else:
@@ -787,7 +789,7 @@ func highlight_gap_choices():
 func get_gene_pool():
 	return reproduct_gene_pool;
 
-func can_meiosis():
+func has_meiosis_viable_pool():
 	return get_gene_pool().size() > 0;
 
 func add_to_gene_pool(cmsm):
@@ -903,48 +905,53 @@ func prune_cmsms(final_num, add_to_pool = true):
 		cmsms.remove_cmsm(final_num);
 
 func replicate(idx):
-	var rep_type = "some unknown freaky deaky shiznaz";
-	
-	perform_anims(false);
-	cmsms.replicate_cmsms([0, 1]);
-	cmsms.hide_all(true);
-	cmsms.show_all_choice_buttons(true);
-	perform_anims(true);
-	
-	match idx:
-		0: # Mitosis
-			rep_type = "mitosis";
-			
-			cmsms.link_cmsms(0, 1);
-			cmsms.link_cmsms(2, 3);
-			
-			emit_signal("justnow_update", "Choose which chromosome pair (top two or bottom two) to keep.");
-			var keep_idx = yield(self, "cmsm_picked");
-			
-			cmsms.move_cmsm(keep_idx, 0);
-			cmsms.move_cmsm(keep_idx+1, 1);
-			
-			prune_cmsms(2);
-			
-			
-		1: # Meiosis
-			rep_type = "meiosis";
-			
-			emit_signal("justnow_update", "Choose one chromosome to keep; the others go into the gene pool. Then, receive one randomly from the gene pool.");
-			var keep_idx = yield(self, "cmsm_picked");
-			cmsms.move_cmsm(keep_idx, 0);
-			
-			prune_cmsms(1);
-			
-			cmsms.add_cmsm(get_random_gene_from_pool(), true);
-	
-	cmsms.show_all_choice_buttons(false);
-	cmsms.hide_all(false);
-	
-	emit_signal("finished_replication");
-	emit_signal("doing_work", false);
-	emit_signal("justnow_update", "Reproduced by %s." % rep_type);
-	perform_anims(true);
+	if (idx == 2):
+		emit_signal("finished_replication");
+		emit_signal("doing_work", false);
+		emit_signal("justnow_update", "Skipped reproduction.");
+	else:
+		perform_anims(false);
+		cmsms.replicate_cmsms([0, 1]);
+		cmsms.hide_all(true);
+		cmsms.show_all_choice_buttons(true);
+		perform_anims(true);
+		
+		var rep_type = "some unknown freaky deaky shiznaz";
+		match idx:
+			0: # Mitosis
+				rep_type = "mitosis";
+				
+				cmsms.link_cmsms(0, 1);
+				cmsms.link_cmsms(2, 3);
+				
+				emit_signal("justnow_update", "Choose which chromosome pair (top two or bottom two) to keep.");
+				var keep_idx = yield(self, "cmsm_picked");
+				
+				cmsms.move_cmsm(keep_idx, 0);
+				cmsms.move_cmsm(keep_idx+1, 1);
+				
+				prune_cmsms(2);
+				use_resources("replicate_mitosis");
+			1: # Meiosis
+				rep_type = "meiosis";
+				
+				emit_signal("justnow_update", "Choose one chromosome to keep; the others go into the gene pool. Then, receive one randomly from the gene pool.");
+				var keep_idx = yield(self, "cmsm_picked");
+				cmsms.move_cmsm(keep_idx, 0);
+				
+				prune_cmsms(1);
+				use_resources("replicate_meiosis");
+				cmsms.add_cmsm(get_random_gene_from_pool(), true);
+		
+		cmsms.show_all_choice_buttons(false);
+		cmsms.hide_all(false);
+		
+		num_progeny += 1;
+		
+		emit_signal("finished_replication");
+		emit_signal("doing_work", false);
+		emit_signal("justnow_update", "Reproduced by %s." % rep_type);
+		perform_anims(true);
 
 func get_missing_ess_classes():
 	var b_prof = get_behavior_profile();
@@ -1057,6 +1064,8 @@ func update_energy_allocation(type, amount):
 
 #NOTE: Energy costs are always per unit
 var costs = {
+	"none": {},
+	
 	"repair_cd" : {
 		"carbs": 0, 
 		"fats": 0, #1
@@ -1216,7 +1225,7 @@ func use_resources(action, num_times_performed = 1):
 	emit_signal("resources_changed", cfp_resources, mineral_resources)
 	emit_signal("energy_changed", energy)
 
-const COST_STR_FORMAT = ", %s x %s";
+const COST_STR_FORMAT = ", %s %s";
 const COST_STR_COMMA_IDX = 2;
 func get_cost_string(action):
 	

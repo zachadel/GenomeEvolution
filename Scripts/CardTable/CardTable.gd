@@ -42,15 +42,49 @@ func show_replicate_opts(show):
 		$pnl_reproduce/hsplit/ilist_choices.select(0);
 		upd_replicate_desc(0);
 
-func upd_replicate_desc(idx):
-	$pnl_reproduce/hsplit/vsplit/btn_apply_replic.disabled = idx == 1 && !orgn.can_meiosis();
+const REPLICATE_DESC_FORMAT = "Cost:\n%s%s\n\n%s";
+func get_replicate_desc(idx):
+	var action_name = "";
+	var tooltip_key = "";
 	match (idx):
 		0:
-			$pnl_reproduce/hsplit/vsplit/scroll/lbl_choice_desc.text = "Replicate both chromosomes and choose one pair.";
+			action_name = "replicate_mitosis";
+			tooltip_key = "mitosis";
 		1:
-			$pnl_reproduce/hsplit/vsplit/scroll/lbl_choice_desc.text = "Replicate and separate both chromosomes; choose two to keep, including a random one from the gene pool.";
+			action_name = "replicate_meiosis";
+			tooltip_key = "meiosis";
+		2:
+			action_name = "none";
+			tooltip_key = "skip";
 		var _err_idx:
-			$pnl_reproduce/hsplit/vsplit/scroll/lbl_choice_desc.text = "This is an error! You picked an option (#%d) we are not familiar with!" % _err_idx;
+			return "This is an error! You picked an option (#%d) we are not familiar with!" % _err_idx;
+	
+	var deficiency_str = "";
+	var df = orgn.check_resources(action_name);
+	if !df.empty():
+		deficiency_str = "\nDeficient %s" % Game.list_array_string(df);
+	var dingo = [orgn.get_cost_string(action_name), deficiency_str, Tooltips.REPLICATE_TTIPS[tooltip_key]];
+	return REPLICATE_DESC_FORMAT % [orgn.get_cost_string(action_name), deficiency_str, Tooltips.REPLICATE_TTIPS[tooltip_key]];
+
+func upd_replicate_desc(idx):
+	var enable_btn = true;
+	var btn_text = "Replicate";
+	match (idx):
+		0:
+			enable_btn = orgn.has_resource_for_action("replicate_mitosis");
+			if !enable_btn:
+				btn_text = "Insufficient resources";
+		1:
+			enable_btn = orgn.has_resource_for_action("replicate_meiosis") && orgn.has_meiosis_viable_pool();
+			if !enable_btn:
+				if orgn.has_meiosis_viable_pool():
+					btn_text = "Insufficient resources";
+				else:
+					btn_text = "Insufficient gene pool";
+	
+	$pnl_reproduce/hsplit/vsplit/btn_apply_replic.disabled = !enable_btn;
+	$pnl_reproduce/hsplit/vsplit/btn_apply_replic.text = btn_text;
+	$pnl_reproduce/hsplit/vsplit/scroll/lbl_choice_desc.text = get_replicate_desc(idx);
 
 func _on_replic_choices_item_activated(idx):
 	do_replicate(idx);
@@ -128,9 +162,9 @@ func _on_btn_nxt_pressed():
 			g.disable(true);
 	Game.adv_turn();
 	$lbl_turn.text = "%s\n%s\n%s" % [
-		"Generation %d" % Game.round_num,
+		"Generation %d" % (orgn.num_progeny + 1),
 		Game.get_turn_txt(),
-		"Progeny: %d" % (Game.round_num - 1)
+		"Progeny: %d" % orgn.num_progeny
 	];
 	emit_signal("next_turn", Game.round_num, Game.turn_idx);
 	$pnl_saveload.new_save(Game.get_save_str());
