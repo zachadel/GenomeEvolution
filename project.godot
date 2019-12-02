@@ -13,9 +13,15 @@ _global_script_classes=[ {
 "class": "Bank",
 "language": "GDScript",
 "path": "res://Scripts/WorldMap/Bank.gd"
+}, {
+"base": "Reference",
+"class": "BehaviorProfile",
+"language": "GDScript",
+"path": "res://Scripts/CardTable/BehaviorProfile.gd"
 } ]
 _global_script_class_icons={
-"Bank": ""
+"Bank": "",
+"BehaviorProfile": ""
 }
 
 [application]

@@ -168,11 +168,15 @@ func cfg_sec_to_dict(cfg, sec):
 
 func add_int_dicts(dict0, dict1):
 	var all_keys = dict0.keys() + dict1.keys()
-	var added_dict = {}
+	var added_dict := {}
 	for k in all_keys:
 		if not k in added_dict:
 			if (k in dict0 and k in dict1):
-				added_dict[k] = dict0[k] + dict1[k]
+				if (typeof(dict0[k]) == TYPE_DICTIONARY):
+					# This will also add nested dicts
+					added_dict[k] = add_int_dicts(dict0[k], dict1[k]);
+				else:
+					added_dict[k] = dict0[k] + dict1[k]
 			elif (k in dict0):
 				added_dict[k] = dict0[k]
 			else:

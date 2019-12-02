@@ -28,16 +28,17 @@ func additive_mod_exists(roll_type, behavior):
 func get_additive_mods(roll_type, behavior):
 	return BEHAVIOR_TO_MOD[behavior][roll_type];
 
-func roll_chance_type(type, behavior_profile = {}):
+func roll_chance_type(type, behavior_profile = null):
 	var mods = [];
 	for i in range(base_rolls[type].size()):
 		mods.append(1.0);
 	
 	# Add up relevant modifiers
-	for k in behavior_profile:
-		if (additive_mod_exists(type, k)):
-			for i in range(mods.size()):
-				mods[i] += get_additive_mods(type, k)[i] * behavior_profile[k];
+	if (behavior_profile != null):
+		for k in behavior_profile.BEHAVIORS:
+			if (additive_mod_exists(type, k)):
+				for i in range(mods.size()):
+					mods[i] += get_additive_mods(type, k)[i] * behavior_profile.get_behavior(k);
 	
 	return roll_chances(base_rolls[type], mods);
 

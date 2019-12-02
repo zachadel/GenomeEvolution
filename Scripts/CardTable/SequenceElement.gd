@@ -7,12 +7,26 @@ var id;   #holds unique identifier
 
 var ess_class = null; #holds essential gene class
 var ess_behavior = {
-	"Replication": 0,
-	"Locomotion": 0,
-	"Manipulation": 0,
-	"Sensing": 0,
-	"Construction": 0,
-	"Deconstruction": 0
+	"Replication": 0.0,
+	"Locomotion": 0.0,
+	"Manipulation": 0.0,
+	"Sensing": 0.0,
+	"Construction": 0.0,
+	"Deconstruction": 0.0
+};
+
+
+var specialization = {};
+var spec_types = {
+	"resource": {"specs": Game.resource_groups.keys().duplicate(), "subs": range(4)},
+	"terrain": {"specs": ["biomes"], "subs": Game.biomes.keys().duplicate()},
+};
+var behavior_to_spec_type = {
+	"Manipulation": "resource",
+	"Sensing": "resource",
+	"Construction": "resource",
+	"Deconstruction": "resource",
+	"Locomotion": "terrain",
 };
 
 var ate_activity = 0.0;
@@ -97,6 +111,7 @@ func setup_copy(ref_elm):
 			"essential":
 				ess_class = ref_elm.ess_class;
 				ess_behavior = ref_elm.ess_behavior;
+				specialization = ref_elm.specialization;
 			"ate":
 				ate_activity = ref_elm.ate_activity;
 				ate_personality = ref_elm.ate_personality;
@@ -123,9 +138,43 @@ func get_ess_behavior():
 	for k in ess_behavior:
 		if (ess_behavior[k] > 0):
 			d[k] = ess_behavior[k];
-	if (type == "gene" && mode == "ate"):
+	if is_ate():
 		d["ate"] = ate_activity;
 	return d;
+
+func get_specialization():
+	var d = {};
+	if !is_ate():
+		for r in specialization:
+			for t in specialization[r]:
+				var spec_val = get_specific_specialization(r, t);
+				if (spec_val != 1.0):
+					if !(r in d):
+						d[r] = {};
+					d[r][t] = spec_val;
+	return d;
+
+func get_specific_specialization(spec, sub_idx):
+	if !(spec in specialization) || !(sub_idx in specialization[spec]):
+		return 1.0;
+	return specialization[spec][sub_idx];
+
+func set_specific_specialization(spec, sub_idx, val):
+	if !(spec in specialization):
+		specialization[spec] = {};
+	specialization[spec][sub_idx] = val;
+
+func modify_specific_specialization(spec, sub_idx, dval):
+	set_specific_specialization(spec, sub_idx, dval + get_specific_specialization(spec, sub_idx));
+
+func evolve_spec(behavior, ev_amt):
+	if (behavior in behavior_to_spec_type):
+		var spec_info = spec_types[behavior_to_spec_type[behavior]];
+		
+		var spec = spec_info["specs"][randi() % spec_info["specs"].size()];
+		var sub_idx = spec_info["subs"][randi() % spec_info["subs"].size()];
+		
+		modify_specific_specialization(spec, sub_idx, ev_amt);
 
 func get_random_code():
 	var _code = "";
@@ -179,6 +228,7 @@ func evolve_current_behavior(amt):
 		"essential":
 			if (ess_behavior.values().max() > 0):
 				var behave_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
+				evolve_spec(behave_key, amt);
 				ess_behavior[behave_key] = max(0, ess_behavior[behave_key] + amt);
 		"ate":
 			ate_activity += amt;
@@ -211,11 +261,13 @@ func evolve_new_behavior(gain):
 				behave_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
 			
 			if (gain):
+				evolve_spec(behave_key, GAIN_AMT);
 				if (ess_behavior.has(behave_key)):
 					ess_behavior[behave_key] += GAIN_AMT;
 				else:
 					ess_behavior[behave_key] = GAIN_AMT;
 			else:
+				evolve_spec(behave_key, -ess_behavior[behave_key]);
 				ess_behavior[behave_key] = 0.0;
 		"ate":
 			if (gain):
@@ -358,7 +410,7 @@ func is_ate():
 	return type == "gene" && mode == "ate";
 
 func silence_ate():
-	if (type == "gene" && mode == "ate"):
+	if is_ate():
 		mode = "ste";
 		upd_display();
 
