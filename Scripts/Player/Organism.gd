@@ -351,6 +351,7 @@ var roll_storage = [{}, {}]; # When a player selects a gap, its roll is stored. 
 # The array number refers to the kind of repair being done (i.e. it should reroll if it is using a different repair option)
 # The dictionaries are indexed by the gap object
 var repair_type_possible = [false, false, false];
+var repair_unavailable_text = ["", "", ""];
 var sel_repair_idx = -1;
 var sel_repair_gap = null;
 
@@ -379,8 +380,11 @@ func check_resources(action, amount = 1):
 	
 	if energy < costs[action]["energy"] * cost_mult * Game.resource_mult * amount:
 		deficiencies.append("energy")
-		
+	
 	return deficiencies
+
+func has_resource_for_action(action, amt = 1):
+	return check_resources(action, amt).empty();
 
 func upd_repair_opts(gap):
 	sel_repair_gap = gap;
@@ -396,9 +400,23 @@ func upd_repair_opts(gap):
 		var left_elm = cmsm.get_child(g_idx-1);
 		var right_elm = cmsm.get_child(g_idx+1);
 		
-		repair_type_possible[0] = cmsm.dupe_block_exists(g_idx);
-		repair_type_possible[1] = cmsms.get_other_cmsm(cmsm).pair_exists(left_elm, right_elm);
-		repair_type_possible[2] = true;
+		repair_type_possible[0] = cmsm.dupe_block_exists(g_idx) && has_resource_for_action("repair_cd");
+		if !repair_type_possible[0]:
+			if has_resource_for_action("repair_cd"):
+				repair_unavailable_text[0] = "No duplicates to collapse";
+			else:
+				repair_unavailable_text[0] = "Not enough resources";
+		
+		repair_type_possible[1] = cmsms.get_other_cmsm(cmsm).pair_exists(left_elm, right_elm) && has_resource_for_action("repair_cp");
+		if !repair_type_possible[1]:
+			if has_resource_for_action("repair_cp"):
+				repair_unavailable_text[0] = "No pattern to copy";
+			else:
+				repair_unavailable_text[0] = "Not enough resources";
+		
+		repair_type_possible[2] = has_resource_for_action("repair_je");
+		if !repair_type_possible[2]:
+			repair_unavailable_text[2] = "Not enough resources";
 		
 		sel_repair_idx = 0;
 		while (sel_repair_idx < 2 && !repair_type_possible[sel_repair_idx]):
@@ -575,7 +593,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 				var right_rem_genes = [];
 				
 				var max_collapse_count = right_idx - left_idx - 1;
-				var continue_collapse = check_resources("repair_cd") && true;
+				var continue_collapse = has_resource_for_action("repair_cd") && true;
 				var ended_due_to = "failure";
 				
 				for i in range(left_idx, g_idx):
@@ -595,7 +613,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 					remove_genes.append(chosen_gene);
 					removing_right = left_rem_genes.size() == 0 || right_rem_genes.size() != 0 && !removing_right;
 					
-					continue_collapse = check_resources("repair_cd") && continue_collapse && Chance.roll_collapse(choice_info["size"], chosen_gene.get_index() - g_idx);
+					continue_collapse = has_resource_for_action("repair_cd") && continue_collapse && Chance.roll_collapse(choice_info["size"], chosen_gene.get_index() - g_idx);
 				
 				var remove_count = remove_genes.size();
 				if (remove_count == max_collapse_count):
@@ -619,8 +637,6 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 				choice_info["left"].highlight_border(false);
 				if (!roll_storage[0].has(gap)):
 					roll_storage[0][gap] = roll_chance("copy_repair");
-				if !check_resources("repair_cd"):
-					roll_storage[0][gap] = 0
 				
 				var do_correction = bool(roll_chance("copy_repair_correction"));
 				var correct_str = "";
@@ -688,8 +704,6 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 			2: # Join Ends
 				if (!roll_storage[1].has(gap)):
 					roll_storage[1][gap] = roll_chance("join_ends");
-				if !check_resources ("repair_je"):
-					roll_storage[1][gap] = 0
 				match (roll_storage[1][gap]):
 					0:
 						emit_signal("justnow_update", "Joined ends for the gap at %d, %d without complications." % gap_pos_disp);
@@ -797,8 +811,8 @@ func get_behavior_profile():
 	if (refresh_bprof):
 		behavior_profile.set_bhv_prof(get_cmsm_pair().get_cmsm(0).get_behavior_profile(),\
 									 get_cmsm_pair().get_cmsm(1).get_behavior_profile());
-		behavior_profile.set_res_prof(get_cmsm_pair().get_cmsm(0).get_resource_spec_profile(),\
-									 get_cmsm_pair().get_cmsm(1).get_resource_spec_profile());
+		behavior_profile.set_spec_prof(get_cmsm_pair().get_cmsm(0).get_specialization_profile(),\
+									 get_cmsm_pair().get_cmsm(1).get_specialization_profile());
 		refresh_bprof = false;
 	return behavior_profile;
 #	var behavior_profile = {};

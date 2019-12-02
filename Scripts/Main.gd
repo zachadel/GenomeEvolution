@@ -119,9 +119,9 @@ func _on_CardTable_next_turn(turn_text, round_num):
 		$WorldMap.show()
 		$WorldMap/WorldMap_UI.show()
 		$WorldMap.current_player.enable_sprite(true)
-		$WorldMap/WorldMap_UI/UI_Panel/CFPBank.update_resources_values($WorldMap.current_player.organism.cfp_resources)
-		$WorldMap/WorldMap_UI/UI_Panel/MineralLevels.update_resources_values($WorldMap.current_player.organism.mineral_resources)
-		$WorldMap/WorldMap_UI/UI_Panel/EnergyBar.update_energy_allocation($WorldMap.current_player.organism.energy)
+		$WorldMap/WorldMap_UI/UIPanel/CFPBank.update_resources_values($WorldMap.current_player.organism.cfp_resources)
+		$WorldMap/WorldMap_UI/UIPanel/MineralLevels.update_resources_values($WorldMap.current_player.organism.mineral_resources)
+		$WorldMap/WorldMap_UI/UIPanel/EnergyBar.update_energy_allocation($WorldMap.current_player.organism.energy)
 
 func _on_GameOver_confirmed():
 	Game.restart_game()

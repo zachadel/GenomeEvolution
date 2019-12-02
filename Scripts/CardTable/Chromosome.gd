@@ -45,36 +45,36 @@ func get_behavior_profile():
 	
 	return behavior_profile;
 
-func get_resource_spec_profile():
+func get_specialization_profile():
 	var behavior_profile = get_behavior_profile();
-	var resource_behavior = {};
+	var spec_behavior = {};
 	
 	for g in get_genes():
-		var g_specialization = g.get_res_specialization();
+		var g_specialization = g.get_specialization();
 		for r in g_specialization:
-			if !resource_behavior.has(r):
-				resource_behavior[r] = {};
+			if !spec_behavior.has(r):
+				spec_behavior[r] = {};
 			for b in behavior_profile:
 				if b != "ate":
-					if !resource_behavior[r].has(b):
-						resource_behavior[r][b] = {};
+					if !spec_behavior[r].has(b):
+						spec_behavior[r][b] = {};
 					for t in g_specialization[r]:
-						if resource_behavior[r][b].has(t):
-							resource_behavior[r][b][t] += behavior_profile[b] * g_specialization[r][t];
+						if spec_behavior[r][b].has(t):
+							spec_behavior[r][b][t] += behavior_profile[b] * g_specialization[r][t];
 						else:
-							resource_behavior[r][b][t] = float(behavior_profile[b] * g_specialization[r][t]);
-					if resource_behavior[r][b].empty():
-						resource_behavior[r].erase(b);
-			if resource_behavior[r].empty():
-				resource_behavior.erase(r);
+							spec_behavior[r][b][t] = float(behavior_profile[b] * g_specialization[r][t]);
+					if spec_behavior[r][b].empty():
+						spec_behavior[r].erase(b);
+			if spec_behavior[r].empty():
+				spec_behavior.erase(r);
 	
-	for r in resource_behavior:
+	for r in spec_behavior:
 		for b in behavior_profile:
-			if b in resource_behavior[r]:
-				for t in resource_behavior[r][b]:
-					resource_behavior[r][b][t] /= behavior_profile[b];
+			if b in spec_behavior[r]:
+				for t in spec_behavior[r][b]:
+					spec_behavior[r][b][t] /= behavior_profile[b];
 	
-	return resource_behavior;
+	return spec_behavior;
 
 func get_pairs(left_elm, right_elm, minimal = false):
 	var pairs = {}; # key is left_idx, value is an array of right_idxs

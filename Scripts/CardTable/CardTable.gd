@@ -81,15 +81,13 @@ func upd_repair_desc(idx):
 	btn.disabled = !orgn.repair_type_possible[idx];
 	btn.text = "Repair";
 	orgn.change_selected_repair(idx);
+	if (btn.disabled):
+		btn.text = orgn.repair_unavailable_text[idx];
 	match (idx):
 		0:
 			$pnl_repair_choices/hsplit/vsplit/scroll/lbl_choice_desc.text = "If the genes to the left and the right of the gap are the same, the break can be repaired by discarding one of the duplicates.";
-			if (btn.disabled):
-				btn.text = "No duplicates to collapse";
 		1:
 			$pnl_repair_choices/hsplit/vsplit/scroll/lbl_choice_desc.text = "If both ends of the gap can be matched to an intact pattern on the other chromosome, you can attempt to copy the pattern. There is a decent chance of complications (duplicates, discarding, etc.).";
-			if (btn.disabled):
-				btn.text = "No pattern to copy";
 		2:
 			$pnl_repair_choices/hsplit/vsplit/scroll/lbl_choice_desc.text = "You can always just attempt to join ends without a template. There is a high chance for complications (duplications, discarding, etc.).";
 		var _err_idx:
