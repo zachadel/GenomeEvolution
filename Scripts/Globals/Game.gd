@@ -115,7 +115,7 @@ var TE_insertion_time_limit = 0.75
 var SeqElm_time_limit = .75
 
 var ate_personalities = {};
-var resource_mult = 0.0;
+var resource_mult = 0.1;
 
 var code_elements = [];
 

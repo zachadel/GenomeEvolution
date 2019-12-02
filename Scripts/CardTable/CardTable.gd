@@ -76,22 +76,32 @@ func _on_Organism_show_repair_opts(show):
 func hide_repair_opts():
 	$pnl_repair_choices.visible = false;
 
+const REPAIR_DESC_FORMAT = "Cost:\n%s\n\n%s";
+func get_repair_desc(idx):
+	var action_name = "";
+	var tooltip_key = "";
+	match (idx):
+		0:
+			action_name = "repair_cd";
+			tooltip_key = "collapse_dupes";
+		1:
+			action_name = "repair_cp";
+			tooltip_key = "copy_pattern";
+		2:
+			action_name = "repair_je";
+			tooltip_key = "join_ends";
+		var _err_idx:
+			return "This is an error! You picked an option (#%d) we are not familiar with!" % _err_idx;
+	return REPAIR_DESC_FORMAT % [orgn.get_cost_string(action_name), Tooltips.REPAIR_TTIPS[tooltip_key]];
+
 func upd_repair_desc(idx):
 	var btn = $pnl_repair_choices/hsplit/vsplit/btn_apply_repair;
 	btn.disabled = !orgn.repair_type_possible[idx];
 	btn.text = "Repair";
 	orgn.change_selected_repair(idx);
 	if (btn.disabled):
-		btn.text = orgn.repair_unavailable_text[idx];
-	match (idx):
-		0:
-			$pnl_repair_choices/hsplit/vsplit/scroll/lbl_choice_desc.text = "If the genes to the left and the right of the gap are the same, the break can be repaired by discarding one of the duplicates.";
-		1:
-			$pnl_repair_choices/hsplit/vsplit/scroll/lbl_choice_desc.text = "If both ends of the gap can be matched to an intact pattern on the other chromosome, you can attempt to copy the pattern. There is a decent chance of complications (duplicates, discarding, etc.).";
-		2:
-			$pnl_repair_choices/hsplit/vsplit/scroll/lbl_choice_desc.text = "You can always just attempt to join ends without a template. There is a high chance for complications (duplications, discarding, etc.).";
-		var _err_idx:
-			$pnl_repair_choices/hsplit/vsplit/scroll/lbl_choice_desc.text = "This is an error! You picked an option (#%d) we are not familiar with!" % _err_idx;
+		btn.text = orgn.repair_btn_text[idx];
+	$pnl_repair_choices/hsplit/vsplit/scroll/lbl_choice_desc.text = get_repair_desc(idx);
 
 func _on_btn_apply_repair_pressed():
 	$pnl_saveload.new_save(Game.get_save_str());

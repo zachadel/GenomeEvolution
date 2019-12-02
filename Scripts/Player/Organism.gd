@@ -351,7 +351,7 @@ var roll_storage = [{}, {}]; # When a player selects a gap, its roll is stored. 
 # The array number refers to the kind of repair being done (i.e. it should reroll if it is using a different repair option)
 # The dictionaries are indexed by the gap object
 var repair_type_possible = [false, false, false];
-var repair_unavailable_text = ["", "", ""];
+var repair_btn_text = ["", "", ""];
 var sel_repair_idx = -1;
 var sel_repair_gap = null;
 
@@ -370,15 +370,15 @@ func check_resources(action, amount = 1):
 	var cost_mult = get_cost_mult(action)
 	
 	for resource in cfp_resources.keys():
-		if cfp_resources[resource][0] < costs[action][resource] * cost_mult * Game.resource_mult * amount:
+		if cfp_resources[resource][0] < costs[action][resource] * cost_mult * amount:
 			#print("NOT ENOUGH CASH! STRANGA!")
 			deficiencies.append(resource)
 			
 	for mineral in mineral_resources.keys():
-		if mineral_resources[mineral][0] < costs[action][mineral] * cost_mult * Game.resource_mult * amount:
+		if mineral_resources[mineral][0] < costs[action][mineral] * cost_mult * amount:
 			deficiencies.append(mineral)
 	
-	if energy < costs[action]["energy"] * cost_mult * Game.resource_mult * amount:
+	if energy < costs[action]["energy"] * cost_mult * amount:
 		deficiencies.append("energy")
 	
 	return deficiencies
@@ -403,20 +403,20 @@ func upd_repair_opts(gap):
 		repair_type_possible[0] = cmsm.dupe_block_exists(g_idx) && has_resource_for_action("repair_cd");
 		if !repair_type_possible[0]:
 			if has_resource_for_action("repair_cd"):
-				repair_unavailable_text[0] = "No duplicates to collapse";
+				repair_btn_text[0] = "No duplicates to collapse";
 			else:
-				repair_unavailable_text[0] = "Not enough resources";
+				repair_btn_text[0] = "Not enough resources";
 		
 		repair_type_possible[1] = cmsms.get_other_cmsm(cmsm).pair_exists(left_elm, right_elm) && has_resource_for_action("repair_cp");
 		if !repair_type_possible[1]:
 			if has_resource_for_action("repair_cp"):
-				repair_unavailable_text[0] = "No pattern to copy";
+				repair_btn_text[1] = "No pattern to copy";
 			else:
-				repair_unavailable_text[0] = "Not enough resources";
+				repair_btn_text[1] = "Not enough resources";
 		
 		repair_type_possible[2] = has_resource_for_action("repair_je");
 		if !repair_type_possible[2]:
-			repair_unavailable_text[2] = "Not enough resources";
+			repair_btn_text[2] = "Not enough resources";
 		
 		sel_repair_idx = 0;
 		while (sel_repair_idx < 2 && !repair_type_possible[sel_repair_idx]):
@@ -426,6 +426,7 @@ func upd_repair_opts(gap):
 
 func reset_repair_opts():
 	repair_type_possible = [false, false, false];
+	repair_btn_text = ["", "", ""];
 	emit_signal("show_repair_opts", false);
 
 func change_selected_repair(repair_idx):
@@ -629,9 +630,9 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 				else:
 					cmsms.close_gap(gap);
 				emit_signal("justnow_update", "Gap at %d, %d closed: collapsed %d genes and ended due to %s." % (gap_pos_disp + [remove_count, ended_due_to]));
-			
+				
 				for times in range(remove_count):
-					get_tree().get_root().get_node("Main/WorldMap").current_player.consume_resources("repair_cd")
+					use_resources("repair_cd");
 			
 			1: # Copy Pattern
 				choice_info["left"].highlight_border(false);
@@ -699,7 +700,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 					yield(cmsms.close_gap(gap), "completed");
 				else:
 					cmsms.close_gap(gap);
-				get_tree().get_root().get_node("Main/WorldMap").current_player.consume_resources("repair_cp")
+				use_resources("repair_cp")
 				#print("repair copy pattern");
 			2: # Join Ends
 				if (!roll_storage[1].has(gap)):
@@ -764,7 +765,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 					yield(cmsms.close_gap(gap), "completed");
 				else:
 					cmsms.close_gap(gap);
-				get_tree().get_root().get_node("Main/WorldMap").current_player.consume_resources("repair_je")
+				use_resources("repair_je")
 				#print("repair join ends")
 		
 		gene_selection = original_select;
@@ -815,15 +816,6 @@ func get_behavior_profile():
 									 get_cmsm_pair().get_cmsm(1).get_specialization_profile());
 		refresh_bprof = false;
 	return behavior_profile;
-#	var behavior_profile = {};
-#	for g in get_cmsm_pair().get_all_genes():
-#		var g_behave = g.get_ess_behavior();
-#		for k in g_behave:
-#			if (behavior_profile.has(k)):
-#				behavior_profile[k] += g_behave[k];
-#			else:
-#				behavior_profile[k] = g_behave[k];
-#	return behavior_profile;
 
 func roll_chance(type):
 	return Chance.roll_chance_type(type, get_behavior_profile());
@@ -1207,13 +1199,28 @@ const BEHAVIOR_TO_COST_MULT = {
 func use_resources(action, num_times_performed = 1):
 	var cost_mult = get_cost_mult(action)
 	for resource in cfp_resources.keys():
-		cfp_resources[resource][0] = max(0, cfp_resources[resource][0] - (costs[action][resource] * cost_mult * Game.resource_mult * num_times_performed))
+		cfp_resources[resource][0] = max(0, cfp_resources[resource][0] - (costs[action][resource] * cost_mult * num_times_performed))
 	for mineral in mineral_resources.keys():
-		mineral_resources[mineral][0] = max(0, mineral_resources[mineral][0] - (costs[action][mineral] * cost_mult * Game.resource_mult * num_times_performed))
-	energy = max(0, energy - (costs[action]["energy"] * cost_mult * Game.resource_mult * num_times_performed))
+		mineral_resources[mineral][0] = max(0, mineral_resources[mineral][0] - (costs[action][mineral] * cost_mult * num_times_performed))
+	energy = max(0, energy - (costs[action]["energy"] * cost_mult * num_times_performed))
 	
 	emit_signal("resources_changed", cfp_resources, mineral_resources)
 	emit_signal("energy_changed", energy)
+
+const COST_STR_FORMAT = ", %s x %s";
+const COST_STR_COMMA_IDX = 2;
+func get_cost_string(action):
+	
+	var cost_mult = get_cost_mult(action);
+	var cost_str = "";
+	for r in costs[action]:
+		var res_cost = costs[action][r] * cost_mult;
+		if (res_cost > 0):
+			cost_str += COST_STR_FORMAT % [res_cost, r];
+	
+	if cost_str.length() < COST_STR_COMMA_IDX:
+		return "Free!";
+	return cost_str.substr(COST_STR_COMMA_IDX, cost_str.length() - COST_STR_COMMA_IDX);
 
 #This always assumes that there is sufficient energy to perform the required task.
 #Only call this function if you have already checked for sufficient energy
@@ -1223,7 +1230,7 @@ func acquire_resources():
 	var cost_mult = get_cost_mult("acquire_resources")
 	var modified = false
 	#Check if any room to store more stuff
-	if energy >= costs["acquire_resources"]["energy"] * cost_mult * Game.resource_mult:
+	if energy >= costs["acquire_resources"]["energy"] * cost_mult:
 		#Run through all resources on the tile
 		for index in range(len(current_tile["resources"])):
 			#grab the resource
@@ -1298,7 +1305,7 @@ func downgrade_internal_cfp_resource(resource, tier, amount = 1):
 	var downgraded_amount = 0
 	
 	if amount <= cfp_resources[resource][tier]:
-		downgraded_amount = (1 - costs["tier_downgrade"][resource] * cost_mult * Game.resource_mult) * amount * TIER_CONVERSIONS[resource][tier]
+		downgraded_amount = (1 - costs["tier_downgrade"][resource] * cost_mult) * amount * TIER_CONVERSIONS[resource][tier]
 		
 		if tier == 0:
 			if downgraded_amount * (1 + current_tile["hazards"]["oxygen"] / Game.hazards["oxygen"]["max"]) + energy <= MAX_ENERGY:
@@ -1307,11 +1314,11 @@ func downgrade_internal_cfp_resource(resource, tier, amount = 1):
 				cfp_resources[resource][tier] -= amount
 			else:
 				downgraded_amount = 0
-		elif energy >= costs["tier_downgrade"]["energy"] * cost_mult * Game.resource_mult * amount:
+		elif energy >= costs["tier_downgrade"]["energy"] * cost_mult * amount:
 			if downgraded_amount - amount + get_total_cfp_stored() <= max_cfp_stored:
 				cfp_resources[resource][tier] -= amount
 				cfp_resources[resource][tier - 1] += downgraded_amount
-				energy -= costs["tier_downgrade"]["energy"] * cost_mult * Game.resource_mult * amount
+				energy -= costs["tier_downgrade"]["energy"] * cost_mult * amount
 			else:
 				downgraded_amount = 0
 				
@@ -1373,7 +1380,7 @@ func get_cost_mult(action):
 			cost_mult += BEHAVIOR_TO_COST_MULT[k][action] * bprof[k];
 	cost_mult = max(0.05, cost_mult);
 	
-	return cost_mult
+	return cost_mult * Game.resource_mult;
 	
 #Converts all higher tier resources into lower tier resources
 #Includes calculations for penalties
@@ -1387,7 +1394,7 @@ func get_total_tier0_cfp_resources(resource):
 		tier_converted_value = 0
 		for j in range(tier, -1, -1):
 			#(percent you get after costs) * (resources at this tier + previously downgraded resources) * (tier conversion factor)
-			tier_converted_value += (1 - costs["tier_downgrade"][resource] * cost_mult * Game.resource_mult) * (cfp_resources[resource][tier] + tier_converted_value) * TIER_CONVERSIONS[resource][tier]
+			tier_converted_value += (1 - costs["tier_downgrade"][resource] * cost_mult) * (cfp_resources[resource][tier] + tier_converted_value) * TIER_CONVERSIONS[resource][tier]
 		
 		sum += tier_converted_value
 		
@@ -1403,7 +1410,7 @@ func get_total_tier0_mineral_resources(resource):
 		tier_converted_value = 0
 		for j in range(tier, -1, -1):
 			#(percent you get after costs) * (resources at this tier + previously downgraded resources) * (tier conversion factor)
-			tier_converted_value += (1 - costs["tier_downgrade"][resource] * cost_mult * Game.resource_mult) * (mineral_resources[resource][tier] + tier_converted_value) * TIER_CONVERSIONS[resource][tier]
+			tier_converted_value += (1 - costs["tier_downgrade"][resource] * cost_mult) * (mineral_resources[resource][tier] + tier_converted_value) * TIER_CONVERSIONS[resource][tier]
 		
 		sum += tier_converted_value
 		
@@ -1416,7 +1423,7 @@ func get_total_energy_possible():
 	
 	for resource in cfp_resources:
 		resource_sum = get_total_tier0_cfp_resources(resource)
-		sum += ((1 - costs["tier_downgrade"][resource] * cost_mult * Game.resource_mult) * resource_sum * TIER_CONVERSIONS[resource][0])
+		sum += ((1 - costs["tier_downgrade"][resource] * cost_mult) * resource_sum * TIER_CONVERSIONS[resource][0])
 
 	return sum
 	

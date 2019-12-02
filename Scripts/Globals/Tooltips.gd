@@ -13,6 +13,12 @@ func _ready():
 #	                                           .88                                                                                                       
 #	                                       d8888P                                                                                                        
 
+const REPAIR_TTIPS = {
+	"collapse_dupes": "If the genes to the left and the right of the gap are the same, the break can be repaired by discarding one of the duplicates.",
+	"copy_pattern": "If both ends of the gap can be matched to an intact pattern on the other chromosome, you can attempt to copy the pattern. There is a decent chance of complications (duplicates, discarding, etc.).",
+	"join_ends": "You can always just attempt to join ends without a template. There is a high chance for complications (duplications, discarding, etc.)."
+};
+
 const BASE_TTIPS = {
 	"Replication": "Replication increases the probability for successful gene modifications.",
 	"Locomotion": "Locomotion aids with movement in the world map.",
