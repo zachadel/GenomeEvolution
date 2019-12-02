@@ -24,3 +24,9 @@ func get_specialization(behavior_key, spec, sub_idx):
 	if !spec_prof_data.has(spec) || !spec_prof_data[spec].has(behavior_key) || !spec_prof_data[spec][behavior_key].has(sub_idx):
 		return 1.0;
 	return spec_prof_data[spec][behavior_key][sub_idx];
+
+func get_res_spec(behavior, res, tier):
+	return get_specialization(behavior, res, tier);
+
+func get_biome_spec(biome):
+	return get_specialization("Locomotion", "biomes", biome);
