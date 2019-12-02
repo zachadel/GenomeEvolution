@@ -954,6 +954,15 @@ func get_missing_ess_classes():
 			missing.append(k);
 	return missing;
 
+func get_rand_environmental_break_count():
+	var hazards = current_tile.hazards;
+	
+	var norm_temp = 2.5 * (hazards["temperature"] + 40) / 140;
+	var norm_uv = 2.5 * hazards["uv_index"] / 100;
+	var norm_oxy = 2.5 * hazards["oxygen"] / 100;
+	
+	return round(norm_uv + randf() * (norm_oxy + norm_temp));
+
 func adv_turn(round_num, turn_idx):
 	if (died_on_turn == -1):
 		match (Game.get_turn_type()):
@@ -989,9 +998,9 @@ func adv_turn(round_num, turn_idx):
 				emit_signal("doing_work", true);
 				var rand;
 				if (do_yields):
-					rand = yield(gain_gaps(1+randi()%3), "completed");
+					rand = yield(gain_gaps(get_rand_environmental_break_count()), "completed");
 				else:
-					rand = gain_gaps(1+randi()%3);
+					rand = gain_gaps(get_rand_environmental_break_count());
 				var plrl = "s";
 				if (rand == 1):
 					plrl = "";
