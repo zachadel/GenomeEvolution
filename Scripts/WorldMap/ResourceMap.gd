@@ -40,7 +40,7 @@ func setup(_biome_generator, _resource_generator, _tiebreak_generator, _chunk_si
 	
 	for i in range(-chunk_size + center_indices.x, chunk_size + center_indices.x + 1):
 		for j in range(-chunk_size + center_indices.y, chunk_size + center_indices.y + 1):
-			set_cell(i, j, get_primary_resource(i, j))
+			set_cell(i, j, get_primary_resource(Vector2(i, j)))
 
 func erase_current_map():
 	for i in range(-chunk_size + center_indices.x, chunk_size + 1 + center_indices.x):
@@ -48,36 +48,42 @@ func erase_current_map():
 			set_cell(i, j, -1)
 			
 #Draw a map at the tile coordinates (x, y) and center the tileMap there
-func draw_and_center_at(x, y):
-	center_indices.x = x
-	center_indices.y = y
+func draw_and_center_at(pos):
+	if typeof(pos) == TYPE_VECTOR3:
+		pos = Game.cube_coords_to_offsetv(pos)
+		
+	center_indices.x = pos.x
+	center_indices.y = pos.y
 	
 	for i in range(-chunk_size + center_indices.x, chunk_size + 1 + center_indices.x):
 		for j in range(-chunk_size + center_indices.y, chunk_size + 1 + center_indices.y):
-			set_cell(i, j, get_primary_resource(i, j))
+			set_cell(i, j, get_primary_resource(Vector2(i, j)))
 
-func shift_map(shift_x, shift_y):
+func shift_map(shift):
 
-	if abs(shift_x) > 0:
-		var unit_x = int(shift_x / abs(shift_x))
+	if typeof(shift) == TYPE_VECTOR3:
+		shift = Game.cube_coords_to_offsetv(shift)
+		
+	if abs(shift.x) > 0:
+		var unit_x = int(shift.x / abs(shift.x))
 		
 		#Shift the number of times necessary for the x coordinate
-		for i in range(abs(shift_x)):
+		for i in range(abs(shift.x)):
 			center_indices.x += unit_x
 			
 			for j in range(-chunk_size, chunk_size + 1):
-				set_cell(center_indices.x + chunk_size * unit_x, j + center_indices.y, get_primary_resource(center_indices.x + chunk_size*unit_x, j + center_indices.y))
+				set_cell(center_indices.x + chunk_size * unit_x, j + center_indices.y, get_primary_resource(Vector2(center_indices.x + chunk_size*unit_x, j + center_indices.y)))
 				set_cell(center_indices.x - (chunk_size + 1) * unit_x, j + center_indices.y, -1)
 	
-	if abs(shift_y) > 0:
-		var unit_y = int(shift_y / abs(shift_y))
+	if abs(shift.y) > 0:
+		var unit_y = int(shift.y / abs(shift.y))
 		
 		#Shift the number of times necessary for the x coordinate
-		for i in range(abs(shift_y)):
+		for i in range(abs(shift.y)):
 			center_indices.y += unit_y
 			
 			for j in range(-chunk_size, chunk_size + 1):
-				set_cell(j + center_indices.x, center_indices.y + chunk_size * unit_y, get_primary_resource(j + center_indices.x, center_indices.y + chunk_size * unit_y))
+				set_cell(j + center_indices.x, center_indices.y + chunk_size * unit_y, get_primary_resource(Vector2(j + center_indices.x, center_indices.y + chunk_size * unit_y)))
 				set_cell(j + center_indices.x, center_indices.y - (chunk_size + 1) * unit_y, -1)
 	
 """
@@ -87,18 +93,22 @@ func shift_map(shift_x, shift_y):
 			ranges are non-overlapping intervals for biomes which have
 			overlapping ranges.
 """	
-func get_biome(x, y):
-	var biome = -1 #undefined/hidden biome
+func get_biome(pos):
+	var biome = -1
 	
-	if not [int(x), int(y)] in Game.modified_tiles:
-		var random_biome = biome_generator.get_noise_2d(x, y) * Game.GEN_SCALING
-		var random_tiebreak = tiebreak_generator.get_noise_2d(x, y) * Game.GEN_SCALING
+	if typeof(pos) == TYPE_VECTOR3:
+		pos = Game.cube_coords_to_offsetv(pos)
+		
+	#Check that the index is not in the modified tiles
+	if not [int(pos.x), int(pos.y)] in Game.modified_tiles:
+		var random_biome = biome_generator.get_noise_2d(pos.x, pos.y) * Game.GEN_SCALING
+		var random_tiebreak = tiebreak_generator.get_noise_2d(pos.x, pos.y) * Game.GEN_SCALING
 		
 		var possible_biomes = [] 
 		var biome_names = Game.biomes.keys()
 		
 		var index = 0
-	
+		
 		#loop through and establish all possible biomes this random value could
 		#fall into
 		for biome_name in biome_names:
@@ -107,7 +117,7 @@ func get_biome(x, y):
 					possible_biomes.append(index)
 			index += 1
 		
-	#	print(x, y, possible_biomes)
+		#	print(x, y, possible_biomes)
 		#if the random value is in multiple biome ranges, we assume there is a
 		#tiebreaker array associated with the biome we can use
 		if len(possible_biomes) > 1:
@@ -117,28 +127,34 @@ func get_biome(x, y):
 					break
 		elif len(possible_biomes) == 1:
 			biome = possible_biomes[0]
-	
-		else:
-			print('ERROR: Unhandled biome type at (%d, %d)', x, y)
-	else:
-		biome = Game.modified_tiles[[int(x), int(y)]]["biome"]
 		
+		else:
+			print('ERROR: Unhandled biome type at (%d, %d)', pos.x, pos.y)
+			
+	#if it is in the modified tiles, then use that biome instead
+	else:
+		biome = Game.modified_tiles[[int(pos.x), int(pos.y)]]["biome"]
+
 	return biome
-	
+		
 """
 	Notes: The input to this function MUST be in terms of the tile_map
 		integer indices i, j.
 		-Each tile can have at most one primary resource on it in a value large
 			enough to trigger the tile's image to activate
 """	
-func get_primary_resource(x, y):
+func get_primary_resource(pos):
+	
+	if typeof(pos) == TYPE_VECTOR3:
+		pos = Game.cube_coords_to_offsetv(pos)
+		
 	var resource = -1
 	
-	if not [int(x), int(y)] in Game.modified_tiles:
-		var biome = get_biome(x, y)
+	if not [int(pos.x), int(pos.y)] in Game.modified_tiles:
+		var biome = get_biome(pos)
 		
-		var random_resource = resource_generator.get_noise_3d(x, y, biome) * Game.GEN_SCALING
-		var random_tiebreak = tiebreak_generator.get_noise_3d(x, y, biome) * Game.GEN_SCALING
+		var random_resource = resource_generator.get_noise_3d(pos.x, pos.y, biome) * Game.GEN_SCALING
+		var random_tiebreak = tiebreak_generator.get_noise_3d(pos.x, pos.y, biome) * Game.GEN_SCALING
 		
 		var resource_names = Game.resources.keys()
 		
@@ -169,27 +185,34 @@ func get_primary_resource(x, y):
 		#if the random value is in multiple biome ranges, we assume there is a
 		#tiebreaker array associated with the biome we can use
 	else:
-		resource = Game.modified_tiles[[int(x), int(y)]]["primary_resource"]
+		resource = Game.modified_tiles[[int(pos.x), int(pos.y)]]["primary_resource"]
 		
 	return resource
 
 #resources[i] = value
-func get_tile_resources(x, y):
+func get_tile_resources(pos):
+	
+	if typeof(pos) == TYPE_VECTOR3:
+		pos = Game.cube_coords_to_offsetv(pos)
+		
 	var resources = {}
 	
-	if not [int(x), int(y)] in Game.modified_tiles:
-		var primary_resource = get_primary_resource(x, y)
+	if not [int(pos.x), int(pos.y)] in Game.modified_tiles:
+		var primary_resource = get_primary_resource(pos)
 		
 		for i in range(len(Game.resources)):
 			if i != primary_resource:
-				resources[i] = int(abs(floor(resource_generator.get_noise_3d(x, y, i) * Game.GEN_SCALING))) % (Game.SECONDARY_RESOURCE_MAX - Game.SECONDARY_RESOURCE_MIN) + Game.SECONDARY_RESOURCE_MIN
+				resources[i] = int(abs(floor(resource_generator.get_noise_3d(pos.x, pos.y, i) * Game.GEN_SCALING))) % (Game.SECONDARY_RESOURCE_MAX - Game.SECONDARY_RESOURCE_MIN) + Game.SECONDARY_RESOURCE_MIN
 			else:
-				resources[i] = int(abs(floor(resource_generator.get_noise_3d(x, y, i) * Game.GEN_SCALING))) % (Game.PRIMARY_RESOURCE_MAX - Game.PRIMARY_RESOURCE_MIN) + Game.PRIMARY_RESOURCE_MIN
+				resources[i] = int(abs(floor(resource_generator.get_noise_3d(pos.x, pos.y, i) * Game.GEN_SCALING))) % (Game.PRIMARY_RESOURCE_MAX - Game.PRIMARY_RESOURCE_MIN) + Game.PRIMARY_RESOURCE_MIN
 	else:
-		resources = Game.modified_tiles[[int(x), int(y)]]["resources"]
+		resources = Game.modified_tiles[[int(pos.x), int(pos.y)]]["resources"]
 	
 	return resources
 
-func update_tile_resource(x, y, primary_resource_index):
-	set_cell(int(x), int(y), primary_resource_index)
+func update_tile_resource(pos, primary_resource_index):
+	if typeof(pos) == TYPE_VECTOR3:
+		pos = Game.cube_coords_to_offsetv(pos)
+		
+	set_cell(int(pos.x), int(pos.y), primary_resource_index)
 	

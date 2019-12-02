@@ -1,8 +1,9 @@
 extends CanvasLayer
 
+#I couldn't get it to run with this line uncommented... sorry!
 func _ready():
-	TooltipPanel.visible = false;
-
+#	TooltipPanel.visible = false;
+	pass
 #	.d88888b    dP            oo                       a88888b.                              dP                                dP   oo                   
 #	88.    "'   88                                    d8'   `88                              88                                88                        
 #	`Y88888b. d8888P 88d888b. dP 88d888b. .d8888b.    88        .d8888b. 88d888b. .d8888b. d8888P 88d888b. dP    dP .d8888b. d8888P dP .d8888b. 88d888b. 

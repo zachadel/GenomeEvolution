@@ -360,3 +360,82 @@ func sort_resources_by_group_then_tier(resources_dict):
 				group_dict[resources_dict[key]["group"]][resources_dict[key]["tier"]][key]=resources_dict[key]["factor"]
 	
 	return group_dict
+	
+	
+#########################MAP FUNCTIONS AND CONVERTERS##########################
+const cube_to_pixel = Transform2D(Vector2(sqrt(3)/2, 1.0/2.0), Vector2(0, 1), Vector2(0,0))
+const pixel_to_cube = Transform2D(Vector2(2*sqrt(3)/3, -sqrt(3)/3), Vector2(0, 1), Vector2(0,0))
+const magic_shift = Vector2(24, 0)
+
+func offset_coords_to_cubev(pos: Vector2):
+	var cube_coords = Vector3(0,0,0)
+	
+	cube_coords.x = pos.x
+	cube_coords.z = pos.y - (pos.x - (int(abs(pos.x)) % 2)) / 2
+	cube_coords.y = -cube_coords.x - cube_coords.z
+	
+	return cube_coords - Vector3(1,0,-1)
+	
+func cube_coords_to_offsetv(pos: Vector3):
+	var hex_coords = Vector2(0,0)
+	
+	hex_coords.x = pos.x
+	hex_coords.y = -1*(pos.z + (pos.x - (int(abs(pos.x)) % 2)) / 2)
+	
+	return hex_coords - Vector2(1,1)
+	
+func round_tile(tile: Vector3):
+	var rx = round(tile.x)
+
+	var ry = round(tile.y)
+	var rz = round(tile.z)
+
+	var x_diff = abs(rx - tile.x)
+	var y_diff = abs(ry - tile.y)
+	var z_diff = abs(rz - tile.z)
+
+	#Find the biggest shift and adjust accordingly
+	if x_diff > y_diff and x_diff > z_diff:
+		rx = -ry-rz
+	elif y_diff > z_diff:
+		ry = -rx-rz
+	else:
+		rz = -rx-ry
+
+	return Vector3(rx, ry, rz)
+	
+func get_distance_offsetv(pos1: Vector2, pos2: Vector2):
+	var cube_coords1 = offset_coords_to_cubev(pos1)
+	var cube_coords2 = offset_coords_to_cubev(pos2)
+	
+	return get_distance_cubev(cube_coords1, cube_coords2)
+
+func get_distance_cubev(vec1: Vector3, vec2: Vector3):
+	return (abs(vec1.x - vec2.x) + abs(vec1.y - vec2.y) + abs(vec1.z - vec2.z))/ 2
+	
+func get_tiles_inside_radius(pos: Vector3, radius = 1):
+	var tiles = []
+	
+	for a in range(-radius, radius + 1):
+		for b in range(int(max(-radius, -a-radius)), int(min(radius, radius-a) + 1)):
+			tiles.append(Vector3(a, b, -a-b) + pos)
+	
+	return tiles
+	
+func map_to_world(tile: Vector3, tile_size: Vector2 = Vector2(72*2/sqrt(3), 82)):
+	var vec = cube_to_pixel.basis_xform(Vector2(tile.x, tile.y))
+	vec.x *= tile_size.x
+	vec.y *= tile_size.y
+	return vec - magic_shift
+
+#The magic shift is necessary because tile maps are shifted weirdly
+func world_to_map(pos: Vector2, tile_size: Vector2 = Vector2(72*2/sqrt(3), 82)):
+	pos += magic_shift
+	pos.x /= tile_size.x
+	pos.y /= tile_size.y
+	var temp_vec = pixel_to_cube.basis_xform(pos)
+#	temp_vec.x /= tile_size.x
+#	temp_vec.y /= tile_size.y
+	temp_vec = Vector3(temp_vec.x, temp_vec.y, -temp_vec.x - temp_vec.y)
+	
+	return round_tile(temp_vec)	
