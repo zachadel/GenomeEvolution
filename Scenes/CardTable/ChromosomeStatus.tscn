@@ -8,7 +8,7 @@
 [ext_resource path="res://Assets/Images/icons/ess_behaviors/S.png" type="Texture" id=6]
 [ext_resource path="res://Assets/Images/icons/ess_behaviors/C.png" type="Texture" id=7]
 [ext_resource path="res://Assets/Images/icons/ess_behaviors/D.png" type="Texture" id=8]
-[ext_resource path="res://Assets/Images/icons/ess_behaviors/A.png" type="Texture" id=9]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/TE.png" type="Texture" id=9]
 
 [node name="ChromosomeStatus" type="ScrollContainer"]
 margin_right = 800.0
