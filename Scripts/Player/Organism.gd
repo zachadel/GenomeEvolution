@@ -1377,7 +1377,7 @@ func get_cost_mult(action):
 	var bprof = get_behavior_profile();
 	for k in bprof.BEHAVIORS:
 		if (BEHAVIOR_TO_COST_MULT.has(k) && BEHAVIOR_TO_COST_MULT[k].has(action)):
-			cost_mult += BEHAVIOR_TO_COST_MULT[k][action] * bprof[k];
+			cost_mult += BEHAVIOR_TO_COST_MULT[k][action] * bprof.get_behavior(k);
 	cost_mult = max(0.05, cost_mult);
 	
 	return cost_mult * Game.resource_mult;
