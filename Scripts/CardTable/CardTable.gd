@@ -81,6 +81,8 @@ func upd_replicate_desc(idx):
 					btn_text = "Insufficient resources";
 				else:
 					btn_text = "Insufficient gene pool";
+		2:
+			btn_text = "Continue";
 	
 	$pnl_reproduce/hsplit/vsplit/btn_apply_replic.disabled = !enable_btn;
 	$pnl_reproduce/hsplit/vsplit/btn_apply_replic.text = btn_text;
@@ -217,7 +219,6 @@ func _on_Organism_finished_replication():
 	reset_status_bar();
 	status_bar.visible = true;
 
-
 func _on_CFPBank_resource_clicked(resource):
 	var resource_group = resource.split('_')[0]
 	var tier = resource.split('_')[1]
@@ -225,4 +226,18 @@ func _on_CFPBank_resource_clicked(resource):
 	if resource_group in $Organism.cfp_resources:
 		var change = $Organism.downgrade_internal_cfp_resource(resource_group, int(tier))
 		
-	pass # Replace with function body.
+
+func refresh_visible_options():
+	if ($pnl_repair_choices.visible):
+		orgn.upd_repair_opts(orgn.sel_repair_gap);
+		upd_repair_desc(orgn.sel_repair_idx);
+	if ($pnl_reproduce.visible):
+		upd_replicate_desc($pnl_reproduce/hsplit/ilist_choices.get_selected_items()[0]);
+
+func _on_Organism_energy_changed(energy):
+	$EnergyBar.update_energy_allocation(energy);
+	refresh_visible_options();
+
+func _on_Organism_resources_changed(cfp_resources, mineral_resources):
+	$CFPBank.update_resources_values(cfp_resources);
+	refresh_visible_options();

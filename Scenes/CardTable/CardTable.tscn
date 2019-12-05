@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Scripts/CardTable/CardTable.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player/Organism.tscn" type="PackedScene" id=2]
@@ -8,11 +8,12 @@
 [ext_resource path="res://Assets/Images/icons/join_ends.png" type="Texture" id=6]
 [ext_resource path="res://Assets/Images/icons/mitosis.png" type="Texture" id=7]
 [ext_resource path="res://Assets/Images/icons/meiosis.png" type="Texture" id=8]
-[ext_resource path="res://Scripts/CardTable/pnl_energy_allocation.gd" type="Script" id=9]
-[ext_resource path="res://Scripts/CardTable/pnl_saveload.gd" type="Script" id=10]
-[ext_resource path="res://Scenes/WorldMap/MineralLevels.tscn" type="PackedScene" id=11]
-[ext_resource path="res://Scenes/WorldMap/CFPBank.tscn" type="PackedScene" id=12]
-[ext_resource path="res://Scenes/WorldMap/EnergyBar.tscn" type="PackedScene" id=13]
+[ext_resource path="res://Assets/Images/icons/skip_rep.png" type="Texture" id=9]
+[ext_resource path="res://Scripts/CardTable/pnl_energy_allocation.gd" type="Script" id=10]
+[ext_resource path="res://Scripts/CardTable/pnl_saveload.gd" type="Script" id=11]
+[ext_resource path="res://Scenes/WorldMap/MineralLevels.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Scenes/WorldMap/CFPBank.tscn" type="PackedScene" id=13]
+[ext_resource path="res://Scenes/WorldMap/EnergyBar.tscn" type="PackedScene" id=14]
 
 [node name="CardTable" type="Control"]
 anchor_right = 1.0
@@ -180,9 +181,9 @@ margin_bottom = 127.0
 scroll_horizontal_enabled = false
 
 [node name="lbl_choice_desc" type="Label" parent="pnl_repair_choices/hsplit/vsplit/scroll"]
-margin_right = 230.0
-margin_bottom = 286.0
-rect_min_size = Vector2( 230, 0 )
+margin_right = 295.0
+margin_bottom = 235.0
+rect_min_size = Vector2( 295, 0 )
 text = "This is a big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long text."
 autowrap = true
 
@@ -193,7 +194,6 @@ margin_bottom = 201.0
 text = "Repair"
 
 [node name="pnl_reproduce" type="Panel" parent="."]
-editor/display_folded = true
 visible = false
 anchor_left = 0.5
 anchor_top = 1.0
@@ -219,7 +219,7 @@ dragger_visibility = 1
 [node name="ilist_choices" type="ItemList" parent="pnl_reproduce/hsplit"]
 margin_right = 230.0
 margin_bottom = 201.0
-items = [ "Mitosis", ExtResource( 7 ), false, "Meiosis", ExtResource( 8 ), false ]
+items = [ "Mitosis", ExtResource( 7 ), false, "Meiosis", ExtResource( 8 ), false, "Skip", ExtResource( 9 ), false ]
 same_column_width = true
 fixed_icon_size = Vector2( 50, 50 )
 
@@ -236,9 +236,9 @@ margin_bottom = 127.0
 scroll_horizontal_enabled = false
 
 [node name="lbl_choice_desc" type="Label" parent="pnl_reproduce/hsplit/vsplit/scroll"]
-margin_right = 230.0
-margin_bottom = 286.0
-rect_min_size = Vector2( 230, 0 )
+margin_right = 295.0
+margin_bottom = 235.0
+rect_min_size = Vector2( 295, 0 )
 text = "This is a big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long text."
 autowrap = true
 
@@ -259,7 +259,7 @@ margin_left = -500.0
 margin_top = -200.0
 margin_right = 500.0
 margin_bottom = 200.0
-script = ExtResource( 9 )
+script = ExtResource( 10 )
 
 [node name="holder" type="HBoxContainer" parent="pnl_energy_allocation"]
 editor/display_folded = true
@@ -521,6 +521,7 @@ margin_bottom = -10.0
 text = "x"
 
 [node name="pnl_saveload" type="Panel" parent="."]
+editor/display_folded = true
 visible = false
 anchor_left = 0.5
 anchor_top = 0.5
@@ -530,7 +531,7 @@ margin_left = 262.0
 margin_top = -217.0
 margin_right = 776.0
 margin_bottom = 208.0
-script = ExtResource( 10 )
+script = ExtResource( 11 )
 
 [node name="btn_load" type="Button" parent="pnl_saveload"]
 anchor_left = 1.0
@@ -558,20 +559,20 @@ mouse_default_cursor_shape = 0
 readonly = true
 show_line_numbers = true
 
-[node name="MineralLevels" parent="." instance=ExtResource( 11 )]
+[node name="MineralLevels" parent="." instance=ExtResource( 12 )]
 margin_left = 139.563
 margin_top = 731.388
 margin_right = -1195.44
 margin_bottom = -40.6124
 
-[node name="CFPBank" parent="." instance=ExtResource( 12 )]
+[node name="CFPBank" parent="." instance=ExtResource( 13 )]
 margin_left = 11.5742
 margin_top = 686.729
 margin_right = -1588.43
 margin_bottom = -213.271
 rect_scale = Vector2( 0.8, 0.75 )
 
-[node name="EnergyBar" parent="." instance=ExtResource( 13 )]
+[node name="EnergyBar" parent="." instance=ExtResource( 14 )]
 margin_left = 11.894
 margin_top = 643.426
 margin_right = -988.106
@@ -585,10 +586,10 @@ rect_scale = Vector2( 0.8, 0.75 )
 [connection signal="pressed" from="button_grid/btn_nxt" to="." method="_on_btn_nxt_pressed"]
 [connection signal="died" from="Organism" to="." method="_on_Organism_died"]
 [connection signal="doing_work" from="Organism" to="." method="_on_Organism_doing_work"]
-[connection signal="energy_changed" from="Organism" to="EnergyBar" method="_on_Organism_energy_changed"]
+[connection signal="energy_changed" from="Organism" to="." method="_on_Organism_energy_changed"]
 [connection signal="finished_replication" from="Organism" to="." method="_on_Organism_finished_replication"]
 [connection signal="justnow_update" from="Organism" to="." method="_on_Organism_justnow_update"]
-[connection signal="resources_changed" from="Organism" to="CFPBank" method="_on_Organism_resources_changed"]
+[connection signal="resources_changed" from="Organism" to="." method="_on_Organism_resources_changed"]
 [connection signal="show_repair_opts" from="Organism" to="." method="_on_Organism_show_repair_opts"]
 [connection signal="show_reprod_opts" from="Organism" to="." method="_on_Organism_show_reprod_opts"]
 [connection signal="updated_gaps" from="Organism" to="." method="_on_Organism_updated_gaps"]

@@ -690,20 +690,21 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 							yield(cmsms.dupe_elm(copy_elm), "completed");
 						else:
 							cmsms.dupe_elm(copy_elm);
-				if (do_correction):
-					var correct_targ = right_break_gene;
-					var correct_src = choice_info["right"];
-					if (correct_targ == null || randi() % 2):
-						correct_targ = left_break_gene;
-						correct_src = choice_info["left"];
-					correct_targ.setup_copy(correct_src);
-				
-				if (do_yields):
-					yield(cmsms.close_gap(gap), "completed");
-				else:
-					cmsms.close_gap(gap);
-				use_resources("repair_cp")
-				#print("repair copy pattern");
+				if !repair_canceled:
+					if (do_correction):
+						var correct_targ = right_break_gene;
+						var correct_src = choice_info["right"];
+						if (correct_targ == null || randi() % 2):
+							correct_targ = left_break_gene;
+							correct_src = choice_info["left"];
+						correct_targ.setup_copy(correct_src);
+					
+					if (do_yields):
+						yield(cmsms.close_gap(gap), "completed");
+					else:
+						cmsms.close_gap(gap);
+					use_resources("repair_cp")
+					#print("repair copy pattern");
 			2: # Join Ends
 				if (!roll_storage[1].has(gap)):
 					roll_storage[1][gap] = roll_chance("join_ends");
@@ -763,16 +764,17 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 								gene.evolve_specific(false, true);
 						emit_signal("justnow_update", "Joined ends for the gap at %d, %d; a %s gene %s in the repair." % (gap_pos_disp + [gene.id, boon_str]));
 				
-				if (do_yields):
-					yield(cmsms.close_gap(gap), "completed");
-				else:
-					cmsms.close_gap(gap);
-				use_resources("repair_je")
-				#print("repair join ends")
+				if !repair_canceled:
+					if (do_yields):
+						yield(cmsms.close_gap(gap), "completed");
+					else:
+						cmsms.close_gap(gap);
+					use_resources("repair_je")
 		
-		gene_selection = original_select;
-		gene_selection.erase(gap);
-		highlight_gap_choices();
+		if !repair_canceled:
+			gene_selection = original_select;
+			gene_selection.erase(gap);
+			highlight_gap_choices();
 
 func highlight_gap_choices():
 	reset_repair_opts();
@@ -1064,7 +1066,16 @@ func update_energy_allocation(type, amount):
 
 #NOTE: Energy costs are always per unit
 var costs = {
-	"none": {},
+	"none": {
+		"carbs": 0, 
+		"fats": 0,
+		"proteins": 0,
+		"iron": 0,
+		"zinc": 0,
+		"manganese": 0,
+		"potassium": 0,
+		"energy": 0
+	},
 	
 	"repair_cd" : {
 		"carbs": 0, 

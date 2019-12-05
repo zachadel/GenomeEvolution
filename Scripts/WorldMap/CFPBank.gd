@@ -21,7 +21,3 @@ func _ready():
 #func _process(delta):
 #	pass
 
-
-func _on_Organism_resources_changed(cfp_resources, mineral_resources):
-	update_resources_values(cfp_resources)
-	pass # Replace with function body.

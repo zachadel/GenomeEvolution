@@ -29,6 +29,3 @@ func update_energy_allocation(amount):
 	
 	hint_tooltip = Tooltips.WORLDMAP_UI_TTIPS["energy"] % energy
 
-func _on_Organism_energy_changed(energy):
-	update_energy_allocation(energy)
-	pass # Replace with function body.

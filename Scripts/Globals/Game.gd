@@ -324,7 +324,7 @@ func list_array_string(array):
 	var list = "";
 	for e in array:
 		list += ", %s" % e;
-	if (list.size() < 2):
+	if (list.length() < 2):
 		return "";
 	return list.substr(2, list.length() - 2);
 
