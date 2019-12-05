@@ -10,6 +10,8 @@ onready var orgn = $Organism;
 onready var nxt_btn = $button_grid/btn_nxt;
 onready var status_bar = $ChromosomeStatus;
 
+onready var ph_filter_panel = $pnl_ph_filter;
+
 var has_gaps = false;
 var wait_on_anim = false;
 var wait_on_select = false;
@@ -22,7 +24,6 @@ func _ready():
 	connect("next_turn", orgn, "adv_turn");
 	
 	$EnergyBar.MAX_ENERGY = orgn.MAX_ENERGY
-	reset_status_bar();
 
 func reset_status_bar():
 	status_bar.clear_cmsms();
@@ -159,6 +160,9 @@ func _on_ilist_choices_item_activated(idx):
 # Next Turn button and availability
 
 func _on_btn_nxt_pressed():
+	if (Game.is_first_turn()):
+		reset_status_bar();
+	close_extra_menus();
 	if (Game.get_turn_type() == Game.TURN_TYPES.Recombination):
 		for g in orgn.gene_selection:
 			g.disable(true);
@@ -191,14 +195,21 @@ func _on_Organism_died(org):
 func check_if_ready():
 	nxt_btn.disabled = orgn.is_dead() || wait_on_anim || wait_on_select || has_gaps;
 
-func _on_btn_energy_allocation_pressed():
-	$pnl_energy_allocation.visible = true;
+func close_extra_menus(toggle_menu = null):
+	for p in [$pnl_saveload, ph_filter_panel]:
+		if (p == toggle_menu):
+			p.visible = !p.visible;
+		else:
+			p.visible = false;
+
+func _on_btn_filter_pressed():
+	close_extra_menus(ph_filter_panel);
 
 func _on_WorldMap_player_done():
 	emit_signal("player_done");
 
 func _on_btn_saveload_pressed():
-	$pnl_saveload.visible = !$pnl_saveload.visible;
+	close_extra_menus($pnl_saveload);
 
 func _on_pnl_saveload_loaded():
 	nxt_btn.disabled = false;
@@ -241,3 +252,7 @@ func _on_Organism_energy_changed(energy):
 func _on_Organism_resources_changed(cfp_resources, mineral_resources):
 	$CFPBank.update_resources_values(cfp_resources);
 	refresh_visible_options();
+
+func _on_pnl_ph_filter_update_seqelm_coloration(compare_type):
+	for g in orgn.get_all_genes(true):
+		g.color_comparison(compare_type, {"slider": ph_filter_panel.get_slider_value(), "current": orgn.current_tile.hazards["pH"]});

@@ -5,6 +5,8 @@ var type; #holds break or gene
 var mode; #holds essential, ate, or pseudogene
 var id;   #holds unique identifier
 
+var SEQ_ELM_COMPARE_GRADIENT = load("res://Scenes/CardTable/SeqElmColorCompare.tres");
+
 var ess_class = null; #holds essential gene class
 var ess_behavior = {
 	"Replication": 0.0,
@@ -28,6 +30,7 @@ var behavior_to_spec_type = {
 	"Deconstruction": "resource",
 	"Locomotion": "terrain",
 };
+var ph_preference = 7.0;
 
 var ate_activity = 0.0;
 var ate_personality = {};
@@ -51,14 +54,21 @@ func _ready():
 	for k in ess_behavior:
 		get_node("Indic%s" % k).ttip_data = [k, "base"];
 
-func setup(_type, _id = "", _mode = "ate", _code = "", _ess_class = -1):
+func setup(_type, _id = "", _mode = "ate", _code = "", _ph = -1.0, _ess_class = -1):
 	id = _id;
 	type = _type;
 	mode = _mode;
+	
+	if (_ph < 0 || _ph > 14):
+		ph_preference = Chance.rand_normal_between(0, 14);
+	else:
+		ph_preference = _ph;
+	
 	if (_code == ""):
 		randomize_code();
 	else:
 		gene_code = _code;
+	
 	var tex;
 	if (type == "gene"):
 		match (mode):
@@ -87,7 +97,6 @@ func setup(_type, _id = "", _mode = "ate", _code = "", _ess_class = -1):
 					tex = Game.ess_textures[Game.ESSENTIAL_CLASSES[id]];
 				else:
 					tex = ate_personality["art"];
-		#Sets the hover tooltip based on the mode and _ess_class
 	else:
 		tex = Game.sqelm_textures[_type];
 		gene_code = "";
@@ -105,6 +114,7 @@ func setup_copy(ref_elm):
 	type = ref_elm.type;
 	mode = ref_elm.mode;
 	gene_code = ref_elm.gene_code;
+	ph_preference = ref_elm.ph_preference;
 	var tex = ref_elm.texture_normal;
 	if (ref_elm.type == "gene"):
 		match (ref_elm.mode):
@@ -125,6 +135,35 @@ func setup_copy(ref_elm):
 	
 	disable(true);
 
+func get_save_data():
+	var elm_data = ["type", "id", "mode", "gene_code", "ph_preference"];
+	if (ess_class != null):
+		elm_data.append("ess_class");
+	
+	for i in range(elm_data.size()):
+		elm_data[i] = get(elm_data[i]);
+	return [elm_data, get_ess_behavior(), get_specialization()];
+
+func load_from_save(save_data):
+	callv("setup", save_data[0]);
+	set_ess_behavior(save_data[1]);
+	set_specialization(save_data[2]);
+
+const MAX_PH_MULT = 1.2;
+# with raw_interp=true, this returns a value between 0.0 and 1.0
+func get_ph_mult(compared_to = null, raw_interp = false):
+	if (compared_to == null):
+		var ct = get_organism().current_tile;
+		if (ct.has("hazards")):
+			compared_to = ct.hazards["pH"];
+		else:
+			compared_to = ph_preference;
+	
+	var mult = inverse_lerp(14, 0, abs(ph_preference - compared_to));
+	if raw_interp:
+		return mult;
+	return mult * MAX_PH_MULT;
+
 func set_ess_behavior(dict):
 	for k in dict:
 		if (k == "ate"):
@@ -142,6 +181,11 @@ func get_ess_behavior():
 		d["ate"] = ate_activity;
 	return d;
 
+func get_ate_activity():
+	if is_ate():
+		return ate_activity * get_ph_mult();
+	return 0.0;
+
 func get_specialization():
 	var d = {};
 	if !is_ate():
@@ -153,6 +197,11 @@ func get_specialization():
 						d[r] = {};
 					d[r][t] = spec_val;
 	return d;
+
+func set_specialization(dict):
+	for r in dict:
+		for t in dict[r]:
+			set_specific_specialization(r, t, dict[r][t]);
 
 func get_specific_specialization(spec, sub_idx):
 	if !(spec in specialization) || !(sub_idx in specialization[spec]):
@@ -342,7 +391,7 @@ func get_tooltip_data():
 					key = "Transposon";
 				"pseudo":
 					key = "Pseudogene";
-			return ["set_gene_ttip", [key]];
+			return ["set_gene_ttip", [key, ph_preference]];
 		"break":
 			return ["This will need to be repaired before more actions can be taken.", "Break"];
 
@@ -358,13 +407,30 @@ func upd_behavior_disp(behavior = ""):
 		"ate", "pseudo":
 			get_node("IndicATE").set_value(ate_activity);
 
+var forced_comparison_color = null;
+func color_comparison(compare_type : String, compare_vals : Dictionary):
+	if (compare_type == ""):
+		forced_comparison_color = null;
+	else:
+		var comparison : float; # should be 0..1
+		
+		if (compare_type.begins_with("ph_")):
+			match compare_type:
+				"ph_optimal_current":
+					comparison = get_ph_mult(compare_vals["current"], true);
+				"ph_optimal_slider":
+					comparison = get_ph_mult(compare_vals["slider"], true);
+				"ph_current_slider":
+					var current_effective = get_ph_mult(compare_vals["current"], true);
+					var slider_effective = get_ph_mult(compare_vals["slider"], true);
+					comparison = clamp(inverse_lerp(0, 2 * current_effective, slider_effective), 0, 1);
+		
+		forced_comparison_color = SEQ_ELM_COMPARE_GRADIENT.interpolate(comparison);
+	
+	upd_display();
+
 func upd_display():
 	$DBGLBL.text = gene_code;
-	if (type != "break"):
-		$version/version_lbl.text = "B"
-		$version.hide()
-	else:
-		$version.show()
 	$lbl.text = id;
 	match(type):
 		"gene":
@@ -377,28 +443,26 @@ func upd_display():
 				"ste":
 					self_modulate = Color(.55, 0, 0);
 				"essential":
+					self_modulate = Color(1, 1, 1);
 					$lbl.visible = false;
-					$version/version_lbl.text = "";
 				"pseudo":
 					$lbl.visible = false;
 					#$lbl.text += " [p]";
 					self_modulate = Color(.5, .5, 0);
 			upd_behavior_disp();
-			
-		#NOTE: This is broken.  It enables you to click on a break in the
-		#chromosome, select collapse/copy/join, see the behavior, then
-		#deselect it
-		
-		# That's actually expected behavior, but it does crash sometimes
 		"break":
-			$version.hide()
 			toggle_mode = true;
 			continue;
 		_:
 			self_modulate = Color(1, 1, 1);
+	if (forced_comparison_color != null):
+		self_modulate = forced_comparison_color;
 
 func get_cmsm():
 	return get_parent();
+
+func get_organism():
+	return get_cmsm().get_cmsm_pair().get_organism();
 
 func get_position_display():
 	return [get_cmsm().get_disp_control().get_index() + 1, get_index() + 1];
@@ -427,9 +491,9 @@ func is_highlighted():
 	return $BorderRect.visible;
 
 func get_ate_jump_roll():
-	var mods = [0.75 / ate_activity];
+	var mods = [0.75 / get_ate_activity()];
 	for i in range(3):
-		mods.append(ate_activity);
+		mods.append(get_ate_activity());
 	return Chance.roll_chances(ate_personality["roll"], mods);
 
 func get_active_behavior(jump): #if jump==false, get the copy range
@@ -493,12 +557,8 @@ func _on_SeqElm_pressed():
 
 func _on_SeqElm_mouse_entered():
 	get_cmsm().magnify_elm(self);
-	if type != "break" && $version/version_lbl.text == "B":
-		$version.show()
 	emit_signal("elm_mouse_entered", self);
 
 func _on_SeqElm_mouse_exited():
 	get_cmsm().demagnify_elm(self);
-	if $version/version_lbl.text == "B":
-		$version.hide()
 	emit_signal("elm_mouse_exited", self);

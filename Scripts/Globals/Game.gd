@@ -127,7 +127,7 @@ func get_code_char(_num):
 
 func _ready():
 	restart_game()
-
+	
 	for i in range(65, 91): # A to Z
 		code_elements.append(char(i));
 	for i in range(97, 122): # a to z
@@ -159,6 +159,9 @@ func restart_game():
 	round_num = 1
 	current_players = 0
 	all_time_players = 0
+
+func is_first_turn():
+	return turn_idx == 0 && round_num == 1;
 
 func cfg_sec_to_dict(cfg, sec):
 	var build = {};

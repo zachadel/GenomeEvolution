@@ -142,15 +142,13 @@ func _ready():
 	
 	perform_anims(false);
 	for n in Game.ESSENTIAL_CLASSES:
-		var code = "";
-		for y in range(2):
-			# create gene
-			var nxt_gelm = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
-			nxt_gelm.setup("gene", n, "essential", code, Game.ESSENTIAL_CLASSES[n]);
-			nxt_gelm.set_ess_behavior({n: 1.0});
-			if (code == ""):
-				code = nxt_gelm.gene_code;
-			cmsms.get_cmsm(y).add_elm(nxt_gelm);
+		# Create one gene for both cmsms
+		var nxt_gelm = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
+		nxt_gelm.setup("gene", n, "essential", "", -1.0, Game.ESSENTIAL_CLASSES[n]);
+		nxt_gelm.set_ess_behavior({n: 1.0});
+		
+		cmsms.get_cmsm(0).add_elm(nxt_gelm);
+		cmsms.get_cmsm(1).add_elm(Game.copy_elm(nxt_gelm));
 	gain_ates(1 + randi() % 6);
 	perform_anims(true);
 	born_on_turn = Game.round_num;
@@ -787,6 +785,9 @@ func highlight_gap_choices():
 	if (is_ai && cmsms.gap_list.size() > 0):
 		upd_repair_opts(cmsms.gap_list[0]);
 		auto_repair();
+
+func get_all_genes(include_past_two_cmsms = false):
+	return cmsms.get_all_genes(include_past_two_cmsms);
 
 func get_gene_pool():
 	return reproduct_gene_pool;

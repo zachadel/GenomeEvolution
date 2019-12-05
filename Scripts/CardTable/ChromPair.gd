@@ -192,8 +192,14 @@ func load_from_save(cmsms):
 		else:
 			remove_cmsm(i);
 
-func get_all_genes():
-	return get_cmsm(0).get_children() + get_cmsm(1).get_children();
+func get_all_genes(include_past_two_cmsms = false):
+	if (include_past_two_cmsms):
+		var genes = [];
+		for c in get_cmsms():
+			genes += c.get_children();
+		return genes;
+	else:
+		return get_cmsm(0).get_children() + get_cmsm(1).get_children();
 
 # CHROMOSOME MODIFICATION FUNCTIONS
 

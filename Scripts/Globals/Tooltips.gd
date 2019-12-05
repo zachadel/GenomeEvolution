@@ -1,9 +1,8 @@
 extends CanvasLayer
 
-#I couldn't get it to run with this line uncommented... sorry!
 func _ready():
-#	TooltipPanel.visible = false;
-	pass
+	TooltipPanel.visible = false;
+
 #	.d88888b    dP            oo                       a88888b.                              dP                                dP   oo                   
 #	88.    "'   88                                    d8'   `88                              88                                88                        
 #	`Y88888b. d8888P 88d888b. dP 88d888b. .d8888b.    88        .d8888b. 88d888b. .d8888b. d8888P 88d888b. dP    dP .d8888b. d8888P dP .d8888b. 88d888b. 
@@ -159,11 +158,11 @@ func disp_ttip_text(for_node : CanvasItem, body : String, title : String = ""):
 #	                       88                                  
 #	                       dP                                  
 
-func set_gene_ttip(type):
+func set_gene_ttip(type, ph_pref):
 	var gene_title = "%s Gene";
 	if (type in UNNAMED_GENES):
 		gene_title = "%s";
-	set_tooltip_text(BASE_TTIPS[type], gene_title % type);
+	set_tooltip_text("%s\n\nThis gene operates optimally at a pH of %.2f." % [BASE_TTIPS[type], ph_pref], gene_title % type);
 
 func set_status_ttip(type, compare):
 	set_tooltip_text(STATUS_TTIP_FORMAT % [BASE_TTIPS[type], COMPARE_TTIPS[compare]], type);
@@ -191,12 +190,14 @@ func _handle_mouse_enter(for_node : CanvasItem):
 		# If the handled node has the get_tooltip_data() method, use it to determine what to display
 		show(for_node);
 		var data = for_node.call(DISP_DATA_FUNC_NAME);
-		if (data.size() != 2 || typeof(data[0]) != TYPE_STRING || typeof(data[1]) != TYPE_ARRAY):
-			# If the data is just the array of args, assume a default callback
-			callv("set_tooltip_text", data);
-		else:
-			# Otherwise, use the explicit callback
-			callv(data[0], data[1]);
+		if (data.size() > 0):
+			# If the data is empty, do nothing
+			if (data.size() != 2 || typeof(data[0]) != TYPE_STRING || typeof(data[1]) != TYPE_ARRAY):
+				# If the data is just the array of args, assume a default callback
+				callv("set_tooltip_text", data);
+			else:
+				# Otherwise, use the explicit callback
+				callv(data[0], data[1]);
 	elif DISP_DATA_STR_NAME in for_node:
 		disp_ttip_text(for_node, for_node.get(DISP_DATA_STR_NAME));
 	else:

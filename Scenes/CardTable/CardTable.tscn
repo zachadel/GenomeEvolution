@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Scripts/CardTable/CardTable.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player/Organism.tscn" type="PackedScene" id=2]
@@ -9,11 +9,13 @@
 [ext_resource path="res://Assets/Images/icons/mitosis.png" type="Texture" id=7]
 [ext_resource path="res://Assets/Images/icons/meiosis.png" type="Texture" id=8]
 [ext_resource path="res://Assets/Images/icons/skip_rep.png" type="Texture" id=9]
-[ext_resource path="res://Scripts/CardTable/pnl_energy_allocation.gd" type="Script" id=10]
-[ext_resource path="res://Scripts/CardTable/pnl_saveload.gd" type="Script" id=11]
+[ext_resource path="res://Scripts/CardTable/pnl_saveload.gd" type="Script" id=10]
+[ext_resource path="res://Scripts/CardTable/pnl_ph_filter.gd" type="Script" id=11]
 [ext_resource path="res://Scenes/WorldMap/MineralLevels.tscn" type="PackedScene" id=12]
 [ext_resource path="res://Scenes/WorldMap/CFPBank.tscn" type="PackedScene" id=13]
 [ext_resource path="res://Scenes/WorldMap/EnergyBar.tscn" type="PackedScene" id=14]
+
+[sub_resource type="ButtonGroup" id=1]
 
 [node name="CardTable" type="Control"]
 anchor_right = 1.0
@@ -34,6 +36,7 @@ valign = 1
 autowrap = true
 
 [node name="sc_justnow" type="ScrollContainer" parent="."]
+editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -53,6 +56,7 @@ valign = 1
 autowrap = true
 
 [node name="sc_criteria" type="ScrollContainer" parent="."]
+editor/display_folded = true
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -113,12 +117,12 @@ margin_bottom = 84.0
 rect_min_size = Vector2( 120, 60 )
 text = "Save/Load"
 
-[node name="btn_energy_allocation" type="Button" parent="button_grid"]
+[node name="btn_filter" type="Button" parent="button_grid"]
 margin_top = 104.0
 margin_right = 122.0
 margin_bottom = 164.0
 rect_min_size = Vector2( 120, 60 )
-text = "Energy Allocation"
+text = "pH Effectiveness"
 
 [node name="btn_nxt" type="Button" parent="button_grid"]
 margin_top = 184.0
@@ -139,6 +143,7 @@ margin_bottom = 639.836
 rect_min_size = Vector2( 0, 50 )
 
 [node name="pnl_repair_choices" type="Panel" parent="."]
+editor/display_folded = true
 visible = false
 anchor_left = 0.5
 anchor_top = 1.0
@@ -194,6 +199,7 @@ margin_bottom = 201.0
 text = "Repair"
 
 [node name="pnl_reproduce" type="Panel" parent="."]
+editor/display_folded = true
 visible = false
 anchor_left = 0.5
 anchor_top = 1.0
@@ -248,278 +254,6 @@ margin_right = 312.0
 margin_bottom = 201.0
 text = "Reproduce"
 
-[node name="pnl_energy_allocation" type="Panel" parent="."]
-editor/display_folded = true
-visible = false
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -500.0
-margin_top = -200.0
-margin_right = 500.0
-margin_bottom = 200.0
-script = ExtResource( 10 )
-
-[node name="holder" type="HBoxContainer" parent="pnl_energy_allocation"]
-editor/display_folded = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_bottom = -50.0
-custom_constants/separation = 60
-alignment = 1
-
-[node name="Construction_container" type="Container" parent="pnl_energy_allocation/holder"]
-editor/display_folded = true
-margin_left = 65.0
-margin_right = 160.0
-margin_bottom = 350.0
-rect_min_size = Vector2( 95, 0 )
-
-[node name="Construction_labels" type="VBoxContainer" parent="pnl_energy_allocation/holder/Construction_container"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_bottom = -65.0
-alignment = 2
-
-[node name="C+" type="Button" parent="pnl_energy_allocation/holder/Construction_container"]
-anchor_bottom = 1.0
-margin_left = 55.0
-margin_top = 295.0
-margin_right = 95.0
-margin_bottom = -25.0
-text = "+"
-
-[node name="C-" type="Button" parent="pnl_energy_allocation/holder/Construction_container"]
-anchor_bottom = 1.0
-margin_top = 295.0
-margin_right = 40.0
-margin_bottom = -25.0
-text = "-"
-
-[node name="Label" type="Label" parent="pnl_energy_allocation/holder/Construction_container"]
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -95.0
-margin_top = 325.0
-text = "Construction"
-align = 1
-valign = 1
-
-[node name="Deconstruction_container" type="Container" parent="pnl_energy_allocation/holder"]
-editor/display_folded = true
-margin_left = 220.0
-margin_right = 315.0
-margin_bottom = 350.0
-rect_min_size = Vector2( 95, 0 )
-
-[node name="Deconstruction_labels" type="VBoxContainer" parent="pnl_energy_allocation/holder/Deconstruction_container"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_bottom = -65.0
-alignment = 2
-
-[node name="D+" type="Button" parent="pnl_energy_allocation/holder/Deconstruction_container"]
-anchor_bottom = 1.0
-margin_left = 55.0
-margin_top = 295.0
-margin_right = 95.0
-margin_bottom = -25.0
-text = "+"
-
-[node name="D-" type="Button" parent="pnl_energy_allocation/holder/Deconstruction_container"]
-anchor_bottom = 1.0
-margin_top = 295.0
-margin_right = 40.0
-margin_bottom = -25.0
-text = "-"
-
-[node name="Label" type="Label" parent="pnl_energy_allocation/holder/Deconstruction_container"]
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -95.0
-margin_top = 325.0
-text = "Deconstruction"
-align = 1
-valign = 1
-
-[node name="Locomotion_container" type="Container" parent="pnl_energy_allocation/holder"]
-editor/display_folded = true
-margin_left = 375.0
-margin_right = 470.0
-margin_bottom = 350.0
-rect_min_size = Vector2( 95, 0 )
-
-[node name="Locomotion_labels" type="VBoxContainer" parent="pnl_energy_allocation/holder/Locomotion_container"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_bottom = -65.0
-alignment = 2
-
-[node name="L+" type="Button" parent="pnl_energy_allocation/holder/Locomotion_container"]
-anchor_bottom = 1.0
-margin_left = 55.0
-margin_top = 295.0
-margin_right = 95.0
-margin_bottom = -25.0
-text = "+"
-
-[node name="L-" type="Button" parent="pnl_energy_allocation/holder/Locomotion_container"]
-anchor_bottom = 1.0
-margin_top = 295.0
-margin_right = 40.0
-margin_bottom = -25.0
-text = "-"
-
-[node name="Label" type="Label" parent="pnl_energy_allocation/holder/Locomotion_container"]
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -95.0
-margin_top = 325.0
-text = "Locomotion"
-align = 1
-valign = 1
-
-[node name="Manipulation_container" type="Container" parent="pnl_energy_allocation/holder"]
-editor/display_folded = true
-margin_left = 530.0
-margin_right = 625.0
-margin_bottom = 350.0
-rect_min_size = Vector2( 95, 0 )
-
-[node name="Manipulation_labels" type="VBoxContainer" parent="pnl_energy_allocation/holder/Manipulation_container"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_bottom = -65.0
-alignment = 2
-
-[node name="M+" type="Button" parent="pnl_energy_allocation/holder/Manipulation_container"]
-anchor_bottom = 1.0
-margin_left = 55.0
-margin_top = 295.0
-margin_right = 95.0
-margin_bottom = -25.0
-text = "+"
-
-[node name="M-" type="Button" parent="pnl_energy_allocation/holder/Manipulation_container"]
-anchor_bottom = 1.0
-margin_top = 295.0
-margin_right = 40.0
-margin_bottom = -25.0
-text = "-"
-
-[node name="Label" type="Label" parent="pnl_energy_allocation/holder/Manipulation_container"]
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -95.0
-margin_top = 325.0
-text = "Manipulation"
-align = 1
-valign = 1
-
-[node name="Replication_container" type="Container" parent="pnl_energy_allocation/holder"]
-editor/display_folded = true
-margin_left = 685.0
-margin_right = 780.0
-margin_bottom = 350.0
-rect_min_size = Vector2( 95, 0 )
-
-[node name="Replication_labels" type="VBoxContainer" parent="pnl_energy_allocation/holder/Replication_container"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_bottom = -65.0
-alignment = 2
-
-[node name="R+" type="Button" parent="pnl_energy_allocation/holder/Replication_container"]
-anchor_bottom = 1.0
-margin_left = 55.0
-margin_top = 295.0
-margin_right = 95.0
-margin_bottom = -25.0
-text = "+"
-
-[node name="R-" type="Button" parent="pnl_energy_allocation/holder/Replication_container"]
-anchor_bottom = 1.0
-margin_top = 295.0
-margin_right = 40.0
-margin_bottom = -25.0
-text = "-"
-
-[node name="Label" type="Label" parent="pnl_energy_allocation/holder/Replication_container"]
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -95.0
-margin_top = 325.0
-text = "Replication"
-align = 1
-valign = 1
-
-[node name="Sensing_container" type="Container" parent="pnl_energy_allocation/holder"]
-editor/display_folded = true
-margin_left = 840.0
-margin_right = 935.0
-margin_bottom = 350.0
-rect_min_size = Vector2( 95, 0 )
-
-[node name="Sensing_labels" type="VBoxContainer" parent="pnl_energy_allocation/holder/Sensing_container"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_bottom = -65.0
-alignment = 2
-
-[node name="S+" type="Button" parent="pnl_energy_allocation/holder/Sensing_container"]
-anchor_bottom = 1.0
-margin_left = 55.0
-margin_top = 295.0
-margin_right = 95.0
-margin_bottom = -25.0
-text = "+"
-
-[node name="S-" type="Button" parent="pnl_energy_allocation/holder/Sensing_container"]
-anchor_bottom = 1.0
-margin_top = 295.0
-margin_right = 40.0
-margin_bottom = -25.0
-text = "-"
-
-[node name="Label" type="Label" parent="pnl_energy_allocation/holder/Sensing_container"]
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -95.0
-margin_top = 325.0
-text = "Sensing"
-align = 1
-valign = 1
-
-[node name="energy_bar" type="ProgressBar" parent="pnl_energy_allocation"]
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -300.0
-margin_top = -30.0
-margin_right = 300.0
-margin_bottom = -10.0
-step = 1.0
-percent_visible = false
-
-[node name="btn_exit" type="Button" parent="pnl_energy_allocation"]
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -40.0
-margin_top = -40.0
-margin_right = -10.0
-margin_bottom = -10.0
-text = "x"
-
 [node name="pnl_saveload" type="Panel" parent="."]
 editor/display_folded = true
 visible = false
@@ -531,7 +265,7 @@ margin_left = 262.0
 margin_top = -217.0
 margin_right = 776.0
 margin_bottom = 208.0
-script = ExtResource( 11 )
+script = ExtResource( 10 )
 
 [node name="btn_load" type="Button" parent="pnl_saveload"]
 anchor_left = 1.0
@@ -559,6 +293,71 @@ mouse_default_cursor_shape = 0
 readonly = true
 show_line_numbers = true
 
+[node name="pnl_ph_filter" type="Panel" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 142.0
+margin_top = 261.0
+margin_right = 656.0
+margin_bottom = 397.0
+script = ExtResource( 11 )
+
+[node name="cbox_optVcur" type="CheckBox" parent="pnl_ph_filter"]
+margin_top = 20.0
+margin_right = 149.0
+margin_bottom = 44.0
+pressed = true
+group = SubResource( 1 )
+text = "Optimal vs Current"
+
+[node name="cbox_curVsld" type="CheckBox" parent="pnl_ph_filter"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -74.5
+margin_top = 20.0
+margin_right = 74.5
+margin_bottom = 44.0
+group = SubResource( 1 )
+text = "Current vs Slider"
+
+[node name="cbox_optVsld" type="CheckBox" parent="pnl_ph_filter"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -149.0
+margin_top = 20.0
+margin_bottom = 44.0
+group = SubResource( 1 )
+text = "Optimal vs Slider"
+
+[node name="slider_ph" type="HSlider" parent="pnl_ph_filter"]
+visible = false
+anchor_right = 1.0
+margin_left = 42.0
+margin_top = 70.0
+margin_right = -42.0
+margin_bottom = 86.0
+max_value = 14.0
+step = 0.25
+value = 7.0
+tick_count = 15
+ticks_on_borders = false
+
+[node name="lbl_slider_value" type="Label" parent="pnl_ph_filter"]
+visible = false
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -24.0
+margin_top = 97.0
+margin_right = 25.0
+margin_bottom = 116.0
+text = "7.00"
+align = 1
+valign = 1
+clip_text = true
+
 [node name="MineralLevels" parent="." instance=ExtResource( 12 )]
 margin_left = 139.563
 margin_top = 731.388
@@ -578,11 +377,10 @@ margin_top = 643.426
 margin_right = -988.106
 margin_bottom = -196.574
 rect_scale = Vector2( 0.8, 0.75 )
-[connection signal="player_done" from="." to="pnl_energy_allocation" method="_on_Control_player_done"]
 [connection signal="pressed" from="button_grid/btn_dead_menu" to="." method="_on_btn_dead_menu_pressed"]
 [connection signal="pressed" from="button_grid/btn_dead_restart" to="." method="_on_btn_dead_restart_pressed"]
 [connection signal="pressed" from="button_grid/btn_saveload" to="." method="_on_btn_saveload_pressed"]
-[connection signal="pressed" from="button_grid/btn_energy_allocation" to="." method="_on_btn_energy_allocation_pressed"]
+[connection signal="pressed" from="button_grid/btn_filter" to="." method="_on_btn_filter_pressed"]
 [connection signal="pressed" from="button_grid/btn_nxt" to="." method="_on_btn_nxt_pressed"]
 [connection signal="died" from="Organism" to="." method="_on_Organism_died"]
 [connection signal="doing_work" from="Organism" to="." method="_on_Organism_doing_work"]
@@ -599,19 +397,12 @@ rect_scale = Vector2( 0.8, 0.75 )
 [connection signal="item_activated" from="pnl_reproduce/hsplit/ilist_choices" to="." method="_on_replic_choices_item_activated"]
 [connection signal="item_selected" from="pnl_reproduce/hsplit/ilist_choices" to="." method="upd_replicate_desc"]
 [connection signal="pressed" from="pnl_reproduce/hsplit/vsplit/btn_apply_replic" to="." method="_on_btn_apply_replic_pressed"]
-[connection signal="pressed" from="pnl_energy_allocation/holder/Construction_container/C+" to="pnl_energy_allocation" method="_on_construction_plus_pressed"]
-[connection signal="pressed" from="pnl_energy_allocation/holder/Construction_container/C-" to="pnl_energy_allocation" method="_on_construction_minus_pressed"]
-[connection signal="pressed" from="pnl_energy_allocation/holder/Deconstruction_container/D+" to="pnl_energy_allocation" method="_on_deconstruction_plus_pressed"]
-[connection signal="pressed" from="pnl_energy_allocation/holder/Deconstruction_container/D-" to="pnl_energy_allocation" method="_on_deconstruction_minus_pressed"]
-[connection signal="pressed" from="pnl_energy_allocation/holder/Locomotion_container/L+" to="pnl_energy_allocation" method="_on_locomotion_plus_pressed"]
-[connection signal="pressed" from="pnl_energy_allocation/holder/Locomotion_container/L-" to="pnl_energy_allocation" method="_on_locomotion_minus_pressed"]
-[connection signal="pressed" from="pnl_energy_allocation/holder/Manipulation_container/M+" to="pnl_energy_allocation" method="_on_manipulation_plus_pressed"]
-[connection signal="pressed" from="pnl_energy_allocation/holder/Manipulation_container/M-" to="pnl_energy_allocation" method="_on_manipulation_minus_pressed"]
-[connection signal="pressed" from="pnl_energy_allocation/holder/Replication_container/R+" to="pnl_energy_allocation" method="_on_replication_plus_pressed"]
-[connection signal="pressed" from="pnl_energy_allocation/holder/Replication_container/R-" to="pnl_energy_allocation" method="_on_replication_minus_pressed"]
-[connection signal="pressed" from="pnl_energy_allocation/holder/Sensing_container/S+" to="pnl_energy_allocation" method="_on_sensing_plus_pressed"]
-[connection signal="pressed" from="pnl_energy_allocation/holder/Sensing_container/S-" to="pnl_energy_allocation" method="_on_sensing_minus_pressed"]
-[connection signal="pressed" from="pnl_energy_allocation/btn_exit" to="pnl_energy_allocation" method="_on_btn_exit_pressed"]
 [connection signal="loaded" from="pnl_saveload" to="." method="_on_pnl_saveload_loaded"]
 [connection signal="pressed" from="pnl_saveload/btn_load" to="pnl_saveload" method="_on_btn_load_pressed"]
+[connection signal="update_seqelm_coloration" from="pnl_ph_filter" to="." method="_on_pnl_ph_filter_update_seqelm_coloration"]
+[connection signal="visibility_changed" from="pnl_ph_filter" to="pnl_ph_filter" method="_on_pnl_ph_filter_visibility_changed"]
+[connection signal="pressed" from="pnl_ph_filter/cbox_optVcur" to="pnl_ph_filter" method="_on_cbox_optVcur_pressed"]
+[connection signal="pressed" from="pnl_ph_filter/cbox_curVsld" to="pnl_ph_filter" method="_on_cbox_curVsld_pressed"]
+[connection signal="pressed" from="pnl_ph_filter/cbox_optVsld" to="pnl_ph_filter" method="_on_cbox_optVsld_pressed"]
+[connection signal="value_changed" from="pnl_ph_filter/slider_ph" to="pnl_ph_filter" method="_on_slider_ph_value_changed"]
 [connection signal="resource_clicked" from="CFPBank" to="." method="_on_CFPBank_resource_clicked"]
