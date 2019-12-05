@@ -382,6 +382,7 @@ rect_scale = Vector2( 0.8, 0.75 )
 [connection signal="pressed" from="button_grid/btn_saveload" to="." method="_on_btn_saveload_pressed"]
 [connection signal="pressed" from="button_grid/btn_filter" to="." method="_on_btn_filter_pressed"]
 [connection signal="pressed" from="button_grid/btn_nxt" to="." method="_on_btn_nxt_pressed"]
+[connection signal="cmsm_changed" from="Organism" to="ChromosomeStatus" method="update"]
 [connection signal="died" from="Organism" to="." method="_on_Organism_died"]
 [connection signal="doing_work" from="Organism" to="." method="_on_Organism_doing_work"]
 [connection signal="energy_changed" from="Organism" to="." method="_on_Organism_energy_changed"]

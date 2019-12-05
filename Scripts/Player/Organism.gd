@@ -1,5 +1,7 @@
 extends Control
 
+signal cmsm_changed();
+
 onready var cmsms = $scroll/chromes
 
 func fix_bars():
@@ -139,19 +141,6 @@ func _ready():
 
 	energy = 10;
 	energy_allocations = {};
-	
-	perform_anims(false);
-	for n in Game.ESSENTIAL_CLASSES:
-		# Create one gene for both cmsms
-		var nxt_gelm = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
-		nxt_gelm.setup("gene", n, "essential", "", -1.0, Game.ESSENTIAL_CLASSES[n]);
-		nxt_gelm.set_ess_behavior({n: 1.0});
-		
-		cmsms.get_cmsm(0).add_elm(nxt_gelm);
-		cmsms.get_cmsm(1).add_elm(Game.copy_elm(nxt_gelm));
-	gain_ates(1 + randi() % 6);
-	perform_anims(true);
-	born_on_turn = Game.round_num;
 
 func reset():
 	energy = 10
@@ -215,6 +204,19 @@ func _input(ev):
 		perform_anims(true);
 
 func setup(card_table):
+	perform_anims(false);
+	for n in Game.ESSENTIAL_CLASSES:
+		# Create one gene for both cmsms
+		var nxt_gelm = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
+		nxt_gelm.setup("gene", n, "essential", "", -1.0, Game.ESSENTIAL_CLASSES[n]);
+		nxt_gelm.set_ess_behavior({n: 1.0});
+		
+		cmsms.get_cmsm(0).add_elm(nxt_gelm);
+		cmsms.get_cmsm(1).add_elm(Game.copy_elm(nxt_gelm));
+	gain_ates(1 + randi() % 6);
+	perform_anims(true);
+	
+	born_on_turn = Game.round_num;
 	is_ai = false;
 	do_yields = true;
 	for type in Game.ESSENTIAL_CLASSES.values():
@@ -645,8 +647,20 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 					correct_str = " One of the genes at the repair site was corrected to match its template gene.";
 				match (roll_storage[0][gap]):
 					0:
+						emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome without complications.%s" % (gap_pos_disp + [left_id, right_id, correct_str]));
+					1:
+						emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome along with intervening genes.%s" % (gap_pos_disp + [left_id, right_id, correct_str]));
+						if (do_yields):
+							for i in range(choice_info["left"].get_index()+1, choice_info["right"].get_index()):
+								var copy_elm = Game.copy_elm(other_cmsm.get_child(i));
+								yield(cmsm.add_elm(copy_elm, gap.get_index()), "completed");
+						else:
+							for i in range(choice_info["left"].get_index()+1, choice_info["right"].get_index()):
+								var copy_elm = Game.copy_elm(other_cmsm.get_child(i));
+								cmsm.add_elm(copy_elm, gap.get_index());
+					2, 3, 4:
 						gene_selection = cmsm.get_elms_around_pos(g_idx, true);
-						emit_signal("justnow_update", "Trying to copy the pattern from the other chromosome, but 1 gene is lost; choose which.");
+						emit_signal("justnow_update", "Trying to copy the pattern from the other chromosome, but 1 gene is harmed; choose which.");
 						if (is_ai):
 							if (gene_selection[0].mode == "ate" || gene_selection[1].mode == "te"):
 								gene_selection.append(gene_selection[0]);
@@ -660,34 +674,42 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 								r.disable(true);
 							
 							var gene = get_gene_selection();
-							var g_id = gene.id;
-							emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome, but a %s gene was lost.%s" % (gap_pos_disp + [left_id, right_id, g_id, correct_str]));
-							if (do_yields):
-								yield(cmsms.remove_elm(gene, false), "completed");
-							else:
-								cmsms.remove_elm(gene, false);
-					1:
-						emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome without complications.%s" % (gap_pos_disp + [left_id, right_id, correct_str]));
-					2:
-						emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome along with intervening genes.%s" % (gap_pos_disp + [left_id, right_id, correct_str]));
-						if (do_yields):
-							for i in range(choice_info["left"].get_index()+1, choice_info["right"].get_index()):
-								var copy_elm = Game.copy_elm(other_cmsm.get_child(i));
-								yield(cmsm.add_elm(copy_elm, gap.get_index()), "completed");
-						else:
-							for i in range(choice_info["left"].get_index()+1, choice_info["right"].get_index()):
-								var copy_elm = Game.copy_elm(other_cmsm.get_child(i));
-								cmsm.add_elm(copy_elm, gap.get_index());
-					3:
-						var copy_elm = right_break_gene;
+							var g_id = gene.id; # Saved here cuz it might free the gene in a bit
+							var damage_str = "";
+							match (roll_storage[0][gap]):
+								2: # Lose gene
+									damage_str = "was lost"
+									if (do_yields):
+										yield(cmsms.remove_elm(gene, false), "completed");
+									else:
+										cmsms.remove_elm(gene, false);
+								3: # Major down
+									damage_str = "received a major downgrade"
+									gene.evolve_specific(true, false);
+								4: # Minor down
+									damage_str = "received a minor downgrade"
+									gene.evolve_specific(false, false);
+							emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome. A %s gene %s in the repair.%s" % (gap_pos_disp + [left_id, right_id, g_id, damage_str, correct_str]));
+					5, 6, 7:
+						var gene = right_break_gene;
 						if (randi() % 2):
-							copy_elm = left_break_gene;
+							gene = left_break_gene;
 						
-						emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome, but a %s gene was copied.%s" % (gap_pos_disp + [left_id, right_id, copy_elm.id, correct_str]));
-						if (do_yields):
-							yield(cmsms.dupe_elm(copy_elm), "completed");
-						else:
-							cmsms.dupe_elm(copy_elm);
+						var boon_str = "";
+						match (roll_storage[0][gap]):
+							5: # Copy gene
+								boon_str = "was duplicated"
+								if (do_yields):
+									yield(cmsms.dupe_elm(gene), "completed");
+								else:
+									cmsms.dupe_elm(gene);
+							6: # Major up
+								boon_str = "received a major upgrade"
+								gene.evolve_specific(true, true);
+							7: # Minor up
+								boon_str = "received a minor upgrade"
+								gene.evolve_specific(false, true);
+						emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome. A %s gene %s in the repair.%s" % (gap_pos_disp + [left_id, right_id, gene.id, boon_str, correct_str]));
 				if !repair_canceled:
 					if (do_correction):
 						var correct_targ = right_break_gene;
@@ -1475,6 +1497,7 @@ func get_total_minerals_stored():
 
 func _on_chromes_on_cmsm_changed():
 	refresh_bprof = true;
+	emit_signal("cmsm_changed");
 
 ####################################SENSING AND LOCOMOTION#####################
 #This is what you can directly see, not counting the cone system

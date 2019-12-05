@@ -22,7 +22,6 @@ var do_animations = false;
 func setup(card_table):
 	connect("animating", card_table, "_on_animating_changed");
 	connect("animating", self, "_on_animating_changed");
-	connect("cmsm_changed", get_cmsm_pair().get_organism().get_card_table().get_cmsm_status(), "update");
 
 func perform_anims(perform):
 	do_animations = perform;

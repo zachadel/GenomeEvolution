@@ -397,14 +397,13 @@ func get_tooltip_data():
 
 func upd_behavior_disp(behavior = ""):
 	match mode:
-		"essential", "pseudo":
+		"essential":
 			if (behavior != ""):
 				get_node("Indic" + behavior).set_value(ess_behavior[behavior]);
 			else:
 				for b in ess_behavior:
 					get_node("Indic" + b).set_value(ess_behavior[b]);
-			continue;
-		"ate", "pseudo":
+		"ate":
 			get_node("IndicATE").set_value(ate_activity);
 
 var forced_comparison_color = null;

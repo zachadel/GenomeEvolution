@@ -19,7 +19,8 @@ const SIGNAL_PROPAGATION = {
 	"cmsm_hide": "_on_hide_cmsm",
 	"elm_clicked": "_propagate_click",
 	"elm_mouse_entered": "_propagate_mouse_entered",
-	"elm_mouse_exited": "_propagate_mouse_exited"
+	"elm_mouse_exited": "_propagate_mouse_exited",
+	"on_cmsm_changed": "_propagate_cmsm_change"
 	};
 
 func _ready():
@@ -33,6 +34,7 @@ func add_cmsm(cmsm_save = null, force_show = false):
 		nxt_cmsm.connect(k, self, SIGNAL_PROPAGATION[k]);
 	
 	add_child(nxt_cmsm);
+	nxt_cmsm.get_cmsm().setup(get_organism().get_card_table());
 	
 	if (force_show || get_child_count() <= MAX_NUM_VISIBLE_CMSM):
 		nxt_cmsm.hide_cmsm(false);
@@ -109,6 +111,9 @@ func find_disp_cmsm_idx(disp_cmsm):
 			return i;
 	return -1;
 
+func _propagate_cmsm_change():
+	emit_signal("on_cmsm_changed");
+
 func _propagate_cmsm_pick(cmsm):
 	emit_signal("cmsm_picked", find_disp_cmsm_idx(cmsm));
 
@@ -126,8 +131,6 @@ func fix_bars():
 	Game.change_slider_width(get_cmsm(1).get_parent());
 
 func setup(card_table):
-	get_cmsm(0).setup(card_table);
-	get_cmsm(1).setup(card_table);
 	do_yields = true;
 
 func perform_anims(perform):
@@ -487,9 +490,6 @@ func append_gaplist(gap):
 func append_atelist(ate):
 	if (!(ate in ate_list) && ate.is_ate()):
 		ate_list.append(ate);
-
-func _on_cmsm_changed():
-	get_organism()
 
 # GENE SINE FUNCTION ANIMATION:
 

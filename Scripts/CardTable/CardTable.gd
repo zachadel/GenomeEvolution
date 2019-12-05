@@ -19,6 +19,7 @@ var wait_on_select = false;
 func _ready():
 	Game.card_table = self;
 	orgn.setup(self);
+	reset_status_bar();
 	
 	$lbl_turn.text = Game.get_turn_txt();
 	connect("next_turn", orgn, "adv_turn");
@@ -160,8 +161,6 @@ func _on_ilist_choices_item_activated(idx):
 # Next Turn button and availability
 
 func _on_btn_nxt_pressed():
-	if (Game.is_first_turn()):
-		reset_status_bar();
 	close_extra_menus();
 	if (Game.get_turn_type() == Game.TURN_TYPES.Recombination):
 		for g in orgn.gene_selection:
