@@ -133,6 +133,7 @@ func _on_update_link_delay_timeout():
 	upd_link_vis(false);
 
 func _on_cmsm_cmsm_changed():
+	emit_signal("on_cmsm_changed");
 	StatusBar.update();
 	upd_size();
 

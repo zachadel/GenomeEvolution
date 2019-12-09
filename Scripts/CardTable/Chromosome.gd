@@ -22,7 +22,6 @@ var do_animations = false;
 func setup(card_table):
 	connect("animating", card_table, "_on_animating_changed");
 	connect("animating", self, "_on_animating_changed");
-	connect("cmsm_changed", get_cmsm_pair().get_organism().get_card_table().get_cmsm_status(), "update");
 
 func perform_anims(perform):
 	do_animations = perform;
@@ -37,16 +36,18 @@ func get_behavior_profile():
 	var behavior_profile = {};
 	for g in get_genes():
 		var g_behave = g.get_ess_behavior();
+		var ph_mult = g.get_ph_mult();
 		for b in g_behave:
 			if (behavior_profile.has(b)):
-				behavior_profile[b] += g_behave[b];
+				behavior_profile[b] += g_behave[b] * ph_mult;
 			else:
-				behavior_profile[b] = g_behave[b];
+				behavior_profile[b] = g_behave[b] * ph_mult;
 	
 	return behavior_profile;
 
-func get_specialization_profile():
-	var behavior_profile = get_behavior_profile();
+func get_specialization_profile(behavior_profile = null):
+	if (behavior_profile == null):
+		behavior_profile = get_behavior_profile();
 	var spec_behavior = {};
 	
 	for g in get_genes():
@@ -207,17 +208,24 @@ func get_organism():
 func get_elms_save():
 	var data = [];
 	for g in get_children():
-		var elm_data = ["type", "id", "mode"];
-		if (g.gene_code != null):
-			elm_data.append("gene_code");
-		if (g.ess_class != null):
-			elm_data.append("ess_class");
-		
-		for i in range(elm_data.size()):
-			elm_data[i] = g.get(elm_data[i]);
-		data.append([elm_data, g.get_ess_behavior()]);
-	
+		data.append(g.get_save_data());	
 	return data;
+
+func load_from_save(elms):
+	# Clear chromosome
+	for e in get_children():
+		get_cmsm_pair().remove_elm(e);
+	
+	# Parse & load
+	for args in elms:
+		var nxt_gelm = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
+		nxt_gelm.load_from_save(args);
+		
+		if (nxt_gelm.is_gap()):
+			get_cmsm_pair().append_gaplist(nxt_gelm);
+		if (nxt_gelm.is_ate()):
+			get_cmsm_pair().append_atelist(nxt_gelm);
+		add_elm(nxt_gelm);
 
 func get_elm_anim_duration(distance):
 	if (Game.turns[Game.turn_idx] == Game.TURN_TYPES.TEJump):
@@ -230,22 +238,6 @@ func get_elm_anim_duration(distance):
 		return min(distance / Game.animation_speed, Game.TE_insertion_time_limit);
 	else:
 		return min(distance / Game.animation_speed, Game.SeqElm_time_limit);
-
-func load_from_save(elms):
-	# Clear chromosome
-	for e in get_children():
-		get_cmsm_pair().remove_elm(e);
-	
-	# Parse & load
-	for args in elms:
-		var nxt_gelm = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
-		nxt_gelm.callv("setup", args[0]);
-		nxt_gelm.set_ess_behavior(args[1]);
-		if (nxt_gelm.is_gap()):
-			get_cmsm_pair().append_gaplist(nxt_gelm);
-		if (nxt_gelm.is_ate()):
-			get_cmsm_pair().append_atelist(nxt_gelm);
-		add_elm(nxt_gelm);
 
 # CHROMOSOME MODIFICATION FUNCTIONS
 

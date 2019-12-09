@@ -10,6 +10,8 @@ onready var orgn = $Organism;
 onready var nxt_btn = $button_grid/btn_nxt;
 onready var status_bar = $ChromosomeStatus;
 
+onready var ph_filter_panel = $pnl_ph_filter;
+
 var has_gaps = false;
 var wait_on_anim = false;
 var wait_on_select = false;
@@ -17,12 +19,12 @@ var wait_on_select = false;
 func _ready():
 	Game.card_table = self;
 	orgn.setup(self);
+	reset_status_bar();
 	
 	$lbl_turn.text = Game.get_turn_txt();
 	connect("next_turn", orgn, "adv_turn");
 	
 	$EnergyBar.MAX_ENERGY = orgn.MAX_ENERGY
-	reset_status_bar();
 
 func reset_status_bar():
 	status_bar.clear_cmsms();
@@ -42,15 +44,51 @@ func show_replicate_opts(show):
 		$pnl_reproduce/hsplit/ilist_choices.select(0);
 		upd_replicate_desc(0);
 
-func upd_replicate_desc(idx):
-	$pnl_reproduce/hsplit/vsplit/btn_apply_replic.disabled = idx == 1 && !orgn.can_meiosis();
+const REPLICATE_DESC_FORMAT = "Cost:\n%s%s\n\n%s";
+func get_replicate_desc(idx):
+	var action_name = "";
+	var tooltip_key = "";
 	match (idx):
 		0:
-			$pnl_reproduce/hsplit/vsplit/scroll/lbl_choice_desc.text = "Replicate both chromosomes and choose one pair.";
+			action_name = "replicate_mitosis";
+			tooltip_key = "mitosis";
 		1:
-			$pnl_reproduce/hsplit/vsplit/scroll/lbl_choice_desc.text = "Replicate and separate both chromosomes; choose two to keep, including a random one from the gene pool.";
+			action_name = "replicate_meiosis";
+			tooltip_key = "meiosis";
+		2:
+			action_name = "none";
+			tooltip_key = "skip";
 		var _err_idx:
-			$pnl_reproduce/hsplit/vsplit/scroll/lbl_choice_desc.text = "This is an error! You picked an option (#%d) we are not familiar with!" % _err_idx;
+			return "This is an error! You picked an option (#%d) we are not familiar with!" % _err_idx;
+	
+	var deficiency_str = "";
+	var df = orgn.check_resources(action_name);
+	if !df.empty():
+		deficiency_str = "\nDeficient %s" % Game.list_array_string(df);
+	var dingo = [orgn.get_cost_string(action_name), deficiency_str, Tooltips.REPLICATE_TTIPS[tooltip_key]];
+	return REPLICATE_DESC_FORMAT % [orgn.get_cost_string(action_name), deficiency_str, Tooltips.REPLICATE_TTIPS[tooltip_key]];
+
+func upd_replicate_desc(idx):
+	var enable_btn = true;
+	var btn_text = "Replicate";
+	match (idx):
+		0:
+			enable_btn = orgn.has_resource_for_action("replicate_mitosis");
+			if !enable_btn:
+				btn_text = "Insufficient resources";
+		1:
+			enable_btn = orgn.has_resource_for_action("replicate_meiosis") && orgn.has_meiosis_viable_pool();
+			if !enable_btn:
+				if orgn.has_meiosis_viable_pool():
+					btn_text = "Insufficient resources";
+				else:
+					btn_text = "Insufficient gene pool";
+		2:
+			btn_text = "Continue";
+	
+	$pnl_reproduce/hsplit/vsplit/btn_apply_replic.disabled = !enable_btn;
+	$pnl_reproduce/hsplit/vsplit/btn_apply_replic.text = btn_text;
+	$pnl_reproduce/hsplit/vsplit/scroll/lbl_choice_desc.text = get_replicate_desc(idx);
 
 func _on_replic_choices_item_activated(idx):
 	do_replicate(idx);
@@ -123,14 +161,15 @@ func _on_ilist_choices_item_activated(idx):
 # Next Turn button and availability
 
 func _on_btn_nxt_pressed():
+	close_extra_menus();
 	if (Game.get_turn_type() == Game.TURN_TYPES.Recombination):
 		for g in orgn.gene_selection:
 			g.disable(true);
 	Game.adv_turn();
 	$lbl_turn.text = "%s\n%s\n%s" % [
-		"Generation %d" % Game.round_num,
+		"Generation %d" % (orgn.num_progeny + 1),
 		Game.get_turn_txt(),
-		"Progeny: %d" % (Game.round_num - 1)
+		"Progeny: %d" % orgn.num_progeny
 	];
 	emit_signal("next_turn", Game.round_num, Game.turn_idx);
 	$pnl_saveload.new_save(Game.get_save_str());
@@ -155,14 +194,21 @@ func _on_Organism_died(org):
 func check_if_ready():
 	nxt_btn.disabled = orgn.is_dead() || wait_on_anim || wait_on_select || has_gaps;
 
-func _on_btn_energy_allocation_pressed():
-	$pnl_energy_allocation.visible = true;
+func close_extra_menus(toggle_menu = null):
+	for p in [$pnl_saveload, ph_filter_panel]:
+		if (p == toggle_menu):
+			p.visible = !p.visible;
+		else:
+			p.visible = false;
+
+func _on_btn_filter_pressed():
+	close_extra_menus(ph_filter_panel);
 
 func _on_WorldMap_player_done():
 	emit_signal("player_done");
 
 func _on_btn_saveload_pressed():
-	$pnl_saveload.visible = !$pnl_saveload.visible;
+	close_extra_menus($pnl_saveload);
 
 func _on_pnl_saveload_loaded():
 	nxt_btn.disabled = false;
@@ -183,7 +229,6 @@ func _on_Organism_finished_replication():
 	reset_status_bar();
 	status_bar.visible = true;
 
-
 func _on_CFPBank_resource_clicked(resource):
 	var resource_group = resource.split('_')[0]
 	var tier = resource.split('_')[1]
@@ -191,4 +236,22 @@ func _on_CFPBank_resource_clicked(resource):
 	if resource_group in $Organism.cfp_resources:
 		var change = $Organism.downgrade_internal_cfp_resource(resource_group, int(tier))
 		
-	pass # Replace with function body.
+
+func refresh_visible_options():
+	if ($pnl_repair_choices.visible):
+		orgn.upd_repair_opts(orgn.sel_repair_gap);
+		upd_repair_desc(orgn.sel_repair_idx);
+	if ($pnl_reproduce.visible):
+		upd_replicate_desc($pnl_reproduce/hsplit/ilist_choices.get_selected_items()[0]);
+
+func _on_Organism_energy_changed(energy):
+	$EnergyBar.update_energy_allocation(energy);
+	refresh_visible_options();
+
+func _on_Organism_resources_changed(cfp_resources, mineral_resources):
+	$CFPBank.update_resources_values(cfp_resources);
+	refresh_visible_options();
+
+func _on_pnl_ph_filter_update_seqelm_coloration(compare_type):
+	for g in orgn.get_all_genes(true):
+		g.color_comparison(compare_type, {"slider": ph_filter_panel.get_slider_value(), "current": orgn.current_tile.hazards["pH"]});

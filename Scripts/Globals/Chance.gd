@@ -1,8 +1,8 @@
 extends Node
 
 var base_rolls = {
-	# lose one, no complications, copy intervening, duplicate a gene at the site
-	"copy_repair": [1.6, 1.6, 5, 2],
+	# no complications, copy intervening, lose one, major down, minor down, dupe, major up, minor up
+	"copy_repair": [1.6, 5, 0.9, 0.4, 0.3, 0.25, 0.5, 1.25],
 	
 	# no correction, yes correction
 	"copy_repair_correction": [2, 1],
@@ -21,6 +21,15 @@ const BEHAVIOR_TO_MOD = {
 		"evolve": [0.2, 0, 0, 0, 0.05, 0.05]
 	}
 }
+
+var _RNG = RandomNumberGenerator.new();
+
+# 1 stdev puts 68% of the random nums in the bounds, 2 gives 95%, 3 gives 99.7%
+# i.e. more stdevs = tighter concentration in the middle
+func rand_normal_between(left_bound : float, right_bound : float, num_stdev : float = 2.0):
+	var range_mean = (left_bound + right_bound) / 2.0;
+	var range_std = (range_mean - left_bound) / num_stdev;
+	return clamp(_RNG.randfn(range_mean, range_std), left_bound, right_bound);
 
 func additive_mod_exists(roll_type, behavior):
 	return BEHAVIOR_TO_MOD.has(behavior) && BEHAVIOR_TO_MOD[behavior].has(roll_type);

@@ -127,7 +127,7 @@ func get_code_char(_num):
 
 func _ready():
 	restart_game()
-
+	
 	for i in range(65, 91): # A to Z
 		code_elements.append(char(i));
 	for i in range(97, 122): # a to z
@@ -159,6 +159,9 @@ func restart_game():
 	round_num = 1
 	current_players = 0
 	all_time_players = 0
+
+func is_first_turn():
+	return turn_idx == 0 && round_num == 1;
 
 func cfg_sec_to_dict(cfg, sec):
 	var build = {};
@@ -319,6 +322,14 @@ func pretty_element_name_list(elms_array):
 		if (put_comma):
 			list += ", ";
 	return list;
+
+func list_array_string(array):
+	var list = "";
+	for e in array:
+		list += ", %s" % e;
+	if (list.length() < 2):
+		return "";
+	return list.substr(2, list.length() - 2);
 
 func load_cfg(data_name, dict):
 	var file = ConfigFile.new()

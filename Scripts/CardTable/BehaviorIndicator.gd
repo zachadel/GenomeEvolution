@@ -16,6 +16,8 @@ func _ready():
 	Tooltips.setup_delayed_tooltip(self);
 
 func get_tooltip_data():
+	if ttip_data.empty():
+		return [];
 	return ["set_status_ttip", ttip_data];
 
 func set_tex(t):
