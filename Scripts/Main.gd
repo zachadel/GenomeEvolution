@@ -56,8 +56,6 @@ func _on_WorldMap_end_map_turn():
 	$Canvas_CardTable/CardTable/EnergyBar.MAX_ENERGY = $WorldMap.current_player.organism.MAX_ENERGY
 	$Canvas_CardTable/CardTable/EnergyBar.update_energy_allocation($WorldMap.current_player.organism.energy)
 	
-  #Game.adv_turn() # Do this within the CardTable, otherwise you're skipping a turn
-	
 	pass
 	
 func _on_WorldMap_change_to_main_menu():
@@ -114,7 +112,7 @@ func _on_Player_died(player):
 ########################CARD TABLE SIGNAL HANDLING#############################
 
 func _on_CardTable_next_turn(turn_text, round_num):
-	if Game.turn_idx == Game.TURN_TYPES.Map:
+	if Game.get_turn_type() == Game.TURN_TYPES.Map:
 		$Canvas_CardTable/CardTable.hide()
 		$WorldMap.show()
 		$WorldMap/WorldMap_UI.show()

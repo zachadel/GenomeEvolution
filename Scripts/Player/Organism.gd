@@ -328,7 +328,7 @@ func _on_chromes_elm_clicked(elm):
 				gene_selection.clear();
 				
 				emit_signal("gene_clicked"); # Used to continue the yields
-				emit_signal("justnow_update", "");
+				#emit_signal("justnow_update", ""); # justnow no longer clears, this just creates a bunch of extra space
 			else:
 				selected_gap = elm;
 				upd_repair_opts(elm);
@@ -517,7 +517,7 @@ func make_repair_choices(gap, repair_idx):
 			
 			if (choice_info["right"] == null):
 				return false;
-			emit_signal("justnow_update", "");
+			#emit_signal("justnow_update", ""); # justnow no longer clears, this just creates a bunch of extra space
 		1: # Copy Pattern
 			var gap_cmsm = gap.get_parent();
 			var g_idx = gap.get_index();
@@ -562,7 +562,7 @@ func make_repair_choices(gap, repair_idx):
 			if (choice_info["right"] == null):
 				choice_info["left"].disable(true);
 				return false;
-			emit_signal("justnow_update", "");
+			#emit_signal("justnow_update", ""); # justnow no longer clears, this just creates a bunch of extra space
 	repair_gap(gap, repair_idx, choice_info);
 
 var repair_canceled = false;
@@ -1002,7 +1002,7 @@ func adv_turn(round_num, turn_idx):
 				emit_signal("justnow_update", "Welcome back!");
 			Game.TURN_TYPES.NewTEs:
 				emit_signal("doing_work", true);
-				emit_signal("justnow_update", "");
+				##emit_signal("justnow_update", ""); # justnow no longer clears, this just creates a bunch of extra space # justnow no longer clears, this just creates a bunch of extra space
 				if (do_yields):
 					yield(gain_ates(1), "completed");
 				else:
@@ -1010,7 +1010,7 @@ func adv_turn(round_num, turn_idx):
 				emit_signal("doing_work", false);
 			Game.TURN_TYPES.TEJump:
 				emit_signal("doing_work", true);
-				emit_signal("justnow_update", "");
+				#emit_signal("justnow_update", ""); # justnow no longer clears, this just creates a bunch of extra space
 				if (do_yields):
 					yield(jump_ates(), "completed");
 				else:
@@ -1045,7 +1045,7 @@ func adv_turn(round_num, turn_idx):
 				else:
 					recombination();
 			Game.TURN_TYPES.Evolve:
-				emit_signal("justnow_update", "");
+				#emit_signal("justnow_update", ""); # justnow no longer clears, this just creates a bunch of extra space
 				for cmsm in cmsms.get_cmsms():
 					evolve_cmsm(cmsm);
 			Game.TURN_TYPES.CheckViability:

@@ -4,7 +4,7 @@ signal gene_clicked;
 signal player_done;
 signal next_turn(turn_text, round_num);
 
-onready var justnow_label = $sc_justnow/lbl_justnow;
+onready var justnow_label : RichTextLabel = $lbl_justnow;
 onready var criteria_label = $sc_criteria/lbl_criteria;
 onready var orgn = $Organism;
 onready var nxt_btn = $button_grid/btn_nxt;
@@ -145,10 +145,18 @@ func _on_btn_apply_repair_pressed():
 	$pnl_saveload.new_save(Game.get_save_str());
 	orgn.auto_repair();
 
+func _add_justnow_bbcode(bbcode : String, tags := {}):
+	if !tags.has("align"):
+		tags["align"] = RichTextLabel.ALIGN_CENTER;
+	
+	for t in tags:
+		justnow_label.call("push_%s" % t, tags[t]);
+	justnow_label.append_bbcode(bbcode);
+	for _t in tags:
+		justnow_label.pop();
+
 func _on_Organism_justnow_update(text):
-	if (justnow_label == null):
-		justnow_label = $sc_justnow/lbl_justnow;
-	justnow_label.text = text;
+	_add_justnow_bbcode("\n%s\n" % text);
 
 func _on_Organism_updated_gaps(gaps_exist, gap_text):
 	has_gaps = gaps_exist;
@@ -165,12 +173,15 @@ func _on_btn_nxt_pressed():
 	if (Game.get_turn_type() == Game.TURN_TYPES.Recombination):
 		for g in orgn.gene_selection:
 			g.disable(true);
+	
 	Game.adv_turn();
 	$lbl_turn.text = "%s\n%s\n%s" % [
 		"Generation %d" % (orgn.num_progeny + 1),
 		Game.get_turn_txt(),
 		"Progeny: %d" % orgn.num_progeny
 	];
+	_add_justnow_bbcode("\n\n%s" % Game.get_turn_txt(), {"color": Color(1, 0.75, 0)});
+	
 	emit_signal("next_turn", Game.round_num, Game.turn_idx);
 	$pnl_saveload.new_save(Game.get_save_str());
 
@@ -186,13 +197,20 @@ func _on_Organism_doing_work(working):
 func _on_Organism_died(org):
 	Game.round_num = 0
 	nxt_btn.visible = false;
-	$button_grid/btn_energy_allocation.visible = false;
 	$button_grid/btn_dead_menu.visible = true;
 	$button_grid/btn_dead_restart.visible = true;
 	$button_grid/hsep_dead.visible = true;
 
+func show():
+	.show();
+	check_if_ready();
+
 func check_if_ready():
-	nxt_btn.disabled = orgn.is_dead() || wait_on_anim || wait_on_select || has_gaps;
+	nxt_btn.disabled = !is_visible_in_tree() || orgn.is_dead() || wait_on_anim || wait_on_select || has_gaps;
+	
+	# Continue automatically
+	if !nxt_btn.disabled && Game.get_turn_type() != Game.TURN_TYPES.Recombination:
+		$AutoContinue.start();
 
 func close_extra_menus(toggle_menu = null):
 	for p in [$pnl_saveload, ph_filter_panel]:
@@ -255,3 +273,6 @@ func _on_Organism_resources_changed(cfp_resources, mineral_resources):
 func _on_pnl_ph_filter_update_seqelm_coloration(compare_type):
 	for g in orgn.get_all_genes(true):
 		g.color_comparison(compare_type, {"slider": ph_filter_panel.get_slider_value(), "current": orgn.current_tile.hazards["pH"]});
+
+func _on_AutoContinue_timeout():
+	_on_btn_nxt_pressed();
