@@ -455,7 +455,7 @@ func upd_display():
 		_:
 			self_modulate = Color(1, 1, 1);
 	if (forced_comparison_color != null):
-		self_modulate = forced_comparison_color;
+		self_modulate *= forced_comparison_color;
 
 func get_cmsm():
 	return get_parent();
