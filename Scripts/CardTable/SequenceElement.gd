@@ -393,7 +393,7 @@ func get_tooltip_data():
 					key = "Pseudogene";
 			return ["set_gene_ttip", [key, ph_preference]];
 		"break":
-			return ["This will need to be repaired before more actions can be taken.", "Break"];
+			return ["Click on open breaks to repair them. All breaks need to be repaired before more actions can be taken.", "Break"];
 
 func upd_behavior_disp(behavior = ""):
 	match mode:

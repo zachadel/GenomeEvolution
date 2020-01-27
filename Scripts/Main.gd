@@ -43,10 +43,15 @@ func _on_MainMenu_change_to_world_map():
 	$WorldMap.show()
 	$WorldMap/WorldMap_UI.show()
 	$WorldMap.setup(randi(), randi(), randi(), randi(), chunk_size, first_player)
+	
+	# Skip the world map if we haven't unlocked it yet
+	if !Unlocks.has_turn_unlock(Game.TURN_TYPES.Map):
+		_on_WorldMap_end_map_turn();
 
 func _on_WorldMap_end_map_turn():
 	$WorldMap.hide()
 	$WorldMap/WorldMap_UI.hide()
+	$WorldMap.current_player.enable_sprite(false)
 	$Canvas_CardTable/CardTable.show()
 	
 	var cfp_resources = $WorldMap.current_player.organism.cfp_resources
@@ -61,6 +66,7 @@ func _on_WorldMap_end_map_turn():
 func _on_WorldMap_change_to_main_menu():
 	$MainMenuLayer/MainMenu.show()
 	$MainMenuLayer/MainMenu/TitleScreen.show()
+	
 	$WorldMap.hide()
 	$WorldMap/WorldMap_UI.hide()
 
@@ -114,12 +120,15 @@ func _on_Player_died(player):
 func _on_CardTable_next_turn(turn_text, round_num):
 	if Game.get_turn_type() == Game.TURN_TYPES.Map:
 		$Canvas_CardTable/CardTable.hide()
-		$WorldMap.show()
-		$WorldMap/WorldMap_UI.show()
-		$WorldMap.current_player.enable_sprite(true)
-		$WorldMap/WorldMap_UI/UIPanel/CFPBank.update_resources_values($WorldMap.current_player.organism.cfp_resources)
-		$WorldMap/WorldMap_UI/UIPanel/MineralLevels.update_resources_values($WorldMap.current_player.organism.mineral_resources)
-		$WorldMap/WorldMap_UI/UIPanel/EnergyBar.update_energy_allocation($WorldMap.current_player.organism.energy)
+		_show_world_map();
+
+func _show_world_map():
+	$WorldMap.show()
+	$WorldMap/WorldMap_UI.show()
+	$WorldMap.current_player.enable_sprite(true)
+	$WorldMap/WorldMap_UI/UIPanel/CFPBank.update_resources_values($WorldMap.current_player.organism.cfp_resources)
+	$WorldMap/WorldMap_UI/UIPanel/MineralLevels.update_resources_values($WorldMap.current_player.organism.mineral_resources)
+	$WorldMap/WorldMap_UI/UIPanel/EnergyBar.update_energy_allocation($WorldMap.current_player.organism.energy)
 
 func _on_GameOver_confirmed():
 	Game.restart_game()

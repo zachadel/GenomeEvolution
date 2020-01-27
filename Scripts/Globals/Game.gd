@@ -4,6 +4,7 @@ var sqelm_textures = {"gene": load("res://Assets/Images/gene.png"), "break": loa
 var ess_textures = {};
 var ess_textures_noDNA = {};
 var default_te_texture = load("res://Assets/Images/tes/default_te.png");
+
 enum ESSENTIAL_CLASSES {Replication, Locomotion, Manipulation, Sensing, Construction, Deconstruction};
 enum TURN_TYPES {Map, NewTEs, TEJump, RepairBreaks, EnvironmentalDamage, Recombination, Evolve, CheckViability, Replication};
 
@@ -245,10 +246,16 @@ func change_slider_width(scroll_cont, horiz = true, width = 30):
 #		slider.rect_size.x = width;
 
 func adv_turn():
+	_incr_turn_idx();
+	while !Unlocks.has_turn_unlock(get_turn_type()):
+		_incr_turn_idx();
+
+func _incr_turn_idx():
 	turn_idx += 1;
 	if (turn_idx == turns.size()):
 		turn_idx = 0;
 		round_num += 1;
+		Unlocks._upd_round_num_unlocks();
 
 func get_turn_type():
 	return turns[turn_idx];
@@ -275,17 +282,6 @@ func get_turn_txt():
 			return "End of Map Turn";
 		var _x:
 			return "Unknown turn type (#%d)" % _x;
-
-#NOTE: Need to be rewritten from the ground up
-#func get_save_str():
-#	return var2str([turn_idx, round_num, card_table.orgn.get_save(), card_table.orgn.get_gene_pool()]).replace("\n", "");
-#
-#func load_from_save(save):
-#	var s = str2var(save);
-#	turn_idx = int(s[0]) - 1;
-#	round_num = int(s[1]);
-#	card_table.orgn.load_from_save(s[2]);
-#	card_table.orgn.reproduct_gene_pool = s[3];
 
 func get_save_str():
 	var savestr = var2str([turn_idx, round_num, card_table.orgn.get_save(), card_table.orgn.get_gene_pool()]).replace("\n", "")

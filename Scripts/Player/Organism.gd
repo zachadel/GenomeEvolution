@@ -402,19 +402,27 @@ func upd_repair_opts(gap):
 		var left_elm = cmsm.get_child(g_idx-1);
 		var right_elm = cmsm.get_child(g_idx+1);
 		
-		repair_type_possible[0] = cmsm.dupe_block_exists(g_idx) && has_resource_for_action("repair_cd");
-		if !repair_type_possible[0]:
-			if has_resource_for_action("repair_cd"):
-				repair_btn_text[0] = "No duplicates to collapse";
-			else:
-				repair_btn_text[0] = "Not enough resources";
+		repair_type_possible[0] = true;
+		if !Unlocks.has_repair_unlock("collapse_dupes"):
+			repair_type_possible[0] = false;
+			repair_btn_text[0] = "Play more to unlock";
+		elif !has_resource_for_action("repair_cd"):
+			repair_type_possible[0] = false;
+			repair_btn_text[0] = "Not enough resources";
+		elif !cmsm.dupe_block_exists(g_idx):
+			repair_type_possible[0] = false;
+			repair_btn_text[0] = "No duplicates to collapse";
 		
-		repair_type_possible[1] = cmsms.get_other_cmsm(cmsm).pair_exists(left_elm, right_elm) && has_resource_for_action("repair_cp");
-		if !repair_type_possible[1]:
-			if has_resource_for_action("repair_cp"):
-				repair_btn_text[1] = "No pattern to copy";
-			else:
-				repair_btn_text[1] = "Not enough resources";
+		repair_type_possible[1] = true;
+		if !Unlocks.has_repair_unlock("copy_pattern"):
+			repair_type_possible[1] = false;
+			repair_btn_text[1] = "Play more to unlock";
+		elif !has_resource_for_action("repair_cp"):
+			repair_type_possible[1] = false;
+			repair_btn_text[1] = "Not enough resources";
+		elif !cmsms.get_other_cmsm(cmsm).pair_exists(left_elm, right_elm):
+			repair_type_possible[1] = false;
+			repair_btn_text[1] = "No pattern to copy";
 		
 		repair_type_possible[2] = has_resource_for_action("repair_je");
 		if !repair_type_possible[2]:
@@ -804,6 +812,8 @@ func highlight_gap_choices():
 	for g in cmsms.gap_list:
 		gap_text += "Chromosome %d needs a repair at %d.\n" % g.get_position_display();
 	emit_signal("updated_gaps", cmsms.gap_list.size() > 0, gap_text);
+	if Unlocks.has_hint_unlock("click_gaps") && !cmsms.gap_list.empty():
+		Tooltips._handle_mouse_enter(cmsms.gap_list.back());
 	if (is_ai && cmsms.gap_list.size() > 0):
 		upd_repair_opts(cmsms.gap_list[0]);
 		auto_repair();
@@ -1424,15 +1434,17 @@ func eject_mineral_resource(resource, amount = 1):
 
 	pass
 
-func get_cost_mult(action):
-	var cost_mult = 1.0;
-	var bprof = get_behavior_profile();
-	for k in bprof.BEHAVIORS:
-		if (BEHAVIOR_TO_COST_MULT.has(k) && BEHAVIOR_TO_COST_MULT[k].has(action)):
-			cost_mult += BEHAVIOR_TO_COST_MULT[k][action] * bprof.get_behavior(k);
-	cost_mult = max(0.05, cost_mult);
-	
-	return cost_mult * Game.resource_mult;
+func get_cost_mult(action) -> float:
+	if Unlocks.has_mechanic_unlock("resource_costs"):
+		var cost_mult = 1.0;
+		var bprof = get_behavior_profile();
+		for k in bprof.BEHAVIORS:
+			if (BEHAVIOR_TO_COST_MULT.has(k) && BEHAVIOR_TO_COST_MULT[k].has(action)):
+				cost_mult += BEHAVIOR_TO_COST_MULT[k][action] * bprof.get_behavior(k);
+		cost_mult = max(0.05, cost_mult);
+		
+		return cost_mult * Game.resource_mult;
+	return 0.0;
 	
 #Converts all higher tier resources into lower tier resources
 #Includes calculations for penalties
