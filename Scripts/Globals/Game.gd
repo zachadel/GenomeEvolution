@@ -285,7 +285,7 @@ func get_turn_txt():
 
 func get_save_str():
 	var savestr = var2str([turn_idx, round_num, card_table.orgn.get_save(), card_table.orgn.get_gene_pool()]).replace("\n", "")
-	OS.set_clipboard(savestr)
+	SaveExports.exp_save_code(savestr);
 	return savestr
 
 func load_from_save(save):
