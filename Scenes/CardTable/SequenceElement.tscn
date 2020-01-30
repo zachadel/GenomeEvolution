@@ -1,14 +1,15 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scripts/CardTable/SequenceElement.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Images/border.png" type="Texture" id=2]
-[ext_resource path="res://Scenes/CardTable/BehaviorIndicator.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Assets/Images/icons/ess_behaviors/R.png" type="Texture" id=4]
-[ext_resource path="res://Assets/Images/icons/ess_behaviors/L.png" type="Texture" id=5]
-[ext_resource path="res://Assets/Images/icons/ess_behaviors/M.png" type="Texture" id=6]
-[ext_resource path="res://Assets/Images/icons/ess_behaviors/S.png" type="Texture" id=7]
-[ext_resource path="res://Assets/Images/icons/ess_behaviors/C.png" type="Texture" id=8]
-[ext_resource path="res://Assets/Images/icons/ess_behaviors/D.png" type="Texture" id=9]
+[ext_resource path="res://Assets/Images/genes/Helix.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Images/border.png" type="Texture" id=3]
+[ext_resource path="res://Scenes/CardTable/BehaviorIndicator.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/R.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/L.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/M.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/S.png" type="Texture" id=8]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/C.png" type="Texture" id=9]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/D.png" type="Texture" id=10]
 
 [node name="SeqElm" type="TextureButton"]
 margin_right = 200.0
@@ -18,12 +19,19 @@ size_flags_vertical = 4
 expand = true
 script = ExtResource( 1 )
 
+[node name="Helix" type="TextureRect" parent="."]
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 2 )
+expand = true
+
 [node name="BorderRect" type="TextureRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_min_size = Vector2( 200, 200 )
 mouse_filter = 2
-texture = ExtResource( 2 )
+texture = ExtResource( 3 )
 expand = true
 
 [node name="GrayFilter" type="ColorRect" parent="."]
@@ -54,7 +62,7 @@ text = "ERROR_code"
 align = 1
 valign = 1
 
-[node name="IndicATE" parent="." instance=ExtResource( 3 )]
+[node name="IndicATE" parent="." instance=ExtResource( 4 )]
 visible = false
 modulate = Color( 0.75, 0.4, 0, 1 )
 anchor_left = 0.5
@@ -65,27 +73,27 @@ margin_top = -35.0
 margin_right = 30.0
 margin_bottom = 25.0
 
-[node name="IndicReplication" parent="." instance=ExtResource( 3 )]
+[node name="IndicReplication" parent="." instance=ExtResource( 4 )]
 visible = false
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = -35.0
 margin_right = 60.0
-margin_bottom = 25.0
-image_texture = ExtResource( 4 )
-
-[node name="IndicLocomotion" parent="." instance=ExtResource( 3 )]
-visible = false
-anchor_left = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.0
-margin_left = -30.0
-margin_top = -35.0
-margin_right = 30.0
 margin_bottom = 25.0
 image_texture = ExtResource( 5 )
 
-[node name="IndicManipulation" parent="." instance=ExtResource( 3 )]
+[node name="IndicLocomotion" parent="." instance=ExtResource( 4 )]
+visible = false
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.0
+margin_left = -30.0
+margin_top = -35.0
+margin_right = 30.0
+margin_bottom = 25.0
+image_texture = ExtResource( 6 )
+
+[node name="IndicManipulation" parent="." instance=ExtResource( 4 )]
 visible = false
 anchor_left = 1.0
 anchor_bottom = 0.0
@@ -93,18 +101,18 @@ margin_left = -60.0
 margin_top = -35.0
 margin_right = 0.0
 margin_bottom = 25.0
-image_texture = ExtResource( 6 )
+image_texture = ExtResource( 7 )
 
-[node name="IndicSensing" parent="." instance=ExtResource( 3 )]
+[node name="IndicSensing" parent="." instance=ExtResource( 4 )]
 visible = false
 anchor_top = 1.0
 anchor_right = 0.0
 margin_top = -23.0
 margin_right = 60.0
 margin_bottom = 37.0
-image_texture = ExtResource( 7 )
+image_texture = ExtResource( 8 )
 
-[node name="IndicConstruction" parent="." instance=ExtResource( 3 )]
+[node name="IndicConstruction" parent="." instance=ExtResource( 4 )]
 visible = false
 anchor_left = 0.5
 anchor_top = 1.0
@@ -113,9 +121,9 @@ margin_left = -30.0
 margin_top = -23.0
 margin_right = 30.0
 margin_bottom = 37.0
-image_texture = ExtResource( 8 )
+image_texture = ExtResource( 9 )
 
-[node name="IndicDeconstruction" parent="." instance=ExtResource( 3 )]
+[node name="IndicDeconstruction" parent="." instance=ExtResource( 4 )]
 visible = false
 anchor_left = 1.0
 anchor_top = 1.0
@@ -123,7 +131,7 @@ margin_left = -60.0
 margin_top = -23.0
 margin_right = 0.0
 margin_bottom = 37.0
-image_texture = ExtResource( 9 )
+image_texture = ExtResource( 10 )
 
 [node name="Tween" type="Tween" parent="."]
 [connection signal="mouse_entered" from="." to="." method="_on_SeqElm_mouse_entered"]

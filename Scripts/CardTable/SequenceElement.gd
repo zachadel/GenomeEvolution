@@ -71,6 +71,7 @@ func setup(_type, _id = "", _mode = "ate", _code = "", _ph = -1.0, _ess_class = 
 	
 	var tex;
 	if (type == "gene"):
+		$Helix.visible = true;
 		match (mode):
 			"essential":
 				# This will happen for saveloads
@@ -79,7 +80,7 @@ func setup(_type, _id = "", _mode = "ate", _code = "", _ph = -1.0, _ess_class = 
 				
 				if (_ess_class in Game.ESSENTIAL_CLASSES.values()):
 					ess_class = _ess_class;
-					tex = Game.ess_textures[_ess_class];
+					tex = Game.ess_textures_noDNA[_ess_class];
 				else:
 					print("!! Trying to put ", name, " (", _type, ", ", _id, ") in non-existent eclass (", _ess_class, ")");
 					print("Here are the valid values: ", Game.ESSENTIAL_CLASSES.values());
@@ -99,6 +100,7 @@ func setup(_type, _id = "", _mode = "ate", _code = "", _ph = -1.0, _ess_class = 
 					tex = ate_personality["art"];
 	else:
 		tex = Game.sqelm_textures[_type];
+		$Helix.visible = false;
 		gene_code = "";
 		
 	upd_display();
