@@ -356,9 +356,11 @@ func evolve_specific(major, up):
 	
 	if (major):
 		evolve_new_behavior(up);
+		ph_preference += (randf() - 0.5) * 5;
 	else:
 		code_change = 1;
 		evolve_current_behavior(0.1 * up_sign);
+		ph_preference += (randf() - 0.5) * 2.5;
 	
 	modify_code(code_change, code_change * up_sign);
 	
