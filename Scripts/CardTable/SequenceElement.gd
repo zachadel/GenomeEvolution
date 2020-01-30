@@ -347,27 +347,28 @@ func kill_elm():
 		upd_behavior_disp(k);
 	ate_activity = 0;
 
-func evolve_specific(major, up):
+func evolve_specific(major : bool, up : bool) -> void:
 	var code_change = 2;
 	
 	var up_sign = -1;
 	if (up):
 		up_sign = 1;
 	
+	var rand_ph_mag : float = randf() - (ph_preference / 14);
 	if (major):
 		evolve_new_behavior(up);
-		ph_preference += (randf() - 0.5) * 5;
+		ph_preference += rand_ph_mag * 5;
 	else:
 		code_change = 1;
 		evolve_current_behavior(0.1 * up_sign);
-		ph_preference += (randf() - 0.5) * 2.5;
+		ph_preference += rand_ph_mag * 2.5;
 	
 	modify_code(code_change, code_change * up_sign);
 	
 	upd_display();
 	get_cmsm().emit_signal("cmsm_changed");
 
-func evolve(ndx, good = true):
+func evolve(ndx : int, good := true) -> void:
 	if (type == "gene"):
 		match ndx:
 			1: # Gene death
