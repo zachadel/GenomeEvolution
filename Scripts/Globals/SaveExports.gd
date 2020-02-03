@@ -12,9 +12,11 @@ const SANITIZE_DICT = {
 };
 
 var HTTP := HTTPRequest.new();
+var request_queue := [];
 
 func _ready():
 	add_child(HTTP);
+	HTTP.connect("request_completed", self, "_on_HTTP_request_completed");
 
 func sanitize_replace(s : String) -> String:
 	for k in SANITIZE_DICT:
@@ -24,6 +26,17 @@ func sanitize_replace(s : String) -> String:
 func exp_save_code(code : String) -> void:
 	OS.set_clipboard(code);
 	var txt = "%s?sid=%d&code=%s" % [SAVE_SITE, save_id, sanitize_replace(code)];
-	var err = HTTP.request("%s?sid=%d&code=%s" % [SAVE_SITE, save_id, txt]) 
+	
+	request_queue.append("%s?sid=%d&code=%s" % [SAVE_SITE, save_id, txt]);
+	if request_queue.size() == 1:
+		_pop_request();
+
+func _pop_request():
+	var err = HTTP.request(request_queue.front());
 	if err != OK:
 		print("http error! ", err);
+
+func _on_HTTP_request_completed(result, response_code, headers, body):
+	request_queue.remove(0);
+	if request_queue.size() > 0:
+		_pop_request();

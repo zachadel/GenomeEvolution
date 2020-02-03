@@ -10,7 +10,7 @@ onready var orgn = $Organism;
 onready var nxt_btn = $button_grid/btn_nxt;
 onready var status_bar = $ChromosomeStatus;
 
-onready var ph_filter_panel = $pnl_ph_filter;
+onready var ph_filter_panel := $pnl_ph_filter;
 
 var has_gaps = false;
 var wait_on_anim = false;

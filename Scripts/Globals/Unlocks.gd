@@ -17,19 +17,23 @@ func _ready():
 	else:
 		print("Failed to load unlocks data file. Very bad!");
 
-func _has_unlock(key : String) -> bool:
-	if unlocks.has(key):
+func _has_unlock(unlock_key : String) -> bool:
+	if unlocks.has(unlock_key):
 		if unlock_override:
-			return unlocks[key].get("override_value", true);
+			return unlocks[unlock_key].get("override_value", true);
 		
-		return unlocks[key].current;
+		return unlocks[unlock_key].current;
 	
-	print("Trying to find unlock %s, which doesn't exist" % key);
+	print("Trying to find unlock %s, which doesn't exist" % unlock_key);
 	return true;
 
 # Doesn't print a warning when the key isn't found
-func _has_unlock_quiet(key : String) -> bool:
-	return !unlocks.has(key) || _has_unlock(key);
+func _has_unlock_quiet(unlock_key : String) -> bool:
+	return !unlocks.has(unlock_key) || _has_unlock(unlock_key);
+
+func _is_unlock_switched(unlock_key : String) -> bool:
+	var switched_on = !unlocks[unlock_key].get("start_value", false);
+	return unlocks[unlock_key].current == switched_on;
 
 func _upd_round_num_unlocks() -> void:
 	for u in unlocks:
@@ -39,29 +43,27 @@ func _upd_round_num_unlocks() -> void:
 
 
 
-func set_unlock(key : String, value : bool):
-	unlocks[key].current = value;
+func set_unlock(unlock_key : String, value : bool):
+	unlocks[unlock_key].current = value;
 
-func switch_unlock(key : String, on : bool):
-	var switch_to = unlocks[key].get("start_value", false);
+func switch_unlock(unlock_key : String, on : bool):
+	var switch_to = unlocks[unlock_key].get("start_value", false);
 	if on:
 		switch_to = !switch_to;
-	set_unlock(key, switch_to);
+	set_unlock(unlock_key, switch_to);
 
-func add_count(key : String, amt := 1):
-	if !counts.has(key):
-		counts[key] = amt;
+func add_count(count_key : String, amt := 1):
+	if !counts.has(count_key):
+		counts[count_key] = amt;
 	else:
-		counts[key] += amt;
+		counts[count_key] += amt;
 	
 	for u in unlocks:
-		# If there is an unlock watching this count that hasn't been unlocked yet,
-		# check all of its counts to switch it on if applicable
-		if unlock_watches_count(u, key) && !_has_unlock(u) && unlock_counts_met(u):
+		if !_is_unlock_switched(u) && unlock_watches_count(u, count_key) && unlock_counts_met(u):
 			switch_unlock(u, true);
 
-func get_count(key : String):
-	return counts.get(key, 0);
+func get_count(count_key : String):
+	return counts.get(count_key, 0);
 
 func unlock_watches_count(unlock_key : String, count_key : String) -> bool:
 	return unlocks.has(unlock_key) && unlocks[unlock_key].has(COUNT_THRESH_KEY) && unlocks[unlock_key][COUNT_THRESH_KEY].has(count_key);

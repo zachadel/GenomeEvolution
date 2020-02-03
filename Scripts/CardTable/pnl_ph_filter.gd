@@ -25,9 +25,12 @@ func _on_pnl_ph_filter_visibility_changed():
 
 func _on_slider_ph_value_changed(val):
 	ph_slider_lbl.text = "%.2f" % val;
-	emit_update();
+	if visible:
+		emit_update();
 
 func upd_current_ph_marker(current_ph : float):
 	var x_point : float = current_ph / 14.0 * $slider_ph.rect_size.x;
 	ph_current_indicator.rect_position.x = x_point - 0.5 * ph_current_indicator.rect_size.x;
 	ph_current_indicator.get_node("lbl").text = "Current pH\n%.2f" % current_ph;
+	
+	ph_slider.value = stepify(current_ph, ph_slider.step);

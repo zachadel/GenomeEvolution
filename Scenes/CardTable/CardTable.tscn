@@ -46,6 +46,7 @@ bbcode_enabled = true
 scroll_following = true
 
 [node name="sc_criteria" type="ScrollContainer" parent="."]
+editor/display_folded = true
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -66,6 +67,7 @@ valign = 1
 autowrap = true
 
 [node name="button_grid" type="VBoxContainer" parent="."]
+editor/display_folded = true
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -122,13 +124,26 @@ text = "Continue"
 
 [node name="Organism" parent="." instance=ExtResource( 2 )]
 
+[node name="lbl_behavior" type="Label" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -1594.0
+margin_top = -298.0
+margin_right = -1127.0
+margin_bottom = -284.0
+text = "Organism Behavior"
+valign = 1
+autowrap = true
+
 [node name="ChromosomeStatus" parent="." instance=ExtResource( 3 )]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -786.519
-margin_top = 577.836
-margin_right = 313.481
-margin_bottom = 639.836
+margin_left = -796.519
+margin_top = 612.836
+margin_right = 303.481
+margin_bottom = 674.836
 rect_min_size = Vector2( 0, 50 )
 
 [node name="pnl_repair_choices" type="Panel" parent="."]
@@ -283,6 +298,7 @@ readonly = true
 show_line_numbers = true
 
 [node name="pnl_ph_filter" type="Panel" parent="."]
+editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -300,7 +316,7 @@ margin_top = 70.0
 margin_right = -42.0
 margin_bottom = 86.0
 max_value = 14.0
-step = 0.25
+step = 0.05
 value = 7.0
 tick_count = 15
 ticks_on_borders = true
@@ -312,7 +328,7 @@ margin_left = 212.0
 margin_top = -20.0
 margin_right = 217.0
 margin_bottom = 25.0
-color = Color( 0.596078, 0.596078, 0.596078, 1 )
+color = Color( 0.3, 0.3, 0.3, 1 )
 
 [node name="lbl" type="Label" parent="pnl_ph_filter/slider_ph/current_ph"]
 anchor_left = 0.5
@@ -337,23 +353,23 @@ valign = 1
 clip_text = true
 
 [node name="MineralLevels" parent="." instance=ExtResource( 12 )]
-margin_left = 139.563
-margin_top = 731.388
-margin_right = -1195.44
-margin_bottom = -40.6124
+margin_left = 129.563
+margin_top = 766.388
+margin_right = -1205.44
+margin_bottom = -5.61249
 
 [node name="CFPBank" parent="." instance=ExtResource( 13 )]
-margin_left = 11.5742
-margin_top = 686.729
-margin_right = -1588.43
-margin_bottom = -213.271
+margin_left = 1.5742
+margin_top = 721.729
+margin_right = -1598.43
+margin_bottom = -178.271
 rect_scale = Vector2( 0.8, 0.75 )
 
 [node name="EnergyBar" parent="." instance=ExtResource( 14 )]
-margin_left = 11.894
-margin_top = 643.426
-margin_right = -988.106
-margin_bottom = -196.574
+margin_left = 1.894
+margin_top = 678.426
+margin_right = -998.106
+margin_bottom = -161.574
 rect_scale = Vector2( 0.8, 0.75 )
 
 [node name="AutoContinue" type="Timer" parent="."]
