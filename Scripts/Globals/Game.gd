@@ -230,6 +230,11 @@ func change_slider_width(scroll_cont, horiz = true, width = 30):
 #		slider.margin_left = -width;
 #		slider.rect_size.x = width;
 
+func pluralize(count : int, pl_end := "s", sing_end := ""):
+	if (count == 1):
+		return sing_end;
+	return pl_end;
+
 func adv_turn():
 	_incr_turn_idx();
 	while !Unlocks.has_turn_unlock(get_turn_type()):

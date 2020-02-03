@@ -406,7 +406,8 @@ func upd_repair_opts(gap):
 		repair_type_possible[0] = true;
 		if !Unlocks.has_repair_unlock("collapse_dupes"):
 			repair_type_possible[0] = false;
-			repair_btn_text[0] = "Play more to unlock";
+			var cps_remain : int = Unlocks.get_count_remaining(Unlocks.get_repair_key("collapse_dupes"), "repair_cp");
+			repair_btn_text[0] = "Perform %d more Copy Pattern repair%s" % [cps_remain, Game.pluralize(cps_remain)];
 		elif !has_resource_for_action("repair_cd"):
 			repair_type_possible[0] = false;
 			repair_btn_text[0] = "Not enough resources";
@@ -417,7 +418,8 @@ func upd_repair_opts(gap):
 		repair_type_possible[1] = true;
 		if !Unlocks.has_repair_unlock("copy_pattern"):
 			repair_type_possible[1] = false;
-			repair_btn_text[1] = "Play more to unlock";
+			var jes_remain : int = Unlocks.get_count_remaining(Unlocks.get_repair_key("copy_pattern"), "repair_je");
+			repair_btn_text[1] = "Perform %d more Join Ends repair%s" % [jes_remain, Game.pluralize(jes_remain)];
 		elif !has_resource_for_action("repair_cp"):
 			repair_type_possible[1] = false;
 			repair_btn_text[1] = "Not enough resources";
@@ -594,6 +596,8 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 		repair_canceled = false;
 		match (repair_idx):
 			0: # Collapse Duplicates
+				Unlocks.add_count("repair_cd");
+				
 				var left_idx = choice_info["left"].get_index();
 				var right_idx = choice_info["right"].get_index();
 				choice_info["left"].highlight_border(false);
@@ -646,6 +650,8 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 					use_resources("repair_cd");
 			
 			1: # Copy Pattern
+				Unlocks.add_count("repair_cp");
+				
 				choice_info["left"].highlight_border(false);
 				if (!roll_storage[0].has(gap)):
 					roll_storage[0][gap] = roll_chance("copy_repair");
@@ -735,6 +741,8 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 					use_resources("repair_cp")
 					#print("repair copy pattern");
 			2: # Join Ends
+				Unlocks.add_count("repair_je");
+				
 				if (!roll_storage[1].has(gap)):
 					roll_storage[1][gap] = roll_chance("join_ends");
 				match (roll_storage[1][gap]):
