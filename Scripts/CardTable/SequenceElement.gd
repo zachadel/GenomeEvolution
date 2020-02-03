@@ -8,32 +8,40 @@ var id;   #holds unique identifier
 var SEQ_ELM_COMPARE_GRADIENT = load("res://Scenes/CardTable/SeqElmColorCompare.tres");
 
 var ess_class = null; #holds essential gene class
-var ess_behavior = {
+var ess_behavior := {
 	"Replication": 0.0,
 	"Locomotion": 0.0,
 	"Manipulation": 0.0,
 	"Sensing": 0.0,
 	"Construction": 0.0,
-	"Deconstruction": 0.0
+	"Deconstruction": 0.0,
+	"Component": 0.0,
+	"Helper": 0.0
 };
 
 
 var specialization = {};
-var spec_types = {
+# tuples take the form spec_type: {spec_sub: mult}
+#
+# for example:
+#specialization={
+#	resource: {0: 1.0, 1: 2.5}
+#}
+var spec_types := {
 	"resource": {"specs": Game.resource_groups.keys().duplicate(), "subs": range(4)},
 	"terrain": {"specs": ["biomes"], "subs": Game.biomes.keys().duplicate()},
 };
-var behavior_to_spec_type = {
+var behavior_to_spec_type := {
 	"Manipulation": "resource",
 	"Sensing": "resource",
 	"Construction": "resource",
 	"Deconstruction": "resource",
 	"Locomotion": "terrain",
 };
-var ph_preference = 7.0;
+var ph_preference := 7.0;
 
-var ate_activity = 0.0;
-var ate_personality = {};
+var ate_activity := 0.0;
+var ate_personality := {};
 
 const CODE_LENGTH = 7;
 var gene_code = "";
@@ -122,8 +130,8 @@ func setup_copy(ref_elm):
 		match (ref_elm.mode):
 			"essential":
 				ess_class = ref_elm.ess_class;
-				ess_behavior = ref_elm.ess_behavior;
-				specialization = ref_elm.specialization;
+				ess_behavior = ref_elm.ess_behavior.duplicate();
+				specialization = ref_elm.specialization.duplicate();
 			"ate":
 				ate_activity = ref_elm.ate_activity;
 				ate_personality = ref_elm.ate_personality;
@@ -218,7 +226,7 @@ func set_specific_specialization(spec, sub_idx, val):
 func modify_specific_specialization(spec, sub_idx, dval):
 	set_specific_specialization(spec, sub_idx, dval + get_specific_specialization(spec, sub_idx));
 
-func evolve_spec(behavior, ev_amt):
+func evolve_specialization(behavior, ev_amt):
 	if (behavior in behavior_to_spec_type):
 		var spec_info = spec_types[behavior_to_spec_type[behavior]];
 		
@@ -279,7 +287,7 @@ func evolve_current_behavior(amt):
 		"essential":
 			if (ess_behavior.values().max() > 0):
 				var behave_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
-				evolve_spec(behave_key, amt);
+				evolve_specialization(behave_key, amt);
 				ess_behavior[behave_key] = max(0, ess_behavior[behave_key] + amt);
 		"ate":
 			ate_activity += amt;
@@ -297,28 +305,27 @@ func get_gain_chance(num_missing_behaviors, num_max_behaviors):
 func evolve_new_behavior(gain):
 	match mode:
 		"essential":
-			var behave_key = "";
 			if (gain):
 				var key_candids = [];
 				for k in ess_behavior:
 					if (ess_behavior[k] == 0):
 						key_candids.append(k);
 				
+				var behave_key = "";
 				if (randf() <= get_gain_chance(key_candids.size(), ess_behavior.size())):
 					behave_key = key_candids[randi() % key_candids.size()];
 				else:
 					behave_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
-			else:
-				behave_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
-			
-			if (gain):
-				evolve_spec(behave_key, GAIN_AMT);
+				
+				evolve_specialization(behave_key, GAIN_AMT);
 				if (ess_behavior.has(behave_key)):
 					ess_behavior[behave_key] += GAIN_AMT;
 				else:
 					ess_behavior[behave_key] = GAIN_AMT;
 			else:
-				evolve_spec(behave_key, -ess_behavior[behave_key]);
+				var behave_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
+				
+				evolve_specialization(behave_key, -ess_behavior[behave_key]);
 				ess_behavior[behave_key] = 0.0;
 		"ate":
 			if (gain):
@@ -406,10 +413,12 @@ func upd_behavior_disp(behavior = ""):
 			if (behavior != ""):
 				get_node("Indic" + behavior).set_value(ess_behavior[behavior]);
 			else:
-				for b in ess_behavior:
-					get_node("Indic" + b).set_value(ess_behavior[b]);
+				continue;
 		"ate":
 			get_node("IndicATE").set_value(ate_activity);
+		_:
+			for b in ess_behavior:
+				get_node("Indic" + b).set_value(ess_behavior[b]);
 
 var forced_comparison_color = null;
 func color_comparison(compare_type : String, compare_val : float):
