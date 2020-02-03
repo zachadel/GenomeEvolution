@@ -208,6 +208,7 @@ func setup(card_table):
 	for n in Game.ESSENTIAL_CLASSES:
 		# Create one gene for both cmsms
 		var nxt_gelm = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
+		
 		nxt_gelm.setup("gene", n, "essential", "", -1.0, Game.ESSENTIAL_CLASSES[n]);
 		nxt_gelm.set_ess_behavior({n: 1.0});
 		

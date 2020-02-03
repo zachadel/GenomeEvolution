@@ -80,7 +80,7 @@ func setup(_type, _id = "", _mode = "ate", _code = "", _ph = -1.0, _ess_class = 
 				
 				if (_ess_class in Game.ESSENTIAL_CLASSES.values()):
 					ess_class = _ess_class;
-					tex = Game.ess_textures_noDNA[_ess_class];
+					tex = Game.ess_textures[_ess_class];
 				else:
 					print("!! Trying to put ", name, " (", _type, ", ", _id, ") in non-existent eclass (", _ess_class, ")");
 					print("Here are the valid values: ", Game.ESSENTIAL_CLASSES.values());
@@ -412,22 +412,14 @@ func upd_behavior_disp(behavior = ""):
 			get_node("IndicATE").set_value(ate_activity);
 
 var forced_comparison_color = null;
-func color_comparison(compare_type : String, compare_vals : Dictionary):
+func color_comparison(compare_type : String, compare_val : float):
 	if (compare_type == ""):
 		forced_comparison_color = null;
 	else:
 		var comparison : float; # should be 0..1
 		
-		if (compare_type.begins_with("ph_")):
-			match compare_type:
-				"ph_optimal_current":
-					comparison = get_ph_mult(compare_vals["current"], true);
-				"ph_optimal_slider":
-					comparison = get_ph_mult(compare_vals["slider"], true);
-				"ph_current_slider":
-					var current_effective = get_ph_mult(compare_vals["current"], true);
-					var slider_effective = get_ph_mult(compare_vals["slider"], true);
-					comparison = clamp(inverse_lerp(0, 2 * current_effective, slider_effective), 0, 1);
+		if (compare_type == "ph"):
+			comparison = get_ph_mult(compare_val, true);
 		
 		forced_comparison_color = SEQ_ELM_COMPARE_GRADIENT.interpolate(comparison);
 	
@@ -447,7 +439,7 @@ func upd_display():
 				"ste":
 					self_modulate = Color(.55, 0, 0);
 				"essential":
-					self_modulate = Color(1, 1, 1);
+					self_modulate = Color(0, .66, 0);
 					$lbl.visible = false;
 				"pseudo":
 					$lbl.visible = false;
@@ -459,8 +451,10 @@ func upd_display():
 			continue;
 		_:
 			self_modulate = Color(1, 1, 1);
-	if (forced_comparison_color != null):
-		self_modulate *= forced_comparison_color;
+	if forced_comparison_color != null:
+		modulate = forced_comparison_color;
+	else:
+		modulate = Color(1, 1, 1, 1);
 
 func get_cmsm():
 	return get_parent();

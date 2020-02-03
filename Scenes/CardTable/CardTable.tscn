@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Scripts/CardTable/CardTable.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player/Organism.tscn" type="PackedScene" id=2]
@@ -14,8 +14,6 @@
 [ext_resource path="res://Scenes/WorldMap/MineralLevels.tscn" type="PackedScene" id=12]
 [ext_resource path="res://Scenes/WorldMap/CFPBank.tscn" type="PackedScene" id=13]
 [ext_resource path="res://Scenes/WorldMap/EnergyBar.tscn" type="PackedScene" id=14]
-
-[sub_resource type="ButtonGroup" id=1]
 
 [node name="CardTable" type="Control"]
 anchor_right = 1.0
@@ -44,7 +42,6 @@ bbcode_enabled = true
 scroll_following = true
 
 [node name="sc_criteria" type="ScrollContainer" parent="."]
-editor/display_folded = true
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -282,8 +279,6 @@ readonly = true
 show_line_numbers = true
 
 [node name="pnl_ph_filter" type="Panel" parent="."]
-editor/display_folded = true
-visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -294,35 +289,7 @@ margin_right = 656.0
 margin_bottom = 397.0
 script = ExtResource( 11 )
 
-[node name="cbox_optVcur" type="CheckBox" parent="pnl_ph_filter"]
-margin_top = 20.0
-margin_right = 149.0
-margin_bottom = 44.0
-pressed = true
-group = SubResource( 1 )
-text = "Optimal vs Current"
-
-[node name="cbox_curVsld" type="CheckBox" parent="pnl_ph_filter"]
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = -74.5
-margin_top = 20.0
-margin_right = 74.5
-margin_bottom = 44.0
-group = SubResource( 1 )
-text = "Current vs Slider"
-
-[node name="cbox_optVsld" type="CheckBox" parent="pnl_ph_filter"]
-anchor_left = 1.0
-anchor_right = 1.0
-margin_left = -149.0
-margin_top = 20.0
-margin_bottom = 44.0
-group = SubResource( 1 )
-text = "Optimal vs Slider"
-
 [node name="slider_ph" type="HSlider" parent="pnl_ph_filter"]
-visible = false
 anchor_right = 1.0
 margin_left = 42.0
 margin_top = 70.0
@@ -332,9 +299,28 @@ max_value = 14.0
 step = 0.25
 value = 7.0
 tick_count = 15
+ticks_on_borders = false
+
+[node name="current_ph" type="ColorRect" parent="pnl_ph_filter/slider_ph"]
+editor/display_folded = true
+show_behind_parent = true
+margin_left = 212.0
+margin_top = -20.0
+margin_right = 217.0
+margin_bottom = 25.0
+color = Color( 0.596078, 0.596078, 0.596078, 1 )
+
+[node name="lbl" type="Label" parent="pnl_ph_filter/slider_ph/current_ph"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -34.5
+margin_top = -31.0
+margin_right = 34.5
+text = "Current pH
+7.00"
+align = 1
 
 [node name="lbl_slider_value" type="Label" parent="pnl_ph_filter"]
-visible = false
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -24.0
@@ -394,9 +380,6 @@ one_shot = true
 [connection signal="pressed" from="pnl_saveload/btn_load" to="pnl_saveload" method="_on_btn_load_pressed"]
 [connection signal="update_seqelm_coloration" from="pnl_ph_filter" to="." method="_on_pnl_ph_filter_update_seqelm_coloration"]
 [connection signal="visibility_changed" from="pnl_ph_filter" to="pnl_ph_filter" method="_on_pnl_ph_filter_visibility_changed"]
-[connection signal="pressed" from="pnl_ph_filter/cbox_optVcur" to="pnl_ph_filter" method="_on_cbox_optVcur_pressed"]
-[connection signal="pressed" from="pnl_ph_filter/cbox_curVsld" to="pnl_ph_filter" method="_on_cbox_curVsld_pressed"]
-[connection signal="pressed" from="pnl_ph_filter/cbox_optVsld" to="pnl_ph_filter" method="_on_cbox_optVsld_pressed"]
 [connection signal="value_changed" from="pnl_ph_filter/slider_ph" to="pnl_ph_filter" method="_on_slider_ph_value_changed"]
 [connection signal="resource_clicked" from="CFPBank" to="." method="_on_CFPBank_resource_clicked"]
 [connection signal="timeout" from="AutoContinue" to="." method="_on_AutoContinue_timeout"]

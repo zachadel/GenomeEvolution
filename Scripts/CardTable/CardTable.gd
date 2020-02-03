@@ -180,6 +180,8 @@ func _on_btn_nxt_pressed():
 		Game.get_turn_txt(),
 		"Progeny: %d" % orgn.num_progeny
 	];
+	if orgn.current_tile.has("hazards"):
+		ph_filter_panel.upd_current_ph_marker(orgn.current_tile.hazards["pH"]);
 	_add_justnow_bbcode("\n\n%s" % Game.get_turn_txt(), {"color": Color(1, 0.75, 0)});
 	
 	emit_signal("next_turn", Game.round_num, Game.turn_idx);
@@ -272,7 +274,7 @@ func _on_Organism_resources_changed(cfp_resources, mineral_resources):
 
 func _on_pnl_ph_filter_update_seqelm_coloration(compare_type):
 	for g in orgn.get_all_genes(true):
-		g.color_comparison(compare_type, {"slider": ph_filter_panel.get_slider_value(), "current": orgn.current_tile.hazards["pH"]});
+		g.color_comparison(compare_type, ph_filter_panel.get_slider_value());
 
 func _on_AutoContinue_timeout():
 	_on_btn_nxt_pressed();
