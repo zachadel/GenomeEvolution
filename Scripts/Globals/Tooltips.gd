@@ -24,15 +24,31 @@ const REPLICATE_TTIPS = {
 	"skip": "You can always choose to not replicate and continue with no offspring."
 };
 
+const GENE_NAMES = {
+	"Replication": "Replication",
+	"Locomotion": "Movement",
+	"Manipulation": "Transporter",
+	"Sensing": "Sensing",
+	"Construction": "Assembly",
+	"Deconstruction": "Disassembly",
+	"Helper": "Helper",
+	"Component": "Component",
+	
+	"Transposon": "Transposons",
+	"Pseudogene": "Psuedogenes"
+};
 const BASE_TTIPS = {
-	"Replication": "Replication increases the probability for successful gene modifications.",
-	"Locomotion": "Locomotion aids with movement in the world map.",
-	"Manipulation": "Manipulation aids with the efficient use of resources.",
-	"Sensing": "Sensing aids with the ability to sense nearby resources and to detect the effectiveness of internal functions.",
-	"Construction": "Construction increases the amount of energy and resources which can be banked for subsequent turns.",
-	"Deconstruction": "Deconstruction aids with the breaking down of complicated resources into simpler, usable ones.",
-	"Transposon": "Transposons are genetic parasites that can modify genes in various, unpredictable ways.",
-	"Pseudogene": "Psuedogenes can still mutate, but are damaged to the point of inactivity."
+	"Replication": "%s increases the probability for successful gene modifications.",
+	"Locomotion": "%s aids with movement in the world map.",
+	"Manipulation": "%s aids with the efficient use of resources.",
+	"Sensing": "%s aids with the ability to sense nearby resources and to detect the effectiveness of internal functions.",
+	"Construction": "%s increases the amount of energy and resources which can be banked for subsequent turns.",
+	"Deconstruction": "%s aids with the breaking down of complicated resources into simpler, usable ones.",
+	"Helper": "%s aids with all functionality of other genes.",
+	"Component": "%s creates structure for your organism.",
+	
+	"Transposon": "%ss are genetic parasites that can modify genes in various, unpredictable ways.",
+	"Pseudogene": "%ss can still mutate, but are damaged to the point of inactivity."
 };
 
 const COMPARE_TTIPS = {
@@ -56,19 +72,25 @@ const WORLDMAP_TTIPS = {
 	"resource_on_tile": "This is %s and it is a %s."
 };
 
-const GENE_TYPE_DESC = "This is a %s%s.";
+const GENE_TYPE_DESC = "This is %s %s%s.";
 const UNNAMED_GENES = ["Transposon", "Pseudogene"];
 const GENE_TTIP_FORMAT = "%s\n\n%s";
 const STATUS_TTIP_FORMAT = "%s\n\n%s";
+
+func _get_gene_desc(type : String):
+	return BASE_TTIPS[type] % GENE_NAMES[type];
 
 func get_gene_ttip(type):
 	var gene_title = " gene";
 	if (type in UNNAMED_GENES):
 		gene_title = "";
-	return GENE_TTIP_FORMAT % [(GENE_TYPE_DESC % [type, gene_title]), BASE_TTIPS[type]];
+	var article = "a";
+	if type == "Construction":
+		article = "an"; # "this is *an* Assembly gene"
+	return GENE_TTIP_FORMAT % [(GENE_TYPE_DESC % [article, GENE_NAMES[type], gene_title]), _get_gene_desc(type)];
 
 func get_status_ttip(type, compare):
-	return STATUS_TTIP_FORMAT % [BASE_TTIPS[type], COMPARE_TTIPS[compare]];
+	return STATUS_TTIP_FORMAT % [_get_gene_desc(type), COMPARE_TTIPS[compare]];
 
 
 #	888888ba  oo                   dP                   
@@ -162,15 +184,16 @@ func set_gene_ttip(type, ph_pref):
 	var gene_title = "%s Gene";
 	if (type in UNNAMED_GENES):
 		gene_title = "%s";
-	set_tooltip_text("%s\n\nThis gene operates optimally at a pH of %.2f." % [BASE_TTIPS[type], ph_pref], gene_title % type);
+	set_tooltip_text("%s\n\nThis gene operates optimally at a pH of %.2f." % [get_gene_ttip(type), ph_pref], gene_title % GENE_NAMES[type]);
 
 func set_status_ttip(type, compare):
-	set_tooltip_text(STATUS_TTIP_FORMAT % [BASE_TTIPS[type], COMPARE_TTIPS[compare]], type);
+	set_tooltip_text(get_status_ttip(type, compare), GENE_NAMES[type]);
 
 
 
-# Rather than setting up mouse_entered and mouse_exited signals on every single node,
-# just call setup_delay_handler(self) and include either a get_tooltip_data() func (which is preferred) or a tooltip_text String
+# Rather than setting up mouse_entered and mouse_exited signals on every single node, just
+# call setup_delay_handler(self) and include either a
+# get_tooltip_data() func (which is preferred) or a tooltip_text String
 
 # get_tooltip_data() should return an array [callback : String, args : Array]
 # it can also just return an args array, and it will assume a set_tooltip_text callback
@@ -192,13 +215,14 @@ func _handle_mouse_enter(for_node : CanvasItem):
 		var data = for_node.call(DISP_DATA_FUNC_NAME);
 		if (data.size() > 0):
 			# If the data is empty, do nothing
-			if (data.size() != 2 || typeof(data[0]) != TYPE_STRING || typeof(data[1]) != TYPE_ARRAY):
-				# If the data is just the array of args, assume a default callback
-				callv("set_tooltip_text", data);
-			else:
-				# Otherwise, use the explicit callback
+			if (data.size() == 2 && typeof(data[0]) == TYPE_STRING && typeof(data[1]) == TYPE_ARRAY):
+				# If the data fits [String, Array], do the explicit callback
 				callv(data[0], data[1]);
+			else:
+				# Otherwise, assume the default callback
+				callv("set_tooltip_text", data);
 	elif DISP_DATA_STR_NAME in for_node:
+		# If the hanlded node doesn't have get_tooltip_data() but does have a tooltip_text var, use it
 		disp_ttip_text(for_node, for_node.get(DISP_DATA_STR_NAME));
 	else:
 		disp_ttip_text(null, "You need to include either String %s or func %s() in nodes that make use of the tooltip auto-handler." % [DISP_DATA_STR_NAME, DISP_DATA_FUNC_NAME], "No data!");

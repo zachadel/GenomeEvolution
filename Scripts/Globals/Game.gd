@@ -2,10 +2,9 @@ extends Node
 
 var sqelm_textures = {"gene": load("res://Assets/Images/gene.png"), "break": load("res://Assets/Images/break.png")};
 var ess_textures = {};
-var ess_textures_noDNA = {};
 var default_te_texture = load("res://Assets/Images/tes/default_te.png");
 
-enum ESSENTIAL_CLASSES {Replication, Locomotion, Manipulation, Sensing, Construction, Deconstruction};
+enum ESSENTIAL_CLASSES {Replication, Locomotion, Helper, Manipulation, Sensing, Component, Construction, Deconstruction};
 enum TURN_TYPES {Map, NewTEs, TEJump, RepairBreaks, EnvironmentalDamage, Recombination, Evolve, CheckViability, Replication};
 
 #NOTE: It may be worthwhile to store dicts which go from biome_index -> string
@@ -139,7 +138,6 @@ func _ready():
 	
 	for c in ESSENTIAL_CLASSES.values():
 		ess_textures[c] = load("res://Assets/Images/genes/" + class_to_string(c) + ".png");
-		ess_textures_noDNA[c] = load("res://Assets/Images/genes_noDNA/" + class_to_string(c) + ".png"); #textures for genes w/o DNA background
 	
 	# Import ATE Personalities
 	load_personalities("ate_personalities", ate_personalities);
@@ -188,20 +186,7 @@ func add_int_dicts(dict0, dict1):
 	return added_dict
 
 func class_to_string(type):
-	match (type):
-		ESSENTIAL_CLASSES.Replication:
-			return "Replication";
-		ESSENTIAL_CLASSES.Locomotion:
-			return "Locomotion";
-		ESSENTIAL_CLASSES.Manipulation:
-			return "Manipulation";
-		ESSENTIAL_CLASSES.Sensing:
-			return "Sensing";
-		ESSENTIAL_CLASSES.Construction:
-			return "Construction";
-		ESSENTIAL_CLASSES.Deconstruction:
-			return "Deconstruction";
-	return "";
+	return ESSENTIAL_CLASSES.keys()[type];
 
 const DEFAULT_ATE_RANGE_BEHAVIOR = {
 	"this_cmsm": true, #Can jump to another spot on this chromosome

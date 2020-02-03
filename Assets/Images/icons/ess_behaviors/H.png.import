@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Construction.png-95309f378740261d46e5cee50f2be1ef.stex"
+path="res://.import/H.png-6f45b8a6dd8e2437bcc2ccdcf54407fc.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Images/genes_noDNA/Construction.png"
-dest_files=[ "res://.import/Construction.png-95309f378740261d46e5cee50f2be1ef.stex" ]
+source_file="res://Assets/Images/icons/ess_behaviors/H.png"
+dest_files=[ "res://.import/H.png-6f45b8a6dd8e2437bcc2ccdcf54407fc.stex" ]
 
 [params]
 
