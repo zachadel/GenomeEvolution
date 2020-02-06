@@ -1,0 +1,187 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Scripts/WorldMap/InternalResourceController.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/WorldMap/EnergyBar.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/WorldMap/Vesicle.tscn" type="PackedScene" id=3]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.6, 0.6, 0.6, 0.545098 )
+
+[sub_resource type="Theme" id=2]
+
+[sub_resource type="DynamicFontData" id=3]
+font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
+
+[sub_resource type="DynamicFont" id=4]
+size = 14
+font_data = SubResource( 3 )
+
+[node name="InternalResourceController" type="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -1320.0
+margin_bottom = -325.0
+mouse_filter = 2
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 1 )
+
+[node name="ComplexCarbsLabel2" type="RichTextLabel" parent="."]
+margin_top = 10.0
+margin_right = 280.0
+margin_bottom = 35.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource( 2 )
+custom_fonts/normal_font = SubResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[center]Available Energy[/center]"
+text = "Available Energy"
+scroll_active = false
+
+[node name="EnergyBar" parent="." instance=ExtResource( 2 )]
+margin_left = 10.0
+margin_top = 40.0
+margin_right = -270.0
+margin_bottom = -430.0
+rect_scale = Vector2( 0.433, 0.75 )
+
+[node name="simple_carbs" parent="." instance=ExtResource( 3 )]
+position = Vector2( 70, 191 )
+scale = Vector2( 0.75, 0.75 )
+
+[node name="complex_carbs" parent="." instance=ExtResource( 3 )]
+position = Vector2( 210, 191 )
+scale = Vector2( 0.5, 0.5 )
+
+[node name="simple_fats" parent="." instance=ExtResource( 3 )]
+position = Vector2( 70, 349 )
+scale = Vector2( 0.75, 0.75 )
+
+[node name="complex_fats" parent="." instance=ExtResource( 3 )]
+position = Vector2( 210, 349 )
+scale = Vector2( 0.5, 0.5 )
+
+[node name="simple_proteins" parent="." instance=ExtResource( 3 )]
+position = Vector2( 70, 507 )
+scale = Vector2( 0.75, 0.75 )
+
+[node name="complex_proteins" parent="." instance=ExtResource( 3 )]
+position = Vector2( 210, 507 )
+scale = Vector2( 0.5, 0.5 )
+
+[node name="LabelColumns" type="HBoxContainer" parent="."]
+margin_top = 105.0
+margin_right = 280.0
+margin_bottom = 575.0
+mouse_filter = 2
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="SimpleLabels" type="VBoxContainer" parent="LabelColumns"]
+margin_right = 138.0
+margin_bottom = 470.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="SimpleCarbsLabel" type="RichTextLabel" parent="LabelColumns/SimpleLabels"]
+margin_right = 138.0
+margin_bottom = 154.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource( 2 )
+custom_fonts/normal_font = SubResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[center]Sugars[/center]"
+text = "Sugars"
+scroll_active = false
+
+[node name="SimpleFatsLabel" type="RichTextLabel" parent="LabelColumns/SimpleLabels"]
+margin_top = 158.0
+margin_right = 138.0
+margin_bottom = 312.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource( 2 )
+custom_fonts/normal_font = SubResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[center]Simple Fats
+[/center]"
+text = "Simple Fats
+"
+scroll_active = false
+
+[node name="SimpleProteinsLabel" type="RichTextLabel" parent="LabelColumns/SimpleLabels"]
+margin_top = 316.0
+margin_right = 138.0
+margin_bottom = 470.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource( 2 )
+custom_fonts/normal_font = SubResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[center]Simple Proteins
+[/center]"
+text = "Simple Proteins
+"
+scroll_active = false
+
+[node name="ComplexLabels" type="VBoxContainer" parent="LabelColumns"]
+margin_left = 142.0
+margin_right = 280.0
+margin_bottom = 470.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ComplexCarbsLabel" type="RichTextLabel" parent="LabelColumns/ComplexLabels"]
+margin_right = 138.0
+margin_bottom = 154.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource( 2 )
+custom_fonts/normal_font = SubResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[center]Complex Carbs[/center]"
+text = "Complex Carbs"
+scroll_active = false
+
+[node name="ComplexFatsLabel" type="RichTextLabel" parent="LabelColumns/ComplexLabels"]
+margin_top = 158.0
+margin_right = 138.0
+margin_bottom = 312.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource( 2 )
+custom_fonts/normal_font = SubResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[center]Complex Fats[/center]"
+text = "Complex Fats"
+scroll_active = false
+
+[node name="ComplexProteinsLabel" type="RichTextLabel" parent="LabelColumns/ComplexLabels"]
+margin_top = 316.0
+margin_right = 138.0
+margin_bottom = 470.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource( 2 )
+custom_fonts/normal_font = SubResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[center]Complex Proteins
+[/center]"
+text = "Complex Proteins
+"
+scroll_active = false
+
+[node name="SelectionArea" type="ColorRect" parent="."]
+mouse_filter = 2
+color = Color( 1, 1, 1, 0.490196 )

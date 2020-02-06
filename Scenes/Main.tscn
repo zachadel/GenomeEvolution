@@ -24,6 +24,7 @@ margin_left = 709.787
 margin_top = -91.1203
 margin_right = -522.213
 margin_bottom = -33.1203
+popup_exclusive = true
 window_title = "Game Over!"
 dialog_text = "You died! Please press OK to return to the Title Screen."
 

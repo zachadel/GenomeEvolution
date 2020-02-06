@@ -11,8 +11,14 @@ enum TURN_TYPES {Map, NewTEs, TEJump, RepairBreaks, EnvironmentalDamage, Recombi
 #NOTE: It may be worthwhile to store dicts which go from biome_index -> string
 #and string -> biome_index, since both operations are needed frequently
 var biomes = {}
+var biome_index_to_string = {}
+var biome_string_to_index = {}
+
 #resources['resource']['tier/biome/etc']
 var resources = {}
+var resource_index_to_string = {}
+var resource_string_to_index = {}
+
 #resources['group'][]
 var resource_groups = {}
 var hazards = {}
@@ -24,6 +30,88 @@ var hazards = {}
 #							}
 #
 var modified_tiles = {}
+var mouse_resource = "" #Determines what needs to be drawn on the screen
+
+var cells = {}
+
+const SEPARATOR = '_'
+const IMAGE_TYPE = ".png"
+const CELL_IMAGE_TYPE = ".svg"
+const WORLD_UI_PATH = "res://Assets/Images/Tiles/Resources/"
+const CELL_TEXTURES_PATH = "res://Assets/Images/Cells/"
+
+const CFP_RESOURCES = ["carbs", "fats", "proteins"]
+
+#VALID_INTERACTIONS[FROM][TO]
+const VALID = 1
+const INVALID = 0
+const VALID_INTERACTIONS = {
+	"simple_carbs": {
+		"simple_carbs": VALID,
+		"complex_carbs": VALID,
+		"simple_fats": VALID,
+		"complex_fats": INVALID,
+		"simple_proteins": VALID,
+		"complex_proteins": INVALID,
+		"energy": VALID
+	},
+	"complex_carbs": {
+		"simple_carbs": VALID,
+		"complex_carbs": VALID,
+		"simple_fats": INVALID, 
+		"complex_fats": INVALID, 
+		"simple_proteins": INVALID, 
+		"complex_proteins":INVALID,
+		"energy": INVALID
+	},
+	"simple_fats": {
+		"simple_carbs": VALID,
+		"complex_carbs": INVALID,
+		"simple_fats": VALID, 
+		"complex_fats": VALID,
+		"simple_proteins": VALID,
+		"complex_proteins": INVALID,
+		"energy": VALID
+	},
+	"complex_fats": {
+		"simple_carbs": INVALID,
+		"complex_carbs": INVALID,
+		"simple_fats": VALID,
+		"complex_fats": VALID,
+		"simple_proteins": INVALID,
+		"complex_proteins": INVALID,
+		"energy": INVALID
+	},
+	"simple_proteins": {
+		"simple_carbs": VALID,
+		"complex_carbs": INVALID,
+		"simple_fats": VALID,
+		"complex_fats": INVALID,
+		"simple_proteins": VALID, 
+		"complex_proteins": INVALID,
+		"energy": VALID
+	},
+	"complex_proteins": {
+		"simple_carbs": INVALID,
+		"complex_carbs": INVALID,
+		"simple_fats": INVALID,
+		"complex_fats": INVALID,
+		"simple_proteins": VALID,
+		"complex_proteins":	INVALID,
+		"energy": INVALID
+	},
+	"energy": {
+		"simple_carbs": VALID,
+		"complex_carbs": INVALID,
+		"simple_fats": VALID,
+		"complex_fats": INVALID,
+		"simple_proteins": VALID,
+		"complex_proteins": INVALID,
+		"energy": INVALID
+	}
+}
+const RESOURCE_COLLISION_SIZE = Vector2(96, 82) * .187
+const RESOURCE_PATH = "res://Scenes/WorldMap/Collision/"
 
 const PRIMARY_RESOURCE_MAX = 10
 const PRIMARY_RESOURCE_MIN = 5
@@ -145,14 +233,18 @@ func _ready():
 	
 	# Load up biome information
 	load_cfg("biomes", biomes)
+	populate_biome_conversion_dicts()
 	
 	# Load up resource information
 	load_cfg("resources", resources)
-	print(resources.keys())
-	resource_groups = sort_resources_by_group_then_tier(resources)
+	populate_resource_conversion_dicts()
 	
 	# Load up hazard information
 	load_cfg("hazards", hazards)
+	
+	# Load up cell information
+	load_cfg("cells", cells)
+	populate_cell_texture_paths()
 
 func restart_game():
 	turn_idx = 0
@@ -330,11 +422,38 @@ func load_cfg(data_name, dict):
 	else:
 		print(err)
 
+func populate_biome_conversion_dicts():
+	var biome_keys = biomes.keys()
+	for i in len(biome_keys):
+		biome_index_to_string[i] = biome_keys[i]
+		biome_string_to_index[biome_index_to_string[i]] = i
+		
+func populate_resource_conversion_dicts():
+	var resource_keys = resources.keys()
+	for i in len(resource_keys):
+		resource_index_to_string[i] = resource_keys[i]
+		resource_string_to_index[resource_index_to_string[i]] = i
+		
+	resource_groups = sort_resources_by_group_then_tier(resources)
+
+func populate_cell_texture_paths():
+	for cell in cells.keys():
+		for part in cells[cell].keys():
+			if not cells[cell][part]:
+				cells[cell][part] = CELL_TEXTURES_PATH + part + '/' + part + SEPARATOR + cell + CELL_IMAGE_TYPE
+
 func get_resource_from_index(resource_index):
 	return Game.resources.keys()[resource_index]
 	
 func get_index_from_resource(resource):
 	return Game.resources.keys().find(resource)
+	
+#Returns [simple/complex]_[carbs/fats/proteins] or the charge of the mineral
+func get_class_from_name(resource_name: String):
+	if resources[resource_name]["group"] == "minerals":
+		return resources[resource_name]["tier"] #returns the charge
+	else:
+		return Game.resources[resource_name]["tier"] + Game.SEPARATOR + Game.resources[resource_name]["group"]
 
 func find_resource_biome_index(resource_index, biome_index):
 	return Game.resources[Game.resources.keys()[resource_index]]["biomes"].find(Game.biomes.keys()[biome_index])
@@ -354,14 +473,69 @@ func sort_resources_by_group_then_tier(resources_dict):
 		else:
 			if not resources_dict[key]["tier"] in group_dict[resources_dict[key]["group"]]:
 				group_dict[resources_dict[key]["group"]][resources_dict[key]["tier"]] = {
-					key: resources_dict[key]["factor"]	
+					key: resources_dict[key]["factor"]
 				}
 			else:
 				group_dict[resources_dict[key]["group"]][resources_dict[key]["tier"]][key]=resources_dict[key]["factor"]
 	
 	return group_dict
+
+func simple_to_pretty_name(resource: String):
+	match(resource):	
+		#BIOME GROUPS
+		"high_altitude":
+			return "High Altitude Biome"
+			
+		#BIOMES
+		"ocean_fresh":
+			return "Fresh Water Ocean"
+		"ocean_salt":
+			return "Salt Water Ocean"
+		"shallow_fresh":
+			return "Fresh Water Shallows"
+		"shallow_salt":
+			return "Salt Water Shallows"
+			
+		#RESOURCE CLASSES:
+		"simple_carbs":
+			return "Sugars"
+		var all_others:
+			return all_others.capitalize()
+		
+#Returns the resource that processing the resource would yield
+func get_downgraded_resource(resource: String):
+	return resources[resource]["downgraded_form"]
 	
+func get_upgraded_resource(resource: String):
+	return resources[resource]["upgraded_form"]
+
+#Can also take
+func get_resource_icon(resource):
+	var icon = ""
 	
+	if resource in Game.resources:
+		icon = Game.WORLD_UI_PATH + Game.resources[resource]["tile_image"].insert(Game.resources[resource]["tile_image"].length() - IMAGE_TYPE.length(), "icon")
+	else:
+		icon = Game.WORLD_UI_PATH + resource + SEPARATOR + "icon" + Game.IMAGE_TYPE
+	
+	return icon
+	
+#Can accept energy, resource_class (simple_carbs/complex_fats, etc.), or resource_names
+func is_valid_interaction(resource_from: String, resource_to: String):
+	if resource_from in resources.keys():
+		if resource_to == resources[resource_from]["upgraded_form"] or resource_to == resources[resource_from]["downgraded_form"]:
+			return true
+		elif resource_to in VALID_INTERACTIONS.keys():
+			var resource_class = get_class_from_name(resource_from)
+			return VALID_INTERACTIONS[resource_class][resource_to] == VALID
+	
+	elif resource_from in VALID_INTERACTIONS.keys():
+		if resource_to in VALID_INTERACTIONS.keys():
+			return VALID_INTERACTIONS[resource_from][resource_to] == VALID
+		else:
+			var resource_class = get_class_from_name(resource_to)
+			return VALID_INTERACTIONS[resource_from][resource_class] == VALID
+
 #########################MAP FUNCTIONS AND CONVERTERS##########################
 const cube_to_pixel = Transform2D(Vector2(sqrt(3)/2, 1.0/2.0), Vector2(0, 1), Vector2(0,0))
 const pixel_to_cube = Transform2D(Vector2(2*sqrt(3)/3, -sqrt(3)/3), Vector2(0, 1), Vector2(0,0))
@@ -438,4 +612,4 @@ func world_to_map(pos: Vector2, tile_size: Vector2 = Vector2(72*2/sqrt(3), 82)):
 #	temp_vec.y /= tile_size.y
 	temp_vec = Vector3(temp_vec.x, temp_vec.y, -temp_vec.x - temp_vec.y)
 	
-	return round_tile(temp_vec)	
+	return round_tile(temp_vec)

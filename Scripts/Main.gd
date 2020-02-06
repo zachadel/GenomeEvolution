@@ -9,7 +9,7 @@ enum GSTATE {
 var gstate = GSTATE.TITLE
 var state_label = ["Title", "Map", "Table"]
 
-var chunk_size = 23
+var chunk_size = 15
 
 #Players will never be seen in the editor as a child node
 #They are passed around and implicitly defined as children
@@ -28,6 +28,7 @@ func _ready():
 	$WorldMap/WorldMap_UI.hide()
 	
 	$Canvas_CardTable/CardTable.hide()
+	Tooltips.organism = $Canvas_CardTable/CardTable/Organism
 
 ###########################WORLD MAP SIGNAL HANDLING###########################
 

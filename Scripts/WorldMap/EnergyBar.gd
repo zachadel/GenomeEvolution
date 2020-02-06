@@ -1,8 +1,6 @@
 extends Control
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+signal resource_clicked(resource, value)
 
 const MAX_ENERGY_UNITS = 25
 const MAX_RECT_SIZE = Vector2(500, 45)
@@ -13,7 +11,12 @@ var MAX_ENERGY = 100
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	update_energy_allocation(energy)
+	Tooltips.setup_delayed_tooltip(self)
 	pass # Replace with function body.
+	
+func _gui_input(event):
+	if event.is_action_pressed("mouse_left"):
+		emit_signal("resource_clicked", "energy", energy)
 
 func update_energy_allocation(amount):
 	var children = $HBoxContainer.get_children()
@@ -26,6 +29,16 @@ func update_energy_allocation(amount):
 			children[i].self_modulate = Color(1,1,1,1)
 		else:
 			children[i].self_modulate = Color(1,1,1,0)
-	
-	hint_tooltip = Tooltips.WORLDMAP_UI_TTIPS["energy"] % energy
 
+<<<<<<< 34f672d1298af7d2b70092982bbe1571b09eb80d
+=======
+func _on_Organism_energy_changed(energy):
+	update_energy_allocation(energy)
+	pass # Replace with function body.
+	
+func get_tooltip_data():
+	var data = []
+	data.append("set_energy_ttip")
+	data.append([energy])
+	return data
+>>>>>>> Vesicle system implemented; lots of bugs still; animation for tranposons

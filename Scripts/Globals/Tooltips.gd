@@ -66,8 +66,9 @@ const WORLDMAP_UI_TTIPS = {
 	"title": "Exit to the title screen.",
 	"end_turn": "End the current map turn and proceed to the chromosome screen.",
 	"energy": "Energy: %.2f",
-	"resource": "%s: %.2f",
-	"mineral_level": "Current: %.2f\nMaximum: %.2f\nMinimum: %.2f"
+	"resource": "This is %s.  It yields %s and is in the resource group %s.  There are %.2f units worth on your current tile.",
+	"mineral_level": "Current: %.2f\nMaximum: %.2f\nMinimum: %.2f",
+	"cfp_bank": "These are your tier %s %s resources.  They can be converted to %s at a rate of 1 %s for %.2f %s.  This action will cost %.2f energy."
 };
 
 const WORLDMAP_TTIPS = {
@@ -108,7 +109,6 @@ func get_gene_ttip(type : String) -> String:
 
 func get_status_ttip(type : String, compare : String) -> String:
 	return STATUS_TTIP_FORMAT % [_get_gene_desc(type), COMPARE_TTIPS[compare]];
-
 
 #	888888ba  oo                   dP                   
 #	88    `8b                      88                   
@@ -205,6 +205,104 @@ func set_gene_ttip(type, ph_pref):
 
 func set_status_ttip(type, compare):
 	set_tooltip_text(get_status_ttip(type, compare), GENE_NAMES[type]);
+
+func set_energy_ttip(energy):
+	TooltipBody.clear()
+	
+	var pretty_resource_name = Game.simple_to_pretty_name("energy")
+	
+	TooltipTitle.text = pretty_resource_name
+	
+	var energy_icon = Game.get_resource_icon("energy")
+	
+	var image = "[center][img]" + energy_icon + "[/img][/center]\n"
+	var yields = ""
+	
+		
+	for cfp in Game.CFP_RESOURCES:
+		var other_resource = cfp + Game.SEPARATOR + '0'
+		var pretty_other = Game.simple_to_pretty_name(other_resource)
+		var other_resource_icon = Game.get_resource_icon(other_resource)
+			
+		yields += "[b][u]%s to %s[/u][/b]: [img]%s[/img] X %.2f yields [img]%s[/img] X 1\n" \
+			% [pretty_resource_name, pretty_other, energy_icon, 3, other_resource_icon]
+	
+	var description = "[b][u]Description[/u][/b]: This is your cell's energy bar.  Energy is the currency of the cell and is used in all cellular functions like movement and resource acquisition. It can also be converted into the simple resources like Simple Carbs, Simple Fats, and Simple Proteins.\n\n"
+
+	TooltipBody.bbcode_text = image + description + yields
+
+func set_cfp_ttip(resource, value):
+	TooltipBody.clear()
+	
+	var pretty_resource_name = Game.simple_to_pretty_name(resource)
+	var split = resource.split(Game.SEPARATOR)
+	var tier
+	
+	TooltipTitle.text = pretty_resource_name
+	
+	var processed_resource = Game.get_process_resource_result(resource)
+	var pretty_processed_resource = Game.simple_to_pretty_name(processed_resource)
+	var how_it_can_be_used = ""
+	var processed_resource_icon = Game.get_resource_icon(processed_resource)
+	var resource_icon = Game.get_resource_icon(resource)
+	var energy_icon = Game.get_resource_icon("energy")
+	
+	var image = "[center][img]" + resource_icon + "[/img][/center]\n"
+	var yields = ""
+	
+	if tier == 0:
+		how_it_can_be_used = "can be used for energy or converted to the any of the other simple resources.  These are also involved in some internal cell processes like reproduction."
+		
+		for cfp in Game.CFP_RESOURCES:
+			if cfp != split[0]:
+				var other_resource = cfp + Game.SEPARATOR + '0'
+				var pretty_other = Game.simple_to_pretty_name(other_resource)
+				var other_resource_icon = Game.get_resource_icon(other_resource)
+				
+				yields += "[b][u]%s to %s[/u][/b]: [img]%s[/img] X 1 and [img]%s[/img] X %.2f yields [img]%s[/img] X %.2f\n" \
+				% [pretty_resource_name, pretty_other, resource_icon, energy_icon, 27, other_resource_icon, 15]
+		yields += "[b][u]%s to %s[/u][/b]: [img]%s[/img] X 1 and [img]%s[/img] X %.2f yields [img]%s[/img] X %.2f\n" \
+				% [pretty_resource_name, "Energy", resource_icon, energy_icon, 27, energy_icon, 15]
+	else:
+		how_it_can_be_used = "must be converted to simple resources before they can be used."
+		yields += "[b][u]%s to %s[/u][/b]: [img]%s[/img] X 1 and [img]%s[/img] X %.2f yields [img]%s[/img] X %.2f\n" % [pretty_resource_name, pretty_processed_resource, resource_icon, energy_icon, 42, processed_resource_icon, 84]
+	
+	var description = "[b][u]Description[/u][/b]: These are your cell's %s.  They %s\n\n" % [pretty_resource_name, how_it_can_be_used]
+
+	TooltipBody.bbcode_text = image + description + yields
+	
+func set_resource_ttip(resource, resource_group, tier, amount):
+	TooltipBody.clear()
+	TooltipTitle.text = Game.simple_to_pretty_name(resource)
+	
+	var pretty_resource_name = Game.simple_to_pretty_name(resource)
+	var processed_resource = Game.get_process_resource_result(resource)
+	var pretty_processed_resource = Game.simple_to_pretty_name(processed_resource)
+	var ext_resource_group = Game.simple_to_pretty_name(resource_group)
+	var how_it_can_be_used = ""
+	var processed_resource_icon = Game.get_resource_icon(processed_resource)
+	var resource_icon = Game.get_resource_icon(resource)
+	
+	if tier == 0:
+		how_it_can_be_used = "can be acquired by the cell and used for energy."
+	else:
+		how_it_can_be_used = "must be broken down by the cell before it can be acquired."
+	
+	var image = "[center][img]" + Game.resources[resource]["tile_image"] + "[/img][/center]\n"
+	var description = "[b][u]Description[/b][/u]: %s is a %s resource, and it %s.\n\n" % [pretty_resource_name, pretty_processed_resource, how_it_can_be_used]
+	var yields = "[b][u]Yields[/b][/u]: [img]%s[/img] X %.2f per [img]%s[/img]\n" % [processed_resource_icon, Game.resources[resource]["factor"], resource_icon]
+	var resource_class = "[b][u]Resource Group[/b][/u]: %s\n" % [ext_resource_group] #Complex/Simple Carbs/Fats/Proteins A/B
+	var amount_on_tile = "[b][u]Amount on Current Tile[/b][/u]: [img]%s[/img] X %.2f" % [resource_icon, amount]
+
+	
+	TooltipBody.bbcode_text = image + description + yields + resource_class + amount_on_tile
+	
+func set_test_ttip(image):
+	TooltipBody.clear()
+	TooltipBody.add_text("this is a resource  ")
+	TooltipBody.add_image(load(image))
+	TooltipBody.add_text("  X  10")
+	
 
 
 

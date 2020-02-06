@@ -24,6 +24,8 @@ var MIN_ZOOM = .5
 var ZOOM_UPDATE = .1
 var CAMERA_MOVEMENT = 10
 
+var move_enabled = false
+
 #this will be the case if the player sprite and the tiles are the same size
 var player_sprite_offset = Vector2(0,0)
 
@@ -43,6 +45,11 @@ var starting_pos = Vector2(0,0)
 var map_offset = Vector2(0,0)
 
 var tile_sprite_size = Vector2(0,0)
+
+onready var tween = get_node("MapZoom")
+onready var camera = get_node("MapCamera")
+
+const FINAL_TWEEN_ZOOM = Vector2(.1, .1)
 
 enum player_vision {HIDDEN, NOT_VISIBLE, VISIBLE}
 
@@ -94,16 +101,20 @@ func setup(biome_seed, hazard_seed, resource_seed, tiebreak_seed, _chunk_size, p
 	
 	astar.initialize_astar(current_player.organism.get_vision_radius(), funcref(self, "costs"))
 	
-	$WorldMap_UI/ResourceHazardPanel.set_resources(current_player.organism.current_tile["resources"])
-	$WorldMap_UI/ResourceHazardPanel.set_hazards(current_player.organism.current_tile["hazards"])
-	$WorldMap_UI/UIPanel/CFPBank.update_resources_values(current_player.organism.cfp_resources)
-	$WorldMap_UI/UIPanel/MineralLevels.update_resources_values(current_player.organism.mineral_resources)
-	$WorldMap_UI/UIPanel/EnergyBar.MAX_ENERGY = current_player.organism.MAX_ENERGY
-	$WorldMap_UI/UIPanel/EnergyBar.update_energy_allocation(current_player.organism.energy)
+	$WorldMap_UI.resource_ui.set_resources(current_player.organism.current_tile["resources"])
+	$WorldMap_UI.hazards_ui.set_hazards(current_player.organism.current_tile["hazards"])
+	$WorldMap_UI.irc.update_resources(current_player.organism.cfp_resources)
+	$WorldMap_UI.mineral_levels.update_resources_values(current_player.organism.mineral_resources)
+	$WorldMap_UI.irc.energy_bar.MAX_ENERGY = current_player.organism.MAX_ENERGY
+	$WorldMap_UI.irc.update_energy(current_player.organism.energy)
+	$WorldMap_UI.irc.set_organism(current_player.organism)
 	
 	$MapCamera.position = current_player.position
 	
 	$Path.default_color = Color(0,0,1)
+	
+	if !move_enabled:
+		$Path.hide()
 
 	if is_visible_in_tree():
 		$MapCamera.make_current()
@@ -122,8 +133,7 @@ func _process(delta):
 		var tile_index = $BiomeMap.get_cellv(tile_position_offset)
 		var player_tile = Game.world_to_map(current_player.position)
 		
-		if Game.get_distance_cubev(tile_position, player_tile) <= current_player.organism.get_vision_radius():
-			
+		if Game.get_distance_cubev(tile_position, player_tile) <= current_player.organism.get_vision_radius() and move_enabled:
 			$Path.clear_points()
 			
 			var path = astar.get_positions_and_costs_from_to(player_tile, tile_position)
@@ -136,6 +146,11 @@ func _process(delta):
 					
 				for i in range(len(path) - 1):
 					$Path.add_point(path[i]["location"])
+					
+			$Path.show()
+		elif !move_enabled:
+			$Path.clear_points()
+			$Path.hide()
 
 		$CursorHighlight.position = Game.map_to_world(tile_position)# + tile_sprite_size / 2
 		
@@ -144,12 +159,12 @@ func _process(delta):
 		var shift = Vector2(0,0)
 	
 		if Input.is_action_pressed("highlight_tile"):
-			$WorldMap_UI/ResourceHazardPanel.set_resources($ResourceMap.get_tile_resources(tile_position))
-			$WorldMap_UI/ResourceHazardPanel.set_hazards($BiomeMap.get_hazards(tile_position))
+			$WorldMap_UI.resource_ui.set_resources($ResourceMap.get_tile_resources(tile_position))
+			$WorldMap_UI.hazards_ui.set_hazards($BiomeMap.get_hazards(tile_position))
 		
 		if Input.is_action_just_released("highlight_tile"):
-			$WorldMap_UI/ResourceHazardPanel.set_resources($ResourceMap.get_tile_resources(player_tile))
-			$WorldMap_UI/ResourceHazardPanel.set_hazards($BiomeMap.get_hazards(player_tile))
+			$WorldMap_UI.resource_ui.set_resources($ResourceMap.get_tile_resources(player_tile))
+			$WorldMap_UI.hazards_ui.set_hazards($BiomeMap.get_hazards(player_tile))
 		
 		if Input.is_action_pressed("pan_up"):
 			$MapCamera.offset.y -= CAMERA_MOVEMENT*$MapCamera.zoom.y
@@ -202,33 +217,41 @@ func _unhandled_input(event):
 
 	if is_visible_in_tree():
 		if event.is_action_pressed("mouse_left"):
-			var tile_position = Game.world_to_map(get_global_mouse_position())
-			var tile_index = $BiomeMap.get_cellv(Game.cube_coords_to_offsetv(tile_position))
-			var player_tile = Game.world_to_map(current_player.position)
 			
-			if tile_position != player_tile:
+			if move_enabled:
+				var tile_position = Game.world_to_map(get_global_mouse_position())
+				var tile_index = $BiomeMap.get_cellv(Game.cube_coords_to_offsetv(tile_position))
+				var player_tile = Game.world_to_map(current_player.position)
 				
-				if move_player(tile_position) > 0:
+				if tile_position != player_tile:
+					
+					if move_player(tile_position) > 0:
+					
+						hide_tiles(player_tile, current_player.organism.get_vision_radius())
+						observe_tiles(tile_position, current_player.organism.get_vision_radius())
+						
+						$MapCamera.position = Game.map_to_world(tile_position)
+						$MapCamera.offset = Vector2(0,0)
+						
+						$WorldMap_UI.resource_ui.set_resources(current_player.organism.current_tile["resources"])
+						$WorldMap_UI.hazards_ui.set_hazards(current_player.organism.current_tile["hazards"])
+						
+						var tile_shift = Game.cube_coords_to_offsetv(tile_position) - $BiomeMap.center_indices
+						shift_maps(tile_shift, current_player.observed_tiles)
+					
+					#Prevents weird interpolation/snapping of camera if smoothing is desired
+		#			if $MapCamera.offset.length_squared() > 0:
+		#				$MapCamera.position = $MapCamera.position
+		#				$MapCamera.reset_smoothing()
 				
-					hide_tiles(player_tile, current_player.organism.get_vision_radius())
-					observe_tiles(tile_position, current_player.organism.get_vision_radius())
-					
-					$MapCamera.position = Game.map_to_world(tile_position)
-					$MapCamera.offset = Vector2(0,0)
-					
-					$WorldMap_UI/ResourceHazardPanel.set_resources(current_player.organism.current_tile["resources"])
-					$WorldMap_UI/ResourceHazardPanel.set_hazards(current_player.organism.current_tile["hazards"])
-					
-					var tile_shift = Game.cube_coords_to_offsetv(tile_position) - $BiomeMap.center_indices
-					shift_maps(tile_shift, current_player.observed_tiles)
-				
-				#Prevents weird interpolation/snapping of camera if smoothing is desired
-	#			if $MapCamera.offset.length_squared() > 0:
-	#				$MapCamera.position = $MapCamera.position
-	#				$MapCamera.reset_smoothing()
-			
-					emit_signal("tile_clicked", tile_index)
-	
+						emit_signal("tile_clicked", tile_index)
+			else:
+				move_enabled = true
+		
+		if event.is_action_pressed("mouse_right"):
+			if move_enabled:
+				move_enabled = false
+		
 		if event.is_action("zoom_in"):
 			$MapCamera.zoom.x = clamp($MapCamera.zoom.x - ZOOM_UPDATE, MIN_ZOOM, MAX_ZOOM)
 			$MapCamera.zoom.y = clamp($MapCamera.zoom.y - ZOOM_UPDATE, MIN_ZOOM, MAX_ZOOM)
@@ -350,8 +373,10 @@ func _on_WorldMap_UI_end_map_pressed():
 	current_player.set_current_tile(curr_tile) 
 	
 	$WorldMap_UI.hide()
-	current_player.enable_sprite(false)
-	emit_signal("end_map_turn")
+	current_player.sprite.highlight_part("nucleus")
+	print(camera.get_zoom(), FINAL_TWEEN_ZOOM)
+	tween.interpolate_property(camera, "zoom", camera.get_zoom(), FINAL_TWEEN_ZOOM, 1, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	tween.start()
 	pass # Replace with function body.
 
 
@@ -376,17 +401,17 @@ func _on_WorldMap_UI_acquire_resources():
 	pass # Replace with function body.
 
 
-func _on_WorldMap_UI_resource_clicked(resource):
-	var resource_group = resource.split('_')[0]
-	var tier = resource.split('_')[1]
-	
-	if resource_group in current_player.organism.cfp_resources:
-		var change = current_player.organism.downgrade_internal_cfp_resource(resource_group, int(tier))
-		
-		if change > 0:
-			emit_signal("player_energy_changed", current_player.organism.energy)
-			emit_signal("player_resources_changed", current_player.organism.cfp_resources, current_player.organism.mineral_resources)
-	pass # Replace with function body.
+#func _on_WorldMap_UI_resource_clicked(resource):
+#	var resource_group = resource.split('_')[0]
+#	var tier = resource.split('_')[1]
+#
+#	if resource_group in current_player.organism.cfp_resources:
+#		var change = current_player.organism.downgrade_internal_cfp_resource(resource_group, int(tier))
+#
+#		if change > 0:
+#			emit_signal("player_energy_changed", current_player.organism.energy)
+#			emit_signal("player_resources_changed", current_player.organism.cfp_resources, current_player.organism.mineral_resources)
+#	pass # Replace with function body.
 
 func _on_WorldMap_UI_eject_resource(resource, value):
 	var player_pos = Game.world_to_map(current_player.position)
@@ -401,4 +426,9 @@ func _on_WorldMap_UI_eject_resource(resource, value):
 	
 	$ResourceMap.update_tile_resource(player_pos, current_player.get_current_tile()["primary_resource"])
 	emit_signal("tile_changed", current_player.get_current_tile())
+	pass # Replace with function body.
+
+func _on_MapZoom_tween_completed(object, key):
+	current_player.enable_sprite(false)
+	emit_signal("end_map_turn")
 	pass # Replace with function body.

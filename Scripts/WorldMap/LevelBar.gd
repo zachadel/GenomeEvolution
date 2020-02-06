@@ -18,6 +18,7 @@ func _ready():
 	rect_size = Vector2($Outline.rect_size.x, $Icon.rect_size.y + $Outline.rect_size.y)
 	
 	update_value(value)
+	Tooltips.setup_delayed_tooltip(self)
 
 	pass # Replace with function body.
 
@@ -31,25 +32,25 @@ func set_resource(string):
 	
 func set_MAXIMUM(amount):
 	MAXIMUM_VALUE = amount
-	hint_tooltip = Tooltips.WORLDMAP_UI_TTIPS["mineral_level"] % [value, MAXIMUM_VALUE, MINIMUM_VALUE]
 	update_level_pos()
 
 func set_MINIMUM(amount):
 	MINIMUM_VALUE = amount
-	hint_tooltip = Tooltips.WORLDMAP_UI_TTIPS["mineral_level"] % [value, MAXIMUM_VALUE, MINIMUM_VALUE]
 	update_level_pos()
 
 func update_level_pos():
 	$Level.rect_position.y = $Bar/Meter.rect_position.x + $Bar/Meter.rect_size.x - $Bar.get("custom_constants/margin_right") - clamp((value - MINIMUM_VALUE) / (MAXIMUM_VALUE - MINIMUM_VALUE) * $Bar/Meter.rect_size.x, 0, $Bar/Meter.rect_size.x - $Bar.get("custom_constants/margin_right"))
-	
-	hint_tooltip = Tooltips.WORLDMAP_UI_TTIPS["mineral_level"] % [value, MAXIMUM_VALUE, MINIMUM_VALUE]
-
-	$Outline.hint_tooltip = hint_tooltip
-	$Bar.hint_tooltip = hint_tooltip
-	$Level.hint_tooltip = hint_tooltip
-
+	print(rect_position)
+	print(rect_scale)
+	print(rect_size)
 func set_icon_texture(path):
 	$Icon.texture = load(path)
+	
+func get_tooltip_data():
+	var data = ["", ""]
+	data[0] = Tooltips.WORLDMAP_UI_TTIPS["mineral_level"] % [value, MAXIMUM_VALUE, MINIMUM_VALUE]
+	data[1] = Game.simple_to_pretty_name(resource)
+	return data
 
 func _on_LevelBar_gui_input(event):
 	if event.is_action_pressed("mouse_right"):

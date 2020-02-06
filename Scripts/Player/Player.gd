@@ -15,7 +15,7 @@ var organism
 
 var observed_tiles = {}
 
-var danger = [0, 0, 0, 0]
+onready var sprite = get_node("Body")
 
 const STARTING_POS = Vector2(0, 0)
 
@@ -30,13 +30,19 @@ func setup(x = STARTING_POS.x, y = STARTING_POS.y):
 	pass
 
 func enable_sprite(enable: bool):
-	$Sprite.visible = enable
+	sprite.visible = enable
+	
+func set_cell_type(cell_type: String):
+	sprite.set_cell_type(cell_type)
+	
+func get_cell_type():
+	return sprite.get_cell_type()
 	
 func get_texture_size():
-	return $Sprite.texture.get_size()
+	return sprite.texture.get_size()
 	
 func rotate_sprite(radians):
-	$Sprite.set_global_rotation(radians)
+	sprite.set_global_rotation(radians)
 	
 func set_current_tile(tile):
 	organism.current_tile = tile
@@ -58,14 +64,14 @@ func is_alive_resource_check():
 	var mineral_alive = true
 	var cfp_alive = false
 	
-	for mineral in organism.mineral_resources:
-		if organism.mineral_resources[mineral][0] < Game.resources[mineral]["safe_range"][0] or organism.mineral_resources[mineral][0] > Game.resources[mineral]["safe_range"][1]:
+	for charge in organism.mineral_resources:
+		if organism.mineral_resources[charge]["total"] < Game.resources[organism.mineral_resources[charge].keys()[0]]["safe_range"][0] or organism.mineral_resources[charge]["total"] > Game.resources[organism.mineral_resources[charge].keys()[0]]["safe_range"][1]:
 			mineral_alive = false
 			break
 		
 	for resource in organism.cfp_resources:
 		for tier in organism.cfp_resources[resource]:
-			if organism.cfp_resources[resource][tier] != 0:
+			if organism.cfp_resources[resource][tier] != 0: #Need to edit to account for total energy
 				cfp_alive = true
 				break
 	
