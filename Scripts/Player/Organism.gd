@@ -107,7 +107,6 @@ var MIN_ENERGY = 0;
 var MAX_ENERGY = 25;
 var MAX_ALLOCATED_ENERGY = 10;
 var energy_allocations
-onready var energy_allocation_panel = get_node("../pnl_energy_allocation");
 
 var max_equality_dist = 10 setget ,get_max_gene_dist;
 var reproduct_gene_pool = [] setget ,get_gene_pool;
@@ -1093,7 +1092,6 @@ func update_energy(amount):
 		energy = MIN_ENERGY;
 	elif (energy > MAX_ENERGY):
 		energy = MAX_ENERGY;
-	energy_allocation_panel.update_energy(energy);
 
 func update_energy_allocation(type, amount):
 	#print(type);
@@ -1103,8 +1101,6 @@ func update_energy_allocation(type, amount):
 		return;
 	energy -= amount;
 	energy_allocations[type] += amount;
-	energy_allocation_panel.update_energy_allocation(type, energy_allocations[type]);
-	energy_allocation_panel.update_energy(energy);
 
 #NOTE: Energy costs are always per unit
 var costs = {

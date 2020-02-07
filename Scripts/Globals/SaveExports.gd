@@ -15,19 +15,21 @@ var HTTP := HTTPRequest.new();
 var request_queue := [];
 
 func _ready():
-	add_child(HTTP);
+# warning-ignore:return_value_discarded
 	HTTP.connect("request_completed", self, "_on_HTTP_request_completed");
+	add_child(HTTP);
 
 func sanitize_replace(s : String) -> String:
 	for k in SANITIZE_DICT:
 		s = s.replace(k, SANITIZE_DICT[k]);
 	return s;
 
+const NO_CLIPBOARD_OS = ["HTML5", "Server"];
 func exp_save_code(code : String) -> void:
-	OS.set_clipboard(code);
-	var txt = "%s?sid=%d&code=%s" % [SAVE_SITE, save_id, sanitize_replace(code)];
+	if !(OS.get_name() in NO_CLIPBOARD_OS):
+		OS.set_clipboard(code);
 	
-	request_queue.append("%s?sid=%d&code=%s" % [SAVE_SITE, save_id, txt]);
+	request_queue.append("%s?sid=%d&code=%s" % [SAVE_SITE, save_id, sanitize_replace(code)]);
 	if request_queue.size() == 1:
 		_pop_request();
 
@@ -36,7 +38,7 @@ func _pop_request():
 	if err != OK:
 		print("http error! ", err);
 
-func _on_HTTP_request_completed(result, response_code, headers, body):
+func _on_HTTP_request_completed(_result, _response_code, _headers, _body):
 	request_queue.remove(0);
 	if request_queue.size() > 0:
 		_pop_request();

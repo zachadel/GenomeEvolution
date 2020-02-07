@@ -21,6 +21,9 @@ size_flags_vertical = 4
 expand = true
 stretch_mode = 5
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Helix" type="TextureRect" parent="."]
 show_behind_parent = true
@@ -75,6 +78,8 @@ margin_left = -30.0
 margin_top = -35.0
 margin_right = 30.0
 margin_bottom = 25.0
+image_texture = null
+always_show = false
 
 [node name="IndicReplication" parent="." instance=ExtResource( 4 )]
 visible = false
@@ -84,6 +89,7 @@ margin_top = -35.0
 margin_right = 60.0
 margin_bottom = 25.0
 image_texture = ExtResource( 5 )
+always_show = false
 
 [node name="IndicLocomotion" parent="." instance=ExtResource( 4 )]
 visible = false
@@ -95,6 +101,7 @@ margin_top = -35.0
 margin_right = 6.0
 margin_bottom = 25.0
 image_texture = ExtResource( 6 )
+always_show = false
 
 [node name="IndicHelper" parent="." instance=ExtResource( 4 )]
 visible = false
@@ -106,6 +113,7 @@ margin_top = -35.0
 margin_right = 53.0
 margin_bottom = 25.0
 image_texture = ExtResource( 7 )
+always_show = false
 
 [node name="IndicManipulation" parent="." instance=ExtResource( 4 )]
 visible = false
@@ -116,6 +124,7 @@ margin_top = -35.0
 margin_right = 0.0
 margin_bottom = 25.0
 image_texture = ExtResource( 8 )
+always_show = false
 
 [node name="IndicSensing" parent="." instance=ExtResource( 4 )]
 visible = false
@@ -125,6 +134,7 @@ margin_top = -23.0
 margin_right = 60.0
 margin_bottom = 37.0
 image_texture = ExtResource( 9 )
+always_show = false
 
 [node name="IndicComponent" parent="." instance=ExtResource( 4 )]
 visible = false
@@ -136,6 +146,7 @@ margin_top = -23.0
 margin_right = 6.0
 margin_bottom = 37.0
 image_texture = ExtResource( 10 )
+always_show = false
 
 [node name="IndicConstruction" parent="." instance=ExtResource( 4 )]
 visible = false
@@ -147,6 +158,7 @@ margin_top = -23.0
 margin_right = 53.0
 margin_bottom = 37.0
 image_texture = ExtResource( 11 )
+always_show = false
 
 [node name="IndicDeconstruction" parent="." instance=ExtResource( 4 )]
 visible = false
@@ -157,6 +169,7 @@ margin_top = -23.0
 margin_right = 0.0
 margin_bottom = 37.0
 image_texture = ExtResource( 12 )
+always_show = false
 
 [node name="Tween" type="Tween" parent="."]
 [connection signal="mouse_entered" from="." to="." method="_on_SeqElm_mouse_entered"]

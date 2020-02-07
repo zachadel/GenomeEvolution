@@ -538,8 +538,9 @@ func get_active_behavior(jump): #if jump==false, get the copy range
 var toggle_rect_clr = {true: Color(0.5, 0.5, 0), false: Color(1, 1, 1)};
 func _on_SeqElm_toggled(on):
 	$BorderRect.modulate = toggle_rect_clr[on];
+	print("Hey! ", on);
 
-func set_size(size = null):
+func set_elm_size(size = null):
 	if (size == null):
 		size = DEFAULT_SIZE;
 	elif (size < MIN_SIZE):

@@ -423,7 +423,7 @@ func set_elms_size():
 	elif (get_child_count() > 0 && size > get_child(0).DEFAULT_SIZE):
 		size = get_child(0).DEFAULT_SIZE;
 	for elm in get_children():
-		elm.set_size(size);
+		elm.set_elm_size(size);
 
 func magnify_elm(elm):
 	if (!animating && !get_cmsm_pair().get_other_cmsm(self).animating):
