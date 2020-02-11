@@ -80,7 +80,7 @@ func _input(event):
 func _process(delta):
 	if Game.mouse_resource:
 		mouse_resource.rect_position = get_viewport().get_mouse_position()
-		print(get_global_mouse_position())
+#		print(get_global_mouse_position())
 	
 func update_resource(resource, value):
 	var split = resource.split(Game.SEPARATOR)
@@ -110,7 +110,7 @@ func clear_mouse():
 	Game.mouse_resource = ""
 
 func _on_resource_clicked(resource, value):
-	print(resource, ' ', value)
+#	print(resource, ' ', value)
 	if Game.mouse_resource == "":
 		Game.mouse_resource = resource
 		Input.set_custom_mouse_cursor(load(Game.get_resource_icon(resource)))
@@ -135,7 +135,7 @@ func _on_resource_clicked(resource, value):
 			
 		else:
 			var center = get_viewport_rect()
-			print(Game.mouse_resource, resource)
+#			print(Game.mouse_resource, resource)
 			warning.dialog_text = "Warning: %s cannot be converted to %s." % [Game.simple_to_pretty_name(Game.mouse_resource), Game.simple_to_pretty_name(resource)]
 			warning.popup(Rect2(center.position + center.size / 2, WARNING_SIZE))
 			clear_mouse()

@@ -51,14 +51,15 @@ var USEABLE_MINERALS_RANGES = ["iron", "manganese", "potassium", "zinc"]
 var current_tile = {}
 var max_cfp_stored = 100
 
-const DEFAULT_VESICLE_RADIUS = 33
+const DEFAULT_VES_SIZE = Vector2(72, 72)
+
 var vesicle_scales = {
-	"simple_carbs": .75,
-	"complex_carbs": .5,
-	"simple_fats": .75,
-	"complex_fats": .5,
-	"simple_proteins": .75,
-	"complex_proteins": .5
+	"simple_carbs": Vector2(.75, .75),
+	"complex_carbs": Vector2(.5, .5),
+	"simple_fats": Vector2(.75, .75),
+	"complex_fats": Vector2(.5, .5),
+	"simple_proteins": Vector2(.75, .75),
+	"complex_proteins": Vector2(.5, .5)
 }
 
 const SIMPLE_VESICLES_STEP = .25
@@ -127,6 +128,10 @@ func _ready():
 	gain_ates(1 + randi() % 6);
 	perform_anims(true);
 	born_on_turn = Game.round_num;
+	
+	for vesicle in vesicle_scales:
+		print(vesicle + ": ", get_estimated_capacity(vesicle))
+	print(cfp_resources)
 
 func populate_cfp_resources_dict():
 	for resource_type in Game.resource_groups:
@@ -136,8 +141,10 @@ func populate_cfp_resources_dict():
 				cfp_resources[resource_class] = {}
 				cfp_resources[resource_class]["total"] = 0
 				for resource in Game.resource_groups[resource_type][tier]:
-					cfp_resources[resource_class][resource] = randi() % (MAX_START_RESOURCES + 1) + MIN_START_RESOURCES
-					cfp_resources[resource_class]["total"] += cfp_resources[resource_class][resource]
+					var remaining_space = get_estimated_capacity(resource_class) - cfp_resources[resource_class]["total"]
+					if remaining_space > 0:
+						cfp_resources[resource_class][resource] = min(remaining_space, randi() % (MAX_START_RESOURCES) + MIN_START_RESOURCES)
+						cfp_resources[resource_class]["total"] += cfp_resources[resource_class][resource]
 	
 #minerals will eventually be divided by charge for now, no such division exists
 func populate_mineral_dict():
@@ -152,24 +159,29 @@ func populate_mineral_dict():
 					mineral_resources[resource_class]["total"] += mineral_resources[resource_class][resource]
 	print(mineral_resources)
 
+func get_vesicle_size(vesicle_name: String):
+	return Game.vec_mult(vesicle_scales[vesicle_name], DEFAULT_VES_SIZE)
+
 #For more info see https://math.stackexchange.com/questions/3007527/how-many-squares-fit-in-a-circle
 #See also https://math.stackexchange.com/questions/2984061/cover-a-circle-with-squares/2991025#2991025
-func get_estimated_capacity(circle_radius: float, object_length: float = Game.RESOURCE_COLLISION_SIZE.x):
+func get_estimated_capacity(vesicle_name: String, object_length: float = Game.RESOURCE_COLLISION_SIZE.y):
+	var ves_size = get_vesicle_size(vesicle_name)
 	
-	var ratio = circle_radius / object_length #vesicle radius / square icon side length
-	var capacity_0 = 0
-	var capacity_1 = 0
-	
-	for i in range(floor(ratio)):
-		capacity_0 += ceil(sqrt(pow(ratio, 2) - pow(i, 2)))	
-		capacity_1 += ceil(sqrt(pow(ratio, 2) - pow(i - .5, 2)) - .5)
-		
-	capacity_0 *= 4
-	
-	capacity_1 *= 4
-	capacity_1 += (2 * ceil(2*ratio) - 1)
-	
-	return max(capacity_0, capacity_1)
+	return int(ceil(ves_size.x*ves_size.y / (Game.RESOURCE_COLLISION_SIZE.x * Game.RESOURCE_COLLISION_SIZE.x)))
+#	var ratio = circle_radius / object_length #vesicle radius / square icon side length
+#	var capacity_0 = 0
+#	var capacity_1 = 0
+#
+#	for i in range(floor(ratio)):
+#		capacity_0 += ceil(sqrt(pow(ratio, 2) - pow(i, 2)))	
+#		capacity_1 += ceil(sqrt(pow(ratio, 2) - pow(i - .5, 2)) - .5)
+#
+#	capacity_0 *= 4
+#
+#	capacity_1 *= 4
+#	capacity_1 += (2 * ceil(2*ratio) - 1)
+#
+#	return max(capacity_0, capacity_1) + 1
 
 func set_vesicle_scale(scale: float, resource_class: String):
 	vesicle_scales[resource_class] = scale
@@ -184,10 +196,11 @@ func set_vesicle_scales(scales: Dictionary):
 	
 func recompute_vesicle_total(resource_class: String):
 	var sum = 0
+	var old_total = cfp_resources[resource_class]["total"]
 	for resource in cfp_resources[resource_class]:
 		sum += cfp_resources[resource_class][resource]
 		
-	cfp_resources[resource_class]["total"] = sum
+	cfp_resources[resource_class]["total"] = sum - old_total
 	
 	return sum
 	
@@ -1572,7 +1585,7 @@ func acquire_resources():
 	var max_capacities = {}
 	
 	for resource_class in vesicle_scales:
-		max_capacities[resource_class] = get_estimated_capacity(DEFAULT_VESICLE_RADIUS * vesicle_scales[resource_class])
+		max_capacities[resource_class] = get_estimated_capacity(resource_class)
 	
 	var cost_mult = get_cost_mult("acquire_resources")
 	var modified = false
@@ -1713,7 +1726,7 @@ func upgrade_cfp_resource(resource_from: String, resource_to: String, amount):
 					
 					#Make sure we have enough resources and enough room for the new resources
 					if cfp_resources[resource_class_from][resource_from] >= (upgraded_amount * tier_conversion) \
-					and cfp_resources[resource_class_to][resource_to] + upgraded_amount <= get_estimated_capacity(vesicle_scales[resource_class_to]*DEFAULT_VESICLE_RADIUS):
+					and cfp_resources[resource_class_to][resource_to] + upgraded_amount <= get_estimated_capacity(resource_class_to):
 						
 						cfp_resources[resource_class_from][resource_from] -= (upgraded_amount * tier_conversion)
 						cfp_resources[resource_class_to][resource_to] += upgraded_amount
@@ -1761,7 +1774,7 @@ func convert_cfp_to_cfp(resource_from: String, resource_to: String, amount):
 				
 				#Make sure we have enough resources and enough room for the new resources
 				if cfp_resources[resource_class_from][resource_from] >= used_amount \
-				and cfp_resources[resource_class_to][resource_to] + converted_amount <= get_estimated_capacity(vesicle_scales[resource_class_to]*DEFAULT_VESICLE_RADIUS):
+				and cfp_resources[resource_class_to][resource_to] + converted_amount <= get_estimated_capacity(resource_class_to):
 					
 					cfp_resources[resource_class_from][resource_from] -= used_amount
 					cfp_resources[resource_class_to][resource_to] += converted_amount
@@ -1813,13 +1826,14 @@ func downgrade_cfp_resource(resource_from: String, amount):
 			var cost = get_energy_cost("complex_to_simple", amount)
 			
 			#If we have the energy for the operation and we have the room for it
-			if cost <= energy and cfp_resources[downgraded_resource_class][downgraded_resource] + downgraded_amount <= get_estimated_capacity(vesicle_scales[downgraded_resource_class] * DEFAULT_VESICLE_RADIUS):
+			if cost <= energy and cfp_resources[downgraded_resource_class]["total"] + downgraded_amount <= get_estimated_capacity(downgraded_resource_class):
 				cfp_resources[downgraded_resource_class][downgraded_resource] += downgraded_amount
 				cfp_resources[resource_from_class][resource_from] -= amount
 				
 				use_resources("complex_to_simple", amount)
 			else:
 				downgraded_amount = 0
+				leftover_resources = amount
 				
 	return [downgraded_amount, leftover_resources]
 

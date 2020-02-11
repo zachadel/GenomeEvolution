@@ -22,10 +22,9 @@ func _ready():
 func get_random_velocity():
 	return Vector2(randf() * 2 * VELOCITY_MAX_X - VELOCITY_MAX_X, randf() * 2 * VELOCITY_MAX_Y - VELOCITY_MAX_Y)
 
-func _input_event(viewport, event, shape_idx):
-	if event.is_action_pressed("mouse_left"):
-		emit_signal("clicked", self)
-		print(name, ": clicked")
+#func _input_event(viewport, event, shape_idx):
+#	if event.is_action_pressed("mouse_left"):
+#		emit_signal("clicked", self)
 		
 func _physics_process(delta):
 	if picked_up:

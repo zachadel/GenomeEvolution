@@ -315,12 +315,6 @@ func construct_resources_dict_from_array_of_dicts(array_of_dicts):
 		
 	return resources_dict
 	
-<<<<<<< 34f672d1298af7d2b70092982bbe1571b09eb80d
-func _on_SubBar_pressed(resource):
-	emit_signal("resource_clicked", resource)
-	print(resource)
-=======
 func _on_SubBar_pressed(resource, value):
 	emit_signal("resource_clicked", resource, value)
-	print(resource)
->>>>>>> Vesicle system implemented; lots of bugs still; animation for tranposons
+#	print(resource)

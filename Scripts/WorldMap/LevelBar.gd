@@ -40,9 +40,9 @@ func set_MINIMUM(amount):
 
 func update_level_pos():
 	$Level.rect_position.y = $Bar/Meter.rect_position.x + $Bar/Meter.rect_size.x - $Bar.get("custom_constants/margin_right") - clamp((value - MINIMUM_VALUE) / (MAXIMUM_VALUE - MINIMUM_VALUE) * $Bar/Meter.rect_size.x, 0, $Bar/Meter.rect_size.x - $Bar.get("custom_constants/margin_right"))
-	print(rect_position)
-	print(rect_scale)
-	print(rect_size)
+#	print(rect_position)
+#	print(rect_scale)
+#	print(rect_size)
 func set_icon_texture(path):
 	$Icon.texture = load(path)
 	

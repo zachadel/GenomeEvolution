@@ -4,7 +4,7 @@
 [ext_resource path="res://Assets/Images/Tiles/Resources/vesicle.svg" type="Texture" id=2]
 
 [node name="Container" type="StaticBody2D"]
-position = Vector2( 716, 441 )
+position = Vector2( 690.604, 445.233 )
 input_pickable = true
 script = ExtResource( 1 )
 
@@ -13,7 +13,7 @@ texture = ExtResource( 2 )
 
 [node name="Collision" type="CollisionPolygon2D" parent="."]
 build_mode = 1
-polygon = PoolVector2Array( -14.3779, 31.0991, -9.27468, 33.4187, -2.54771, 34.4626, 4.64319, 34.5785, 11.4861, 32.9548, 17.9812, 29.8233, 24.1282, 25.184, 29.9273, 17.9931, 33.7547, 8.94646, 34.6826, -0.100159, 32.8269, -9.84267, 30.2753, -16.3377, 26.0999, -22.9487, 19.4104, -28.3197, 13.6128, -31.8153, 6.96283, -34.0455, -1.05148, -34.2877, -8.55415, -33.3499, -15.3748, -30.6217, -22, -26, -28, -20, -32, -12, -34, -4, -34, 4, -32.7031, 11.424, -29, 18, -24.8163, 23.7922, -19.2492, 28.5475 )
+polygon = PoolVector2Array( -25.0769, 35.1474, 25.8857, 35.4629, 32.3547, 31.6762, 35.668, 24.4184, 35.5103, -25.1242, 31.8813, -32.2243, 24.7813, -35.6954, -25.5502, -35.6954, -31.0725, -32.5399, -35.5833, -26.5055, -35.9637, 25.3651, -31.8615, 31.5185 )
 one_way_collision_margin = 0.0
 
 [node name="MouseDetection" type="Area2D" parent="."]
@@ -26,7 +26,8 @@ collision_layer = 2
 collision_mask = 2
 
 [node name="Collision2" type="CollisionPolygon2D" parent="MouseDetection"]
-polygon = PoolVector2Array( -14.3779, 31.0991, -9.27468, 33.4187, -2.54771, 34.4626, 4.64319, 34.5785, 11.4861, 32.9548, 17.9812, 29.8233, 24.1282, 25.184, 29.9273, 17.9931, 33.7547, 8.94646, 34.6826, -0.100159, 32.8269, -9.84267, 30.2753, -16.3377, 26.0999, -22.9487, 19.4104, -28.3197, 13.6128, -31.8153, 6.96283, -34.0455, -1.05148, -34.2877, -8.55415, -33.3499, -15.3748, -30.6217, -22, -26, -28, -20, -32, -12, -34, -4, -34, 4, -32.7031, 11.424, -29, 18, -24.8163, 23.7922, -19.2492, 28.5475 )
+build_mode = 1
+polygon = PoolVector2Array( -25.0769, 35.1474, 25.8857, 35.4629, 32.3547, 31.6762, 35.668, 24.4184, 35.5103, -25.1242, 31.8813, -32.2243, 24.7813, -35.6954, -25.5502, -35.6954, -31.0725, -32.5399, -35.5833, -26.5055, -35.9637, 25.3651, -31.8615, 31.5185 )
 one_way_collision_margin = 0.0
 [connection signal="mouse_entered" from="MouseDetection" to="." method="_on_Area2D_mouse_entered"]
 [connection signal="mouse_exited" from="MouseDetection" to="." method="_on_Area2D_mouse_exited"]

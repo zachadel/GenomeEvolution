@@ -14,10 +14,13 @@ var selected = false
 var true_start: Vector2
 var true_end: Vector2
 
+var energy_clicked = false
+
 var organism
 
 onready var draw_rect = get_node("SelectionArea")
 onready var energy_bar = get_node("EnergyBar")
+var energy_icon = load("res://Assets/Images/Tiles/Resources/energy_icon.png")
 
 var resources = {
 	"simple_carbs": {},
@@ -46,27 +49,28 @@ func _ready():
 			resources[resource_class][resource] = []
 			selected_resources[resource_class][resource] = []
 	
-	add_resource("candy1", 5)
-	add_resource("protein_shake", 5)
-	add_resource("avocado", 2)
-	
 	pass # Replace with function body.
 	
 func _unhandled_input(event):
-	if event.is_action_pressed("mouse_left") and !dragging and visible:
-		if selected:
-			selected = false
-			
-			handle_click_with_selection()
-			clear_selected_resources()
-			
-		draw_rect.visible = true
-		
-		dragging = true
-		
-		true_start = get_global_mouse_position()
-		
-		draw_rect.set_global_position(true_start)
+	if event.is_action_pressed("mouse_left") and visible:
+		if !dragging:
+			if !energy_clicked:
+				if selected:
+					selected = false
+					
+					handle_click_with_selection()
+					clear_selected_resources()
+					
+				draw_rect.visible = true
+				
+				dragging = true
+				
+				true_start = get_global_mouse_position()
+				
+				draw_rect.set_global_position(true_start)
+			elif energy_clicked:
+				handle_energy_to_vesicle_click()
+				pass
 		
 	if event.is_action_released("mouse_left") and dragging and visible:
 		dragging = false
@@ -175,39 +179,87 @@ func handle_click_with_selection():
 	var mouse_pos = get_global_mouse_position()
 	var resources_to_process = {}
 	
-	#Locate which container you're in
-	for container_name in resources:
-		var resource_holder = get_node(container_name)
-		
+	if !energy_clicked:
+	
+		#Locate which container you're in
+		for container_name in resources:
+			var resource_holder = get_node(container_name)
+			
+			#if in a particular container, check for any valid interactions
+			if resource_holder.has_point(mouse_pos):
+				for resource_class in selected_resources:
+					for resource in selected_resources[resource_class]:
+						#Check if we can do anything here
+						if len(selected_resources[resource_class][resource]) > 0:
+							if Game.is_valid_interaction(resource, container_name):
+								resources_to_process[resource] = len(selected_resources[resource_class][resource])
+	
+				#Once we know what container we are in, we can leave at the end
+				if resources_to_process:
+					
+					for resource in resources_to_process:
+						var results = organism.process_resource(resource, container_name, resources_to_process[resource])
+						var resource_class = Game.get_class_from_name(resource)
+						
+						#if we actually used some resources
+						var diff = len(selected_resources[resource_class][resource]) - results[0][1]
+						if diff > 0:
+							remove_resource_by_name(resource, diff, true)
+						
+						#Process for adding nodes to vesicles according to upgraded amount
+						add_resource(results[1], results[0][0])
+						
+				break
+	elif energy_clicked:
 		#if in a particular container, check for any valid interactions
-		if resource_holder.has_point(mouse_pos):
-			for resource_class in selected_resources:
-				for resource in selected_resources[resource_class]:
-					#Check if we can do anything here
-					if len(selected_resources[resource_class][resource]) > 0:
-						if Game.is_valid_interaction(resource, container_name):
-							if resources_to_process.has(resource):
-								resources_to_process[resource] += 1
-							else:
-								resources_to_process[resource] = 1
+		for resource_class in selected_resources:
+			for resource in selected_resources[resource_class]:
+				#Check if we can do anything here
+				if len(selected_resources[resource_class][resource]) > 0:
+					if Game.is_valid_interaction(resource, "energy"):
+						resources_to_process[resource] = len(selected_resources[resource_class][resource])
 
-			#Once we know what container we are in, we can leave at the end
-			if resources_to_process:
+		#Once we know what container we are in, we can leave at the end
+		if resources_to_process:
+			
+			for resource in resources_to_process:
+				var results = organism.process_resource(resource, "energy", resources_to_process[resource])
+				var resource_class = Game.get_class_from_name(resource)
 				
-				for resource in resources_to_process:
-					var results = organism.process_resource(resource, container_name, resources_to_process[resource])
-					var resource_class = Game.get_class_from_name(resource)
-					
-					#if we actually used some resources
-					var diff = len(resources[resource_class][resource]) - results[0][1]
-					if diff > 0:
-						remove_resource_by_name(resource, diff, true)
-					
-					#Process for adding nodes to vesicles according to upgraded amount
-					add_resource(results[1], results[0][0])
-					
-			break
+				#if we actually used some resources
+				var diff = len(selected_resources[resource_class][resource]) - results[0][1]
+				if diff > 0:
+					remove_resource_by_name(resource, diff, true)
+				
+				#Process for adding nodes to vesicles according to upgraded amount
+				add_resource(results[1], results[0][0])
+		energy_clicked = false
+		Input.set_custom_mouse_cursor(null)
 
+func handle_energy_to_vesicle_click():
+	var vesicle_name = get_vesicle_from_mouse_pos(get_global_mouse_position())
+	
+	if vesicle_name:
+		var results = organism.process_resources("energy", vesicle_name)
+	pass
+	
+func get_vesicle_from_mouse_pos(mouse_pos: Vector2):
+	var vesicle_name = ""
+	
+	for container in resources:
+		var vesicle = get_node(container)
+		if vesicle.had_point(mouse_pos):
+			vesicle_name = container
+			break
+			
+	return vesicle_name
 		
+		
+	
 func _on_Organism_resources_changed(cfp_resources, mineral_resources):
 	pass
+
+func _on_EnergyBar_resource_clicked(resource, value):
+	energy_clicked = true
+	Input.set_custom_mouse_cursor(energy_icon)
+	pass # Replace with function body.

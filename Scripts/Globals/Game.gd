@@ -40,6 +40,8 @@ const CELL_IMAGE_TYPE = ".svg"
 const WORLD_UI_PATH = "res://Assets/Images/Tiles/Resources/"
 const CELL_TEXTURES_PATH = "res://Assets/Images/Cells/"
 
+const MAX_ERROR = .0001
+
 const CFP_RESOURCES = ["carbs", "fats", "proteins"]
 
 #VALID_INTERACTIONS[FROM][TO]
@@ -88,7 +90,7 @@ const VALID_INTERACTIONS = {
 		"simple_fats": VALID,
 		"complex_fats": INVALID,
 		"simple_proteins": VALID, 
-		"complex_proteins": INVALID,
+		"complex_proteins": VALID,
 		"energy": VALID
 	},
 	"complex_proteins": {
@@ -522,20 +524,25 @@ func get_resource_icon(resource):
 	
 #Can accept energy, resource_class (simple_carbs/complex_fats, etc.), or resource_names
 func is_valid_interaction(resource_from: String, resource_to: String):
-	if resource_from in resources.keys():
-		if resource_to == resources[resource_from]["upgraded_form"] or resource_to == resources[resource_from]["downgraded_form"]:
-			return true
-		elif resource_to in VALID_INTERACTIONS.keys():
-			var resource_class = get_class_from_name(resource_from)
-			return VALID_INTERACTIONS[resource_class][resource_to] == VALID
 	
-	elif resource_from in VALID_INTERACTIONS.keys():
-		if resource_to in VALID_INTERACTIONS.keys():
-			return VALID_INTERACTIONS[resource_from][resource_to] == VALID
+	if resource_from in resources.keys(): #if resource_from is a valid non-energy resource
+		var resource_from_class = get_class_from_name(resource_from)
+		if resource_to in VALID_INTERACTIONS.keys(): #if resource_to is a vesicle or energy
+			return VALID_INTERACTIONS[resource_from_class][resource_to] == VALID
+		elif resource_to == resources[resource_from]["upgraded_form"] or resource_to == resources[resource_from]["downgraded_form"]: #quick check for up/downgrade
+			return true
+		elif resource_to in resources.keys(): #if we aren't an up/down form, then we must be trying to convert from one cfp to another
+			return VALID_INTERACTIONS[resource_from_class][get_class_from_name(resource_to)] == VALID
 		else:
-			var resource_class = get_class_from_name(resource_to)
-			return VALID_INTERACTIONS[resource_from][resource_class] == VALID
-
+			print('ERROR: Bad unexpected usage of is_valid_interaction. Arguments: ', resource_from, resource_to)
+	
+	elif resource_from in VALID_INTERACTIONS.keys(): #if we are going from vesicle/energy elsewhere
+		if resource_to in VALID_INTERACTIONS.keys(): #if resource_to is a vesicle or energy
+			return VALID_INTERACTIONS[resource_from][resource_to] == VALID
+		elif resource_to in resources.keys(): #if we aren't an up/down form, then we must be trying to convert from one cfp to another
+			return VALID_INTERACTIONS[resource_from][get_class_from_name(resource_to)] == VALID
+		else:
+			print('ERROR: Bad unexpected usage of is_valid_interaction. Arguments: ', resource_from, resource_to)
 #########################MAP FUNCTIONS AND CONVERTERS##########################
 const cube_to_pixel = Transform2D(Vector2(sqrt(3)/2, 1.0/2.0), Vector2(0, 1), Vector2(0,0))
 const pixel_to_cube = Transform2D(Vector2(2*sqrt(3)/3, -sqrt(3)/3), Vector2(0, 1), Vector2(0,0))
@@ -613,3 +620,7 @@ func world_to_map(pos: Vector2, tile_size: Vector2 = Vector2(72*2/sqrt(3), 82)):
 	temp_vec = Vector3(temp_vec.x, temp_vec.y, -temp_vec.x - temp_vec.y)
 	
 	return round_tile(temp_vec)
+	
+#################################RANDOM FUNCTIONS######################################
+func vec_mult(vec1: Vector2, vec2: Vector2):
+	return Vector2(vec1.x*vec2.x, vec1.y*vec2.y)

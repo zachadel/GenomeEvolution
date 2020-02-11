@@ -19,8 +19,9 @@ font_data = SubResource( 3 )
 [node name="InternalResourceController" type="Panel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_top = -0.463295
 margin_right = -1320.0
-margin_bottom = -325.0
+margin_bottom = -325.463
 mouse_filter = 2
 custom_styles/panel = SubResource( 1 )
 script = ExtResource( 1 )
@@ -49,26 +50,32 @@ rect_scale = Vector2( 0.433, 0.75 )
 [node name="simple_carbs" parent="." instance=ExtResource( 3 )]
 position = Vector2( 70, 191 )
 scale = Vector2( 0.75, 0.75 )
+resource_class = "simple_carbs"
 
 [node name="complex_carbs" parent="." instance=ExtResource( 3 )]
 position = Vector2( 210, 191 )
 scale = Vector2( 0.5, 0.5 )
+resource_class = "complex_carbs"
 
 [node name="simple_fats" parent="." instance=ExtResource( 3 )]
 position = Vector2( 70, 349 )
 scale = Vector2( 0.75, 0.75 )
+resource_class = "simple_fats"
 
 [node name="complex_fats" parent="." instance=ExtResource( 3 )]
 position = Vector2( 210, 349 )
 scale = Vector2( 0.5, 0.5 )
+resource_class = "complex_fats"
 
 [node name="simple_proteins" parent="." instance=ExtResource( 3 )]
 position = Vector2( 70, 507 )
 scale = Vector2( 0.75, 0.75 )
+resource_class = "simple_proteins"
 
 [node name="complex_proteins" parent="." instance=ExtResource( 3 )]
 position = Vector2( 210, 507 )
 scale = Vector2( 0.5, 0.5 )
+resource_class = "complex_proteins"
 
 [node name="LabelColumns" type="HBoxContainer" parent="."]
 margin_top = 105.0
@@ -185,3 +192,4 @@ scroll_active = false
 [node name="SelectionArea" type="ColorRect" parent="."]
 mouse_filter = 2
 color = Color( 1, 1, 1, 0.490196 )
+[connection signal="resource_clicked" from="EnergyBar" to="." method="_on_EnergyBar_resource_clicked"]
