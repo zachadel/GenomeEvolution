@@ -346,6 +346,7 @@ func evolve_major(gain):
 		"pseudo":
 			if !gain:
 				set_texture(null);
+				parent_code = gene_code;
 				mode = "blank";
 		"ate":
 			if (gain):
