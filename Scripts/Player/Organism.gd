@@ -204,12 +204,23 @@ func _input(ev):
 
 func setup(card_table):
 	perform_anims(false);
-	for n in Game.ESSENTIAL_CLASSES:
-		# Create one gene for both cmsms
+	
+	var essential_names = Game.ESSENTIAL_CLASSES.keys();
+	
+	# Start with the essentials + some blanks, shuffled
+	var starter_genes = essential_names + ["blank"];
+	for _i in range(2 + randi() % 3):
+		starter_genes.append("blank");
+	starter_genes.shuffle();
+	
+	for g in starter_genes:
 		var nxt_gelm = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
 		
-		nxt_gelm.set_ess_behavior({n: 1.0});
-		nxt_gelm.setup("gene", n, "essential", "", -1.0);
+		if g in essential_names:
+			nxt_gelm.set_ess_behavior({g: 1.0});
+			nxt_gelm.setup("gene", g, "essential", "", -1.0);
+		elif g == "blank":
+			nxt_gelm.setup("gene", g, g);
 		
 		cmsms.get_cmsm(0).add_elm(nxt_gelm);
 		cmsms.get_cmsm(1).add_elm(Game.copy_elm(nxt_gelm));
