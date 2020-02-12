@@ -218,8 +218,8 @@ func setup(card_table):
 		
 		if g in essential_names:
 			nxt_gelm.set_ess_behavior({g: 1.0});
-			nxt_gelm.setup("gene", g, "essential", "", -1.0);
-		elif g == "blank":
+			nxt_gelm.setup("gene", g, "essential");
+		else:
 			nxt_gelm.setup("gene", g, g);
 		
 		cmsms.get_cmsm(0).add_elm(nxt_gelm);

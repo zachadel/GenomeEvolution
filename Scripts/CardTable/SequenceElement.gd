@@ -43,7 +43,8 @@ var ate_activity := 0.0;
 var ate_personality := {};
 
 const CODE_LENGTH = 7;
-var gene_code = "";
+var gene_code := "";
+var parent_code := "";
 
 var DEFAULT_SIZE = 200;
 var MIN_SIZE = 125;
@@ -69,7 +70,7 @@ func obtain_ate_personality(personality_id := ""):
 		ate_personality = Game.get_ate_personality_by_name(id);
 		id = personality_id;
 
-func setup(_type, _id = "", _mode = "ate", _code = "", _ph = -1.0):
+func setup(_type : String, _id := "", _mode := "ate", _code := "", _par_code := "", _ph := -1.0):
 	id = _id;
 	type = _type;
 	mode = _mode;
@@ -79,10 +80,15 @@ func setup(_type, _id = "", _mode = "ate", _code = "", _ph = -1.0):
 	else:
 		ph_preference = _ph;
 	
-	if (_code == ""):
+	if _code.empty():
 		randomize_code();
 	else:
 		gene_code = _code;
+	
+	if _par_code.empty():
+		parent_code = gene_code;
+	else:
+		parent_code = _par_code;
 	
 	var tex : Texture = null;
 	if (type == "gene"):
@@ -116,6 +122,7 @@ func setup_copy(ref_elm):
 	type = ref_elm.type;
 	mode = ref_elm.mode;
 	gene_code = ref_elm.gene_code;
+	parent_code = ref_elm.parent_code;
 	ph_preference = ref_elm.ph_preference;
 	var tex = ref_elm.texture_normal;
 	if (ref_elm.type == "gene"):
@@ -137,7 +144,7 @@ func setup_copy(ref_elm):
 	disable(true);
 
 func get_save_data():
-	var elm_data = ["type", "id", "mode", "gene_code", "ph_preference"];
+	var elm_data = ["type", "id", "mode", "gene_code", "parent_code", "ph_preference"];
 	for i in range(elm_data.size()):
 		elm_data[i] = get(elm_data[i]);
 	return [elm_data, get_ess_behavior(), get_specialization()];
@@ -258,6 +265,9 @@ func get_code_dist(other_cd, my_cd = ""):
 	
 	return _dist;
 
+func get_code_dist_to_parent():
+	return get_code_dist(parent_code, gene_code);
+
 func can_compare_elm(other_elm):
 	return gene_code.length() > 0 && other_elm.gene_code.length() > 0 && other_elm.type == type;
 
@@ -317,9 +327,10 @@ func evolve_new_behavior(gain : bool) -> void:
 		evolve_specialization(behave_key, -ess_behavior[behave_key]);
 		ess_behavior[behave_key] = 0.0;
 
+const BLANK_EVOLVE_DIFF = 4;
 func evolve_major(gain):
 	# oustide of match so we can change the mode and use the match behaviors
-	if mode == "blank":
+	if mode == "blank" && get_code_dist_to_parent() >= BLANK_EVOLVE_DIFF:
 		if gain:
 			mode = "essential";
 		else:
@@ -365,7 +376,7 @@ func kill_elm():
 	mode = "pseudo";
 
 func evolve(major : bool, up : bool) -> void:
-	var code_change = 2;
+	var code_change = 3;
 	
 	var up_sign = -1;
 	if (up):
