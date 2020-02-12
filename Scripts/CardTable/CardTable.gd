@@ -5,7 +5,6 @@ signal player_done;
 signal next_turn(turn_text, round_num);
 
 onready var justnow_label : RichTextLabel = $lbl_justnow;
-onready var criteria_label = $sc_criteria/lbl_criteria;
 onready var orgn = $Organism;
 onready var nxt_btn = $button_grid/btn_nxt;
 onready var status_bar = $ChromosomeStatus;
@@ -160,7 +159,7 @@ func _on_Organism_justnow_update(text):
 
 func _on_Organism_updated_gaps(gaps_exist, gap_text):
 	has_gaps = gaps_exist;
-	criteria_label.text = gap_text;
+	_add_justnow_bbcode(gap_text);
 	check_if_ready();
 
 func _on_ilist_choices_item_activated(idx):
@@ -175,11 +174,11 @@ func _on_btn_nxt_pressed():
 			g.disable(true);
 	
 	Game.adv_turn();
-	$lbl_turn.text = "%s\n%s\n%s" % [
-		"Generation %d" % (orgn.num_progeny + 1),
-		Game.get_turn_txt(),
+	$lbl_turn.text = "%s\n%s" % [
+		"Round %d" % (Game.round_num + 1),
 		"Progeny: %d" % orgn.num_progeny
 	];
+	$TurnList.highlight(Game.turn_idx);
 	if orgn.current_tile.has("hazards"):
 		ph_filter_panel.upd_current_ph_marker(orgn.current_tile.hazards["pH"]);
 	_add_justnow_bbcode("\n\n%s" % Game.get_turn_txt(), {"color": Color(1, 0.75, 0)});

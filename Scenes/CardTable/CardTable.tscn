@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Scripts/CardTable/CardTable.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player/Organism.tscn" type="PackedScene" id=2]
@@ -14,6 +14,8 @@
 [ext_resource path="res://Scenes/WorldMap/MineralLevels.tscn" type="PackedScene" id=12]
 [ext_resource path="res://Scenes/WorldMap/CFPBank.tscn" type="PackedScene" id=13]
 [ext_resource path="res://Scenes/WorldMap/EnergyBar.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Scenes/CardTable/TurnList.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Scenes/CardTable/DarkenedBG.tres" type="StyleBox" id=16]
 
 [sub_resource type="Theme" id=1]
 Button/colors/font_color_disabled = Color( 0, 0, 0, 1 )
@@ -24,6 +26,9 @@ anchor_bottom = 1.0
 mouse_filter = 1
 theme = SubResource( 1 )
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="lbl_turn" type="Label" parent="."]
 anchor_left = 1.0
@@ -31,9 +36,26 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -397.0
-margin_top = -92.0
+margin_top = -75.0
 margin_right = -160.0
 align = 2
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="lbl_log" type="Label" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -1090.0
+margin_top = -254.0
+margin_right = -490.0
+margin_bottom = -240.0
+text = "Event Log"
+align = 1
 valign = 1
 autowrap = true
 
@@ -42,28 +64,18 @@ margin_left = 510.0
 margin_top = 670.0
 margin_right = 1110.0
 margin_bottom = 870.0
+custom_styles/normal = ExtResource( 16 )
 bbcode_enabled = true
 scroll_following = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="sc_criteria" type="ScrollContainer" parent="."]
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -476.0
-margin_top = -275.0
-margin_right = -144.0
-margin_bottom = -75.0
-rect_min_size = Vector2( 320, 200 )
-scroll_horizontal_enabled = false
-
-[node name="lbl_criteria" type="Label" parent="sc_criteria"]
-margin_right = 320.0
-margin_bottom = 180.0
-rect_min_size = Vector2( 320, 180 )
-align = 1
-valign = 1
-autowrap = true
+[node name="TurnList" parent="." instance=ExtResource( 15 )]
+margin_left = 1208.0
+margin_top = 629.0
+margin_right = 1458.0
+margin_bottom = 821.0
 
 [node name="button_grid" type="VBoxContainer" parent="."]
 anchor_left = 1.0
@@ -77,6 +89,9 @@ grow_horizontal = 0
 grow_vertical = 0
 custom_constants/separation = 20
 alignment = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="btn_dead_menu" type="Button" parent="button_grid"]
 visible = false
@@ -131,7 +146,7 @@ margin_left = -1594.0
 margin_top = -298.0
 margin_right = -1127.0
 margin_bottom = -284.0
-text = "Organism Behavior"
+text = "Gene Content"
 valign = 1
 autowrap = true
 
@@ -293,6 +308,7 @@ readonly = true
 show_line_numbers = true
 
 [node name="pnl_ph_filter" type="Panel" parent="."]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5

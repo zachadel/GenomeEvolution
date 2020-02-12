@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/CardTable/DarkenedBG.tres" type="StyleBox" id=1]
+[ext_resource path="res://Scenes/CardTable/TurnList.gd" type="Script" id=2]
+
+[node name="TurnList" type="Panel"]
+margin_right = 477.0
+margin_bottom = 177.0
+custom_styles/panel = ExtResource( 1 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBox" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = -5.0
+margin_bottom = -5.0
+__meta__ = {
+"_edit_use_anchors_": false
+}

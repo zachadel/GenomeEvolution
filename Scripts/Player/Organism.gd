@@ -982,6 +982,7 @@ func replicate(idx):
 				
 				prune_cmsms(2);
 				use_resources("replicate_mitosis");
+				num_progeny += 1;
 			1: # Meiosis
 				rep_type = "meiosis";
 				
@@ -992,11 +993,10 @@ func replicate(idx):
 				prune_cmsms(1);
 				use_resources("replicate_meiosis");
 				cmsms.add_cmsm(get_random_gene_from_pool(), true);
+				num_progeny += 3;
 		
 		cmsms.show_all_choice_buttons(false);
 		cmsms.hide_all(false);
-		
-		num_progeny += 1;
 		
 		emit_signal("finished_replication");
 		emit_signal("doing_work", false);

@@ -251,8 +251,10 @@ func _incr_turn_idx():
 func get_turn_type():
 	return turns[turn_idx];
 
-func get_turn_txt():
-	match(get_turn_type()):
+func get_turn_txt(turn_type := -1) -> String:
+	if turn_type < 0:
+		turn_type = get_turn_type();
+	match turn_type:
 		TURN_TYPES.NewTEs:
 			return "New TEs";
 		TURN_TYPES.TEJump:
@@ -270,7 +272,7 @@ func get_turn_txt():
 		TURN_TYPES.Replication:
 			return "Replication";
 		TURN_TYPES.Map:
-			return "End of Map Turn";
+			return "Map Turn";
 		var _x:
 			return "Unknown turn type (#%d)" % _x;
 
