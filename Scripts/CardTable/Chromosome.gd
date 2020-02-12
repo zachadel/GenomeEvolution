@@ -311,9 +311,10 @@ func add_elm(elm, pos = null):
 
 func remove_elm(elm):
 	emit_signal("animating", true);
-	elm.disconnect("elm_clicked", elm.get_cmsm(), "_propogate_click");
-	elm.disconnect("elm_mouse_entered", elm.get_cmsm(), "_propagate_mouse_entered");
-	elm.disconnect("elm_mouse_exited", elm.get_cmsm(), "_propagate_mouse_exited");
+	if elm.is_connected("elm_clicked", elm.get_cmsm(), "_propogate_click"):
+		elm.disconnect("elm_clicked", elm.get_cmsm(), "_propogate_click");
+		elm.disconnect("elm_mouse_entered", elm.get_cmsm(), "_propagate_mouse_entered");
+		elm.disconnect("elm_mouse_exited", elm.get_cmsm(), "_propagate_mouse_exited");
 	
 	if (do_animations):
 		if (!elm.is_gap()):

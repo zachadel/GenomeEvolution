@@ -34,8 +34,9 @@ const GENE_NAMES = {
 	"Helper": "Helper",
 	"Component": "Component",
 	
-	"Transposon": "Transposons",
-	"Pseudogene": "Psuedogenes"
+	"Transposon": "Transposable Element",
+	"Pseudogene": "Psuedogene",
+	"Blank": "Blank"
 };
 const BASE_TTIPS = {
 	"Replication": "%s increases the probability for successful gene modifications.",
@@ -48,7 +49,8 @@ const BASE_TTIPS = {
 	"Component": "%s creates structure for your organism.",
 	
 	"Transposon": "%ss are genetic parasites that can modify genes in various, unpredictable ways.",
-	"Pseudogene": "%ss can still mutate, but are damaged to the point of inactivity."
+	"Pseudogene": "%ss can still mutate, but are damaged to the point of inactivity.",
+	"Blank": "%s genes do not encode proteins, but can potentially evolve to encode new proteins."
 };
 
 const COMPARE_TTIPS = {
@@ -72,24 +74,39 @@ const WORLDMAP_TTIPS = {
 	"resource_on_tile": "This is %s and it is a %s."
 };
 
-const GENE_TYPE_DESC = "This is %s %s%s.";
-const UNNAMED_GENES = ["Transposon", "Pseudogene"];
+const GENE_TYPE_DESC = "This is %s %s.";
+const UNNAMED_GENES = ["Pseudogene", "Transposon"];
+const NO_ACRONYM_GENES = ["Pseudogene", "Blank"];
 const GENE_TTIP_FORMAT = "%s\n\n%s";
 const STATUS_TTIP_FORMAT = "%s\n\n%s";
 
-func _get_gene_desc(type : String):
+func _get_gene_desc(type : String) -> String:
 	return BASE_TTIPS[type] % GENE_NAMES[type];
 
-func get_gene_ttip(type):
-	var gene_title = " gene";
-	if (type in UNNAMED_GENES):
+func _get_gene_title(type : String, capitalize_gene := true, incl_acronym := true) -> String:
+	var gene_title := " Gene";
+	if type in UNNAMED_GENES:
 		gene_title = "";
+	elif !capitalize_gene:
+		gene_title = " gene";
+	
+	var gene_name : String = GENE_NAMES[type];
+	if incl_acronym && !(type in NO_ACRONYM_GENES):
+		if type == "Transposon":
+			gene_name += " (TE)";
+		else:
+			gene_name += " (%s)" % gene_name[0];
+	
+	return gene_name + gene_title;
+
+func get_gene_ttip(type : String) -> String:
 	var article = "a";
 	if type == "Construction":
 		article = "an"; # "this is *an* Assembly gene"
-	return GENE_TTIP_FORMAT % [(GENE_TYPE_DESC % [article, GENE_NAMES[type], gene_title]), _get_gene_desc(type)];
+	
+	return GENE_TTIP_FORMAT % [(GENE_TYPE_DESC % [article, _get_gene_title(type, false)]), _get_gene_desc(type)];
 
-func get_status_ttip(type, compare):
+func get_status_ttip(type : String, compare : String) -> String:
 	return STATUS_TTIP_FORMAT % [_get_gene_desc(type), COMPARE_TTIPS[compare]];
 
 
@@ -202,7 +219,9 @@ func setup_delayed_tooltip(for_node : Control):
 	setup_delayed_tooltip_special(for_node, "mouse_entered", "mouse_exited");
 
 func setup_delayed_tooltip_special(for_node : CanvasItem, enter_signal : String, exit_signal : String):
+# warning-ignore:return_value_discarded
 	for_node.connect(enter_signal, self, "_handle_mouse_enter", [for_node]);
+# warning-ignore:return_value_discarded
 	for_node.connect(exit_signal, self, "_handle_mouse_exit");
 
 const DISP_DATA_FUNC_NAME = "get_tooltip_data";

@@ -208,8 +208,8 @@ func setup(card_table):
 		# Create one gene for both cmsms
 		var nxt_gelm = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
 		
-		nxt_gelm.setup("gene", n, "essential", "", -1.0, Game.ESSENTIAL_CLASSES[n]);
 		nxt_gelm.set_ess_behavior({n: 1.0});
+		nxt_gelm.setup("gene", n, "essential", "", -1.0);
 		
 		cmsms.get_cmsm(0).add_elm(nxt_gelm);
 		cmsms.get_cmsm(1).add_elm(Game.copy_elm(nxt_gelm));
@@ -699,10 +699,10 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 										cmsms.remove_elm(gene, false);
 								3: # Major down
 									damage_str = "received a major downgrade"
-									gene.evolve_specific(true, false);
+									gene.evolve(true, false);
 								4: # Minor down
 									damage_str = "received a minor downgrade"
-									gene.evolve_specific(false, false);
+									gene.evolve(false, false);
 							emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome. A %s gene %s in the repair.%s" % (gap_pos_disp + [left_id, right_id, g_id, damage_str, correct_str]));
 					5, 6, 7:
 						var gene = right_break_gene;
@@ -719,10 +719,10 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 									cmsms.dupe_elm(gene);
 							6: # Major up
 								boon_str = "received a major upgrade"
-								gene.evolve_specific(true, true);
+								gene.evolve(true, true);
 							7: # Minor up
 								boon_str = "received a minor upgrade"
-								gene.evolve_specific(false, true);
+								gene.evolve(false, true);
 						emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome. A %s gene %s in the repair.%s" % (gap_pos_disp + [left_id, right_id, gene.id, boon_str, correct_str]));
 				if !repair_canceled:
 					if (do_correction):
@@ -774,10 +774,10 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 										cmsms.remove_elm(gene, false);
 								2: # Major down
 									damage_str = "received a major downgrade"
-									gene.evolve_specific(true, false);
+									gene.evolve(true, false);
 								3: # Minor down
 									damage_str = "received a minor downgrade"
-									gene.evolve_specific(false, false);
+									gene.evolve(false, false);
 							emit_signal("justnow_update", "Joined ends for the gap at %d, %d; a %s gene %s in the repair." % (gap_pos_disp + [g_id, damage_str]));
 					4, 5, 6:
 						var gene = right_break_gene;
@@ -794,10 +794,10 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 									cmsms.dupe_elm(gene);
 							5: # Major up
 								boon_str = "received a major upgrade"
-								gene.evolve_specific(true, true);
+								gene.evolve(true, true);
 							6: # Minor up
 								boon_str = "received a minor upgrade"
-								gene.evolve_specific(false, true);
+								gene.evolve(false, true);
 						emit_signal("justnow_update", "Joined ends for the gap at %d, %d; a %s gene %s in the repair." % (gap_pos_disp + [gene.id, boon_str]));
 				
 				if !repair_canceled:
@@ -862,7 +862,7 @@ func get_behavior_profile():
 		refresh_bprof = false;
 	return behavior_profile;
 
-func roll_chance(type):
+func roll_chance(type : String) -> int:
 	return Chance.roll_chance_type(type, get_behavior_profile());
 
 func evolve_cmsm(cmsm):
@@ -873,25 +873,21 @@ func evolve_candidates(candids):
 		var justnow = "";
 		for e in candids:
 			#if ((cmsms.get_cmsm(0).find_all_genes(e.id).size() + cmsms.get_cmsm(1).find_all_genes(e.id).size()) > 2):
-			match (roll_chance("evolve")):
+			var evolve_idx := roll_chance("evolve")
+			match evolve_idx:
 				0:
 					justnow += "%s did not evolve.\n" % e.id;
-					e.evolve(0);
 				1:
-					justnow += "%s received a fatal mutation and has become a pseudogene.\n" % e.id;
-					e.evolve(1);
+					justnow += "%s received a fatal mutation.\n" % e.id;
 				2:
 					justnow += "%s received a major upgrade!\n" % e.id;
-					e.evolve(2);
 				3:
 					justnow += "%s received a major downgrade!\n" % e.id;
-					e.evolve(3);
 				4:
 					justnow += "%s received a minor upgrade.\n" % e.id;
-					e.evolve(4);
 				5:
 					justnow += "%s received a minor downgrade.\n" % e.id;
-					e.evolve(5);
+			e.evolve_by_idx(evolve_idx);
 		emit_signal("justnow_update", justnow);
 	else:
 		emit_signal("justnow_update", "No essential genes were duplicated, so no genes evolve.");

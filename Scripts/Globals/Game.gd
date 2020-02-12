@@ -3,6 +3,7 @@ extends Node
 var sqelm_textures = {"gene": load("res://Assets/Images/gene.png"), "break": load("res://Assets/Images/break.png")};
 var ess_textures = {};
 var default_te_texture = load("res://Assets/Images/tes/default_te.png");
+var helix_textures = {true: load("res://Assets/Images/genes/Helix_Circle.png"), false: load("res://Assets/Images/genes/Helix.png")}
 
 enum ESSENTIAL_CLASSES {Replication, Locomotion, Helper, Manipulation, Sensing, Component, Construction, Deconstruction};
 enum TURN_TYPES {Map, NewTEs, TEJump, RepairBreaks, EnvironmentalDamage, Recombination, Evolve, CheckViability, Replication};
@@ -137,7 +138,7 @@ func _ready():
 	randomize();
 	
 	for c in ESSENTIAL_CLASSES.values():
-		ess_textures[c] = load("res://Assets/Images/genes/" + class_to_string(c) + ".png");
+		ess_textures[class_to_string(c)] = load("res://Assets/Images/genes/" + class_to_string(c) + ".png");
 	
 	# Import ATE Personalities
 	load_personalities("ate_personalities", ate_personalities);

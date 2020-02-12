@@ -46,7 +46,6 @@ bbcode_enabled = true
 scroll_following = true
 
 [node name="sc_criteria" type="ScrollContainer" parent="."]
-editor/display_folded = true
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -67,7 +66,6 @@ valign = 1
 autowrap = true
 
 [node name="button_grid" type="VBoxContainer" parent="."]
-editor/display_folded = true
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -147,7 +145,6 @@ margin_bottom = 674.836
 rect_min_size = Vector2( 0, 50 )
 
 [node name="pnl_repair_choices" type="Panel" parent="."]
-editor/display_folded = true
 visible = false
 anchor_left = 0.5
 anchor_top = 1.0
@@ -203,7 +200,6 @@ margin_bottom = 201.0
 text = "Repair"
 
 [node name="pnl_reproduce" type="Panel" parent="."]
-editor/display_folded = true
 visible = false
 anchor_left = 0.5
 anchor_top = 1.0
@@ -259,7 +255,6 @@ margin_bottom = 201.0
 text = "Reproduce"
 
 [node name="pnl_saveload" type="Panel" parent="."]
-editor/display_folded = true
 visible = false
 anchor_left = 0.5
 anchor_top = 0.5
@@ -298,7 +293,6 @@ readonly = true
 show_line_numbers = true
 
 [node name="pnl_ph_filter" type="Panel" parent="."]
-editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -322,7 +316,6 @@ tick_count = 15
 ticks_on_borders = true
 
 [node name="current_ph" type="ColorRect" parent="pnl_ph_filter/slider_ph"]
-editor/display_folded = true
 show_behind_parent = true
 margin_left = 212.0
 margin_top = -20.0
