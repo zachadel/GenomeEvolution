@@ -39,17 +39,17 @@ const GENE_NAMES = {
 	"Blank": "Blank"
 };
 const BASE_TTIPS = {
-	"Replication": "%s increases the probability for successful gene modifications.",
-	"Locomotion": "%s aids with movement in the world map.",
-	"Manipulation": "%s aids with the efficient use of resources.",
-	"Sensing": "%s aids with the ability to sense nearby resources and to detect the effectiveness of internal functions.",
-	"Construction": "%s increases the amount of energy and resources which can be banked for subsequent turns.",
-	"Deconstruction": "%s aids with the breaking down of complicated resources into simpler, usable ones.",
-	"Helper": "%s aids with all functionality of other genes.",
-	"Component": "%s creates structure for your organism.",
+	"Replication": "%s genes encode proteins needed to copy (replicate) your genome or repair it when it is broken.",
+	"Locomotion": "%s genes encode proteins needed to move your organism around in the world.",
+	"Manipulation": "%s genes encode proteins ",
+	"Sensing": "%s genes encode proteins that sense resources or dangers either in the world or inside your organism. ",
+	"Construction": "%s genes encode proteins required to build all your other proteins or store resources.",
+	"Deconstruction": "%s genes encode proteins required to break down complex resources into simpler, usable ones.",
+	"Helper": "%s genes encode proteins that help another gene do its job more effectively.",
+	"Component": "%s genes encode proteins that are used as building blocks for your organism.",
 	
-	"Transposon": "%ss are genetic parasites that can modify genes in various, unpredictable ways.",
-	"Pseudogene": "%ss can still mutate, but are damaged to the point of inactivity.",
+	"Transposon": "%ss are genetic parasites that encode proteins that help them to replicate.",
+	"Pseudogene": "%ss are broken genes; they do not encode proteins anymore.",
 	"Blank": "%s genes do not encode proteins, but can potentially evolve to encode new proteins."
 };
 
