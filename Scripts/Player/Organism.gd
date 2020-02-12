@@ -416,8 +416,8 @@ func upd_repair_opts(gap):
 		repair_type_possible[0] = true;
 		if !Unlocks.has_repair_unlock("collapse_dupes"):
 			repair_type_possible[0] = false;
-			var cps_remain : int = Unlocks.get_count_remaining(Unlocks.get_repair_key("collapse_dupes"), "repair_cp");
-			repair_btn_text[0] = "Perform %d more Copy Pattern repair%s" % [cps_remain, Game.pluralize(cps_remain)];
+			var cps_remain : int = Unlocks.get_count_remaining(Unlocks.get_repair_key("collapse_dupes"), "cp_duped_genes");
+			repair_btn_text[0] = "Copy %d more gene%s with Copy Repair" % [cps_remain, Game.pluralize(cps_remain)];
 		elif !has_resource_for_action("repair_cd"):
 			repair_type_possible[0] = false;
 			repair_btn_text[0] = "Not enough resources";
@@ -675,14 +675,16 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 						emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome without complications.%s" % (gap_pos_disp + [left_id, right_id, correct_str]));
 					1:
 						emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome along with intervening genes.%s" % (gap_pos_disp + [left_id, right_id, correct_str]));
+						var copied_section = range(choice_info["left"].get_index()+1, choice_info["right"].get_index());
 						if (do_yields):
-							for i in range(choice_info["left"].get_index()+1, choice_info["right"].get_index()):
+							for i in copied_section:
 								var copy_elm = Game.copy_elm(other_cmsm.get_child(i));
 								yield(cmsm.add_elm(copy_elm, gap.get_index()), "completed");
 						else:
-							for i in range(choice_info["left"].get_index()+1, choice_info["right"].get_index()):
+							for i in copied_section:
 								var copy_elm = Game.copy_elm(other_cmsm.get_child(i));
 								cmsm.add_elm(copy_elm, gap.get_index());
+						Unlocks.add_count("cp_duped_genes", copied_section.size());
 					2, 3, 4:
 						gene_selection = cmsm.get_elms_around_pos(g_idx, true);
 						emit_signal("justnow_update", "Trying to copy the pattern from the other chromosome, but 1 gene is harmed; choose which.");
