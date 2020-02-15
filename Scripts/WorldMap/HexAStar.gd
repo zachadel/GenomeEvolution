@@ -4,7 +4,7 @@ extends AStar
 var radius = 5
 var cube_directions = [
    Vector3(1, -1, 0), Vector3(1, 0, -1), Vector3(0, 1, -1), 
-    Vector3(-1, 1, 0), Vector3(-1, 0, 1), Vector3(0, -1, 1)
+	Vector3(-1, 1, 0), Vector3(-1, 0, 1), Vector3(0, -1, 1)
 ]
 
 var offset = Vector3(0,0,0)

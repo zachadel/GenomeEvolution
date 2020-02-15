@@ -504,7 +504,7 @@ func _process(delta):
 	
 	# I'm afraid of overflow
 	if (total_time >= sin_period):
-	    total_time -= sin_period;
+		total_time -= sin_period;
 	
 	for c in get_cmsms():
 		for i in c.get_child_count():
