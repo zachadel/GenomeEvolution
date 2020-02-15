@@ -2106,4 +2106,3 @@ func get_locomotion_cost(biome):
 		return Game.biomes[biome]["base_cost"]
 	else:
 		return -1
-
