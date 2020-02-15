@@ -2,9 +2,10 @@ extends Node
 
 var sqelm_textures = {"gene": load("res://Assets/Images/gene.png"), "break": load("res://Assets/Images/break.png")};
 var ess_textures = {};
-var ess_textures_noDNA = {};
 var default_te_texture = load("res://Assets/Images/tes/default_te.png");
-enum ESSENTIAL_CLASSES {Replication, Locomotion, Manipulation, Sensing, Construction, Deconstruction};
+var helix_textures = {true: load("res://Assets/Images/genes/Helix_Circle.png"), false: load("res://Assets/Images/genes/Helix.png")}
+
+enum ESSENTIAL_CLASSES {Replication, Locomotion, Helper, Manipulation, Sensing, Component, Construction, Deconstruction};
 enum TURN_TYPES {Map, NewTEs, TEJump, RepairBreaks, EnvironmentalDamage, Recombination, Evolve, CheckViability, Replication};
 
 #NOTE: It may be worthwhile to store dicts which go from biome_index -> string
@@ -137,8 +138,7 @@ func _ready():
 	randomize();
 	
 	for c in ESSENTIAL_CLASSES.values():
-		ess_textures[c] = load("res://Assets/Images/genes/" + class_to_string(c) + ".png");
-		ess_textures_noDNA[c] = load("res://Assets/Images/genes_noDNA/" + class_to_string(c) + ".png"); #textures for genes w/o DNA background
+		ess_textures[class_to_string(c)] = load("res://Assets/Images/genes/" + class_to_string(c) + ".png");
 	
 	# Import ATE Personalities
 	load_personalities("ate_personalities", ate_personalities);
@@ -187,20 +187,7 @@ func add_int_dicts(dict0, dict1):
 	return added_dict
 
 func class_to_string(type):
-	match (type):
-		ESSENTIAL_CLASSES.Replication:
-			return "Replication";
-		ESSENTIAL_CLASSES.Locomotion:
-			return "Locomotion";
-		ESSENTIAL_CLASSES.Manipulation:
-			return "Manipulation";
-		ESSENTIAL_CLASSES.Sensing:
-			return "Sensing";
-		ESSENTIAL_CLASSES.Construction:
-			return "Construction";
-		ESSENTIAL_CLASSES.Deconstruction:
-			return "Deconstruction";
-	return "";
+	return ESSENTIAL_CLASSES.keys()[type];
 
 const DEFAULT_ATE_RANGE_BEHAVIOR = {
 	"this_cmsm": true, #Can jump to another spot on this chromosome
@@ -244,17 +231,30 @@ func change_slider_width(scroll_cont, horiz = true, width = 30):
 #		slider.margin_left = -width;
 #		slider.rect_size.x = width;
 
+func pluralize(count : int, pl_end := "s", sing_end := ""):
+	if (count == 1):
+		return sing_end;
+	return pl_end;
+
 func adv_turn():
+	_incr_turn_idx();
+	while !Unlocks.has_turn_unlock(get_turn_type()):
+		_incr_turn_idx();
+
+func _incr_turn_idx():
 	turn_idx += 1;
 	if (turn_idx == turns.size()):
 		turn_idx = 0;
 		round_num += 1;
+		Unlocks._upd_round_num_unlocks();
 
 func get_turn_type():
 	return turns[turn_idx];
 
-func get_turn_txt():
-	match(get_turn_type()):
+func get_turn_txt(turn_type := -1) -> String:
+	if turn_type < 0:
+		turn_type = get_turn_type();
+	match turn_type:
 		TURN_TYPES.NewTEs:
 			return "New TEs";
 		TURN_TYPES.TEJump:
@@ -272,24 +272,13 @@ func get_turn_txt():
 		TURN_TYPES.Replication:
 			return "Replication";
 		TURN_TYPES.Map:
-			return "End of Map Turn";
+			return "Map Turn";
 		var _x:
 			return "Unknown turn type (#%d)" % _x;
 
-#NOTE: Need to be rewritten from the ground up
-#func get_save_str():
-#	return var2str([turn_idx, round_num, card_table.orgn.get_save(), card_table.orgn.get_gene_pool()]).replace("\n", "");
-#
-#func load_from_save(save):
-#	var s = str2var(save);
-#	turn_idx = int(s[0]) - 1;
-#	round_num = int(s[1]);
-#	card_table.orgn.load_from_save(s[2]);
-#	card_table.orgn.reproduct_gene_pool = s[3];
-
 func get_save_str():
 	var savestr = var2str([turn_idx, round_num, card_table.orgn.get_save(), card_table.orgn.get_gene_pool()]).replace("\n", "")
-	OS.set_clipboard(savestr)
+	SaveExports.exp_save_code(savestr);
 	return savestr
 
 func load_from_save(save):

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Manipulation.png-660c15f57f2815c2e9004113156580a3.stex"
+path="res://.import/Helper.png-7e859ecd6528c13ca92992809f0821d7.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Images/genes_noDNA/Manipulation.png"
-dest_files=[ "res://.import/Manipulation.png-660c15f57f2815c2e9004113156580a3.stex" ]
+source_file="res://Assets/Images/genes/Helper.png"
+dest_files=[ "res://.import/Helper.png-7e859ecd6528c13ca92992809f0821d7.stex" ]
 
 [params]
 

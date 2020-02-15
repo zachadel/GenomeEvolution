@@ -107,7 +107,6 @@ var MIN_ENERGY = 0;
 var MAX_ENERGY = 25;
 var MAX_ALLOCATED_ENERGY = 10;
 var energy_allocations
-onready var energy_allocation_panel = get_node("../pnl_energy_allocation");
 
 var max_equality_dist = 10 setget ,get_max_gene_dist;
 var reproduct_gene_pool = [] setget ,get_gene_pool;
@@ -205,11 +204,23 @@ func _input(ev):
 
 func setup(card_table):
 	perform_anims(false);
-	for n in Game.ESSENTIAL_CLASSES:
-		# Create one gene for both cmsms
+	
+	var essential_names = Game.ESSENTIAL_CLASSES.keys();
+	
+	# Start with the essentials + some blanks, shuffled
+	var starter_genes = essential_names + ["blank"];
+	for _i in range(2 + randi() % 3):
+		starter_genes.append("blank");
+	starter_genes.shuffle();
+	
+	for g in starter_genes:
 		var nxt_gelm = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
-		nxt_gelm.setup("gene", n, "essential", "", -1.0, Game.ESSENTIAL_CLASSES[n]);
-		nxt_gelm.set_ess_behavior({n: 1.0});
+		
+		if g in essential_names:
+			nxt_gelm.set_ess_behavior({g: 1.0});
+			nxt_gelm.setup("gene", g, "essential");
+		else:
+			nxt_gelm.setup("gene", g, g);
 		
 		cmsms.get_cmsm(0).add_elm(nxt_gelm);
 		cmsms.get_cmsm(1).add_elm(Game.copy_elm(nxt_gelm));
@@ -328,7 +339,7 @@ func _on_chromes_elm_clicked(elm):
 				gene_selection.clear();
 				
 				emit_signal("gene_clicked"); # Used to continue the yields
-				emit_signal("justnow_update", "");
+				#emit_signal("justnow_update", ""); # justnow no longer clears, this just creates a bunch of extra space
 			else:
 				selected_gap = elm;
 				upd_repair_opts(elm);
@@ -402,19 +413,29 @@ func upd_repair_opts(gap):
 		var left_elm = cmsm.get_child(g_idx-1);
 		var right_elm = cmsm.get_child(g_idx+1);
 		
-		repair_type_possible[0] = cmsm.dupe_block_exists(g_idx) && has_resource_for_action("repair_cd");
-		if !repair_type_possible[0]:
-			if has_resource_for_action("repair_cd"):
-				repair_btn_text[0] = "No duplicates to collapse";
-			else:
-				repair_btn_text[0] = "Not enough resources";
+		repair_type_possible[0] = true;
+		if !Unlocks.has_repair_unlock("collapse_dupes"):
+			repair_type_possible[0] = false;
+			var cps_remain : int = Unlocks.get_count_remaining(Unlocks.get_repair_key("collapse_dupes"), "cp_duped_genes");
+			repair_btn_text[0] = "Copy %d more gene%s with Copy Repair" % [cps_remain, Game.pluralize(cps_remain)];
+		elif !has_resource_for_action("repair_cd"):
+			repair_type_possible[0] = false;
+			repair_btn_text[0] = "Not enough resources";
+		elif !cmsm.dupe_block_exists(g_idx):
+			repair_type_possible[0] = false;
+			repair_btn_text[0] = "No duplicates to collapse";
 		
-		repair_type_possible[1] = cmsms.get_other_cmsm(cmsm).pair_exists(left_elm, right_elm) && has_resource_for_action("repair_cp");
-		if !repair_type_possible[1]:
-			if has_resource_for_action("repair_cp"):
-				repair_btn_text[1] = "No pattern to copy";
-			else:
-				repair_btn_text[1] = "Not enough resources";
+		repair_type_possible[1] = true;
+		if !Unlocks.has_repair_unlock("copy_pattern"):
+			repair_type_possible[1] = false;
+			var jes_remain : int = Unlocks.get_count_remaining(Unlocks.get_repair_key("copy_pattern"), "repair_je");
+			repair_btn_text[1] = "Perform %d more Join Ends repair%s" % [jes_remain, Game.pluralize(jes_remain)];
+		elif !has_resource_for_action("repair_cp"):
+			repair_type_possible[1] = false;
+			repair_btn_text[1] = "Not enough resources";
+		elif !cmsms.get_other_cmsm(cmsm).pair_exists(left_elm, right_elm):
+			repair_type_possible[1] = false;
+			repair_btn_text[1] = "No pattern to copy";
 		
 		repair_type_possible[2] = has_resource_for_action("repair_je");
 		if !repair_type_possible[2]:
@@ -517,7 +538,7 @@ func make_repair_choices(gap, repair_idx):
 			
 			if (choice_info["right"] == null):
 				return false;
-			emit_signal("justnow_update", "");
+			#emit_signal("justnow_update", ""); # justnow no longer clears, this just creates a bunch of extra space
 		1: # Copy Pattern
 			var gap_cmsm = gap.get_parent();
 			var g_idx = gap.get_index();
@@ -562,7 +583,7 @@ func make_repair_choices(gap, repair_idx):
 			if (choice_info["right"] == null):
 				choice_info["left"].disable(true);
 				return false;
-			emit_signal("justnow_update", "");
+			#emit_signal("justnow_update", ""); # justnow no longer clears, this just creates a bunch of extra space
 	repair_gap(gap, repair_idx, choice_info);
 
 var repair_canceled = false;
@@ -585,6 +606,8 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 		repair_canceled = false;
 		match (repair_idx):
 			0: # Collapse Duplicates
+				Unlocks.add_count("repair_cd");
+				
 				var left_idx = choice_info["left"].get_index();
 				var right_idx = choice_info["right"].get_index();
 				choice_info["left"].highlight_border(false);
@@ -637,6 +660,8 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 					use_resources("repair_cd");
 			
 			1: # Copy Pattern
+				Unlocks.add_count("repair_cp");
+				
 				choice_info["left"].highlight_border(false);
 				if (!roll_storage[0].has(gap)):
 					roll_storage[0][gap] = roll_chance("copy_repair");
@@ -650,14 +675,16 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 						emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome without complications.%s" % (gap_pos_disp + [left_id, right_id, correct_str]));
 					1:
 						emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome along with intervening genes.%s" % (gap_pos_disp + [left_id, right_id, correct_str]));
+						var copied_section = range(choice_info["left"].get_index()+1, choice_info["right"].get_index());
 						if (do_yields):
-							for i in range(choice_info["left"].get_index()+1, choice_info["right"].get_index()):
+							for i in copied_section:
 								var copy_elm = Game.copy_elm(other_cmsm.get_child(i));
 								yield(cmsm.add_elm(copy_elm, gap.get_index()), "completed");
 						else:
-							for i in range(choice_info["left"].get_index()+1, choice_info["right"].get_index()):
+							for i in copied_section:
 								var copy_elm = Game.copy_elm(other_cmsm.get_child(i));
 								cmsm.add_elm(copy_elm, gap.get_index());
+						Unlocks.add_count("cp_duped_genes", copied_section.size());
 					2, 3, 4:
 						gene_selection = cmsm.get_elms_around_pos(g_idx, true);
 						emit_signal("justnow_update", "Trying to copy the pattern from the other chromosome, but 1 gene is harmed; choose which.");
@@ -685,10 +712,10 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 										cmsms.remove_elm(gene, false);
 								3: # Major down
 									damage_str = "received a major downgrade"
-									gene.evolve_specific(true, false);
+									gene.evolve(true, false);
 								4: # Minor down
 									damage_str = "received a minor downgrade"
-									gene.evolve_specific(false, false);
+									gene.evolve(false, false);
 							emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome. A %s gene %s in the repair.%s" % (gap_pos_disp + [left_id, right_id, g_id, damage_str, correct_str]));
 					5, 6, 7:
 						var gene = right_break_gene;
@@ -705,10 +732,10 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 									cmsms.dupe_elm(gene);
 							6: # Major up
 								boon_str = "received a major upgrade"
-								gene.evolve_specific(true, true);
+								gene.evolve(true, true);
 							7: # Minor up
 								boon_str = "received a minor upgrade"
-								gene.evolve_specific(false, true);
+								gene.evolve(false, true);
 						emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome. A %s gene %s in the repair.%s" % (gap_pos_disp + [left_id, right_id, gene.id, boon_str, correct_str]));
 				if !repair_canceled:
 					if (do_correction):
@@ -726,6 +753,8 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 					use_resources("repair_cp")
 					#print("repair copy pattern");
 			2: # Join Ends
+				Unlocks.add_count("repair_je");
+				
 				if (!roll_storage[1].has(gap)):
 					roll_storage[1][gap] = roll_chance("join_ends");
 				match (roll_storage[1][gap]):
@@ -758,10 +787,10 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 										cmsms.remove_elm(gene, false);
 								2: # Major down
 									damage_str = "received a major downgrade"
-									gene.evolve_specific(true, false);
+									gene.evolve(true, false);
 								3: # Minor down
 									damage_str = "received a minor downgrade"
-									gene.evolve_specific(false, false);
+									gene.evolve(false, false);
 							emit_signal("justnow_update", "Joined ends for the gap at %d, %d; a %s gene %s in the repair." % (gap_pos_disp + [g_id, damage_str]));
 					4, 5, 6:
 						var gene = right_break_gene;
@@ -778,10 +807,10 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 									cmsms.dupe_elm(gene);
 							5: # Major up
 								boon_str = "received a major upgrade"
-								gene.evolve_specific(true, true);
+								gene.evolve(true, true);
 							6: # Minor up
 								boon_str = "received a minor upgrade"
-								gene.evolve_specific(false, true);
+								gene.evolve(false, true);
 						emit_signal("justnow_update", "Joined ends for the gap at %d, %d; a %s gene %s in the repair." % (gap_pos_disp + [gene.id, boon_str]));
 				
 				if !repair_canceled:
@@ -804,6 +833,8 @@ func highlight_gap_choices():
 	for g in cmsms.gap_list:
 		gap_text += "Chromosome %d needs a repair at %d.\n" % g.get_position_display();
 	emit_signal("updated_gaps", cmsms.gap_list.size() > 0, gap_text);
+	if Unlocks.has_hint_unlock("click_gaps") && !cmsms.gap_list.empty():
+		Tooltips._handle_mouse_enter(cmsms.gap_list.back());
 	if (is_ai && cmsms.gap_list.size() > 0):
 		upd_repair_opts(cmsms.gap_list[0]);
 		auto_repair();
@@ -844,7 +875,7 @@ func get_behavior_profile():
 		refresh_bprof = false;
 	return behavior_profile;
 
-func roll_chance(type):
+func roll_chance(type : String) -> int:
 	return Chance.roll_chance_type(type, get_behavior_profile());
 
 func evolve_cmsm(cmsm):
@@ -855,25 +886,21 @@ func evolve_candidates(candids):
 		var justnow = "";
 		for e in candids:
 			#if ((cmsms.get_cmsm(0).find_all_genes(e.id).size() + cmsms.get_cmsm(1).find_all_genes(e.id).size()) > 2):
-			match (roll_chance("evolve")):
+			var evolve_idx := roll_chance("evolve")
+			match evolve_idx:
 				0:
 					justnow += "%s did not evolve.\n" % e.id;
-					e.evolve(0);
 				1:
-					justnow += "%s received a fatal mutation and has become a pseudogene.\n" % e.id;
-					e.evolve(1);
+					justnow += "%s received a fatal mutation.\n" % e.id;
 				2:
 					justnow += "%s received a major upgrade!\n" % e.id;
-					e.evolve(2);
 				3:
 					justnow += "%s received a major downgrade!\n" % e.id;
-					e.evolve(3);
 				4:
 					justnow += "%s received a minor upgrade.\n" % e.id;
-					e.evolve(4);
 				5:
 					justnow += "%s received a minor downgrade.\n" % e.id;
-					e.evolve(5);
+			e.evolve_by_idx(evolve_idx);
 		emit_signal("justnow_update", justnow);
 	else:
 		emit_signal("justnow_update", "No essential genes were duplicated, so no genes evolve.");
@@ -957,6 +984,7 @@ func replicate(idx):
 				
 				prune_cmsms(2);
 				use_resources("replicate_mitosis");
+				num_progeny += 1;
 			1: # Meiosis
 				rep_type = "meiosis";
 				
@@ -967,11 +995,10 @@ func replicate(idx):
 				prune_cmsms(1);
 				use_resources("replicate_meiosis");
 				cmsms.add_cmsm(get_random_gene_from_pool(), true);
+				num_progeny += 3;
 		
 		cmsms.show_all_choice_buttons(false);
 		cmsms.hide_all(false);
-		
-		num_progeny += 1;
 		
 		emit_signal("finished_replication");
 		emit_signal("doing_work", false);
@@ -1002,7 +1029,7 @@ func adv_turn(round_num, turn_idx):
 				emit_signal("justnow_update", "Welcome back!");
 			Game.TURN_TYPES.NewTEs:
 				emit_signal("doing_work", true);
-				emit_signal("justnow_update", "");
+				##emit_signal("justnow_update", ""); # justnow no longer clears, this just creates a bunch of extra space # justnow no longer clears, this just creates a bunch of extra space
 				if (do_yields):
 					yield(gain_ates(1), "completed");
 				else:
@@ -1010,7 +1037,7 @@ func adv_turn(round_num, turn_idx):
 				emit_signal("doing_work", false);
 			Game.TURN_TYPES.TEJump:
 				emit_signal("doing_work", true);
-				emit_signal("justnow_update", "");
+				#emit_signal("justnow_update", ""); # justnow no longer clears, this just creates a bunch of extra space
 				if (do_yields):
 					yield(jump_ates(), "completed");
 				else:
@@ -1045,7 +1072,7 @@ func adv_turn(round_num, turn_idx):
 				else:
 					recombination();
 			Game.TURN_TYPES.Evolve:
-				emit_signal("justnow_update", "");
+				#emit_signal("justnow_update", ""); # justnow no longer clears, this just creates a bunch of extra space
 				for cmsm in cmsms.get_cmsms():
 					evolve_cmsm(cmsm);
 			Game.TURN_TYPES.CheckViability:
@@ -1074,7 +1101,6 @@ func update_energy(amount):
 		energy = MIN_ENERGY;
 	elif (energy > MAX_ENERGY):
 		energy = MAX_ENERGY;
-	energy_allocation_panel.update_energy(energy);
 
 func update_energy_allocation(type, amount):
 	#print(type);
@@ -1084,8 +1110,6 @@ func update_energy_allocation(type, amount):
 		return;
 	energy -= amount;
 	energy_allocations[type] += amount;
-	energy_allocation_panel.update_energy_allocation(type, energy_allocations[type]);
-	energy_allocation_panel.update_energy(energy);
 
 #NOTE: Energy costs are always per unit
 var costs = {
@@ -1424,15 +1448,17 @@ func eject_mineral_resource(resource, amount = 1):
 
 	pass
 
-func get_cost_mult(action):
-	var cost_mult = 1.0;
-	var bprof = get_behavior_profile();
-	for k in bprof.BEHAVIORS:
-		if (BEHAVIOR_TO_COST_MULT.has(k) && BEHAVIOR_TO_COST_MULT[k].has(action)):
-			cost_mult += BEHAVIOR_TO_COST_MULT[k][action] * bprof.get_behavior(k);
-	cost_mult = max(0.05, cost_mult);
-	
-	return cost_mult * Game.resource_mult;
+func get_cost_mult(action) -> float:
+	if Unlocks.has_mechanic_unlock("resource_costs"):
+		var cost_mult = 1.0;
+		var bprof = get_behavior_profile();
+		for k in bprof.BEHAVIORS:
+			if (BEHAVIOR_TO_COST_MULT.has(k) && BEHAVIOR_TO_COST_MULT[k].has(action)):
+				cost_mult += BEHAVIOR_TO_COST_MULT[k][action] * bprof.get_behavior(k);
+		cost_mult = max(0.05, cost_mult);
+		
+		return cost_mult * Game.resource_mult;
+	return 0.0;
 	
 #Converts all higher tier resources into lower tier resources
 #Includes calculations for penalties

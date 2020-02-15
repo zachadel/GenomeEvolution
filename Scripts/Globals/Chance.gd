@@ -22,24 +22,24 @@ const BEHAVIOR_TO_MOD = {
 	}
 }
 
-var _RNG = RandomNumberGenerator.new();
+var RNG = RandomNumberGenerator.new();
 
 # 1 stdev puts 68% of the random nums in the bounds, 2 gives 95%, 3 gives 99.7%
 # i.e. more stdevs = tighter concentration in the middle
 func rand_normal_between(left_bound : float, right_bound : float, num_stdev : float = 2.0):
 	var range_mean = (left_bound + right_bound) / 2.0;
 	var range_std = (range_mean - left_bound) / num_stdev;
-	return clamp(_RNG.randfn(range_mean, range_std), left_bound, right_bound);
+	return clamp(RNG.randfn(range_mean, range_std), left_bound, right_bound);
 
-func additive_mod_exists(roll_type, behavior):
+func additive_mod_exists(roll_type : String, behavior : String) -> bool:
 	return BEHAVIOR_TO_MOD.has(behavior) && BEHAVIOR_TO_MOD[behavior].has(roll_type);
 
-func get_additive_mods(roll_type, behavior):
+func get_additive_mods(roll_type : String, behavior : String) -> Array:
 	return BEHAVIOR_TO_MOD[behavior][roll_type];
 
-func roll_chance_type(type, behavior_profile = null):
+func roll_chance_type(type : String, behavior_profile = null) -> int:
 	var mods = [];
-	for i in range(base_rolls[type].size()):
+	for _i in range(base_rolls[type].size()):
 		mods.append(1.0);
 	
 	# Add up relevant modifiers
@@ -51,7 +51,7 @@ func roll_chance_type(type, behavior_profile = null):
 	
 	return roll_chances(base_rolls[type], mods);
 
-func roll_chances(chance_array, mods = []):
+func roll_chances(chance_array : Array, mods := []) -> int:
 	# Modify the chances, then find their sum for normalizing
 	var roll_chances = chance_array + [];
 	var chance_sum = 0;
@@ -72,10 +72,10 @@ func roll_chances(chance_array, mods = []):
 		previous_range = now_range;
 	return roll_chances.size() - 1;
 
-func collapse_chance(segment_size, dist_from_gap):
+func collapse_chance(segment_size : int, dist_from_gap : int) -> float:
 	return float(float(segment_size) / float(dist_from_gap + 0.5));
 
-func roll_collapse(segment_size, dist_from_gap):
+func roll_collapse(segment_size : int, dist_from_gap : int) -> bool:
 	if (dist_from_gap < 0):
 		dist_from_gap *= -1;
 #	var roll = randf();

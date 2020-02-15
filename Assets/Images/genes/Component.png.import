@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Deconstruction.png-cdfb68f8c3dce834b42097cb7cabd570.stex"
+path="res://.import/Component.png-77a51f955623d3046919a1d625426498.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Images/genes_noDNA/Deconstruction.png"
-dest_files=[ "res://.import/Deconstruction.png-cdfb68f8c3dce834b42097cb7cabd570.stex" ]
+source_file="res://Assets/Images/genes/Component.png"
+dest_files=[ "res://.import/Component.png-77a51f955623d3046919a1d625426498.stex" ]
 
 [params]
 

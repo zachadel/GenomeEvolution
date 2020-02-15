@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/icons-07.png-cb090e9dbb8e5ce6f58870a5f097817a.stex"
+path="res://.import/padlock.png-68844b275525c604bd333093b85735cd.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Images/genes/icons-07.png"
-dest_files=[ "res://.import/icons-07.png-cb090e9dbb8e5ce6f58870a5f097817a.stex" ]
+source_file="res://Assets/Images/icons/padlock.png"
+dest_files=[ "res://.import/padlock.png-68844b275525c604bd333093b85735cd.stex" ]
 
 [params]
 

@@ -10,6 +10,9 @@ func _ready():
 func _on_nudResRate_value_changed(val):
 	Game.resource_mult = val;
 
+func _on_cboxUnlockAll_toggled(pressed):
+	Unlocks.unlock_override = pressed;
+
 func _on_NewGame_pressed():
 	emit_signal("begin_new_game")
 	pass # Replace with function body.
@@ -24,3 +27,4 @@ func _on_Exit_pressed():
 
 func _on_Tutorial_pressed():
 	pass # Replace with function body.
+

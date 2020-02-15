@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Scripts/CardTable/CardTable.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player/Organism.tscn" type="PackedScene" id=2]
@@ -14,14 +14,21 @@
 [ext_resource path="res://Scenes/WorldMap/MineralLevels.tscn" type="PackedScene" id=12]
 [ext_resource path="res://Scenes/WorldMap/CFPBank.tscn" type="PackedScene" id=13]
 [ext_resource path="res://Scenes/WorldMap/EnergyBar.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Scenes/CardTable/TurnList.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Scenes/CardTable/DarkenedBG.tres" type="StyleBox" id=16]
 
-[sub_resource type="ButtonGroup" id=1]
+[sub_resource type="Theme" id=1]
+Button/colors/font_color_disabled = Color( 0, 0, 0, 1 )
 
 [node name="CardTable" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 1
+theme = SubResource( 1 )
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="lbl_turn" type="Label" parent="."]
 anchor_left = 1.0
@@ -29,52 +36,46 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -397.0
-margin_top = -92.0
+margin_top = -75.0
 margin_right = -160.0
 align = 2
 valign = 1
 autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="sc_justnow" type="ScrollContainer" parent="."]
-editor/display_folded = true
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -300.0
-margin_top = -200.0
-margin_right = 300.0
-rect_min_size = Vector2( 600, 200 )
-scroll_horizontal_enabled = false
-
-[node name="lbl_justnow" type="Label" parent="sc_justnow"]
-margin_right = 600.0
-margin_bottom = 180.0
-rect_min_size = Vector2( 600, 180 )
-align = 1
-valign = 1
-autowrap = true
-
-[node name="sc_criteria" type="ScrollContainer" parent="."]
-editor/display_folded = true
+[node name="lbl_log" type="Label" parent="."]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -476.0
-margin_top = -275.0
-margin_right = -144.0
-margin_bottom = -75.0
-rect_min_size = Vector2( 320, 200 )
-scroll_horizontal_enabled = false
-
-[node name="lbl_criteria" type="Label" parent="sc_criteria"]
-margin_right = 320.0
-margin_bottom = 180.0
-rect_min_size = Vector2( 320, 180 )
+margin_left = -1090.0
+margin_top = -254.0
+margin_right = -490.0
+margin_bottom = -240.0
+text = "Event Log"
 align = 1
 valign = 1
 autowrap = true
+
+[node name="lbl_justnow" type="RichTextLabel" parent="."]
+margin_left = 510.0
+margin_top = 670.0
+margin_right = 1110.0
+margin_bottom = 870.0
+custom_styles/normal = ExtResource( 16 )
+bbcode_enabled = true
+scroll_following = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TurnList" parent="." instance=ExtResource( 15 )]
+margin_left = 1208.0
+margin_top = 629.0
+margin_right = 1458.0
+margin_bottom = 821.0
 
 [node name="button_grid" type="VBoxContainer" parent="."]
 anchor_left = 1.0
@@ -88,6 +89,9 @@ grow_horizontal = 0
 grow_vertical = 0
 custom_constants/separation = 20
 alignment = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="btn_dead_menu" type="Button" parent="button_grid"]
 visible = false
@@ -133,17 +137,29 @@ text = "Continue"
 
 [node name="Organism" parent="." instance=ExtResource( 2 )]
 
+[node name="lbl_behavior" type="Label" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -1594.0
+margin_top = -298.0
+margin_right = -1127.0
+margin_bottom = -284.0
+text = "Gene Content"
+valign = 1
+autowrap = true
+
 [node name="ChromosomeStatus" parent="." instance=ExtResource( 3 )]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -786.519
-margin_top = 577.836
-margin_right = 313.481
-margin_bottom = 639.836
+margin_left = -796.519
+margin_top = 612.836
+margin_right = 303.481
+margin_bottom = 674.836
 rect_min_size = Vector2( 0, 50 )
 
 [node name="pnl_repair_choices" type="Panel" parent="."]
-editor/display_folded = true
 visible = false
 anchor_left = 0.5
 anchor_top = 1.0
@@ -199,7 +215,6 @@ margin_bottom = 201.0
 text = "Repair"
 
 [node name="pnl_reproduce" type="Panel" parent="."]
-editor/display_folded = true
 visible = false
 anchor_left = 0.5
 anchor_top = 1.0
@@ -255,7 +270,6 @@ margin_bottom = 201.0
 text = "Reproduce"
 
 [node name="pnl_saveload" type="Panel" parent="."]
-editor/display_folded = true
 visible = false
 anchor_left = 0.5
 anchor_top = 0.5
@@ -305,48 +319,37 @@ margin_right = 656.0
 margin_bottom = 397.0
 script = ExtResource( 11 )
 
-[node name="cbox_optVcur" type="CheckBox" parent="pnl_ph_filter"]
-margin_top = 20.0
-margin_right = 149.0
-margin_bottom = 44.0
-pressed = true
-group = SubResource( 1 )
-text = "Optimal vs Current"
-
-[node name="cbox_curVsld" type="CheckBox" parent="pnl_ph_filter"]
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = -74.5
-margin_top = 20.0
-margin_right = 74.5
-margin_bottom = 44.0
-group = SubResource( 1 )
-text = "Current vs Slider"
-
-[node name="cbox_optVsld" type="CheckBox" parent="pnl_ph_filter"]
-anchor_left = 1.0
-anchor_right = 1.0
-margin_left = -149.0
-margin_top = 20.0
-margin_bottom = 44.0
-group = SubResource( 1 )
-text = "Optimal vs Slider"
-
 [node name="slider_ph" type="HSlider" parent="pnl_ph_filter"]
-visible = false
 anchor_right = 1.0
 margin_left = 42.0
 margin_top = 70.0
 margin_right = -42.0
 margin_bottom = 86.0
 max_value = 14.0
-step = 0.25
+step = 0.05
 value = 7.0
 tick_count = 15
-ticks_on_borders = false
+ticks_on_borders = true
+
+[node name="current_ph" type="ColorRect" parent="pnl_ph_filter/slider_ph"]
+show_behind_parent = true
+margin_left = 212.0
+margin_top = -20.0
+margin_right = 217.0
+margin_bottom = 25.0
+color = Color( 0.3, 0.3, 0.3, 1 )
+
+[node name="lbl" type="Label" parent="pnl_ph_filter/slider_ph/current_ph"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -34.5
+margin_top = -31.0
+margin_right = 34.5
+text = "Current pH
+7.00"
+align = 1
 
 [node name="lbl_slider_value" type="Label" parent="pnl_ph_filter"]
-visible = false
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -24.0
@@ -359,24 +362,28 @@ valign = 1
 clip_text = true
 
 [node name="MineralLevels" parent="." instance=ExtResource( 12 )]
-margin_left = 139.563
-margin_top = 731.388
-margin_right = -1195.44
-margin_bottom = -40.6124
+margin_left = 129.563
+margin_top = 766.388
+margin_right = -1205.44
+margin_bottom = -5.61249
 
 [node name="CFPBank" parent="." instance=ExtResource( 13 )]
-margin_left = 11.5742
-margin_top = 686.729
-margin_right = -1588.43
-margin_bottom = -213.271
+margin_left = 1.5742
+margin_top = 721.729
+margin_right = -1598.43
+margin_bottom = -178.271
 rect_scale = Vector2( 0.8, 0.75 )
 
 [node name="EnergyBar" parent="." instance=ExtResource( 14 )]
-margin_left = 11.894
-margin_top = 643.426
-margin_right = -988.106
-margin_bottom = -196.574
+margin_left = 1.894
+margin_top = 678.426
+margin_right = -998.106
+margin_bottom = -161.574
 rect_scale = Vector2( 0.8, 0.75 )
+
+[node name="AutoContinue" type="Timer" parent="."]
+wait_time = 0.01
+one_shot = true
 [connection signal="pressed" from="button_grid/btn_dead_menu" to="." method="_on_btn_dead_menu_pressed"]
 [connection signal="pressed" from="button_grid/btn_dead_restart" to="." method="_on_btn_dead_restart_pressed"]
 [connection signal="pressed" from="button_grid/btn_saveload" to="." method="_on_btn_saveload_pressed"]
@@ -402,8 +409,6 @@ rect_scale = Vector2( 0.8, 0.75 )
 [connection signal="pressed" from="pnl_saveload/btn_load" to="pnl_saveload" method="_on_btn_load_pressed"]
 [connection signal="update_seqelm_coloration" from="pnl_ph_filter" to="." method="_on_pnl_ph_filter_update_seqelm_coloration"]
 [connection signal="visibility_changed" from="pnl_ph_filter" to="pnl_ph_filter" method="_on_pnl_ph_filter_visibility_changed"]
-[connection signal="pressed" from="pnl_ph_filter/cbox_optVcur" to="pnl_ph_filter" method="_on_cbox_optVcur_pressed"]
-[connection signal="pressed" from="pnl_ph_filter/cbox_curVsld" to="pnl_ph_filter" method="_on_cbox_curVsld_pressed"]
-[connection signal="pressed" from="pnl_ph_filter/cbox_optVsld" to="pnl_ph_filter" method="_on_cbox_optVsld_pressed"]
 [connection signal="value_changed" from="pnl_ph_filter/slider_ph" to="pnl_ph_filter" method="_on_slider_ph_value_changed"]
 [connection signal="resource_clicked" from="CFPBank" to="." method="_on_CFPBank_resource_clicked"]
+[connection signal="timeout" from="AutoContinue" to="." method="_on_AutoContinue_timeout"]

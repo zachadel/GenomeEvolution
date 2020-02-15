@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Replication.png-48adb62bd5d2568c24018272d2541c02.stex"
+path="res://.import/T.png-9bed377a321e9103a0fe153f6eac87e9.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Images/genes_noDNA/Replication.png"
-dest_files=[ "res://.import/Replication.png-48adb62bd5d2568c24018272d2541c02.stex" ]
+source_file="res://Assets/Images/icons/ess_behaviors/T.png"
+dest_files=[ "res://.import/T.png-9bed377a321e9103a0fe153f6eac87e9.stex" ]
 
 [params]
 

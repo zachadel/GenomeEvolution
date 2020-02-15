@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/icons-08.png-557498b106b5b4f87cd49e1b96af8747.stex"
+path="res://.import/Helix_Circle.png-23f2b3b210ab39bd285df726150469d6.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Images/genes/icons-08.png"
-dest_files=[ "res://.import/icons-08.png-557498b106b5b4f87cd49e1b96af8747.stex" ]
+source_file="res://Assets/Images/genes/Helix_Circle.png"
+dest_files=[ "res://.import/Helix_Circle.png-23f2b3b210ab39bd285df726150469d6.stex" ]
 
 [params]
 
