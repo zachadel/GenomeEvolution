@@ -60,6 +60,9 @@ script = ExtResource( 7 )
 [node name="CursorHighlight" type="Sprite" parent="."]
 script = ExtResource( 8 )
 
+[node name="CurrentLocation" type="Sprite" parent="."]
+script = ExtResource( 8 )
+
 [node name="Path" type="Line2D" parent="."]
 points = PoolVector2Array( 1111.46, 268.78 )
 default_color = Color( 0, 0, 1, 1 )

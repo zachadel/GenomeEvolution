@@ -452,7 +452,10 @@ func get_index_from_resource(resource):
 	
 #Returns [simple/complex]_[carbs/fats/proteins] or the charge of the mineral
 func get_class_from_name(resource_name: String):
-	if resources[resource_name]["group"] == "minerals":
+	
+	if resource_name == "energy":
+		return "energy"
+	elif resources[resource_name]["group"] == "minerals":
 		return resources[resource_name]["tier"] #returns the charge
 	else:
 		return Game.resources[resource_name]["tier"] + Game.SEPARATOR + Game.resources[resource_name]["group"]

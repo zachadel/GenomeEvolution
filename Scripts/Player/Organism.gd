@@ -16,6 +16,8 @@ var born_on_turn
 var died_on_turn
 var num_progeny = 0;
 
+var starting_tile
+
 var energy = 10
 #the 4 resource groups with initial tiers of compression
 #tier 0 is immediately useable
@@ -25,6 +27,7 @@ const MIN_START_RESOURCES = 1
 
 const NECESSARY_OXYGEN_LEVEL = 75
 const LARGEST_MULTIPLIER = 2
+const OXYGEN_ACTIONS = ["energy_to_simple", "simple_to_simple", "simple_to_complex", "complex_to_simple", "simple_to_energy"]
 
 #cfp_resources[resource_class][resource_name] = value
 #cfp_resources[resource_class]["total"] = sum of all values held in resource_class
@@ -98,6 +101,8 @@ signal vesicle_scale_changed(scale, vesicle_name)
 
 signal finished_processing()
 signal energy_changed(energy);
+
+signal insufficient_energy(action);
 
 func _ready():
 	#initialization done in _ready for restarts
@@ -276,11 +281,8 @@ func load_from_save(orgn_info):
 	
 	perform_anims(true);
 
+#NOTE: We should probably remove this before releasing it into the wild
 func _input(ev):
-	if (ev.is_action_pressed("increment")):
-		update_energy(1);
-	if (ev.is_action_pressed("decrement")):
-		update_energy(-1);
 	if (ev.is_action("add_ate") && !ev.is_action_released("add_ate")): # So you can hold it down
 		perform_anims(false);
 		gain_ates();
@@ -1159,25 +1161,25 @@ func check_resources(action, amount = 1):
 	var deficiencies = []
 	var cost_mult = get_cost_mult(action)
 	
-	for resource in cfp_resources.keys():
-		if cfp_resources[resource]["total"] < costs[action][resource] * cost_mult * Game.resource_mult * amount:
+	for resource_class in cfp_resources.keys():
+		if cfp_resources[resource_class]["total"] < get_cfp_cost(action, resource_class, amount):
 			#print("NOT ENOUGH CASH! STRANGA!")
-			deficiencies.append(resource)
+			deficiencies.append(resource_class)
 			
-	for charge in mineral_resources:
-		if mineral_resources[charge]["total"] < costs[action][charge] * cost_mult * Game.resource_mult * amount:
-			deficiencies.append(charge)
+	for group in mineral_resources:
+		if mineral_resources[group]["total"] < get_mineral_cost(action, group, amount):
+			deficiencies.append(group)
 	
-	if energy < costs[action]["energy"] * cost_mult * Game.resource_mult * amount:
+	if energy < get_energy_cost(action, amount):
 		deficiencies.append("energy")
 		
 	return deficiencies
 	
 func get_energy_cost(action, amount = 1):
 	var cost = costs[action]["energy"] * get_cost_mult(action) * Game.resource_mult * amount
-	var oxygen_multiplier =  get_oxygen_multiplier(current_tile["hazards"]["oxygen"])
 	
-	if action in ["energy_to_simple", "simple_to_simple", "simple_to_complex", "complex_to_simple", "simple_to_energy"]:
+	if action in OXYGEN_ACTIONS:
+		var oxygen_multiplier = get_oxygen_multiplier(current_tile["hazards"]["oxygen"])
 		cost *= oxygen_multiplier
 			
 	return cost
@@ -1189,41 +1191,70 @@ func get_oxygen_multiplier(oxygen_level: float):
 	return multiplier
 
 #integer values only for cfp
-func get_cfp_cost(action, resource, tier = 0, amount = 1):
-	var cost = costs[action][resource] * get_cost_mult(action) * Game.resource_mult * amount
+func get_cfp_cost(action, resource, amount = 1):
+	var cost = 0
 	var minimum_cost = 0
 	
-	if costs[action][resource] > 0:
-		minimum_cost = 1
+	if resource in cost[action].keys(): #if we are asking for totals
+		cost = costs[action][resource] * get_cost_mult(action) * Game.resource_mult * amount
+	
+		if costs[action][resource] > 0:
+			minimum_cost = 1
+			
+	elif resource in Game.resources: #if its just a generic resource name
+		var resource_class = Game.get_class_from_name(resource)
+		
+		cost = costs[action][resource_class] * get_cost_mult(action) * Game.resource_mult * amount
+	
+		if costs[action][resource_class] > 0:
+			minimum_cost = 1
+	else:
+		print('ERROR: Invalid resource of %s in function get_cfp_cost', resource)
 	
 	return round(cost) + minimum_cost
 
 #Integer values only for minerals
 #In the future, this will likely be changed to reflect minerals purpose
 #in acting as catalysts rather than being actually used
-func get_mineral_cost(action, mineral, tier = 0, amount = 1):
-	var cost = round(costs[action][mineral] * get_cost_mult(action) * Game.resource_mult * amount)
+func get_mineral_cost(action, mineral, amount = 1):
+	var cost = 0
 	var minimum_cost = 0
 	
-	if costs[action][mineral] > 0:
-		minimum_cost = 1
-	return cost + minimum_cost
+	if mineral in cost[action].keys(): #if we are asking for totals
+		cost = costs[action][mineral] * get_cost_mult(action) * Game.resource_mult * amount
 	
-func update_energy(amount):
-	energy += amount;
-	if (energy < MIN_ENERGY):
-		energy = MIN_ENERGY;
-	elif (energy > MAX_ENERGY):
-		energy = MAX_ENERGY;
+		if costs[action][mineral] > 0:
+			minimum_cost = 1
+			
+	elif mineral in Game.resources: #if its just a generic resource name
+		var resource_class = Game.get_class_from_name(mineral)
+		
+		cost = costs[action][resource_class] * get_cost_mult(action) * Game.resource_mult * amount
+	
+		if costs[action][resource_class] > 0:
+			minimum_cost = 1
+	else:
+		print('ERROR: Invalid resource of %s in function get_mineral_cost', mineral)
+	
+	return round(cost) + minimum_cost
+	
+#func update_energy(amount):
+#	energy += amount;
+#	if (energy < MIN_ENERGY):
+#		energy = MIN_ENERGY;
+#	elif (energy > MAX_ENERGY):
+#		energy = MAX_ENERGY;
 
-func update_energy_allocation(type, amount):
-	#print(type);
-	if (energy - amount < MIN_ENERGY || energy - amount > MAX_ENERGY):
-		return;
-	if (energy_allocations[type] + amount < 0 || energy_allocations[type] + amount > MAX_ALLOCATED_ENERGY):
-		return;
-	energy -= amount;
-	energy_allocations[type] += amount;
+#func update_energy_allocation(type, amount):
+#	#print(type);
+#	if (energy - amount < MIN_ENERGY || energy - amount > MAX_ENERGY):
+#		return;
+#	if (energy_allocations[type] + amount < 0 || energy_allocations[type] + amount > MAX_ALLOCATED_ENERGY):
+#		return;
+#	energy -= amount;
+#	energy_allocations[type] += amount;
+#	energy_allocation_panel.update_energy_allocation(type, energy_allocations[type]);
+#	energy_allocation_panel.update_energy(energy);
 
 #NOTE: Energy costs are always per unit
 var costs = {
@@ -1536,7 +1567,7 @@ const BEHAVIOR_TO_COST_MULT = {
 #
 func use_resources(action, num_times_performed = 1):
 	for resource_class in cfp_resources: #should yield simple_carbs,complex_carbs, etc.
-		var cost = get_cfp_cost(action, resource_class) * num_times_performed
+		var cost = get_cfp_cost(action, resource_class, num_times_performed)
 		if cost > 0:
 			for resource in cfp_resources[resource_class]:
 				if cost <= cfp_resources[resource_class][resource]:
@@ -1548,7 +1579,7 @@ func use_resources(action, num_times_performed = 1):
 		recompute_vesicle_total(resource_class)
 					
 	for charge in mineral_resources: #should yield charges 1, 2, -2, etc.
-		var cost = get_mineral_cost(action, charge) * num_times_performed
+		var cost = get_mineral_cost(action, charge, num_times_performed)
 		if cost > 0:
 			for resource in mineral_resources[charge]:
 				if cost <= mineral_resources[charge][resource]:
@@ -1559,7 +1590,7 @@ func use_resources(action, num_times_performed = 1):
 					mineral_resources[charge][resource] = 0
 		recompute_mineral_total(charge)
 		
-	energy = max(0, energy - (get_energy_cost(action) * num_times_performed))
+	energy = max(0, energy - get_energy_cost(action, num_times_performed))
 	
 	emit_signal("resources_changed", cfp_resources, mineral_resources)
 	emit_signal("energy_changed", energy)
@@ -1582,12 +1613,6 @@ func get_cost_string(action):
 #This always assumes that there is sufficient energy to perform the required task.
 #Only call this function if you have already checked for sufficient energy
 func acquire_resources():
-	var max_capacities = {}
-	
-	for resource_class in vesicle_scales:
-		max_capacities[resource_class] = get_estimated_capacity(resource_class)
-	
-	var cost_mult = get_cost_mult("acquire_resources")
 	var modified = false
 	#Check if any room to store more stuff
 	if energy >= get_energy_cost("acquire_resources"):
@@ -1608,11 +1633,12 @@ func acquire_resources():
 				current_tile["resources"][index] = 0
 				
 			#Acquire carbs, fats, proteins
-			elif cfp_resources[resource_class]["total"] < max_capacities[resource_class] and current_tile["resources"][index] > 0:
+			elif cfp_resources[resource_class]["total"] < get_estimated_capacity(resource_class) and current_tile["resources"][index] > 0:
 				modified = true
+				var max_capacity = get_estimated_capacity(resource_class)
 				
 				#Vesicle can accomodate all resources
-				if cfp_resources[resource_class]["total"] + current_tile["resources"][index] <= max_capacities[resource_class]:
+				if cfp_resources[resource_class]["total"] + current_tile["resources"][index] <= max_capacity:
 					cfp_resources[resource_class]["total"] += current_tile["resources"][index]
 					cfp_resources[resource_class][resource] += current_tile["resources"][index]
 					
@@ -1620,10 +1646,10 @@ func acquire_resources():
 					
 				#Can only accomodate some of the resources
 				else:
-					cfp_resources[resource_class][resource] += (max_capacities[resource_class] - cfp_resources[resource_class]["total"])
-					cfp_resources[resource_class]["total"] = max_capacities[resource_class]
+					cfp_resources[resource_class][resource] += (max_capacity - cfp_resources[resource_class]["total"])
+					cfp_resources[resource_class]["total"] = max_capacity
 					
-					current_tile["resources"][index] -= (max_capacities[resource_class] - cfp_resources[resource_class]["total"])		
+					current_tile["resources"][index] -= (max_capacity - cfp_resources[resource_class]["total"])
 	
 	else:
 		modified = false		
@@ -1640,6 +1666,7 @@ func acquire_resources():
 	if modified and Game.modified_tiles.has(current_tile["location"]):
 		for property in Game.modified_tiles[current_tile["location"]].keys():
 			Game.modified_tiles[current_tile["location"]][property] = current_tile[property]
+
 	elif modified:
 		Game.modified_tiles[current_tile["location"]] = {}
 		
@@ -1694,33 +1721,40 @@ func upgrade_cfp_resource(resource_from: String, resource_to: String, amount):
 	
 	#Check for valid interaction
 	if Game.is_valid_interaction(resource_from, resource_to):
-		
-		var tier_conversion = Game.resources[resource_from]["factor"] #can be changed later to account for genome
-		
-		upgraded_amount = floor(amount / tier_conversion)
-		leftover_resources = amount - (upgraded_amount * tier_conversion)
-		
-		var cost = get_energy_cost("energy_to_simple", upgraded_amount)
-		
-		if upgraded_amount > 0:
+		#in the case we are using energy, amount represents the amount of final product desired
+		if resource_from == "energy":
+			var tier_conversion = Game.resources[resource_to]["factor"] #how much energy to produce one unit
+			var cost = get_energy_cost("energy_to_simple", amount)
 			
-			#Check to make sure that there is enough energy for the conversion
-			if energy >= cost:
+			var energy_required = cost + tier_conversion * amount
+			var resource_class = Game.get_class_from_name(resource_to)
+			
+			if energy >= energy_required and cfp_resources[resource_class][resource_to] + amount <= get_estimated_capacity(resource_class):
+				energy -= tier_conversion * amount
 				
-				#Converting from energy to resources requires some special logic
-				if resource_from == "energy":
-					#Check to make sure there is enough energy for the cost and for conversion
-					if energy >= cost + (upgraded_amount * tier_conversion):
-						energy -= (upgraded_amount * tier_conversion)
-						
-						use_resources("energy_to_simple", upgraded_amount)
-						
-					else:
-						upgraded_amount = 0
-						leftover_resources = amount
-						
-				#Check that we have sufficient resources to perform the operation
-				elif resource_from != "energy":
+				upgraded_amount = amount
+				leftover_resources = energy
+				
+				cfp_resources[resource_class][resource_to] += amount
+				
+				use_resources("energy_to_simple", amount)
+			
+			else:
+				upgraded_amount = 0
+				leftover_resources = energy
+
+		else:
+			var tier_conversion = Game.resources[resource_from]["factor"] #can be changed later to account for genome
+			
+			upgraded_amount = floor(amount / tier_conversion)
+			leftover_resources = amount - (upgraded_amount * tier_conversion)
+			
+			var cost = get_energy_cost("simple_to_complex", upgraded_amount)
+			
+			if upgraded_amount > 0:
+				
+				#Check to make sure that there is enough energy for the conversion
+				if energy >= cost:
 					var resource_class_from = Game.get_class_from_name(resource_from)
 					var resource_class_to = Game.get_class_from_name(resource_to)
 					
@@ -1735,12 +1769,12 @@ func upgrade_cfp_resource(resource_from: String, resource_to: String, amount):
 					else:
 						upgraded_amount = 0
 						leftover_resources = amount
+				else:
+					upgraded_amount = 0
+					leftover_resources = amount
 			else:
 				upgraded_amount = 0
 				leftover_resources = amount
-		else:
-			upgraded_amount = 0
-			leftover_resources = amount
 	
 	return [upgraded_amount, leftover_resources]
 
@@ -1814,7 +1848,7 @@ func downgrade_cfp_resource(resource_from: String, amount):
 			var cost = get_energy_cost("simple_to_energy", amount)
 			
 			#If you have enough room and you have sufficient energy to perform the operation
-			if energy + downgraded_amount <= MAX_ENERGY and cost <= energy:
+			if energy + downgraded_amount <= MAX_ENERGY and cost <= energy + downgraded_amount:
 				energy += downgraded_amount
 				cfp_resources[resource_from_class][resource_from] -= amount
 				
@@ -1837,37 +1871,39 @@ func downgrade_cfp_resource(resource_from: String, amount):
 				
 	return [downgraded_amount, leftover_resources]
 
+#BROKEN
 func eject_mineral_resource(resource, amount = 1):
 
-	var resource_index = Game.get_index_from_resource(resource)
-	var resource_class = Game.get_class_from_name(resource)
-	
-	if mineral_resources[resource_class][resource] >= amount and !check_resources("mineral_ejection", amount):
-		current_tile["resources"][resource_index] += amount
-		mineral_resources[resource_class][resource] -= amount
-		mineral_resources[resource_class]["total"] -= amount
+	#If we are ejecting from a group of minerals (most likely case)
+	if resource in mineral_resources.keys():
+		var resource_index = Game.get_index_from_resource(resource)
+		var resource_class = Game.get_class_from_name(resource)
 		
-		#If suddenly competing for highest value on tile
-		if current_tile["resources"][resource_index] >= Game.PRIMARY_RESOURCE_MIN:
-			if current_tile["primary_resource"] == -1:
-				current_tile["primary_resource"] = resource_index
-				
-			else:
-				for index in current_tile["resources"]:
+		if mineral_resources[resource_class][resource] >= amount and !check_resources("mineral_ejection", amount):
+			current_tile["resources"][resource_index] += amount
+			mineral_resources[resource_class][resource] -= amount
+			mineral_resources[resource_class]["total"] -= amount
+			
+			#If suddenly competing for highest value on tile
+			if current_tile["resources"][resource_index] >= Game.PRIMARY_RESOURCE_MIN:
+				if current_tile["primary_resource"] == -1:
+					current_tile["primary_resource"] = resource_index
 					
-					if current_tile["resources"][index] > current_tile["resources"][current_tile["primary_resource"]]:
-						current_tile["primary_resource"] = index
-		
-		Game.modified_tiles[current_tile["location"]] = {
-								"resources": current_tile["resources"],
-								"biome": current_tile["biome"],
-								"primary_resource": current_tile["primary_resource"],
-								"hazards": current_tile["hazards"]
-							}
-		use_resources("mineral_ejection", amount)
-
-	pass
+				else:
+					for index in current_tile["resources"]:
+						
+						if current_tile["resources"][index] > current_tile["resources"][current_tile["primary_resource"]]:
+							current_tile["primary_resource"] = index
+			
+			Game.modified_tiles[current_tile["location"]] = {
+									"resources": current_tile["resources"],
+									"biome": current_tile["biome"],
+									"primary_resource": current_tile["primary_resource"],
+									"hazards": current_tile["hazards"]
+								}
+			use_resources("mineral_ejection", amount)
 	
+#BROKEN: need to use consume randomly function
 func eject_cfp_resource(resource, amount = 1):
 
 	var resource_index = Game.get_index_from_resource(resource)
@@ -1909,6 +1945,50 @@ func get_cost_mult(action) -> float:
 		
 		return cost_mult * Game.resource_mult;
 	return 0.0;
+
+#works for cfp or mineral
+func consume_randomly_from_class(resource_class: String, amount: int):
+	var keys
+	var dict
+	var final_amount = amount
+
+	if resource_class in cfp_resources:
+		if cfp_resources[resource_class]["total"] <= amount:
+			dict = cfp_resources
+			keys = cfp_resources[resource_class].keys()
+			keys.remove("total")
+		else:
+			return -1
+			
+	elif resource_class in mineral_resources:
+		if mineral_resources[resource_class]["total"] <= amount:
+			dict = mineral_resources
+			keys = mineral_resources[resource_class].keys()
+			keys.remove("total")
+		else:
+			return -1
+		
+	while(amount > 0):
+		var index = randi() % len(keys)
+		var resource = keys[index]
+		
+		#we have stuff we can remove
+		if dict[resource_class][resource] > 0:
+			var remove_amount = 0
+			if dict[resource_class][resource] <= amount:
+				remove_amount = randi() % (dict[resource_class][resource] - 1) + 1 #guarantees we remove at least one unit
+				
+			elif dict[resource_class][resource] > amount:
+				remove_amount = randi() % (amount - 1) + 1
+				
+			amount -= remove_amount
+			dict[resource_class][resource] -= remove_amount
+			
+			if dict[resource_class][resource] == 0:
+				keys.erase(index)
+		else:
+			keys.erase(index)
+	return final_amount		
 	
 #Converts all higher tier resources into lower tier resources
 #Includes calculations for penalties

@@ -3,6 +3,7 @@ extends CanvasLayer
 signal end_map_pressed
 signal quit_to_title
 signal acquire_resources
+signal check_genome
 signal eject_resource(resource, value)
 signal breakdown_resource(resource, amount)
 

@@ -54,7 +54,10 @@ func _ready():
 func _unhandled_input(event):
 	if event.is_action_pressed("mouse_left") and visible:
 		if !dragging:
-			if !energy_clicked:
+			if energy_clicked:
+				handle_energy_to_vesicle_click()
+				energy_clicked = false
+			elif !energy_clicked:
 				if selected:
 					selected = false
 					
@@ -68,9 +71,6 @@ func _unhandled_input(event):
 				true_start = get_global_mouse_position()
 				
 				draw_rect.set_global_position(true_start)
-			elif energy_clicked:
-				handle_energy_to_vesicle_click()
-				pass
 		
 	if event.is_action_released("mouse_left") and dragging and visible:
 		dragging = false
@@ -87,6 +87,15 @@ func _unhandled_input(event):
 		true_end = Vector2.ZERO
 		true_start = Vector2.ZERO
 	
+	if event.is_action_pressed("mouse_right") and energy_clicked:
+		energy_clicked = false
+		Input.set_custom_mouse_cursor(null)
+	
+func _input(event):
+	if event.is_action_pressed("mouse_right"):
+		energy_clicked = false
+		Input.set_custom_mouse_cursor(null)
+		
 func _process(delta):
 	if dragging:
 		var temp_end = get_global_mouse_position()
@@ -99,6 +108,7 @@ func update_energy(energy):
 
 func set_organism(org):
 	organism = org
+	organism.connect("energy_changed", energy_bar, "_on_Organism_energy_changed", [organism.energy])
 	
 #cfp_resources[resource_class][resource] = value
 #should not be called when selected_resources has stuff
@@ -231,35 +241,47 @@ func handle_click_with_selection():
 				if diff > 0:
 					remove_resource_by_name(resource, diff, true)
 				
-				#Process for adding nodes to vesicles according to upgraded amount
-				add_resource(results[1], results[0][0])
+				print("Energy check: ", results)
+				#energy_bar.add_energy(results[0][0])
+				
+			energy_bar.update_energy_allocation(organism.energy)
 		energy_clicked = false
 		Input.set_custom_mouse_cursor(null)
 
 func handle_energy_to_vesicle_click():
 	var vesicle_name = get_vesicle_from_mouse_pos(get_global_mouse_position())
-	
-	if vesicle_name:
-		var results = organism.process_resources("energy", vesicle_name)
-	pass
+	print("Before: ", energy_bar.energy)
+	if vesicle_name and Game.is_valid_interaction("energy", vesicle_name):
+		var results = organism.process_resource("energy", vesicle_name, 1)
+		
+		add_resource(results[1], results[0][0])
+		energy_bar.update_energy_allocation(organism.energy)
+		Input.set_custom_mouse_cursor(null)
+	print("After: ", energy_bar.energy)
 	
 func get_vesicle_from_mouse_pos(mouse_pos: Vector2):
 	var vesicle_name = ""
 	
 	for container in resources:
 		var vesicle = get_node(container)
-		if vesicle.had_point(mouse_pos):
+		if vesicle.has_point(mouse_pos):
 			vesicle_name = container
 			break
 			
 	return vesicle_name
-		
-		
 	
 func _on_Organism_resources_changed(cfp_resources, mineral_resources):
 	pass
 
 func _on_EnergyBar_resource_clicked(resource, value):
-	energy_clicked = true
-	Input.set_custom_mouse_cursor(energy_icon)
+	if selected:
+		energy_clicked = true
+		handle_click_with_selection()
+		energy_clicked = false
+		selected = false
+		Input.set_custom_mouse_cursor(null)
+	elif !energy_clicked:
+		energy_clicked = true
+		Input.set_custom_mouse_cursor(energy_icon)
+	
 	pass # Replace with function body.

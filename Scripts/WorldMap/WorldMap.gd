@@ -48,6 +48,7 @@ var tile_sprite_size = Vector2(0,0)
 
 onready var tween = get_node("MapZoom")
 onready var camera = get_node("MapCamera")
+onready var loc_highlight = get_node("CurrentLocation")
 
 const FINAL_TWEEN_ZOOM = Vector2(.1, .1)
 
@@ -96,6 +97,9 @@ func setup(biome_seed, hazard_seed, resource_seed, tiebreak_seed, _chunk_size, p
 	player_sprite_offset = (tile_sprite_size - current_player.get_texture_size()) / 2
 	current_player.position = Game.map_to_world(Game.world_to_map(default_start))
 	current_player.organism.current_tile = get_tile_at_pos(Game.world_to_map(default_start))
+	current_player.organism.start_tile = get_tile_at_pos(Game.world_to_map((default_start)))
+	loc_highlight.self_modulate = Color.blue
+	loc_highlight.position = current_player.position
 	
 	observe_tiles(Game.world_to_map(default_start), current_player.organism.get_vision_radius())
 	
@@ -108,6 +112,7 @@ func setup(biome_seed, hazard_seed, resource_seed, tiebreak_seed, _chunk_size, p
 	$WorldMap_UI.irc.energy_bar.MAX_ENERGY = current_player.organism.MAX_ENERGY
 	$WorldMap_UI.irc.update_energy(current_player.organism.energy)
 	$WorldMap_UI.irc.set_organism(current_player.organism)
+	connect("player_energy_changed", $WorldMap_UI.irc.energy_bar, "_on_Organism_energy_changed")
 	
 	$MapCamera.position = current_player.position
 	
@@ -303,6 +308,7 @@ func move_player(pos: Vector3):
 			astar.set_position_offset(pos, funcref(self, "costs"))
 			
 			emit_signal("player_energy_changed", current_player.organism.energy)
+			loc_highlight.position = current_player.position
 	
 	return tiles_moved
 	
