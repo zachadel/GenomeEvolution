@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Scripts/CardTable/CardTable.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player/Organism.tscn" type="PackedScene" id=2]
@@ -11,8 +11,7 @@
 [ext_resource path="res://Assets/Images/icons/skip_rep.png" type="Texture" id=9]
 [ext_resource path="res://Scripts/CardTable/pnl_saveload.gd" type="Script" id=10]
 [ext_resource path="res://Scripts/CardTable/pnl_ph_filter.gd" type="Script" id=11]
-[ext_resource path="res://Scenes/WorldMap/MineralLevels.tscn" type="PackedScene" id=12]
-[ext_resource path="res://Scenes/WorldMap/CFPBank.tscn" type="PackedScene" id=13]
+[ext_resource path="res://Assets/Images/Cells/body/body_cell_1_button.svg" type="Texture" id=12]
 [ext_resource path="res://Scenes/WorldMap/EnergyBar.tscn" type="PackedScene" id=14]
 [ext_resource path="res://Scenes/CardTable/TurnList.tscn" type="PackedScene" id=15]
 [ext_resource path="res://Scenes/CardTable/DarkenedBG.tres" type="StyleBox" id=16]
@@ -361,19 +360,6 @@ align = 1
 valign = 1
 clip_text = true
 
-[node name="MineralLevels" parent="." instance=ExtResource( 12 )]
-margin_left = 129.563
-margin_top = 766.388
-margin_right = -1205.44
-margin_bottom = -5.61249
-
-[node name="CFPBank" parent="." instance=ExtResource( 13 )]
-margin_left = 1.5742
-margin_top = 721.729
-margin_right = -1598.43
-margin_bottom = -178.271
-rect_scale = Vector2( 0.8, 0.75 )
-
 [node name="EnergyBar" parent="." instance=ExtResource( 14 )]
 margin_left = 1.894
 margin_top = 678.426
@@ -384,6 +370,20 @@ rect_scale = Vector2( 0.8, 0.75 )
 [node name="AutoContinue" type="Timer" parent="."]
 wait_time = 0.01
 one_shot = true
+
+[node name="ViewMap" type="TextureButton" parent="."]
+anchor_right = 1.0
+anchor_bottom = 0.995
+margin_left = 98.0
+margin_top = 737.0
+margin_right = -1199.0
+margin_bottom = -10.5001
+texture_normal = ExtResource( 12 )
+expand = true
+stretch_mode = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="pressed" from="button_grid/btn_dead_menu" to="." method="_on_btn_dead_menu_pressed"]
 [connection signal="pressed" from="button_grid/btn_dead_restart" to="." method="_on_btn_dead_restart_pressed"]
 [connection signal="pressed" from="button_grid/btn_saveload" to="." method="_on_btn_saveload_pressed"]
@@ -410,5 +410,5 @@ one_shot = true
 [connection signal="update_seqelm_coloration" from="pnl_ph_filter" to="." method="_on_pnl_ph_filter_update_seqelm_coloration"]
 [connection signal="visibility_changed" from="pnl_ph_filter" to="pnl_ph_filter" method="_on_pnl_ph_filter_visibility_changed"]
 [connection signal="value_changed" from="pnl_ph_filter/slider_ph" to="pnl_ph_filter" method="_on_slider_ph_value_changed"]
-[connection signal="resource_clicked" from="CFPBank" to="." method="_on_CFPBank_resource_clicked"]
 [connection signal="timeout" from="AutoContinue" to="." method="_on_AutoContinue_timeout"]
+[connection signal="pressed" from="ViewMap" to="." method="_on_ViewMap_pressed"]

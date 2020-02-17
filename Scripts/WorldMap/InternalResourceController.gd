@@ -15,6 +15,7 @@ var true_start: Vector2
 var true_end: Vector2
 
 var energy_clicked = false
+var enable_input = true
 
 var organism
 
@@ -52,7 +53,7 @@ func _ready():
 	pass # Replace with function body.
 	
 func _unhandled_input(event):
-	if event.is_action_pressed("mouse_left") and visible:
+	if event.is_action_pressed("mouse_left") and visible and enable_input:
 		if !dragging:
 			if energy_clicked:
 				handle_energy_to_vesicle_click()
@@ -72,7 +73,7 @@ func _unhandled_input(event):
 				
 				draw_rect.set_global_position(true_start)
 		
-	if event.is_action_released("mouse_left") and dragging and visible:
+	if event.is_action_released("mouse_left") and dragging and visible and enable_input:
 		dragging = false
 		selected = true
 		draw_rect.visible = false
@@ -87,12 +88,12 @@ func _unhandled_input(event):
 		true_end = Vector2.ZERO
 		true_start = Vector2.ZERO
 	
-	if event.is_action_pressed("mouse_right") and energy_clicked:
+	if event.is_action_pressed("mouse_right") and energy_clicked and enable_input:
 		energy_clicked = false
 		Input.set_custom_mouse_cursor(null)
 	
 func _input(event):
-	if event.is_action_pressed("mouse_right"):
+	if event.is_action_pressed("mouse_right") and enable_input:
 		energy_clicked = false
 		Input.set_custom_mouse_cursor(null)
 		
@@ -270,18 +271,22 @@ func get_vesicle_from_mouse_pos(mouse_pos: Vector2):
 			
 	return vesicle_name
 	
+func set_input(enabled: bool):
+	enable_input = enabled
+	
 func _on_Organism_resources_changed(cfp_resources, mineral_resources):
 	pass
 
 func _on_EnergyBar_resource_clicked(resource, value):
-	if selected:
-		energy_clicked = true
-		handle_click_with_selection()
-		energy_clicked = false
-		selected = false
-		Input.set_custom_mouse_cursor(null)
-	elif !energy_clicked:
-		energy_clicked = true
-		Input.set_custom_mouse_cursor(energy_icon)
+	if enable_input:
+		if selected:
+			energy_clicked = true
+			handle_click_with_selection()
+			energy_clicked = false
+			selected = false
+			Input.set_custom_mouse_cursor(null)
+		elif !energy_clicked:
+			energy_clicked = true
+			Input.set_custom_mouse_cursor(energy_icon)
 	
 	pass # Replace with function body.

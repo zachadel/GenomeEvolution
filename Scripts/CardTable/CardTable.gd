@@ -2,12 +2,15 @@ extends Control
 
 signal gene_clicked;
 signal player_done;
+signal switch_to_map
 signal next_turn(turn_text, round_num);
 
 onready var justnow_label : RichTextLabel = $lbl_justnow;
 onready var orgn = $Organism;
 onready var nxt_btn = $button_grid/btn_nxt;
 onready var status_bar = $ChromosomeStatus;
+
+onready var energy_bar = get_node("EnergyBar")
 
 onready var ph_filter_panel := $pnl_ph_filter;
 
@@ -248,14 +251,6 @@ func _on_Organism_finished_replication():
 	reset_status_bar();
 	status_bar.visible = true;
 
-func _on_CFPBank_resource_clicked(resource):
-	var resource_group = resource.split('_')[0]
-	var tier = resource.split('_')[1]
-	
-	if resource_group in $Organism.cfp_resources:
-		var change = $Organism.downgrade_internal_cfp_resource(resource_group, int(tier))
-		
-
 func refresh_visible_options():
 	if ($pnl_repair_choices.visible):
 		orgn.upd_repair_opts(orgn.sel_repair_gap);
@@ -268,7 +263,6 @@ func _on_Organism_energy_changed(energy):
 	refresh_visible_options();
 
 func _on_Organism_resources_changed(cfp_resources, mineral_resources):
-	$CFPBank.update_resources_values(cfp_resources);
 	refresh_visible_options();
 
 func _on_pnl_ph_filter_update_seqelm_coloration(compare_type):
@@ -277,3 +271,8 @@ func _on_pnl_ph_filter_update_seqelm_coloration(compare_type):
 
 func _on_AutoContinue_timeout():
 	_on_btn_nxt_pressed();
+
+
+func _on_ViewMap_pressed():
+	emit_signal("switch_to_map")
+	pass # Replace with function body.

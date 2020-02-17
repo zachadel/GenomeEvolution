@@ -118,6 +118,9 @@ custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[center]Nutrients[/center]"
 text = "Nutrients"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="TileResourcesLabel2" type="RichTextLabel" parent="ExternalPanel"]
 margin_right = 290.0
@@ -189,4 +192,5 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "End Map Turn"
 [connection signal="pressed" from="MenuPanel/HBoxContainer/EjectResources" to="." method="_on_EjectResources_pressed"]
+[connection signal="pressed" from="MenuPanel/HBoxContainer/CheckGenome" to="." method="_on_CheckGenome_pressed"]
 [connection signal="pressed" from="MenuPanel/HBoxContainer/EndMapTurn" to="." method="_on_EndMapTurn_pressed"]

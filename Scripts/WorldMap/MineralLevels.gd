@@ -6,6 +6,8 @@ extends HBoxContainer
 
 signal eject_resource(resource, value)
 
+var enabled_input = true
+
 var bar = preload("res://Scenes/WorldMap/LevelBar.tscn")
 var charges = []
 
@@ -37,5 +39,9 @@ func update_resources_values(mineral_resources):
 	for child in get_children():
 		child.update_value(mineral_resources[Game.get_class_from_name(child.name)][child.name])
 
+func set_input(enabled: bool):
+	enabled_input = enabled
+
 func _on_LevelBar_eject_resource(resource, value):
-	emit_signal("eject_resource", resource, value)
+	if enabled_input:
+		emit_signal("eject_resource", resource, value)

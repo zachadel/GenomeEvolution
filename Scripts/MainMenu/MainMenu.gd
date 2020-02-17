@@ -5,6 +5,9 @@ signal change_to_world_map
 # var a = 2
 # var b = "text"
 
+onready var title_screen = get_node("TitleScreen")
+onready var settings = get_node("Settings")
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass
@@ -16,7 +19,7 @@ func _process(delta):
 
 func _on_TitleScreen_begin_new_game():
 	emit_signal("change_to_world_map")
-	$TitleScreen.hide()
+	title_screen.hide()
 	pass # Replace with function body.
 
 
@@ -26,12 +29,12 @@ func _on_TitleScreen_exit_game():
 
 
 func _on_TitleScreen_go_to_settings():
-	$TitleScreen.hide()
-	$Settings.show()
+	title_screen.hide()
+	settings.show()
 	pass # Replace with function body.
 
 
 func _on_Settings_return_to_title():
-	$Settings.hide()
-	$TitleScreen.show()
+	settings.hide()
+	title_screen.show()
 	pass # Replace with function body.

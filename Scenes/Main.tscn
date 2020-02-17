@@ -46,4 +46,6 @@ layer = 2
 [connection signal="change_to_world_map" from="MainMenuLayer/MainMenu" to="." method="_on_MainMenu_change_to_world_map"]
 [connection signal="change_to_main_menu" from="WorldMap" to="." method="_on_WorldMap_change_to_main_menu"]
 [connection signal="end_map_turn" from="WorldMap" to="." method="_on_WorldMap_end_map_turn"]
+[connection signal="switch_to_card_table" from="WorldMap" to="." method="_on_WorldMap_switch_to_card_table"]
 [connection signal="next_turn" from="Canvas_CardTable/CardTable" to="." method="_on_CardTable_next_turn"]
+[connection signal="switch_to_map" from="Canvas_CardTable/CardTable" to="." method="_on_CardTable_switch_to_map"]

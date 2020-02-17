@@ -16,7 +16,7 @@ var born_on_turn
 var died_on_turn
 var num_progeny = 0;
 
-var starting_tile
+var start_tile
 
 var energy = 10
 #the 4 resource groups with initial tiers of compression
@@ -118,21 +118,6 @@ func _ready():
 	energy_allocations = {};
 	populate_cfp_resources_dict()
 	populate_mineral_dict()
-	
-	perform_anims(false);
-	for n in Game.ESSENTIAL_CLASSES:
-		var code = "";
-		for y in range(2):
-			# create gene
-			var nxt_gelm = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
-			nxt_gelm.setup("gene", n, "essential", code, Game.ESSENTIAL_CLASSES[n]);
-			nxt_gelm.set_ess_behavior({n: 1.0});
-			if (code == ""):
-				code = nxt_gelm.gene_code;
-			cmsms.get_cmsm(y).add_elm(nxt_gelm);
-	gain_ates(1 + randi() % 6);
-	perform_anims(true);
-	born_on_turn = Game.round_num;
 	
 	for vesicle in vesicle_scales:
 		print(vesicle + ": ", get_estimated_capacity(vesicle))
@@ -1195,7 +1180,7 @@ func get_cfp_cost(action, resource, amount = 1):
 	var cost = 0
 	var minimum_cost = 0
 	
-	if resource in cost[action].keys(): #if we are asking for totals
+	if resource in costs[action]: #if we are asking for totals
 		cost = costs[action][resource] * get_cost_mult(action) * Game.resource_mult * amount
 	
 		if costs[action][resource] > 0:
@@ -1220,7 +1205,7 @@ func get_mineral_cost(action, mineral, amount = 1):
 	var cost = 0
 	var minimum_cost = 0
 	
-	if mineral in cost[action].keys(): #if we are asking for totals
+	if mineral in costs[action]: #if we are asking for totals
 		cost = costs[action][mineral] * get_cost_mult(action) * Game.resource_mult * amount
 	
 		if costs[action][mineral] > 0:
@@ -2092,6 +2077,7 @@ func _on_chromes_on_cmsm_changed():
 	refresh_bprof = true;
 	emit_signal("cmsm_changed");
 
+###########LOCOMOTION IS BROKEN AND THE COSTS ARE WRONG
 ####################################SENSING AND LOCOMOTION#####################
 #This is what you can directly see, not counting the cone system
 func get_vision_radius():

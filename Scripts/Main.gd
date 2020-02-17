@@ -14,7 +14,13 @@ var chunk_size = 15
 #Players will never be seen in the editor as a child node
 #They are passed around and implicitly defined as children
 #of Main
+#Why on earth did I make this const?  I'll check on that later.
 const Player = preload("res://Scenes/Player/Player.tscn")
+
+onready var main_menu = get_node("MainMenuLayer/MainMenu")
+onready var world_map = get_node("WorldMap") #access world_map ui via world_map.ui
+onready var card_table = get_node("Canvas_CardTable/CardTable")
+onready var game_over = get_node("GameOverLayer/GameOver")
 
 #NOTE: $Player should NEVER be called. Ever.  For any reason.
 #Eventually, I will put documentation in here explaining the workflow that
@@ -22,18 +28,17 @@ const Player = preload("res://Scenes/Player/Player.tscn")
 
 func _ready(): 
 	
-	$MainMenuLayer/MainMenu.show()
+	main_menu.show()
 	
-	$WorldMap.hide()
-	$WorldMap/WorldMap_UI.hide()
+	world_map.hide()
+	world_map.ui.hide()
 	
-	$Canvas_CardTable/CardTable.hide()
-	Tooltips.organism = $Canvas_CardTable/CardTable/Organism
+	card_table.hide()
 
 ###########################WORLD MAP SIGNAL HANDLING###########################
 
 func _on_MainMenu_change_to_world_map():
-	$MainMenuLayer/MainMenu.hide()
+	main_menu.hide()
 	
 	#Add looping after first_player if there are multiple players, but only give the first
 	#player to the WorldMap for setup
@@ -41,40 +46,29 @@ func _on_MainMenu_change_to_world_map():
 	var first_player = create_player()
 	
 	#This order enables the WorldMap to make its camera the current one
-	$WorldMap.show()
-	$WorldMap/WorldMap_UI.show()
-	$WorldMap.setup(randi(), randi(), randi(), randi(), chunk_size, first_player)
+	world_map.setup(randi(), randi(), randi(), randi(), chunk_size, first_player)
+	_show_world_map()
+	world_map.set_input(Game.PLAYER_VIEW.ON_MAP)
 	
 	# Skip the world map if we haven't unlocked it yet
 	if !Unlocks.has_turn_unlock(Game.TURN_TYPES.Map):
 		_on_WorldMap_end_map_turn();
 
 func _on_WorldMap_end_map_turn():
-	$WorldMap.hide()
-	$WorldMap/WorldMap_UI.hide()
-	$WorldMap.current_player.enable_sprite(false)
-	$Canvas_CardTable/CardTable.show()
+	_hide_world_map()
+	world_map.set_input(Game.PLAYER_VIEW.ON_CARDTABLE)
+	card_table.show()
 	
-	var cfp_resources = $WorldMap.current_player.organism.cfp_resources
-	var mineral_resources = $WorldMap.current_player.organism.mineral_resources
-	$Canvas_CardTable/CardTable/CFPBank.update_resources_values(cfp_resources)
-	$Canvas_CardTable/CardTable/MineralLevels.update_resources_values(mineral_resources)
-	$Canvas_CardTable/CardTable/EnergyBar.MAX_ENERGY = $WorldMap.current_player.organism.MAX_ENERGY
-	$Canvas_CardTable/CardTable/EnergyBar.update_energy_allocation($WorldMap.current_player.organism.energy)
+	card_table.energy_bar.MAX_ENERGY = world_map.current_player.organism.MAX_ENERGY
+	card_table.energy_bar.update_energy_allocation(world_map.current_player.organism.energy)
 	
 	pass
 	
 func _on_WorldMap_change_to_main_menu():
-	$MainMenuLayer/MainMenu.show()
-	$MainMenuLayer/MainMenu/TitleScreen.show()
+	main_menu.show()
+	main_menu.title_screen.show()
 	
-	$WorldMap.hide()
-	$WorldMap/WorldMap_UI.hide()
-
-	for player in get_tree().get_nodes_in_group("players"):
-		player.enable_sprite(false)
-	
-	pass
+	_hide_world_map()
 
 ############################MULTIPLAYER HANDLING###############################
 
@@ -108,31 +102,45 @@ func _on_Player_died(player):
 		
 	else:
 		Game.round_num = 0
-		$GameOverLayer/GameOver.popup()
+		game_over.popup()
 		
-		if $Canvas_CardTable/CardTable.is_visible_in_tree():
-			$Canvas_CardTable/CardTable._on_Organism_died()
+		if card_table.is_visible_in_tree():
+			card_table._on_Organism_died()
 		else:
-			$WorldMap/WorldMap_UI/UIPanel/ActionsPanel.hide()
+			world_map.set_input(Game.PLAYER_VIEW.DEAD)
 	Game.current_players -= 1
 
 ########################CARD TABLE SIGNAL HANDLING#############################
 
 func _on_CardTable_next_turn(turn_text, round_num):
 	if Game.get_turn_type() == Game.TURN_TYPES.Map:
-		$Canvas_CardTable/CardTable.hide()
+		card_table.hide()
 		_show_world_map();
 
 func _show_world_map():
-	$WorldMap.show()
-	$WorldMap/WorldMap_UI.show()
-	$WorldMap.current_player.enable_sprite(true)
-	$WorldMap/WorldMap_UI/UIPanel/CFPBank.update_resources_values($WorldMap.current_player.organism.cfp_resources)
-	$WorldMap/WorldMap_UI/UIPanel/MineralLevels.update_resources_values($WorldMap.current_player.organism.mineral_resources)
-	$WorldMap/WorldMap_UI/UIPanel/EnergyBar.update_energy_allocation($WorldMap.current_player.organism.energy)
+	world_map.show()
+	world_map.ui.show()
+	for player in get_tree().get_nodes_in_group("players"):
+		player.enable_sprite(true)
+	world_map.update_ui_resources()
+	world_map.enable_camera()
+	
+func _hide_world_map():
+	world_map.hide()
+	world_map.ui.hide()
+	for player in get_tree().get_nodes_in_group("players"):
+		player.enable_sprite(false)
 
 func _on_GameOver_confirmed():
 	Game.restart_game()
 	get_tree().reload_current_scene()
-	
-	pass # Replace with function body.
+
+func _on_WorldMap_switch_to_card_table():
+	world_map.set_input(Game.PLAYER_VIEW.SWITCHED_TO_GENOME)
+	_hide_world_map()
+	card_table.show()
+
+func _on_CardTable_switch_to_map():
+	card_table.hide()
+	world_map.set_input(Game.PLAYER_VIEW.SWITCHED_TO_MAP)
+	_show_world_map()

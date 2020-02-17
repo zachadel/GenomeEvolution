@@ -7,7 +7,16 @@ var helix_textures = {true: load("res://Assets/Images/genes/Helix_Circle.png"), 
 
 enum ESSENTIAL_CLASSES {Replication, Locomotion, Helper, Manipulation, Sensing, Component, Construction, Deconstruction};
 enum TURN_TYPES {Map, NewTEs, TEJump, RepairBreaks, EnvironmentalDamage, Recombination, Evolve, CheckViability, Replication};
-
+#These mark what the current state of the player is as it relates to the map
+enum PLAYER_VIEW {
+	DEAD, #What inputs should be available when the player dies on the map
+	ON_CARDTABLE, #when the player is on the CardTable 
+	ON_MAP, #when the player is on the map
+	PAUSED, #when the game is paused on the map
+	SWITCHED_TO_MAP, #when the player checks the map from the CardTable
+	SWITCHED_TO_GENOME #when the player checks their Genome from the map
+	}
+	
 #NOTE: It may be worthwhile to store dicts which go from biome_index -> string
 #and string -> biome_index, since both operations are needed frequently
 var biomes = {}
