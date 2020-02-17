@@ -1057,14 +1057,15 @@ func get_missing_ess_classes():
 			missing.append(k);
 	return missing;
 
-func get_rand_environmental_break_count():
+func get_rand_environmental_break_count() -> int:
 	var hazards = current_tile.hazards;
 	
-	var norm_temp = 2.5 * (hazards["temperature"] + 40) / 140;
-	var norm_uv = 2.5 * hazards["uv_index"] / 100;
-	var norm_oxy = 2.5 * hazards["oxygen"] / 100;
+	var norm_temp : float = 2.5 * (hazards["temperature"] + 40.0) / 140.0;
+	var norm_uv : float = 2.5 * hazards["uv_index"] / 100.0;
+	var norm_oxy : float = 2.5 * hazards["oxygen"] / 100.0;
+	var norm_component : float  = 0.25 * get_behavior_profile().get_behavior("component");
 	
-	return round(norm_uv + randf() * (norm_oxy + norm_temp));
+	return int(round(norm_uv + randf() * (norm_oxy + norm_temp) / norm_component));
 
 func adv_turn(round_num, turn_idx):
 	if (died_on_turn == -1):

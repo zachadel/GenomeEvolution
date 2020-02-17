@@ -146,6 +146,7 @@ margin_top = -298.0
 margin_right = -1127.0
 margin_bottom = -284.0
 text = "Gene Content"
+align = 1
 valign = 1
 autowrap = true
 __meta__ = {
