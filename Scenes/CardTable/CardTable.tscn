@@ -20,6 +20,7 @@
 Button/colors/font_color_disabled = Color( 0, 0, 0, 1 )
 
 [node name="CardTable" type="Control"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 1
@@ -71,9 +72,9 @@ __meta__ = {
 }
 
 [node name="TurnList" parent="." instance=ExtResource( 15 )]
-margin_left = 1208.0
+margin_left = 1164.0
 margin_top = 629.0
-margin_right = 1458.0
+margin_right = 1414.0
 margin_bottom = 821.0
 
 [node name="button_grid" type="VBoxContainer" parent="."]

@@ -170,6 +170,19 @@ func _on_ilist_choices_item_activated(idx):
 
 # Next Turn button and availability
 
+func upd_turn_display(upd_turn_unlocks := Game.fresh_round, upd_env_markers := Game.fresh_round):
+	$lbl_turn.text = "%s\n%s" % [
+		"Round %d" % (Game.round_num + 1),
+		"Progeny: %d" % orgn.num_progeny
+	];
+	
+	$TurnList.highlight(Game.turn_idx);
+	
+	if upd_turn_unlocks:
+		$TurnList.check_unlocks();
+	if upd_env_markers && orgn.current_tile.has("hazards"):
+		ph_filter_panel.upd_current_ph_marker(orgn.current_tile.hazards["pH"]);
+
 func _on_btn_nxt_pressed():
 	close_extra_menus();
 	if (Game.get_turn_type() == Game.TURN_TYPES.Recombination):
@@ -177,16 +190,7 @@ func _on_btn_nxt_pressed():
 			g.disable(true);
 	
 	Game.adv_turn();
-	$lbl_turn.text = "%s\n%s" % [
-		"Round %d" % (Game.round_num + 1),
-		"Progeny: %d" % orgn.num_progeny
-	];
-	
-	$TurnList.highlight(Game.turn_idx);
-	if Game.fresh_round:
-		$TurnList.check_unlocks();
-		if orgn.current_tile.has("hazards"):
-			ph_filter_panel.upd_current_ph_marker(orgn.current_tile.hazards["pH"]);
+	upd_turn_display();
 	
 	_add_justnow_bbcode("\n\n%s" % Game.get_turn_txt(), {"color": Color(1, 0.75, 0)});
 	
@@ -212,9 +216,13 @@ func _on_Organism_died(org):
 func show():
 	.show();
 	check_if_ready();
+	
+	upd_turn_display(true, true);
 
 func check_if_ready():
-	nxt_btn.disabled = !is_visible_in_tree() || orgn.is_dead() || wait_on_anim || wait_on_select || has_gaps;
+	var end_mapturn_on_mapscreen = Game.get_turn_type() == Game.TURN_TYPES.Map && Unlocks.has_turn_unlock(Game.TURN_TYPES.Map);
+	nxt_btn.disabled = !is_visible_in_tree() || orgn.is_dead() || end_mapturn_on_mapscreen ||\
+		wait_on_anim || wait_on_select || has_gaps;
 	
 	# Continue automatically
 	if !nxt_btn.disabled && Game.get_turn_type() != Game.TURN_TYPES.Recombination:

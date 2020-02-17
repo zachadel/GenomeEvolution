@@ -57,6 +57,7 @@ func _on_MainMenu_change_to_world_map():
 func _on_WorldMap_end_map_turn():
 	_hide_world_map()
 	world_map.set_input(Game.PLAYER_VIEW.ON_CARDTABLE)
+	Game.adv_turn();
 	card_table.show()
 	
 	card_table.energy_bar.MAX_ENERGY = world_map.current_player.organism.MAX_ENERGY
