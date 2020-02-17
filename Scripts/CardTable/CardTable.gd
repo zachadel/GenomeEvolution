@@ -181,9 +181,13 @@ func _on_btn_nxt_pressed():
 		"Round %d" % (Game.round_num + 1),
 		"Progeny: %d" % orgn.num_progeny
 	];
+	
 	$TurnList.highlight(Game.turn_idx);
-	if orgn.current_tile.has("hazards"):
-		ph_filter_panel.upd_current_ph_marker(orgn.current_tile.hazards["pH"]);
+	if Game.fresh_round:
+		$TurnList.check_unlocks();
+		if orgn.current_tile.has("hazards"):
+			ph_filter_panel.upd_current_ph_marker(orgn.current_tile.hazards["pH"]);
+	
 	_add_justnow_bbcode("\n\n%s" % Game.get_turn_txt(), {"color": Color(1, 0.75, 0)});
 	
 	emit_signal("next_turn", Game.round_num, Game.turn_idx);

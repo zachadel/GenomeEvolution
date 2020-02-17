@@ -339,7 +339,10 @@ func pluralize(count : int, pl_end := "s", sing_end := ""):
 		return sing_end;
 	return pl_end;
 
+var fresh_round := true;
 func adv_turn():
+	fresh_round = false;
+	
 	_incr_turn_idx();
 	while !Unlocks.has_turn_unlock(get_turn_type()):
 		_incr_turn_idx();
@@ -350,6 +353,7 @@ func _incr_turn_idx():
 		turn_idx = 0;
 		round_num += 1;
 		Unlocks._upd_round_num_unlocks();
+		fresh_round = true;
 
 func get_turn_type():
 	return turns[turn_idx];

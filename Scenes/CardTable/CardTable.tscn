@@ -148,6 +148,9 @@ margin_bottom = -284.0
 text = "Gene Content"
 valign = 1
 autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ChromosomeStatus" parent="." instance=ExtResource( 3 )]
 anchor_left = 0.5
