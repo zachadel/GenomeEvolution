@@ -63,6 +63,10 @@ func _ready():
 	Tooltips.setup_delayed_tooltip(self);
 	for k in ess_behavior:
 		get_node("Indic%s" % k).ttip_data = [k, "base"];
+	
+	if mode == "ate" && !AnthroArt.has_art():
+		set_ate_art();
+		upd_display();
 
 func obtain_ate_personality(personality_id := "") -> void:
 	if (personality_id == ""):
@@ -75,14 +79,16 @@ func obtain_ate_personality(personality_id := "") -> void:
 
 func set_ate_art():
 	if ate_personality.has("art_scene"):
-		var art_scene : Control = load("res://Scenes/CardTable/Art/%s.tscn" % ate_personality.get("art_scene")).instance();
-		art_scene.set_anchors_and_margins_preset(Control.PRESET_WIDE);
-		AnthroArt.add_child(art_scene);
-		AnthroArt.visible = true;
 		set_texture(null);
 	else:
-		AnthroArt.visible = false;
 		set_texture(ate_personality["art"]);
+	
+	if AnthroArt != null:
+		AnthroArt.visible = ate_personality.has("art_scene");
+		if AnthroArt.visible:
+			var art_scene : Control = load("res://Scenes/CardTable/Art/%s.tscn" % ate_personality.get("art_scene")).instance();
+			art_scene.set_anchors_and_margins_preset(Control.PRESET_WIDE);
+			AnthroArt.add_child(art_scene);
 
 func setup(_type : String, _id := "", _mode := "", _code := "", _par_code := "", _ph := -1.0):
 	id = _id;
@@ -453,7 +459,8 @@ func upd_behavior_disp(behavior = ""):
 			get_node("IndicATE").set_value(ate_activity);
 			var droop_amt = 1.0 - inverse_lerp(0.0, 1.5, ate_activity);
 			droop_amt = clamp(droop_amt, 0, 1);
-			AnthroArt.safe_callv("set_eye_droop", [droop_amt])
+			if AnthroArt != null:
+				AnthroArt.safe_callv("set_eye_droop", [droop_amt])
 		_:
 			for b in ess_behavior:
 				get_node("Indic" + b).set_value(ess_behavior[b]);
@@ -496,7 +503,8 @@ func upd_display():
 			match (mode):
 				"ate":
 					self_modulate = Color(.8, .15, 0);
-					AnthroArt.safe_callv("set_color", [self_modulate]);
+					if AnthroArt != null && AnthroArt.visible:
+						AnthroArt.safe_callv("set_color", [self_modulate]);
 					$lbl.visible = true;
 				"essential":
 					self_modulate = Color(0, .66, 0);
