@@ -20,7 +20,6 @@
 Button/colors/font_color_disabled = Color( 0, 0, 0, 1 )
 
 [node name="CardTable" type="Control"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 1
@@ -35,9 +34,9 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -397.0
+margin_left = -421.0
 margin_top = -75.0
-margin_right = -160.0
+margin_right = -184.0
 align = 2
 valign = 1
 autowrap = true
@@ -51,10 +50,24 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -1090.0
-margin_top = -254.0
+margin_top = -251.0
 margin_right = -490.0
-margin_bottom = -240.0
+margin_bottom = -237.0
 text = "Event Log"
+align = 1
+valign = 1
+autowrap = true
+
+[node name="lbl_turnorder" type="Label" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -437.0
+margin_top = -294.0
+margin_right = -185.0
+margin_bottom = -280.0
+text = "Turn Order"
 align = 1
 valign = 1
 autowrap = true

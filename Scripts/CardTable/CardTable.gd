@@ -19,6 +19,7 @@ var wait_on_anim = false;
 var wait_on_select = false;
 
 func _ready():
+	visible = false; # Prevents an auto-turn before the game begins
 	Game.card_table = self;
 	orgn.setup(self);
 	reset_status_bar();

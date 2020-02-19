@@ -122,7 +122,7 @@ func set_input_state(player_view: int):
 			buttons[BUTTONS.ACQUIRE] = true
 			buttons[BUTTONS.EJECT] = true
 			buttons[BUTTONS.CHECK] = true
-			buttons[BUTTONS.END] = false
+			buttons[BUTTONS.END] = Game.get_turn_type() == Game.TURN_TYPES.Map;
 			set_mineral_levels_state(true)
 			set_irc_state(true)
 			set_button_states(buttons)

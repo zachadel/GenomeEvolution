@@ -365,7 +365,7 @@ func get_turn_txt(turn_type := -1) -> String:
 		TURN_TYPES.NewTEs:
 			return "New TEs";
 		TURN_TYPES.TEJump:
-			return "Active TEs Jump";
+			return "Transposon Activity";
 		TURN_TYPES.RepairBreaks:
 			return "Repair Breaks";
 		TURN_TYPES.EnvironmentalDamage:

@@ -17,8 +17,10 @@ func offset_anim(amt : float) -> void:
 	Anim.advance(amt);
 
 func set_eye_droop(d : float) -> void:
-	$Art2D/Body/LeftEye.set_droop(d);
-	$Art2D/Body/RightEye.set_droop(d);
+	var droop_amt = clamp(d, 0, 1);
+	$Art2D/Body/LeftEye.set_droop(droop_amt);
+	$Art2D/Body/RightEye.set_droop(droop_amt);
+	Anim.playback_speed = clamp(1.0 - d, 0.0, 5.0);
 
 func set_color(c : Color) -> void:
 	ColorBody.modulate = c;

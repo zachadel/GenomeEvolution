@@ -85,7 +85,7 @@ func set_ate_art():
 	
 	if AnthroArt != null:
 		AnthroArt.visible = ate_personality.has("art_scene");
-		if AnthroArt.visible:
+		if AnthroArt.visible && !AnthroArt.has_art():
 			var art_scene : Control = load("res://Scenes/CardTable/Art/%s.tscn" % ate_personality.get("art_scene")).instance();
 			art_scene.set_anchors_and_margins_preset(Control.PRESET_WIDE);
 			AnthroArt.add_child(art_scene);
@@ -458,7 +458,6 @@ func upd_behavior_disp(behavior = ""):
 		"ate":
 			get_node("IndicATE").set_value(ate_activity);
 			var droop_amt = 1.0 - inverse_lerp(0.0, 1.5, ate_activity);
-			droop_amt = clamp(droop_amt, 0, 1);
 			if AnthroArt != null:
 				AnthroArt.safe_callv("set_eye_droop", [droop_amt])
 		_:
@@ -503,8 +502,6 @@ func upd_display():
 			match (mode):
 				"ate":
 					self_modulate = Color(.8, .15, 0);
-					if AnthroArt != null && AnthroArt.visible:
-						AnthroArt.safe_callv("set_color", [self_modulate]);
 					$lbl.visible = true;
 				"essential":
 					self_modulate = Color(0, .66, 0);
@@ -515,6 +512,8 @@ func upd_display():
 					set_texture(null);
 					$Helix.texture = Game.helix_textures[false];
 			upd_behavior_disp();
+			if AnthroArt != null && AnthroArt.visible:
+				AnthroArt.safe_callv("set_color", [self_modulate]);
 		"break":
 			toggle_mode = true;
 			continue;
@@ -548,7 +547,7 @@ func disable(dis):
 func highlight_border(on : bool, force_color := false):
 	$BorderRect.visible = on;
 	if force_color:
-		$BorderRect.modulate = toggle_rect_clr[true];
+		$BorderRect.modulate = toggle_rect_clr[pressed];
 
 func is_highlighted():
 	return $BorderRect.visible;
