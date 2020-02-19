@@ -402,13 +402,13 @@ func jump_ate(ate_elm):
 
 func copy_ate(original_ate):
 	var copy_ate = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
-	copy_ate.setup_copy(original_ate);
 	if (do_yields):
 		yield(insert_from_behavior(copy_ate, original_ate.get_parent(), original_ate.get_index(),\
 			original_ate.get_active_behavior(false)), "completed");
 	else:
 		insert_from_behavior(copy_ate, original_ate.get_parent(), original_ate.get_index(),\
 			original_ate.get_active_behavior(false));
+	copy_ate.setup_copy(original_ate);
 	return copy_ate;
 
 func insert_ate(ate_elm):

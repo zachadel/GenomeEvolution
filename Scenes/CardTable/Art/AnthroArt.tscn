@@ -1,0 +1,154 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Scenes/CardTable/Art/AnthroArt.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/CardTable/Art/DroopEye.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Assets/Images/tes/circle_body.png" type="Texture" id=3]
+
+[sub_resource type="Curve" id=1]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.75, 0.5 ), -2.17391, -2.17391, 0, 0, Vector2( 1, 0.245455 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Animation" id=2]
+resource_name = "idle"
+length = 2.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Art2D/Body/BodySprite/Arms/LeftArm:points")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ PoolVector2Array( -58.1906, -6.70314, -83.558, -1.22745, -91.1594, -33.7137 ), PoolVector2Array( -58.1906, -6.70314, -83.558, -12.9317, -97.2129, 8.03838 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Art2D/Body/BodySprite/Arms/RightArm:points")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.2, 1.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ PoolVector2Array( -93.8068, -2.33379, -76.7266, -6.30592, -62.8241, 15.9381 ), PoolVector2Array( -93.8068, -2.33379, -68.4918, 2.24229, -51.9108, -18.2401 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Art2D/Body/BodySprite/Legs/LeftLeg:points")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ PoolVector2Array( -58.1906, -6.70314, -77.6541, 5.67346, -74.8736, 31.8896 ), PoolVector2Array( -58.1906, -6.70314, -73.6211, 6.74062, -49.2373, 19.4202 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Art2D/Body/BodySprite/Legs/RightLeg:points")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ PoolVector2Array( -127.173, 2.09851, -129.159, 21.9592, -118.037, 41.0255 ), PoolVector2Array( -127.173, 2.09851, -132.327, 19.6678, -118.672, 29.4213 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Art2D/Body:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, -20 ), Vector2( 0, -6 ) ]
+}
+
+[node name="AnthroArt" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -1400.0
+margin_bottom = -700.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Art2D" type="Node2D" parent="."]
+position = Vector2( 100, 100 )
+
+[node name="Body" type="Node2D" parent="Art2D"]
+position = Vector2( 0, -20 )
+
+[node name="BodySprite" type="Sprite" parent="Art2D/Body"]
+scale = Vector2( 0.4, 0.4 )
+texture = ExtResource( 3 )
+
+[node name="Legs" type="Node2D" parent="Art2D/Body/BodySprite"]
+show_behind_parent = true
+scale = Vector2( 2.5, 2.5 )
+
+[node name="LeftLeg" type="Line2D" parent="Art2D/Body/BodySprite/Legs"]
+position = Vector2( 23.9549, 56.7387 )
+points = PoolVector2Array( -58.1906, -6.70314, -77.6541, 5.67346, -74.8736, 31.8896 )
+width_curve = SubResource( 1 )
+default_color = Color( 0.101961, 0.101961, 0.101961, 1 )
+joint_mode = 1
+begin_cap_mode = 1
+end_cap_mode = 2
+antialiased = true
+
+[node name="RightLeg" type="Line2D" parent="Art2D/Body/BodySprite/Legs"]
+position = Vector2( 163.206, 42.8362 )
+points = PoolVector2Array( -127.173, 2.09851, -129.159, 21.9592, -118.037, 41.0255 )
+width_curve = SubResource( 1 )
+default_color = Color( 0.101961, 0.101961, 0.101961, 1 )
+joint_mode = 1
+begin_cap_mode = 1
+end_cap_mode = 2
+antialiased = true
+
+[node name="Arms" type="Node2D" parent="Art2D/Body/BodySprite"]
+show_behind_parent = true
+scale = Vector2( 2.5, 2.5 )
+
+[node name="LeftArm" type="Line2D" parent="Art2D/Body/BodySprite/Arms"]
+position = Vector2( 0.513367, 6.67345 )
+points = PoolVector2Array( -58.1906, -6.70314, -83.558, -1.22745, -91.1594, -33.7137 )
+width_curve = SubResource( 1 )
+default_color = Color( 0.101961, 0.101961, 0.101961, 1 )
+joint_mode = 1
+begin_cap_mode = 1
+end_cap_mode = 2
+antialiased = true
+
+[node name="RightArm" type="Line2D" parent="Art2D/Body/BodySprite/Arms"]
+position = Vector2( 152.232, 6.12975 )
+points = PoolVector2Array( -93.8068, -2.33379, -75.0796, -4.59628, -60.6414, 9.10246 )
+width_curve = SubResource( 1 )
+default_color = Color( 0.101961, 0.101961, 0.101961, 1 )
+joint_mode = 1
+begin_cap_mode = 1
+end_cap_mode = 2
+antialiased = true
+
+[node name="LeftEye" parent="Art2D/Body" instance=ExtResource( 2 )]
+position = Vector2( -24.377, -29.811 )
+scale = Vector2( 1.25, 1.25 )
+
+[node name="RightEye" parent="Art2D/Body" instance=ExtResource( 2 )]
+position = Vector2( 26.1694, -29.094 )
+scale = Vector2( 1.25, 1.25 )
+
+[node name="Anim" type="AnimationPlayer" parent="."]
+autoplay = "idle"
+anims/idle = SubResource( 2 )
+[connection signal="resized" from="." to="." method="_on_AnthroArt_resized"]

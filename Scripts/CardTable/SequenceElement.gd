@@ -56,21 +56,35 @@ signal elm_clicked(elm);
 signal elm_mouse_entered(elm);
 signal elm_mouse_exited(elm);
 
+onready var AnthroArt : Control = $AnthroArtHolder;
+
 func _ready():
 	current_size = DEFAULT_SIZE;
 	Tooltips.setup_delayed_tooltip(self);
 	for k in ess_behavior:
 		get_node("Indic%s" % k).ttip_data = [k, "base"];
 
-func obtain_ate_personality(personality_id := ""):
+func obtain_ate_personality(personality_id := "") -> void:
 	if (personality_id == ""):
 		ate_personality = Game.get_random_ate_personality();
 		id = ate_personality["title"];
 	else:
 		ate_personality = Game.get_ate_personality_by_name(id);
 		id = personality_id;
+	set_ate_art();
 
-func setup(_type : String, _id := "", _mode := "ate", _code := "", _par_code := "", _ph := -1.0):
+func set_ate_art():
+	if ate_personality.has("art_scene"):
+		var art_scene : Control = load("res://Scenes/CardTable/Art/%s.tscn" % ate_personality.get("art_scene")).instance();
+		art_scene.set_anchors_and_margins_preset(Control.PRESET_WIDE);
+		AnthroArt.add_child(art_scene);
+		AnthroArt.visible = true;
+		set_texture(null);
+	else:
+		AnthroArt.visible = false;
+		set_texture(ate_personality["art"]);
+
+func setup(_type : String, _id := "", _mode := "", _code := "", _par_code := "", _ph := -1.0):
 	id = _id;
 	type = _type;
 	mode = _mode;
@@ -96,7 +110,6 @@ func setup(_type : String, _id := "", _mode := "ate", _code := "", _par_code := 
 			"ate":
 				ate_activity = 1.0;
 				obtain_ate_personality(id);
-				tex = ate_personality["art"];
 			"pseudo":
 				var ate_personality = Game.get_ate_personality_by_name(id);
 				if (ate_personality == null):
@@ -108,7 +121,8 @@ func setup(_type : String, _id := "", _mode := "ate", _code := "", _par_code := 
 		$Helix.visible = false;
 		gene_code = "";
 	
-	set_texture(tex);
+	if mode != "ate":
+		set_texture(tex);
 	upd_display();
 	disable(true);
 
@@ -132,14 +146,13 @@ func setup_copy(ref_elm):
 				specialization = ref_elm.specialization.duplicate();
 			"ate":
 				ate_activity = ref_elm.ate_activity;
-				ate_personality = ref_elm.ate_personality;
-				id = ate_personality["title"];
-				tex = ate_personality["art"];
+				obtain_ate_personality(ref_elm.ate_personality["title"]);
 	upd_display();
 	
-	texture_normal = tex;
-	texture_pressed = tex;
-	texture_disabled = tex;
+	if ref_elm.mode != "ate":
+		texture_normal = tex;
+		texture_pressed = tex;
+		texture_disabled = tex;
 	
 	disable(true);
 
@@ -337,7 +350,6 @@ func evolve_major(gain):
 			# Major Down on a blank becomes a Major Up forming an ATE
 			gain = !gain;
 			obtain_ate_personality();
-			set_texture(ate_personality["art"]);
 			mode = "ate";
 	
 	match mode:
@@ -439,6 +451,9 @@ func upd_behavior_disp(behavior = ""):
 				continue;
 		"ate":
 			get_node("IndicATE").set_value(ate_activity);
+			var droop_amt = 1.0 - inverse_lerp(0.0, 1.5, ate_activity);
+			droop_amt = clamp(droop_amt, 0, 1);
+			AnthroArt.safe_callv("set_eye_droop", [droop_amt])
 		_:
 			for b in ess_behavior:
 				get_node("Indic" + b).set_value(ess_behavior[b]);
@@ -481,6 +496,7 @@ func upd_display():
 			match (mode):
 				"ate":
 					self_modulate = Color(.8, .15, 0);
+					AnthroArt.safe_callv("set_color", [self_modulate]);
 					$lbl.visible = true;
 				"essential":
 					self_modulate = Color(0, .66, 0);
@@ -589,7 +605,7 @@ func set_elm_size(size = null):
 	var scale = size / float(DEFAULT_SIZE);
 	for k in ess_behavior:
 		get_node("Indic" + k).rescale(scale);
-	
+	AnthroArt.safe_callv("_upd_size");
 
 func _on_SeqElm_pressed():
 	emit_signal("elm_clicked", self);

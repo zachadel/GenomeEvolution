@@ -326,12 +326,12 @@ func gain_ates(count = 1):
 	var justnow = "";
 	for i in range(count):
 		var nxt_te = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
-		nxt_te.setup("gene");
 		var pos;
 		if (do_yields):
 			pos = yield(cmsms.insert_ate(nxt_te), "completed");
 		else:
 			pos = cmsms.insert_ate(nxt_te);
+		nxt_te.setup("gene", "", "ate");
 		justnow += "Inserted %s into position %d (%d, %d).\n" % ([nxt_te.id, pos] + nxt_te.get_position_display());
 	emit_signal("justnow_update", justnow);
 

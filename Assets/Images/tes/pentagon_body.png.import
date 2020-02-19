@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/pentagon_0.png-8b5d2f4b4cc4ae49e9aef225c192cd5a.stex"
+path="res://.import/pentagon_body.png-9d1d37187cc23e14a36a21081416c0ed.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Images/tes/pentagon_0.png"
-dest_files=[ "res://.import/pentagon_0.png-8b5d2f4b4cc4ae49e9aef225c192cd5a.stex" ]
+source_file="res://Assets/Images/tes/pentagon_body.png"
+dest_files=[ "res://.import/pentagon_body.png-9d1d37187cc23e14a36a21081416c0ed.stex" ]
 
 [params]
 

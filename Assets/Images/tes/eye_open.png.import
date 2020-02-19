@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/pentagon_2.png-66fcd8280e5abc479010b54208017618.stex"
+path="res://.import/eye_open.png-69fdb187b3e83a8bf3a320611407ffe2.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Images/tes/pentagon_2.png"
-dest_files=[ "res://.import/pentagon_2.png-66fcd8280e5abc479010b54208017618.stex" ]
+source_file="res://Assets/Images/tes/eye_open.png"
+dest_files=[ "res://.import/eye_open.png-69fdb187b3e83a8bf3a320611407ffe2.stex" ]
 
 [params]
 
