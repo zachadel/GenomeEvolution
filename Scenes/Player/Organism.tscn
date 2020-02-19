@@ -27,6 +27,9 @@ margin_bottom = 600.0
 rect_min_size = Vector2( 200, 600 )
 mouse_filter = 1
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="slider_correct" type="AnimationPlayer" parent="."]
 autoplay = "correction"

@@ -326,7 +326,7 @@ func gain_ates(count = 1):
 	var justnow = "";
 	for i in range(count):
 		var nxt_te = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
-		nxt_te.setup("gene");
+		nxt_te.setup("gene", "", "ate");
 		var pos;
 		if (do_yields):
 			pos = yield(cmsms.insert_ate(nxt_te), "completed");
@@ -1057,14 +1057,15 @@ func get_missing_ess_classes():
 			missing.append(k);
 	return missing;
 
-func get_rand_environmental_break_count():
+func get_rand_environmental_break_count() -> int:
 	var hazards = current_tile.hazards;
 	
-	var norm_temp = 2.5 * (hazards["temperature"] + 40) / 140;
-	var norm_uv = 2.5 * hazards["uv_index"] / 100;
-	var norm_oxy = 2.5 * hazards["oxygen"] / 100;
+	var norm_temp : float = 2.5 * (hazards["temperature"] + 40.0) / 140.0;
+	var norm_uv : float = 2.5 * hazards["uv_index"] / 100.0;
+	var norm_oxy : float = 2.5 * hazards["oxygen"] / 100.0;
+	var norm_component : float  = 0.25 * get_behavior_profile().get_behavior("Component");
 	
-	return round(norm_uv + randf() * (norm_oxy + norm_temp));
+	return int(round(norm_uv + randf() * (norm_oxy + norm_temp) / norm_component));
 
 func adv_turn(round_num, turn_idx):
 	if (died_on_turn == -1):
@@ -1194,7 +1195,7 @@ func get_cfp_cost(action, resource, amount = 1):
 		if costs[action][resource_class] > 0:
 			minimum_cost = 1
 	else:
-		print('ERROR: Invalid resource of %s in function get_cfp_cost', resource)
+		print('ERROR: Invalid resource of %s in function get_cfp_cost' % resource)
 	
 	return round(cost) + minimum_cost
 
@@ -1219,7 +1220,7 @@ func get_mineral_cost(action, mineral, amount = 1):
 		if costs[action][resource_class] > 0:
 			minimum_cost = 1
 	else:
-		print('ERROR: Invalid resource of %s in function get_mineral_cost', mineral)
+		print('ERROR: Invalid resource of %s in function get_mineral_cost' % mineral)
 	
 	return round(cost) + minimum_cost
 	
