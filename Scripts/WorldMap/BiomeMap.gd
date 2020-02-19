@@ -154,6 +154,7 @@ func get_biome(pos):
 
 	return biome
 	
+#Returns values from 0 to 1 which must be normalized when presented to the player
 func get_hazards(pos):
 	if typeof(pos) == TYPE_VECTOR3:
 		pos = Game.cube_coords_to_offsetv(pos)
