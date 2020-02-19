@@ -16,3 +16,8 @@ func highlight(idx : int):
 		highlighted_node.set_highlighted(false);
 	highlighted_node = TurnList.get_child(idx);
 	highlighted_node.set_highlighted(true);
+
+func check_unlocks():
+	for idx in TurnList.get_child_count():
+		var turn_code : int = Game.turns[idx];
+		TurnList.get_child(idx).set_locked(!Unlocks.has_turn_unlock(turn_code));
