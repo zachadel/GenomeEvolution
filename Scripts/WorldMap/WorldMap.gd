@@ -284,6 +284,7 @@ func _input(event):
 
 func enable_camera():
 	$MapCamera.make_current()
+	$MapCamera.zoom = Vector2(1, 1)
 
 #Enter the use case as an int from Game.PLAYER_VIEW
 #In the case of the title screen, the map is hidden, so this is not necessary
