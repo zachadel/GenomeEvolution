@@ -116,8 +116,7 @@ func _on_Player_died(player):
 func _on_CardTable_next_turn(turn_text, round_num):
 	if Game.get_turn_type() == Game.TURN_TYPES.Map:
 		card_table.hide()
-		_show_world_map();
-		world_map.set_input(Game.PLAYER_VIEW.ON_MAP)
+		_on_CardTable_switch_to_map();
 
 func _show_world_map():
 	world_map.show()

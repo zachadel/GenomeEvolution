@@ -283,6 +283,7 @@ func _input(event):
 		get_tree().set_input_as_handled()
 
 func enable_camera():
+	$MapCamera.zoom = Vector2(1, 1);
 	$MapCamera.make_current()
 	$MapCamera.zoom = Vector2(1, 1)
 
