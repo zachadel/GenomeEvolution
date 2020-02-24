@@ -295,7 +295,7 @@ func setup(card_table):
 		
 		cmsms.get_cmsm(0).add_elm(nxt_gelm);
 		cmsms.get_cmsm(1).add_elm(Game.copy_elm(nxt_gelm));
-	gain_ates(1 + randi() % 6);
+	gain_ates(5 + randi() % 5);
 	perform_anims(true);
 	
 	born_on_turn = Game.round_num;
@@ -1075,10 +1075,11 @@ func adv_turn(round_num, turn_idx):
 			Game.TURN_TYPES.NewTEs:
 				emit_signal("doing_work", true);
 				##emit_signal("justnow_update", ""); # justnow no longer clears, this just creates a bunch of extra space # justnow no longer clears, this just creates a bunch of extra space
+				var num_ates = 1 + randi() % 3;
 				if (do_yields):
-					yield(gain_ates(1), "completed");
+					yield(gain_ates(num_ates), "completed");
 				else:
-					gain_ates(1);
+					gain_ates(num_ates);
 				emit_signal("doing_work", false);
 			Game.TURN_TYPES.TEJump:
 				emit_signal("doing_work", true);
