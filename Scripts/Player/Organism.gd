@@ -634,7 +634,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 	if (repair_type_possible[repair_idx]):
 		repair_type_possible = [false, false, false];
 		var cmsm = gap.get_parent();
-		var g_idx = gap.get_index();
+		var g_idx : int = gap.get_index();
 		var gap_pos_disp = gap.get_position_display();
 		
 		var other_cmsm = cmsms.get_other_cmsm(cmsm);
@@ -797,10 +797,55 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 					#print("repair copy pattern");
 			2: # Join Ends
 				Unlocks.add_count("repair_je");
-				
+				var seg_size := 0;
+				var seg_left_of_gap := true;
 				if (!roll_storage[1].has(gap)):
-					roll_storage[1][gap] = roll_chance("join_ends");
+					var seg_end_right : int = cmsm.find_next_gap(g_idx + 1);
+					var seg_end_left : int = cmsm.find_next_gap(g_idx - 1, -1);
+					if seg_end_right == -1:
+						seg_end_right = cmsm.get_child_count();
+					
+					var size_left := g_idx - seg_end_left - 1;
+					var size_right := seg_end_right - g_idx - 1;
+					
+					if size_left < 2:
+						seg_size = size_right;
+					elif size_right < 2:
+						seg_size = size_left;
+					else:
+						seg_size = min(size_left, size_right);
+					seg_left_of_gap = seg_size == size_left;
+					
+#					print("+========================+");
+#					print(" gidx: ", g_idx);
+#					print(" endR: ", seg_end_right);
+#					print("sizeR: ", size_right);
+#					print(" endL: ", seg_end_left);
+#					print("sizeL: ", size_left);
+#					print("Left?: ", seg_left_of_gap);
+#					print(" size: ", seg_size);
+#					print("+========================+");
+					
+					if Chance.roll_inversion(seg_size):
+						roll_storage[1][gap] = -1;
+					else:
+						roll_storage[1][gap] = roll_chance("join_ends");
 				match (roll_storage[1][gap]):
+					-1: # Inversion
+						var seg_idxs : Array;
+						var seg_elms : Array;
+						if seg_left_of_gap:
+							seg_idxs = range(g_idx - seg_size, g_idx);
+						else:
+							seg_idxs = range(g_idx + 1, g_idx + seg_size + 1);
+						var leftmost_idx : int = seg_idxs.front();
+						
+						for i in seg_idxs:
+							var elm = cmsm.get_child(i);
+							cmsm.move_elm(elm, leftmost_idx);
+							elm.reverse_code();
+						
+						emit_signal("justnow_update", "Joined ends for the gap at %d, %d; resulted in an inversion." % gap_pos_disp);
 					0:
 						emit_signal("justnow_update", "Joined ends for the gap at %d, %d without complications." % gap_pos_disp);
 					1, 2, 3:

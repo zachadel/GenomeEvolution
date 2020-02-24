@@ -7,8 +7,8 @@ var base_rolls = {
 	# no correction, yes correction
 	"copy_repair_correction": [2, 1],
 	
-	# no complications, lose a gene, major down gene, minor down gene, dupe a gene, major up gene, minor up gene
-	"join_ends": [3, 3, 2, 1, 0.25, 0.5, 1.25],
+	# no complications, lose a gene, major down gene, minor down gene, dupe a gene, major up gene, minor up gene, merge genes
+	"join_ends": [3, 3, 2, 1, 0.25, 0.5, 1.25, 1],
 	
 	# none, death, major up, major down, minor up, minor down
 	"evolve": [10, 0, 5, 4, 15, 14]
@@ -72,16 +72,18 @@ func roll_chances(chance_array : Array, mods := []) -> int:
 		previous_range = now_range;
 	return roll_chances.size() - 1;
 
+func inversion_chance(segment_size : int) -> float:
+	if segment_size < 2:
+		return 0.0;
+	return 2.25 / (segment_size * segment_size);
+
+func roll_inversion(segment_size : int) -> bool:
+	return randf() <= inversion_chance(segment_size);
+
 func collapse_chance(segment_size : int, dist_from_gap : int) -> float:
 	return float(float(segment_size) / float(dist_from_gap + 0.5));
 
 func roll_collapse(segment_size : int, dist_from_gap : int) -> bool:
 	if (dist_from_gap < 0):
 		dist_from_gap *= -1;
-#	var roll = randf();
-#	var need = collapse_chance(segment_size, dist_from_gap);
-#	print("--- Collapse Attempt ---");
-#	print("need: ", need);
-#	print("got: ", roll);
-#	return roll <= need;
 	return randf() <= collapse_chance(segment_size, dist_from_gap);

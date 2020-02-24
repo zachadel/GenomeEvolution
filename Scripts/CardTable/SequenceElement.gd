@@ -260,6 +260,13 @@ func get_random_code():
 func randomize_code():
 	gene_code = get_random_code();
 
+func reverse_code():
+	var gc = gene_code;
+	gene_code = "";
+	for c in gc:
+		gene_code = c + gene_code;
+	upd_display();
+
 func modify_code(spaces = 1, min_mag = 1, allow_negative = false):
 	for _i in range(spaces):
 		var _idx = randi() % gene_code.length();
