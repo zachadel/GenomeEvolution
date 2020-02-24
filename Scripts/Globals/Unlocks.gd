@@ -101,4 +101,4 @@ func has_mechanic_unlock(mech_type : String) -> bool:
 func has_hint_unlock(hint_type : String) -> bool:
 	return _has_unlock(get_hint_key(hint_type));
 func has_te_unlock(te_type : String) -> bool:
-	return _has_unlock(get_te_key(te_type));
+	return _has_unlock_quiet(get_te_key(te_type));
