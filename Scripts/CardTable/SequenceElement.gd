@@ -136,6 +136,8 @@ func set_texture(tex : Texture):
 	texture_normal = tex;
 	texture_pressed = tex;
 	texture_disabled = tex;
+	if AnthroArt != null:
+		AnthroArt.visible = false;
 
 func setup_copy(ref_elm):
 	id = ref_elm.id;
@@ -512,6 +514,7 @@ func upd_display():
 					set_texture(null);
 					$Helix.texture = Game.helix_textures[false];
 			upd_behavior_disp();
+			
 			if AnthroArt != null && AnthroArt.visible:
 				AnthroArt.safe_callv("set_color", [self_modulate]);
 		"break":
