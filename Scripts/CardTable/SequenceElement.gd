@@ -192,7 +192,7 @@ func get_ph_mult(compared_to = null, raw_interp = false):
 
 func set_ess_behavior(dict):
 	for k in dict:
-		if (k == "ate"):
+		if (k == "ate" && is_ate()):
 			ate_activity = dict[k];
 		else:
 			ess_behavior[k] = dict[k];
@@ -308,6 +308,25 @@ func is_equal(other_elm, max_dist = -1):
 	else:
 		return can_compare_elm(other_elm) && get_gene_distance(other_elm) <= max_dist;
 
+func merge_with(other_elm):
+	randomize_code();
+	match mode:
+		"essential":
+			var bdict = get_ess_behavior();
+			var add_dict = other_elm.get_ess_behavior();
+			for k in add_dict:
+				if bdict.has(k):
+					bdict[k] += add_dict[k];
+				else:
+					bdict[k] = add_dict[k];
+			set_ess_behavior(bdict);
+		"ate":
+			ate_activity += other_elm.ate_activity;
+		"pseudo":
+			blank_out_gene();
+	ph_preference = (ph_preference + other_elm.ph_preference) / 2;
+	upd_display();
+
 func evolve_minor(amt):
 	match mode:
 		"essential":
@@ -372,15 +391,18 @@ func evolve_major(gain):
 			evolve_new_behavior(gain);
 		"pseudo":
 			if !gain:
-				set_texture(null);
-				parent_code = gene_code;
-				mode = "blank";
+				blank_out_gene();
 		"ate":
 			if (gain):
 				ate_activity += GAIN_AMT;
 			else:
 				ate_activity -= ATE_LOSS_AMT;
 	check_for_death();
+
+func blank_out_gene():
+	set_texture(null);
+	parent_code = gene_code;
+	mode = "blank";
 
 func check_for_death():
 	match mode:
@@ -548,6 +570,28 @@ func is_gap():
 
 func is_ate():
 	return type == "gene" && mode == "ate";
+
+func is_essential():
+	return type == "gene" && mode == "essential";
+
+func is_pseudo():
+	return type == "gene" && mode == "pseudo";
+
+func is_blank():
+	return type == "gene" && mode == "blank";
+
+func has_no_behavior():
+	return is_pseudo() || is_blank();
+
+# Lower number = keep during merge
+func get_merge_priority() -> float:
+	if is_essential():
+		return 0.0;
+	if is_ate():
+		return 10.0 - (ate_activity * 0.01);
+	if has_no_behavior():
+		return 20.0;
+	return -1.0;
 
 func disable(dis):
 	disabled = dis;

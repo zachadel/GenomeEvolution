@@ -846,7 +846,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 							elm.reverse_code();
 						
 						emit_signal("justnow_update", "Joined ends for the gap at %d, %d; resulted in an inversion." % gap_pos_disp);
-					0:
+					0: # No complications
 						emit_signal("justnow_update", "Joined ends for the gap at %d, %d without complications." % gap_pos_disp);
 					1, 2, 3:
 						gene_selection = cmsm.get_elms_around_pos(g_idx, true);
@@ -900,7 +900,16 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 								boon_str = "received a minor upgrade"
 								gene.evolve(false, true);
 						emit_signal("justnow_update", "Joined ends for the gap at %d, %d; a %s gene %s in the repair." % (gap_pos_disp + [gene.id, boon_str]));
-				
+					7: # Gene merge
+						var keep_gene = left_break_gene;
+						var rem_gene = right_break_gene;
+						if right_break_gene.get_merge_priority() < left_break_gene.get_merge_priority():
+							keep_gene = right_break_gene;
+							rem_gene = left_break_gene;
+						
+						keep_gene.merge_with(rem_gene);
+						cmsms.remove_elm(rem_gene, false);
+						emit_signal("justnow_update", "Joined ends for the gap at %d, %d; the two adjacent genes merged." % (gap_pos_disp));
 				if !repair_canceled:
 					if (do_yields):
 						yield(cmsms.close_gap(gap), "completed");

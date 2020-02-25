@@ -2,13 +2,8 @@ extends Control
 
 export var default_size := Vector2(200, 200);
 
-#onready var Art2D : Node2D = $Art2D;
 onready var Anim : AnimationPlayer = $Anim;
 onready var ColorBody : Sprite = $Art2D/Body/BodySprite;
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
 
 func play_anim(anim_name : String, at_speed := 1.0) -> void:
 	Anim.play(anim_name, -1.0, at_speed);
