@@ -369,7 +369,7 @@ func get_turn_txt(turn_type := -1) -> String:
 		turn_type = get_turn_type();
 	match turn_type:
 		TURN_TYPES.NewTEs:
-			return "New TEs";
+			return "New Transposons";
 		TURN_TYPES.TEJump:
 			return "Transposon Activity";
 		TURN_TYPES.RepairBreaks:
