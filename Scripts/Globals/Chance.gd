@@ -2,7 +2,7 @@ extends Node
 
 var base_rolls = {
 	# no complications, copy intervening, lose one, major down, minor down, dupe, major up, minor up
-	"copy_repair": [1.6, 10, 0.9, 0.4, 0.3, 0.25, 0.5, 1.25],
+	"copy_repair": [0, 10, 0.9, 0.4, 0.3, 0.25, 0.5, 1.25],
 	
 	# no correction, yes correction
 	"copy_repair_correction": [2, 1],
