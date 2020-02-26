@@ -151,7 +151,7 @@ func block_exists(start_idx, block_elms):
 			return false;
 	return true;
 
-func find_next_gap(start_idx, step = 1, end_at = -1):
+func find_next_gap(start_idx : int, step := 1, end_at := -1) -> int:
 	if (step == 0):
 		return start_idx;
 	if (end_at < 0 && step > 0):
@@ -249,6 +249,9 @@ func create_gap(pos):
 		return yield(add_elm(gap, pos), "completed");
 	else:
 		add_elm(gap, pos);
+
+func move_elm(elm, pos_idx : int):
+	move_child(elm, pos_idx);
 
 func add_elm(elm, pos = null):
 	emit_signal("animating", true);

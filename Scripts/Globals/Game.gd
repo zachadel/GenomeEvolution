@@ -314,7 +314,13 @@ func load_personalities(data_name, dict):
 	else: print("Failed to load " + data_name + " data files. Very bad!");
 
 func get_random_ate_personality():
-	return ate_personalities[ate_personalities.keys()[randi()%ate_personalities.size()]];
+	var pers_keys := [];
+	for k in ate_personalities.keys():
+		if Unlocks.has_te_unlock(k):
+			pers_keys.append(k);
+	
+	var rand_idx := randi() % pers_keys.size();
+	return ate_personalities[pers_keys[rand_idx]];
 
 func get_ate_personality_by_name(ate_name):
 	for k in ate_personalities:
@@ -363,7 +369,7 @@ func get_turn_txt(turn_type := -1) -> String:
 		turn_type = get_turn_type();
 	match turn_type:
 		TURN_TYPES.NewTEs:
-			return "New TEs";
+			return "New Transposons";
 		TURN_TYPES.TEJump:
 			return "Transposon Activity";
 		TURN_TYPES.RepairBreaks:
