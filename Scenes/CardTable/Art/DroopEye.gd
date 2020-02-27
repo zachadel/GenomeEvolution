@@ -9,17 +9,20 @@ const MAX_IRIS_Y = 19.0;
 const MIN_IRIS_X = -1;
 const MAX_IRIS_X = 1;
 
+onready var Drooper := $Drooper;
+onready var Iris := $Iris;
+
 func set_droop(d : float) -> void:
 	droopiness = d;
-	if $Drooper != null:
-		$Drooper.value = d;
-		$Iris.position.y = clamp(_get_lid_bottom(), MIN_IRIS_Y, MAX_IRIS_Y);
+	if Drooper != null:
+		Drooper.value = d;
+		Iris.position.y = clamp(_get_lid_bottom(), MIN_IRIS_Y, MAX_IRIS_Y);
 
 func set_drift(d : float) -> void:
 	eye_drift = d;
-	if $Iris != null:
-		$Iris.position.x = lerp(MIN_IRIS_X, MAX_IRIS_X, d);
+	if Iris != null:
+		Iris.position.x = lerp(MIN_IRIS_X, MAX_IRIS_X, d);
 
 func _get_lid_bottom() -> float:
-	var lid = $Drooper;
+	var lid = Drooper;
 	return lid.value * lid.rect_size.y;

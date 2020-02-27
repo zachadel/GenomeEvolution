@@ -52,6 +52,9 @@ var MAGNIFICATION_FACTOR = 1.5;
 var MAGNIFICATION_DROPOFF = 0.9;
 var current_size;
 
+var display_locked := false;
+var setup_ate_display_onready := false;
+
 signal elm_clicked(elm);
 signal elm_mouse_entered(elm);
 signal elm_mouse_exited(elm);
@@ -64,8 +67,8 @@ func _ready():
 	for k in ess_behavior:
 		get_node("Indic%s" % k).ttip_data = [k, "base"];
 	
-	if mode == "ate" && !AnthroArt.has_art():
-		set_ate_art();
+	if setup_ate_display_onready || mode == "ate" && !AnthroArt.has_art():
+		setup_ate_art();
 		upd_display();
 
 func obtain_ate_personality(personality_id := "") -> void:
@@ -73,22 +76,28 @@ func obtain_ate_personality(personality_id := "") -> void:
 		ate_personality = Game.get_random_ate_personality();
 		id = ate_personality["title"];
 	else:
-		ate_personality = Game.get_ate_personality_by_name(id);
 		id = personality_id;
-	set_ate_art();
+		ate_personality = Game.get_ate_personality_by_name(id);
+	setup_ate_art();
 
-func set_ate_art():
-	if ate_personality.has("art_scene"):
+func setup_ate_art(ate_pers = null):
+	if AnthroArt == null:
+		setup_ate_display_onready = true;
+	else:
+		_perf_ate_art_setup(ate_pers);
+
+func _perf_ate_art_setup(ate_pers = null):
+	if ate_pers == null:
+		ate_pers = ate_personality;
+	
+	if ate_pers.has("art_scene"):
 		set_texture(null);
 	else:
-		set_texture(ate_personality["art"]);
+		set_texture(ate_pers["art"]);
 	
-	if AnthroArt != null:
-		AnthroArt.visible = ate_personality.has("art_scene");
-		if AnthroArt.visible && !AnthroArt.has_art():
-			var art_scene : Control = load("res://Scenes/CardTable/Art/%s.tscn" % ate_personality.get("art_scene")).instance();
-			art_scene.set_anchors_and_margins_preset(Control.PRESET_WIDE);
-			AnthroArt.add_child(art_scene);
+	AnthroArt.visible = ate_pers.has("art_scene");
+	if AnthroArt.visible && !AnthroArt.has_art():
+		AnthroArt.add_art("res://Scenes/CardTable/Art/%s.tscn" % ate_pers.get("art_scene"));
 
 func setup(_type : String, _id := "", _mode := "", _code := "", _par_code := "", _ph := -1.0):
 	id = _id;
@@ -119,9 +128,9 @@ func setup(_type : String, _id := "", _mode := "", _code := "", _par_code := "",
 			"pseudo":
 				var ate_personality = Game.get_ate_personality_by_name(id);
 				if (ate_personality == null):
-					tex = Game.ess_textures[Game.ESSENTIAL_CLASSES[id]];
+					tex = Game.ess_textures[id];
 				else:
-					tex = ate_personality["art"];
+					setup_ate_art(ate_personality);
 	else:
 		tex = Game.sqelm_textures[_type];
 		$Helix.visible = false;
@@ -136,6 +145,9 @@ func set_texture(tex : Texture):
 	texture_normal = tex;
 	texture_pressed = tex;
 	texture_disabled = tex;
+	if AnthroArt != null:
+		AnthroArt.clear_art();
+		AnthroArt.visible = false;
 
 func setup_copy(ref_elm):
 	id = ref_elm.id;
@@ -169,9 +181,12 @@ func get_save_data():
 	return [elm_data, get_ess_behavior(), get_specialization()];
 
 func load_from_save(save_data):
+	display_locked = true;
+	callv("setup", save_data[0]);
 	set_ess_behavior(save_data[1]);
 	set_specialization(save_data[2]);
-	callv("setup", save_data[0]);
+	display_locked = false;
+	upd_display();
 
 const MAX_PH_MULT = 1.2;
 # with raw_interp=true, this returns a value between 0.0 and 1.0
@@ -190,7 +205,7 @@ func get_ph_mult(compared_to = null, raw_interp = false):
 
 func set_ess_behavior(dict):
 	for k in dict:
-		if (k == "ate"):
+		if (k == "ate" && is_ate()):
 			ate_activity = dict[k];
 		else:
 			ess_behavior[k] = dict[k];
@@ -258,6 +273,13 @@ func get_random_code():
 func randomize_code():
 	gene_code = get_random_code();
 
+func reverse_code():
+	var gc = gene_code;
+	gene_code = "";
+	for c in gc:
+		gene_code = c + gene_code;
+	upd_display();
+
 func modify_code(spaces = 1, min_mag = 1, allow_negative = false):
 	for _i in range(spaces):
 		var _idx = randi() % gene_code.length();
@@ -298,6 +320,25 @@ func is_equal(other_elm, max_dist = -1):
 		return can_compare_elm(other_elm);
 	else:
 		return can_compare_elm(other_elm) && get_gene_distance(other_elm) <= max_dist;
+
+func merge_with(other_elm):
+	randomize_code();
+	match mode:
+		"essential":
+			var bdict = get_ess_behavior();
+			var add_dict = other_elm.get_ess_behavior();
+			for k in add_dict:
+				if bdict.has(k):
+					bdict[k] += add_dict[k];
+				else:
+					bdict[k] = add_dict[k];
+			set_ess_behavior(bdict);
+		"ate":
+			ate_activity += other_elm.ate_activity;
+		"pseudo":
+			blank_out_gene();
+	ph_preference = (ph_preference + other_elm.ph_preference) / 2;
+	upd_display();
 
 func evolve_minor(amt):
 	match mode:
@@ -363,15 +404,18 @@ func evolve_major(gain):
 			evolve_new_behavior(gain);
 		"pseudo":
 			if !gain:
-				set_texture(null);
-				parent_code = gene_code;
-				mode = "blank";
+				blank_out_gene();
 		"ate":
 			if (gain):
 				ate_activity += GAIN_AMT;
 			else:
 				ate_activity -= ATE_LOSS_AMT;
 	check_for_death();
+
+func blank_out_gene():
+	set_texture(null);
+	parent_code = gene_code;
+	mode = "blank";
 
 func check_for_death():
 	match mode:
@@ -490,39 +534,41 @@ func get_dominant_essential() -> String:
 	return dominant_key;
 
 func upd_display():
-	$DBGLBL.text = gene_code;
-	$lbl.text = id;
-	match(type):
-		"gene":
-			$Helix.visible = true;
-			$Helix.texture = Game.helix_textures[true];
-			$lbl.visible = false;
-			
-			toggle_mode = false;
-			match (mode):
-				"ate":
-					self_modulate = Color(.8, .15, 0);
-					$lbl.visible = true;
-				"essential":
-					self_modulate = Color(0, .66, 0);
-					set_texture(Game.ess_textures[get_dominant_essential()]);
-				"pseudo":
-					self_modulate = Color(.5, .5, 0);
-				"blank":
-					set_texture(null);
-					$Helix.texture = Game.helix_textures[false];
-			upd_behavior_disp();
-			if AnthroArt != null && AnthroArt.visible:
-				AnthroArt.safe_callv("set_color", [self_modulate]);
-		"break":
-			toggle_mode = true;
-			continue;
-		_:
-			self_modulate = Color(1, 1, 1);
-	if forced_comparison_color != null:
-		modulate = forced_comparison_color;
-	else:
-		modulate = Color(1, 1, 1, 1);
+	if !display_locked:
+		$DBGLBL.text = gene_code;
+		$lbl.text = id;
+		match(type):
+			"gene":
+				$Helix.visible = true;
+				$Helix.texture = Game.helix_textures[true];
+				$lbl.visible = false;
+				
+				toggle_mode = false;
+				match (mode):
+					"ate":
+						self_modulate = Color(.8, .15, 0);
+						$lbl.visible = true;
+					"essential":
+						self_modulate = Color(0, .66, 0);
+						set_texture(Game.ess_textures[get_dominant_essential()]);
+					"pseudo":
+						self_modulate = Color(.5, .5, 0);
+					"blank":
+						set_texture(null);
+						$Helix.texture = Game.helix_textures[false];
+				upd_behavior_disp();
+				
+				if AnthroArt != null && AnthroArt.visible:
+					AnthroArt.safe_callv("set_color", [self_modulate]);
+			"break":
+				toggle_mode = true;
+				continue;
+			_:
+				self_modulate = Color(1, 1, 1);
+		if forced_comparison_color != null:
+			modulate = forced_comparison_color;
+		else:
+			modulate = Color(1, 1, 1, 1);
 
 func get_cmsm():
 	return get_parent();
@@ -538,6 +584,28 @@ func is_gap():
 
 func is_ate():
 	return type == "gene" && mode == "ate";
+
+func is_essential():
+	return type == "gene" && mode == "essential";
+
+func is_pseudo():
+	return type == "gene" && mode == "pseudo";
+
+func is_blank():
+	return type == "gene" && mode == "blank";
+
+func has_no_behavior():
+	return is_pseudo() || is_blank();
+
+# Lower number = keep during merge
+func get_merge_priority() -> float:
+	if is_essential():
+		return 0.0;
+	if is_ate():
+		return 10.0 - (ate_activity * 0.01);
+	if has_no_behavior():
+		return 20.0;
+	return -1.0;
 
 func disable(dis):
 	disabled = dis;

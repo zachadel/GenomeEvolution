@@ -89,6 +89,8 @@ func get_mechanic_key(mech_type : String) -> String:
 	return "MECHANIC.%s" % mech_type;
 func get_hint_key(hint_type : String) -> String:
 	return "HINT.%s" % hint_type;
+func get_te_key(te_type : String) -> String:
+	return "TE.%s" % te_type;
 
 func has_turn_unlock(turn : int) -> bool:
 	return _has_unlock_quiet(get_turn_key(turn));
@@ -98,3 +100,5 @@ func has_mechanic_unlock(mech_type : String) -> bool:
 	return _has_unlock(get_mechanic_key(mech_type));
 func has_hint_unlock(hint_type : String) -> bool:
 	return _has_unlock(get_hint_key(hint_type));
+func has_te_unlock(te_type : String) -> bool:
+	return _has_unlock_quiet(get_te_key(te_type));

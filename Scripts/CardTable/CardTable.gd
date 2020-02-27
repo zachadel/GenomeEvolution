@@ -230,7 +230,7 @@ func check_if_ready():
 		$AutoContinue.start();
 
 func close_extra_menus(toggle_menu = null):
-	for p in [$pnl_saveload, ph_filter_panel]:
+	for p in [$pnl_saveload, ph_filter_panel, $pnl_bugreport]:
 		if (p == toggle_menu):
 			p.visible = !p.visible;
 		else:
@@ -285,7 +285,12 @@ func _on_pnl_ph_filter_update_seqelm_coloration(compare_type):
 func _on_AutoContinue_timeout():
 	_on_btn_nxt_pressed();
 
-
 func _on_ViewMap_pressed():
 	emit_signal("switch_to_map")
-	pass # Replace with function body.
+
+func _on_btn_bugreport_pressed():
+	close_extra_menus($pnl_bugreport);
+func _on_btn_load_pressed():
+	SaveExports.flag_bug($pnl_bugreport/tbox_bugdesc.text);
+	$pnl_bugreport/tbox_bugdesc.text = "";
+	close_extra_menus($pnl_bugreport);
