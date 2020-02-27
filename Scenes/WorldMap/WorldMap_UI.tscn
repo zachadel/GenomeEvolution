@@ -191,6 +191,7 @@ margin_bottom = 32.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "End Map Turn"
+[connection signal="pressed" from="MenuPanel/HBoxContainer/AcquireResources" to="." method="_on_AcquireResources_pressed"]
 [connection signal="pressed" from="MenuPanel/HBoxContainer/EjectResources" to="." method="_on_EjectResources_pressed"]
 [connection signal="pressed" from="MenuPanel/HBoxContainer/CheckGenome" to="." method="_on_CheckGenome_pressed"]
 [connection signal="pressed" from="MenuPanel/HBoxContainer/EndMapTurn" to="." method="_on_EndMapTurn_pressed"]

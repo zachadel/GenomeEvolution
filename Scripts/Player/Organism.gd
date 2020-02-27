@@ -118,10 +118,6 @@ func _ready():
 	energy_allocations = {};
 	populate_cfp_resources_dict()
 	populate_mineral_dict()
-	
-	for vesicle in vesicle_scales:
-		print(vesicle + ": ", get_estimated_capacity(vesicle))
-	print(cfp_resources)
 
 func populate_cfp_resources_dict():
 	for resource_type in Game.resource_groups:
@@ -145,9 +141,11 @@ func populate_mineral_dict():
 				mineral_resources[resource_class] = {}
 				mineral_resources[resource_class]["total"] = 0
 				for resource in Game.resource_groups[resource_type][resource_class]:
-					mineral_resources[resource_class][resource] = 5
+					if randi() % 2 == 0:
+						mineral_resources[resource_class][resource] = clamp(Game.resources[resource]["optimal"] - randi() % (Game.resources[resource]["optimal_radius"]), Game.resources[resource]["safe_range"][0], Game.resources[resource]["safe_range"][1])
+					else:
+						mineral_resources[resource_class][resource] = clamp(Game.resources[resource]["optimal"] + randi() % (Game.resources[resource]["optimal_radius"]), Game.resources[resource]["safe_range"][0], Game.resources[resource]["safe_range"][1])
 					mineral_resources[resource_class]["total"] += mineral_resources[resource_class][resource]
-	print(mineral_resources)
 
 func get_vesicle_size(vesicle_name: String):
 	return Game.vec_mult(vesicle_scales[vesicle_name], DEFAULT_VES_SIZE)
@@ -194,12 +192,13 @@ func recompute_vesicle_total(resource_class: String):
 	
 	return sum
 	
-func recompute_mineral_total(charge: int):
+func recompute_mineral_total(resource_class):
 	var sum = 0
-	for mineral in mineral_resources[charge]:
-		sum += mineral_resources[charge][mineral]
+	var old_total = mineral_resources[resource_class]["total"]
+	for resource in mineral_resources[resource_class]:
+		sum += mineral_resources[resource_class][resource]
 		
-	mineral_resources[charge]["total"] = sum
+	mineral_resources[resource_class]["total"] = sum - old_total
 	
 	return sum
 
@@ -1160,7 +1159,52 @@ func check_resources(action, amount = 1):
 		deficiencies.append("energy")
 		
 	return deficiencies
+
+#Can take a cfp resource or a resource class (simple_carbs, etc.)
+#Returns total energy content after downgrading it to energy and calculating costs
+func get_processed_energy_value(resource: String) -> float:
+	var processed_energy = 0
 	
+	if resource in cfp_resources:
+		if resource.split(Game.SEPARATOR)[0] == "simple":
+			for resource_name in cfp_resources[resource]:
+				if resource_name != "total":
+					var amount = cfp_resources[resource][resource_name]
+					processed_energy += (amount * Game.resources[resource_name]["factor"])
+					processed_energy -= get_energy_cost("simple_to_energy", amount)
+				
+		else:
+			var need_to_process = {}
+			for resource_name in cfp_resources[resource]:
+				if resource_name != "total" and cfp_resources[resource][resource_name] > 0:
+					var downgrade_name = Game.resources[resource_name]["downgraded_form"]
+					var amount = cfp_resources[resource][resource_name]
+					
+					need_to_process[downgrade_name] = amount * Game.resources[resource_name]["factor"]
+					processed_energy -= get_energy_cost("complex_to_simple", amount)
+			
+			for resource_name in need_to_process:
+				processed_energy += (need_to_process[resource_name] * Game.resources[resource_name]["factor"])
+				processed_energy -= get_energy_cost("simple_to_energy", need_to_process[resource_name])
+	
+	#In the case we are dealing with a resource name		
+	else:
+		if Game.resources[resource]["tier"] == "complex":
+			var downgraded_form = Game.resources[resource]["downgraded_form"]
+			var amount = cfp_resources[Game.get_class_from_name(resource)][resource]
+			processed_energy -= get_energy_cost("complex_to_simple", amount)
+			
+			#What we will now need to convert to energy
+			amount *= Game.resources[resource]["factor"]
+			processed_energy -= get_energy_cost("simple_to_energy", amount)
+			processed_energy += (amount * Game.resources[downgraded_form]["factor"])
+		else:
+			var amount = cfp_resources[Game.get_class_from_name(resource)][resource]
+			processed_energy -= get_energy_cost("simple_to_energy", amount)
+			processed_energy += amount * Game.resources[resource]["factor"]
+			
+	return processed_energy
+
 func get_energy_cost(action, amount = 1):
 	var cost = costs[action]["energy"] * get_cost_mult(action) * Game.resource_mult * amount
 	
@@ -1611,31 +1655,32 @@ func acquire_resources():
 			#Later, the resources to be grabbed should be randomly selected from all
 			#possible resources that fit into a certain resource class
 			#Acquire minerals
-			if Game.resources[resource]["group"] == "minerals" and current_tile["resources"][index] > 0:
-				modified = true
-				
-				mineral_resources[resource_class][resource] += current_tile["resources"][index]
-				mineral_resources[resource_class]["total"] += current_tile["resources"][index]
-				current_tile["resources"][index] = 0
-				
-			#Acquire carbs, fats, proteins
-			elif cfp_resources[resource_class]["total"] < get_estimated_capacity(resource_class) and current_tile["resources"][index] > 0:
-				modified = true
-				var max_capacity = get_estimated_capacity(resource_class)
-				
-				#Vesicle can accomodate all resources
-				if cfp_resources[resource_class]["total"] + current_tile["resources"][index] <= max_capacity:
-					cfp_resources[resource_class]["total"] += current_tile["resources"][index]
-					cfp_resources[resource_class][resource] += current_tile["resources"][index]
-					
+			if current_tile["resources"][index] > 0:
+				if Game.resources[resource]["group"] == "minerals":
+					modified = true
+	
+					mineral_resources[resource_class][resource] += current_tile["resources"][index]
+					mineral_resources[resource_class]["total"] += current_tile["resources"][index]
 					current_tile["resources"][index] = 0
-					
-				#Can only accomodate some of the resources
-				else:
-					cfp_resources[resource_class][resource] += (max_capacity - cfp_resources[resource_class]["total"])
-					cfp_resources[resource_class]["total"] = max_capacity
-					
-					current_tile["resources"][index] -= (max_capacity - cfp_resources[resource_class]["total"])
+
+			#Acquire carbs, fats, proteins
+				elif cfp_resources[resource_class]["total"] < get_estimated_capacity(resource_class):
+					modified = true
+					var max_capacity = get_estimated_capacity(resource_class)
+	
+					#Vesicle can accomodate all resources
+					if cfp_resources[resource_class]["total"] + current_tile["resources"][index] <= max_capacity:
+						cfp_resources[resource_class]["total"] += current_tile["resources"][index]
+						cfp_resources[resource_class][resource] += current_tile["resources"][index]
+	
+						current_tile["resources"][index] = 0
+	
+					#Can only accomodate some of the resources
+					else:
+						cfp_resources[resource_class][resource] += (max_capacity - cfp_resources[resource_class]["total"])
+						cfp_resources[resource_class]["total"] = max_capacity
+	
+						current_tile["resources"][index] -= (max_capacity - cfp_resources[resource_class]["total"])
 	
 	else:
 		modified = false		
@@ -2073,6 +2118,39 @@ func process_resource(resource: String, container_name: String, amount):
 		result_resource = Game.resources[resource]["downgraded_form"]
 		
 	return [results, result_resource]
+	
+func is_resource_alive() -> bool:
+	return is_mineral_alive() and is_energy_alive()	
+	
+func is_mineral_alive() -> bool:
+	var mineral_alive = true
+	for charge in mineral_resources:
+		var default_resource = mineral_resources[charge].keys()[1]
+
+		if mineral_resources[charge]["total"] < Game.resources[default_resource]["safe_range"][0] or mineral_resources[charge]["total"] > Game.resources[default_resource]["safe_range"][1]:
+			mineral_alive = false
+			break
+
+	return mineral_alive
+	
+#Returns true if enough energy/resources to perform "acquire_resources"
+func is_energy_alive() -> bool:
+	var energy_alive = false
+	var total_energy = energy
+	var acquire_cost = get_energy_cost("acquire_resources")
+	
+	if total_energy < acquire_cost:
+		for resource_class in cfp_resources:
+			if cfp_resources[resource_class]["total"] > 0:
+				total_energy += get_processed_energy_value(resource_class)
+			
+			if total_energy >= acquire_cost:
+				energy_alive = true
+				break
+	else:
+		energy_alive = true
+	
+	return energy_alive
 
 func _on_chromes_on_cmsm_changed():
 	refresh_bprof = true;

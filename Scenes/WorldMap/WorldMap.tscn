@@ -35,6 +35,9 @@
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="WorldMap_UI" parent="." instance=ExtResource( 2 )]
 
@@ -73,6 +76,5 @@ end_cap_mode = 2
 [connection signal="tile_changed" from="." to="WorldMap_UI" method="_on_WorldMap_tile_changed"]
 [connection signal="acquire_resources" from="WorldMap_UI" to="." method="_on_WorldMap_UI_acquire_resources"]
 [connection signal="check_genome" from="WorldMap_UI" to="." method="_on_WorldMap_UI_check_genome"]
-[connection signal="eject_resource" from="WorldMap_UI" to="." method="_on_WorldMap_UI_eject_resource"]
 [connection signal="end_map_pressed" from="WorldMap_UI" to="." method="_on_WorldMap_UI_end_map_pressed"]
 [connection signal="tween_completed" from="MapZoom" to="." method="_on_MapZoom_tween_completed"]

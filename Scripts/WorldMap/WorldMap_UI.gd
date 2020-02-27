@@ -5,7 +5,7 @@ signal quit_to_title
 signal acquire_resources
 signal check_genome
 
-signal eject_resource(resource, value)
+signal eject_resources(resources_dict)
 
 #internal resources controller
 onready var irc = get_node("InternalPanel/InternalResourceController")
@@ -35,6 +35,12 @@ func _ready():
 	check_genome_button.text = DEFAULT_BUTTON_TEXT[BUTTONS.CHECK]
 	end_turn_button.text = DEFAULT_BUTTON_TEXT[BUTTONS.END]
 	
+	if OS.is_debug_build():
+		var test_button = Button.new()
+		test_button.text = "Test Function"
+		$MenuPanel/HBoxContainer.add_child(test_button)
+		test_button.connect("pressed", self, "test_functionality")
+		
 	pass
 	
 func set_organism(org):
@@ -133,10 +139,7 @@ func _on_WorldMap_player_resources_changed(cfp_resources, mineral_resources):
 	irc.update_resources(cfp_resources)
 	mineral_levels.update_resources_values(mineral_resources)
 	pass # Replace with function body.
-
-func _on_Acquire_Button_pressed():
-	emit_signal("acquire_resources")
-	pass # Replace with function body.
+	
 
 func _on_WorldMap_tile_changed(tile_dict):
 	hazards_ui.set_hazards(tile_dict["hazards"])
@@ -153,6 +156,7 @@ func _on_MineralLevels_eject_resource(resource, value):
 
 
 func _on_EjectResources_pressed():
+	
 	pass # Replace with function body.
 	
 func _on_EndMapTurn_pressed():
@@ -167,3 +171,49 @@ func _on_WorldMap_end_map_turn():
 func _on_CheckGenome_pressed():
 	emit_signal("check_genome")
 	pass # Replace with function body.
+
+
+func _on_AcquireResources_pressed():
+	emit_signal("acquire_resources")
+	pass # Replace with function body.
+	
+#Downgrade to energy is broken
+#Downgrade to resource is not
+#Upgrade might have some issues
+#upgrade from energy is broken
+#Seems like energy is quite broken
+func test_functionality():
+	var args = ["butter", 1]
+	print("Test Functionality...")
+	print("Using downgrade_cfp_resource with arguments: ", args, "...\n")
+	var prior = irc.organism.cfp_resources.duplicate(true)
+	var prior_energy = irc.organism.energy
+	irc.organism.downgrade_cfp_resource(args[0], args[1])
+	var diff_dict = get_resource_dict_differences(prior, irc.organism.cfp_resources)
+	print("Difference after function...\n")
+	print_diff_dict(diff_dict)
+	print("Energy difference: ", irc.organism.energy - prior_energy)
+	pass
+
+func get_resource_dict_differences(cfp_1:Dictionary, cfp_2: Dictionary):
+	var diff_dict = {}
+	for resource_class in cfp_1:
+		for resource in cfp_1[resource_class]:
+			if cfp_1[resource_class][resource] > cfp_2[resource_class][resource]:
+				if not resource_class in diff_dict:
+					diff_dict[resource_class] = {}
+				diff_dict[resource_class][resource] = "After dictionary in %s at resource %s is smaller by %f" %[resource_class, resource, cfp_1[resource_class][resource] - cfp_2[resource_class][resource]]
+			elif cfp_1[resource_class][resource] < cfp_2[resource_class][resource]:
+				if not resource_class in diff_dict:
+					diff_dict[resource_class] = {}
+				diff_dict[resource_class][resource] = "After dictionary in %s at resource %s is larger by %f" %[resource_class, resource, cfp_2[resource_class][resource] - cfp_1[resource_class][resource]]
+	return diff_dict
+
+func print_diff_dict(diff_dict: Dictionary):
+	if diff_dict:
+		for resource_class in diff_dict:
+			for resource in diff_dict[resource_class]:
+				print(diff_dict[resource_class][resource])
+	else:
+		print("No changes in resource dictionaries")
+

@@ -61,22 +61,7 @@ func add_observed_tiles(tiles):
 #It is the responsibility of the calling function to determine what to do
 #with this information
 func is_alive_resource_check():
-	var mineral_alive = true
-	var cfp_alive = false
-	
-	for charge in organism.mineral_resources:
-		if organism.mineral_resources[charge]["total"] < Game.resources[organism.mineral_resources[charge].keys()[0]]["safe_range"][0] or organism.mineral_resources[charge]["total"] > Game.resources[organism.mineral_resources[charge].keys()[0]]["safe_range"][1]:
-			mineral_alive = false
-			break
-		
-	for resource in organism.cfp_resources:
-		for tier in organism.cfp_resources[resource]:
-			if organism.cfp_resources[resource][tier] != 0: #Need to edit to account for total energy
-				cfp_alive = true
-				break
-	
-	return (mineral_alive and cfp_alive)
-#		organism.get_parent()._on_Organism_died(organism)
+	return organism.is_resource_alive()
 
 func get_observed_tiles():
 	return observed_tiles
@@ -87,7 +72,7 @@ func get_observed_tiles():
 #This seems to imply a rework of the way we view Organism/Player needs to be reconsidered
 func acquire_resources():
 	organism.acquire_resources()
-	
+
 	if not is_alive_resource_check():
 		organism.emit_signal("died", organism)
 		emit_signal("player_died")

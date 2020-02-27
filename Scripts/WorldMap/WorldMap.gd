@@ -460,7 +460,7 @@ func _on_WorldMap_UI_end_map_pressed():
 	
 	ui.hide()
 	current_player.sprite.highlight_part("nucleus")
-	print(camera.get_zoom(), FINAL_TWEEN_ZOOM)
+
 	tween.interpolate_property(camera, "zoom", camera.get_zoom(), FINAL_TWEEN_ZOOM, 1, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	tween.start()
 	pass # Replace with function body.
@@ -476,11 +476,22 @@ func _on_WorldMap_UI_acquire_resources():
 	var player_pos = Game.world_to_map(current_player.position)
 	var curr_tile = get_tile_at_pos(player_pos)
 	
+	print("Before acquiring cfp resources: ", current_player.organism.cfp_resources, '\n')
+	print("Before acquiring mineral resources: ", current_player.organism.mineral_resources, '\n')
+	print("Before acquiring resources energy: ", current_player.organism.energy, '\n')
+	print("Before acquiring resources ui: ", ui.irc.resources, '\n')
+	print("Current tile: ", Game.get_pretty_resources_from_indices(curr_tile["resources"]), '\n')
 	current_player.set_current_tile(curr_tile) 
 	current_player.acquire_resources()
+	update_ui_resources()
+	print("After acquiring cfp resources: ", current_player.organism.cfp_resources, '\n')
+	print("After acquiring mineral resources: ", current_player.organism.mineral_resources, '\n')
+	print("After acquiring resources energy: ", current_player.organism.energy, '\n')
+	print("After acquiring resources ui: ", ui.irc.resources, '\n')
+	print("Current tile resources: ", Game.get_pretty_resources_from_indices(curr_tile["resources"]), '\n')
 	emit_signal("player_resources_changed", current_player.organism.cfp_resources, current_player.organism.mineral_resources)
 	emit_signal("player_energy_changed", current_player.organism.energy)
-	
+
 	$ResourceMap.update_tile_resource(player_pos, current_player.get_current_tile()["primary_resource"])
 	emit_signal("tile_changed", current_player.get_current_tile())
 

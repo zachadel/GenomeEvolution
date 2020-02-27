@@ -463,6 +463,13 @@ func get_resource_from_index(resource_index):
 func get_index_from_resource(resource):
 	return Game.resources.keys().find(resource)
 	
+func get_pretty_resources_from_indices(resources: Dictionary):
+	var new_dict = {}
+	for index in resources:
+		new_dict[get_resource_from_index(index)] = resources[index]
+		
+	return new_dict
+	
 #Returns [simple/complex]_[carbs/fats/proteins] or the charge of the mineral
 func get_class_from_name(resource_name: String):
 	

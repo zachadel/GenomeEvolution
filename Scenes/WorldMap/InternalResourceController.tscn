@@ -25,6 +25,9 @@ margin_bottom = -325.463
 mouse_filter = 2
 custom_styles/panel = SubResource( 1 )
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ComplexCarbsLabel2" type="RichTextLabel" parent="."]
 margin_top = 10.0
@@ -116,10 +119,8 @@ size_flags_vertical = 3
 theme = SubResource( 2 )
 custom_fonts/normal_font = SubResource( 4 )
 bbcode_enabled = true
-bbcode_text = "[center]Simple Fats
-[/center]"
-text = "Simple Fats
-"
+bbcode_text = "[center]Simple Fats[/center]"
+text = "Simple Fats"
 scroll_active = false
 
 [node name="SimpleProteinsLabel" type="RichTextLabel" parent="LabelColumns/SimpleLabels"]
@@ -132,10 +133,8 @@ size_flags_vertical = 3
 theme = SubResource( 2 )
 custom_fonts/normal_font = SubResource( 4 )
 bbcode_enabled = true
-bbcode_text = "[center]Simple Proteins
-[/center]"
-text = "Simple Proteins
-"
+bbcode_text = "[center]Simple Proteins[/center]"
+text = "Simple Proteins"
 scroll_active = false
 
 [node name="ComplexLabels" type="VBoxContainer" parent="LabelColumns"]
@@ -183,10 +182,8 @@ size_flags_vertical = 3
 theme = SubResource( 2 )
 custom_fonts/normal_font = SubResource( 4 )
 bbcode_enabled = true
-bbcode_text = "[center]Complex Proteins
-[/center]"
-text = "Complex Proteins
-"
+bbcode_text = "[center]Complex Proteins[/center]"
+text = "Complex Proteins"
 scroll_active = false
 
 [node name="SelectionArea" type="ColorRect" parent="."]

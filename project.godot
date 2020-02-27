@@ -43,6 +43,10 @@ SaveExports="*res://Scripts/Globals/SaveExports.gd"
 window/size/width=1600
 window/size/height=900
 
+[gdnative]
+
+singletons=[  ]
+
 [input]
 
 ui_left={

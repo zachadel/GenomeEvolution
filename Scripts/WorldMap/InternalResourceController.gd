@@ -242,7 +242,6 @@ func handle_click_with_selection():
 				if diff > 0:
 					remove_resource_by_name(resource, diff, true)
 				
-				print("Energy check: ", results)
 				#energy_bar.add_energy(results[0][0])
 				
 			energy_bar.update_energy_allocation(organism.energy)
@@ -251,14 +250,13 @@ func handle_click_with_selection():
 
 func handle_energy_to_vesicle_click():
 	var vesicle_name = get_vesicle_from_mouse_pos(get_global_mouse_position())
-	print("Before: ", energy_bar.energy)
+	
 	if vesicle_name and Game.is_valid_interaction("energy", vesicle_name):
 		var results = organism.process_resource("energy", vesicle_name, 1)
 		
 		add_resource(results[1], results[0][0])
 		energy_bar.update_energy_allocation(organism.energy)
 		Input.set_custom_mouse_cursor(null)
-	print("After: ", energy_bar.energy)
 	
 func get_vesicle_from_mouse_pos(mouse_pos: Vector2):
 	var vesicle_name = ""

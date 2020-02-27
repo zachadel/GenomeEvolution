@@ -18,5 +18,4 @@ func _ready():
 
 func _on_Button_pressed():
 	rect.self_modulate = Color(2,2,2,2)
-	print(rect.self_modulate)
 	pass # Replace with function body.

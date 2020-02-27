@@ -20,17 +20,14 @@ func _ready():
 			if not Game.resources[resource]["tier"] in charges:
 				charges.append(Game.resources[resource]["tier"])
 				var LevelBar = bar.instance()
-				
+				add_child(LevelBar)
 				LevelBar.name = resource
 				
 				LevelBar.set_resource(resource)
-				LevelBar.set_icon_texture(Game.resources[resource]["tile_image"])
-				
-				LevelBar.MINIMUM_VALUE = float(Game.resources[resource]["safe_range"][0])
-				LevelBar.MAXIMUM_VALUE = float(Game.resources[resource]["safe_range"][1])
-				
-				LevelBar.update_value(randi() % int(LevelBar.MAXIMUM_VALUE - LevelBar.MINIMUM_VALUE) + LevelBar.MINIMUM_VALUE)
-				add_child(LevelBar)
+				var value = randi() % int(LevelBar.MAXIMUM_VALUE - LevelBar.MINIMUM_VALUE) + LevelBar.MINIMUM_VALUE
+
+				LevelBar.update_value(value)
+
 				LevelBar.connect("eject_resource", self, "_on_LevelBar_eject_resource")
 			
 	#set("custom_constants/separation", 
