@@ -521,17 +521,18 @@ func upd_behavior_disp(behavior = ""):
 
 var forced_comparison_color = null;
 func color_comparison(compare_type : String, compare_val : float):
-	if (compare_type == ""):
-		forced_comparison_color = null;
-	else:
-		var comparison : float; # should be 0..1
+	if !has_no_behavior():
+		if (compare_type == ""):
+			forced_comparison_color = null;
+		else:
+			var comparison : float; # should be 0..1
+			
+			if (compare_type == "ph"):
+				comparison = get_ph_mult(compare_val, true);
+			
+			forced_comparison_color = SEQ_ELM_COMPARE_GRADIENT.interpolate(comparison);
 		
-		if (compare_type == "ph"):
-			comparison = get_ph_mult(compare_val, true);
-		
-		forced_comparison_color = SEQ_ELM_COMPARE_GRADIENT.interpolate(comparison);
-	
-	upd_display();
+		upd_display();
 
 func get_dominant_essential() -> String:
 	var highest_yet = 0.0;
