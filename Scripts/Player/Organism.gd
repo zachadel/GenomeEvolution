@@ -815,20 +815,25 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 						seg_size = min(size_left, size_right);
 					seg_left_of_gap = seg_size == size_left;
 					
-#					print("+========================+");
-#					print(" gidx: ", g_idx);
-#					print(" endR: ", seg_end_right);
-#					print("sizeR: ", size_right);
-#					print(" endL: ", seg_end_left);
-#					print("sizeL: ", size_left);
-#					print("Left?: ", seg_left_of_gap);
-#					print(" size: ", seg_size);
-#					print("+========================+");
-					
 					if Chance.roll_inversion(seg_size):
 						roll_storage[1][gap] = -1;
 					else:
 						roll_storage[1][gap] = roll_chance("join_ends");
+				
+				# Do this outside of the match so that it can change the roll val
+				if roll_storage[1][gap] == 7: # Gene merge
+					var keep_gene = left_break_gene;
+					var rem_gene = right_break_gene;
+					if right_break_gene.get_merge_priority() < left_break_gene.get_merge_priority():
+						keep_gene = right_break_gene;
+						rem_gene = left_break_gene;
+					
+					if keep_gene.is_essential() && rem_gene.get_merge_priority() >= 0:
+						keep_gene.merge_with(rem_gene);
+						cmsms.remove_elm(rem_gene, false);
+						emit_signal("justnow_update", "Joined ends for the gap at %d, %d; the %s and %s genes merged." % (gap_pos_disp+ [left_id, right_id]));
+					else:
+						roll_storage[1][gap] = 0;
 				match (roll_storage[1][gap]):
 					-1: # Inversion
 						var seg_idxs : Array;
@@ -899,16 +904,6 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 								boon_str = "received a minor upgrade"
 								gene.evolve(false, true);
 						emit_signal("justnow_update", "Joined ends for the gap at %d, %d; a %s gene %s in the repair." % (gap_pos_disp + [gene.get_gene_name(), boon_str]));
-					7: # Gene merge
-						var keep_gene = left_break_gene;
-						var rem_gene = right_break_gene;
-						if right_break_gene.get_merge_priority() < left_break_gene.get_merge_priority():
-							keep_gene = right_break_gene;
-							rem_gene = left_break_gene;
-						
-						keep_gene.merge_with(rem_gene);
-						cmsms.remove_elm(rem_gene, false);
-						emit_signal("justnow_update", "Joined ends for the gap at %d, %d; the two adjacent genes merged." % (gap_pos_disp));
 				if !repair_canceled:
 					if (do_yields):
 						yield(cmsms.close_gap(gap), "completed");

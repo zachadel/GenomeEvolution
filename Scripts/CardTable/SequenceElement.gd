@@ -332,22 +332,35 @@ func get_gene_name():
 		"blank":
 			return "blank";
 
+# Lower number = keep during merge
+# Negative number = invalid merge
+func get_merge_priority() -> float:
+	if is_essential():
+		return 0.0;
+	if is_ate():
+		return 10.0;
+	return -1.0;
+
 func merge_with(other_elm):
 	randomize_code();
-	match mode:
-		"essential":
-			var bdict = get_ess_behavior();
-			var add_dict = other_elm.get_ess_behavior();
-			for k in add_dict:
-				if bdict.has(k):
-					bdict[k] += add_dict[k];
-				else:
-					bdict[k] = add_dict[k];
-			set_ess_behavior(bdict);
-		"ate":
-			ate_activity += other_elm.ate_activity;
-		"pseudo":
-			blank_out_gene();
+	
+	var bdict = get_ess_behavior();
+	var add_dict = {};
+	
+	if other_elm.is_essential():
+		add_dict = other_elm.get_ess_behavior();
+	elif other_elm.is_ate():
+		add_dict = {"Replication": stepify(other_elm.ate_activity * 0.25, 0.1)};
+	else:
+		print("!! Trying to merge an essential gene with an invalid gene: %s, %s" % [other_elm.mode, other_elm.id]);
+	
+	for k in add_dict:
+		if bdict.has(k):
+			bdict[k] += add_dict[k];
+		else:
+			bdict[k] = add_dict[k];
+	
+	set_ess_behavior(bdict);
 	ph_preference = (ph_preference + other_elm.ph_preference) / 2;
 	upd_display();
 
@@ -608,16 +621,6 @@ func is_blank():
 
 func has_no_behavior():
 	return is_pseudo() || is_blank();
-
-# Lower number = keep during merge
-func get_merge_priority() -> float:
-	if is_essential():
-		return 0.0;
-	if is_ate():
-		return 10.0 - (ate_activity * 0.01);
-	if has_no_behavior():
-		return 20.0;
-	return -1.0;
 
 func disable(dis):
 	disabled = dis;
