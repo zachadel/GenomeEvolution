@@ -331,7 +331,7 @@ func gain_ates(count = 1):
 			pos = yield(cmsms.insert_ate(nxt_te), "completed");
 		else:
 			pos = cmsms.insert_ate(nxt_te);
-		justnow += "Inserted %s into position %d (%d, %d).\n" % ([nxt_te.id, pos] + nxt_te.get_position_display());
+		justnow += "Inserted %s into position %d (%d, %d).\n" % ([nxt_te.get_gene_name(), pos] + nxt_te.get_position_display());
 	emit_signal("justnow_update", justnow);
 
 func gain_gaps(count = 1):
@@ -351,10 +351,10 @@ func jump_ates():
 	for ate in _actives:
 		match (ate.get_ate_jump_roll()):
 			0:
-				justnow += "%s did not do anything.\n" % ate.id;
+				justnow += "%s did not do anything.\n" % ate.get_gene_name();
 			1:
 				var old_loc = ate.get_position_display();
-				var old_id = ate.id;
+				var old_id = ate.get_gene_name();
 				if (do_yields):
 					yield(cmsms.remove_elm(ate), "completed");
 				else:
@@ -368,7 +368,7 @@ func jump_ates():
 				else:
 					cmsms.jump_ate(ate);
 				justnow += "%s jumped from (%d, %d) to (%d, %d); left a gap.\n" % \
-					([ate.id] + old_loc + ate.get_position_display());
+					([ate.get_gene_name()] + old_loc + ate.get_position_display());
 			3:
 				var copy_ate;
 				if (do_yields):
@@ -376,7 +376,7 @@ func jump_ates():
 				else:
 					copy_ate = cmsms.copy_ate(ate);
 				justnow += "%s copied itself to (%d, %d); left no gap.\n" % \
-					([ate.id] + copy_ate.get_position_display());
+					([ate.get_gene_name()] + copy_ate.get_position_display());
 	emit_signal("justnow_update", justnow);
 	if (do_yields):
 		yield(cmsms.collapse_gaps(), "completed");
@@ -531,7 +531,7 @@ func make_repair_choices(gap, repair_idx):
 			var left_idx = choice_info["left"].get_index();
 			choice_info["left"].highlight_border(true, true);
 			
-			emit_signal("justnow_update", "Select the rightmost element of the pattern you will collapse.\n\nThe leftmost element is %s." % choice_info["left"].id);
+			emit_signal("justnow_update", "Select the rightmost element of the pattern you will collapse.\n\nThe leftmost element is %s." % choice_info["left"].get_gene_name());
 			gene_selection.clear();
 			var sel_size_gene = null;
 			if (is_ai || blocks_dict[left_idx].size() == 1):
@@ -608,7 +608,7 @@ func make_repair_choices(gap, repair_idx):
 				return false;
 			choice_info["left"].highlight_border(true, true);
 			
-			emit_signal("justnow_update", "Select the rightmost element of the pattern you will copy.\n\nThe leftmost element is %s." % choice_info["left"].id);
+			emit_signal("justnow_update", "Select the rightmost element of the pattern you will copy.\n\nThe leftmost element is %s." % choice_info["left"].get_gene_name());
 			gene_selection.clear();
 			var right_idxs = pairs_dict[choice_info["left"].get_index()];
 			if (is_ai || right_idxs.size() == 1):
@@ -640,8 +640,8 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 		
 		var left_break_gene = cmsm.get_child(g_idx - 1);
 		var right_break_gene = cmsm.get_child(g_idx + 1);
-		var left_id = left_break_gene.id;
-		var right_id = right_break_gene.id;
+		var left_id = left_break_gene.get_gene_name();
+		var right_id = right_break_gene.get_gene_name();
 		
 		var original_select = gene_selection;
 		
@@ -743,7 +743,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 								r.disable(true);
 							
 							var gene = get_gene_selection();
-							var g_id = gene.id; # Saved here cuz it might free the gene in a bit
+							var g_id = gene.get_gene_name(); # Saved here cuz it might free the gene in a bit
 							var damage_str = "";
 							match (roll_storage[0][gap]):
 								2: # Lose gene
@@ -778,7 +778,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 							7: # Minor up
 								boon_str = "received a minor upgrade"
 								gene.evolve(false, true);
-						emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome. A %s gene %s in the repair.%s" % (gap_pos_disp + [left_id, right_id, gene.id, boon_str, correct_str]));
+						emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome. A %s gene %s in the repair.%s" % (gap_pos_disp + [left_id, right_id, gene.get_gene_name(), boon_str, correct_str]));
 				if !repair_canceled:
 					if (do_correction):
 						var correct_targ = right_break_gene;
@@ -863,7 +863,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 								r.disable(true);
 							
 							var gene = get_gene_selection();
-							var g_id = gene.id; # Saved here cuz it'll free the gene in a bit
+							var g_id = gene.get_gene_name(); # Saved here cuz it'll free the gene in a bit
 							var damage_str = "";
 							match (roll_storage[1][gap]):
 								1: # Lose gene
@@ -898,7 +898,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 							6: # Minor up
 								boon_str = "received a minor upgrade"
 								gene.evolve(false, true);
-						emit_signal("justnow_update", "Joined ends for the gap at %d, %d; a %s gene %s in the repair." % (gap_pos_disp + [gene.id, boon_str]));
+						emit_signal("justnow_update", "Joined ends for the gap at %d, %d; a %s gene %s in the repair." % (gap_pos_disp + [gene.get_gene_name(), boon_str]));
 					7: # Gene merge
 						var keep_gene = left_break_gene;
 						var rem_gene = right_break_gene;
@@ -988,17 +988,17 @@ func evolve_candidates(candids):
 			var evolve_idx := roll_chance("evolve")
 			match evolve_idx:
 				0:
-					justnow += "%s did not evolve.\n" % e.id;
+					justnow += "%s did not evolve.\n" % e.get_gene_name();
 				1:
-					justnow += "%s received a fatal mutation.\n" % e.id;
+					justnow += "%s received a fatal mutation.\n" % e.get_gene_name();
 				2:
-					justnow += "%s received a major upgrade!\n" % e.id;
+					justnow += "%s received a major upgrade!\n" % e.get_gene_name();
 				3:
-					justnow += "%s received a major downgrade!\n" % e.id;
+					justnow += "%s received a major downgrade!\n" % e.get_gene_name();
 				4:
-					justnow += "%s received a minor upgrade.\n" % e.id;
+					justnow += "%s received a minor upgrade.\n" % e.get_gene_name();
 				5:
-					justnow += "%s received a minor downgrade.\n" % e.id;
+					justnow += "%s received a minor downgrade.\n" % e.get_gene_name();
 			e.evolve_by_idx(evolve_idx);
 		emit_signal("justnow_update", justnow);
 	else:
@@ -1038,7 +1038,7 @@ func recombination():
 					idxs = cmsms.recombine(first_elm, scnd_elm);
 				recombo_chance *= RECOMBO_COMPOUND;
 				perform_anims(true);
-				emit_signal("justnow_update", "Recombination success: swapped %s genes at positions %d and %d.\nNext recombination has a %d%% chance of success." % ([first_elm.id] + idxs + [100*recombo_chance]));
+				emit_signal("justnow_update", "Recombination success: swapped %s genes at positions %d and %d.\nNext recombination has a %d%% chance of success." % ([first_elm.get_gene_name()] + idxs + [100*recombo_chance]));
 				emit_signal("doing_work", false);
 				if (do_yields):
 					yield(recombination(), "completed");

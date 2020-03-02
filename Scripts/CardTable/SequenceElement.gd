@@ -321,6 +321,17 @@ func is_equal(other_elm, max_dist = -1):
 	else:
 		return can_compare_elm(other_elm) && get_gene_distance(other_elm) <= max_dist;
 
+func get_gene_name():
+	match mode:
+		"essential":
+			return Tooltips.GENE_NAMES.get(id, id);
+		"ate":
+			return id;
+		"pseudo":
+			return "pseudogene";
+		"blank":
+			return "blank";
+
 func merge_with(other_elm):
 	randomize_code();
 	match mode:
