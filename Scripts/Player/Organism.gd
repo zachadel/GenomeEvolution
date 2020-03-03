@@ -801,11 +801,13 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 				if (!roll_storage[1].has(gap)):
 					var seg_end_right : int = cmsm.find_next_gap(g_idx + 1);
 					var seg_end_left : int = cmsm.find_next_gap(g_idx - 1, -1);
-					if seg_end_right == -1:
-						seg_end_right = cmsm.get_child_count();
 					
 					var size_left := g_idx - seg_end_left - 1;
+					if seg_end_left < 0:
+						size_left = 0;
 					var size_right := seg_end_right - g_idx - 1;
+					if seg_end_right < 0:
+						size_right = 0;
 					
 					if size_left < 2:
 						seg_size = size_right;

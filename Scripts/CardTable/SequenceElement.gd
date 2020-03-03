@@ -60,6 +60,7 @@ signal elm_mouse_entered(elm);
 signal elm_mouse_exited(elm);
 
 onready var AnthroArt : Control = $AnthroArtHolder;
+onready var CodeArrow : TextureRect = $direct_arrow;
 
 func _ready():
 	current_size = DEFAULT_SIZE;
@@ -67,6 +68,8 @@ func _ready():
 	for k in ess_behavior:
 		get_node("Indic%s" % k).ttip_data = [k, "base"];
 	
+	if type == "gene":
+		set_code_arrow_dir(false);
 	if setup_ate_display_onready || mode == "ate" && !AnthroArt.has_art():
 		setup_ate_art();
 		upd_display();
@@ -109,7 +112,7 @@ func setup(_type : String, _id := "", _mode := "", _code := "", _par_code := "",
 	else:
 		ph_preference = _ph;
 	
-	if _code.empty():
+	if _code.empty() && type == "gene":
 		randomize_code();
 	else:
 		gene_code = _code;
@@ -272,6 +275,8 @@ func get_random_code():
 
 func randomize_code():
 	gene_code = get_random_code();
+	if CodeArrow != null:
+		set_code_arrow_dir(false);
 
 func reverse_code():
 	var gc = gene_code;
@@ -279,6 +284,15 @@ func reverse_code():
 	for c in gc:
 		gene_code = c + gene_code;
 	upd_display();
+	set_code_arrow_dir(!CodeArrow.flip_h);
+
+func set_code_arrow_dir(left : bool):
+	CodeArrow.visible = true;
+	CodeArrow.flip_h = left;
+	if left:
+		CodeArrow.self_modulate = Color(0.75, 0.4, 0);
+	else:
+		CodeArrow.self_modulate = Color(0, 0.4, 0.75);
 
 func modify_code(spaces = 1, min_mag = 1, allow_negative = false):
 	for _i in range(spaces):
@@ -560,19 +574,19 @@ func get_dominant_essential() -> String:
 
 func upd_display():
 	if !display_locked:
-		$DBGLBL.text = gene_code;
-		$lbl.text = id;
+		$lbl_code.text = gene_code;
+		$lbl_id.text = id;
 		match(type):
 			"gene":
 				$Helix.visible = true;
 				$Helix.texture = Game.helix_textures[true];
-				$lbl.visible = false;
+				$lbl_id.visible = false;
 				
 				toggle_mode = false;
 				match (mode):
 					"ate":
 						self_modulate = Color(.8, .15, 0);
-						$lbl.visible = true;
+						$lbl_id.visible = true;
 					"essential":
 						self_modulate = Color(0, .66, 0);
 						set_texture(Game.ess_textures[get_dominant_essential()]);
