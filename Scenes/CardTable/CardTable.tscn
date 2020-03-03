@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Scripts/CardTable/CardTable.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player/Organism.tscn" type="PackedScene" id=2]
@@ -12,9 +12,11 @@
 [ext_resource path="res://Scripts/CardTable/pnl_saveload.gd" type="Script" id=10]
 [ext_resource path="res://Scripts/CardTable/pnl_ph_filter.gd" type="Script" id=11]
 [ext_resource path="res://Assets/Images/Cells/body/body_cell_1_button.svg" type="Texture" id=12]
+[ext_resource path="res://Assets/Fonts/OpenSans-22.tres" type="DynamicFont" id=13]
 [ext_resource path="res://Scenes/WorldMap/EnergyBar.tscn" type="PackedScene" id=14]
 [ext_resource path="res://Scenes/CardTable/TurnList.tscn" type="PackedScene" id=15]
 [ext_resource path="res://Scenes/CardTable/DarkenedBG.tres" type="StyleBox" id=16]
+[ext_resource path="res://Scenes/CardTable/LabeledNumber.tscn" type="PackedScene" id=17]
 
 [sub_resource type="Theme" id=1]
 Button/colors/font_color_disabled = Color( 0, 0, 0, 1 )
@@ -29,34 +31,19 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="lbl_turn" type="Label" parent="."]
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -421.0
-margin_top = -75.0
-margin_right = -184.0
-align = 2
-valign = 1
-autowrap = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="lnum_turn" parent="." instance=ExtResource( 17 )]
+margin_left = 1177.4
+margin_top = 792.691
+margin_right = 1277.4
+margin_bottom = 892.691
+lbl = "Round"
 
-[node name="lbl_log" type="Label" parent="."]
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -1090.0
-margin_top = -251.0
-margin_right = -490.0
-margin_bottom = -237.0
-text = "Event Log"
-align = 1
-valign = 1
-autowrap = true
+[node name="lnum_progeny" parent="." instance=ExtResource( 17 )]
+margin_left = 1297.4
+margin_top = 792.691
+margin_right = 1397.4
+margin_bottom = 892.691
+lbl = "Progeny"
 
 [node name="lbl_turnorder" type="Label" parent="."]
 anchor_left = 1.0
@@ -64,19 +51,49 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -437.0
-margin_top = -294.0
+margin_top = -310.0
 margin_right = -185.0
-margin_bottom = -280.0
+margin_bottom = -279.0
+custom_fonts/font = ExtResource( 13 )
 text = "Turn Order"
 align = 1
 valign = 1
 autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="lbl_justnow" type="RichTextLabel" parent="."]
-margin_left = 510.0
-margin_top = 670.0
-margin_right = 1110.0
-margin_bottom = 870.0
+[node name="ctl_justnow" type="Control" parent="."]
+margin_left = 506.0
+margin_top = 595.0
+margin_right = 1115.0
+margin_bottom = 875.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="lbl_log" type="Label" parent="ctl_justnow"]
+anchor_right = 1.0
+margin_left = 4.0
+margin_top = -5.0
+margin_right = -5.0
+margin_bottom = 26.0
+custom_fonts/font = ExtResource( 13 )
+text = "Event Log"
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="lbl_justnow" type="RichTextLabel" parent="ctl_justnow"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -5.0
+margin_bottom = -5.0
 custom_styles/normal = ExtResource( 16 )
 bbcode_enabled = true
 scroll_following = true
@@ -86,9 +103,9 @@ __meta__ = {
 
 [node name="TurnList" parent="." instance=ExtResource( 15 )]
 margin_left = 1164.0
-margin_top = 629.0
+margin_top = 621.0
 margin_right = 1414.0
-margin_bottom = 821.0
+margin_bottom = 788.0
 
 [node name="button_grid" type="VBoxContainer" parent="."]
 anchor_left = 1.0
@@ -162,9 +179,10 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -1594.0
-margin_top = -298.0
+margin_top = -310.0
 margin_right = -1127.0
-margin_bottom = -284.0
+margin_bottom = -279.0
+custom_fonts/font = ExtResource( 13 )
 text = "Gene Content"
 align = 1
 valign = 1
@@ -188,10 +206,10 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -280.0
-margin_top = -250.0
-margin_right = 280.0
-margin_bottom = -20.0
+margin_left = -264.0
+margin_top = -266.0
+margin_right = 296.0
+margin_bottom = -36.0
 __meta__ = {
 "_edit_group_": true
 }
@@ -243,10 +261,10 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -280.0
-margin_top = -250.0
-margin_right = 280.0
-margin_bottom = -20.0
+margin_left = -272.0
+margin_top = -266.0
+margin_right = 288.0
+margin_bottom = -36.0
 __meta__ = {
 "_edit_group_": true
 }
@@ -298,10 +316,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = 262.0
-margin_top = -217.0
-margin_right = 776.0
-margin_bottom = 208.0
+margin_left = -242.0
+margin_top = 142.0
+margin_right = 272.0
+margin_bottom = 440.0
 script = ExtResource( 10 )
 
 [node name="btn_load" type="Button" parent="pnl_saveload"]
@@ -383,11 +401,14 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = 142.0
-margin_top = 261.0
-margin_right = 656.0
-margin_bottom = 397.0
+margin_left = -242.0
+margin_top = 245.0
+margin_right = 272.0
+margin_bottom = 381.0
 script = ExtResource( 11 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="slider_ph" type="HSlider" parent="pnl_ph_filter"]
 anchor_right = 1.0

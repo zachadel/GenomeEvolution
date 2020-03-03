@@ -3,7 +3,7 @@
 [ext_resource path="res://Assets/Fonts/OpenSans-Bold.ttf" type="DynamicFontData" id=1]
 
 [resource]
-size = 48
+size = 22
 use_mipmaps = true
 use_filter = true
 font_data = ExtResource( 1 )

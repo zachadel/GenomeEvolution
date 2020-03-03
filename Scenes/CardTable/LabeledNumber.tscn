@@ -1,0 +1,50 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Assets/Fonts/OpenSans-48.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Assets/Fonts/OpenSans-22.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Scripts/CardTable/LabeledNumber.gd" type="Script" id=3]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0, 0.4, 0.772549, 1 )
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color( 0, 0, 0, 1 )
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="LabeledNumber" type="Control"]
+margin_right = 100.0
+margin_bottom = 100.0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="lblNum" type="Label" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/normal = SubResource( 1 )
+custom_fonts/font = ExtResource( 1 )
+text = "0"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="lblText" type="Label" parent="."]
+anchor_right = 1.0
+margin_bottom = 31.0
+custom_fonts/font = ExtResource( 2 )
+text = "Number"
+align = 1
+valign = 1
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
