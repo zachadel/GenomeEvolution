@@ -6,7 +6,7 @@
 [ext_resource path="res://Scenes/CardTable/CardTable.tscn" type="PackedScene" id=4]
 
 [node name="Main" type="Control"]
-mouse_filter = 1
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 1 )
@@ -32,6 +32,7 @@ dialog_text = "You died! Please press OK to return to the Title Screen."
 layer = 0
 
 [node name="MainMenu" parent="MainMenuLayer" instance=ExtResource( 2 )]
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 

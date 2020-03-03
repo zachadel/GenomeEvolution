@@ -8,6 +8,9 @@
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="TitleScreen" parent="." instance=ExtResource( 2 )]
 
@@ -16,4 +19,3 @@ visible = false
 [connection signal="begin_new_game" from="TitleScreen" to="." method="_on_TitleScreen_begin_new_game"]
 [connection signal="exit_game" from="TitleScreen" to="." method="_on_TitleScreen_exit_game"]
 [connection signal="go_to_settings" from="TitleScreen" to="." method="_on_TitleScreen_go_to_settings"]
-[connection signal="return_to_title" from="Settings" to="." method="_on_Settings_return_to_title"]
