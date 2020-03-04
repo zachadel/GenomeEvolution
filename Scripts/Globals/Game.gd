@@ -307,6 +307,7 @@ func load_personalities(data_name, dict):
 	if (err == OK):
 		for s in data.get_sections():
 			dict[s] = cfg_sec_to_dict(data, s);
+			dict[s]["key"] = s;
 			if (dict[s].has("art")):
 				dict[s]["art"] = load("res://Assets/Images/tes/" + dict[s]["art"] + ".png");
 			else:
@@ -322,11 +323,17 @@ func get_random_ate_personality():
 	var rand_idx := randi() % pers_keys.size();
 	return ate_personalities[pers_keys[rand_idx]];
 
-func get_ate_personality_by_name(ate_name):
+func get_ate_personality_by_key(ate_key : String):
+	return ate_personalities.get(ate_key, null);
+
+func get_ate_personality_by_name(ate_name : String):
+	get_ate_personality_by_key(get_ate_key_by_name(ate_name));
+
+func get_ate_key_by_name(ate_name : String) -> String:
 	for k in ate_personalities:
 		if (ate_personalities[k]["title"] == ate_name):
-			return ate_personalities[k];
-	return null;
+			return k;
+	return "";
 
 # This is a little hack I've come up with to make bars in ScrollContainer controls larger
 func change_slider_width(scroll_cont, horiz = true, width = 30):

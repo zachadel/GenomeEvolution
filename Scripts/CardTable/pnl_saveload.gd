@@ -8,5 +8,5 @@ func new_save(save):
 func _on_btn_load_pressed():
 	if ($tbox_load.text != ""):
 		Game.load_from_save($tbox_load.text.strip_edges());
-		visible = false;
+		get_parent().close_extra_menus(self);
 		emit_signal("loaded");

@@ -926,8 +926,6 @@ func highlight_gap_choices():
 	for g in cmsms.gap_list:
 		gap_text += "Chromosome %d needs a repair at %d.\n" % g.get_position_display();
 	emit_signal("updated_gaps", cmsms.gap_list.size() > 0, gap_text);
-	if Unlocks.has_hint_unlock("click_gaps") && !cmsms.gap_list.empty():
-		Tooltips._handle_mouse_enter(cmsms.gap_list.back());
 	if (is_ai && cmsms.gap_list.size() > 0):
 		upd_repair_opts(cmsms.gap_list[0]);
 		auto_repair();
