@@ -1,0 +1,436 @@
+[gd_scene load_steps=22 format=2]
+
+[ext_resource path="res://Assets/Images/Menus/right_arrow_normal.svg" type="Texture" id=1]
+[ext_resource path="res://Assets/Images/Menus/left_arrow_pressed.svg" type="Texture" id=2]
+[ext_resource path="res://Assets/Images/Menus/right_arrow_hover.svg" type="Texture" id=3]
+[ext_resource path="res://Assets/Images/Menus/left_arrow_hover.svg" type="Texture" id=4]
+[ext_resource path="res://Assets/Images/Menus/right_arrow_pressed.svg" type="Texture" id=5]
+[ext_resource path="res://Assets/Images/Cells/body/body_cell_1_large.svg" type="Texture" id=6]
+[ext_resource path="res://Assets/Images/Menus/left_arrow_normal.svg" type="Texture" id=7]
+[ext_resource path="res://Scripts/MainMenu/CellSelection.gd" type="Script" id=8]
+[ext_resource path="res://Assets/Images/genes/Component.png" type="Texture" id=9]
+[ext_resource path="res://Assets/Images/genes/Helix_Circle.png" type="Texture" id=10]
+[ext_resource path="res://Assets/Images/genes/Construction.png" type="Texture" id=11]
+[ext_resource path="res://Assets/Images/genes/Helper.png" type="Texture" id=12]
+[ext_resource path="res://Assets/Images/genes/Sensing.png" type="Texture" id=13]
+[ext_resource path="res://Assets/Images/genes/Locomotion.png" type="Texture" id=14]
+[ext_resource path="res://Assets/Images/genes/Deconstruction.png" type="Texture" id=15]
+[ext_resource path="res://Assets/Images/genes/Replication.png" type="Texture" id=16]
+[ext_resource path="res://Assets/Images/genes/Manipulation.png" type="Texture" id=17]
+
+[sub_resource type="DynamicFontData" id=2]
+font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
+
+[sub_resource type="DynamicFont" id=4]
+size = 48
+use_mipmaps = true
+use_filter = true
+font_data = SubResource( 2 )
+
+[sub_resource type="StyleBoxFlat" id=1]
+content_margin_left = 10.0
+content_margin_right = 10.0
+content_margin_top = 10.0
+content_margin_bottom = 10.0
+bg_color = Color( 1, 1, 1, 1 )
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color( 0, 0, 0, 1 )
+border_blend = true
+
+[sub_resource type="DynamicFont" id=3]
+size = 48
+use_mipmaps = true
+use_filter = true
+font_data = SubResource( 2 )
+
+[node name="CellSelection" type="MarginContainer"]
+anchor_right = 0.249375
+anchor_bottom = 0.947778
+script = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_right = 399.0
+margin_bottom = 853.0
+custom_constants/separation = 20
+
+[node name="SelectYourCell" type="RichTextLabel" parent="VBoxContainer"]
+margin_right = 399.0
+margin_bottom = 68.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.24
+custom_fonts/normal_font = SubResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[center][u]Select your Cell![/u][/center]"
+text = "Select your Cell!"
+
+[node name="CellDisplay" type="Panel" parent="VBoxContainer"]
+margin_top = 88.0
+margin_right = 399.0
+margin_bottom = 375.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Cell" type="TextureRect" parent="VBoxContainer/CellDisplay"]
+anchor_left = 0.0582011
+anchor_top = 0.0759493
+anchor_right = 0.94709
+anchor_bottom = 0.911392
+margin_top = 1.52588e-05
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Arrows" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 395.0
+margin_right = 399.0
+margin_bottom = 498.0
+custom_constants/separation = 20
+alignment = 1
+
+[node name="LeftArrow" type="TextureButton" parent="VBoxContainer/Arrows"]
+margin_left = 29.0
+margin_right = 159.0
+margin_bottom = 103.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+texture_normal = ExtResource( 7 )
+texture_pressed = ExtResource( 2 )
+texture_hover = ExtResource( 4 )
+stretch_mode = 5
+
+[node name="RightArrow" type="TextureButton" parent="VBoxContainer/Arrows"]
+margin_left = 239.0
+margin_right = 369.0
+margin_bottom = 103.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+texture_normal = ExtResource( 1 )
+texture_pressed = ExtResource( 5 )
+texture_hover = ExtResource( 3 )
+stretch_mode = 5
+
+[node name="Genome" type="GridContainer" parent="VBoxContainer"]
+margin_top = 518.0
+margin_right = 399.0
+margin_bottom = 853.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.16
+custom_constants/hseparation = 10
+columns = 4
+
+[node name="Assembly" type="TextureRect" parent="VBoxContainer/Genome"]
+margin_right = 92.0
+margin_bottom = 80.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 10 )
+expand = true
+stretch_mode = 5
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Genome/Assembly"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 11 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Assembly_Label" type="Label" parent="VBoxContainer/Genome"]
+margin_left = 114.0
+margin_top = 6.0
+margin_right = 181.0
+margin_bottom = 73.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "x 2"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Component" type="TextureRect" parent="VBoxContainer/Genome"]
+margin_left = 204.0
+margin_right = 296.0
+margin_bottom = 80.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 10 )
+expand = true
+stretch_mode = 5
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Genome/Component"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 9 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Component_Label" type="Label" parent="VBoxContainer/Genome"]
+margin_left = 318.0
+margin_top = 6.0
+margin_right = 385.0
+margin_bottom = 73.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "x 2"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Disassembly" type="TextureRect" parent="VBoxContainer/Genome"]
+margin_top = 84.0
+margin_right = 92.0
+margin_bottom = 164.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 10 )
+expand = true
+stretch_mode = 5
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Genome/Disassembly"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 15 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Disassembly_Label" type="Label" parent="VBoxContainer/Genome"]
+margin_left = 114.0
+margin_top = 90.0
+margin_right = 181.0
+margin_bottom = 157.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "x 2"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Helper" type="TextureRect" parent="VBoxContainer/Genome"]
+margin_left = 204.0
+margin_top = 84.0
+margin_right = 296.0
+margin_bottom = 164.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 10 )
+expand = true
+stretch_mode = 5
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Genome/Helper"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 12 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Helper_Label" type="Label" parent="VBoxContainer/Genome"]
+margin_left = 318.0
+margin_top = 90.0
+margin_right = 385.0
+margin_bottom = 157.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "x 2"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Locomotion" type="TextureRect" parent="VBoxContainer/Genome"]
+margin_top = 168.0
+margin_right = 92.0
+margin_bottom = 248.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 10 )
+expand = true
+stretch_mode = 5
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Genome/Locomotion"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Locomotion_Label" type="Label" parent="VBoxContainer/Genome"]
+margin_left = 114.0
+margin_top = 174.0
+margin_right = 181.0
+margin_bottom = 241.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "x 2"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Manipulation" type="TextureRect" parent="VBoxContainer/Genome"]
+margin_left = 204.0
+margin_top = 168.0
+margin_right = 296.0
+margin_bottom = 248.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 10 )
+expand = true
+stretch_mode = 5
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Genome/Manipulation"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 17 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Manipulation_Label" type="Label" parent="VBoxContainer/Genome"]
+margin_left = 318.0
+margin_top = 174.0
+margin_right = 385.0
+margin_bottom = 241.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "x 2"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Replication" type="TextureRect" parent="VBoxContainer/Genome"]
+margin_top = 252.0
+margin_right = 92.0
+margin_bottom = 332.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 10 )
+expand = true
+stretch_mode = 5
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Genome/Replication"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 16 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Replication_Label" type="Label" parent="VBoxContainer/Genome"]
+margin_left = 114.0
+margin_top = 258.0
+margin_right = 181.0
+margin_bottom = 325.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "x 2"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sensing" type="TextureRect" parent="VBoxContainer/Genome"]
+margin_left = 204.0
+margin_top = 252.0
+margin_right = 296.0
+margin_bottom = 332.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 10 )
+expand = true
+stretch_mode = 5
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Genome/Sensing"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 13 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Sensing_Label" type="Label" parent="VBoxContainer/Genome"]
+margin_left = 318.0
+margin_top = 258.0
+margin_right = 385.0
+margin_bottom = 325.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "x 2"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="VBoxContainer/Arrows/LeftArrow" to="." method="_on_LeftArrow_pressed"]
+[connection signal="pressed" from="VBoxContainer/Arrows/RightArrow" to="." method="_on_RightArrow_pressed"]

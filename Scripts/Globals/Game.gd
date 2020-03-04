@@ -258,9 +258,6 @@ func _ready():
 	# Load up cell information
 	load_cfg("cells", cells)
 	populate_cell_texture_paths()
-	
-	# Load up character selection settings menu settings
-	load_cfg("settings.cfg", settings)
 
 func restart_game():
 	turn_idx = 0
