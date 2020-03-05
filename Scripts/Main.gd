@@ -17,7 +17,6 @@ var chunk_size = 15
 #Why on earth did I make this const?  I'll check on that later.
 const Player = preload("res://Scenes/Player/Player.tscn")
 
-onready var main_menu = get_node("MainMenuLayer/MainMenu")
 onready var world_map = get_node("WorldMap") #access world_map ui via world_map.ui
 onready var card_table = get_node("Canvas_CardTable/CardTable")
 onready var game_over = get_node("GameOverLayer/GameOver")
@@ -27,19 +26,8 @@ onready var game_over = get_node("GameOverLayer/GameOver")
 #allows for multiplayer
 
 func _ready(): 
-	
-	main_menu.show()
-	
-	world_map.hide()
-	world_map.ui.hide()
-	
 	card_table.hide()
 
-###########################WORLD MAP SIGNAL HANDLING###########################
-
-func _on_MainMenu_change_to_world_map():
-	main_menu.hide()
-	
 	#Add looping after first_player if there are multiple players, but only give the first
 	#player to the WorldMap for setup
 	#If there is character creation, then that should go here before creating the player
@@ -64,12 +52,6 @@ func _on_WorldMap_end_map_turn():
 	card_table.energy_bar.update_energy_allocation(world_map.current_player.organism.energy)
 	
 	pass
-	
-func _on_WorldMap_change_to_main_menu():
-	main_menu.show()
-	main_menu.title_screen.show()
-	
-	_hide_world_map()
 
 ############################MULTIPLAYER HANDLING###############################
 
@@ -134,7 +116,7 @@ func _hide_world_map():
 
 func _on_GameOver_confirmed():
 	Game.restart_game()
-	get_tree().reload_current_scene()
+	get_tree().change_scene("res://Scenes/MainMenu/TitleScreen.tscn")
 
 func _on_WorldMap_switch_to_card_table():
 	world_map.set_input(Game.PLAYER_VIEW.SWITCHED_TO_GENOME)
@@ -143,5 +125,9 @@ func _on_WorldMap_switch_to_card_table():
 
 func _on_CardTable_switch_to_map():
 	card_table.hide()
-	world_map.set_input(Game.PLAYER_VIEW.SWITCHED_TO_MAP)
+	
+	if Game.turn_idx == Game.TURN_TYPES.Map:
+		world_map.set_input(Game.PLAYER_VIEW.ON_MAP)
+	else:
+		world_map.set_input(Game.PLAYER_VIEW.SWITCHED_TO_MAP)
 	_show_world_map()

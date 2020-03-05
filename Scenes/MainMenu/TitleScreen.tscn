@@ -6,21 +6,21 @@
 [ext_resource path="res://Assets/Images/pngs/DNA_right.png" type="Texture" id=4]
 [ext_resource path="res://Scenes/MainMenu/TitleCell.tscn" type="PackedScene" id=5]
 
-[sub_resource type="Curve2D" id=5]
+[sub_resource type="Curve2D" id=1]
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, -1.07379, 81.8436, 0, 0, 0, 0, -1.43216, 0.0722504, 0, 0, 0, 0, 1578.13, 84.5643, 0, 0, 0, 0, 1599.68, 901.029, 0, 0, 0, 0, -0.189148, 900.495, 0, 0, 0, 0, -1.18261, 81.7348 )
 }
 
-[sub_resource type="DynamicFontData" id=1]
+[sub_resource type="DynamicFontData" id=2]
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=3]
 size = 64
 use_mipmaps = true
 use_filter = true
-font_data = SubResource( 1 )
+font_data = SubResource( 2 )
 
-[sub_resource type="StyleBoxFlat" id=6]
+[sub_resource type="StyleBoxFlat" id=4]
 bg_color = Color( 0.94902, 0.952941, 0.956863, 1 )
 border_width_left = 10
 border_width_top = 10
@@ -35,7 +35,7 @@ corner_radius_bottom_left = 30
 corner_detail = 20
 shadow_color = Color( 0.282353, 0.282353, 0.282353, 1 )
 
-[sub_resource type="StyleBoxFlat" id=3]
+[sub_resource type="StyleBoxFlat" id=5]
 bg_color = Color( 0.341176, 0.545098, 0.788235, 1 )
 border_width_left = 10
 border_width_top = 10
@@ -50,7 +50,7 @@ corner_radius_bottom_left = 30
 corner_detail = 20
 shadow_color = Color( 0.282353, 0.282353, 0.282353, 1 )
 
-[sub_resource type="StyleBoxFlat" id=7]
+[sub_resource type="StyleBoxFlat" id=6]
 bg_color = Color( 0.427451, 0.427451, 0.427451, 1 )
 border_width_left = 10
 border_width_top = 10
@@ -63,18 +63,18 @@ corner_radius_top_right = 30
 corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
 
-[sub_resource type="Theme" id=4]
+[sub_resource type="Theme" id=7]
 Button/colors/font_color = Color( 1, 1, 1, 1 )
 Button/colors/font_color_disabled = Color( 0, 0, 0, 1 )
 Button/colors/font_color_hover = Color( 0.341176, 0.545098, 0.788235, 1 )
 Button/colors/font_color_pressed = Color( 0, 0, 0, 1 )
 Button/constants/hseparation = 2
-Button/fonts/font = SubResource( 2 )
+Button/fonts/font = SubResource( 3 )
 Button/styles/disabled = null
 Button/styles/focus = null
-Button/styles/hover = SubResource( 6 )
-Button/styles/normal = SubResource( 3 )
-Button/styles/pressed = SubResource( 7 )
+Button/styles/hover = SubResource( 4 )
+Button/styles/normal = SubResource( 5 )
+Button/styles/pressed = SubResource( 6 )
 CheckBox/colors/font_color = Color( 0, 0, 0, 1 )
 CheckBox/colors/font_color_disabled = Color( 0, 0, 0, 1 )
 CheckBox/colors/font_color_hover = Color( 0, 0, 0, 1 )
@@ -493,7 +493,7 @@ __meta__ = {
 Cell = ExtResource( 5 )
 
 [node name="CellPath" type="Path2D" parent="."]
-curve = SubResource( 5 )
+curve = SubResource( 1 )
 
 [node name="CellSpawnPosition" type="PathFollow2D" parent="CellPath"]
 position = Vector2( -1.07379, 81.8436 )
@@ -558,9 +558,9 @@ __meta__ = {
 margin_right = 494.0
 margin_bottom = 108.0
 focus_mode = 0
-theme = SubResource( 4 )
-custom_styles/normal = SubResource( 3 )
-custom_fonts/font = SubResource( 2 )
+theme = SubResource( 7 )
+custom_styles/normal = SubResource( 5 )
+custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 0.341176, 0.545098, 0.788235, 1 )
 enabled_focus_mode = 0
@@ -574,9 +574,9 @@ margin_top = 138.0
 margin_right = 494.0
 margin_bottom = 246.0
 focus_mode = 0
-theme = SubResource( 4 )
-custom_styles/normal = SubResource( 3 )
-custom_fonts/font = SubResource( 2 )
+theme = SubResource( 7 )
+custom_styles/normal = SubResource( 5 )
+custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 0.341176, 0.545098, 0.788235, 1 )
 enabled_focus_mode = 0
@@ -587,9 +587,9 @@ margin_top = 276.0
 margin_right = 494.0
 margin_bottom = 384.0
 focus_mode = 0
-theme = SubResource( 4 )
-custom_styles/normal = SubResource( 3 )
-custom_fonts/font = SubResource( 2 )
+theme = SubResource( 7 )
+custom_styles/normal = SubResource( 5 )
+custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 0.341176, 0.545098, 0.788235, 1 )
 enabled_focus_mode = 0
@@ -598,46 +598,14 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="nudResRate" type="SpinBox" parent="."]
-margin_left = 1300.0
-margin_top = 536.0
-margin_right = 1374.0
-margin_bottom = 560.0
-max_value = 10.0
-step = 0.05
-value = 0.25
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="nudResRate"]
-margin_left = -3.0
-margin_top = -19.0
-margin_right = 199.0
-margin_bottom = -1.0
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Resource Consumption Rate"
-
-[node name="cboxUnlockAll" type="CheckBox" parent="."]
-margin_left = 1294.17
-margin_top = 573.03
-margin_right = 1436.17
-margin_bottom = 597.03
-custom_colors/font_color_hover_pressed = Color( 0.15, 0.15, 0.15, 1 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-custom_colors/font_color_hover = Color( 0.25, 0.25, 0.25, 1 )
-custom_colors/font_color_pressed = Color( 0.35, 0.35, 0.35, 1 )
-text = "Unlock Everything"
-
 [node name="CellTimer" type="Timer" parent="."]
 wait_time = 0.5
 autostart = true
 __meta__ = {
 "_editor_description_": "Controls the Spawn rate of cells on the TitleScreen"
 }
+[connection signal="begin_new_game" from="." to="." method="_on_TitleScreen_begin_new_game"]
+[connection signal="exit_game" from="." to="." method="_on_TitleScreen_exit_game"]
 [connection signal="pressed" from="ButtonContainer/NewGame" to="." method="_on_NewGame_pressed"]
-[connection signal="pressed" from="ButtonContainer/Continue" to="." method="_on_Tutorial_pressed"]
 [connection signal="pressed" from="ButtonContainer/Exit" to="." method="_on_Exit_pressed"]
-[connection signal="value_changed" from="nudResRate" to="." method="_on_nudResRate_value_changed"]
-[connection signal="toggled" from="cboxUnlockAll" to="." method="_on_cboxUnlockAll_toggled"]
 [connection signal="timeout" from="CellTimer" to="." method="_on_CellTimer_timeout"]

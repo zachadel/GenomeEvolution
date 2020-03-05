@@ -9,7 +9,8 @@ onready var genome = get_node("VBoxContainer/Genome")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print('hello')
+	update_cell()
+	update_genome()
 	pass # Replace with function body.
 
 
@@ -25,9 +26,12 @@ func update_genome():
 	var current_cell = "cell_%d" % [cell_index]
 	for child in genome.get_children():
 		if child is Label:
-			var gene = child.name.split(Game.SEPARATOR)[0].to_lower()
+			var gene = child.name.split(Game.SEPARATOR)[0]
 			child.text = "x " + str(Game.cells[current_cell]["genome"][gene])
 	pass
+	
+func get_cell_string():
+	return "cell_" + str(cell_index)
 
 func _on_LeftArrow_pressed():
 	cell_index = wrapi(cell_index - 1, MIN_INDEX, MAX_INDEX)

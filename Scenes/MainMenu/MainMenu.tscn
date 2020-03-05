@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Scripts/MainMenu/MainMenu.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/MainMenu/TitleScreen.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Scenes/MainMenu/Settings.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/MainMenu/CharacterSelection.tscn" type="PackedScene" id=3]
 
 [node name="MainMenu" type="Control"]
 anchor_right = 1.0
@@ -14,7 +14,7 @@ __meta__ = {
 
 [node name="TitleScreen" parent="." instance=ExtResource( 2 )]
 
-[node name="Settings" parent="." instance=ExtResource( 3 )]
+[node name="CharacterSelection" parent="." instance=ExtResource( 3 )]
 visible = false
 [connection signal="begin_new_game" from="TitleScreen" to="." method="_on_TitleScreen_begin_new_game"]
 [connection signal="exit_game" from="TitleScreen" to="." method="_on_TitleScreen_exit_game"]

@@ -143,6 +143,7 @@ var all_time_players = 0
 var current_players = 0
 
 var settings = {}
+var current_cell_string = "cell_1"
 #################################SETTINGS VALUES###############################
 #const default_settings = {
 #	#Settings for the WorldMap scene
@@ -226,7 +227,18 @@ func get_code_num(_char):
 
 func get_code_char(_num):
 	return code_elements[_num];
-
+	
+#Note: Cell_idx can be either the cell index (1, 2, ...) or the string
+#"cell_1"
+func get_default_genome(cell_idx) -> Dictionary:
+	if typeof(cell_idx) == TYPE_STRING:
+		return Game.cells[cell_idx]["genome"]
+	elif typeof(cell_idx) == TYPE_INT:
+		return Game.cells[Game.cells.keys()[cell_idx]]["genome"]
+	else:
+		print('ERROR: Invalidd cell_idx type of %d given in get_default_genome.' % [cell_idx])
+		return {}
+		
 func _ready():
 	restart_game()
 	

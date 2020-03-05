@@ -10,6 +10,7 @@ const NON_GODOT_VALUES = ["type", "stacked"]
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	print(Game.ESSENTIAL_CLASSES.keys())
 	Game.load_cfg("settings", menu_settings)
 	for setting in menu_settings:
 		var node = create_node_from_dictionary(setting, menu_settings[setting]["type"], menu_settings[setting])
@@ -19,7 +20,7 @@ func _ready():
 	pass # Replace with function body.
 	
 #If you want the name of the setting to the left of the option, stacked = false
-func create_settings_row(name: String, stacked: bool = true) -> VBoxContainer:
+func create_settings_row(name: String, stacked: bool = true, value_label: bool = false) -> VBoxContainer:
 	var box = null
 	if stacked:
 		box = VBoxContainer.new()

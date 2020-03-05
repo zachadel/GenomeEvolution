@@ -277,24 +277,50 @@ func setup(card_table):
 	
 	var essential_names = Game.ESSENTIAL_CLASSES.keys();
 	
+	var augment_genes = {}
+	var default_genome = Game.get_default_genome(Game.current_cell_string)
+	
+	var min_tes = Settings.get_setting("min_starting_transposons")
+	var min_blanks = Settings.get_setting("min_starting_blanks")
+	
+	var max_tes = Settings.get_setting("max_starting_transposons")
+	var max_blanks = Settings.get_setting("max_starting_blanks")
+	
+	var max_random_ess = Settings.get_setting("max_additional_genes")
+	var min_random_ess = Settings.get_setting("min_additional_genes")
+	
 	# Start with the essentials + some blanks, shuffled
 	var starter_genes = essential_names + ["blank"];
-	for _i in range(2 + randi() % 3):
+	for _i in range(min_blanks + randi() % int((max_blanks - min_blanks + 1))):
 		starter_genes.append("blank");
+		
+	# Add the random additional essential genes
+	for _i in range(min_random_ess  + randi() % int(max_random_ess - min_random_ess + 1)):
+		starter_genes.append(essential_names[randi() % len(essential_names)])
+		
+	# Prepare cell specific modifications
+	for g in default_genome:
+		augment_genes[g] = false
+		if default_genome[g] > 2: # 1 per chromosome is default value
+			augment_genes[g] = true
+		
 	starter_genes.shuffle();
 	
 	for g in starter_genes:
 		var nxt_gelm = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
-		
 		if g in essential_names:
-			nxt_gelm.set_ess_behavior({g: 1.0});
+			if augment_genes[g]:
+				nxt_gelm.set_ess_behavior({g: default_genome[g]/2.0});
+				augment_genes[g] = false
+			else:
+				nxt_gelm.set_ess_behavior({g: 1.0})
 			nxt_gelm.setup("gene", g, "essential");
 		else:
 			nxt_gelm.setup("gene", g, g);
 		
 		cmsms.get_cmsm(0).add_elm(nxt_gelm);
 		cmsms.get_cmsm(1).add_elm(Game.copy_elm(nxt_gelm));
-	gain_ates(5 + randi() % 5);
+	gain_ates(min_tes + randi() % int((max_tes - min_tes)));
 	perform_anims(true);
 	
 	born_on_turn = Game.round_num;
@@ -2215,7 +2241,7 @@ func _on_chromes_on_cmsm_changed():
 ####################################SENSING AND LOCOMOTION#####################
 #This is what you can directly see, not counting the cone system
 func get_vision_radius():
-	return 5
+	return floor(get_behavior_profile().get_behavior("Sensing"))
 
 #Cost to move over a particular tile type
 #biome is an integer
