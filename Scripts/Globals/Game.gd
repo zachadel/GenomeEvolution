@@ -239,6 +239,16 @@ func get_default_genome(cell_idx) -> Dictionary:
 		print('ERROR: Invalidd cell_idx type of %d given in get_default_genome.' % [cell_idx])
 		return {}
 		
+func get_large_cell_path(cell_idx) -> String:
+	var path = CELL_TEXTURES_PATH + 'body/' + 'body' + Game.SEPARATOR
+	if typeof(cell_idx) == TYPE_STRING:
+		return path + cell_idx + Game.SEPARATOR + 'large.svg'
+	elif typeof(cell_idx) == TYPE_INT:
+		return path + 'cell' + Game.SEPARATOR + cell_idx + Game.SEPARATOR + 'large.svg'
+	else:
+		print('ERROR: Invalidd cell_idx type of %d given in get_large_cell_path.' % [cell_idx])
+		return ""
+		
 func _ready():
 	restart_game()
 	

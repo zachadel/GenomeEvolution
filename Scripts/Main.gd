@@ -32,6 +32,7 @@ func _ready():
 	#player to the WorldMap for setup
 	#If there is character creation, then that should go here before creating the player
 	var first_player = create_player()
+	first_player.set_cell_type(Game.current_cell_string)
 	
 	#This order enables the WorldMap to make its camera the current one
 	world_map.setup(randi(), randi(), randi(), randi(), chunk_size, first_player)

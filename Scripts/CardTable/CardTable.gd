@@ -23,6 +23,7 @@ func _ready():
 	Game.card_table = self;
 	orgn.setup(self);
 	reset_status_bar();
+	$ViewMap.texture_normal = load(Game.get_large_cell_path(Game.current_cell_string))
 	
 	$lbl_turn.text = Game.get_turn_txt();
 	connect("next_turn", orgn, "adv_turn");

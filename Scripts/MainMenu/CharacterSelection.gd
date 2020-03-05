@@ -14,7 +14,8 @@ func _ready():
 
 func _on_GoToGame_pressed():
 	Settings.settings = settings_menu.get_final_settings()
-	print(Settings.settings)
+	
+	Game.resource_mult = Settings.settings['resource_consumption_rate']
 	Game.current_cell_string = cell_selection.get_cell_string()
 
 	Unlocks.unlock_override = Settings.get_setting("unlock_everything")
