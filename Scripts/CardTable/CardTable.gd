@@ -5,7 +5,7 @@ signal player_done;
 signal switch_to_map
 signal next_turn(turn_text, round_num);
 
-onready var justnow_label : RichTextLabel = $lbl_justnow;
+onready var justnow_label : RichTextLabel = $ctl_justnow/lbl_justnow;
 onready var orgn = $Organism;
 onready var nxt_btn = $button_grid/btn_nxt;
 onready var status_bar = $ChromosomeStatus;
@@ -25,7 +25,6 @@ func _ready():
 	reset_status_bar();
 	$ViewMap.texture_normal = load(Game.get_large_cell_path(Game.current_cell_string))
 	
-	$lbl_turn.text = Game.get_turn_txt();
 	connect("next_turn", orgn, "adv_turn");
 	
 	$EnergyBar.MAX_ENERGY = orgn.MAX_ENERGY
@@ -42,7 +41,8 @@ func get_cmsm_status():
 # Replication
 
 func show_replicate_opts(show):
-	$pnl_reproduce.visible = show;
+	if $pnl_reproduce.visible != show:
+		close_extra_menus($pnl_reproduce);
 	if (show):
 		status_bar.visible = false;
 		$pnl_reproduce/hsplit/ilist_choices.select(0);
@@ -107,7 +107,8 @@ func do_replicate(idx):
 # Gaps and repairs
 
 func show_repair_opts(show):
-	$pnl_repair_choices.visible = show;
+	if $pnl_repair_choices.visible != show:
+		close_extra_menus($pnl_repair_choices);
 	if (show):
 		$pnl_repair_choices/hsplit/ilist_choices.select(orgn.sel_repair_idx);
 		upd_repair_desc(orgn.sel_repair_idx);
@@ -116,7 +117,7 @@ func _on_Organism_show_repair_opts(show):
 	show_repair_opts(show);
 
 func hide_repair_opts():
-	$pnl_repair_choices.visible = false;
+	close_extra_menus();
 
 const REPAIR_DESC_FORMAT = "Cost:\n%s\n\n%s";
 func get_repair_desc(idx):
@@ -173,10 +174,8 @@ func _on_ilist_choices_item_activated(idx):
 # Next Turn button and availability
 
 func upd_turn_display(upd_turn_unlocks := Game.fresh_round, upd_env_markers := Game.fresh_round):
-	$lbl_turn.text = "%s\n%s" % [
-		"Round %d" % (Game.round_num + 1),
-		"Progeny: %d" % orgn.num_progeny
-	];
+	$lnum_turn.set_num(Game.round_num);
+	$lnum_progeny.set_num(orgn.num_progeny);
 	
 	$TurnList.highlight(Game.turn_idx);
 	
@@ -231,11 +230,16 @@ func check_if_ready():
 		$AutoContinue.start();
 
 func close_extra_menus(toggle_menu = null):
-	for p in [$pnl_saveload, ph_filter_panel, $pnl_bugreport]:
+	var restore_justnow = toggle_menu == null;
+	for p in [$pnl_saveload, ph_filter_panel, $pnl_bugreport, $ctl_justnow, $pnl_repair_choices, $pnl_reproduce]:
 		if (p == toggle_menu):
 			p.visible = !p.visible;
+			if !p.visible:
+				restore_justnow = true;
 		else:
 			p.visible = false;
+	if restore_justnow:
+		$ctl_justnow.visible = true;
 
 func _on_btn_filter_pressed():
 	close_extra_menus(ph_filter_panel);

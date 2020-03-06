@@ -24,13 +24,16 @@ func _on_pnl_ph_filter_visibility_changed():
 		emit_signal("update_seqelm_coloration", "");
 
 func _on_slider_ph_value_changed(val):
+	center_control_on_value(ph_slider_lbl, val);
 	ph_slider_lbl.text = "%.2f" % val;
 	if visible:
 		emit_update();
 
 func upd_current_ph_marker(current_ph : float):
-	var x_point : float = current_ph / 14.0 * $slider_ph.rect_size.x;
-	ph_current_indicator.rect_position.x = x_point - 0.5 * ph_current_indicator.rect_size.x;
+	center_control_on_value(ph_current_indicator, current_ph);
 	ph_current_indicator.get_node("lbl").text = "Current pH\n%.2f" % current_ph;
-	
 	ph_slider.value = stepify(current_ph, ph_slider.step);
+
+func center_control_on_value(ui_control : Control, value : float):
+	var x_offs : float = inverse_lerp($slider_ph.min_value, $slider_ph.max_value, value) * $slider_ph.rect_size.x;
+	ui_control.rect_global_position.x = $slider_ph.rect_global_position.x + x_offs - 0.5 * ui_control.rect_size.x;

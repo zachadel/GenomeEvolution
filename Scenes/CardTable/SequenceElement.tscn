@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Scripts/CardTable/SequenceElement.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Images/genes/Helix_Circle.png" type="Texture" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://Assets/Images/icons/ess_behaviors/A.png" type="Texture" id=11]
 [ext_resource path="res://Assets/Images/icons/ess_behaviors/D.png" type="Texture" id=12]
 [ext_resource path="res://Scripts/CardTable/AnthroArtHolder.gd" type="Script" id=13]
+[ext_resource path="res://Assets/Images/gene_direction_arrow.png" type="Texture" id=14]
 
 [node name="SeqElm" type="TextureButton"]
 margin_right = 200.0
@@ -61,7 +62,7 @@ rect_min_size = Vector2( 200, 200 )
 mouse_filter = 2
 color = Color( 0, 0, 0, 0.33 )
 
-[node name="lbl" type="Label" parent="."]
+[node name="lbl_id" type="Label" parent="."]
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -71,7 +72,7 @@ text = "ERROR_name"
 align = 1
 valign = 1
 
-[node name="DBGLBL" type="Label" parent="."]
+[node name="lbl_code" type="Label" parent="."]
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -80,6 +81,23 @@ margin_bottom = -38.0
 text = "ERROR_code"
 align = 1
 valign = 1
+
+[node name="direct_arrow" type="TextureRect" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -34.0
+margin_top = -47.0
+margin_right = 36.0
+margin_bottom = -17.0
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="IndicATE" parent="." instance=ExtResource( 4 )]
 visible = false

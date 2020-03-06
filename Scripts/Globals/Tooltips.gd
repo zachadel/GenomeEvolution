@@ -77,7 +77,7 @@ const WORLDMAP_TTIPS = {
 
 const GENE_TYPE_DESC = "This is %s %s.";
 const UNNAMED_GENES = ["Pseudogene", "Transposon"];
-const NO_ACRONYM_GENES = ["Pseudogene", "Blank"];
+const NO_BEHAVIOR_GENES = ["Pseudogene", "Blank"];
 const GENE_TTIP_FORMAT = "%s\n\n%s";
 const STATUS_TTIP_FORMAT = "%s\n\n%s";
 
@@ -92,7 +92,7 @@ func _get_gene_title(type : String, capitalize_gene := true, incl_acronym := tru
 		gene_title = " gene";
 	
 	var gene_name : String = GENE_NAMES[type];
-	if incl_acronym && !(type in NO_ACRONYM_GENES):
+	if incl_acronym && !(type in NO_BEHAVIOR_GENES):
 		if type == "Transposon":
 			gene_name += " (TE)";
 		else:
@@ -201,7 +201,11 @@ func set_gene_ttip(type, ph_pref):
 	var gene_title = "%s Gene";
 	if (type in UNNAMED_GENES):
 		gene_title = "%s";
-	set_tooltip_text("%s\n\nThis gene operates optimally at a pH of %.2f." % [get_gene_ttip(type), ph_pref], gene_title % GENE_NAMES[type]);
+	
+	var tt_text = get_gene_ttip(type);
+	if !(type in NO_BEHAVIOR_GENES):
+		tt_text += "\n\nThis gene operates optimally at a pH of %.2f." % ph_pref;
+	set_tooltip_text(tt_text, gene_title % GENE_NAMES[type]);
 
 func set_status_ttip(type, compare):
 	set_tooltip_text(get_status_ttip(type, compare), GENE_NAMES[type]);

@@ -46,10 +46,11 @@ func add_cmsm(cmsm_save = null, force_show = false):
 
 func remove_cmsm(cmsm_idx):
 	var c = get_child(cmsm_idx);
-	c.clear_link();
-	if (c in visible_cmsm):
-		visible_cmsm.erase(c);
-	c.free();
+	if c != null:
+		c.clear_link();
+		if (c in visible_cmsm):
+			visible_cmsm.erase(c);
+		c.free();
 
 func move_cmsm(from_idx, to_idx):
 	move_child(get_child(from_idx), to_idx);

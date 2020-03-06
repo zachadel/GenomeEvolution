@@ -60,6 +60,7 @@ signal elm_mouse_entered(elm);
 signal elm_mouse_exited(elm);
 
 onready var AnthroArt : Control = $AnthroArtHolder;
+onready var CodeArrow : TextureRect = $direct_arrow;
 
 func _ready():
 	current_size = DEFAULT_SIZE;
@@ -67,6 +68,8 @@ func _ready():
 	for k in ess_behavior:
 		get_node("Indic%s" % k).ttip_data = [k, "base"];
 	
+	if type == "gene":
+		set_code_arrow_dir(false);
 	if setup_ate_display_onready || mode == "ate" && !AnthroArt.has_art():
 		setup_ate_art();
 		upd_display();
@@ -74,21 +77,22 @@ func _ready():
 func obtain_ate_personality(personality_id := "") -> void:
 	if (personality_id == ""):
 		ate_personality = Game.get_random_ate_personality();
-		id = ate_personality["title"];
+		id = ate_personality["key"];
 	else:
 		id = personality_id;
-		ate_personality = Game.get_ate_personality_by_name(id);
+		ate_personality = Game.get_ate_personality_by_key(id);
 	setup_ate_art();
 
-func setup_ate_art(ate_pers = null):
+func setup_ate_art():
 	if AnthroArt == null:
 		setup_ate_display_onready = true;
 	else:
-		_perf_ate_art_setup(ate_pers);
+		_perf_ate_art_setup();
 
-func _perf_ate_art_setup(ate_pers = null):
-	if ate_pers == null:
-		ate_pers = ate_personality;
+func _perf_ate_art_setup():
+	var ate_pers = ate_personality;
+	if ate_personality.empty():
+		ate_pers = Game.get_ate_personality_by_key(id);
 	
 	if ate_pers.has("art_scene"):
 		set_texture(null);
@@ -98,6 +102,9 @@ func _perf_ate_art_setup(ate_pers = null):
 	AnthroArt.visible = ate_pers.has("art_scene");
 	if AnthroArt.visible && !AnthroArt.has_art():
 		AnthroArt.add_art("res://Scenes/CardTable/Art/%s.tscn" % ate_pers.get("art_scene"));
+	
+	if is_pseudo():
+		AnthroArt.safe_callv("set_eye_droop", [1.0]);
 
 func setup(_type : String, _id := "", _mode := "", _code := "", _par_code := "", _ph := -1.0):
 	id = _id;
@@ -109,7 +116,7 @@ func setup(_type : String, _id := "", _mode := "", _code := "", _par_code := "",
 	else:
 		ph_preference = _ph;
 	
-	if _code.empty():
+	if _code.empty() && type == "gene":
 		randomize_code();
 	else:
 		gene_code = _code;
@@ -126,11 +133,11 @@ func setup(_type : String, _id := "", _mode := "", _code := "", _par_code := "",
 				ate_activity = 1.0;
 				obtain_ate_personality(id);
 			"pseudo":
-				var ate_personality = Game.get_ate_personality_by_name(id);
-				if (ate_personality == null):
+				var ate_pers = Game.get_ate_personality_by_key(id);
+				if ate_pers == null:
 					tex = Game.ess_textures[id];
 				else:
-					setup_ate_art(ate_personality);
+					setup_ate_art();
 	else:
 		tex = Game.sqelm_textures[_type];
 		$Helix.visible = false;
@@ -164,7 +171,7 @@ func setup_copy(ref_elm):
 				specialization = ref_elm.specialization.duplicate();
 			"ate":
 				ate_activity = ref_elm.ate_activity;
-				obtain_ate_personality(ref_elm.ate_personality["title"]);
+				obtain_ate_personality(ref_elm.ate_personality["key"]);
 	upd_display();
 	
 	if ref_elm.mode != "ate":
@@ -178,6 +185,10 @@ func get_save_data():
 	var elm_data = ["type", "id", "mode", "gene_code", "parent_code", "ph_preference"];
 	for i in range(elm_data.size()):
 		elm_data[i] = get(elm_data[i]);
+	var ate_id_key = Game.get_ate_key_by_name(elm_data[1]);
+	if !ate_id_key.empty():
+		elm_data[1] = ate_id_key;
+	
 	return [elm_data, get_ess_behavior(), get_specialization()];
 
 func load_from_save(save_data):
@@ -272,6 +283,8 @@ func get_random_code():
 
 func randomize_code():
 	gene_code = get_random_code();
+	if CodeArrow != null:
+		set_code_arrow_dir(false);
 
 func reverse_code():
 	var gc = gene_code;
@@ -279,6 +292,15 @@ func reverse_code():
 	for c in gc:
 		gene_code = c + gene_code;
 	upd_display();
+	set_code_arrow_dir(!CodeArrow.flip_h);
+
+func set_code_arrow_dir(left : bool):
+	CodeArrow.visible = true;
+	CodeArrow.flip_h = left;
+	if left:
+		CodeArrow.self_modulate = Color(0.75, 0.4, 0);
+	else:
+		CodeArrow.self_modulate = Color(0, 0.4, 0.75);
 
 func modify_code(spaces = 1, min_mag = 1, allow_negative = false):
 	for _i in range(spaces):
@@ -321,22 +343,46 @@ func is_equal(other_elm, max_dist = -1):
 	else:
 		return can_compare_elm(other_elm) && get_gene_distance(other_elm) <= max_dist;
 
-func merge_with(other_elm):
-	randomize_code();
+func get_gene_name():
 	match mode:
 		"essential":
-			var bdict = get_ess_behavior();
-			var add_dict = other_elm.get_ess_behavior();
-			for k in add_dict:
-				if bdict.has(k):
-					bdict[k] += add_dict[k];
-				else:
-					bdict[k] = add_dict[k];
-			set_ess_behavior(bdict);
+			return Tooltips.GENE_NAMES.get(id, id);
 		"ate":
-			ate_activity += other_elm.ate_activity;
+			return ate_personality["title"];
 		"pseudo":
-			blank_out_gene();
+			return "pseudogene";
+		"blank":
+			return "blank";
+
+# Lower number = keep during merge
+# Negative number = invalid merge
+func get_merge_priority() -> float:
+	if is_essential():
+		return 0.0;
+	if is_ate():
+		return 10.0;
+	return -1.0;
+
+func merge_with(other_elm):
+	randomize_code();
+	
+	var bdict = get_ess_behavior();
+	var add_dict = {};
+	
+	if other_elm.is_essential():
+		add_dict = other_elm.get_ess_behavior();
+	elif other_elm.is_ate():
+		add_dict = {"Replication": stepify(other_elm.ate_activity * 0.25, 0.1)};
+	else:
+		print("!! Trying to merge an essential gene with an invalid gene: %s, %s" % [other_elm.mode, other_elm.id]);
+	
+	for k in add_dict:
+		if bdict.has(k):
+			bdict[k] += add_dict[k];
+		else:
+			bdict[k] = add_dict[k];
+	
+	set_ess_behavior(bdict);
 	ph_preference = (ph_preference + other_elm.ph_preference) / 2;
 	upd_display();
 
@@ -510,17 +556,18 @@ func upd_behavior_disp(behavior = ""):
 
 var forced_comparison_color = null;
 func color_comparison(compare_type : String, compare_val : float):
-	if (compare_type == ""):
-		forced_comparison_color = null;
-	else:
-		var comparison : float; # should be 0..1
+	if !is_gap() && !is_dead():
+		if (compare_type == ""):
+			forced_comparison_color = null;
+		else:
+			var comparison : float; # should be 0..1
+			
+			if (compare_type == "ph"):
+				comparison = get_ph_mult(compare_val, true);
+			
+			forced_comparison_color = SEQ_ELM_COMPARE_GRADIENT.interpolate(comparison);
 		
-		if (compare_type == "ph"):
-			comparison = get_ph_mult(compare_val, true);
-		
-		forced_comparison_color = SEQ_ELM_COMPARE_GRADIENT.interpolate(comparison);
-	
-	upd_display();
+		upd_display();
 
 func get_dominant_essential() -> String:
 	var highest_yet = 0.0;
@@ -535,19 +582,18 @@ func get_dominant_essential() -> String:
 
 func upd_display():
 	if !display_locked:
-		$DBGLBL.text = gene_code;
-		$lbl.text = id;
+		$lbl_code.text = gene_code;
+		$lbl_id.visible = false;
 		match(type):
 			"gene":
 				$Helix.visible = true;
 				$Helix.texture = Game.helix_textures[true];
-				$lbl.visible = false;
-				
 				toggle_mode = false;
 				match (mode):
 					"ate":
 						self_modulate = Color(.8, .15, 0);
-						$lbl.visible = true;
+						$lbl_id.text = ate_personality["title"];
+						$lbl_id.visible = true;
 					"essential":
 						self_modulate = Color(0, .66, 0);
 						set_texture(Game.ess_textures[get_dominant_essential()]);
@@ -594,18 +640,8 @@ func is_pseudo():
 func is_blank():
 	return type == "gene" && mode == "blank";
 
-func has_no_behavior():
+func is_dead():
 	return is_pseudo() || is_blank();
-
-# Lower number = keep during merge
-func get_merge_priority() -> float:
-	if is_essential():
-		return 0.0;
-	if is_ate():
-		return 10.0 - (ate_activity * 0.01);
-	if has_no_behavior():
-		return 20.0;
-	return -1.0;
 
 func disable(dis):
 	disabled = dis;
@@ -616,6 +652,10 @@ func highlight_border(on : bool, force_color := false):
 	$BorderRect.visible = on;
 	if force_color:
 		$BorderRect.modulate = toggle_rect_clr[pressed];
+	
+	if is_gap() && Unlocks.has_hint_unlock("click_gaps"):
+		$lbl_id.text = "Click to repair!";
+		$lbl_id.visible = on;
 
 func is_highlighted():
 	return $BorderRect.visible;
