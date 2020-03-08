@@ -26,7 +26,7 @@ onready var game_over = get_node("GameOverLayer/GameOver")
 #allows for multiplayer
 
 func _ready(): 
-	card_table.hide()
+	_hide_card_table()
 
 	#Add looping after first_player if there are multiple players, but only give the first
 	#player to the WorldMap for setup
@@ -47,7 +47,7 @@ func _on_WorldMap_end_map_turn():
 	_hide_world_map()
 	world_map.set_input(Game.PLAYER_VIEW.ON_CARDTABLE)
 	Game.adv_turn();
-	card_table.show()
+	_show_card_table()
 	
 	card_table.energy_bar.MAX_ENERGY = world_map.current_player.organism.MAX_ENERGY
 	card_table.energy_bar.update_energy_allocation(world_map.current_player.organism.energy)
@@ -98,7 +98,7 @@ func _on_Player_died(player):
 
 func _on_CardTable_next_turn(turn_text, round_num):
 	if Game.get_turn_type() == Game.TURN_TYPES.Map:
-		card_table.hide()
+		_hide_card_table()
 		_on_CardTable_switch_to_map();
 
 func _show_world_map():
@@ -115,6 +115,16 @@ func _hide_world_map():
 	for player in get_tree().get_nodes_in_group("players"):
 		player.enable_sprite(false)
 
+func _show_card_table():
+	card_table.show()
+	if Unlocks.has_turn_unlock(Game.TURN_TYPES.Map):
+		card_table.show_map_button()
+	else:
+		card_table.hide_map_button()
+		
+func _hide_card_table():
+	card_table.hide()
+
 func _on_GameOver_confirmed():
 	Game.restart_game()
 	get_tree().change_scene("res://Scenes/MainMenu/TitleScreen.tscn")
@@ -122,10 +132,10 @@ func _on_GameOver_confirmed():
 func _on_WorldMap_switch_to_card_table():
 	world_map.set_input(Game.PLAYER_VIEW.SWITCHED_TO_GENOME)
 	_hide_world_map()
-	card_table.show()
+	_show_card_table()
 
 func _on_CardTable_switch_to_map():
-	card_table.hide()
+	_hide_card_table()
 	
 	if Game.turn_idx == Game.TURN_TYPES.Map:
 		world_map.set_input(Game.PLAYER_VIEW.ON_MAP)

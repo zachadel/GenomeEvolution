@@ -299,3 +299,9 @@ func _on_btn_load_pressed():
 	SaveExports.flag_bug($pnl_bugreport/tbox_bugdesc.text);
 	$pnl_bugreport/tbox_bugdesc.text = "";
 	close_extra_menus($pnl_bugreport);
+	
+func show_map_button():
+	$ViewMap.show()
+	
+func hide_map_button():
+	$ViewMap.hide()
