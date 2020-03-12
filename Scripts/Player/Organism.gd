@@ -1822,161 +1822,186 @@ func acquire_resources():
 #upgrades cfp_resources["simple_#"][resource] to cfp_resources["complex_#"][Game.resources[resource]["upgraded_form"]
 #We can consider adding in manipulation/construction values to reduce the tier_conversion later
 #amount is the amount of resource_from units to be used in the conversion
-func upgrade_cfp_resource(resource_from: String, resource_to: String, amount):
+#NOTE: Can NOT be used with energy as resource_from
+func upgrade_cfp_resource(resource_from: String, amount: int):
 	var leftover_resources = amount
+	var upgraded_amount = int(floor(amount/Game.resources[resource_from]["factor"]))
+	var total_upgraded = 0
+	
+	var resource_class = Game.get_class_from_name(resource_from)
+	
+	var upgraded_form = Game.resources[resource_from]["upgraded_form"]
+	var upgraded_class = Game.get_class_from_name(upgraded_form)
+
+	var required_from_per_up = Game.resources[resource_from]["factor"]
+	#Is there anything to do?
+	if upgraded_amount > 0:
+		var energy_cost = get_energy_cost("simple_to_complex", 1)
+		var vesicle_capacity = get_estimated_capacity(upgraded_class)
+		
+		#Upgrade all resources that you can
+		for i in range(upgraded_amount):
+			if energy_cost <= energy and cfp_resources[upgraded_class]["total"] < vesicle_capacity and cfp_resources[resource_class][resource_from] >= required_from_per_up:
+				energy -= energy_cost
+				
+				cfp_resources[upgraded_class][upgraded_form] += 1
+				cfp_resources[upgraded_class]["total"] += 1
+				
+				cfp_resources[resource_class][resource_from] -= required_from_per_up
+				cfp_resources[resource_class]["total"] -= required_from_per_up
+				
+				total_upgraded += 1
+				leftover_resources -= required_from_per_up 
+			else:
+				break
+	
+	return {"new_resource_amount": upgraded_amount, "leftover_resource_amount": leftover_resources, "new_resource_name": upgraded_form}
+
+func upgrade_energy(resource_to: String, amount_to: int = 1):
 	var upgraded_amount = 0
+	var factor = Game.resources[resource_to]["factor"]
+	var resource_to_class = Game.get_class_from_name(resource_to)
 	
-	#Check for valid interaction
-	if Game.is_valid_interaction(resource_from, resource_to):
-		#in the case we are using energy, amount represents the amount of final product desired
-		if resource_from == "energy":
-			var tier_conversion = Game.resources[resource_to]["factor"] #how much energy to produce one unit
-			var cost = get_energy_cost("energy_to_simple", amount)
-			
-			var energy_required = cost + tier_conversion * amount
-			var resource_class = Game.get_class_from_name(resource_to)
-			
-			if energy >= energy_required and cfp_resources[resource_class][resource_to] + amount <= get_estimated_capacity(resource_class):
-				energy -= tier_conversion * amount
-				
-				upgraded_amount = amount
-				leftover_resources = energy
-				
-				cfp_resources[resource_class][resource_to] += amount
-				
-				use_resources("energy_to_simple", amount)
-			
-			else:
-				upgraded_amount = 0
-				leftover_resources = energy
-
-		else:
-			var tier_conversion = Game.resources[resource_from]["factor"] #can be changed later to account for genome
-			
-			upgraded_amount = floor(amount / tier_conversion)
-			leftover_resources = amount - (upgraded_amount * tier_conversion)
-			
-			var cost = get_energy_cost("simple_to_complex", upgraded_amount)
-			
-			if upgraded_amount > 0:
-				
-				#Check to make sure that there is enough energy for the conversion
-				if energy >= cost:
-					var resource_class_from = Game.get_class_from_name(resource_from)
-					var resource_class_to = Game.get_class_from_name(resource_to)
-					
-					#Make sure we have enough resources and enough room for the new resources
-					if cfp_resources[resource_class_from][resource_from] >= (upgraded_amount * tier_conversion) \
-					and cfp_resources[resource_class_to][resource_to] + upgraded_amount <= get_estimated_capacity(resource_class_to):
-						
-						cfp_resources[resource_class_from][resource_from] -= (upgraded_amount * tier_conversion)
-						cfp_resources[resource_class_to][resource_to] += upgraded_amount
-						
-						use_resources("simple_to_complex", upgraded_amount)
-					else:
-						upgraded_amount = 0
-						leftover_resources = amount
-				else:
-					upgraded_amount = 0
-					leftover_resources = amount
-			else:
-				upgraded_amount = 0
-				leftover_resources = amount
+	var energy_cost = get_energy_cost("energy_to_simple", 1)
+	var vesicle_capacity = get_estimated_capacity(resource_to_class)
 	
-	return [upgraded_amount, leftover_resources]
+	while(amount_to > 0 and energy_cost + factor <= energy and cfp_resources[resource_to_class]["total"] < vesicle_capacity):
+		amount_to -= 1
+		
+		energy -= (energy_cost + factor)
+		
+		cfp_resources[resource_to_class][resource_to] += 1
+		cfp_resources[resource_to_class]["total"] += 1
+		
+	return {"new_resource_amount": upgraded_amount, "leftover_resource_amount": energy, "new_resource_name": resource_to}
+		
 
-#To convert from resource to resource, get the tier conversion by converting
-#1 resource to energy then converting energy to resour
-func convert_cfp_to_cfp(resource_from: String, resource_to: String, amount):
+#resources_from[resource] = amount
+#leftover_resources[resource] = {"new_resource_amount": upgraded_amount, "leftover_resource_amount": leftover_amount, "new_resource_name": upgraded_form_name}
+func upgrade_cfp_resources(resources_from: Dictionary) -> Dictionary:
+	var leftover_resources = {}
+	
+	for resource in resources_from:
+		leftover_resources[resource] = upgrade_cfp_resource(resource, resources_from[resource])
+		
+	return leftover_resources
+	
+#This assumes that all ratios of from:to are either proper fractions or whole numbers
+#results[resource] = {"new_resource_amount": upgraded_amount, "leftover_resource_amount": energy, "new_resource_name": resource_to}
+func convert_cfp_to_cfp(resources_from: Dictionary, resource_to: String):
+	var results = {}
+		
+	var energy_to_to = Game.resources[resource_to]["factor"]
+	var energy_cost = get_energy_cost("simple_to_simple", 1)
+	
+	var resource_to_class = Game.get_class_from_name(resource_to)
+	var vesicle_capacity = get_estimated_capacity(resource_to_class)
+	
+	#Draw from highest energy value first
+	var sorted_resources = resources_from.keys()
+	sorted_resources.sort_custom(self, "sort_by_energy_factor")
+	
+	#Loop over resources and convert as much as you can
+	for resource in sorted_resources:
+		var energy_from = Game.resources[resource]["factor"]
+		var ratio = float(energy_from) / energy_to_to
+		
+		results[resource] = {"new_resource_amount": 0, "leftover_resource_amount": resources_from[resource], "new_resource_name": resource_to} #converted amount, leftover_amount
+		
+		var subtract_resource = max(1.0/ratio, 1) #1/ratio is large when it takes more of from to get to to
+		var add_resource = max(ratio, 1)
+		
+		var resource_from_class = Game.get_class_from_name(resource)
+		
+		#Do you have enough resources from what was requested to be converted?
+		#Do you have enough room to store converted resources?
+		#Do you have enough energy to complete the action?
+		while(results[resource]["leftover_resource_amount"] >= subtract_resource and cfp_resources[resource_to_class]["total"] + add_resource <= vesicle_capacity and energy_cost <= energy):
+			
+			#Check to make sure you can actually subtract that many resources
+			#Check to make sure you have enough energy to complete the operation
+			cfp_resources[resource_from_class][resource] -= subtract_resource
+			cfp_resources[resource_from_class]["total"] -= subtract_resource
+			
+			cfp_resources[resource_to_class][resource_to] += add_resource
+			cfp_resources[resource_to_class]["total"] += add_resource
+			
+			energy -= energy_cost
+			
+			results[resource]["new_resource_amount"] += add_resource
+			
+			results[resource]["leftover_resource_amount"] -= subtract_resource
+	
+	return results
+	
+#Amount checks for how much of the resource we are looking to downgrade
+#Always assumes the downgrade is valid
+#returns {"new_resource_amount": amount, "leftover_resource_amount": amount, "new_resource_name": name}
+func downgrade_cfp_resource(resource_from: String, amount: int):
 	var leftover_resources = amount
-	var converted_amount = 0
-	var used_amount = 0
-	
-	#Check for valid interaction
-	if Game.is_valid_interaction(resource_from, resource_to):
-		
-		#It takes tier_conversion_to units of resource_from to get tier_conversion_from units of resource_to
-		var tier_conversion_from = Game.resources[resource_from]["factor"] #can be changed later to account for genome
-		var tier_conversion_to = Game.resources[resource_to]["factor"]
-		
-		
-		converted_amount = floor(amount / tier_conversion_to) * tier_conversion_from
-		used_amount = (converted_amount / tier_conversion_from) * tier_conversion_to
-		leftover_resources = amount - used_amount
-		
-		var cost = get_energy_cost("simple_to_simple", converted_amount)
-		
-		if converted_amount > 0:
-			#Check to make sure that there is enough energy for the conversion
-			if energy >= cost:
-				
-				var resource_class_from = Game.get_class_from_name(resource_from)
-				var resource_class_to = Game.get_class_from_name(resource_to)
-				
-				#Make sure we have enough resources and enough room for the new resources
-				if cfp_resources[resource_class_from][resource_from] >= used_amount \
-				and cfp_resources[resource_class_to][resource_to] + converted_amount <= get_estimated_capacity(resource_class_to):
-					
-					cfp_resources[resource_class_from][resource_from] -= used_amount
-					cfp_resources[resource_class_to][resource_to] += converted_amount
-					
-					use_resources("simple_to_simple", converted_amount)
-				else:
-					converted_amount = 0
-					leftover_resources = amount
-			else:
-				converted_amount = 0
-				leftover_resources = amount
-		else:
-			converted_amount = 0
-			leftover_resources = amount
-	
-	return [converted_amount, leftover_resources]
-	
-#For now, if you lack the necessary energy to metabolize resources, you cannot convert
-#any simple resources to energy.  This might not be what we want for now.
-func downgrade_cfp_resource(resource_from: String, amount):
-	var leftover_resources = 0
 	var downgraded_amount = 0
+	var total_downgraded = 0
 	
-	#Check for valid interaction
-	if resource_from != "energy":
-		
-		var tier_conversion = Game.resources[resource_from]["factor"] #can be changed later to account for genome
-		
-		var downgraded_resource = Game.resources[resource_from]["downgraded_form"]
-		var downgraded_resource_class = Game.get_class_from_name(downgraded_resource)
-		
-		var resource_from_class = Game.get_class_from_name(resource_from)
-		
-		downgraded_amount = amount * tier_conversion
-		
-		if downgraded_resource == "energy":
-			var cost = get_energy_cost("simple_to_energy", amount)
+	var resource_class = Game.get_class_from_name(resource_from)
+	
+	var downgraded_form = Game.resources[resource_from]["downgraded_form"]
+	var downgraded_class = Game.get_class_from_name(downgraded_form)
+
+	#Is there anything to do?
+	if amount > 0:
+		if downgraded_form == "energy":
+			downgraded_amount = energy #Store old energy amount
 			
-			#If you have enough room and you have sufficient energy to perform the operation
-			if energy + downgraded_amount <= MAX_ENERGY and cost <= energy + downgraded_amount:
-				energy += downgraded_amount
-				cfp_resources[resource_from_class][resource_from] -= amount
-				
-				use_resources("simple_to_energy", amount)
-			else:
-				downgraded_amount = 0
-		
+			var energy_cost = get_energy_cost("simple_to_energy", 1)
+			var energy_gained = Game.resources[resource_from]["factor"]
+			
+			#Downgrade all resources that you can
+			for i in range(amount):
+				#It is possible for energy_cost > energy_gained in some strange
+				#situations; we punish the player for processing resources at that
+				#time and deduct energy trying to handle thier request
+				if energy < MAX_ENERGY and energy - energy_cost + energy_gained > 0:	
+					energy = clamp(energy - energy_cost + energy_gained, 0, MAX_ENERGY)
+					
+					cfp_resources[resource_class][resource_from] -= 1
+					cfp_resources[resource_class]["total"] -= 1
+					
+					leftover_resources -= 1
+				else:
+					break
+			
+			downgraded_amount = energy - downgraded_amount
 		else:
-			var cost = get_energy_cost("complex_to_simple", amount)
+			var energy_cost = get_energy_cost("complex_to_simple", 1)
+			var vesicle_capacity = get_estimated_capacity(downgraded_class)
+			var resources_per_downgrade = Game.resources[resource_from]["factor"]
 			
-			#If we have the energy for the operation and we have the room for it
-			if cost <= energy and cfp_resources[downgraded_resource_class]["total"] + downgraded_amount <= get_estimated_capacity(downgraded_resource_class):
-				cfp_resources[downgraded_resource_class][downgraded_resource] += downgraded_amount
-				cfp_resources[resource_from_class][resource_from] -= amount
-				
-				use_resources("complex_to_simple", amount)
-			else:
-				downgraded_amount = 0
-				leftover_resources = amount
-				
-	return [downgraded_amount, leftover_resources]
+			#Downgrade all resources that you can
+			for i in range(amount):
+				if energy_cost <= energy and cfp_resources[downgraded_class]["total"] + resources_per_downgrade <= vesicle_capacity:
+					energy -= energy_cost
+					
+					cfp_resources[resource_class][resource_from] -= 1
+					cfp_resources[resource_class]["total"] -= 1
+					
+					cfp_resources[downgraded_class][downgraded_form] += resources_per_downgrade
+					cfp_resources[downgraded_class]["total"] += resources_per_downgrade
+					
+					leftover_resources -= 1
+					downgraded_amount += resources_per_downgrade
+				else:
+					break
+	
+	return {"new_resource_amount": downgraded_amount, "leftover_resource_amount": leftover_resources, "new_resource_name": downgraded_form}
+
+#leftover_resources[resource] = {"new_resource_amount": downgraded_amount, "leftover_resource_amount": leftover_resources, "new_resource_name": downgraded_form}
+func downgrade_cfp_resources(resources_from: Dictionary) -> Dictionary:
+	var results = {}
+	
+	for resource in resources_from:
+		results[resource] = downgrade_cfp_resource(resource, resources_from[resource])
+		
+	return results
 
 #BROKEN
 func eject_mineral_resource(resource, amount = 1):
@@ -2096,104 +2121,68 @@ func consume_randomly_from_class(resource_class: String, amount: int):
 		else:
 			keys.erase(index)
 	return final_amount		
-	
-#Converts all higher tier resources into lower tier resources
-#Includes calculations for penalties
-#Calculates as if energy if of no object
-#func get_total_tier0_cfp_resources(resource):
-#	var sum = 0
-#	var tier_converted_value = 0
-#	var cost_mult = get_cost_mult("tier_downgrade")
-#
-#	for tier in range(len(cfp_resources[resource])):
-#		tier_converted_value = 0
-#		for j in range(tier, -1, -1):
-#			#(percent you get after costs) * (resources at this tier + previously downgraded resources) * (tier conversion factor)
-#			tier_converted_value += (1 - costs["tier_downgrade"][resource] * cost_mult * Game.resource_mult) * (cfp_resources[resource][tier] + tier_converted_value) * TIER_CONVERSIONS[resource][tier]
-#
-#		sum += tier_converted_value
-#
-#	return sum
-	
-#Calculates as if energy if of no object
-#func get_total_tier0_mineral_resources(resource):
-#	var sum = 0
-#	var tier_converted_value = 0
-#	var cost_mult = get_cost_mult("tier_downgrade")
-#
-#	for tier in mineral_resources[resource]:
-#		tier_converted_value = 0
-#		for j in range(tier, -1, -1):
-#			#(percent you get after costs) * (resources at this tier + previously downgraded resources) * (tier conversion factor)
-#			tier_converted_value += (1 - costs["tier_downgrade"][resource] * cost_mult * Game.resource_mult) * (mineral_resources[resource][tier] + tier_converted_value) * TIER_CONVERSIONS[resource][tier]
-#
-#		sum += tier_converted_value
-#
-#	return sum
-#
-#func get_total_energy_possible():
-#	var sum = 0
-#	var resource_sum = 0
-#	var cost_mult = get_cost_mult("tier_downgrade")
-#
-#	for resource in cfp_resources:
-#		resource_sum = get_total_tier0_cfp_resources(resource)
-#		sum += ((1 - costs["tier_downgrade"][resource] * cost_mult * Game.resource_mult) * resource_sum * TIER_CONVERSIONS[resource][0])
-#
-#	return sum
-	
-#func get_total_cfp_stored():
-#	var sum = 0
-#	for resource in cfp_resources:
-#		for tier in cfp_resources[resource]:
-#			sum += cfp_resources[resource][tier]
-#
-#	return sum
-#
-#func get_total_minerals_stored():
-#	var sum = 0
-#	for resource in mineral_resources:
-#		for tier in mineral_resources[resource]:
-#			sum += mineral_resources[resource][tier]
-#
-#	return sum
 
 #Connect to internal resource controller
 #container name should be the resource_class that the resources
 #are going to
 #We assume valid interactions
-#resources_to_process[resource_name] = amount
+#resources[resource_name] = amount
 #resources_to_process will be modified according to how many are utilized
-func process_resource(resource: String, container_name: String, amount):
-	var resource_class = Game.get_class_from_name(resource)
-	
-	var resource_split = resource_class.split(Game.SEPARATOR)
-	var container_split = container_name.split(Game.SEPARATOR)
+#Assumes valid interactions and non-empty dictionary
+func process_resources(resources: Dictionary, container_name: String) -> Dictionary:
+	var simple_resources = {}
+	var complex_resources = {}
 	
 	var results = {}
-	var result_resource = "energy"
 	
-	#energy to simple
-	if resource == "energy":
-		results = upgrade_cfp_resource(resource, Game.resource_groups[container_split[1]][container_split[0]].keys()[0], amount)
-		result_resource = Game.resource_groups[container_split[1]][container_split[0]].keys()[0]
+	var container_split = container_name.split(Game.SEPARATOR)
 	
-	#simple to complex
-	elif resource_split[0] == "simple" and container_split[0] == "complex":
-		results = upgrade_cfp_resource(resource, Game.resources[resource]["upgraded_form"], amount)
-		result_resource = Game.resources[resource]["upgraded_form"]
+	for resource in resources:
+		if Game.resources[resource]["tier"] == "simple":
+			simple_resources[resource] = resources[resource]
+		elif Game.resources[resource]["tier"] == "complex":
+			complex_resources[resource] = resources[resource]
+		else:
+			print('ERROR: Invalid resource tier of %s for resource %s in function process_resources' % [Game.resources[resource]["tier"], resource])
+			
+	var simple_results = {}
+	var complex_results = {}
+	if container_split[0] == "simple":
 		
-	#Simple to simple conversion
-	elif resource_split[0] == "simple" and container_split[0] == "simple":
-		results = convert_cfp_to_cfp(resource, Game.resource_groups[container_split[1]][container_split[0]].keys()[0], amount)
-		result_resource = Game.resource_groups[container_split[1]][container_split[0]].keys()[0]
+		#complex to simple
+		if complex_resources:
+			complex_results = downgrade_cfp_resources(complex_resources)
 		
-	#complex to simple
-	elif resource_split[0] == "complex" and container_split[0] == "simple" or container_name == "energy":
-		results = downgrade_cfp_resource(resource, amount)
-		result_resource = Game.resources[resource]["downgraded_form"]
+		#simple to simple
+		if simple_resources:
+			simple_results = convert_cfp_to_cfp(simple_resources, get_random_resource_from_class(container_name))
 		
-	return [results, result_resource]
+	elif container_split[0] == "complex":
+		#simple to complex
+		if simple_resources:
+			simple_results = upgrade_cfp_resources(simple_resources)
+		#complex to complex (INVALID)
+		if complex_resources:
+			print('ERROR: Invalid interaction of %s and complex_resources in function process_resources' % [container_name])
+	else:
+		print('ERROR: Invalid container name of %s in function process_resources' % [container_name])
+	
+	results = merge_dictionaries(simple_results, complex_results)
+		
+	return results
+	
+#
+func merge_dictionaries(merged_dictionary: Dictionary, to_be_merged: Dictionary) -> Dictionary:
+	
+	for value in to_be_merged:
+		merged_dictionary[value] = to_be_merged[value]
+	
+	return merged_dictionary
+	
+func get_random_resource_from_class(resource_class: String):
+	var keys = cfp_resources[resource_class].keys()
+	keys.remove("total")
+	return keys[randi() % len(keys)]
 	
 func is_resource_alive() -> bool:
 	return is_mineral_alive() and is_energy_alive()	
@@ -2227,6 +2216,15 @@ func is_energy_alive() -> bool:
 		energy_alive = true
 	
 	return energy_alive
+	
+#Helper function for sorting resources by energy they yield
+#Sorts from largest to smallest
+func sort_by_energy_factor(a, b):
+	if Game.resources[a]["factor"] > Game.resources[b]["factor"]:
+		return true
+	else:
+		return false
+	
 
 func _on_chromes_on_cmsm_changed():
 	refresh_bprof = true;

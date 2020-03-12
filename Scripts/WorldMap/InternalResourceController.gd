@@ -186,10 +186,11 @@ func clear_selected_resources():
 				node.deselect()
 			selected_resources[resource_class][resource].clear()
 
+#NOTE: Energy upgrades and downgrades to energy are still broken, needs to be fixed
 func handle_click_with_selection():
 	var mouse_pos = get_global_mouse_position()
 	var resources_to_process = {}
-	
+	print(organism.cfp_resources)
 	if !energy_clicked:
 	
 		#Locate which container you're in
@@ -207,18 +208,17 @@ func handle_click_with_selection():
 	
 				#Once we know what container we are in, we can leave at the end
 				if resources_to_process:
-					
-					for resource in resources_to_process:
-						var results = organism.process_resource(resource, container_name, resources_to_process[resource])
+					var results = organism.process_resources(resources_to_process, container_name)
+					for resource in results:
 						var resource_class = Game.get_class_from_name(resource)
 						
 						#if we actually used some resources
-						var diff = len(selected_resources[resource_class][resource]) - results[0][1]
+						var diff = len(selected_resources[resource_class][resource]) - results[resource]["leftover_resource_amount"]
 						if diff > 0:
 							remove_resource_by_name(resource, diff, true)
 						
 						#Process for adding nodes to vesicles according to upgraded amount
-						add_resource(results[1], results[0][0])
+						add_resource(results[resource]["new_resource_name"], results[resource]["new_resource_amount"])
 						
 				break
 	elif energy_clicked:
@@ -247,6 +247,7 @@ func handle_click_with_selection():
 			energy_bar.update_energy_allocation(organism.energy)
 		energy_clicked = false
 		Input.set_custom_mouse_cursor(null)
+	print(organism.cfp_resources)
 
 func handle_energy_to_vesicle_click():
 	var vesicle_name = get_vesicle_from_mouse_pos(get_global_mouse_position())
