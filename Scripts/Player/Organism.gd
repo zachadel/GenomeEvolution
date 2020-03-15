@@ -1873,6 +1873,8 @@ func upgrade_energy(resource_to: String, amount_to: int = 1):
 		cfp_resources[resource_to_class][resource_to] += 1
 		cfp_resources[resource_to_class]["total"] += 1
 		
+		upgraded_amount += 1
+		
 	return {"new_resource_amount": upgraded_amount, "leftover_resource_amount": energy, "new_resource_name": resource_to}
 		
 
@@ -2129,7 +2131,7 @@ func consume_randomly_from_class(resource_class: String, amount: int):
 #resources[resource_name] = amount
 #resources_to_process will be modified according to how many are utilized
 #Assumes valid interactions and non-empty dictionary
-func process_resources(resources: Dictionary, container_name: String) -> Dictionary:
+func process_cfp_resources(resources: Dictionary, container_name: String) -> Dictionary:
 	var simple_resources = {}
 	var complex_resources = {}
 	

@@ -208,7 +208,7 @@ func handle_click_with_selection():
 	
 				#Once we know what container we are in, we can leave at the end
 				if resources_to_process:
-					var results = organism.process_resources(resources_to_process, container_name)
+					var results = organism.process_cfp_resources(resources_to_process, container_name)
 					for resource in results:
 						var resource_class = Game.get_class_from_name(resource)
 						
@@ -221,6 +221,8 @@ func handle_click_with_selection():
 						add_resource(results[resource]["new_resource_name"], results[resource]["new_resource_amount"])
 						
 				break
+				
+	#if we have selected resources and have clicked on energy
 	elif energy_clicked:
 		#if in a particular container, check for any valid interactions
 		for resource_class in selected_resources:
@@ -233,16 +235,15 @@ func handle_click_with_selection():
 		#Once we know what container we are in, we can leave at the end
 		if resources_to_process:
 			
-			for resource in resources_to_process:
-				var results = organism.process_resource(resource, "energy", resources_to_process[resource])
+			var results = organism.downgrade_cfp_resources(resources_to_process)
+			
+			for resource in results:
 				var resource_class = Game.get_class_from_name(resource)
 				
 				#if we actually used some resources
-				var diff = len(selected_resources[resource_class][resource]) - results[0][1]
+				var diff = len(selected_resources[resource_class][resource]) - results[resource]["leftover_resource_amount"]
 				if diff > 0:
 					remove_resource_by_name(resource, diff, true)
-				
-				#energy_bar.add_energy(results[0][0])
 				
 			energy_bar.update_energy_allocation(organism.energy)
 		energy_clicked = false
@@ -253,9 +254,11 @@ func handle_energy_to_vesicle_click():
 	var vesicle_name = get_vesicle_from_mouse_pos(get_global_mouse_position())
 	
 	if vesicle_name and Game.is_valid_interaction("energy", vesicle_name):
-		var results = organism.process_resource("energy", vesicle_name, 1)
-		
-		add_resource(results[1], results[0][0])
+		var resource_to = Game.get_random_element_from_array(resources[vesicle_name].keys())
+		var results = organism.upgrade_energy(resource_to, 1)
+		print(results)
+		if results["new_resource_amount"] > 0:
+			add_resource(resource_to, 1)
 		energy_bar.update_energy_allocation(organism.energy)
 		Input.set_custom_mouse_cursor(null)
 	

@@ -683,4 +683,10 @@ func world_to_map(pos: Vector2, tile_size: Vector2 = Vector2(72*2/sqrt(3), 82)):
 	
 #################################RANDOM FUNCTIONS######################################
 func vec_mult(vec1: Vector2, vec2: Vector2):
-	return Vector2(vec1.x*vec2.x, vec1.y*vec2.y)
+	return Vector2(vec1.x*vec2.x, vec1.y*vec2.y)	
+
+func get_random_element_from_dictionary(dict: Dictionary):
+	return dict[dict.keys()[randi() % len(dict.keys())]]
+	
+func get_random_element_from_array(arr: Array):
+	return arr[randi() % len(arr)]
