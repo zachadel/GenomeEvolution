@@ -1720,8 +1720,9 @@ func get_cost_string(action):
 #Only call this function if you have already checked for sufficient energy
 func acquire_resources():
 	var modified = false
+	var energy_cost = get_energy_cost("acquire_resources")
 	#Check if any room to store more stuff
-	if energy >= get_energy_cost("acquire_resources"):
+	if energy >= energy_cost:
 		#Run through all resources on the tile
 		for index in range(len(current_tile["resources"])):
 			#grab the resource
@@ -1761,6 +1762,7 @@ func acquire_resources():
 	else:
 		modified = false		
 		
+	print('stop')
 	#Reestablish what the new primary_resource indicator on the tile should be
 	if modified and current_tile["primary_resource"] != -1:
 		if current_tile["resources"][current_tile["primary_resource"]] < Game.PRIMARY_RESOURCE_MIN:
@@ -1778,11 +1780,10 @@ func acquire_resources():
 		Game.modified_tiles[current_tile["location"]] = {}
 		
 		for property in current_tile.keys():
-			if property != "location":
-				Game.modified_tiles[current_tile["location"]][property] = current_tile[property]
+			Game.modified_tiles[current_tile["location"]][property] = current_tile[property]
 	
 	if modified:
-		use_resources("acquire_resources")
+		energy -= energy_cost
 		
 	return modified
 

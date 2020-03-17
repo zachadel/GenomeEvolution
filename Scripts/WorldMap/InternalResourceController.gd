@@ -114,18 +114,17 @@ func set_organism(org):
 #cfp_resources[resource_class][resource] = value
 #should not be called when selected_resources has stuff
 func update_resources(cfp_resources: Dictionary):
-	if !selected:
-		for resource_class in cfp_resources:
-			for resource in cfp_resources[resource_class]:
+	for resource_class in cfp_resources:
+		for resource in cfp_resources[resource_class]:
+			
+			if resource != "total":
+				var diff = len(resources[resource_class][resource]) - cfp_resources[resource_class][resource]
 				
-				if resource != "total":
-					var diff = len(resources[resource_class][resource]) - cfp_resources[resource_class][resource]
-					
-					#means we have too few resources
-					if diff < 0:
-						add_resource(resource, int(abs(diff)))
-					elif diff > 0:
-						remove_resource_by_name(resource, diff)
+				#means we have too few resources
+				if diff < 0:
+					add_resource(resource, int(abs(diff)))
+				elif diff > 0:
+					remove_resource_by_name(resource, diff)
 
 func add_resource(resource_name: String, amount: int = 1):
 	
