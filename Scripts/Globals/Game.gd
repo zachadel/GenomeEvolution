@@ -58,7 +58,7 @@ const VALID = 1
 const INVALID = 0
 const VALID_INTERACTIONS = {
 	"simple_carbs": {
-		"simple_carbs": VALID,
+		"simple_carbs": INVALID,
 		"complex_carbs": VALID,
 		"simple_fats": VALID,
 		"complex_fats": INVALID,
@@ -68,7 +68,7 @@ const VALID_INTERACTIONS = {
 	},
 	"complex_carbs": {
 		"simple_carbs": VALID,
-		"complex_carbs": VALID,
+		"complex_carbs": INVALID,
 		"simple_fats": INVALID, 
 		"complex_fats": INVALID, 
 		"simple_proteins": INVALID, 
@@ -78,7 +78,7 @@ const VALID_INTERACTIONS = {
 	"simple_fats": {
 		"simple_carbs": VALID,
 		"complex_carbs": INVALID,
-		"simple_fats": VALID, 
+		"simple_fats": INVALID, 
 		"complex_fats": VALID,
 		"simple_proteins": VALID,
 		"complex_proteins": INVALID,
@@ -88,7 +88,7 @@ const VALID_INTERACTIONS = {
 		"simple_carbs": INVALID,
 		"complex_carbs": INVALID,
 		"simple_fats": VALID,
-		"complex_fats": VALID,
+		"complex_fats": INVALID,
 		"simple_proteins": INVALID,
 		"complex_proteins": INVALID,
 		"energy": INVALID
@@ -98,7 +98,7 @@ const VALID_INTERACTIONS = {
 		"complex_carbs": INVALID,
 		"simple_fats": VALID,
 		"complex_fats": INVALID,
-		"simple_proteins": VALID, 
+		"simple_proteins": INVALID, 
 		"complex_proteins": VALID,
 		"energy": VALID
 	},
@@ -142,71 +142,7 @@ var round_num
 var all_time_players = 0
 var current_players = 0
 
-var settings = {}
 var current_cell_string = "cell_1"
-#################################SETTINGS VALUES###############################
-#const default_settings = {
-#	#Settings for the WorldMap scene
-#	"WorldMap": {
-#		#Settings pertaining to the BiomeMap
-#		"BiomeMap": {
-#			#Parameters governing the noise generator
-#			"Generator": {
-#				"seed":  0,
-#				"octaves": 3,
-#				"period": 20,
-#				"persistence": .1,
-#				"lacunarity": .7
-#			},
-#			#
-#			"number_of_biomes": 8,
-#			"Biome_Ranges": {
-#				"fire": [-1, -.7]
-#			}
-#		},
-#
-#		"ResourceMap": {
-#			"Generator": {
-#				"seed":  0,
-#				"octaves": 8,
-#				"period": 5,
-#				"persistence": .1,
-#				"lacunarity": .7
-#			},
-#			"number_of_resources": 4,
-#			"Resource_Biomes":{
-#				RESOURCES.vitamin: BIOMES.mountain,
-#				RESOURCES.lipid: BIOMES.shallow,
-#				RESOURCES.carb: BIOMES.grass,
-#				RESOURCES.protein: BIOMES.ocean
-#			}
-#		},
-#
-#		"TiebreakGenerator": {
-#			"seed": 0,
-#			"octaves": 3,
-#			"period": 40,
-#			"persistence": 1,
-#			"lacunarity": 1
-#		}
-#	},
-#	"Chance": {
-#		"base_rolls": {
-#			# Lose one, no complications, copy intervening, duplicate a gene at the site
-#			"copy_repair": [1.6, 1.6, 5, 2],
-#
-#			# Lose one, no complications, duplicate a gene at the site
-#			"join_ends": [5, 3, 2],
-#
-#			# none, death, major up, major down, minor up, minor down
-#			"evolve": [10, 0, 5, 4, 15, 14]
-#		}
-#
-#	}
-#}
-#
-#var settings = default_settings
-###############################################################################
 
 var card_table
 
@@ -516,6 +452,25 @@ func get_class_from_name(resource_name: String):
 		return resources[resource_name]["tier"] #returns the charge
 	else:
 		return Game.resources[resource_name]["tier"] + Game.SEPARATOR + Game.resources[resource_name]["group"]
+
+func get_cfp_resource_names() -> Array:
+	var arr = []
+	
+	for resource in Game.resources:
+		if Game.resources[resource]["group"] in CFP_RESOURCES:
+			arr.append(resource)
+			
+	return arr
+	
+func get_mineral_resource_names() -> Array:
+	var arr = []
+	
+	for resource in Game.resources:
+		if Game.resources[resource]["group"] == "minerals":
+			arr.append(resource)
+			
+	return arr
+
 
 func find_resource_biome_index(resource_index, biome_index):
 	return Game.resources[Game.resources.keys()[resource_index]]["biomes"].find(Game.biomes.keys()[biome_index])

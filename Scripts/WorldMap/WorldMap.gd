@@ -287,6 +287,9 @@ func enable_camera():
 	$MapCamera.make_current()
 	$MapCamera.zoom = Vector2(1, 1)
 
+func update_vision():
+	astar.change_radius(current_player.organism.get_vision_radius(), funcref(self, "costs"))
+
 #Enter the use case as an int from Game.PLAYER_VIEW
 #In the case of the title screen, the map is hidden, so this is not necessary
 func set_input(player_state: int):

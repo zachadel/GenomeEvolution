@@ -320,7 +320,7 @@ func collapse_gaps():
 		if _close.size() == 0:
 			yield(get_tree(), "idle_frame");
 		for g in _close:
-			yield(close_gap(g), "completed");
+			yield(close_gap(g), "completed"); #crash when waiting for transposon action to finish "First argument of yield() not of type object"
 	return gap_list.size();
 
 func silence_ates(ids):

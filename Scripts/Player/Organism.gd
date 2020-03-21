@@ -29,6 +29,10 @@ const NECESSARY_OXYGEN_LEVEL = 75
 const LARGEST_MULTIPLIER = 2
 const OXYGEN_ACTIONS = ["energy_to_simple", "simple_to_simple", "simple_to_complex", "complex_to_simple", "simple_to_energy"]
 
+const MITOSIS_SPLITS = 2
+const MEIOSIS_SPLITS = 4
+
+
 #cfp_resources[resource_class][resource_name] = value
 #cfp_resources[resource_class]["total"] = sum of all values held in resource_class
 var cfp_resources = {}
@@ -1104,6 +1108,15 @@ func replicate(idx):
 				
 				prune_cmsms(2);
 				use_resources("replicate_mitosis");
+				
+				var cfp_splits = split_cfp_resources(MITOSIS_SPLITS)
+				var mineral_splits = split_mineral_resources(MITOSIS_SPLITS)
+				var energy_split = split_energy(MITOSIS_SPLITS)
+				
+				cfp_resources = cfp_splits[randi() % MITOSIS_SPLITS]
+				mineral_splits = mineral_splits[randi() % MITOSIS_SPLITS]
+				energy = energy_split
+				
 				num_progeny += 1;
 			1: # Meiosis
 				rep_type = "meiosis";
@@ -1114,6 +1127,15 @@ func replicate(idx):
 				
 				prune_cmsms(1);
 				use_resources("replicate_meiosis");
+				
+				var cfp_splits = split_cfp_resources(MEIOSIS_SPLITS)
+				var mineral_splits = split_mineral_resources(MEIOSIS_SPLITS)
+				var energy_split = split_energy(MEIOSIS_SPLITS)
+				
+				cfp_resources = cfp_splits[randi() % MEIOSIS_SPLITS]
+				mineral_splits = mineral_splits[randi() % MEIOSIS_SPLITS]
+				energy = energy_split
+				
 				cmsms.add_cmsm(get_random_gene_from_pool(), true);
 				num_progeny += 3;
 		
@@ -1123,6 +1145,7 @@ func replicate(idx):
 		emit_signal("doing_work", false);
 		emit_signal("justnow_update", "Reproduced by %s." % rep_type);
 		perform_anims(true);
+		
 func get_missing_ess_classes():
 	var b_prof = get_behavior_profile();
 	var missing = [];
@@ -1282,7 +1305,7 @@ func get_processed_energy_value(resource: String) -> float:
 	return processed_energy
 
 func get_energy_cost(action, amount = 1):
-	var cost = costs[action]["energy"] * get_cost_mult(action) * Game.resource_mult * amount
+	var cost = costs[action]["energy"] * get_cost_mult(action) * amount
 	
 	if action in OXYGEN_ACTIONS:
 		var oxygen_multiplier = get_oxygen_multiplier(current_tile["hazards"]["oxygen"])
@@ -1302,7 +1325,7 @@ func get_cfp_cost(action, resource, amount = 1):
 	var minimum_cost = 0
 	
 	if resource in costs[action]: #if we are asking for totals
-		cost = costs[action][resource] * get_cost_mult(action) * Game.resource_mult * amount
+		cost = costs[action][resource] * get_cost_mult(action) * amount
 	
 		if costs[action][resource] > 0:
 			minimum_cost = 1
@@ -1310,7 +1333,7 @@ func get_cfp_cost(action, resource, amount = 1):
 	elif resource in Game.resources: #if its just a generic resource name
 		var resource_class = Game.get_class_from_name(resource)
 		
-		cost = costs[action][resource_class] * get_cost_mult(action) * Game.resource_mult * amount
+		cost = costs[action][resource_class] * get_cost_mult(action) * amount
 	
 		if costs[action][resource_class] > 0:
 			minimum_cost = 1
@@ -1327,7 +1350,7 @@ func get_mineral_cost(action, mineral, amount = 1):
 	var minimum_cost = 0
 	
 	if mineral in costs[action]: #if we are asking for totals
-		cost = costs[action][mineral] * get_cost_mult(action) * Game.resource_mult * amount
+		cost = costs[action][mineral] * get_cost_mult(action) * amount
 	
 		if costs[action][mineral] > 0:
 			minimum_cost = 1
@@ -1335,7 +1358,7 @@ func get_mineral_cost(action, mineral, amount = 1):
 	elif mineral in Game.resources: #if its just a generic resource name
 		var resource_class = Game.get_class_from_name(mineral)
 		
-		cost = costs[action][resource_class] * get_cost_mult(action) * Game.resource_mult * amount
+		cost = costs[action][resource_class] * get_cost_mult(action) * amount
 	
 		if costs[action][resource_class] > 0:
 			minimum_cost = 1
@@ -1787,39 +1810,6 @@ func acquire_resources():
 		
 	return modified
 
-#downgrades cfp_resources[resource][tier] to cfp_resources[resource][tier - 1]
-#or energy if tier = 0
-#NOTE: If this fails, nothing is done internally
-#The two fail cases are: the amount is more than what is there
-#the second is there is not enough room to store the newly converted resources
-#func downgrade_internal_cfp_resource(resource, amount = 1):
-#	var cost_mult = get_cost_mult("tier_downgrade")
-#	var downgraded_amount = 0
-#
-#	if amount <= cfp_resources[resource][tier]:
-#		downgraded_amount = amount * Game.resources[resource]
-#
-#		if tier == 0:
-#			if downgraded_amount * (1 + current_tile["hazards"]["oxygen"] / Game.hazards["oxygen"]["max"]) + energy <= MAX_ENERGY:
-#				downgraded_amount = downgraded_amount * (1 + current_tile["hazards"]["oxygen"] / Game.hazards["oxygen"]["max"])
-#				energy += downgraded_amount
-#				cfp_resources[resource][tier] -= amount
-#			else:
-#				downgraded_amount = 0
-#		elif energy >= costs["tier_downgrade"]["energy"] * cost_mult * Game.resource_mult * amount:
-#			if downgraded_amount - amount + get_total_cfp_stored() <= max_cfp_stored:
-#				cfp_resources[resource][tier] -= amount
-#				cfp_resources[resource][tier - 1] += downgraded_amount
-#				energy -= costs["tier_downgrade"]["energy"] * cost_mult * Game.resource_mult * amount
-#			else:
-#				downgraded_amount = 0
-#
-#	if downgraded_amount > 0:
-#		emit_signal("energy_changed", energy)
-#		emit_signal("resources_changed", cfp_resources, mineral_resources)
-#
-#	return downgraded_amount		
-
 #upgrades cfp_resources["simple_#"][resource] to cfp_resources["complex_#"][Game.resources[resource]["upgraded_form"]
 #We can consider adding in manipulation/construction values to reduce the tier_conversion later
 #amount is the amount of resource_from units to be used in the conversion
@@ -1856,7 +1846,7 @@ func upgrade_cfp_resource(resource_from: String, amount: int):
 			else:
 				break
 	
-	return {"new_resource_amount": upgraded_amount, "leftover_resource_amount": leftover_resources, "new_resource_name": upgraded_form}
+	return {"new_resource_amount": total_upgraded, "leftover_resource_amount": leftover_resources, "new_resource_name": upgraded_form}
 
 func upgrade_energy(resource_to: String, amount_to: int = 1):
 	var upgraded_amount = 0
@@ -2173,7 +2163,135 @@ func process_cfp_resources(resources: Dictionary, container_name: String) -> Dic
 	results = merge_dictionaries(simple_results, complex_results)
 		
 	return results
+
+func split_energy(num_splits: int) -> float:
+	return energy / num_splits
+
+#Requires (for reasonable integer results) that every resource 
+#Call this function and set its result equal to cfp_resources AFTER using all
+#resources for the operation
+func split_cfp_resources(num_splits: int) -> Array:
+	var cfp_splits = []
 	
+	for i in range(num_splits):
+		var new_dict = {}
+		
+		for resource_class in cfp_resources:
+			new_dict[resource_class] = {}
+			for resource in cfp_resources[resource_class]:
+				new_dict[resource_class][resource] = 0
+				
+		cfp_splits.append(new_dict)
+		
+	#Begin looping through resources
+	for resource_class in cfp_resources:
+		if cfp_resources[resource_class]["total"] > 0:
+			for resource in cfp_resources[resource_class]:
+				if resource != "total":
+					#Get the total amount of resources for this split
+					var resource_total = int(cfp_resources[resource_class][resource])
+					#Ge
+					var amount = max(resource_total / num_splits, 1)
+					
+					while(resource_total > 0):
+						for i in range(num_splits):
+							if resource_total >= amount:
+								cfp_splits[i][resource_class][resource] += amount
+								resource_total -= amount
+							elif resource_total > 0:
+								cfp_splits[i][resource_class][resource] += 1
+								resource_total -= 1
+							else:
+								break
+		
+	return cfp_splits
+	
+#resources for the operation
+func split_mineral_resources(num_splits: int) -> Array:
+	var mineral_splits = []
+	
+	for i in range(num_splits):
+		var new_dict = {}
+		
+		for resource_class in mineral_resources:
+			new_dict[resource_class] = {}
+			for resource in mineral_resources[resource_class]:
+				new_dict[resource_class][resource] = 0
+				
+		mineral_splits.append(new_dict)
+		
+	#Begin looping through resources
+	for resource_class in mineral_resources:
+		if mineral_resources[resource_class]["total"] > 0:
+			for resource in mineral_resources[resource_class]:
+				if resource != "total":
+					#Get the total amount of resources for this split
+					var resource_total = int(mineral_resources[resource_class][resource])
+					#Ge
+					var amount = max(resource_total / num_splits, 1)
+					
+					while(resource_total > 0):
+						for i in range(num_splits):
+							if resource_total >= amount:
+								mineral_splits[i][resource_class][resource] += amount
+								resource_total -= amount
+							elif resource_total > 0:
+								mineral_splits[i][resource_class][resource] += 1
+								resource_total -= 1
+							else:
+								break
+		
+	return mineral_splits
+	
+func get_total_cfp_resources() -> int:
+	var total = 0
+	
+	for resource_class in cfp_resources:
+		total += cfp_resources[resource_class]["total"]
+	
+	return total	
+	
+func get_total_cfp_resource_names() -> int:
+	var total = 0
+	for resource_class in cfp_resources:
+		total += len(cfp_resources[resource_class].keys()) - 1 #-1 to account for "total"
+		
+	return total
+	
+func get_cfp_resource_names() -> Array:
+	var names = []
+	
+	for resource_class in cfp_resources:
+		for resource in cfp_resources[resource_class]:
+			if resource != "total":
+				names.append(resource)
+				
+	return names
+	
+func get_total_mineral_resource_names() -> int:
+	var total = 0
+	for resource_class in mineral_resources:
+		total += len(mineral_resources[resource_class].keys()) - 1
+		
+	return total
+	
+func get_mineral_resource_names() -> Array:
+	var names = []
+	
+	for resource_class in mineral_resources:
+		for resource in mineral_resources[resource_class]:
+			if resource != "total":
+				names.append(resource)
+				
+	return names
+	
+func get_total_mineral_resources() -> int:
+	var total = 0
+	
+	for resource_class in mineral_resources:
+		total += mineral_resources[resource_class]["total"]
+		
+	return total
 #
 func merge_dictionaries(merged_dictionary: Dictionary, to_be_merged: Dictionary) -> Dictionary:
 	
@@ -2233,7 +2351,6 @@ func _on_chromes_on_cmsm_changed():
 	refresh_bprof = true;
 	emit_signal("cmsm_changed");
 
-###########LOCOMOTION IS BROKEN AND THE COSTS ARE WRONG
 ####################################SENSING AND LOCOMOTION#####################
 #This is what you can directly see, not counting the cone system
 func get_vision_radius():
@@ -2243,8 +2360,8 @@ func get_vision_radius():
 #biome is an integer
 func get_locomotion_cost(biome):
 	if typeof(biome) == TYPE_INT:
-		return Game.biomes[Game.biomes.keys()[biome]]["base_cost"]
+		return Game.biomes[Game.biomes.keys()[biome]]["base_cost"] * get_cost_mult("move") 
 	elif typeof(biome) == TYPE_STRING:
-		return Game.biomes[biome]["base_cost"]
+		return Game.biomes[biome]["base_cost"] * get_cost_mult("move")
 	else:
 		return -1
