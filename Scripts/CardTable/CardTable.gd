@@ -259,6 +259,7 @@ func _on_btn_saveload_pressed():
 
 func _on_pnl_saveload_loaded():
 	nxt_btn.disabled = false;
+	has_gaps = false; # Should be false at the start of every new turn, incl. after loading
 	_on_Organism_justnow_update("Loaded from a save.");
 
 func _on_Organism_show_reprod_opts(show):
