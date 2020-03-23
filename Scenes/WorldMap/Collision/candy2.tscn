@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scenes/WorldMap/Collision/ResourceCollision.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Assets/Images/Tiles/Resources/candy_2.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Images/Tiles/Resources/candy2.png" type="Texture" id=2]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 2.98999

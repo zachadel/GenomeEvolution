@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Scripts/CardTable/CardTable.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player/Organism.tscn" type="PackedScene" id=2]
@@ -11,7 +11,6 @@
 [ext_resource path="res://Assets/Images/icons/skip_rep.png" type="Texture" id=9]
 [ext_resource path="res://Scripts/CardTable/pnl_saveload.gd" type="Script" id=10]
 [ext_resource path="res://Scripts/CardTable/pnl_ph_filter.gd" type="Script" id=11]
-[ext_resource path="res://Assets/Images/Cells/body/body_cell_1_button.svg" type="Texture" id=12]
 [ext_resource path="res://Assets/Fonts/OpenSans-22.tres" type="DynamicFont" id=13]
 [ext_resource path="res://Scenes/WorldMap/EnergyBar.tscn" type="PackedScene" id=14]
 [ext_resource path="res://Scenes/CardTable/TurnList.tscn" type="PackedScene" id=15]
@@ -481,9 +480,8 @@ margin_left = 98.0
 margin_top = 737.0
 margin_right = -1199.0
 margin_bottom = -10.5001
-texture_normal = ExtResource( 12 )
 expand = true
-stretch_mode = 4
+stretch_mode = 5
 __meta__ = {
 "_edit_use_anchors_": false
 }

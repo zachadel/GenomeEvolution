@@ -45,6 +45,7 @@ var ate_personality := {};
 const CODE_LENGTH = 7;
 var gene_code := "";
 var parent_code := "";
+var code_direction := false;
 
 var DEFAULT_SIZE = 200;
 var MIN_SIZE = 125;
@@ -69,7 +70,7 @@ func _ready():
 		get_node("Indic%s" % k).ttip_data = [k, "base"];
 	
 	if type == "gene":
-		set_code_arrow_dir(false);
+		set_code_arrow_dir(code_direction);
 	if setup_ate_display_onready || mode == "ate" && !AnthroArt.has_art():
 		setup_ate_art();
 		upd_display();
@@ -106,7 +107,7 @@ func _perf_ate_art_setup():
 	if is_pseudo():
 		AnthroArt.safe_callv("set_eye_droop", [1.0]);
 
-func setup(_type : String, _id := "", _mode := "", _code := "", _par_code := "", _ph := -1.0):
+func setup(_type : String, _id := "", _mode := "", _code := "", _par_code := "", _ph := -1.0, _code_dir := false):
 	id = _id;
 	type = _type;
 	mode = _mode;
@@ -120,6 +121,7 @@ func setup(_type : String, _id := "", _mode := "", _code := "", _par_code := "",
 		randomize_code();
 	else:
 		gene_code = _code;
+	code_direction = _code_dir;
 	
 	if _par_code.empty():
 		parent_code = gene_code;
@@ -174,6 +176,7 @@ func setup_copy(ref_elm):
 				obtain_ate_personality(ref_elm.ate_personality["key"]);
 	upd_display();
 	
+	code_direction = ref_elm.code_direction;
 	if ref_elm.mode != "ate":
 		texture_normal = tex;
 		texture_pressed = tex;
@@ -182,7 +185,7 @@ func setup_copy(ref_elm):
 	disable(true);
 
 func get_save_data():
-	var elm_data = ["type", "id", "mode", "gene_code", "parent_code", "ph_preference"];
+	var elm_data = ["type", "id", "mode", "gene_code", "parent_code", "ph_preference", "code_direction"];
 	for i in range(elm_data.size()):
 		elm_data[i] = get(elm_data[i]);
 	var ate_id_key = Game.get_ate_key_by_name(elm_data[1]);
@@ -292,11 +295,12 @@ func reverse_code():
 	for c in gc:
 		gene_code = c + gene_code;
 	upd_display();
-	set_code_arrow_dir(!CodeArrow.flip_h);
+	set_code_arrow_dir(!code_direction);
 
 func set_code_arrow_dir(left : bool):
 	CodeArrow.visible = true;
 	CodeArrow.flip_h = left;
+	code_direction = left;
 	if left:
 		CodeArrow.self_modulate = Color(0.75, 0.4, 0);
 	else:

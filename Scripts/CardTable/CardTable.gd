@@ -219,6 +219,13 @@ func show():
 	check_if_ready();
 	
 	upd_turn_display(true, true);
+	set_map_btn_texture("res://Assets/Images/Cells/body/body_%s_large.svg" % Game.current_cell_string);
+
+func set_map_btn_texture(texture_path: String) -> void:
+	var tex: Texture = load(texture_path);
+	$ViewMap.texture_normal = tex;
+	$ViewMap.texture_disabled = tex;
+	$ViewMap.texture_pressed = tex;
 
 func check_if_ready():
 	var end_mapturn_on_mapscreen = Game.get_turn_type() == Game.TURN_TYPES.Map && Unlocks.has_turn_unlock(Game.TURN_TYPES.Map);
@@ -299,9 +306,14 @@ func _on_btn_load_pressed():
 	SaveExports.flag_bug($pnl_bugreport/tbox_bugdesc.text);
 	$pnl_bugreport/tbox_bugdesc.text = "";
 	close_extra_menus($pnl_bugreport);
-	
+
 func show_map_button():
+	$ViewMap.disabled = false;
 	$ViewMap.show()
-	
+
 func hide_map_button():
-	$ViewMap.hide()
+	$ViewMap.disabled = true;
+	
+	# The cell should always be visible?
+	#$ViewMap.hide()
+	$ViewMap/Label.hide()
