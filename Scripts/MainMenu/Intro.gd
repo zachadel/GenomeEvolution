@@ -22,8 +22,7 @@ func _on_Skip_pressed():
 func _on_Next_pressed():
 	var slide = get_children()[current_slide]
 	slide.hide()
-	print(current_slide)
-	print(get_child_count())
+
 	if current_slide < get_child_count() - 2:
 		current_slide += 1
 		var next_slide = get_children()[current_slide]

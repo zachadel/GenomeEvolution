@@ -1785,7 +1785,6 @@ func acquire_resources():
 	else:
 		modified = false		
 		
-	print('stop')
 	#Reestablish what the new primary_resource indicator on the tile should be
 	if modified and current_tile["primary_resource"] != -1:
 		if current_tile["resources"][current_tile["primary_resource"]] < Game.PRIMARY_RESOURCE_MIN:
@@ -2355,12 +2354,12 @@ func _on_chromes_on_cmsm_changed():
 #This is what you can directly see, not counting the cone system
 func get_vision_radius():
 	return floor(get_behavior_profile().get_behavior("Sensing"))
-
+	
 #Cost to move over a particular tile type
 #biome is an integer
 func get_locomotion_cost(biome):
 	if typeof(biome) == TYPE_INT:
-		return Game.biomes[Game.biomes.keys()[biome]]["base_cost"] * get_cost_mult("move") 
+		return Game.biomes[Game.biomes.keys()[biome]]["base_cost"] * get_cost_mult("move")
 	elif typeof(biome) == TYPE_STRING:
 		return Game.biomes[biome]["base_cost"] * get_cost_mult("move")
 	else:

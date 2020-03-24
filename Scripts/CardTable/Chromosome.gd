@@ -32,6 +32,7 @@ func perform_anims(perform):
 func get_genes():
 	return get_children();
 
+
 func get_behavior_profile():
 	var behavior_profile = {};
 	for g in get_genes():

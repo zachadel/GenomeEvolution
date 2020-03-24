@@ -67,8 +67,36 @@ var input_elements = {
 
 enum player_vision {HIDDEN, NOT_VISIBLE, VISIBLE}
 
+func get_secondary_resource_max() -> int:
+	match(Settings.get_setting("resource_abundance")):
+		"Rare": 
+			return 0
+		"Normal":
+			return 1
+		"Abundant": 
+			return 3
+		var _x:
+			print("ERROR: Invalid resource_abundance setting of %s" % [Settings.get_setting("resource_abundance")])
+			return -1
+			
+func get_secondary_resource_min() -> int:
+	match(Settings.get_setting("resource_abundance")):
+		"Rare":
+			return 0
+		"Normal":
+			return 0
+		"Abundant": 
+			return 0
+		var _x:
+			print("ERROR: Invalid resource_abundance setting of %s" % [Settings.get_setting("resource_abundance")])
+			return -1
+		
+
 func setup(biome_seed, hazard_seed, resource_seed, tiebreak_seed, _chunk_size, player):
 	Game.modified_tiles = {}
+	Game.SECONDARY_RESOURCE_MAX = get_secondary_resource_max()
+	Game.SECONDARY_RESOURCE_MIN = get_secondary_resource_min()
+	
 	chunk_size = _chunk_size
 	
 	biome_generator = OpenSimplexNoise.new()
@@ -363,7 +391,7 @@ func move_player(pos: Vector3):
 		
 		if len(path_and_cost) > 0 and path_and_cost["total_cost"] <= current_player.organism.energy:
 			tiles_moved = len(path_and_cost) - 1
-			current_player.organism.energy -= path_and_cost["total_cost"]*Game.resource_mult
+			current_player.organism.energy -= path_and_cost["total_cost"]
 			
 			var new_position = Game.map_to_world(pos)
 		
@@ -383,11 +411,13 @@ func shift_maps(position, observed_dict: Dictionary):
 	$BiomeMap.shift_map(position)
 	$ResourceMap.shift_map(position)
 	$ObscurityMap.shift_map(position, observed_dict)
+	pass
 	
 func erase_current_maps():
 	$BiomeMap.erase_current_map()
 	$ResourceMap.erase_current_map()
 	$ObscurityMap.erase_current_map()
+	pass
 	
 func draw_and_center_maps_to(position, observed_tiles: Dictionary):
 	$BiomeMap.draw_and_center_at(position)
