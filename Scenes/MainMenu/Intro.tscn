@@ -536,10 +536,8 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-current_slide = 5
 
 [node name="Cells" type="Control" parent="."]
-visible = false
 margin_right = 1600.0
 margin_bottom = 900.0
 mouse_filter = 2
@@ -1749,6 +1747,7 @@ texture = ExtResource( 18 )
 expand = true
 
 [node name="Transposon" type="Control" parent="."]
+visible = false
 margin_right = 1600.0
 margin_bottom = 900.0
 mouse_filter = 2

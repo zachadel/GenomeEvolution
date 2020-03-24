@@ -8,7 +8,7 @@ extends Control
 export var current_slide = 0
 var cell = preload("res://Scenes/MainMenu/TitleCell.tscn")
 
-const EXPLOSION_NUMBER = 20
+const EXPLOSION_NUMBER = 60
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -49,7 +49,7 @@ func explosion():
 func _on_Cell_Exploded(dna_array):
 	for dna in dna_array:
 		dna.visible = true
-		$Chaos.add_child(dna)
+		$Chaos/ColorRect.add_child(dna)
 
 func _gui_input(event):
 	if event.is_action_pressed("mouse_left"):

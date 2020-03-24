@@ -126,7 +126,7 @@ const RESOURCE_PATH = "res://Scenes/WorldMap/Collision/"
 
 const PRIMARY_RESOURCE_MAX = 10
 const PRIMARY_RESOURCE_MIN = 5
-const SECONDARY_RESOURCE_MAX = 4
+const SECONDARY_RESOURCE_MAX = 1
 const SECONDARY_RESOURCE_MIN = 0
 
 #allows for integers in the biome.cfg file, since there is currently a bug in Godot which prevents reading in floats from nested arrays
