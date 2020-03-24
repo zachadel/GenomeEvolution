@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Scripts/MainMenu/title_screen.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Images/pngs/CHAOS.png" type="Texture" id=2]
@@ -14,8 +14,8 @@ _data = {
 [sub_resource type="DynamicFontData" id=2]
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
 
-[sub_resource type="DynamicFont" id=3]
-size = 64
+[sub_resource type="DynamicFont" id=8]
+size = 45
 use_mipmaps = true
 use_filter = true
 font_data = SubResource( 2 )
@@ -35,7 +35,7 @@ corner_radius_bottom_left = 30
 corner_detail = 20
 shadow_color = Color( 0.282353, 0.282353, 0.282353, 1 )
 
-[sub_resource type="StyleBoxFlat" id=5]
+[sub_resource type="StyleBoxFlat" id=9]
 bg_color = Color( 0.341176, 0.545098, 0.788235, 1 )
 border_width_left = 10
 border_width_top = 10
@@ -69,11 +69,11 @@ Button/colors/font_color_disabled = Color( 0, 0, 0, 1 )
 Button/colors/font_color_hover = Color( 0.341176, 0.545098, 0.788235, 1 )
 Button/colors/font_color_pressed = Color( 0, 0, 0, 1 )
 Button/constants/hseparation = 2
-Button/fonts/font = SubResource( 3 )
+Button/fonts/font = SubResource( 8 )
 Button/styles/disabled = null
 Button/styles/focus = null
 Button/styles/hover = SubResource( 4 )
-Button/styles/normal = SubResource( 5 )
+Button/styles/normal = SubResource( 9 )
 Button/styles/pressed = SubResource( 6 )
 CheckBox/colors/font_color = Color( 0, 0, 0, 1 )
 CheckBox/colors/font_color_disabled = Color( 0, 0, 0, 1 )
@@ -482,6 +482,12 @@ WindowDialog/icons/close = null
 WindowDialog/icons/close_highlight = null
 WindowDialog/styles/panel = null
 
+[sub_resource type="DynamicFont" id=3]
+size = 64
+use_mipmaps = true
+use_filter = true
+font_data = SubResource( 2 )
+
 [node name="TitleScreen" type="Control"]
 margin_right = 1600.0
 margin_bottom = 900.0
@@ -505,7 +511,7 @@ anchor_right = 1.0
 margin_left = -1600.0
 margin_bottom = 900.0
 mouse_filter = 2
-color = Color( 0.0442505, 0.0577546, 0.566406, 1 )
+color = Color( 0.0431373, 0.0588235, 0.564706, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -559,7 +565,7 @@ margin_right = 494.0
 margin_bottom = 108.0
 focus_mode = 0
 theme = SubResource( 7 )
-custom_styles/normal = SubResource( 5 )
+custom_styles/normal = SubResource( 9 )
 custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 0.341176, 0.545098, 0.788235, 1 )
@@ -575,7 +581,7 @@ margin_right = 494.0
 margin_bottom = 246.0
 focus_mode = 0
 theme = SubResource( 7 )
-custom_styles/normal = SubResource( 5 )
+custom_styles/normal = SubResource( 9 )
 custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 0.341176, 0.545098, 0.788235, 1 )
@@ -588,7 +594,7 @@ margin_right = 494.0
 margin_bottom = 384.0
 focus_mode = 0
 theme = SubResource( 7 )
-custom_styles/normal = SubResource( 5 )
+custom_styles/normal = SubResource( 9 )
 custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 0.341176, 0.545098, 0.788235, 1 )

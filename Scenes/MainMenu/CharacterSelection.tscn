@@ -114,10 +114,8 @@ custom_colors/default_color = Color( 0, 0, 0, 1 )
 custom_constants/table_vseparation = 0
 bbcode_enabled = true
 bbcode_text = "[center][wave amp=30
- freq=2]I'm a friendly transposon!
-Please select your cell on the left and change settings on the right![/wave][/center]"
-text = "I'm a friendly transposon!
-Please select your cell on the left and change settings on the right!"
+ freq=2]Please select your cell on the left and change settings on the right![/wave][/center]"
+text = "Please select your cell on the left and change settings on the right!"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": true
