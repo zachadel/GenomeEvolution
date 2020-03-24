@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Scripts/MainMenu/title_screen.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Images/pngs/CHAOS.png" type="Texture" id=2]
@@ -15,7 +15,7 @@ _data = {
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
 
 [sub_resource type="DynamicFont" id=3]
-size = 64
+size = 45
 use_mipmaps = true
 use_filter = true
 font_data = SubResource( 2 )
@@ -482,6 +482,12 @@ WindowDialog/icons/close = null
 WindowDialog/icons/close_highlight = null
 WindowDialog/styles/panel = null
 
+[sub_resource type="DynamicFont" id=8]
+size = 64
+use_mipmaps = true
+use_filter = true
+font_data = SubResource( 2 )
+
 [node name="TitleScreen" type="Control"]
 margin_right = 1600.0
 margin_bottom = 900.0
@@ -505,7 +511,7 @@ anchor_right = 1.0
 margin_left = -1600.0
 margin_bottom = 900.0
 mouse_filter = 2
-color = Color( 0.0442505, 0.0577546, 0.566406, 1 )
+color = Color( 0.0431373, 0.0588235, 0.564706, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -560,7 +566,7 @@ margin_bottom = 108.0
 focus_mode = 0
 theme = SubResource( 7 )
 custom_styles/normal = SubResource( 5 )
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 8 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 0.341176, 0.545098, 0.788235, 1 )
 enabled_focus_mode = 0
@@ -570,26 +576,27 @@ __meta__ = {
 }
 
 [node name="Continue" type="Button" parent="ButtonContainer"]
+visible = false
 margin_top = 138.0
 margin_right = 494.0
 margin_bottom = 246.0
 focus_mode = 0
 theme = SubResource( 7 )
 custom_styles/normal = SubResource( 5 )
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 8 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 0.341176, 0.545098, 0.788235, 1 )
 enabled_focus_mode = 0
 text = "Continue"
 
 [node name="Exit" type="Button" parent="ButtonContainer"]
-margin_top = 276.0
+margin_top = 138.0
 margin_right = 494.0
-margin_bottom = 384.0
+margin_bottom = 246.0
 focus_mode = 0
 theme = SubResource( 7 )
 custom_styles/normal = SubResource( 5 )
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 8 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 0.341176, 0.545098, 0.788235, 1 )
 enabled_focus_mode = 0

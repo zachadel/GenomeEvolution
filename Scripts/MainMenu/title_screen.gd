@@ -45,7 +45,7 @@ func _on_Cell_Exploded(dna_array):
 
 
 func _on_TitleScreen_begin_new_game():
-	get_tree().change_scene("res://Scenes/MainMenu/CharacterSelection.tscn")
+	get_tree().change_scene("res://Scenes/MainMenu/Intro.tscn")
 	pass # Replace with function body.
 
 

@@ -202,9 +202,9 @@ func get_tile_resources(pos):
 		
 		for i in range(len(Game.resources)):
 			if i != primary_resource:
-				resources[i] = int(abs(floor(resource_generator.get_noise_3d(pos.x, pos.y, i) * Game.GEN_SCALING))) % (Game.SECONDARY_RESOURCE_MAX - Game.SECONDARY_RESOURCE_MIN) + Game.SECONDARY_RESOURCE_MIN
+				resources[i] = int(abs(floor(resource_generator.get_noise_3d(pos.x, pos.y, i) * Game.GEN_SCALING))) % (Game.SECONDARY_RESOURCE_MAX - Game.SECONDARY_RESOURCE_MIN + 1) + Game.SECONDARY_RESOURCE_MIN
 			else:
-				resources[i] = int(abs(floor(resource_generator.get_noise_3d(pos.x, pos.y, i) * Game.GEN_SCALING))) % (Game.PRIMARY_RESOURCE_MAX - Game.PRIMARY_RESOURCE_MIN) + Game.PRIMARY_RESOURCE_MIN
+				resources[i] = int(abs(floor(resource_generator.get_noise_3d(pos.x, pos.y, i) * Game.GEN_SCALING))) % (Game.PRIMARY_RESOURCE_MAX - Game.PRIMARY_RESOURCE_MIN + 1) + Game.PRIMARY_RESOURCE_MIN
 	else:
 		resources = Game.modified_tiles[[int(pos.x), int(pos.y)]]["resources"]
 	

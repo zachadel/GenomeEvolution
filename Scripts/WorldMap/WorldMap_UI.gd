@@ -183,16 +183,7 @@ func _on_AcquireResources_pressed():
 #upgrade from energy is broken
 #Seems like energy is quite broken
 func test_functionality():
-	var args = ["butter", 1]
-	print("Test Functionality...")
-	print("Using downgrade_cfp_resource with arguments: ", args, "...\n")
-	var prior = irc.organism.cfp_resources.duplicate(true)
-	var prior_energy = irc.organism.energy
-	irc.organism.downgrade_cfp_resource(args[0], args[1])
-	var diff_dict = get_resource_dict_differences(prior, irc.organism.cfp_resources)
-	print("Difference after function...\n")
-	print_diff_dict(diff_dict)
-	print("Energy difference: ", irc.organism.energy - prior_energy)
+	print(irc.organism.get_vision_radius())
 	pass
 
 func get_resource_dict_differences(cfp_1:Dictionary, cfp_2: Dictionary):
