@@ -270,14 +270,18 @@ func create_gap(truepos = null):
 		truepos = rand_truepos(false);
 	var first_posns = get_cmsm(0).get_child_count();
 	var cmsm_idx = int(truepos > first_posns);
+	var local_pos = truepos;
 	if (cmsm_idx):
-		truepos -= first_posns + 1;
-	var gap;
-	if (do_yields):
-		gap = yield(get_cmsm(cmsm_idx).create_gap(truepos), "completed");
-	else:
-		gap = get_cmsm(cmsm_idx).create_gap(truepos);
-	append_gaplist(gap);
+		local_pos -= first_posns + 1;
+	var cmsm = get_cmsm(cmsm_idx);
+	
+	if cmsm.valid_gap_pos(local_pos):
+		var gap;
+		if (do_yields):
+			gap = yield(cmsm.create_gap(local_pos), "completed");
+		else:
+			gap = cmsm.create_gap(local_pos);
+		append_gaplist(gap);
 
 func remove_elm(elm, place_gap = true):
 	if (elm in ate_list):

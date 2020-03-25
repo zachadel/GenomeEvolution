@@ -243,13 +243,14 @@ func get_elm_anim_duration(distance):
 # CHROMOSOME MODIFICATION FUNCTIONS
 
 func create_gap(pos):
-	var gap = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
-	gap.setup("break");
-	get_cmsm_pair().append_gaplist(gap);
-	if (do_animations):
-		return yield(add_elm(gap, pos), "completed");
-	else:
-		add_elm(gap, pos);
+	if valid_gap_pos(pos):
+		var gap = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
+		gap.setup("break");
+		get_cmsm_pair().append_gaplist(gap);
+		if (do_animations):
+			return yield(add_elm(gap, pos), "completed");
+		else:
+			add_elm(gap, pos);
 
 func move_elm(elm, pos_idx : int):
 	move_child(elm, pos_idx);
