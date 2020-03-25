@@ -47,6 +47,8 @@ func generate_dna(num_dna: int = -1) -> Array:
 		dna.linear_velocity = Vector2(rand_range(dna.MIN_SPEED, dna.MAX_SPEED), 0)
 		dna.linear_velocity = dna.linear_velocity.rotated(direction)
 		
+		dna.modulate = Color(randf(), randf(), randf(), 1)
+		
 		dna_array.append(dna)
 		
 	return dna_array

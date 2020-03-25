@@ -1771,10 +1771,10 @@ func acquire_resources():
 	
 					#Can only accomodate some of the resources
 					else:
+						current_tile["resources"][index] -= (max_capacity - cfp_resources[resource_class]["total"])
+						
 						cfp_resources[resource_class][resource] += (max_capacity - cfp_resources[resource_class]["total"])
 						cfp_resources[resource_class]["total"] = max_capacity
-	
-						current_tile["resources"][index] -= (max_capacity - cfp_resources[resource_class]["total"])
 	
 	else:
 		modified = false		
@@ -1782,6 +1782,7 @@ func acquire_resources():
 	#Reestablish what the new primary_resource indicator on the tile should be
 	if modified and current_tile["primary_resource"] != -1:
 		if current_tile["resources"][current_tile["primary_resource"]] < Game.PRIMARY_RESOURCE_MIN:
+			current_tile["primary_resource"] = -1
 			for index in range(len(current_tile["resources"])):
 				if current_tile["resources"][index] >= Game.PRIMARY_RESOURCE_MIN:
 					current_tile["primary_resource"] = index
