@@ -433,10 +433,10 @@ func apply_boosts():
 # HELPER FUNCTIONS
 
 func valid_gap_pos(idx: int) -> bool:
-	return valid_pos(idx) && !get_child(idx - 1).is_gap() && !get_child(idx + 1).is_gap();
+	return valid_pos(idx, 1) && !get_child(idx - 1).is_gap() && !get_child(idx + 1).is_gap();
 
-func valid_pos(idx: int) -> bool:
-	return idx > 0 && idx < get_child_count()-1;
+func valid_pos(idx: int, ofs := 0) -> bool:
+	return idx >= ofs && idx <= get_child_count()-1-ofs;
 
 func pair_exists(left_elm, right_elm):
 	return get_pairs(left_elm, right_elm, true).size() > 0;
