@@ -53,6 +53,9 @@ rect_min_size = Vector2( 200, 200 )
 mouse_filter = 2
 texture = ExtResource( 3 )
 expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="GrayFilter" type="ColorRect" parent="."]
 visible = false
@@ -81,6 +84,22 @@ margin_bottom = -38.0
 text = "ERROR_code"
 align = 1
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="lbl_affected" type="Label" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -77.0
+margin_bottom = -63.0
+text = "Affected: %+.2f"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="direct_arrow" type="TextureRect" parent="."]
 visible = false

@@ -17,6 +17,10 @@ func _propagate_mouse_entered(elm):
 func _propagate_mouse_exited(elm):
 	emit_signal("elm_mouse_exited", elm);
 
+func _on_cmsm_changed():
+	apply_boosts();
+	emit_signal("cmsm_changed");
+
 var do_animations = false;
 
 func setup(card_table):
@@ -36,12 +40,8 @@ func get_behavior_profile():
 	var behavior_profile = {};
 	for g in get_genes():
 		var g_behave = g.get_ess_behavior();
-		var ph_mult = g.get_ph_mult();
 		for b in g_behave:
-			if (behavior_profile.has(b)):
-				behavior_profile[b] += g_behave[b] * ph_mult;
-			else:
-				behavior_profile[b] = g_behave[b] * ph_mult;
+			behavior_profile[b] = behavior_profile.get(b, 0) + g_behave[b];
 	
 	return behavior_profile;
 
@@ -309,12 +309,12 @@ func add_elm(elm, pos = null):
 	emit_signal("animating", false);
 	yield(get_tree(), "idle_frame");
 	queue_sort();
-	emit_signal("cmsm_changed");
+	_on_cmsm_changed()
 	return elm;
 
 func split_elm(elm):
 	var dupe_elm = Game.copy_elm(elm);
-	var base_behavior = elm.get_ess_behavior();
+	var base_behavior = elm.get_ess_behavior_raw();
 	
 	var half_up = {};
 	var half_down = {};
@@ -373,7 +373,7 @@ func remove_elm(elm):
 	emit_signal("animating", false);
 	set_elms_size();
 	yield(get_tree(), "idle_frame");
-	emit_signal("cmsm_changed");
+	_on_cmsm_changed()
 	queue_sort();
 
 func remove_elm_create_gap(elm):
@@ -414,13 +414,27 @@ func remove_elm_create_gap(elm):
 	set_elms_size();
 	yield(get_tree(), "idle_frame");
 	queue_sort();
-	emit_signal("cmsm_changed");
+	_on_cmsm_changed()
 	return gap;
+
+func apply_boosts():
+	for g in get_children():
+		g.set_boost(0);
+	for g in get_children():
+		var gpos = g.get_index();
+		var aura = g.aura;
+		for i in aura:
+			for p in [gpos - i, gpos + i]:
+				if valid_pos(p):
+					get_child(p).add_boost(aura[i]);
 
 # HELPER FUNCTIONS
 
-func valid_gap_pos(idx):
-	return idx > 0 && idx < get_child_count()-1 && !get_child(idx - 1).is_gap() && !get_child(idx + 1).is_gap();
+func valid_gap_pos(idx: int) -> bool:
+	return valid_pos(idx) && !get_child(idx - 1).is_gap() && !get_child(idx + 1).is_gap();
+
+func valid_pos(idx: int) -> bool:
+	return idx > 0 && idx < get_child_count()-1;
 
 func pair_exists(left_elm, right_elm):
 	return get_pairs(left_elm, right_elm, true).size() > 0;

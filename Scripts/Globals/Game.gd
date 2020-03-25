@@ -296,22 +296,22 @@ func cfg_sec_to_dict(cfg, sec):
 		build[k] = cfg.get_value(sec, k);
 	return build;
 
-func add_int_dicts(dict0, dict1):
+func add_numeric_dicts(dict0: Dictionary, dict1: Dictionary) -> Dictionary:
 	var all_keys = dict0.keys() + dict1.keys()
 	var added_dict := {}
 	for k in all_keys:
-		if not k in added_dict:
-			if (k in dict0 and k in dict1):
+		if !(k in added_dict): # all_keys contains dupes if the key is in both dicts, but we only want them once
+			if (k in dict0 && k in dict1):
 				if (typeof(dict0[k]) == TYPE_DICTIONARY):
 					# This will also add nested dicts
-					added_dict[k] = add_int_dicts(dict0[k], dict1[k]);
+					added_dict[k] = add_numeric_dicts(dict0[k], dict1[k]);
 				else:
-					added_dict[k] = dict0[k] + dict1[k]
+					added_dict[k] = dict0[k] + dict1[k];
 			elif (k in dict0):
-				added_dict[k] = dict0[k]
+				added_dict[k] = dict0[k];
 			else:
-				added_dict[k] = dict1[k]
-	return added_dict
+				added_dict[k] = dict1[k];
+	return added_dict;
 
 func class_to_string(type):
 	return ESSENTIAL_CLASSES.keys()[type];
