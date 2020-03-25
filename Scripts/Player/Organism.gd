@@ -327,7 +327,6 @@ func setup(card_table):
 	is_ai = false;
 	do_yields = true;
 	for type in Game.ESSENTIAL_CLASSES.values():
-		#print("type: " + str(type));
 		energy_allocations[type] = 0;
 	cmsms.setup(card_table);
 

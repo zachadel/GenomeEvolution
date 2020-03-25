@@ -286,8 +286,6 @@ func get_random_code():
 
 func randomize_code():
 	gene_code = get_random_code();
-	if CodeArrow != null:
-		set_code_arrow_dir(false);
 
 func reverse_code():
 	var gc = gene_code;

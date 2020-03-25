@@ -322,7 +322,8 @@ const DEFAULT_ATE_RANGE_BEHAVIOR = {
 	"max_dist": -1, #If this_cmsm is true, this is the largest distance it will move; -1 means the whole chromosome
 	"other_cmsm": true, #Can jump to a spot on the other chromosome
 	"min_range": 0.0, #If other_cmsm is true, this is the leftmost spot as a percentage it will jump to
-	"max_range": 1.0 #If other_cmsm is true, this is the rightmost spot as a percentage it will jump to
+	"max_range": 1.0, #If other_cmsm is true, this is the rightmost spot as a percentage it will jump to
+	"split_chance": 0.03, #The chance this will split a gene upon arrival
 };
 
 func load_personalities(data_name, dict):

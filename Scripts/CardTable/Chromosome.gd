@@ -312,6 +312,26 @@ func add_elm(elm, pos = null):
 	emit_signal("cmsm_changed");
 	return elm;
 
+func split_elm(elm):
+	var dupe_elm = Game.copy_elm(elm);
+	var base_behavior = elm.get_ess_behavior();
+	
+	var half_up = {};
+	var half_down = {};
+	for k in base_behavior:
+		half_up[k] = stepify(base_behavior[k] / 2.0, 0.1);
+		half_down[k] = base_behavior[k] - half_up[k];
+	
+	elm.set_ess_behavior(half_up);
+	dupe_elm.set_ess_behavior(half_down);
+	
+	add_elm(dupe_elm, elm.get_index());
+	
+	elm.randomize_code();
+	dupe_elm.randomize_code();
+	elm.upd_display();
+	dupe_elm.upd_display();
+
 func remove_elm(elm):
 	emit_signal("animating", true);
 	if elm.is_connected("elm_clicked", elm.get_cmsm(), "_propogate_click"):
