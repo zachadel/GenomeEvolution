@@ -369,10 +369,7 @@ func gain_gaps(count = 1):
 			yield(cmsms.create_gap(), "completed");
 		else:
 			cmsms.create_gap();
-	if (do_yields):
-		return yield(cmsms.collapse_gaps(), "completed");
-	else:
-		return cmsms.collapse_gaps();
+	return cmsms.collapse_gaps();
 
 func jump_ates():
 	var _actives = cmsms.ate_list + [];
@@ -407,10 +404,7 @@ func jump_ates():
 				justnow += "%s copied itself to (%d, %d); left no gap.\n" % \
 					([ate.get_gene_name()] + copy_ate.get_position_display());
 	emit_signal("justnow_update", justnow);
-	if (do_yields):
-		yield(cmsms.collapse_gaps(), "completed");
-	else:
-		cmsms.collapse_gaps();
+	cmsms.collapse_gaps();
 
 func get_gene_selection():
 	if (gene_selection.size() > 0):

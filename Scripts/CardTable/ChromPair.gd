@@ -265,7 +265,7 @@ func recombine(elm0, elm1):
 	
 	#There's probably a much simpler way of doing this that involves a lot less looping, but here we are.
 
-func create_gap(truepos = null):
+func create_gap(truepos = null) -> bool:
 	if (truepos == null):
 		truepos = rand_truepos(false);
 	var first_posns = get_cmsm(0).get_child_count();
@@ -282,6 +282,10 @@ func create_gap(truepos = null):
 		else:
 			gap = cmsm.create_gap(local_pos);
 		append_gaplist(gap);
+		return true;
+	if do_yields:
+		yield(get_tree(), "idle_frame");
+	return false;
 
 func remove_elm(elm, place_gap = true):
 	if (elm in ate_list):
@@ -320,11 +324,8 @@ func collapse_gaps():
 			cmsm.get_child(i + 1).is_gap()):
 				_close.append(g);
 	
-	if (do_yields):
-		if _close.size() == 0:
-			yield(get_tree(), "idle_frame");
-		for g in _close:
-			yield(close_gap(g), "completed"); #crash when waiting for transposon action to finish "First argument of yield() not of type object"
+	for g in _close:
+		close_gap(g);
 	return gap_list.size();
 
 func silence_ates(ids):
