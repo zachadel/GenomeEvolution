@@ -17,6 +17,7 @@ var ess_behavior := {
 	"Component": 0.0,
 	"Helper": 0.0
 };
+var aura_boost := 0.0 setget set_boost, get_boost;
 
 
 var specialization = {};
@@ -41,6 +42,7 @@ var ph_preference := 7.0;
 
 var ate_activity := 0.0;
 var ate_personality := {};
+var aura := {};
 
 const CODE_LENGTH = 7;
 var gene_code := "";
@@ -82,6 +84,7 @@ func obtain_ate_personality(personality_id := "") -> void:
 	else:
 		id = personality_id;
 		ate_personality = Game.get_ate_personality_by_key(id);
+	aura = Game.add_numeric_dicts(aura, ate_personality.get("aura", {}));
 	setup_ate_art();
 
 func setup_ate_art():
@@ -192,7 +195,7 @@ func get_save_data():
 	if !ate_id_key.empty():
 		elm_data[1] = ate_id_key;
 	
-	return [elm_data, get_ess_behavior(), get_specialization()];
+	return [elm_data, get_ess_behavior_raw(), get_specialization()];
 
 func load_from_save(save_data):
 	display_locked = true;
@@ -204,7 +207,7 @@ func load_from_save(save_data):
 
 const MAX_PH_MULT = 1.2;
 # with raw_interp=true, this returns a value between 0.0 and 1.0
-func get_ph_mult(compared_to = null, raw_interp = false):
+func get_ph_mult(compared_to = null, raw_interp = false) -> float:
 	if (compared_to == null):
 		var ct = get_organism().current_tile;
 		if (ct.has("hazards")):
@@ -217,6 +220,21 @@ func get_ph_mult(compared_to = null, raw_interp = false):
 		return mult;
 	return mult * MAX_PH_MULT;
 
+func add_boost(b: float) -> void:
+	set_boost(get_boost() + b);
+
+func set_boost(b: float) -> void:
+	aura_boost = stepify(b, 0.1);
+	upd_boost_disp();
+
+func upd_boost_disp():
+	$lbl_affected.visible = aura_boost != 0.0 && is_behavior_gene();
+	if $lbl_affected.visible:
+		$lbl_affected.text = "Affected: %+.1f" % aura_boost;
+
+func get_boost() -> float:
+	return aura_boost;
+
 func set_ess_behavior(dict):
 	for k in dict:
 		if (k == "ate" && is_ate()):
@@ -225,14 +243,26 @@ func set_ess_behavior(dict):
 			ess_behavior[k] = dict[k];
 		upd_behavior_disp(k);
 
-func get_ess_behavior():
-	var d = {};
+func get_ess_behavior_raw() -> Dictionary:
+	var d := {};
 	for k in ess_behavior:
 		if (ess_behavior[k] > 0):
 			d[k] = ess_behavior[k];
 	if is_ate():
 		d["ate"] = ate_activity;
 	return d;
+
+func get_ess_behavior() -> Dictionary:
+	var g_behave := {};
+	var base_behave := get_ess_behavior_raw();
+	
+	var base_total := 0.0;
+	for b in base_behave:
+		base_total += base_behave[b];
+	for b in base_behave:
+		g_behave[b] = g_behave.get(b, 0) +\
+			base_behave[b] * (get_ph_mult() + (get_boost() / base_total));
+	return g_behave;
 
 func get_ate_activity():
 	if is_ate():
@@ -286,8 +316,6 @@ func get_random_code():
 
 func randomize_code():
 	gene_code = get_random_code();
-	if CodeArrow != null:
-		set_code_arrow_dir(false);
 
 func reverse_code():
 	var gc = gene_code;
@@ -370,11 +398,11 @@ func get_merge_priority() -> float:
 func merge_with(other_elm):
 	randomize_code();
 	
-	var bdict = get_ess_behavior();
+	var bdict = get_ess_behavior_raw();
 	var add_dict = {};
 	
 	if other_elm.is_essential():
-		add_dict = other_elm.get_ess_behavior();
+		add_dict = other_elm.get_ess_behavior_raw();
 	elif other_elm.is_ate():
 		add_dict = {"Replication": stepify(other_elm.ate_activity * 0.25, 0.1)};
 	else:
@@ -464,6 +492,7 @@ func evolve_major(gain):
 
 func blank_out_gene():
 	set_texture(null);
+	aura.clear();
 	parent_code = gene_code;
 	mode = "blank";
 
@@ -619,6 +648,8 @@ func upd_display():
 			modulate = forced_comparison_color;
 		else:
 			modulate = Color(1, 1, 1, 1);
+		
+		upd_boost_disp();
 
 func get_cmsm():
 	return get_parent();
@@ -646,6 +677,9 @@ func is_blank():
 
 func is_dead():
 	return is_pseudo() || is_blank();
+
+func is_behavior_gene():
+	return is_ate() || is_essential();
 
 func disable(dis):
 	disabled = dis;

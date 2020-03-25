@@ -357,17 +357,16 @@ func insert_from_behavior(sq_elm, this_cmsm, ref_pos, behave_dict = Game.DEFAULT
 	if (behave_dict["this_cmsm"]):
 		for s in [-1, 1]:
 			var start = ref_pos + s * behave_dict["min_dist"];
-			start = min(this_cmsm.get_child_count()-1, max(0, start));
+			start = clamp(start, 0, this_cmsm.get_child_count());
 			var end = behave_dict["max_dist"];
 			if (end == -1):
 				end = this_cmsm.get_child_count();
-			end = min(this_cmsm.get_child_count() - 1, max(0, ref_pos + s * end));
+			end = clamp(ref_pos + s * end, 0, this_cmsm.get_child_count());
 			
 			if (s == 1):
 				possible_spots += range(start, end + 1); # = [start, start+1, ..., end-1, end]
 			else:
 				possible_spots += range(end + 1, start + 2);
-	var ends_idx = possible_spots.size();
 	# Get spots from the other cmsm
 	if (behave_dict["other_cmsm"]):
 		var start = round(behave_dict["min_range"] * other_cmsm.get_child_count());
@@ -376,20 +375,27 @@ func insert_from_behavior(sq_elm, this_cmsm, ref_pos, behave_dict = Game.DEFAULT
 	
 	# Pick a random spot from the array
 	var rand_idx = randi() % possible_spots.size();
+	var final_idx = possible_spots[rand_idx];
 	# Determine which cmsm to go to
 	var final_cmsm = this_cmsm;
-	if (rand_idx >= ends_idx):
+	if (rand_idx >= possible_spots.size()):
 		final_cmsm = other_cmsm;
 	
+	# If applicable, split the gene at that spot
+	if final_idx < final_cmsm.get_child_count() && randf() <= behave_dict["split_chance"]:
+		var gene_at = final_cmsm.get_child(final_idx);
+		if !gene_at.is_gap():
+			final_cmsm.split_elm(gene_at);
+			final_idx += 1;
 	# Move sq_elm to the picked spot
 	if (sq_elm.mode == "ate" && !ate_list.has(sq_elm)):
 		append_atelist(sq_elm);
-	
 	if (do_yields):
-		yield(final_cmsm.add_elm(sq_elm, possible_spots[rand_idx]), "completed");
+		yield(final_cmsm.add_elm(sq_elm, final_idx), "completed");
 	else:
-		final_cmsm.add_elm(sq_elm, possible_spots[rand_idx]);
-	return rand_idx;
+		final_cmsm.add_elm(sq_elm, final_idx);
+	
+	return final_idx;
 
 func jump_ate(ate_elm):
 	var old_idx = ate_elm.get_index();

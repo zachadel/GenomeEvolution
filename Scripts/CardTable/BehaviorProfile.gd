@@ -7,10 +7,10 @@ const BEHAVIORS = ["Replication", "Locomotion", "Helper", "Manipulation", "Sensi
 const RESOURCES = ["carbs", "fats", "proteins", "minerals"];
 
 func set_bhv_prof(prof_dict0, prof_dict1):
-	bhv_prof_data = Game.add_int_dicts(prof_dict0, prof_dict1);
+	bhv_prof_data = Game.add_numeric_dicts(prof_dict0, prof_dict1);
 
 func set_spec_prof(prof_dict0, prof_dict1):
-	spec_prof_data = Game.add_int_dicts(prof_dict0, prof_dict1);
+	spec_prof_data = Game.add_numeric_dicts(prof_dict0, prof_dict1);
 
 func get_behavior(behavior_key : String) -> float:
 	return bhv_prof_data.get(behavior_key, 0.0);
