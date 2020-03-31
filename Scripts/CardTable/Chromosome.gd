@@ -221,11 +221,6 @@ func load_from_save(elms):
 	for args in elms:
 		var nxt_gelm = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
 		nxt_gelm.load_from_save(args);
-		
-		if (nxt_gelm.is_gap()):
-			get_cmsm_pair().append_gaplist(nxt_gelm);
-		if (nxt_gelm.is_ate()):
-			get_cmsm_pair().append_atelist(nxt_gelm);
 		add_elm(nxt_gelm);
 
 func get_elm_anim_duration(distance):
@@ -246,7 +241,6 @@ func create_gap(pos):
 	if valid_gap_pos(pos):
 		var gap = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
 		gap.setup("break");
-		get_cmsm_pair().append_gaplist(gap);
 		if (do_animations):
 			return yield(add_elm(gap, pos), "completed");
 		else:
@@ -286,8 +280,6 @@ func add_elm(elm, pos = null):
 		
 		add_child(elm);
 		move_child(elm, pos);
-		if (elm.is_ate()):
-			get_cmsm_pair().append_atelist(elm);
 		set_elms_size();
 		
 		if (do_animations):
@@ -410,7 +402,6 @@ func remove_elm_create_gap(elm):
 	gap.connect("elm_clicked", self, "_propogate_click");
 	gap.connect("elm_mouse_entered", self, "_propagate_mouse_entered");
 	gap.connect("elm_mouse_exited", self, "_propagate_mouse_exited");
-	get_cmsm_pair().append_gaplist(gap);
 	
 	emit_signal("animating", false);
 	set_elms_size();

@@ -3,7 +3,10 @@ extends VBoxContainer
 const MAX_NUM_VISIBLE_CMSM = 2;
 
 var ate_list = [] setget ,get_ate_list;
+var ate_list_is_clean = false;
 var gap_list = [] setget ,get_gap_list;
+var gap_list_is_clean = false;
+
 var visible_cmsm = [];
 var recombining = false;  # Used to prevent recombination from triggering evolution conditions
 var do_yields = false;
@@ -113,6 +116,8 @@ func find_disp_cmsm_idx(disp_cmsm):
 	return -1;
 
 func _propagate_cmsm_change():
+	ate_list_is_clean = false;
+	gap_list_is_clean = false;
 	emit_signal("on_cmsm_changed");
 
 func _propagate_cmsm_pick(cmsm):
@@ -162,17 +167,21 @@ func get_other_cmsm(cmsm):
 		return get_cmsm(0);
 
 func get_ate_list():
-	ate_list.clear();
-	for g in get_all_genes():
-		if (g.is_ate()):
-			ate_list.append(g);
+	if !ate_list_is_clean:
+		ate_list.clear();
+		for g in get_all_genes():
+			if (g.is_ate()):
+				ate_list.append(g);
+		ate_list_is_clean = true;
 	return ate_list;
 
 func get_gap_list():
-	gap_list.clear();
-	for g in get_all_genes():
-		if (g.is_gap()):
-			gap_list.append(g);
+	if !gap_list_is_clean:
+		gap_list.clear();
+		for g in get_all_genes():
+			if (g.is_gap()):
+				gap_list.append(g);
+		gap_list_is_clean = true;
 	return gap_list;
 
 func get_max_pos(ends = true):
@@ -217,8 +226,6 @@ func extract_elm(elm, place_gap = true):
 			gap = yield(cmsm.remove_elm_create_gap(elm), "completed");
 		else:
 			gap = cmsm.remove_elm_create_gap(elm);
-		if (gap != null):
-			append_gaplist(gap);
 	else:
 		if (do_yields):
 			yield(cmsm.remove_elm(elm), "completed");
@@ -281,18 +288,12 @@ func create_gap(truepos = null) -> bool:
 			gap = yield(cmsm.create_gap(local_pos), "completed");
 		else:
 			gap = cmsm.create_gap(local_pos);
-		append_gaplist(gap);
 		return true;
 	if do_yields:
 		yield(get_tree(), "idle_frame");
 	return false;
 
-func remove_elm(elm, place_gap = true):
-	if (elm in ate_list):
-		ate_list.erase(elm);
-	if (elm in gap_list):
-		gap_list.erase(elm);
-	
+func remove_elm(elm, place_gap = true):	
 	var displaced;
 	if (do_yields):
 		displaced = yield(extract_elm(elm, place_gap), "completed");
@@ -302,8 +303,6 @@ func remove_elm(elm, place_gap = true):
 	get_organism().seq_elm_deleted(displaced);
 
 func close_gap(gap):
-	if (gap in gap_list):
-		gap_list.erase(gap);
 	if (gap.get_cmsm() != null):
 		if (do_yields):
 			yield(gap.get_cmsm().remove_elm(gap), "completed");
@@ -314,28 +313,22 @@ func close_gap(gap):
 
 func collapse_gaps():
 	var _close = [];
-	for g in gap_list:
+	var _rem = [];
+	for g in get_gap_list():
 		if (g == null):
-			gap_list.erase(g);
+			_rem.append(g);
 		else:
 			var i = g.get_index();
 			var cmsm = g.get_cmsm();
-			if (i == 0 || i == cmsm.get_child_count() - 1 || 
-			cmsm.get_child(i + 1).is_gap()):
+			if cmsm != null &&\
+				(i == 0 || i == cmsm.get_child_count() - 1 || cmsm.get_child(i + 1).is_gap()):
 				_close.append(g);
 	
 	for g in _close:
 		close_gap(g);
+	for g in _rem:
+		gap_list.erase(g);
 	return gap_list.size();
-
-func silence_ates(ids):
-	var _remove = [];
-	for ate in ate_list:
-		if (ate.id in ids):
-			ate.silence_ate();
-			_remove.append(ate);
-	for r in _remove:
-		ate_list.erase(r);
 
 func add_to_truepos(sq_elm, pos):
 	var first_posns = get_cmsm(0).get_child_count();
@@ -393,8 +386,6 @@ func insert_from_behavior(sq_elm, this_cmsm, ref_pos, behave_dict = Game.DEFAULT
 			final_cmsm.split_elm(gene_at);
 			final_idx += 1;
 	# Move sq_elm to the picked spot
-	if (sq_elm.mode == "ate" && !ate_list.has(sq_elm)):
-		append_atelist(sq_elm);
 	if (do_yields):
 		yield(final_cmsm.add_elm(sq_elm, final_idx), "completed");
 	else:
@@ -433,8 +424,6 @@ func insert_ate(ate_elm):
 
 func dupe_elm(elm):
 	var copy_elm = Game.copy_elm(elm);
-	if (copy_elm.mode == "ate"):
-		append_atelist(copy_elm);
 	if (do_yields):
 		yield(elm.get_cmsm().add_elm(copy_elm, elm.get_index()), "completed");
 	else:
@@ -459,7 +448,7 @@ func rand_truepos(allow_ends = true):
 	return rand_val;
 
 func highlight_gaps():
-	for g in gap_list:
+	for g in get_gap_list():
 		g.disable(false);
 
 func highlight_common_genes(highlight_first_cmsm = true, highlight_scnd_cmsm = true):
@@ -495,13 +484,6 @@ func validate_essentials(ess_classes):
 		if (!get_cmsm(0).has_essclass(e) && !get_cmsm(1).has_essclass(e)):
 			return false;
 	return true;
-
-func append_gaplist(gap):
-	if (!(gap in gap_list)):
-		gap_list.append(gap);
-func append_atelist(ate):
-	if (!(ate in ate_list) && ate.is_ate()):
-		ate_list.append(ate);
 
 # GENE SINE FUNCTION ANIMATION:
 

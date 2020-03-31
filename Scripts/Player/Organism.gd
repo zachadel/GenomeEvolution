@@ -91,6 +91,7 @@ signal gene_clicked();
 signal cmsm_picked(cmsm);
 
 signal doing_work(working);
+signal transposon_activity(active);
 signal finished_replication();
 
 signal updated_gaps(has_gaps, gap_text);
@@ -1169,10 +1170,12 @@ func adv_turn(round_num, turn_idx):
 				emit_signal("doing_work", false);
 			Game.TURN_TYPES.TEJump:
 				emit_signal("doing_work", true);
+				emit_signal("transposon_activity", true);
 				if (do_yields):
 					yield(jump_ates(), "completed");
 				else:
 					jump_ates();
+				emit_signal("transposon_activity", false);
 				emit_signal("doing_work", false);
 			Game.TURN_TYPES.RepairBreaks:
 				roll_storage = [{}, {}];

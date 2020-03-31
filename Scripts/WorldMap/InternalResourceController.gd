@@ -109,7 +109,7 @@ func update_energy(energy):
 
 func set_organism(org):
 	organism = org
-	organism.connect("energy_changed", energy_bar, "_on_Organism_energy_changed", [organism.energy])
+	organism.connect("energy_changed", energy_bar, "_on_Organism_energy_changed")
 	
 #cfp_resources[resource_class][resource] = value
 #should not be called when selected_resources has stuff
