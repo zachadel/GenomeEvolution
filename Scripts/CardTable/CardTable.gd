@@ -236,9 +236,10 @@ func check_if_ready():
 	if !nxt_btn.disabled && Game.get_turn_type() != Game.TURN_TYPES.Recombination:
 		$AutoContinue.start();
 
-func close_extra_menus(toggle_menu = null):
+onready var central_menus := [$pnl_saveload, ph_filter_panel, $pnl_bugreport, $ctl_justnow, $pnl_repair_choices, $pnl_reproduce];
+func close_extra_menus(toggle_menu: Control = null) -> void:
 	var restore_justnow = toggle_menu == null;
-	for p in [$pnl_saveload, ph_filter_panel, $pnl_bugreport, $ctl_justnow, $pnl_repair_choices, $pnl_reproduce]:
+	for p in central_menus:
 		if (p == toggle_menu):
 			p.visible = !p.visible;
 			if !p.visible:
@@ -247,6 +248,20 @@ func close_extra_menus(toggle_menu = null):
 			p.visible = false;
 	if restore_justnow:
 		$ctl_justnow.visible = true;
+
+func show_chaos_anim():
+	close_extra_menus($pnl_chaos);
+	$pnl_chaos/Anim.play("show");
+	print("showing");
+
+func hide_chaos_anim():
+	$pnl_chaos/Anim.play("hide");
+	print("hiding");
+
+func _on_chaos_anim_finished(anim_name: String):
+	if anim_name == "hide":
+		print("done hiding");
+		close_extra_menus();
 
 func _on_btn_filter_pressed():
 	close_extra_menus(ph_filter_panel);
@@ -318,3 +333,9 @@ func hide_map_button():
 	# The cell should always be visible?
 	#$ViewMap.hide()
 	$ViewMap/Label.hide()
+
+func _on_Organism_transposon_activity(active):
+	if active:
+		show_chaos_anim();
+	else:
+		hide_chaos_anim();

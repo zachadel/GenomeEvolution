@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://Scripts/CardTable/CardTable.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player/Organism.tscn" type="PackedScene" id=2]
@@ -11,23 +11,189 @@
 [ext_resource path="res://Assets/Images/icons/skip_rep.png" type="Texture" id=9]
 [ext_resource path="res://Scripts/CardTable/pnl_saveload.gd" type="Script" id=10]
 [ext_resource path="res://Scripts/CardTable/pnl_ph_filter.gd" type="Script" id=11]
+[ext_resource path="res://Assets/Images/pngs/CHAOS.png" type="Texture" id=12]
 [ext_resource path="res://Assets/Fonts/OpenSans-22.tres" type="DynamicFont" id=13]
 [ext_resource path="res://Scenes/WorldMap/EnergyBar.tscn" type="PackedScene" id=14]
 [ext_resource path="res://Scenes/CardTable/TurnList.tscn" type="PackedScene" id=15]
 [ext_resource path="res://Scenes/CardTable/DarkenedBG.tres" type="StyleBox" id=16]
 [ext_resource path="res://Scenes/CardTable/LabeledNumber.tscn" type="PackedScene" id=17]
+[ext_resource path="res://Assets/Images/pngs/DNA_small.png" type="Texture" id=19]
 
 [sub_resource type="Theme" id=1]
 Button/colors/font_color_disabled = Color( 0, 0, 0, 1 )
 
-[sub_resource type="DynamicFontData" id=2]
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.0431373, 0.0588235, 0.564706, 1 )
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color( 0, 0.0313726, 0.223529, 1 )
+border_blend = true
+
+[sub_resource type="Animation" id=3]
+resource_name = "hide"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("part_right:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("part_top:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("part_left:emitting")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("part_bot:emitting")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "show"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("part_right:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("part_top:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("part_left:emitting")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("part_bot:emitting")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
+[sub_resource type="Curve" id=5]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.0294118, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.849673, 0.509091 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="DynamicFontData" id=6]
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="DynamicFont" id=7]
 size = 20
 use_mipmaps = true
 use_filter = true
-font_data = SubResource( 2 )
+font_data = SubResource( 6 )
 
 [node name="CardTable" type="Control"]
 anchor_right = 1.0
@@ -44,6 +210,7 @@ margin_left = 1177.4
 margin_top = 792.691
 margin_right = 1277.4
 margin_bottom = 892.691
+num = 0
 lbl = "Round"
 
 [node name="lnum_progeny" parent="." instance=ExtResource( 17 )]
@@ -51,6 +218,7 @@ margin_left = 1297.4
 margin_top = 792.691
 margin_right = 1397.4
 margin_bottom = 892.691
+num = 0
 lbl = "Progeny"
 
 [node name="lbl_turnorder" type="Label" parent="."]
@@ -460,6 +628,133 @@ align = 1
 valign = 1
 clip_text = true
 
+[node name="pnl_chaos" type="Panel" parent="."]
+visible = false
+modulate = Color( 1, 1, 1, 0 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -295.0
+margin_top = 182.0
+margin_right = 340.0
+margin_bottom = 432.0
+rect_clip_content = true
+custom_styles/panel = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Anim" type="AnimationPlayer" parent="pnl_chaos"]
+anims/hide = SubResource( 3 )
+anims/show = SubResource( 4 )
+
+[node name="part_right" type="CPUParticles2D" parent="pnl_chaos"]
+light_mask = 16
+position = Vector2( 635, 125 )
+emitting = false
+amount = 40
+lifetime = 10.0
+preprocess = 5.0
+texture = ExtResource( 19 )
+emission_shape = 2
+emission_rect_extents = Vector2( 0, 62 )
+direction = Vector2( -1, 0 )
+gravity = Vector2( 0, 0 )
+initial_velocity = 300.0
+initial_velocity_random = 0.75
+angular_velocity = 300.0
+angular_velocity_random = 0.75
+radial_accel = -30.0
+radial_accel_random = 0.25
+angle = 720.0
+angle_random = 1.0
+scale_amount_random = 0.5
+scale_amount_curve = SubResource( 5 )
+
+[node name="part_top" type="CPUParticles2D" parent="pnl_chaos"]
+light_mask = 16
+position = Vector2( 312, 0 )
+emitting = false
+amount = 40
+lifetime = 10.0
+preprocess = 5.0
+texture = ExtResource( 19 )
+emission_shape = 2
+emission_rect_extents = Vector2( 200, 0 )
+direction = Vector2( 0, 1 )
+gravity = Vector2( 0, 0 )
+initial_velocity = 300.0
+initial_velocity_random = 0.75
+angular_velocity = 300.0
+angular_velocity_random = 0.75
+radial_accel = -30.0
+radial_accel_random = 0.25
+angle = 720.0
+angle_random = 1.0
+scale_amount_random = 0.5
+scale_amount_curve = SubResource( 5 )
+
+[node name="part_left" type="CPUParticles2D" parent="pnl_chaos"]
+light_mask = 16
+position = Vector2( 0, 125 )
+emitting = false
+amount = 40
+lifetime = 10.0
+preprocess = 5.0
+texture = ExtResource( 19 )
+emission_shape = 2
+emission_rect_extents = Vector2( 0, 62 )
+gravity = Vector2( 0, 0 )
+initial_velocity = 300.0
+initial_velocity_random = 0.75
+angular_velocity = 300.0
+angular_velocity_random = 0.75
+radial_accel = -30.0
+radial_accel_random = 0.25
+angle = 720.0
+angle_random = 1.0
+scale_amount_random = 0.5
+scale_amount_curve = SubResource( 5 )
+
+[node name="part_bot" type="CPUParticles2D" parent="pnl_chaos"]
+light_mask = 16
+position = Vector2( 312, 250 )
+emitting = false
+amount = 40
+lifetime = 10.0
+preprocess = 5.0
+texture = ExtResource( 19 )
+emission_shape = 2
+emission_rect_extents = Vector2( 200, 0 )
+direction = Vector2( 0, -1 )
+gravity = Vector2( 0, 0 )
+initial_velocity = 300.0
+initial_velocity_random = 0.75
+angular_velocity = 300.0
+angular_velocity_random = 0.75
+radial_accel = -30.0
+radial_accel_random = 0.25
+angle = 720.0
+angle_random = 1.0
+scale_amount_random = 0.5
+scale_amount_curve = SubResource( 5 )
+
+[node name="texrect_chaos" type="TextureRect" parent="pnl_chaos"]
+light_mask = 16
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 65.0
+margin_top = 26.0
+margin_right = -66.0
+margin_bottom = -26.0
+texture = ExtResource( 12 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="EnergyBar" parent="." instance=ExtResource( 14 )]
 margin_left = 1.894
 margin_top = 678.426
@@ -493,7 +788,7 @@ margin_left = -113.206
 margin_top = -27.9999
 margin_right = 114.794
 margin_bottom = 7.00006
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 7 )
 text = "View Environment"
 align = 1
 valign = 1
@@ -515,6 +810,7 @@ __meta__ = {
 [connection signal="resources_changed" from="Organism" to="." method="_on_Organism_resources_changed"]
 [connection signal="show_repair_opts" from="Organism" to="." method="_on_Organism_show_repair_opts"]
 [connection signal="show_reprod_opts" from="Organism" to="." method="_on_Organism_show_reprod_opts"]
+[connection signal="transposon_activity" from="Organism" to="." method="_on_Organism_transposon_activity"]
 [connection signal="updated_gaps" from="Organism" to="." method="_on_Organism_updated_gaps"]
 [connection signal="item_activated" from="pnl_repair_choices/hsplit/ilist_choices" to="." method="_on_ilist_choices_item_activated"]
 [connection signal="item_selected" from="pnl_repair_choices/hsplit/ilist_choices" to="." method="upd_repair_desc"]
@@ -528,5 +824,6 @@ __meta__ = {
 [connection signal="update_seqelm_coloration" from="pnl_ph_filter" to="." method="_on_pnl_ph_filter_update_seqelm_coloration"]
 [connection signal="visibility_changed" from="pnl_ph_filter" to="pnl_ph_filter" method="_on_pnl_ph_filter_visibility_changed"]
 [connection signal="value_changed" from="pnl_ph_filter/slider_ph" to="pnl_ph_filter" method="_on_slider_ph_value_changed"]
+[connection signal="animation_finished" from="pnl_chaos/Anim" to="." method="_on_chaos_anim_finished"]
 [connection signal="timeout" from="AutoContinue" to="." method="_on_AutoContinue_timeout"]
 [connection signal="pressed" from="ViewMap" to="." method="_on_ViewMap_pressed"]
