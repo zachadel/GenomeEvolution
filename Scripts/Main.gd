@@ -108,6 +108,7 @@ func _show_world_map():
 		player.enable_sprite(true)
 	world_map.update_ui_resources()
 	world_map.enable_camera()
+	world_map.update_vision()
 	
 func _hide_world_map():
 	world_map.hide()

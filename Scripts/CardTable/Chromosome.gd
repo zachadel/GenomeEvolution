@@ -36,6 +36,7 @@ func perform_anims(perform):
 func get_genes():
 	return get_children();
 
+
 func get_behavior_profile():
 	var behavior_profile = {};
 	for g in get_genes():
@@ -242,13 +243,14 @@ func get_elm_anim_duration(distance):
 # CHROMOSOME MODIFICATION FUNCTIONS
 
 func create_gap(pos):
-	var gap = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
-	gap.setup("break");
-	get_cmsm_pair().append_gaplist(gap);
-	if (do_animations):
-		return yield(add_elm(gap, pos), "completed");
-	else:
-		add_elm(gap, pos);
+	if valid_gap_pos(pos):
+		var gap = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
+		gap.setup("break");
+		get_cmsm_pair().append_gaplist(gap);
+		if (do_animations):
+			return yield(add_elm(gap, pos), "completed");
+		else:
+			add_elm(gap, pos);
 
 func move_elm(elm, pos_idx : int):
 	move_child(elm, pos_idx);
@@ -431,10 +433,10 @@ func apply_boosts():
 # HELPER FUNCTIONS
 
 func valid_gap_pos(idx: int) -> bool:
-	return valid_pos(idx) && !get_child(idx - 1).is_gap() && !get_child(idx + 1).is_gap();
+	return valid_pos(idx, 1) && !get_child(idx - 1).is_gap() && !get_child(idx + 1).is_gap();
 
-func valid_pos(idx: int) -> bool:
-	return idx > 0 && idx < get_child_count()-1;
+func valid_pos(idx: int, ofs := 0) -> bool:
+	return idx >= ofs && idx <= get_child_count()-1-ofs;
 
 func pair_exists(left_elm, right_elm):
 	return get_pairs(left_elm, right_elm, true).size() > 0;

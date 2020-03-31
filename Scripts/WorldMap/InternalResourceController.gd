@@ -189,7 +189,7 @@ func clear_selected_resources():
 func handle_click_with_selection():
 	var mouse_pos = get_global_mouse_position()
 	var resources_to_process = {}
-	print(organism.cfp_resources)
+	
 	if !energy_clicked:
 	
 		#Locate which container you're in
@@ -247,7 +247,7 @@ func handle_click_with_selection():
 			energy_bar.update_energy_allocation(organism.energy)
 		energy_clicked = false
 		Input.set_custom_mouse_cursor(null)
-	print(organism.cfp_resources)
+
 
 func handle_energy_to_vesicle_click():
 	var vesicle_name = get_vesicle_from_mouse_pos(get_global_mouse_position())
@@ -255,7 +255,7 @@ func handle_energy_to_vesicle_click():
 	if vesicle_name and Game.is_valid_interaction("energy", vesicle_name):
 		var resource_to = Game.get_random_element_from_array(resources[vesicle_name].keys())
 		var results = organism.upgrade_energy(resource_to, 1)
-		print(results)
+
 		if results["new_resource_amount"] > 0:
 			add_resource(resource_to, 1)
 		energy_bar.update_energy_allocation(organism.energy)

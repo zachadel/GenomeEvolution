@@ -10,7 +10,6 @@ const NON_GODOT_VALUES = ["type", "stacked"]
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print(Game.ESSENTIAL_CLASSES.keys())
 	Game.load_cfg("settings", menu_settings)
 	for setting in menu_settings:
 		var node = create_node_from_dictionary(setting, menu_settings[setting]["type"], menu_settings[setting])

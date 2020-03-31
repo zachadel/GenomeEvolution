@@ -265,19 +265,27 @@ func recombine(elm0, elm1):
 	
 	#There's probably a much simpler way of doing this that involves a lot less looping, but here we are.
 
-func create_gap(truepos = null):
+func create_gap(truepos = null) -> bool:
 	if (truepos == null):
 		truepos = rand_truepos(false);
 	var first_posns = get_cmsm(0).get_child_count();
 	var cmsm_idx = int(truepos > first_posns);
+	var local_pos = truepos;
 	if (cmsm_idx):
-		truepos -= first_posns + 1;
-	var gap;
-	if (do_yields):
-		gap = yield(get_cmsm(cmsm_idx).create_gap(truepos), "completed");
-	else:
-		gap = get_cmsm(cmsm_idx).create_gap(truepos);
-	append_gaplist(gap);
+		local_pos -= first_posns + 1;
+	var cmsm = get_cmsm(cmsm_idx);
+	
+	if cmsm.valid_gap_pos(local_pos):
+		var gap;
+		if (do_yields):
+			gap = yield(cmsm.create_gap(local_pos), "completed");
+		else:
+			gap = cmsm.create_gap(local_pos);
+		append_gaplist(gap);
+		return true;
+	if do_yields:
+		yield(get_tree(), "idle_frame");
+	return false;
 
 func remove_elm(elm, place_gap = true):
 	if (elm in ate_list):
@@ -316,11 +324,8 @@ func collapse_gaps():
 			cmsm.get_child(i + 1).is_gap()):
 				_close.append(g);
 	
-	if (do_yields):
-		if _close.size() == 0:
-			yield(get_tree(), "idle_frame");
-		for g in _close:
-			yield(close_gap(g), "completed");
+	for g in _close:
+		close_gap(g);
 	return gap_list.size();
 
 func silence_ates(ids):
