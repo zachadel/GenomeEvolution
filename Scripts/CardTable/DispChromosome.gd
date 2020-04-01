@@ -77,15 +77,12 @@ func lock(lock):
 		BtnChoose.text = "Keep";
 
 const SIZER_OFFSET = 13;
-const SCROLL_MAX_WIDTH = 1550;
 func upd_size(delay = true):
 	if (delay):
 		$update_delay.start();
 	else:
 		$container.rect_size.y = 0;
 		rect_min_size.y = $container.rect_size.y + $container.rect_position.y;
-		if ($container/scroll.visible):
-			$container/scroll.rect_min_size.x = SCROLL_MAX_WIDTH - $container/scroll.rect_position.x;
 		if (ChoiceBtnsSizer.visible):
 			var sizer_y = $container.rect_size.y + SIZER_OFFSET;
 			ChoiceBtnsSizer.rect_size.y = sizer_y;

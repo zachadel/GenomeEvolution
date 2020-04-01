@@ -38,5 +38,8 @@ func get_value():
 	return val;
 
 func rescale(scale):
+	var old_scale = rect_size.x / DEFAULT_SIZE;
 	var scale_size = DEFAULT_SIZE * scale;
 	rect_size = Vector2(scale_size, scale_size);
+	var y_offset = DEFAULT_SIZE * (old_scale - scale) / 2;
+	rect_position.y += y_offset;

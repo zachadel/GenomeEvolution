@@ -38,12 +38,20 @@ anims/correction = SubResource( 1 )
 [node name="scroll" type="ScrollContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_top = -25.0
+margin_right = 0.00012207
+margin_bottom = -25.0
 rect_min_size = Vector2( 1600, 600 )
 scroll_horizontal_enabled = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="chromes" parent="scroll" instance=ExtResource( 2 )]
 anchor_right = 0.0
-margin_right = 1550.0
+margin_right = 1600.0
+size_flags_horizontal = 3
+custom_constants/separation = 5
 
 [node name="lbl_dead" type="Label" parent="."]
 visible = false

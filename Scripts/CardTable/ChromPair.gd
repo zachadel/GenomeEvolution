@@ -502,4 +502,8 @@ func _process(delta):
 	
 	for c in get_cmsms():
 		for i in c.get_child_count():
-			c.get_child(i).rect_position.y = SIN_AMP * sin(total_time * SIN_FREQ + OFFSET_FACTOR * i);
+			var child = c.get_child(i);
+			var offs = 0;
+			if "y_offset" in child:
+				offs = child.y_offset;
+			child.rect_position.y = offs + SIN_AMP * sin(total_time * SIN_FREQ + OFFSET_FACTOR * i);

@@ -7,16 +7,22 @@
 [node name="DispChromosome" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_bottom = -900.0
-rect_min_size = Vector2( 200, 262 )
+margin_bottom = -605.0
+rect_min_size = Vector2( 200, 300 )
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="container" type="HBoxContainer" parent="."]
-margin_left = 7.5
+margin_left = 8.0
 margin_top = 40.0
-margin_right = 1607.5
+margin_right = 1598.0
 margin_bottom = 290.0
 custom_constants/separation = 25
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ChoiceButtons" type="Control" parent="container"]
 visible = false
@@ -69,13 +75,23 @@ margin_bottom = 250.0
 [node name="scroll" type="ScrollContainer" parent="container"]
 margin_right = 1590.0
 margin_bottom = 250.0
-rect_min_size = Vector2( 1590, 0 )
-rect_clip_content = false
+rect_min_size = Vector2( 0, 250 )
+size_flags_horizontal = 3
 scroll_vertical_enabled = false
 
 [node name="cmsm" parent="container/scroll" instance=ExtResource( 3 )]
 anchor_right = 0.0
-margin_bottom = 225.0
+margin_right = 1590.0
+margin_bottom = 250.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="RightsideSizer" type="Control" parent="container"]
+visible = false
+margin_left = 1340.0
+margin_right = 1590.0
+margin_bottom = 250.0
+rect_min_size = Vector2( 250, 0 )
 
 [node name="update_delay" type="Timer" parent="."]
 wait_time = 0.01
