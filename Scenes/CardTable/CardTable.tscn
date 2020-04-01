@@ -59,48 +59,12 @@ tracks/1/keys = {
 "values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("part_right:emitting")
+tracks/2/path = NodePath("part_lone:emitting")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0.5 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ false ]
-}
-tracks/3/type = "value"
-tracks/3/path = NodePath("part_top:emitting")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
-"times": PoolRealArray( 0.5 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ false ]
-}
-tracks/4/type = "value"
-tracks/4/path = NodePath("part_left:emitting")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/keys = {
-"times": PoolRealArray( 0.5 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ false ]
-}
-tracks/5/type = "value"
-tracks/5/path = NodePath("part_bot:emitting")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/keys = {
 "times": PoolRealArray( 0.5 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
@@ -135,48 +99,12 @@ tracks/1/keys = {
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("part_right:emitting")
+tracks/2/path = NodePath("part_lone:emitting")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
-}
-tracks/3/type = "value"
-tracks/3/path = NodePath("part_top:emitting")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
-}
-tracks/4/type = "value"
-tracks/4/path = NodePath("part_left:emitting")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
-}
-tracks/5/type = "value"
-tracks/5/path = NodePath("part_bot:emitting")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
@@ -649,85 +577,18 @@ __meta__ = {
 anims/hide = SubResource( 3 )
 anims/show = SubResource( 4 )
 
-[node name="part_right" type="CPUParticles2D" parent="pnl_chaos"]
+[node name="part_lone" type="CPUParticles2D" parent="pnl_chaos"]
 light_mask = 16
-position = Vector2( 635, 125 )
+position = Vector2( 312, 125 )
 emitting = false
-amount = 40
+amount = 240
 lifetime = 10.0
 preprocess = 5.0
 texture = ExtResource( 19 )
 emission_shape = 2
-emission_rect_extents = Vector2( 0, 62 )
-direction = Vector2( -1, 0 )
-gravity = Vector2( 0, 0 )
-initial_velocity = 300.0
-initial_velocity_random = 0.75
-angular_velocity = 300.0
-angular_velocity_random = 0.75
-radial_accel = -30.0
-radial_accel_random = 0.25
-angle = 720.0
-angle_random = 1.0
-scale_amount_random = 0.5
-scale_amount_curve = SubResource( 5 )
-
-[node name="part_top" type="CPUParticles2D" parent="pnl_chaos"]
-light_mask = 16
-position = Vector2( 312, 0 )
-emitting = false
-amount = 40
-lifetime = 10.0
-preprocess = 5.0
-texture = ExtResource( 19 )
-emission_shape = 2
-emission_rect_extents = Vector2( 200, 0 )
-direction = Vector2( 0, 1 )
-gravity = Vector2( 0, 0 )
-initial_velocity = 300.0
-initial_velocity_random = 0.75
-angular_velocity = 300.0
-angular_velocity_random = 0.75
-radial_accel = -30.0
-radial_accel_random = 0.25
-angle = 720.0
-angle_random = 1.0
-scale_amount_random = 0.5
-scale_amount_curve = SubResource( 5 )
-
-[node name="part_left" type="CPUParticles2D" parent="pnl_chaos"]
-light_mask = 16
-position = Vector2( 0, 125 )
-emitting = false
-amount = 40
-lifetime = 10.0
-preprocess = 5.0
-texture = ExtResource( 19 )
-emission_shape = 2
-emission_rect_extents = Vector2( 0, 62 )
-gravity = Vector2( 0, 0 )
-initial_velocity = 300.0
-initial_velocity_random = 0.75
-angular_velocity = 300.0
-angular_velocity_random = 0.75
-radial_accel = -30.0
-radial_accel_random = 0.25
-angle = 720.0
-angle_random = 1.0
-scale_amount_random = 0.5
-scale_amount_curve = SubResource( 5 )
-
-[node name="part_bot" type="CPUParticles2D" parent="pnl_chaos"]
-light_mask = 16
-position = Vector2( 312, 250 )
-emitting = false
-amount = 40
-lifetime = 10.0
-preprocess = 5.0
-texture = ExtResource( 19 )
-emission_shape = 2
-emission_rect_extents = Vector2( 200, 0 )
-direction = Vector2( 0, -1 )
+emission_rect_extents = Vector2( 158, 62 )
+direction = Vector2( 0, 0 )
+spread = 180.0
 gravity = Vector2( 0, 0 )
 initial_velocity = 300.0
 initial_velocity_random = 0.75

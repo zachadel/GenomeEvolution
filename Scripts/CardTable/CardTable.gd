@@ -185,6 +185,9 @@ func upd_turn_display(upd_turn_unlocks := Game.fresh_round, upd_env_markers := G
 		ph_filter_panel.upd_current_ph_marker(orgn.current_tile.hazards["pH"]);
 
 func _on_btn_nxt_pressed():
+	adv_turn();
+
+func adv_turn():
 	close_extra_menus();
 	if (Game.get_turn_type() == Game.TURN_TYPES.Recombination):
 		for g in orgn.gene_selection:
@@ -216,6 +219,9 @@ func _on_Organism_died(org):
 
 func show():
 	.show();
+	print("show!");
+#	if Game.is_first_turn():
+#		adv_turn();
 	check_if_ready();
 	
 	upd_turn_display(true, true);
@@ -229,8 +235,14 @@ func set_map_btn_texture(texture_path: String) -> void:
 
 func check_if_ready():
 	var end_mapturn_on_mapscreen = Game.get_turn_type() == Game.TURN_TYPES.Map && Unlocks.has_turn_unlock(Game.TURN_TYPES.Map);
-	nxt_btn.disabled = !is_visible_in_tree() || orgn.is_dead() || end_mapturn_on_mapscreen ||\
-		wait_on_anim || wait_on_select || has_gaps;
+	
+	if is_visible_in_tree():
+		if end_mapturn_on_mapscreen:
+			nxt_btn.disabled = false;
+		else:
+			nxt_btn.disabled = orgn.is_dead() || wait_on_anim || wait_on_select || has_gaps;
+	else:
+		nxt_btn.disabled = true;
 	
 	# Continue automatically
 	if !nxt_btn.disabled && Game.get_turn_type() != Game.TURN_TYPES.Recombination:
@@ -311,7 +323,7 @@ func _on_pnl_ph_filter_update_seqelm_coloration(compare_type):
 		g.color_comparison(compare_type, ph_filter_panel.get_slider_value());
 
 func _on_AutoContinue_timeout():
-	_on_btn_nxt_pressed();
+	adv_turn();
 
 func _on_ViewMap_pressed():
 	emit_signal("switch_to_map")

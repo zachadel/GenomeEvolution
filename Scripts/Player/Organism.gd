@@ -375,35 +375,41 @@ func gain_gaps(count = 1):
 func jump_ates():
 	var _actives = cmsms.ate_list + [];
 	var justnow = "";
-	for ate in _actives:
-		match (ate.get_ate_jump_roll()):
-			0:
-				justnow += "%s did not do anything.\n" % ate.get_gene_name();
-			1:
-				var old_loc = ate.get_position_display();
-				var old_id = ate.get_gene_name();
-				if (do_yields):
-					yield(cmsms.remove_elm(ate), "completed");
-				else:
-					cmsms.remove_elm(ate);
-				justnow += "%s removed from (%d, %d); left a gap.\n" % ([old_id] + old_loc);
-			2:
-				var old_loc = ate.get_position_display();
-				
-				if (do_yields):
-					yield(cmsms.jump_ate(ate), "completed");
-				else:
-					cmsms.jump_ate(ate);
-				justnow += "%s jumped from (%d, %d) to (%d, %d); left a gap.\n" % \
-					([ate.get_gene_name()] + old_loc + ate.get_position_display());
-			3:
-				var copy_ate;
-				if (do_yields):
-					copy_ate = yield(cmsms.copy_ate(ate), "completed");
-				else:
-					copy_ate = cmsms.copy_ate(ate);
-				justnow += "%s copied itself to (%d, %d); left no gap.\n" % \
-					([ate.get_gene_name()] + copy_ate.get_position_display());
+	
+	if _actives.empty():
+		if do_yields:
+			yield(get_tree(), "idle_frame");
+		justnow = "There are no transposons in your genes.";
+	else:
+		for ate in _actives:
+			match (ate.get_ate_jump_roll()):
+				0:
+					justnow += "%s did not do anything.\n" % ate.get_gene_name();
+				1:
+					var old_loc = ate.get_position_display();
+					var old_id = ate.get_gene_name();
+					if (do_yields):
+						yield(cmsms.remove_elm(ate), "completed");
+					else:
+						cmsms.remove_elm(ate);
+					justnow += "%s removed from (%d, %d); left a gap.\n" % ([old_id] + old_loc);
+				2:
+					var old_loc = ate.get_position_display();
+					
+					if (do_yields):
+						yield(cmsms.jump_ate(ate), "completed");
+					else:
+						cmsms.jump_ate(ate);
+					justnow += "%s jumped from (%d, %d) to (%d, %d); left a gap.\n" % \
+						([ate.get_gene_name()] + old_loc + ate.get_position_display());
+				3:
+					var copy_ate;
+					if (do_yields):
+						copy_ate = yield(cmsms.copy_ate(ate), "completed");
+					else:
+						copy_ate = cmsms.copy_ate(ate);
+					justnow += "%s copied itself to (%d, %d); left no gap.\n" % \
+						([ate.get_gene_name()] + copy_ate.get_position_display());
 	emit_signal("justnow_update", justnow);
 	cmsms.collapse_gaps();
 
@@ -1000,7 +1006,6 @@ func evolve_candidates(candids):
 	if (candids.size() > 0):
 		var justnow = "";
 		for e in candids:
-			#if ((cmsms.get_cmsm(0).find_all_genes(e.id).size() + cmsms.get_cmsm(1).find_all_genes(e.id).size()) > 2):
 			var evolve_idx := roll_chance("evolve")
 			match evolve_idx:
 				0:
@@ -1086,6 +1091,7 @@ func replicate(idx):
 		var rep_type = "some unknown freaky deaky shiznaz";
 		match idx:
 			0: # Mitosis
+				use_resources("replicate_mitosis");
 				rep_type = "mitosis";
 				
 				cmsms.link_cmsms(0, 1);
@@ -1098,7 +1104,6 @@ func replicate(idx):
 				cmsms.move_cmsm(keep_idx+1, 1);
 				
 				prune_cmsms(2);
-				use_resources("replicate_mitosis");
 				
 				var cfp_splits = split_cfp_resources(MITOSIS_SPLITS)
 				var mineral_splits = split_mineral_resources(MITOSIS_SPLITS)
@@ -1110,6 +1115,7 @@ func replicate(idx):
 				
 				num_progeny += 1;
 			1: # Meiosis
+				use_resources("replicate_meiosis");
 				rep_type = "meiosis";
 				
 				emit_signal("justnow_update", "Choose one chromosome to keep; the others go into the gene pool. Then, receive one randomly from the gene pool.");
@@ -1117,7 +1123,6 @@ func replicate(idx):
 				cmsms.move_cmsm(keep_idx, 0);
 				
 				prune_cmsms(1);
-				use_resources("replicate_meiosis");
 				
 				var cfp_splits = split_cfp_resources(MEIOSIS_SPLITS)
 				var mineral_splits = split_mineral_resources(MEIOSIS_SPLITS)
