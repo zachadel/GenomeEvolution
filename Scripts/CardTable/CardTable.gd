@@ -43,8 +43,7 @@ func get_cmsm_status():
 func show_replicate_opts(show):
 	if $pnl_reproduce.visible != show:
 		close_extra_menus($pnl_reproduce);
-	if (show):
-		status_bar.visible = false;
+	if show:
 		$pnl_reproduce/hsplit/ilist_choices.select(0);
 		upd_replicate_desc(0);
 
@@ -102,6 +101,7 @@ func _on_btn_apply_replic_pressed():
 
 func do_replicate(idx):
 	show_replicate_opts(false);
+	status_bar.visible = false;
 	orgn.replicate(idx);
 
 # Gaps and repairs
