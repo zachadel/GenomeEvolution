@@ -73,8 +73,11 @@ func replicate_cmsm(cmsm_idx):
 	move_child(new_disp_cmsm, cmsm_idx + 1);
 	return new_disp_cmsm;
 
-func link_cmsms(par, child):
+func link_cmsms(par: int, child: int) -> void:
 	get_child(par).set_link(get_child(child));
+
+func lbl_cmsm(cm: int, lbl: String):
+	get_child(cm).set_title(lbl);
 
 func hide_cmsm(idx, h):
 	get_child(idx).hide_cmsm(h);

@@ -1086,6 +1086,10 @@ func replicate(idx):
 		cmsms.replicate_cmsms([0, 1]);
 		cmsms.hide_all(true);
 		cmsms.show_all_choice_buttons(true);
+		cmsms.lbl_cmsm(0, "Original");
+		cmsms.lbl_cmsm(1, "Copy");
+		cmsms.lbl_cmsm(2, "Original");
+		cmsms.lbl_cmsm(3, "Copy");
 		perform_anims(true);
 		
 		var rep_type = "some unknown freaky deaky shiznaz";
