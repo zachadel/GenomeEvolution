@@ -61,21 +61,37 @@ var max_cfp_stored = 100
 const DEFAULT_VES_SIZE = Vector2(72, 72)
 
 var vesicle_scales = {
-	"simple_carbs": Vector2(.75, .75),
-	"complex_carbs": Vector2(.5, .5),
-	"simple_fats": Vector2(.75, .75),
-	"complex_fats": Vector2(.5, .5),
-	"simple_proteins": Vector2(.75, .75),
-	"complex_proteins": Vector2(.5, .5)
+	"simple_carbs": {
+		"scale": Vector2(.75, .75),
+		"enabled": true
+		},
+	"complex_carbs":{
+		"scale": Vector2(.5, .5),
+		"enabled": true
+		},
+	"simple_fats":{
+		"scale": Vector2(.75, .75),
+		"enabled": true
+		},
+	"complex_fats": {
+		"scale": Vector2(.5, .5),
+		"enabled": true
+		},
+	"simple_proteins": {
+		"scale": Vector2(.75, .75),
+		"enabled": true
+		},
+	"complex_proteins": {
+		"scale": Vector2(.5, .5),
+		"enabled": true
+		}
 }
 
-const SIMPLE_VESICLES_STEP = .25
-const SIMPLE_VESICLES_MAX = 1.5
-const SIMPLE_VESICLES_MIN = .75
+const SIMPLE_VESICLE_SCALES = [Vector2(.5, .5), Vector2(.75, .75), Vector2(1, 1), Vector2(1.25, 1.25), Vector2(1.5, 1.5)]
+const COMPLEX_VESICLE_SCALES = [Vector2(0, 0), Vector2(.5, .5), Vector2(.75, .75), Vector2(1, 1), Vector2(1.25, 1.25), Vector2(1.5, 1.5)]
 
-const COMPLEX_VESICLES_STEP = .25
-const COMPLEX_VESICLES_MAX = 1.25
-const COMPLEX_VESICLES_MIN = .5
+var simple_vesicle_step = 1
+var complex_vesicle_step = 0
 
 var MIN_ENERGY = 0;
 var MAX_ENERGY = 25;
@@ -101,13 +117,14 @@ signal show_reprod_opts(show);
 
 signal died(org);
 signal resources_changed(cfp_resources, mineral_resources);
-signal vesicle_scale_changed(scale, vesicle_name)
+signal vesicle_scale_changed(vesicle_scales, cfp_resources)
 
 signal finished_processing()
 signal energy_changed(energy);
 
 signal insufficient_energy(action);
 
+#NOTE: Don't call get_behavior_profile in ready
 func _ready():
 	#initialization done in _ready for restarts
 	behavior_profile = BehaviorProfile.new();
@@ -118,7 +135,7 @@ func _ready():
 	born_on_turn = -1;
 	died_on_turn = -1;
 
-	energy = 10;
+	set_energy(10);
 	energy_allocations = {};
 	populate_cfp_resources_dict()
 	populate_mineral_dict()
@@ -130,10 +147,13 @@ func populate_cfp_resources_dict():
 				var resource_class = tier + Game.SEPARATOR + resource_type
 				cfp_resources[resource_class] = {}
 				cfp_resources[resource_class]["total"] = 0
+				
+				var resource_to_start = Game.get_random_element_from_array(Game.resource_groups[resource_type][tier].keys())
+				
 				for resource in Game.resource_groups[resource_type][tier]:
-					var remaining_space = get_estimated_capacity(resource_class) - cfp_resources[resource_class]["total"]
-					if remaining_space > 0:
-						cfp_resources[resource_class][resource] = min(remaining_space, randi() % (MAX_START_RESOURCES) + MIN_START_RESOURCES)
+					cfp_resources[resource_class][resource] = 0
+					if resource == resource_to_start and tier == "simple":
+						cfp_resources[resource_class][resource] = randi() % MAX_START_RESOURCES + MIN_START_RESOURCES
 						cfp_resources[resource_class]["total"] += cfp_resources[resource_class][resource]
 	
 #minerals will eventually be divided by charge for now, no such division exists
@@ -145,21 +165,26 @@ func populate_mineral_dict():
 				mineral_resources[resource_class] = {}
 				mineral_resources[resource_class]["total"] = 0
 				for resource in Game.resource_groups[resource_type][resource_class]:
-					if randi() % 2 == 0:
-						mineral_resources[resource_class][resource] = clamp(Game.resources[resource]["optimal"] - randi() % (Game.resources[resource]["optimal_radius"]), Game.resources[resource]["safe_range"][0], Game.resources[resource]["safe_range"][1])
+					if Game.resources[resource]["tier"] != "hazardous":
+						if randi() % 2 == 0:
+							mineral_resources[resource_class][resource] = clamp(Game.resources[resource]["optimal"] - randi() % (Game.resources[resource]["optimal_radius"]), Game.resources[resource]["safe_range"][0], Game.resources[resource]["safe_range"][1])
+						else:
+							mineral_resources[resource_class][resource] = clamp(Game.resources[resource]["optimal"] + randi() % (Game.resources[resource]["optimal_radius"]), Game.resources[resource]["safe_range"][0], Game.resources[resource]["safe_range"][1])
 					else:
-						mineral_resources[resource_class][resource] = clamp(Game.resources[resource]["optimal"] + randi() % (Game.resources[resource]["optimal_radius"]), Game.resources[resource]["safe_range"][0], Game.resources[resource]["safe_range"][1])
+						mineral_resources[resource_class][resource] = 0
+					
 					mineral_resources[resource_class]["total"] += mineral_resources[resource_class][resource]
 
 func get_vesicle_size(vesicle_name: String):
-	return Game.vec_mult(vesicle_scales[vesicle_name], DEFAULT_VES_SIZE)
+	return Game.vec_mult(vesicle_scales[vesicle_name]["scale"], DEFAULT_VES_SIZE)
 
 #For more info see https://math.stackexchange.com/questions/3007527/how-many-squares-fit-in-a-circle
 #See also https://math.stackexchange.com/questions/2984061/cover-a-circle-with-squares/2991025#2991025
-func get_estimated_capacity(vesicle_name: String, object_length: float = Game.RESOURCE_COLLISION_SIZE.y):
+func get_estimated_capacity(vesicle_name: String, object_length: float = Game.RESOURCE_COLLISION_SIZE.x):
 	var ves_size = get_vesicle_size(vesicle_name)
+	var capacity = int(ceil(ves_size.x*ves_size.y / (object_length * object_length))) - 3
 	
-	return int(ceil(ves_size.x*ves_size.y / (Game.RESOURCE_COLLISION_SIZE.x * Game.RESOURCE_COLLISION_SIZE.x)))
+	return capacity
 #	var ratio = circle_radius / object_length #vesicle radius / square icon side length
 #	var capacity_0 = 0
 #	var capacity_1 = 0
@@ -174,17 +199,6 @@ func get_estimated_capacity(vesicle_name: String, object_length: float = Game.RE
 #	capacity_1 += (2 * ceil(2*ratio) - 1)
 #
 #	return max(capacity_0, capacity_1) + 1
-
-func set_vesicle_scale(scale: float, resource_class: String):
-	vesicle_scales[resource_class] = scale
-	emit_signal("vesicle_scale_changed", vesicle_scales, [resource_class])
-	
-#scales[resource_class] = scale
-func set_vesicle_scales(scales: Dictionary):
-	for resource_class in scales:
-		vesicle_scales[resource_class] = scales[resource_class]
-		
-	emit_signal("vesicle_scale_changed", vesicle_scales, scales.keys())
 	
 func recompute_vesicle_total(resource_class: String):
 	var sum = 0
@@ -206,52 +220,74 @@ func recompute_mineral_total(resource_class):
 	
 	return sum
 
-#.75, 1, 1.25, 1.5
-func increment_vesicle_scale(resource_class: String = ""):
-	var split = resource_class.split(Game.SEPARATOR)
-	var changed_classes = []
+func clear_vesicle(resource_class: String):
+	for resource in cfp_resources[resource_class]:
+		cfp_resources[resource_class][resource] = 0
+		
+	cfp_resources[resource_class]["total"] = 0
+
+func update_vesicle_sizes():
+	var component = get_behavior_profile().get_behavior("Component")
 	
-	#increment all of them
-	if resource_class == "":
-		for resource in vesicle_scales:
-			if resource.split(Game.SEPARATOR)[0] == "simple":
-				vesicle_scales[resource] = min(vesicle_scales[resource] + SIMPLE_VESICLES_STEP, SIMPLE_VESICLES_MAX)
+	var old_simple = simple_vesicle_step
+	var old_complex = complex_vesicle_step
+	
+	if 0 <= component and component < 2:
+		simple_vesicle_step = 0
+		complex_vesicle_step = 0
+		
+		for resource_class in vesicle_scales:
+			if resource_class.split(Game.SEPARATOR)[0] == "complex":
+				vesicle_scales[resource_class]["enabled"] = false
+				
+		
+		
+	elif 2 <= component and component < 6:
+		simple_vesicle_step = 1
+		complex_vesicle_step = 1
+		
+		for resource_class in vesicle_scales:
+			if resource_class.split(Game.SEPARATOR)[0] == "complex":
+				vesicle_scales[resource_class]["enabled"] = true
+		
+	elif 6 <= component and component < 10:
+		simple_vesicle_step = 2
+		complex_vesicle_step = 1
+		
+	elif 10 <= component and component < 14:
+		simple_vesicle_step = 3
+		complex_vesicle_step = 2
+		
+	elif 14 <= component and component < 18:
+		simple_vesicle_step = 4
+		complex_vesicle_step = 3
+		
+	elif 18 <= component and component < 22:
+		simple_vesicle_step = 4
+		complex_vesicle_step = 4
+		
+	elif 22 <= component and component < 26:
+		simple_vesicle_step = 4
+		complex_vesicle_step = 5
+		
+	elif 26 <= component:
+		simple_vesicle_step = 4
+		complex_vesicle_step = 6
+
+	if old_complex != complex_vesicle_step or old_simple != simple_vesicle_step:
+		for resource_class in vesicle_scales:
+			if resource_class.split(Game.SEPARATOR)[0] == "simple":
+				vesicle_scales[resource_class]["scale"] = SIMPLE_VESICLE_SCALES[simple_vesicle_step]
 			else:
-				vesicle_scales[resource] = min(vesicle_scales[resource] + COMPLEX_VESICLES_STEP, COMPLEX_VESICLES_MAX)
-			changed_classes.append(resource)
-		pass
-	elif split[0] == 'simple':
-		vesicle_scales[resource_class] = min(vesicle_scales[resource_class] + SIMPLE_VESICLES_STEP, SIMPLE_VESICLES_MAX)
-		changed_classes.append(resource_class)
-	elif split[0] == 'complex':
-		vesicle_scales[resource_class] = min(vesicle_scales[resource_class] + COMPLEX_VESICLES_STEP, COMPLEX_VESICLES_MAX)
-		changed_classes.append(resource_class)
-	else:
-		print('ERROR: Invalid resource class in increment_vesicle_scale')
-	emit_signal("vesicle_scale_changed", vesicle_scales, changed_classes)
-	
-func decrement_vesicle_scale(resource_class: String = ""):
-	var split = resource_class.split(Game.SEPARATOR)
-	var changed_classes = []
-	
-	#increment all of them
-	if resource_class == "":
-		for resource in vesicle_scales:
-			if resource.split(Game.SEPARATOR)[0] == "simple":
-				vesicle_scales[resource] = max(vesicle_scales[resource] - SIMPLE_VESICLES_STEP, SIMPLE_VESICLES_MIN)
-			else:
-				vesicle_scales[resource] = max(vesicle_scales[resource] - COMPLEX_VESICLES_STEP, COMPLEX_VESICLES_MIN)
-			changed_classes.append(resource)
-		pass
-	elif split[0] == 'simple':
-		vesicle_scales[resource_class] = max(vesicle_scales[resource_class] + SIMPLE_VESICLES_STEP, SIMPLE_VESICLES_MIN)
-		changed_classes.append(resource_class)
-	elif split[0] == 'complex':
-		vesicle_scales[resource_class] = max(vesicle_scales[resource_class] + COMPLEX_VESICLES_STEP, COMPLEX_VESICLES_MIN)
-		changed_classes.append(resource_class)
-	else:
-		print('ERROR: Invalid resource class in decrement_vesicle_scale')
-	emit_signal("vesicle_scale_changed", vesicle_scales, changed_classes)
+				vesicle_scales[resource_class]["scale"] = COMPLEX_VESICLE_SCALES[complex_vesicle_step]
+			
+			var new_capacity = get_estimated_capacity(resource_class)
+			if new_capacity == 0:
+				clear_vesicle(resource_class)
+			elif cfp_resources[resource_class]["total"] > new_capacity:
+				consume_randomly_from_class(resource_class, new_capacity - cfp_resources[resource_class]["total"])	
+				
+		emit_signal("vesicle_scale_changed", vesicle_scales, cfp_resources)
 		
 func reset():
 	pass
@@ -264,7 +300,7 @@ func load_from_save(orgn_info):
 	
 	gene_selection.clear();
 	born_on_turn = int(orgn_info[0]);
-	energy = int(orgn_info[1]);
+	set_energy(int(orgn_info[1]));
 	cmsms.load_from_save(orgn_info[2]);
 	
 	perform_anims(true);
@@ -284,15 +320,15 @@ func setup(card_table):
 	var augment_genes = {}
 	var default_genome = Game.get_default_genome(Game.current_cell_string)
 	
-	var min_tes = Settings.get_setting("min_starting_transposons")
-	var min_blanks = Settings.get_setting("min_starting_blanks")
+	var min_tes = Settings.starting_transposons()[Settings.MIN]
+	var min_blanks = Settings.starting_blanks()[Settings.MIN]
 	
-	var max_tes = Settings.get_setting("max_starting_transposons")
-	var max_blanks = Settings.get_setting("max_starting_blanks")
+	var max_tes = Settings.starting_transposons()[Settings.MAX]
+	var max_blanks = Settings.starting_blanks()[Settings.MAX]
 	
-	var max_random_ess = Settings.get_setting("max_additional_genes")
-	var min_random_ess = Settings.get_setting("min_additional_genes")
-	
+	var max_random_ess = Settings.starting_additional_genes()[Settings.MAX]
+	var min_random_ess = Settings.starting_additional_genes()[Settings.MIN]
+
 	# Start with the essentials + some blanks, shuffled
 	var starter_genes = essential_names + ["blank"];
 	for _i in range(min_blanks + randi() % int((max_blanks - min_blanks + 1))):
@@ -324,7 +360,8 @@ func setup(card_table):
 		
 		cmsms.get_cmsm(0).add_elm(nxt_gelm);
 		cmsms.get_cmsm(1).add_elm(Game.copy_elm(nxt_gelm));
-	gain_ates(min_tes + randi() % int((max_tes - min_tes)));
+		
+	gain_ates(min_tes + randi() % int((max_tes - min_tes + 1)));
 	perform_anims(true);
 	
 	born_on_turn = Game.round_num;
@@ -996,6 +1033,14 @@ func get_behavior_profile():
 		refresh_bprof = false;
 	return behavior_profile;
 
+func refresh_behavior_profile():
+	behavior_profile.set_bhv_prof(get_cmsm_pair().get_cmsm(0).get_behavior_profile(),\
+									 get_cmsm_pair().get_cmsm(1).get_behavior_profile());
+	behavior_profile.set_spec_prof(get_cmsm_pair().get_cmsm(0).get_specialization_profile(),\
+								 get_cmsm_pair().get_cmsm(1).get_specialization_profile());
+								
+	refresh_bprof = false
+
 func roll_chance(type : String) -> int:
 	return Chance.roll_chance_type(type, get_behavior_profile());
 
@@ -1112,7 +1157,7 @@ func replicate(idx):
 				
 				cfp_resources = cfp_splits[randi() % MITOSIS_SPLITS]
 				mineral_splits = mineral_splits[randi() % MITOSIS_SPLITS]
-				energy = energy_split
+				set_energy(energy_split)
 				
 				num_progeny += 1;
 			1: # Meiosis
@@ -1131,7 +1176,7 @@ func replicate(idx):
 				
 				cfp_resources = cfp_splits[randi() % MEIOSIS_SPLITS]
 				mineral_splits = mineral_splits[randi() % MEIOSIS_SPLITS]
-				energy = energy_split
+				set_energy(energy_split)
 				
 				cmsms.add_cmsm(get_random_gene_from_pool(), true);
 				num_progeny += 3;
@@ -1168,7 +1213,8 @@ func adv_turn(round_num, turn_idx):
 				emit_signal("justnow_update", "Welcome back!");
 			Game.TURN_TYPES.NewTEs:
 				emit_signal("doing_work", true);
-				var num_ates = 1 + randi() % 2;
+				var min_max = Settings.transposons_per_turn()
+				var num_ates = min_max[Settings.MIN] + randi() % (min_max[Settings.MAX] - min_max[Settings.MIN] + 1);
 				if (do_yields):
 					yield(gain_ates(num_ates), "completed");
 				else:
@@ -1382,13 +1428,16 @@ func get_mineral_cost(action, mineral, amount = 1):
 #NOTE: Energy costs are always per unit
 var costs = {
 	"none": {
-		"carbs": 0, 
-		"fats": 0,
-		"proteins": 0,
-		"iron": 0,
-		"zinc": 0,
-		"manganese": 0,
-		"potassium": 0,
+		"simple_carbs": 0, 
+		"simple_fats": 0, 
+		"simple_proteins": 0, 
+		"complex_carbs": 0,
+		"complex_fats": 0,
+		"complex_proteins": 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
 		"energy": 0
 	},
 	
@@ -1399,13 +1448,10 @@ var costs = {
 		"complex_carbs": 0,
 		"complex_fats": 0,
 		"complex_proteins": 0,
-		-3: 0,
-		-2: 0,
-		-1: 0,
-		0: 0,
-		1: 0,
-		2: 0,
-		3: 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
 		"energy": 5
 	},
 	"repair_cp" : {
@@ -1415,13 +1461,10 @@ var costs = {
 		"complex_carbs": 0,
 		"complex_fats": 0,
 		"complex_proteins": 0,
-		-3: 0,
-		-2: 0,
-		-1: 0,
-		0: 0,
-		1: 0,
-		2: 0,
-		3: 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
 		"energy": 5
 	},
 	"repair_je" : {
@@ -1431,13 +1474,10 @@ var costs = {
 		"complex_carbs": 0,
 		"complex_fats": 0,
 		"complex_proteins": 0, 
-		-3: 0,
-		-2: 0,
-		-1: 0,
-		0: 0,
-		1: 0,
-		2: 0,
-		3: 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
 		"energy": 2
 	},
 	"move" : {
@@ -1447,13 +1487,10 @@ var costs = {
 		"complex_carbs": 0,
 		"complex_fats": 0,
 		"complex_proteins": 0, 
-		-3: 0,
-		-2: 0,
-		-1: 0,
-		0: 0,
-		1: 0,
-		2: 0,
-		3: 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
 		"energy": 5
 	},
 
@@ -1464,13 +1501,10 @@ var costs = {
 		"complex_carbs": 0,
 		"complex_fats": 0,
 		"complex_proteins": 0, 
-		-3: 0,
-		-2: 0,
-		-1: 0,
-		0: 0,
-		1: 0,
-		2: 0,
-		3: 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
 		"energy": 5
 	},
 	
@@ -1481,13 +1515,10 @@ var costs = {
 		"complex_carbs": 0,
 		"complex_fats": 0,
 		"complex_proteins": 0,
-		-3: 0,
-		-2: 0,
-		-1: 0,
-		0: 0,
-		1: 0,
-		2: 0,
-		3: 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
 		"energy": 5
 	},
 
@@ -1500,13 +1531,10 @@ var costs = {
 		"complex_carbs": 0,
 		"complex_fats": 0,
 		"complex_proteins": 0,
-		-3: 0,
-		-2: 0,
-		-1: 0,
-		0: 0,
-		1: 0,
-		2: 0,
-		3: 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
 		"energy": 5
 	},
 
@@ -1517,13 +1545,10 @@ var costs = {
 		"complex_carbs": 0,
 		"complex_fats": 0,
 		"complex_proteins": 0, 
-		-3: 0,
-		-2: 0,
-		-1: 0,
-		0: 0,
-		1: 0,
-		2: 0,
-		3: 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
 		"energy": 2	
 	},
 
@@ -1534,13 +1559,10 @@ var costs = {
 		"complex_carbs": 0,
 		"complex_fats": 0,
 		"complex_proteins": 0, 
-		-3: 0,
-		-2: 0,
-		-1: 0,
-		0: 0,
-		1: 0,
-		2: 0,
-		3: 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
 		"energy": 8
 	},
 
@@ -1551,13 +1573,10 @@ var costs = {
 		"complex_carbs": 0,
 		"complex_fats": 0,
 		"complex_proteins": 0,
-		-3: 0,
-		-2: 0,
-		-1: 0,
-		0: 0,
-		1: 0,
-		2: 0,
-		3: 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
 		"energy": 5
 	},
 
@@ -1568,13 +1587,10 @@ var costs = {
 		"complex_carbs": 0,
 		"complex_fats": 0,
 		"complex_proteins": 0,
-		-3: 0,
-		-2: 0,
-		-1: 0,
-		0: 0,
-		1: 0,
-		2: 0,
-		3: 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
 		"energy": 5
 	},
 
@@ -1587,13 +1603,10 @@ var costs = {
 		"complex_carbs": 0,
 		"complex_fats": 0,
 		"complex_proteins": 0,
-		-3: 0,
-		-2: 0,
-		-1: 0,
-		0: 0,
-		1: 0,
-		2: 0,
-		3: 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
 		"energy": 8
 	},
 
@@ -1604,13 +1617,10 @@ var costs = {
 		"complex_carbs": 0,
 		"complex_fats": 0,
 		"complex_proteins": 0,
-		-3: 0,
-		-2: 0,
-		-1: 0,
-		0: 0,
-		1: 0,
-		2: 0,
-		3: 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
 		"energy": 5
 	},
 
@@ -1621,13 +1631,10 @@ var costs = {
 		"complex_carbs": 0,
 		"complex_fats": 0,
 		"complex_proteins": 0,
-		-3: 0,
-		-2: 0,
-		-1: 0,
-		0: 0,
-		1: 0,
-		2: 0,
-		3: 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
 		"energy": 15
 	},
 
@@ -1638,13 +1645,10 @@ var costs = {
 		"complex_carbs": 0,
 		"complex_fats": 0,
 		"complex_proteins": 0,
-		-3: 0,
-		-2: 0,
-		-1: 0,
-		0: 0,
-		1: 0,
-		2: 0,
-		3: 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
 		"energy": 15
 	}
 }
@@ -1713,10 +1717,9 @@ func use_resources(action, num_times_performed = 1):
 					mineral_resources[charge][resource] = 0
 		recompute_mineral_total(charge)
 		
-	energy = max(0, energy - get_energy_cost(action, num_times_performed))
+	set_energy(max(0, energy - get_energy_cost(action, num_times_performed)))
 	
 	emit_signal("resources_changed", cfp_resources, mineral_resources)
-	emit_signal("energy_changed", energy)
 
 const COST_STR_FORMAT = ", %s %s";
 const COST_STR_COMMA_IDX = 2;
@@ -1800,7 +1803,7 @@ func acquire_resources():
 			Game.modified_tiles[current_tile["location"]][property] = current_tile[property]
 	
 	if modified:
-		energy -= energy_cost
+		set_energy(energy - energy_cost)
 		
 	return modified
 
@@ -1827,7 +1830,7 @@ func upgrade_cfp_resource(resource_from: String, amount: int):
 		#Upgrade all resources that you can
 		for i in range(upgraded_amount):
 			if energy_cost <= energy and cfp_resources[upgraded_class]["total"] < vesicle_capacity and cfp_resources[resource_class][resource_from] >= required_from_per_up:
-				energy -= energy_cost
+				set_energy(energy - energy_cost)
 				
 				cfp_resources[upgraded_class][upgraded_form] += 1
 				cfp_resources[upgraded_class]["total"] += 1
@@ -1853,7 +1856,7 @@ func upgrade_energy(resource_to: String, amount_to: int = 1):
 	while(amount_to > 0 and energy_cost + factor <= energy and cfp_resources[resource_to_class]["total"] < vesicle_capacity):
 		amount_to -= 1
 		
-		energy -= (energy_cost + factor)
+		set_energy(energy - (energy_cost + factor))
 		
 		cfp_resources[resource_to_class][resource_to] += 1
 		cfp_resources[resource_to_class]["total"] += 1
@@ -1913,7 +1916,7 @@ func convert_cfp_to_cfp(resources_from: Dictionary, resource_to: String):
 			cfp_resources[resource_to_class][resource_to] += add_resource
 			cfp_resources[resource_to_class]["total"] += add_resource
 			
-			energy -= energy_cost
+			set_energy(energy - energy_cost)
 			
 			results[resource]["new_resource_amount"] += add_resource
 			
@@ -1948,7 +1951,7 @@ func downgrade_cfp_resource(resource_from: String, amount: int):
 				#situations; we punish the player for processing resources at that
 				#time and deduct energy trying to handle thier request
 				if energy < MAX_ENERGY and energy - energy_cost + energy_gained > 0:	
-					energy = clamp(energy - energy_cost + energy_gained, 0, MAX_ENERGY)
+					set_energy(clamp(energy - energy_cost + energy_gained, 0, MAX_ENERGY))
 					
 					cfp_resources[resource_class][resource_from] -= 1
 					cfp_resources[resource_class]["total"] -= 1
@@ -1966,7 +1969,7 @@ func downgrade_cfp_resource(resource_from: String, amount: int):
 			#Downgrade all resources that you can
 			for i in range(amount):
 				if energy_cost <= energy and cfp_resources[downgraded_class]["total"] + resources_per_downgrade <= vesicle_capacity:
-					energy -= energy_cost
+					set_energy(energy - energy_cost)
 					
 					cfp_resources[resource_class][resource_from] -= 1
 					cfp_resources[resource_class]["total"] -= 1
@@ -2157,6 +2160,10 @@ func process_cfp_resources(resources: Dictionary, container_name: String) -> Dic
 	results = merge_dictionaries(simple_results, complex_results)
 		
 	return results
+
+func set_energy(_energy: float):
+	energy = _energy
+	emit_signal("energy_changed", energy)
 
 func split_energy(num_splits: int) -> float:
 	return energy / num_splits
@@ -2354,8 +2361,8 @@ func get_vision_radius():
 #biome is an integer
 func get_locomotion_cost(biome):
 	if typeof(biome) == TYPE_INT:
-		return Game.biomes[Game.biomes.keys()[biome]]["base_cost"] * get_cost_mult("move")
+		return Game.biomes[Game.biomes.keys()[biome]]["base_cost"] * get_cost_mult("move") * get_behavior_profile().get_specialization("Locomotion", "biomes", Game.biomes.keys()[biome])
 	elif typeof(biome) == TYPE_STRING:
-		return Game.biomes[biome]["base_cost"] * get_cost_mult("move")
+		return Game.biomes[biome]["base_cost"] * get_cost_mult("move") * get_behavior_profile().get_specialization("Locomotion", "biomes", biome)
 	else:
 		return -1

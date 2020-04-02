@@ -64,7 +64,7 @@ func create_player():
 	player.name = "player_" + str(Game.all_time_players)
 	player.setup()
 	add_child(player)
-	player.connect("player_died", self, "_on_Player_died", [player])
+	player.connect("player_died", self, "_on_Player_died")
 	
 	Game.all_time_players += 1
 	Game.current_players += 1

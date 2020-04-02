@@ -6,14 +6,6 @@
 [ext_resource path="res://Assets/Images/Tiles/Resources/steak.png" type="Texture" id=4]
 [ext_resource path="res://Scripts/WorldMap/ResourceMap.gd" type="Script" id=5]
 
-
-
-
-
-
-
-
-
 [sub_resource type="TileSet" id=1]
 0/name = "vitamin_tile.png 0"
 0/texture = ExtResource( 1 )

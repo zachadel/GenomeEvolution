@@ -10,18 +10,23 @@ var resource_generator
 
 var tile_texture_size
 
+#tile_textures[resource]["texture"] = texture
+#tile_textures[resource]["observed"] = bool
+var tile_textures = {}
+
 func _ready():
 	var i = 0
-	var tile_texture
-
+	tile_textures["question_mark"] = load(Game.DEFAULT_RESOURCE_PATH)
+	
 	tile_set = TileSet.new()
 	for resource in Game.resources.keys():
-
-		tile_set.create_tile(i)
-
-		tile_texture = load(Game.resources[resource]['tile_image'])
+		tile_textures[resource] = {}
+		tile_textures[resource]["texture"] = load(Game.resources[resource]['tile_image'])
+		tile_textures[resource]["observed"] = false
 		
-		tile_set.tile_set_texture(i, tile_texture)
+		tile_set.create_tile(i)
+		
+		tile_set.tile_set_texture(i, tile_textures["question_mark"])
 		i += 1
 	
 	tile_texture_size = tile_set.tile_get_texture(0).get_size()
@@ -199,7 +204,7 @@ func get_tile_resources(pos):
 	
 	if not [int(pos.x), int(pos.y)] in Game.modified_tiles:
 		var primary_resource = get_primary_resource(pos)
-		
+		#var keys = Game.resources.keys()
 		for i in range(len(Game.resources)):
 			if i != primary_resource:
 				resources[i] = int(abs(floor(resource_generator.get_noise_3d(pos.x, pos.y, i) * Game.GEN_SCALING))) % (Game.SECONDARY_RESOURCE_MAX - Game.SECONDARY_RESOURCE_MIN + 1) + Game.SECONDARY_RESOURCE_MIN
@@ -215,4 +220,20 @@ func update_tile_resource(pos, primary_resource_index):
 		pos = Game.cube_coords_to_offsetv(pos)
 		
 	set_cell(int(pos.x), int(pos.y), primary_resource_index)
+	
+func observe_resource(resource: String):
+	if not tile_textures[resource]["observed"]:
+		var resource_index = Game.get_index_from_resource(resource)
+		
+		tile_set.tile_set_texture(resource_index, tile_textures[resource]["texture"])
+		tile_textures[resource]["observed"] = true
+		
+func observe_resources(cfp_resources: Dictionary, mineral_resources: Dictionary):
+	for resource_class in cfp_resources:
+		for resource in cfp_resources[resource_class]:
+			observe_resource(resource)
+			
+	for resource_class in mineral_resources:
+		for resource in mineral_resources[resource_class]:
+			observe_resource(resource)
 	

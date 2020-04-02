@@ -40,7 +40,7 @@ func _ready():
 		test_button.text = "Test Function"
 		$MenuPanel/HBoxContainer.add_child(test_button)
 		test_button.connect("pressed", self, "test_functionality")
-		
+	
 	pass
 	
 func set_organism(org):
@@ -183,7 +183,14 @@ func _on_AcquireResources_pressed():
 #upgrade from energy is broken
 #Seems like energy is quite broken
 func test_functionality():
-	print(irc.organism.get_vision_radius())
+	print("Organism storage capacity:")
+	print("Simple Carbs: ", irc.organism.get_estimated_capacity("simple_carbs"))
+	print("Simple Fats: ", irc.organism.get_estimated_capacity("simple_fats"))
+	print("Simple Proteins: ", irc.organism.get_estimated_capacity("simple_proteins"))
+	print("Complex Carbs: ", irc.organism.get_estimated_capacity("complex_carbs"))
+	print("Complex Fats: ", irc.organism.get_estimated_capacity("complex_fats"))
+	print("Complex PRoteins: ", irc.organism.get_estimated_capacity("complex_proteins"))
+	
 	pass
 
 func get_resource_dict_differences(cfp_1:Dictionary, cfp_2: Dictionary):

@@ -26,6 +26,7 @@ func _ready():
 	$ViewMap.texture_normal = load(Game.get_large_cell_path(Game.current_cell_string))
 	
 	connect("next_turn", orgn, "adv_turn");
+	orgn.connect("energy_changed", energy_bar, "_on_Organism_energy_changed")
 	
 	$EnergyBar.MAX_ENERGY = orgn.MAX_ENERGY
 
