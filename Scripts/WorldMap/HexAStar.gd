@@ -25,7 +25,10 @@ func _ready():
 #I leave this final note for posterity: no sane human should ever have to work
 #in hexagonal coordinates.  It's an affront to the dignity of man.
 
-	
+
+func get_radius():
+	return radius
+
 func set_position_offset(pos: Vector3, costs: FuncRef):
 	offset = pos
 	update_costs(costs)

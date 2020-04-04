@@ -16,14 +16,16 @@ var born_on_turn
 var died_on_turn
 var num_progeny = 0;
 
+var cell_str = "cell_1"
+
 var start_tile
 
 var energy = 10
 #the 4 resource groups with initial tiers of compression
 #tier 0 is immediately useable
 #tier 1 must be broken down into tier 0 using the tier stats
-const MAX_START_RESOURCES = 2
-const MIN_START_RESOURCES = 1
+const MAX_START_RESOURCES = 10
+const MIN_START_RESOURCES = 10
 
 const NECESSARY_OXYGEN_LEVEL = 75
 const LARGEST_MULTIPLIER = 2
@@ -62,7 +64,7 @@ const DEFAULT_VES_SIZE = Vector2(72, 72)
 
 var vesicle_scales = {
 	"simple_carbs": {
-		"scale": Vector2(.75, .75),
+		"scale": Vector2(.8, .8),
 		"enabled": true
 		},
 	"complex_carbs":{
@@ -70,7 +72,7 @@ var vesicle_scales = {
 		"enabled": true
 		},
 	"simple_fats":{
-		"scale": Vector2(.75, .75),
+		"scale": Vector2(.8, .8),
 		"enabled": true
 		},
 	"complex_fats": {
@@ -78,7 +80,7 @@ var vesicle_scales = {
 		"enabled": true
 		},
 	"simple_proteins": {
-		"scale": Vector2(.75, .75),
+		"scale": Vector2(.8, .8),
 		"enabled": true
 		},
 	"complex_proteins": {
@@ -86,12 +88,6 @@ var vesicle_scales = {
 		"enabled": true
 		}
 }
-
-const SIMPLE_VESICLE_SCALES = [Vector2(.5, .5), Vector2(.75, .75), Vector2(1, 1), Vector2(1.25, 1.25), Vector2(1.5, 1.5)]
-const COMPLEX_VESICLE_SCALES = [Vector2(0, 0), Vector2(.5, .5), Vector2(.75, .75), Vector2(1, 1), Vector2(1.25, 1.25), Vector2(1.5, 1.5)]
-
-var simple_vesicle_step = 1
-var complex_vesicle_step = 0
 
 var MIN_ENERGY = 0;
 var MAX_ENERGY = 25;
@@ -175,14 +171,22 @@ func populate_mineral_dict():
 					
 					mineral_resources[resource_class]["total"] += mineral_resources[resource_class][resource]
 
+func set_cell_type(_cell_str: String):
+	cell_str = _cell_str
+
 func get_vesicle_size(vesicle_name: String):
 	return Game.vec_mult(vesicle_scales[vesicle_name]["scale"], DEFAULT_VES_SIZE)
 
+#Possible Capacities: 2, 7, 14, 23, 34
+#Resource size: 322.274304
+#Vesicle Sizes: (36, 36), (54, 54), (72, 72), (90, 90), (108, 108)
+#Vesicle Areas: 1296, 2916, 5184, 8100, 11664
+
 #For more info see https://math.stackexchange.com/questions/3007527/how-many-squares-fit-in-a-circle
 #See also https://math.stackexchange.com/questions/2984061/cover-a-circle-with-squares/2991025#2991025
-func get_estimated_capacity(vesicle_name: String, object_length: float = Game.RESOURCE_COLLISION_SIZE.x):
+func get_estimated_capacity(vesicle_name: String, object_length: float = Game.RESOURCE_COLLISION_SIZE.y):
 	var ves_size = get_vesicle_size(vesicle_name)
-	var capacity = int(ceil(ves_size.x*ves_size.y / (object_length * object_length))) - 3
+	var capacity = max(0, int(ceil(ves_size.x*ves_size.y / (object_length * object_length))))
 	
 	return capacity
 #	var ratio = circle_radius / object_length #vesicle radius / square icon side length
@@ -227,67 +231,27 @@ func clear_vesicle(resource_class: String):
 	cfp_resources[resource_class]["total"] = 0
 
 func update_vesicle_sizes():
+	var scale_str = "_scales"
 	var component = get_behavior_profile().get_behavior("Component")
 	
-	var old_simple = simple_vesicle_step
-	var old_complex = complex_vesicle_step
-	
-	if 0 <= component and component < 2:
-		simple_vesicle_step = 0
-		complex_vesicle_step = 0
-		
-		for resource_class in vesicle_scales:
-			if resource_class.split(Game.SEPARATOR)[0] == "complex":
-				vesicle_scales[resource_class]["enabled"] = false
+	for i in len(Game.cells[cell_str]["vesicle_thresholds"]):
+		if len(Game.cells[cell_str]["vesicle_thresholds"][i]) == 2: #Case where we have two things to compare
+			if Game.cells[cell_str]["vesicle_thresholds"][i][0] <= component and component < Game.cells[cell_str]["vesicle_thresholds"][i][1]:
+				for resource_class in vesicle_scales:
+					vesicle_scales[resource_class]["scale"] = Vector2(Game.cells[cell_str][resource_class + scale_str][i], Game.cells[cell_str][resource_class + scale_str][i])
+					var new_capacity = get_estimated_capacity(resource_class)
+					
+					if new_capacity <= 0:
+						clear_vesicle(resource_class)
+					elif cfp_resources[resource_class]["total"] > new_capacity:
+						consume_randomly_from_class(resource_class, cfp_resources[resource_class]["total"] - new_capacity)	
+				break #We can exit because the intervals are mutually exclusive
+		elif Game.cells[cell_str]["vesicle_thresholds"][i][0] <= component: #End of vesicle_thresholds
+			for resource_class in vesicle_scales:
+				vesicle_scales[resource_class]["scale"] = Vector2(Game.cells[cell_str][resource_class + scale_str][i], Game.cells[cell_str][resource_class + scale_str][i])
+			break #We can exit because the intervals are mutually exclusive
 				
-		
-		
-	elif 2 <= component and component < 6:
-		simple_vesicle_step = 1
-		complex_vesicle_step = 1
-		
-		for resource_class in vesicle_scales:
-			if resource_class.split(Game.SEPARATOR)[0] == "complex":
-				vesicle_scales[resource_class]["enabled"] = true
-		
-	elif 6 <= component and component < 10:
-		simple_vesicle_step = 2
-		complex_vesicle_step = 1
-		
-	elif 10 <= component and component < 14:
-		simple_vesicle_step = 3
-		complex_vesicle_step = 2
-		
-	elif 14 <= component and component < 18:
-		simple_vesicle_step = 4
-		complex_vesicle_step = 3
-		
-	elif 18 <= component and component < 22:
-		simple_vesicle_step = 4
-		complex_vesicle_step = 4
-		
-	elif 22 <= component and component < 26:
-		simple_vesicle_step = 4
-		complex_vesicle_step = 5
-		
-	elif 26 <= component:
-		simple_vesicle_step = 4
-		complex_vesicle_step = 6
-
-	if old_complex != complex_vesicle_step or old_simple != simple_vesicle_step:
-		for resource_class in vesicle_scales:
-			if resource_class.split(Game.SEPARATOR)[0] == "simple":
-				vesicle_scales[resource_class]["scale"] = SIMPLE_VESICLE_SCALES[simple_vesicle_step]
-			else:
-				vesicle_scales[resource_class]["scale"] = COMPLEX_VESICLE_SCALES[complex_vesicle_step]
-			
-			var new_capacity = get_estimated_capacity(resource_class)
-			if new_capacity == 0:
-				clear_vesicle(resource_class)
-			elif cfp_resources[resource_class]["total"] > new_capacity:
-				consume_randomly_from_class(resource_class, new_capacity - cfp_resources[resource_class]["total"])	
-				
-		emit_signal("vesicle_scale_changed", vesicle_scales, cfp_resources)
+	emit_signal("vesicle_scale_changed", vesicle_scales, cfp_resources)
 		
 func reset():
 	pass
@@ -320,11 +284,11 @@ func setup(card_table):
 	var augment_genes = {}
 	var default_genome = Game.get_default_genome(Game.current_cell_string)
 	
-	var min_tes = Settings.starting_transposons()[Settings.MIN]
-	var min_blanks = Settings.starting_blanks()[Settings.MIN]
-	
 	var max_tes = Settings.starting_transposons()[Settings.MAX]
+	var min_tes = Settings.starting_transposons()[Settings.MIN]
+	
 	var max_blanks = Settings.starting_blanks()[Settings.MAX]
+	var min_blanks = Settings.starting_blanks()[Settings.MIN]
 	
 	var max_random_ess = Settings.starting_additional_genes()[Settings.MAX]
 	var min_random_ess = Settings.starting_additional_genes()[Settings.MIN]
@@ -1260,7 +1224,7 @@ func adv_turn(round_num, turn_idx):
 					evolve_cmsm(cmsm);
 			Game.TURN_TYPES.CheckViability:
 				var missing = get_missing_ess_classes();
-				if (missing.size() == 0):
+				if is_viable(missing):
 					emit_signal("justnow_update", "You're still kicking!");
 					cont_recombo = true
 					recombo_chance = 1
@@ -1274,6 +1238,14 @@ func adv_turn(round_num, turn_idx):
 				emit_signal("justnow_update", "Choose replication method.");
 				emit_signal("doing_work", true);
 				emit_signal("show_reprod_opts", true);
+
+func is_viable(missing_classes: Array) -> bool:
+	if missing_classes.size() == 0:
+		return true
+	else:
+		return not (missing_classes.has("Component") or missing_classes.has("Deconstruction") or \
+			   missing_classes.has("Construction") or missing_classes.has("Locomotion") or \
+			   missing_classes.has("Manipulation"))
 
 func is_dead():
 	return died_on_turn > -1;
@@ -2075,41 +2047,36 @@ func consume_randomly_from_class(resource_class: String, amount: int):
 	var final_amount = amount
 
 	if resource_class in cfp_resources:
-		if cfp_resources[resource_class]["total"] <= amount:
-			dict = cfp_resources
-			keys = cfp_resources[resource_class].keys()
-			keys.remove("total")
-		else:
-			return -1
+		dict = cfp_resources
+		keys = cfp_resources[resource_class].keys()
+		keys.erase("total")
 			
 	elif resource_class in mineral_resources:
-		if mineral_resources[resource_class]["total"] <= amount:
-			dict = mineral_resources
-			keys = mineral_resources[resource_class].keys()
-			keys.remove("total")
-		else:
-			return -1
+		dict = mineral_resources
+		keys = mineral_resources[resource_class].keys()
+		keys.erase("total")
 		
-	while(amount > 0):
-		var index = randi() % len(keys)
+	while(amount > 0 and len(keys) > 0):
+		var index = randi() % (len(keys))
 		var resource = keys[index]
 		
 		#we have stuff we can remove
 		if dict[resource_class][resource] > 0:
 			var remove_amount = 0
 			if dict[resource_class][resource] <= amount:
-				remove_amount = randi() % (dict[resource_class][resource] - 1) + 1 #guarantees we remove at least one unit
+				remove_amount = randi() % (dict[resource_class][resource]) + 1 #guarantees we remove at least one unit
 				
 			elif dict[resource_class][resource] > amount:
-				remove_amount = randi() % (amount - 1) + 1
+				remove_amount = randi() % (amount) + 1
 				
 			amount -= remove_amount
 			dict[resource_class][resource] -= remove_amount
+			dict[resource_class]["total"] -= remove_amount
 			
 			if dict[resource_class][resource] == 0:
-				keys.erase(index)
+				keys.remove(index)
 		else:
-			keys.erase(index)
+			keys.remove(index)
 	return final_amount		
 
 #Connect to internal resource controller

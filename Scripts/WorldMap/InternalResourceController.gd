@@ -295,17 +295,23 @@ func set_input(enabled: bool):
 func _on_Organism_vesicle_scale_changed(vesicle_scales, cfp_resources):
 	for resource_class in vesicle_scales:
 		var vesicle = get_node(resource_class)
+		var old_scale = vesicle.get_scale()
+		
 		vesicle.set_scale(vesicle_scales[resource_class]["scale"])
 		
-		if vesicle_scales[resource_class]["enabled"]:
-			enable_vesicle(resource_class)
-		else:
-			disable_vesicle(resource_class)
+		center_resources(resource_class)
 			
 	update_resources(cfp_resources)
 			
 	pass
 	
+func center_resources(resource_class: String):
+	var vesicle = get_node(resource_class)
+	
+	for resource in resources[resource_class]:
+		for node in resources[resource_class][resource]:
+			node.position = vesicle.position
+
 func enable_vesicle(resource_class: String):
 	var vesicle = get_node(resource_class)
 	

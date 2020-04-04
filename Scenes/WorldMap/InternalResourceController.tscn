@@ -52,32 +52,26 @@ rect_scale = Vector2( 0.433, 0.75 )
 
 [node name="simple_carbs" parent="." instance=ExtResource( 3 )]
 position = Vector2( 70, 191 )
-scale = Vector2( 0.75, 0.75 )
 resource_class = "simple_carbs"
 
 [node name="complex_carbs" parent="." instance=ExtResource( 3 )]
 position = Vector2( 210, 191 )
-scale = Vector2( 0.5, 0.5 )
 resource_class = "complex_carbs"
 
 [node name="simple_fats" parent="." instance=ExtResource( 3 )]
 position = Vector2( 70, 349 )
-scale = Vector2( 0.75, 0.75 )
 resource_class = "simple_fats"
 
 [node name="complex_fats" parent="." instance=ExtResource( 3 )]
 position = Vector2( 210, 349 )
-scale = Vector2( 0.5, 0.5 )
 resource_class = "complex_fats"
 
 [node name="simple_proteins" parent="." instance=ExtResource( 3 )]
 position = Vector2( 70, 507 )
-scale = Vector2( 0.75, 0.75 )
 resource_class = "simple_proteins"
 
 [node name="complex_proteins" parent="." instance=ExtResource( 3 )]
 position = Vector2( 210, 507 )
-scale = Vector2( 0.5, 0.5 )
 resource_class = "complex_proteins"
 
 [node name="LabelColumns" type="HBoxContainer" parent="."]

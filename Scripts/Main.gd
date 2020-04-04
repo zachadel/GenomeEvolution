@@ -99,7 +99,9 @@ func _on_Player_died(player):
 func _on_CardTable_next_turn(turn_text, round_num):
 	if Game.get_turn_type() == Game.TURN_TYPES.Map:
 		_hide_card_table()
+		world_map.current_player.organism.update_vesicle_sizes()
 		_on_CardTable_switch_to_map();
+		
 
 func _show_world_map():
 	world_map.show()

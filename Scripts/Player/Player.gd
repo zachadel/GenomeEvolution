@@ -33,6 +33,7 @@ func enable_sprite(enable: bool):
 	sprite.visible = enable
 	
 func set_cell_type(cell_type: String):
+	organism.set_cell_type(cell_type)
 	sprite.set_cell_type(cell_type)
 	
 func get_cell_type():

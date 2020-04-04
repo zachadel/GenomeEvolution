@@ -190,7 +190,16 @@ func test_functionality():
 	print("Complex Carbs: ", irc.organism.get_estimated_capacity("complex_carbs"))
 	print("Complex Fats: ", irc.organism.get_estimated_capacity("complex_fats"))
 	print("Complex PRoteins: ", irc.organism.get_estimated_capacity("complex_proteins"))
-	
+	print('Vesicle: Scales:')
+	print(irc.organism.vesicle_scales)
+	print('Component Values:')
+	print(irc.organism.get_behavior_profile().get_behavior("Component"))
+	print("Resources Before Consume:")
+	print(irc.organism.cfp_resources)
+	print("Resources After Consume %d:" % [10])
+	irc.organism.consume_randomly_from_class("simple_fats", 10)
+	irc.update_resources(irc.organism.cfp_resources)
+	print(irc.organism.cfp_resources)
 	pass
 
 func get_resource_dict_differences(cfp_1:Dictionary, cfp_2: Dictionary):

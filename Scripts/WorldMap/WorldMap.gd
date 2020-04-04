@@ -320,6 +320,13 @@ func enable_camera():
 	$MapCamera.zoom = Vector2(1, 1)
 
 func update_vision():
+	var old_radius = astar.get_radius()
+	var new_radius = current_player.organism.get_vision_radius()
+	
+	if old_radius != new_radius:
+		hide_tiles(Game.world_to_map(current_player.position), old_radius)
+	observe_tiles(Game.world_to_map(current_player.position), current_player.organism.get_vision_radius())
+	
 	astar.change_radius(max(1, current_player.organism.get_vision_radius()), funcref(self, "costs"))
 
 #Enter the use case as an int from Game.PLAYER_VIEW
