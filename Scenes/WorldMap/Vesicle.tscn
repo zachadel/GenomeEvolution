@@ -4,9 +4,12 @@
 [ext_resource path="res://Assets/Images/Tiles/Resources/vesicle.svg" type="Texture" id=2]
 
 [node name="Container" type="StaticBody2D"]
-position = Vector2( 690.604, 445.233 )
+position = Vector2( 685.758, 445.143 )
 input_pickable = true
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )

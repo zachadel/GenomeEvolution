@@ -538,6 +538,7 @@ __meta__ = {
 }
 
 [node name="Cells" type="Control" parent="."]
+visible = false
 margin_right = 1600.0
 margin_bottom = 900.0
 mouse_filter = 2
@@ -741,9 +742,9 @@ __meta__ = {
 }
 
 [node name="GeneBackground" type="TextureRect" parent="Cells"]
-margin_left = 113.746
+margin_left = 565.962
 margin_top = 703.0
-margin_right = 286.746
+margin_right = 738.962
 margin_bottom = 876.0
 mouse_filter = 2
 texture = ExtResource( 11 )
@@ -761,6 +762,17 @@ mouse_filter = 2
 texture = ExtResource( 12 )
 expand = true
 
+[node name="Back" type="Button" parent="Cells"]
+margin_left = 53.2607
+margin_top = 769.932
+margin_right = 312.261
+margin_bottom = 874.932
+theme = SubResource( 9 )
+text = "Back"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Skip" type="Button" parent="Cells"]
 margin_left = 1016.0
 margin_top = 770.708
@@ -774,9 +786,9 @@ __meta__ = {
 
 [node name="Next" type="Button" parent="Cells"]
 margin_left = 1293.0
-margin_top = 770.708
+margin_top = 771.0
 margin_right = 1552.0
-margin_bottom = 875.708
+margin_bottom = 876.0
 theme = SubResource( 9 )
 text = "Next"
 __meta__ = {
@@ -784,7 +796,6 @@ __meta__ = {
 }
 
 [node name="Genes" type="Control" parent="."]
-visible = false
 margin_right = 1600.0
 margin_bottom = 900.0
 mouse_filter = 2
@@ -840,9 +851,9 @@ mouse_filter = 2
 
 [node name="Explanations" type="VBoxContainer" parent="Genes"]
 margin_left = 320.0
-margin_top = 256.0
+margin_top = 228.22
 margin_right = 1202.0
-margin_bottom = 771.0
+margin_bottom = 743.22
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -913,9 +924,9 @@ __meta__ = {
 
 [node name="Genes" type="VBoxContainer" parent="Genes"]
 margin_left = 80.0
-margin_top = 217.954
+margin_top = 190.174
 margin_right = 475.0
-margin_bottom = 1405.95
+margin_bottom = 1378.17
 rect_scale = Vector2( 0.5, 0.5 )
 mouse_filter = 2
 __meta__ = {
@@ -1002,6 +1013,17 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Back" type="Button" parent="Genes"]
+margin_left = 53.2607
+margin_top = 769.932
+margin_right = 312.261
+margin_bottom = 874.932
+theme = SubResource( 9 )
+text = "Back"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Skip" type="Button" parent="Genes"]
 margin_left = 1016.0
 margin_top = 770.708
@@ -1081,6 +1103,17 @@ margin_top = 150.174
 margin_bottom = -549.826
 rect_scale = Vector2( 2, 2 )
 mouse_filter = 2
+
+[node name="Back" type="Button" parent="Chromosomes"]
+margin_left = 53.2607
+margin_top = 769.932
+margin_right = 312.261
+margin_bottom = 874.932
+theme = SubResource( 9 )
+text = "Back"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Skip" type="Button" parent="Chromosomes"]
 margin_left = 1016.0
@@ -1294,8 +1327,10 @@ custom_fonts/italics_font = ExtResource( 9 )
 custom_fonts/normal_font = SubResource( 2 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
-bbcode_text = "[i][center]All the genes in a living cell are linked together like beads on strings.[/center][/i]"
-text = "All the genes in a living cell are linked together like beads on strings."
+bbcode_text = "[i][center]Just like real strings, the strings that make
+up the genome can be damaged or broken![/center][/i]"
+text = "Just like real strings, the strings that make
+up the genome can be damaged or broken!"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1308,6 +1343,17 @@ margin_right = -201.967
 margin_bottom = -549.826
 rect_scale = Vector2( 2, 2 )
 mouse_filter = 2
+
+[node name="Back" type="Button" parent="Breaks"]
+margin_left = 53.2607
+margin_top = 769.932
+margin_right = 312.261
+margin_bottom = 874.932
+theme = SubResource( 9 )
+text = "Back"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Skip" type="Button" parent="Breaks"]
 margin_left = 1016.0
@@ -1541,6 +1587,17 @@ margin_right = -201.967
 margin_bottom = -549.826
 rect_scale = Vector2( 2, 2 )
 mouse_filter = 2
+
+[node name="Back" type="Button" parent="Blanks"]
+margin_left = 53.2607
+margin_top = 769.932
+margin_right = 312.261
+margin_bottom = 874.932
+theme = SubResource( 9 )
+text = "Back"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Skip" type="Button" parent="Blanks"]
 margin_left = 1016.0
@@ -1866,6 +1923,17 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Back" type="Button" parent="Transposon"]
+margin_left = 53.2607
+margin_top = 769.932
+margin_right = 312.261
+margin_bottom = 874.932
+theme = SubResource( 9 )
+text = "Back"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Skip" type="Button" parent="Transposon"]
 margin_left = 1016.0
 margin_top = 770.708
@@ -2073,15 +2141,21 @@ expand = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
+[connection signal="pressed" from="Cells/Back" to="." method="_on_Back_pressed"]
 [connection signal="pressed" from="Cells/Skip" to="." method="_on_Skip_pressed"]
 [connection signal="pressed" from="Cells/Next" to="." method="_on_Next_pressed"]
+[connection signal="pressed" from="Genes/Back" to="." method="_on_Back_pressed"]
 [connection signal="pressed" from="Genes/Skip" to="." method="_on_Skip_pressed"]
 [connection signal="pressed" from="Genes/Next" to="." method="_on_Next_pressed"]
+[connection signal="pressed" from="Chromosomes/Back" to="." method="_on_Back_pressed"]
 [connection signal="pressed" from="Chromosomes/Skip" to="." method="_on_Skip_pressed"]
 [connection signal="pressed" from="Chromosomes/Next" to="." method="_on_Next_pressed"]
+[connection signal="pressed" from="Breaks/Back" to="." method="_on_Back_pressed"]
 [connection signal="pressed" from="Breaks/Skip" to="." method="_on_Skip_pressed"]
 [connection signal="pressed" from="Breaks/Next" to="." method="_on_Next_pressed"]
+[connection signal="pressed" from="Blanks/Back" to="." method="_on_Back_pressed"]
 [connection signal="pressed" from="Blanks/Skip" to="." method="_on_Skip_pressed"]
 [connection signal="pressed" from="Blanks/Next" to="." method="_on_Next_pressed"]
+[connection signal="pressed" from="Transposon/Back" to="." method="_on_Back_pressed"]
 [connection signal="pressed" from="Transposon/Skip" to="." method="_on_Skip_pressed"]
 [connection signal="pressed" from="Transposon/Next" to="." method="_on_Next_pressed"]

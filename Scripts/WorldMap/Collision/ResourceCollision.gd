@@ -8,6 +8,9 @@ signal clicked
 var picked_up = false
 export var resource = "candy1"
 
+var DEFAULT_POS = Vector2(0, 0)
+var center = false
+
 const VELOCITY_MAX_X = 10
 const VELOCITY_MAX_Y = 15
 
@@ -16,7 +19,7 @@ const DEFAULT_COLOR = Color(1,1,1,1)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	linear_velocity = get_random_velocity()
+	apply_central_impulse(get_random_velocity())
 	pass # Replace with function body.
 
 func get_random_velocity():
@@ -30,6 +33,23 @@ func _physics_process(delta):
 	if picked_up:
 		global_transform.origin = get_global_mouse_position()
 	
+func _integrate_forces(state):
+	if center:
+		state.transform = Transform2D(0, DEFAULT_POS)	
+		center = false
+		
+		apply_central_impulse(get_random_velocity())
+
+func set_default_position(pos: Vector2):
+	DEFAULT_POS = pos
+	
+func get_default_position() -> Vector2:
+	return DEFAULT_POS
+	
+func center():
+	center = true
+	apply_central_impulse(get_random_velocity())
+
 func pickup():
 	if !picked_up:
 		picked_up = true

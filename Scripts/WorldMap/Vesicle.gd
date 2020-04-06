@@ -86,6 +86,13 @@ func mouse_entered_modulate(color: Color = MOUSE_ENTERED_MODULATE):
 	
 func reset_modulate(color: Color = DEFAULT_MODULATE):
 	sprite.self_modulate = color
+	
+func set_scale(_scale: Vector2):
+	sprite.scale = _scale
+	collision.scale = _scale
+	
+	mouse_collision.scale = _scale
+	pass
 
 #This is if you want all resources to be handled by a single vesicle
 #Currently vesicles are managed by an InternalResourceControl Node

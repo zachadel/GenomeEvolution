@@ -17,11 +17,14 @@ var true_end: Vector2
 var energy_clicked = false
 var enable_input = true
 
-var organism
+var organism = null
 
 onready var draw_rect = get_node("SelectionArea")
 onready var energy_bar = get_node("EnergyBar")
 var energy_icon = load("res://Assets/Images/Tiles/Resources/energy_icon.png")
+
+onready var simple_column = get_node("LabelColumns/SimpleLabels")
+onready var complex_column = get_node("LabelColumns/ComplexLabels")
 
 var resources = {
 	"simple_carbs": {},
@@ -104,13 +107,23 @@ func _process(delta):
 		draw_rect.rect_global_position = Vector2(min(true_start.x, temp_end.x), min(true_start.y, temp_end.y))
 		draw_rect.rect_size = Vector2(abs(temp_end.x - true_start.x), abs(temp_end.y - true_start.y))
 
+#func hide_class(resource_class: String):
+#	if resource_class.split(Game.SEPARATOR)[0] == "simple":
+#		pass
+
 func update_energy(energy):
 	energy_bar.update_energy_allocation(energy)
 
 func set_organism(org):
 	organism = org
-	organism.connect("energy_changed", energy_bar, "_on_Organism_energy_changed", [organism.energy])
-	
+	organism.connect("energy_changed", energy_bar, "_on_Organism_energy_changed")
+	organism.connect("vesicle_scale_changed", self, "_on_Organism_vesicle_scale_changed")
+
+#TO BE FIXED SOON
+func update_vesicles():
+	if organism != null:
+		_on_Organism_vesicle_scale_changed(organism.vesicle_scales, organism.cfp_resources)
+
 #cfp_resources[resource_class][resource] = value
 #should not be called when selected_resources has stuff
 func update_resources(cfp_resources: Dictionary):
@@ -131,7 +144,8 @@ func add_resource(resource_name: String, amount: int = 1):
 	for i in range(amount):
 		var resource = load(Game.resources[resource_name]["collision_scene"]).instance()
 		var resource_class = Game.get_class_from_name(resource_name)
-		resource.position = get_node(resource_class).position
+		resource.position = get_node(resource_class).get_position()
+		resource.set_default_position(get_node(resource_class).get_global_position())
 
 		resources[resource_class][resource_name].append(resource)
 
@@ -165,6 +179,10 @@ func remove_resource_by_node(node_list: Array):
 		
 		resources[resource_class][node.resource].erase(node)
 		node.queue_free()
+		
+func empty_vesicle(resource_class: String):
+	for resource in resources[resource_class]:
+		remove_resource_by_node(resources[resource_class][resource])
 
 func populate_selected_resources(bounding_box: Rect2):
 	var count = 0
@@ -218,7 +236,7 @@ func handle_click_with_selection():
 						
 						#Process for adding nodes to vesicles according to upgraded amount
 						add_resource(results[resource]["new_resource_name"], results[resource]["new_resource_amount"])
-						
+					energy_bar.update_energy_allocation(organism.energy)	
 				break
 				
 	#if we have selected resources and have clicked on energy
@@ -274,7 +292,40 @@ func get_vesicle_from_mouse_pos(mouse_pos: Vector2):
 	
 func set_input(enabled: bool):
 	enable_input = enabled
+
+func _on_Organism_vesicle_scale_changed(vesicle_scales, cfp_resources):
+	for resource_class in vesicle_scales:
+		var vesicle = get_node(resource_class)
+		var old_scale = vesicle.get_scale()
+		
+		vesicle.set_scale(vesicle_scales[resource_class]["scale"])
+		
+		center_resources(resource_class)
+			
+	update_resources(cfp_resources)
+			
+	pass
 	
+func center_resources(resource_class: String):
+	var vesicle = get_node(resource_class)
+	
+	for resource in resources[resource_class]:
+		for node in resources[resource_class][resource]:
+			node.center()
+
+func enable_vesicle(resource_class: String):
+	var vesicle = get_node(resource_class)
+	
+	if not vesicle.visible:
+		vesicle.visible = true
+	
+func disable_vesicle(resource_class: String):
+	var vesicle = get_node(resource_class) 
+	
+	if vesicle.visible:
+		vesicle.visible = false
+		empty_vesicle(resource_class)
+
 func _on_Organism_resources_changed(cfp_resources, mineral_resources):
 	pass
 
@@ -283,6 +334,7 @@ func _on_EnergyBar_resource_clicked(resource, value):
 		if selected:
 			energy_clicked = true
 			handle_click_with_selection()
+			clear_selected_resources()
 			energy_clicked = false
 			selected = false
 			Input.set_custom_mouse_cursor(null)

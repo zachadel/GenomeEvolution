@@ -10,6 +10,8 @@ const MAX_IMAGE_SIZE = Vector2(36, 30)
 export var value = 2.0
 export var resource = ""
 
+export var observed = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$Outline.rect_size.y = MAX_RECT_SIZE.y
@@ -19,9 +21,19 @@ func _ready():
 	$Outline.rect_size.x = value / Game.PRIMARY_RESOURCE_MAX * MAX_RECT_SIZE.x
 	$Bar.rect_size.x = $Outline.rect_size.x
 	
+	set_texture(Game.DEFAULT_RESOURCE_PATH)
+	
 	Tooltips.setup_delayed_tooltip(self)
 
 	pass # Replace with function body.
+
+func observe():
+	observed = true
+	
+	set_texture(Game.resources[resource]["tile_image"])
+	
+func is_observed():
+	return observed
 
 func set_resource(resource_str):
 	resource = resource_str
@@ -35,6 +47,11 @@ func update_value(amount):
 	
 	$Outline.rect_size.x = value / Game.PRIMARY_RESOURCE_MAX * MAX_RECT_SIZE.x
 	$Bar.rect_size.x = $Outline.rect_size.x
+	
+	if value == 0:
+		hide()
+	else:
+		show()
 	
 func get_tooltip_data():
 	var data = ["set_resource_ttip", ["", ""]]

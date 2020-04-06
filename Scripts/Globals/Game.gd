@@ -124,8 +124,10 @@ const VALID_INTERACTIONS = {
 const RESOURCE_COLLISION_SIZE = Vector2(96, 82) * .187
 const RESOURCE_PATH = "res://Scenes/WorldMap/Collision/"
 
-const PRIMARY_RESOURCE_MAX = 10
-const PRIMARY_RESOURCE_MIN = 5
+const DEFAULT_RESOURCE_PATH = "res://Assets/Images/Tiles/Icons/question_mark.png"
+
+const PRIMARY_RESOURCE_MAX = 7
+const PRIMARY_RESOURCE_MIN = 4
 var SECONDARY_RESOURCE_MAX = 1
 var SECONDARY_RESOURCE_MIN = 0
 

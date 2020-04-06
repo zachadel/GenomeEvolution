@@ -64,7 +64,7 @@ func create_player():
 	player.name = "player_" + str(Game.all_time_players)
 	player.setup()
 	add_child(player)
-	player.connect("player_died", self, "_on_Player_died", [player])
+	player.connect("player_died", self, "_on_Player_died")
 	
 	Game.all_time_players += 1
 	Game.current_players += 1
@@ -99,7 +99,9 @@ func _on_Player_died(player):
 func _on_CardTable_next_turn(turn_text, round_num):
 	if Game.get_turn_type() == Game.TURN_TYPES.Map:
 		_hide_card_table()
+		world_map.current_player.organism.update_vesicle_sizes()
 		_on_CardTable_switch_to_map();
+		
 
 func _show_world_map():
 	world_map.show()
@@ -109,6 +111,7 @@ func _show_world_map():
 	world_map.update_ui_resources()
 	world_map.enable_camera()
 	world_map.update_vision()
+	world_map.ui.center_resources()
 	
 func _hide_world_map():
 	world_map.hide()
