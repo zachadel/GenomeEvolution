@@ -111,6 +111,7 @@ func _show_world_map():
 	world_map.update_ui_resources()
 	world_map.enable_camera()
 	world_map.update_vision()
+	world_map.ui.center_resources()
 	
 func _hide_world_map():
 	world_map.hide()

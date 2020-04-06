@@ -144,7 +144,8 @@ func add_resource(resource_name: String, amount: int = 1):
 	for i in range(amount):
 		var resource = load(Game.resources[resource_name]["collision_scene"]).instance()
 		var resource_class = Game.get_class_from_name(resource_name)
-		resource.position = get_node(resource_class).position
+		resource.position = get_node(resource_class).get_position()
+		resource.set_default_position(get_node(resource_class).get_global_position())
 
 		resources[resource_class][resource_name].append(resource)
 
@@ -310,7 +311,7 @@ func center_resources(resource_class: String):
 	
 	for resource in resources[resource_class]:
 		for node in resources[resource_class][resource]:
-			node.position = vesicle.position
+			node.center()
 
 func enable_vesicle(resource_class: String):
 	var vesicle = get_node(resource_class)

@@ -24,8 +24,8 @@ var energy = 10
 #the 4 resource groups with initial tiers of compression
 #tier 0 is immediately useable
 #tier 1 must be broken down into tier 0 using the tier stats
-const MAX_START_RESOURCES = 10
-const MIN_START_RESOURCES = 10
+const MAX_START_RESOURCES = 2
+const MIN_START_RESOURCES = 1
 
 const NECESSARY_OXYGEN_LEVEL = 75
 const LARGEST_MULTIPLIER = 2

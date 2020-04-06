@@ -159,25 +159,36 @@ margin_right = 350.0
 margin_bottom = -19.0
 mouse_filter = 2
 custom_constants/separation = 20
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="AcquireResources" type="Button" parent="MenuPanel/HBoxContainer"]
-margin_right = 167.0
+margin_right = 131.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Acquire Resources"
 
 [node name="EjectResources" type="Button" parent="MenuPanel/HBoxContainer"]
-margin_left = 187.0
-margin_right = 354.0
+margin_left = 151.0
+margin_right = 301.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Eject Resources (TBA)"
 
+[node name="JiggleResources" type="Button" parent="MenuPanel/HBoxContainer"]
+margin_left = 321.0
+margin_right = 444.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Jiggle Resources"
+
 [node name="CheckGenome" type="Button" parent="MenuPanel/HBoxContainer"]
-margin_left = 374.0
-margin_right = 541.0
+margin_left = 464.0
+margin_right = 587.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -185,7 +196,7 @@ text = "Check Genome"
 
 [node name="EndMapTurn" type="Button" parent="MenuPanel/HBoxContainer"]
 self_modulate = Color( 1, 0.556863, 0.556863, 1 )
-margin_left = 561.0
+margin_left = 607.0
 margin_right = 730.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
@@ -193,5 +204,6 @@ size_flags_vertical = 3
 text = "End Map Turn"
 [connection signal="pressed" from="MenuPanel/HBoxContainer/AcquireResources" to="." method="_on_AcquireResources_pressed"]
 [connection signal="pressed" from="MenuPanel/HBoxContainer/EjectResources" to="." method="_on_EjectResources_pressed"]
+[connection signal="pressed" from="MenuPanel/HBoxContainer/JiggleResources" to="." method="center_resources"]
 [connection signal="pressed" from="MenuPanel/HBoxContainer/CheckGenome" to="." method="_on_CheckGenome_pressed"]
 [connection signal="pressed" from="MenuPanel/HBoxContainer/EndMapTurn" to="." method="_on_EndMapTurn_pressed"]
