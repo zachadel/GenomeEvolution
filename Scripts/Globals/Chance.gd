@@ -1,24 +1,61 @@
 extends Node
 
 var base_rolls = {
+	"copy_repair": make_result_array("copy_repair", {
+		"copy_intervening": 10.0,
+		"lose_one": 0.9,
+		"major_down": 0.4,
+		"minor_down": 0.3,
+		"dupe": 0.25,
+		"major_up": 0.5,
+		"minor_up": 1.25
+	}),
 	# no complications, copy intervening, lose one, major down, minor down, dupe, major up, minor up
-	"copy_repair": [0, 10, 0.9, 0.4, 0.3, 0.25, 0.5, 1.25],
+	# [0, 10, 0.9, 0.4, 0.3, 0.25, 0.5, 1.25],
 	
+	"copy_repair_correction": make_result_array("copy_repair_correction", {
+		"no": 2.0,
+		"yes": 1.0
+	}),
 	# no correction, yes correction
-	"copy_repair_correction": [2, 1],
+	# [2, 1],
 	
-	# no complications, lose a gene, major down gene, minor down gene, dupe a gene, major up gene, minor up gene, merge genes
-	"join_ends": [3, 1, 4, 1, 0.25, 0.5, 1.25, 1],
+	"join_ends": make_result_array("join_ends", {
+		"none": 3.0,
+		"lose_one": 1.0,
+		"major_down": 4.0,
+		"minor_down": 1.0,
+		"dupe": 0.25,
+		"major_up": 0.5,
+		"minor_up": 1.25,
+		"merge": 1.0
+	}),
+	# no complications, lose one, major down, minor down, dupe, major up, minor up, merge
+	# [3, 1, 4, 1, 0.25, 0.5, 1.25, 1],
 	
-	# none, death, major up, major down, minor up, minor down
-	"evolve": [10, 0, 5, 4, 15, 14]
+	"evolve": make_result_array("evolve", {
+		"none": 10.0,
+		"major_down": 4.0,
+		"minor_down": 14.0,
+		"major_up": 5.0,
+		"minor_up": 15.0
+	}),
+	# none, dead, major down, minor down, major up, minor up
+	# [10, 0, 4, 14, 5, 15]
 }
 
+const ROLL_RESULTS = {
+	"copy_repair": ["none", "copy_intervening", "lose_one", "major_down", "minor_down", "dupe", "major_up", "minor_up"],
+	"copy_repair_correction": ["no", "yes"],
+	"join_ends": ["none", "lose_one", "major_down", "minor_down", "dupe", "major_up", "minor_up", "merge"],
+	"evolve": ["none", "dead", "major_down", "minor_down", "major_up", "minor_up"]
+}
 # These are added together, multiplied by the value from the behavior profile (e.g. the overall Replication value)
 # Then they are added with +1.0, and multiplied as a modifier to the corresponding base_roll
-const BEHAVIOR_TO_MOD = {
+var BEHAVIOR_TO_MOD = {
 	"Replication": {
-		"evolve": [0.2, 0, 0, 0, 0.05, 0.05]
+		"evolve": make_result_array("evolve", {"none": 0.2, "minor_up": 0.05, "minor_down": 0.05}),
+		#"evolve": [0.2, 0, 0, 0, 0.05, 0.05]
 	}
 }
 
@@ -37,19 +74,24 @@ func additive_mod_exists(roll_type : String, behavior : String) -> bool:
 func get_additive_mods(roll_type : String, behavior : String) -> Array:
 	return BEHAVIOR_TO_MOD[behavior][roll_type];
 
-func roll_chance_type(type : String, behavior_profile = null) -> int:
-	var mods = [];
+func roll_chance_type(type : String, behavior_profile = null, mods := []) -> int:
+	var final_mods = [];
 	for _i in range(base_rolls[type].size()):
-		mods.append(1.0);
+		final_mods.append(1.0);
 	
 	# Add up relevant modifiers
 	if (behavior_profile != null):
 		for k in behavior_profile.BEHAVIORS:
 			if (additive_mod_exists(type, k)):
-				for i in range(mods.size()):
-					mods[i] += get_additive_mods(type, k)[i] * behavior_profile.get_behavior(k);
+				for i in range(final_mods.size()):
+					final_mods[i] += get_additive_mods(type, k)[i] * behavior_profile.get_behavior(k);
+	for i in range(mods.size()):
+		final_mods[i] += mods[i];
 	
-	return roll_chances(base_rolls[type], mods);
+	return roll_chances(base_rolls[type], final_mods);
+
+func roll_chance_type_named(type: String, behavior_profile = null, mod_dict := {}) -> String:
+	return ROLL_RESULTS[roll_chance_type(type, behavior_profile, make_result_array(type, mod_dict))];
 
 func roll_chances(chance_array : Array, mods := []) -> int:
 	# Modify the chances, then find their sum for normalizing
@@ -71,6 +113,15 @@ func roll_chances(chance_array : Array, mods := []) -> int:
 			return i;
 		previous_range = now_range;
 	return roll_chances.size() - 1;
+
+func make_result_array(for_type: String, result_dict: Dictionary) -> Array:
+	var arr := [];
+	for result in ROLL_RESULTS[for_type]:
+		if result in result_dict:
+			arr.append(float(result_dict[result]));
+		else:
+			arr.append(0.0);
+	return arr;
 
 func inversion_chance(segment_size : int) -> float:
 	if segment_size < 2:

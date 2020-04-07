@@ -220,9 +220,6 @@ func _on_Organism_died(org):
 
 func show():
 	.show();
-	print("show!");
-#	if Game.is_first_turn():
-#		adv_turn();
 	check_if_ready();
 	
 	upd_turn_display(true, true);
@@ -234,6 +231,7 @@ func set_map_btn_texture(texture_path: String) -> void:
 	$ViewMap.texture_disabled = tex;
 	$ViewMap.texture_pressed = tex;
 
+const TURNS_WITHOUT_AUTO_CONTINUE = [ Game.TURN_TYPES.RemoveDamage];
 func check_if_ready():
 	var end_mapturn_on_mapscreen = Game.get_turn_type() == Game.TURN_TYPES.Map && Unlocks.has_turn_unlock(Game.TURN_TYPES.Map);
 	
@@ -245,8 +243,14 @@ func check_if_ready():
 	else:
 		nxt_btn.disabled = true;
 	
+	var auto_continue := true;
+	match Game.get_turn_type():
+		Game.TURN_TYPES.Recombination:
+			auto_continue = false;
+		Game.TURN_TYPES.RemoveDamage:
+			auto_continue = orgn.gene_selection.empty();
 	# Continue automatically
-	if !nxt_btn.disabled && Game.get_turn_type() != Game.TURN_TYPES.Recombination:
+	if !nxt_btn.disabled && auto_continue:
 		$AutoContinue.start();
 
 onready var central_menus := [$pnl_saveload, ph_filter_panel, $pnl_bugreport, $ctl_justnow, $pnl_repair_choices, $pnl_reproduce];
@@ -265,15 +269,12 @@ func close_extra_menus(toggle_menu: Control = null) -> void:
 func show_chaos_anim():
 	close_extra_menus($pnl_chaos);
 	$pnl_chaos/Anim.play("show");
-	print("showing");
 
 func hide_chaos_anim():
 	$pnl_chaos/Anim.play("hide");
-	print("hiding");
 
 func _on_chaos_anim_finished(anim_name: String):
 	if anim_name == "hide":
-		print("done hiding");
 		close_extra_menus();
 
 func _on_btn_filter_pressed():

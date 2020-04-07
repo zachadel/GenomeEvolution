@@ -134,18 +134,18 @@ __meta__ = {
 }
 
 [node name="lnum_turn" parent="." instance=ExtResource( 17 )]
-margin_left = 1177.4
-margin_top = 792.691
-margin_right = 1277.4
-margin_bottom = 892.691
+margin_left = 1169.4
+margin_top = 805.0
+margin_right = 1269.4
+margin_bottom = 895.0
 num = 0
 lbl = "Round"
 
 [node name="lnum_progeny" parent="." instance=ExtResource( 17 )]
-margin_left = 1297.4
-margin_top = 792.691
-margin_right = 1397.4
-margin_bottom = 892.691
+margin_left = 1313.4
+margin_top = 805.0
+margin_right = 1413.4
+margin_bottom = 895.0
 num = 0
 lbl = "Progeny"
 
@@ -207,9 +207,9 @@ __meta__ = {
 
 [node name="TurnList" parent="." instance=ExtResource( 15 )]
 margin_left = 1164.0
-margin_top = 621.0
+margin_top = 618.0
 margin_right = 1414.0
-margin_bottom = 788.0
+margin_bottom = 801.0
 
 [node name="button_grid" type="VBoxContainer" parent="."]
 anchor_left = 1.0

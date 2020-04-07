@@ -450,37 +450,49 @@ func rand_truepos(allow_ends = true):
 			rand_val += 1;
 	return rand_val;
 
-func highlight_gaps():
-	for g in get_gap_list():
+func clear_damage_from_genes() -> void:
+	for g in get_damaged_genes():
+		g.damage_gene(false);
+
+func get_damaged_genes() -> Array:
+	var dmg_genes := [];
+	for c in get_cmsms():
+		for g in c.get_children():
+			if g.is_damaged():
+				dmg_genes.append(g);
+	return dmg_genes;
+
+func highlight_genes(elms: Array):
+	for g in elms:
 		g.disable(false);
 
+func highlight_gaps():
+	highlight_genes(get_gap_list());
+
+func highlight_damaged_genes():
+	var highlighted_genes = [];
+	highlight_genes(get_damaged_genes());
+	return highlighted_genes;
+
 func highlight_common_genes(highlight_first_cmsm = true, highlight_scnd_cmsm = true):
-	var append_to = [];
+	var highlighted_genes = [];
 	for x in get_cmsm(0).get_children():
 		for y in get_cmsm(1).find_matching_genes(x):
 			if (highlight_first_cmsm):
 				x.disable(false);
-				append_to.append(x);
+				highlighted_genes.append(x);
 			
 			if (highlight_scnd_cmsm):
 				y.disable(false);
-				append_to.append(y);
-	return append_to;
-
-func highlight_all_genes():
-	var append_to = [];
-	for c in get_cmsms():
-		for g in c.get_children():
-			g.disable(false);
-			append_to.append(g);
-	return append_to;
+				highlighted_genes.append(y);
+	return highlighted_genes;
 
 func highlight_this_gene(cmsm, elm):
-	var append_to = [];
+	var highlighted_genes = [];
 	for g in cmsm.find_matching_genes(elm):
 		g.disable(false);
-		append_to.append(g);
-	return append_to;
+		highlighted_genes.append(g);
+	return highlighted_genes;
 
 func validate_essentials(ess_classes):
 	for e in ess_classes:
