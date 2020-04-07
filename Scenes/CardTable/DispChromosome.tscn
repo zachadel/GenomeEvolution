@@ -1,22 +1,29 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scripts/CardTable/DispChromosome.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/CardTable/ChromosomeStatus.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/CardTable/Chromosome.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/Images/Bracket.png" type="Texture" id=4]
 
 [node name="DispChromosome" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_bottom = -900.0
-rect_min_size = Vector2( 200, 262 )
+margin_bottom = -605.0
+rect_min_size = Vector2( 200, 300 )
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="container" type="HBoxContainer" parent="."]
-margin_left = 7.5
+margin_left = 8.0
 margin_top = 40.0
-margin_right = 1607.5
+margin_right = 1598.0
 margin_bottom = 290.0
-custom_constants/separation = 25
+custom_constants/separation = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ChoiceButtons" type="Control" parent="container"]
 visible = false
@@ -24,21 +31,24 @@ margin_right = 200.0
 margin_bottom = 250.0
 rect_min_size = Vector2( 200, 0 )
 
-[node name="zIndexEnforce" type="Node2D" parent="container/ChoiceButtons"]
-z_index = 10
-
-[node name="BackColor" type="Panel" parent="container/ChoiceButtons/zIndexEnforce"]
+[node name="BackColor" type="Panel" parent="container/ChoiceButtons"]
 margin_left = -38.0
 margin_top = -7.0
 margin_right = 200.0
 margin_bottom = 256.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Sizer" type="Control" parent="container/ChoiceButtons/zIndexEnforce"]
+[node name="Sizer" type="Control" parent="container/ChoiceButtons"]
 margin_top = -7.0
 margin_right = 200.0
 margin_bottom = 256.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="BtnCollapse" type="Button" parent="container/ChoiceButtons/zIndexEnforce/Sizer"]
+[node name="BtnCollapse" type="Button" parent="container/ChoiceButtons/Sizer"]
 anchor_left = 0.5
 anchor_right = 0.5
 anchor_bottom = 1.0
@@ -48,8 +58,11 @@ margin_right = -15.0
 margin_bottom = -6.0
 rect_min_size = Vector2( 75, 50 )
 text = "Show"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="BtnChoose" type="Button" parent="container/ChoiceButtons/zIndexEnforce/Sizer"]
+[node name="LblTitle" type="Label" parent="container/ChoiceButtons/Sizer"]
 anchor_left = 0.5
 anchor_right = 0.5
 anchor_bottom = 1.0
@@ -58,24 +71,69 @@ margin_top = 7.0
 margin_right = 90.0
 margin_bottom = -6.0
 rect_min_size = Vector2( 75, 50 )
-text = "  Keep  "
+text = "Original"
+align = 1
+valign = 1
 
 [node name="StatusBar" parent="container" instance=ExtResource( 2 )]
-visible = false
-margin_left = 225.0
-margin_right = 1025.0
+margin_right = 525.0
 margin_bottom = 250.0
+rect_min_size = Vector2( 525, 60 )
 
 [node name="scroll" type="ScrollContainer" parent="container"]
+margin_left = 530.0
 margin_right = 1590.0
 margin_bottom = 250.0
-rect_min_size = Vector2( 1590, 0 )
-rect_clip_content = false
+rect_min_size = Vector2( 0, 250 )
+size_flags_horizontal = 3
 scroll_vertical_enabled = false
 
 [node name="cmsm" parent="container/scroll" instance=ExtResource( 3 )]
 anchor_right = 0.0
-margin_bottom = 225.0
+margin_right = 1060.0
+margin_bottom = 250.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="RightsideSizer" type="Control" parent="container"]
+visible = false
+margin_left = 1340.0
+margin_right = 1590.0
+margin_bottom = 250.0
+rect_min_size = Vector2( 250, 0 )
+
+[node name="CellImg" type="TextureRect" parent="container/RightsideSizer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 0, 60 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="container/RightsideSizer/CellImg"]
+anchor_bottom = 1.0
+margin_right = 127.0
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BtnChoose" type="Button" parent="container/RightsideSizer"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -40.0
+margin_right = 40.0
+margin_bottom = 35.0
+rect_min_size = Vector2( 80, 35 )
+size_flags_vertical = 4
+text = "Keep Cell"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="update_delay" type="Timer" parent="."]
 wait_time = 0.01
@@ -84,11 +142,11 @@ one_shot = true
 [node name="update_link_delay" type="Timer" parent="."]
 wait_time = 0.01
 one_shot = true
-[connection signal="pressed" from="container/ChoiceButtons/zIndexEnforce/Sizer/BtnCollapse" to="." method="_on_BtnCollapse_pressed"]
-[connection signal="pressed" from="container/ChoiceButtons/zIndexEnforce/Sizer/BtnChoose" to="." method="_on_BtnChoose_pressed"]
+[connection signal="pressed" from="container/ChoiceButtons/Sizer/BtnCollapse" to="." method="_on_BtnCollapse_pressed"]
 [connection signal="cmsm_changed" from="container/scroll/cmsm" to="." method="_on_cmsm_cmsm_changed"]
 [connection signal="elm_clicked" from="container/scroll/cmsm" to="." method="_propogate_click"]
 [connection signal="elm_mouse_entered" from="container/scroll/cmsm" to="." method="_propagate_mouse_entered"]
 [connection signal="elm_mouse_exited" from="container/scroll/cmsm" to="." method="_propagate_mouse_exited"]
+[connection signal="pressed" from="container/RightsideSizer/BtnChoose" to="." method="_on_BtnChoose_pressed"]
 [connection signal="timeout" from="update_delay" to="." method="_on_update_delay_timeout"]
 [connection signal="timeout" from="update_link_delay" to="." method="_on_update_link_delay_timeout"]

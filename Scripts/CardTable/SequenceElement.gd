@@ -740,13 +740,13 @@ var toggle_rect_clr = {true: Color(0.5, 0.5, 0), false: Color(1, 1, 1)};
 func _on_SeqElm_toggled(on):
 	$BorderRect.modulate = toggle_rect_clr[on];
 
+const Y_OFFSET_UPWARD_BIAS = 50;
+var y_offset = 0;
 func set_elm_size(size = null):
 	if (size == null):
 		size = DEFAULT_SIZE;
-	elif (size < MIN_SIZE):
-		size = MIN_SIZE;
-	elif (size > DEFAULT_SIZE):
-		size = DEFAULT_SIZE;
+	else:
+		clamp(size, MIN_SIZE, DEFAULT_SIZE);
 	rect_min_size = Vector2(size, size);
 	$BorderRect.rect_min_size = Vector2(size, size);
 	$GrayFilter.rect_min_size = Vector2(size, size);
@@ -755,6 +755,7 @@ func set_elm_size(size = null):
 	$GrayFilter.rect_size = Vector2(size, size);
 	current_size = size;
 	
+	y_offset = (DEFAULT_SIZE - Y_OFFSET_UPWARD_BIAS - size) * 0.5;
 	var scale = size / float(DEFAULT_SIZE);
 	for k in ess_behavior:
 		get_node("Indic" + k).rescale(scale);

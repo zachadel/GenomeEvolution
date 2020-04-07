@@ -3,13 +3,16 @@ extends Control
 onready var cmsm = $container/scroll/cmsm setget ,get_cmsm;
 var hidden = true;
 
-onready var ChoiceBtnsCtl = $container/ChoiceButtons;
-onready var ChoiceBtnsBg = $container/ChoiceButtons/zIndexEnforce/BackColor;
-onready var ChoiceBtnsSizer = $container/ChoiceButtons/zIndexEnforce/Sizer;
-onready var BtnCollapse = $container/ChoiceButtons/zIndexEnforce/Sizer/BtnCollapse;
-onready var BtnChoose = $container/ChoiceButtons/zIndexEnforce/Sizer/BtnChoose;
+onready var ChoiceBtnsCtl := $container/ChoiceButtons;
+onready var ChoiceBtnsBg : Panel = $container/ChoiceButtons/BackColor;
+onready var ChoiceBtnsSizer : Control = $container/ChoiceButtons/Sizer;
 
-onready var StatusBar = $container/StatusBar;
+onready var BtnCollapse : Button = $container/ChoiceButtons/Sizer/BtnCollapse;
+onready var BtnChoose : Button = $container/RightsideSizer/BtnChoose;
+onready var LblTitle := $container/ChoiceButtons/Sizer/LblTitle;
+onready var CellImg : TextureRect = $container/RightsideSizer/CellImg;
+
+onready var StatusBar := $container/StatusBar;
 
 var linked_cmsm = null setget set_link;
 
@@ -32,6 +35,7 @@ func _propagate_mouse_exited(elm):
 	emit_signal("elm_mouse_exited", elm);
 
 func _ready():
+	CellImg.texture = load("res://Assets/Images/Cells/body/body_%s_large.svg" % Game.current_cell_string);
 	StatusBar.add_cmsm(cmsm);
 	StatusBar.update();
 	upd_size();
@@ -63,6 +67,7 @@ func hide_cmsm(h = null, only_two = true):
 
 func show_choice_buttons(show):
 	$container/ChoiceButtons.visible = show;
+	$container/RightsideSizer.visible = show;
 	lock(false);
 	if (!show):
 		clear_link();
@@ -71,38 +76,50 @@ func show_choice_buttons(show):
 
 func lock(lock):
 	BtnChoose.disabled = lock;
-	if (lock):
-		BtnChoose.text = "";
-	else:
-		BtnChoose.text = "Keep";
+	BtnChoose.visible = !lock;
+	CellImg.visible = !lock;
+	$container/RightsideSizer.mouse_filter = Control.MOUSE_FILTER_IGNORE if lock else Control.MOUSE_FILTER_STOP;
 
 const SIZER_OFFSET = 13;
-const SCROLL_MAX_WIDTH = 1550;
-func upd_size(delay = true):
-	if (delay):
+func upd_size(delay := true):
+	if delay:
 		$update_delay.start();
 	else:
 		$container.rect_size.y = 0;
 		rect_min_size.y = $container.rect_size.y + $container.rect_position.y;
-		if ($container/scroll.visible):
-			$container/scroll.rect_min_size.x = SCROLL_MAX_WIDTH - $container/scroll.rect_position.x;
 		if (ChoiceBtnsSizer.visible):
 			var sizer_y = $container.rect_size.y + SIZER_OFFSET;
 			ChoiceBtnsSizer.rect_size.y = sizer_y;
 			
 			if (linked_cmsm == null):
-				ChoiceBtnsBg.rect_size.y = sizer_y;
+				set_sizers_height(sizer_y);
 			else:
 				upd_link_vis();
 
-func upd_link_vis(delay = true):
-	if (delay):
+func set_sizers_height(h: float) -> void:
+	ChoiceBtnsBg.rect_size.y = h;
+	CellImg.rect_size.y = h;
+
+func set_title(title: String) -> void:
+	LblTitle.text = title;
+
+func upd_link_vis(delay := true):
+	if delay:
 		$update_link_delay.start();
 	else:
-		if (ChoiceBtnsBg.visible):
-			ChoiceBtnsBg.rect_size.y = linked_cmsm.get_global_bottom() - ChoiceBtnsBg.get_global_rect().position.y;
+		if ChoiceBtnsBg.visible:
+			var offset_idx = $container/RightsideSizer.get_index();
+			get_last_visible_item(offset_idx).rect_min_size.x = linked_cmsm.get_last_visible_item(offset_idx).rect_size.x;
+			set_sizers_height(linked_cmsm.get_global_bottom() - ChoiceBtnsBg.get_global_rect().position.y);
 		else:
 			linked_cmsm.upd_link_vis();
+
+func get_last_visible_item(before_idx: int) -> Control:
+	var contr : HBoxContainer = $container;
+	for i in range(before_idx - 1, -1, -1):
+		if contr.get_child(i).visible:
+			return (contr.get_child(i) as Control);
+	return null;
 
 func clear_link():
 	if (linked_cmsm != null):
@@ -122,8 +139,8 @@ func _child_link(cmsm):
 	lock(true);
 	upd_link_vis();
 
-func get_global_bottom():
-	var r = ChoiceBtnsSizer.get_global_rect();
+func get_global_bottom() -> float:
+	var r := ChoiceBtnsSizer.get_global_rect();
 	return r.position.y + r.size.y;
 
 func _on_update_delay_timeout():

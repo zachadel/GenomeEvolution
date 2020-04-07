@@ -44,8 +44,7 @@ func get_cmsm_status():
 func show_replicate_opts(show):
 	if $pnl_reproduce.visible != show:
 		close_extra_menus($pnl_reproduce);
-	if (show):
-		status_bar.visible = false;
+	if show:
 		$pnl_reproduce/hsplit/ilist_choices.select(0);
 		upd_replicate_desc(0);
 
@@ -103,6 +102,7 @@ func _on_btn_apply_replic_pressed():
 
 func do_replicate(idx):
 	show_replicate_opts(false);
+	status_bar.visible = false;
 	orgn.replicate(idx);
 
 # Gaps and repairs
@@ -186,6 +186,9 @@ func upd_turn_display(upd_turn_unlocks := Game.fresh_round, upd_env_markers := G
 		ph_filter_panel.upd_current_ph_marker(orgn.current_tile.hazards["pH"]);
 
 func _on_btn_nxt_pressed():
+	adv_turn();
+
+func adv_turn():
 	close_extra_menus();
 	if (Game.get_turn_type() == Game.TURN_TYPES.Recombination):
 		for g in orgn.gene_selection:
@@ -217,6 +220,9 @@ func _on_Organism_died(org):
 
 func show():
 	.show();
+	print("show!");
+#	if Game.is_first_turn():
+#		adv_turn();
 	check_if_ready();
 	
 	upd_turn_display(true, true);
@@ -230,16 +236,23 @@ func set_map_btn_texture(texture_path: String) -> void:
 
 func check_if_ready():
 	var end_mapturn_on_mapscreen = Game.get_turn_type() == Game.TURN_TYPES.Map && Unlocks.has_turn_unlock(Game.TURN_TYPES.Map);
-	nxt_btn.disabled = !is_visible_in_tree() || orgn.is_dead() || end_mapturn_on_mapscreen ||\
-		wait_on_anim || wait_on_select || has_gaps;
+	
+	if is_visible_in_tree():
+		if end_mapturn_on_mapscreen:
+			nxt_btn.disabled = false;
+		else:
+			nxt_btn.disabled = orgn.is_dead() || wait_on_anim || wait_on_select || has_gaps;
+	else:
+		nxt_btn.disabled = true;
 	
 	# Continue automatically
 	if !nxt_btn.disabled && Game.get_turn_type() != Game.TURN_TYPES.Recombination:
 		$AutoContinue.start();
 
-func close_extra_menus(toggle_menu = null):
+onready var central_menus := [$pnl_saveload, ph_filter_panel, $pnl_bugreport, $ctl_justnow, $pnl_repair_choices, $pnl_reproduce];
+func close_extra_menus(toggle_menu: Control = null) -> void:
 	var restore_justnow = toggle_menu == null;
-	for p in [$pnl_saveload, ph_filter_panel, $pnl_bugreport, $ctl_justnow, $pnl_repair_choices, $pnl_reproduce]:
+	for p in central_menus:
 		if (p == toggle_menu):
 			p.visible = !p.visible;
 			if !p.visible:
@@ -248,6 +261,20 @@ func close_extra_menus(toggle_menu = null):
 			p.visible = false;
 	if restore_justnow:
 		$ctl_justnow.visible = true;
+
+func show_chaos_anim():
+	close_extra_menus($pnl_chaos);
+	$pnl_chaos/Anim.play("show");
+	print("showing");
+
+func hide_chaos_anim():
+	$pnl_chaos/Anim.play("hide");
+	print("hiding");
+
+func _on_chaos_anim_finished(anim_name: String):
+	if anim_name == "hide":
+		print("done hiding");
+		close_extra_menus();
 
 func _on_btn_filter_pressed():
 	close_extra_menus(ph_filter_panel);
@@ -297,7 +324,7 @@ func _on_pnl_ph_filter_update_seqelm_coloration(compare_type):
 		g.color_comparison(compare_type, ph_filter_panel.get_slider_value());
 
 func _on_AutoContinue_timeout():
-	_on_btn_nxt_pressed();
+	adv_turn();
 
 func _on_ViewMap_pressed():
 	emit_signal("switch_to_map")
@@ -319,3 +346,9 @@ func hide_map_button():
 	# The cell should always be visible?
 	#$ViewMap.hide()
 	$ViewMap/Label.hide()
+
+func _on_Organism_transposon_activity(active):
+	if active:
+		show_chaos_anim();
+	else:
+		hide_chaos_anim();

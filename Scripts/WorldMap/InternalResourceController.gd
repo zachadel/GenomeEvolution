@@ -123,7 +123,6 @@ func set_organism(org):
 func update_vesicles():
 	if organism != null:
 		_on_Organism_vesicle_scale_changed(organism.vesicle_scales, organism.cfp_resources)
-
 #cfp_resources[resource_class][resource] = value
 #should not be called when selected_resources has stuff
 func update_resources(cfp_resources: Dictionary):
