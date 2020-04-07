@@ -796,6 +796,7 @@ __meta__ = {
 }
 
 [node name="Genes" type="Control" parent="."]
+visible = false
 margin_right = 1600.0
 margin_bottom = 900.0
 mouse_filter = 2
@@ -1528,7 +1529,6 @@ __meta__ = {
 }
 
 [node name="Blanks" type="Control" parent="."]
-visible = false
 margin_right = 1600.0
 margin_bottom = 900.0
 mouse_filter = 2

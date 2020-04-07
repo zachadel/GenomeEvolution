@@ -1,0 +1,2363 @@
+[gd_scene load_steps=29 format=2]
+
+[ext_resource path="res://Scenes/MainMenu/CellDisplay.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/CardTable/Art/TEs/Hexagon.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scripts/CardTable/Meiosis.gd" type="Script" id=3]
+[ext_resource path="res://Assets/Fonts/BoldItalics_50.tres" type="DynamicFont" id=4]
+[ext_resource path="res://Assets/Fonts/Italics_50.tres" type="DynamicFont" id=5]
+[ext_resource path="res://Assets/Images/genes/Sensing.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Fonts/OpenSans-Bold.ttf" type="DynamicFontData" id=7]
+[ext_resource path="res://Assets/Images/genes/Replication.png" type="Texture" id=8]
+[ext_resource path="res://Assets/Images/genes/Component.png" type="Texture" id=9]
+[ext_resource path="res://Assets/Images/genes/Helix.png" type="Texture" id=10]
+[ext_resource path="res://Assets/Images/genes/Construction.png" type="Texture" id=11]
+[ext_resource path="res://Assets/Fonts/OpenSans-Italic.ttf" type="DynamicFontData" id=12]
+[ext_resource path="res://Assets/Images/pngs/SpeechRectLeft.png" type="Texture" id=13]
+[ext_resource path="res://Assets/Images/genes/Helix_Circle.png" type="Texture" id=14]
+
+[sub_resource type="DynamicFontData" id=1]
+font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
+
+[sub_resource type="DynamicFont" id=2]
+use_mipmaps = true
+use_filter = true
+font_data = SubResource( 1 )
+
+[sub_resource type="DynamicFontData" id=3]
+font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
+
+[sub_resource type="DynamicFont" id=4]
+size = 45
+use_mipmaps = true
+use_filter = true
+font_data = SubResource( 3 )
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.94902, 0.952941, 0.956863, 1 )
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color( 0, 0, 0, 1 )
+border_blend = true
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+shadow_color = Color( 0.282353, 0.282353, 0.282353, 1 )
+
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 0.341176, 0.545098, 0.788235, 1 )
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color( 0, 0, 0, 1 )
+border_blend = true
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+shadow_color = Color( 0.282353, 0.282353, 0.282353, 1 )
+
+[sub_resource type="StyleBoxFlat" id=7]
+bg_color = Color( 0.427451, 0.427451, 0.427451, 1 )
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color( 0, 0, 0, 1 )
+border_blend = true
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="Theme" id=8]
+Button/colors/font_color = Color( 1, 1, 1, 1 )
+Button/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+Button/colors/font_color_hover = Color( 0.341176, 0.545098, 0.788235, 1 )
+Button/colors/font_color_pressed = Color( 0, 0, 0, 1 )
+Button/constants/hseparation = 2
+Button/fonts/font = SubResource( 4 )
+Button/styles/disabled = null
+Button/styles/focus = null
+Button/styles/hover = SubResource( 5 )
+Button/styles/normal = SubResource( 6 )
+Button/styles/pressed = SubResource( 7 )
+CheckBox/colors/font_color = Color( 0, 0, 0, 1 )
+CheckBox/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+CheckBox/colors/font_color_hover = Color( 0, 0, 0, 1 )
+CheckBox/colors/font_color_hover_pressed = Color( 0, 0, 0, 1 )
+CheckBox/colors/font_color_pressed = Color( 0, 0, 0, 1 )
+CheckBox/constants/check_vadjust = 0
+CheckBox/constants/hseparation = 4
+CheckBox/fonts/font = null
+CheckBox/icons/checked = null
+CheckBox/icons/radio_checked = null
+CheckBox/icons/radio_unchecked = null
+CheckBox/icons/unchecked = null
+CheckBox/styles/disabled = null
+CheckBox/styles/focus = null
+CheckBox/styles/hover = null
+CheckBox/styles/hover_pressed = null
+CheckBox/styles/normal = null
+CheckBox/styles/pressed = null
+CheckButton/colors/font_color = Color( 0, 0, 0, 1 )
+CheckButton/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+CheckButton/colors/font_color_hover = Color( 0, 0, 0, 1 )
+CheckButton/colors/font_color_hover_pressed = Color( 0, 0, 0, 1 )
+CheckButton/colors/font_color_pressed = Color( 0, 0, 0, 1 )
+CheckButton/constants/check_vadjust = 0
+CheckButton/constants/hseparation = 4
+CheckButton/fonts/font = null
+CheckButton/icons/off = null
+CheckButton/icons/off_disabled = null
+CheckButton/icons/on = null
+CheckButton/icons/on_disabled = null
+CheckButton/styles/disabled = null
+CheckButton/styles/focus = null
+CheckButton/styles/hover = null
+CheckButton/styles/hover_pressed = null
+CheckButton/styles/normal = null
+CheckButton/styles/pressed = null
+ColorPicker/constants/h_width = 30
+ColorPicker/constants/label_width = 10
+ColorPicker/constants/margin = 4
+ColorPicker/constants/sv_height = 256
+ColorPicker/constants/sv_width = 256
+ColorPicker/icons/add_preset = null
+ColorPicker/icons/color_hue = null
+ColorPicker/icons/color_sample = null
+ColorPicker/icons/overbright_indicator = null
+ColorPicker/icons/preset_bg = null
+ColorPicker/icons/screen_picker = null
+ColorPickerButton/colors/font_color = Color( 0, 0, 0, 1 )
+ColorPickerButton/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+ColorPickerButton/colors/font_color_hover = Color( 0, 0, 0, 1 )
+ColorPickerButton/colors/font_color_pressed = Color( 0, 0, 0, 1 )
+ColorPickerButton/constants/hseparation = 2
+ColorPickerButton/fonts/font = null
+ColorPickerButton/icons/bg = null
+ColorPickerButton/styles/disabled = null
+ColorPickerButton/styles/focus = null
+ColorPickerButton/styles/hover = null
+ColorPickerButton/styles/normal = null
+ColorPickerButton/styles/pressed = null
+Dialogs/constants/button_margin = 32
+Dialogs/constants/margin = 8
+FileDialog/colors/files_disabled = Color( 0, 0, 0, 1 )
+FileDialog/colors/folder_icon_modulate = Color( 0, 0, 0, 1 )
+FileDialog/icons/folder = null
+FileDialog/icons/parent_folder = null
+FileDialog/icons/reload = null
+FileDialog/icons/toggle_hidden = null
+Fonts/fonts/large = null
+Fonts/fonts/normal = null
+GraphEdit/colors/activity = Color( 0, 0, 0, 1 )
+GraphEdit/colors/grid_major = Color( 0, 0, 0, 1 )
+GraphEdit/colors/grid_minor = Color( 0, 0, 0, 1 )
+GraphEdit/colors/selection_fill = Color( 0, 0, 0, 1 )
+GraphEdit/colors/selection_stroke = Color( 0, 0, 0, 1 )
+GraphEdit/constants/bezier_len_neg = 160
+GraphEdit/constants/bezier_len_pos = 80
+GraphEdit/constants/port_grab_distance_horizontal = 48
+GraphEdit/constants/port_grab_distance_vertical = 6
+GraphEdit/icons/minus = null
+GraphEdit/icons/more = null
+GraphEdit/icons/reset = null
+GraphEdit/icons/snap = null
+GraphEdit/styles/bg = null
+GraphNode/colors/close_color = Color( 0, 0, 0, 1 )
+GraphNode/colors/resizer_color = Color( 0, 0, 0, 1 )
+GraphNode/colors/title_color = Color( 0, 0, 0, 1 )
+GraphNode/constants/close_offset = 18
+GraphNode/constants/port_offset = 3
+GraphNode/constants/separation = 1
+GraphNode/constants/title_offset = 20
+GraphNode/fonts/title_font = null
+GraphNode/icons/close = null
+GraphNode/icons/port = null
+GraphNode/icons/resizer = null
+GraphNode/styles/breakpoint = null
+GraphNode/styles/comment = null
+GraphNode/styles/commentfocus = null
+GraphNode/styles/defaultfocus = null
+GraphNode/styles/defaultframe = null
+GraphNode/styles/frame = null
+GraphNode/styles/position = null
+GraphNode/styles/selectedframe = null
+GridContainer/constants/hseparation = 4
+GridContainer/constants/vseparation = 4
+HBoxContainer/constants/separation = 4
+HScrollBar/icons/decrement = null
+HScrollBar/icons/decrement_highlight = null
+HScrollBar/icons/increment = null
+HScrollBar/icons/increment_highlight = null
+HScrollBar/styles/grabber = null
+HScrollBar/styles/grabber_highlight = null
+HScrollBar/styles/grabber_pressed = null
+HScrollBar/styles/scroll = null
+HScrollBar/styles/scroll_focus = null
+HSeparator/constants/separation = 4
+HSeparator/styles/separator = null
+HSlider/icons/grabber = null
+HSlider/icons/grabber_disabled = null
+HSlider/icons/grabber_highlight = null
+HSlider/icons/tick = null
+HSlider/styles/grabber_area = null
+HSlider/styles/slider = null
+HSplitContainer/constants/autohide = 1
+HSplitContainer/constants/separation = 12
+HSplitContainer/icons/grabber = null
+HSplitContainer/styles/bg = null
+Icons/icons/close = null
+ItemList/colors/font_color = Color( 0, 0, 0, 1 )
+ItemList/colors/font_color_selected = Color( 0, 0, 0, 1 )
+ItemList/colors/guide_color = Color( 0, 0, 0, 1 )
+ItemList/constants/hseparation = 4
+ItemList/constants/icon_margin = 4
+ItemList/constants/line_separation = 2
+ItemList/constants/vseparation = 2
+ItemList/fonts/font = null
+ItemList/styles/bg = null
+ItemList/styles/bg_focus = null
+ItemList/styles/cursor = null
+ItemList/styles/cursor_unfocused = null
+ItemList/styles/selected = null
+ItemList/styles/selected_focus = null
+Label/colors/font_color = Color( 0, 0, 0, 1 )
+Label/colors/font_color_shadow = Color( 0, 0, 0, 1 )
+Label/colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+Label/constants/line_spacing = 3
+Label/constants/shadow_as_outline = 0
+Label/constants/shadow_offset_x = 1
+Label/constants/shadow_offset_y = 1
+Label/fonts/font = null
+Label/styles/normal = null
+LineEdit/colors/clear_button_color = Color( 0, 0, 0, 1 )
+LineEdit/colors/clear_button_color_pressed = Color( 0, 0, 0, 1 )
+LineEdit/colors/cursor_color = Color( 0, 0, 0, 1 )
+LineEdit/colors/font_color = Color( 0, 0, 0, 1 )
+LineEdit/colors/font_color_selected = Color( 0, 0, 0, 1 )
+LineEdit/colors/font_color_uneditable = Color( 0, 0, 0, 1 )
+LineEdit/colors/selection_color = Color( 0, 0, 0, 1 )
+LineEdit/constants/minimum_spaces = 12
+LineEdit/fonts/font = null
+LineEdit/icons/clear = null
+LineEdit/styles/focus = null
+LineEdit/styles/normal = null
+LineEdit/styles/read_only = null
+LinkButton/colors/font_color = Color( 0, 0, 0, 1 )
+LinkButton/colors/font_color_hover = Color( 0, 0, 0, 1 )
+LinkButton/colors/font_color_pressed = Color( 0, 0, 0, 1 )
+LinkButton/constants/underline_spacing = 2
+LinkButton/fonts/font = null
+LinkButton/styles/focus = null
+MarginContainer/constants/margin_bottom = 0
+MarginContainer/constants/margin_left = 0
+MarginContainer/constants/margin_right = 0
+MarginContainer/constants/margin_top = 0
+MenuButton/colors/font_color = Color( 0, 0, 0, 1 )
+MenuButton/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+MenuButton/colors/font_color_hover = Color( 0, 0, 0, 1 )
+MenuButton/colors/font_color_pressed = Color( 0, 0, 0, 1 )
+MenuButton/constants/hseparation = 3
+MenuButton/fonts/font = null
+MenuButton/styles/disabled = null
+MenuButton/styles/focus = null
+MenuButton/styles/hover = null
+MenuButton/styles/normal = null
+MenuButton/styles/pressed = null
+OptionButton/colors/font_color = Color( 0, 0, 0, 1 )
+OptionButton/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+OptionButton/colors/font_color_hover = Color( 0, 0, 0, 1 )
+OptionButton/colors/font_color_pressed = Color( 0, 0, 0, 1 )
+OptionButton/constants/arrow_margin = 2
+OptionButton/constants/hseparation = 2
+OptionButton/fonts/font = null
+OptionButton/icons/arrow = null
+OptionButton/styles/disabled = null
+OptionButton/styles/focus = null
+OptionButton/styles/hover = null
+OptionButton/styles/normal = null
+OptionButton/styles/pressed = null
+Panel/styles/panel = null
+PanelContainer/styles/panel = null
+PopupDialog/styles/panel = null
+PopupMenu/colors/font_color = Color( 0, 0, 0, 1 )
+PopupMenu/colors/font_color_accel = Color( 0, 0, 0, 1 )
+PopupMenu/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+PopupMenu/colors/font_color_hover = Color( 0, 0, 0, 1 )
+PopupMenu/constants/hseparation = 4
+PopupMenu/constants/vseparation = 4
+PopupMenu/fonts/font = null
+PopupMenu/icons/checked = null
+PopupMenu/icons/radio_checked = null
+PopupMenu/icons/radio_unchecked = null
+PopupMenu/icons/submenu = null
+PopupMenu/icons/unchecked = null
+PopupMenu/styles/hover = null
+PopupMenu/styles/labeled_separator_left = null
+PopupMenu/styles/labeled_separator_right = null
+PopupMenu/styles/panel = null
+PopupMenu/styles/panel_disabled = null
+PopupMenu/styles/separator = null
+PopupPanel/styles/panel = null
+ProgressBar/colors/font_color = Color( 0, 0, 0, 1 )
+ProgressBar/colors/font_color_shadow = Color( 0, 0, 0, 1 )
+ProgressBar/fonts/font = null
+ProgressBar/styles/bg = null
+ProgressBar/styles/fg = null
+RichTextLabel/colors/default_color = Color( 0, 0, 0, 1 )
+RichTextLabel/colors/font_color_selected = Color( 0, 0, 0, 1 )
+RichTextLabel/colors/font_color_shadow = Color( 0, 0, 0, 1 )
+RichTextLabel/colors/selection_color = Color( 0, 0, 0, 1 )
+RichTextLabel/constants/line_separation = 1
+RichTextLabel/constants/shadow_as_outline = 0
+RichTextLabel/constants/shadow_offset_x = 1
+RichTextLabel/constants/shadow_offset_y = 1
+RichTextLabel/constants/table_hseparation = 3
+RichTextLabel/constants/table_vseparation = 3
+RichTextLabel/fonts/bold_font = null
+RichTextLabel/fonts/bold_italics_font = null
+RichTextLabel/fonts/italics_font = null
+RichTextLabel/fonts/mono_font = null
+RichTextLabel/fonts/normal_font = null
+RichTextLabel/styles/focus = null
+RichTextLabel/styles/normal = null
+ScrollContainer/styles/bg = null
+SpinBox/icons/updown = null
+TabContainer/colors/font_color_bg = Color( 0, 0, 0, 1 )
+TabContainer/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+TabContainer/colors/font_color_fg = Color( 0, 0, 0, 1 )
+TabContainer/constants/hseparation = 4
+TabContainer/constants/label_valign_bg = 2
+TabContainer/constants/label_valign_fg = 0
+TabContainer/constants/side_margin = 8
+TabContainer/constants/top_margin = 24
+TabContainer/fonts/font = null
+TabContainer/icons/decrement = null
+TabContainer/icons/decrement_highlight = null
+TabContainer/icons/increment = null
+TabContainer/icons/increment_highlight = null
+TabContainer/icons/menu = null
+TabContainer/icons/menu_highlight = null
+TabContainer/styles/panel = null
+TabContainer/styles/tab_bg = null
+TabContainer/styles/tab_disabled = null
+TabContainer/styles/tab_fg = null
+Tabs/colors/font_color_bg = Color( 0, 0, 0, 1 )
+Tabs/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+Tabs/colors/font_color_fg = Color( 0, 0, 0, 1 )
+Tabs/constants/hseparation = 4
+Tabs/constants/label_valign_bg = 2
+Tabs/constants/label_valign_fg = 0
+Tabs/constants/top_margin = 24
+Tabs/fonts/font = null
+Tabs/icons/close = null
+Tabs/icons/decrement = null
+Tabs/icons/decrement_highlight = null
+Tabs/icons/increment = null
+Tabs/icons/increment_highlight = null
+Tabs/styles/button = null
+Tabs/styles/button_pressed = null
+Tabs/styles/panel = null
+Tabs/styles/tab_bg = null
+Tabs/styles/tab_disabled = null
+Tabs/styles/tab_fg = null
+TextEdit/colors/background_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/bookmark_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/brace_mismatch_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/breakpoint_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/caret_background_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/caret_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/code_folding_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/completion_background_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/completion_existing_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/completion_font_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/completion_scroll_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/completion_selected_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/current_line_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/executing_line_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/font_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/font_color_readonly = Color( 0, 0, 0, 1 )
+TextEdit/colors/font_color_selected = Color( 0, 0, 0, 1 )
+TextEdit/colors/function_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/line_number_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/mark_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/member_variable_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/number_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/safe_line_number_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/selection_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/symbol_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/word_highlighted_color = Color( 0, 0, 0, 1 )
+TextEdit/constants/completion_lines = 7
+TextEdit/constants/completion_max_width = 50
+TextEdit/constants/completion_scroll_width = 3
+TextEdit/constants/line_spacing = 4
+TextEdit/fonts/font = null
+TextEdit/icons/fold = null
+TextEdit/icons/folded = null
+TextEdit/icons/space = null
+TextEdit/icons/tab = null
+TextEdit/styles/completion = null
+TextEdit/styles/focus = null
+TextEdit/styles/normal = null
+TextEdit/styles/read_only = null
+ToolButton/colors/font_color = Color( 0, 0, 0, 1 )
+ToolButton/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+ToolButton/colors/font_color_hover = Color( 0, 0, 0, 1 )
+ToolButton/colors/font_color_pressed = Color( 0, 0, 0, 1 )
+ToolButton/constants/hseparation = 3
+ToolButton/fonts/font = null
+ToolButton/styles/disabled = null
+ToolButton/styles/focus = null
+ToolButton/styles/hover = null
+ToolButton/styles/normal = null
+ToolButton/styles/pressed = null
+TooltipLabel/colors/font_color = Color( 0, 0, 0, 1 )
+TooltipLabel/colors/font_color_shadow = Color( 0, 0, 0, 1 )
+TooltipLabel/constants/shadow_offset_x = 1
+TooltipLabel/constants/shadow_offset_y = 1
+TooltipLabel/fonts/font = null
+TooltipPanel/styles/panel = null
+Tree/colors/cursor_color = Color( 0, 0, 0, 1 )
+Tree/colors/custom_button_font_highlight = Color( 0, 0, 0, 1 )
+Tree/colors/drop_position_color = Color( 0, 0, 0, 1 )
+Tree/colors/font_color = Color( 0, 0, 0, 1 )
+Tree/colors/font_color_selected = Color( 0, 0, 0, 1 )
+Tree/colors/guide_color = Color( 0, 0, 0, 1 )
+Tree/colors/relationship_line_color = Color( 0, 0, 0, 1 )
+Tree/colors/selection_color = Color( 0, 0, 0, 1 )
+Tree/colors/title_button_color = Color( 0, 0, 0, 1 )
+Tree/constants/button_margin = 4
+Tree/constants/draw_guides = 1
+Tree/constants/draw_relationship_lines = 0
+Tree/constants/hseparation = 4
+Tree/constants/item_margin = 12
+Tree/constants/scroll_border = 4
+Tree/constants/scroll_speed = 12
+Tree/constants/vseparation = 4
+Tree/fonts/font = null
+Tree/fonts/title_button_font = null
+Tree/icons/arrow = null
+Tree/icons/arrow_collapsed = null
+Tree/icons/checked = null
+Tree/icons/select_arrow = null
+Tree/icons/unchecked = null
+Tree/icons/updown = null
+Tree/styles/bg = null
+Tree/styles/bg_focus = null
+Tree/styles/button_pressed = null
+Tree/styles/cursor = null
+Tree/styles/cursor_unfocused = null
+Tree/styles/custom_button = null
+Tree/styles/custom_button_hover = null
+Tree/styles/custom_button_pressed = null
+Tree/styles/selected = null
+Tree/styles/selected_focus = null
+Tree/styles/title_button_hover = null
+Tree/styles/title_button_normal = null
+Tree/styles/title_button_pressed = null
+VBoxContainer/constants/separation = 4
+VScrollBar/icons/decrement = null
+VScrollBar/icons/decrement_highlight = null
+VScrollBar/icons/increment = null
+VScrollBar/icons/increment_highlight = null
+VScrollBar/styles/grabber = null
+VScrollBar/styles/grabber_highlight = null
+VScrollBar/styles/grabber_pressed = null
+VScrollBar/styles/scroll = null
+VScrollBar/styles/scroll_focus = null
+VSeparator/constants/separation = 4
+VSeparator/styles/separator = null
+VSlider/icons/grabber = null
+VSlider/icons/grabber_disabled = null
+VSlider/icons/grabber_highlight = null
+VSlider/icons/tick = null
+VSlider/styles/grabber_area = null
+VSlider/styles/slider = null
+VSplitContainer/constants/autohide = 1
+VSplitContainer/constants/separation = 12
+VSplitContainer/icons/grabber = null
+VSplitContainer/styles/bg = null
+WindowDialog/colors/title_color = Color( 0, 0, 0, 1 )
+WindowDialog/constants/close_h_ofs = 18
+WindowDialog/constants/close_v_ofs = 18
+WindowDialog/constants/scaleborder_size = 4
+WindowDialog/constants/title_height = 20
+WindowDialog/fonts/title_font = null
+WindowDialog/icons/close = null
+WindowDialog/icons/close_highlight = null
+WindowDialog/styles/panel = null
+
+[sub_resource type="DynamicFont" id=9]
+size = 50
+font_data = ExtResource( 12 )
+
+[sub_resource type="DynamicFont" id=10]
+size = 50
+font_data = ExtResource( 7 )
+
+[sub_resource type="Animation" id=11]
+resource_name = "Copying Genome"
+length = 16.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimationPlayer/GeneBackground:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 216, 296 ), Vector2( 216, 458 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("AnimationPlayer/GeneBackground2:rect_position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 3, 4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 381, 296 ), Vector2( 381, 296 ), Vector2( 381, 457 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AnimationPlayer/GeneBackground2/Sensing:self_modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 3, 4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 0, 1, 0, 1 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("AnimationPlayer/Blank:rect_position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 6, 7 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 546, 295.542 ), Vector2( 546, 295.542 ), Vector2( 546, 457 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("AnimationPlayer/GeneBackground3:rect_position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 9, 10 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 711, 296 ), Vector2( 711, 296 ), Vector2( 711, 457 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("AnimationPlayer/GeneBackground4:rect_position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 12, 13 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 876, 296 ), Vector2( 876, 296 ), Vector2( 874, 457 ) ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("AnimationPlayer/GeneBackground4/Replication:self_modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 12, 13 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 0.717647, 0.717647, 0, 1 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("AnimationPlayer/Blank2:rect_position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0, 15, 16 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1041, 296 ), Vector2( 1041, 296 ), Vector2( 1041, 457 ) ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("AnimationPlayer/ComponentText2:bbcode_text")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 1, 4, 5, 10, 13, 15 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ "[b]A copy may not be exactly like the original[/b]", "[b]A copy may not be exactly like the original[/b]", "[b]Sometimes small changes are made that make the gene slightly better or worse than before.[/b]", "[b]Sometimes small changes are made that make the gene slightly better or worse than before.[/b]", "[b]Sometimes big mistakes are made and a gene is destroyed.[/b]", "[b]Sometimes big mistakes are made and a gene is destroyed.[/b]" ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("AnimationPlayer/ComponentText2:custom_colors/default_color")
+tracks/9/interp = 2
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0, 1.1, 2.1, 4, 5, 6, 10, 13, 14, 15 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("AnimationPlayer/GeneBackground:visible")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/11/type = "value"
+tracks/11/path = NodePath("AnimationPlayer/GeneBackground2:visible")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/12/type = "value"
+tracks/12/path = NodePath("AnimationPlayer/Blank:visible")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/13/type = "value"
+tracks/13/path = NodePath("AnimationPlayer/GeneBackground3:visible")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/14/type = "value"
+tracks/14/path = NodePath("AnimationPlayer/GeneBackground4:visible")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/15/type = "value"
+tracks/15/path = NodePath("AnimationPlayer/Blank2:visible")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/16/type = "value"
+tracks/16/path = NodePath("AnimationPlayer/ComponentText2:visible")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/imported = false
+tracks/16/enabled = true
+tracks/16/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
+[sub_resource type="DynamicFont" id=13]
+size = 45
+font_data = ExtResource( 7 )
+
+[sub_resource type="Animation" id=16]
+resource_name = "Splitting Chromosomes"
+length = 15.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimationPlayer/Original2:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 350.761, 155.695 ), Vector2( 350.761, 310.523 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("AnimationPlayer/OriginalLabel2:rect_position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 134.761, 184.66 ), Vector2( 134.761, 330.434 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AnimationPlayer/CopyLabel:self_modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 1.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("AnimationPlayer/CopyLabel2:self_modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 1.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("AnimationPlayer/GeneCopies/GeneBackground:rect_position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 1, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 51.1755, 35 ), Vector2( 50.4789, 152.174 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("AnimationPlayer/GeneCopies/GeneBackground:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("AnimationPlayer/GeneCopies/GeneBackground2:rect_position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 1, 2, 3 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 185.893, 35 ), Vector2( 185.893, 35 ), Vector2( 185.893, 150.174 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("AnimationPlayer/GeneCopies/GeneBackground2:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("AnimationPlayer/GeneCopies/Blank:rect_position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 1, 3, 4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 321.414, 35 ), Vector2( 321.414, 35 ), Vector2( 321.414, 147.695 ) ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("AnimationPlayer/GeneCopies/Blank:visible")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0, 3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("AnimationPlayer/GeneCopies/GeneBackground3:rect_position")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 1, 4, 5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 456.414, 35 ), Vector2( 456.414, 35 ), Vector2( 456.414, 147.695 ) ]
+}
+tracks/11/type = "value"
+tracks/11/path = NodePath("AnimationPlayer/GeneCopies/GeneBackground3:visible")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/keys = {
+"times": PoolRealArray( 0, 4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/12/type = "value"
+tracks/12/path = NodePath("AnimationPlayer/GeneCopies/GeneBackground4:rect_position")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/keys = {
+"times": PoolRealArray( 1, 5, 6 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 591.414, 35 ), Vector2( 591.414, 35 ), Vector2( 590.479, 148.695 ) ]
+}
+tracks/13/type = "value"
+tracks/13/path = NodePath("AnimationPlayer/GeneCopies/GeneBackground4:visible")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/keys = {
+"times": PoolRealArray( 0, 5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/14/type = "value"
+tracks/14/path = NodePath("AnimationPlayer/GeneCopies/Blank2:rect_position")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/keys = {
+"times": PoolRealArray( 1, 6, 7 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 726.414, 35 ), Vector2( 726.414, 35 ), Vector2( 723, 150 ) ]
+}
+tracks/15/type = "value"
+tracks/15/path = NodePath("AnimationPlayer/GeneCopies/Blank2:visible")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/keys = {
+"times": PoolRealArray( 0, 6 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/16/type = "value"
+tracks/16/path = NodePath("AnimationPlayer/GeneCopies2/GeneBackground:rect_position")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/imported = false
+tracks/16/enabled = true
+tracks/16/keys = {
+"times": PoolRealArray( 7, 8 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 51.1755, 35 ), Vector2( 50.4789, 152.174 ) ]
+}
+tracks/17/type = "value"
+tracks/17/path = NodePath("AnimationPlayer/GeneCopies2/GeneBackground:visible")
+tracks/17/interp = 1
+tracks/17/loop_wrap = true
+tracks/17/imported = false
+tracks/17/enabled = true
+tracks/17/keys = {
+"times": PoolRealArray( 0, 7 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/18/type = "value"
+tracks/18/path = NodePath("AnimationPlayer/GeneCopies2/GeneBackground2:rect_position")
+tracks/18/interp = 1
+tracks/18/loop_wrap = true
+tracks/18/imported = false
+tracks/18/enabled = true
+tracks/18/keys = {
+"times": PoolRealArray( 7, 8, 9 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 185.893, 35 ), Vector2( 185.893, 35 ), Vector2( 185.893, 150.174 ) ]
+}
+tracks/19/type = "value"
+tracks/19/path = NodePath("AnimationPlayer/GeneCopies2/GeneBackground2:visible")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/imported = false
+tracks/19/enabled = true
+tracks/19/keys = {
+"times": PoolRealArray( 0, 8 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/20/type = "value"
+tracks/20/path = NodePath("AnimationPlayer/GeneCopies2/Blank:rect_position")
+tracks/20/interp = 1
+tracks/20/loop_wrap = true
+tracks/20/imported = false
+tracks/20/enabled = true
+tracks/20/keys = {
+"times": PoolRealArray( 7, 9, 10 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 321.414, 35 ), Vector2( 321.414, 35 ), Vector2( 321.414, 147.695 ) ]
+}
+tracks/21/type = "value"
+tracks/21/path = NodePath("AnimationPlayer/GeneCopies2/Blank:visible")
+tracks/21/interp = 1
+tracks/21/loop_wrap = true
+tracks/21/imported = false
+tracks/21/enabled = true
+tracks/21/keys = {
+"times": PoolRealArray( 0, 9 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/22/type = "value"
+tracks/22/path = NodePath("AnimationPlayer/GeneCopies2/GeneBackground3:rect_position")
+tracks/22/interp = 1
+tracks/22/loop_wrap = true
+tracks/22/imported = false
+tracks/22/enabled = true
+tracks/22/keys = {
+"times": PoolRealArray( 7, 10, 11 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 456.414, 35 ), Vector2( 456.414, 35 ), Vector2( 456.414, 147.695 ) ]
+}
+tracks/23/type = "value"
+tracks/23/path = NodePath("AnimationPlayer/GeneCopies2/GeneBackground3:visible")
+tracks/23/interp = 1
+tracks/23/loop_wrap = true
+tracks/23/imported = false
+tracks/23/enabled = true
+tracks/23/keys = {
+"times": PoolRealArray( 0, 10 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/24/type = "value"
+tracks/24/path = NodePath("AnimationPlayer/GeneCopies2/GeneBackground4:rect_position")
+tracks/24/interp = 1
+tracks/24/loop_wrap = true
+tracks/24/imported = false
+tracks/24/enabled = true
+tracks/24/keys = {
+"times": PoolRealArray( 7, 11, 12 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 591.414, 35 ), Vector2( 591.414, 35 ), Vector2( 590.479, 148.695 ) ]
+}
+tracks/25/type = "value"
+tracks/25/path = NodePath("AnimationPlayer/GeneCopies2/GeneBackground4:visible")
+tracks/25/interp = 1
+tracks/25/loop_wrap = true
+tracks/25/imported = false
+tracks/25/enabled = true
+tracks/25/keys = {
+"times": PoolRealArray( 0, 11 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/26/type = "value"
+tracks/26/path = NodePath("AnimationPlayer/GeneCopies2/Blank2:rect_position")
+tracks/26/interp = 1
+tracks/26/loop_wrap = true
+tracks/26/imported = false
+tracks/26/enabled = true
+tracks/26/keys = {
+"times": PoolRealArray( 7, 12, 13 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 726.414, 35 ), Vector2( 726.414, 35 ), Vector2( 723, 150 ) ]
+}
+tracks/27/type = "value"
+tracks/27/path = NodePath("AnimationPlayer/GeneCopies2/Blank2:visible")
+tracks/27/interp = 1
+tracks/27/loop_wrap = true
+tracks/27/imported = false
+tracks/27/enabled = true
+tracks/27/keys = {
+"times": PoolRealArray( 0, 12 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/28/type = "value"
+tracks/28/path = NodePath("AnimationPlayer/CellDisplay2:modulate")
+tracks/28/interp = 1
+tracks/28/loop_wrap = true
+tracks/28/imported = false
+tracks/28/enabled = true
+tracks/28/keys = {
+"times": PoolRealArray( 0, 13 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/29/type = "value"
+tracks/29/path = NodePath("AnimationPlayer/CellDisplay2:rect_position")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/keys = {
+"times": PoolRealArray( 0, 13 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1197.14, 48.7089 ), Vector2( 1197.14, 320.523 ) ]
+}
+tracks/30/type = "value"
+tracks/30/path = NodePath("AnimationPlayer/Transposon:visible")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/keys = {
+"times": PoolRealArray( 0, 14 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/31/type = "value"
+tracks/31/path = NodePath("AnimationPlayer/SpeechBubble:visible")
+tracks/31/interp = 1
+tracks/31/loop_wrap = true
+tracks/31/imported = false
+tracks/31/enabled = true
+tracks/31/keys = {
+"times": PoolRealArray( 0, 14 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/32/type = "value"
+tracks/32/path = NodePath("AnimationPlayer/Keep:visible")
+tracks/32/interp = 1
+tracks/32/loop_wrap = true
+tracks/32/imported = false
+tracks/32/enabled = true
+tracks/32/keys = {
+"times": PoolRealArray( 0, 15 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/33/type = "value"
+tracks/33/path = NodePath("AnimationPlayer/Keep2:visible")
+tracks/33/interp = 1
+tracks/33/loop_wrap = true
+tracks/33/imported = false
+tracks/33/enabled = true
+tracks/33/keys = {
+"times": PoolRealArray( 0, 15 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+
+[sub_resource type="DynamicFont" id=15]
+size = 32
+use_mipmaps = true
+use_filter = true
+extra_spacing_top = -5
+font_data = SubResource( 1 )
+
+[node name="Meiosis" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Copying" type="Control" parent="."]
+margin_right = 1600.0
+margin_bottom = 900.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="Copying"]
+margin_right = 1600.0
+margin_bottom = 900.0
+mouse_filter = 2
+color = Color( 0.0431373, 0.0588235, 0.564706, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SpeechBubble" type="TextureRect" parent="Copying"]
+margin_left = 53.0
+margin_top = 32.0
+margin_right = 1293.0
+margin_bottom = 252.0
+mouse_filter = 2
+texture = ExtResource( 13 )
+expand = true
+flip_h = true
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="BubbleText" type="RichTextLabel" parent="Copying/SpeechBubble"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -593.0
+margin_top = -96.0
+margin_right = 604.0
+margin_bottom = 43.0
+mouse_filter = 2
+custom_fonts/italics_font = ExtResource( 5 )
+custom_fonts/normal_font = SubResource( 2 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[i][center]Congratulations, mitosis is now unlocked! This means you can copy your genome so your cell can divide!
+[/center][/i]"
+text = "Congratulations, mitosis is now unlocked! This means you can copy your genome so your cell can divide!
+"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Transposon" parent="Copying" instance=ExtResource( 2 )]
+margin_left = 1198.03
+margin_top = 150.174
+margin_right = -201.967
+margin_bottom = -549.826
+rect_scale = Vector2( 2, 2 )
+mouse_filter = 2
+
+[node name="Skip" type="Button" parent="Copying"]
+margin_left = 1038.01
+margin_top = 770.708
+margin_right = 1299.01
+margin_bottom = 878.708
+theme = SubResource( 8 )
+text = "Skip"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Next" type="Button" parent="Copying"]
+margin_left = 1312.38
+margin_top = 770.708
+margin_right = 1571.38
+margin_bottom = 875.708
+theme = SubResource( 8 )
+text = "Next"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GenesLabel" type="RichTextLabel" parent="Copying"]
+margin_top = 340.434
+margin_right = 216.0
+margin_bottom = 419.434
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.09
+custom_fonts/bold_italics_font = ExtResource( 4 )
+custom_fonts/italics_font = SubResource( 9 )
+custom_fonts/bold_font = SubResource( 10 )
+custom_fonts/normal_font = SubResource( 2 )
+custom_colors/default_color = Color( 1, 1, 1, 1 )
+bbcode_enabled = true
+bbcode_text = "[b]Original[/b]"
+text = "Original"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CopyLabel" type="RichTextLabel" parent="Copying"]
+margin_left = 41.0
+margin_top = 500.619
+margin_right = 178.0
+margin_bottom = 579.619
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.09
+custom_fonts/bold_italics_font = ExtResource( 4 )
+custom_fonts/italics_font = SubResource( 9 )
+custom_fonts/bold_font = SubResource( 10 )
+custom_fonts/normal_font = SubResource( 2 )
+custom_colors/default_color = Color( 1, 1, 1, 1 )
+bbcode_enabled = true
+bbcode_text = "[b]Copy[/b]"
+text = "Copy"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Genes" type="HBoxContainer" parent="Copying"]
+margin_left = 216.0
+margin_top = 296.0
+margin_right = 2196.0
+margin_bottom = 620.0
+rect_scale = Vector2( 0.5, 0.5 )
+mouse_filter = 2
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground" type="TextureRect" parent="Copying/Genes"]
+margin_right = 326.0
+margin_bottom = 324.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Component" type="TextureRect" parent="Copying/Genes/GeneBackground"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 9 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground2" type="TextureRect" parent="Copying/Genes"]
+margin_left = 330.0
+margin_right = 656.0
+margin_bottom = 324.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Sensing" type="TextureRect" parent="Copying/Genes/GeneBackground2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Blank" type="TextureRect" parent="Copying/Genes"]
+margin_left = 660.0
+margin_right = 986.0
+margin_bottom = 324.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 10 )
+expand = true
+
+[node name="GeneBackground3" type="TextureRect" parent="Copying/Genes"]
+margin_left = 990.0
+margin_right = 1316.0
+margin_bottom = 324.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Assembly" type="TextureRect" parent="Copying/Genes/GeneBackground3"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 11 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground4" type="TextureRect" parent="Copying/Genes"]
+margin_left = 1320.0
+margin_right = 1646.0
+margin_bottom = 324.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Replication" type="TextureRect" parent="Copying/Genes/GeneBackground4"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 8 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Blank2" type="TextureRect" parent="Copying/Genes"]
+margin_left = 1650.0
+margin_right = 1980.0
+margin_bottom = 324.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 10 )
+expand = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Copying"]
+"anims/Copying Genome" = SubResource( 11 )
+
+[node name="GeneBackground" type="TextureRect" parent="Copying/AnimationPlayer"]
+margin_left = 216.0
+margin_top = 458.0
+margin_right = 378.0
+margin_bottom = 618.996
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Component" type="TextureRect" parent="Copying/AnimationPlayer/GeneBackground"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 9 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground2" type="TextureRect" parent="Copying/AnimationPlayer"]
+margin_left = 381.0
+margin_top = 457.0
+margin_right = 543.0
+margin_bottom = 618.019
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Sensing" type="TextureRect" parent="Copying/AnimationPlayer/GeneBackground2"]
+self_modulate = Color( 0, 1, 0, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Blank" type="TextureRect" parent="Copying/AnimationPlayer"]
+margin_left = 546.0
+margin_top = 457.0
+margin_right = 709.0
+margin_bottom = 619.01
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 10 )
+expand = true
+
+[node name="GeneBackground3" type="TextureRect" parent="Copying/AnimationPlayer"]
+margin_left = 711.0
+margin_top = 457.0
+margin_right = 874.0
+margin_bottom = 618.992
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Assembly" type="TextureRect" parent="Copying/AnimationPlayer/GeneBackground3"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 11 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground4" type="TextureRect" parent="Copying/AnimationPlayer"]
+margin_left = 874.0
+margin_top = 457.0
+margin_right = 1036.01
+margin_bottom = 617.998
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Replication" type="TextureRect" parent="Copying/AnimationPlayer/GeneBackground4"]
+self_modulate = Color( 0.717647, 0.717647, 0, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 8 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Blank2" type="TextureRect" parent="Copying/AnimationPlayer"]
+margin_left = 1041.0
+margin_top = 408.7
+margin_right = 1206.0
+margin_bottom = 570.7
+rect_rotation = 0.064891
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 10 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ComponentText2" type="RichTextLabel" parent="Copying/AnimationPlayer"]
+margin_left = 18.0
+margin_top = 691.0
+margin_right = 1016.0
+margin_bottom = 884.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.09
+custom_fonts/bold_italics_font = ExtResource( 4 )
+custom_fonts/italics_font = SubResource( 9 )
+custom_fonts/bold_font = SubResource( 13 )
+custom_fonts/normal_font = SubResource( 2 )
+custom_colors/default_color = Color( 1, 1, 1, 1 )
+bbcode_enabled = true
+bbcode_text = "[b]Sometimes big mistakes are made and a gene is destroyed.[/b]"
+text = "Sometimes big mistakes are made and a gene is destroyed."
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Choose" type="Control" parent="."]
+visible = false
+margin_right = 1600.0
+margin_bottom = 900.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="Choose"]
+margin_right = 1600.0
+margin_bottom = 900.0
+mouse_filter = 2
+color = Color( 0.0431373, 0.0588235, 0.564706, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Back" type="Button" parent="Choose"]
+margin_left = 18.0
+margin_top = 770.708
+margin_right = 279.0
+margin_bottom = 878.708
+theme = SubResource( 8 )
+text = "Back"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Skip" type="Button" parent="Choose"]
+margin_left = 1038.01
+margin_top = 770.708
+margin_right = 1299.01
+margin_bottom = 878.708
+theme = SubResource( 8 )
+text = "Skip"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Next" type="Button" parent="Choose"]
+margin_left = 1312.38
+margin_top = 770.708
+margin_right = 1571.38
+margin_bottom = 875.708
+theme = SubResource( 8 )
+text = "Next"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OriginalLabel" type="RichTextLabel" parent="Choose"]
+margin_left = 134.761
+margin_top = 62.6947
+margin_right = 350.761
+margin_bottom = 141.695
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.09
+custom_fonts/bold_italics_font = ExtResource( 4 )
+custom_fonts/italics_font = SubResource( 9 )
+custom_fonts/bold_font = SubResource( 10 )
+custom_fonts/normal_font = SubResource( 2 )
+custom_colors/default_color = Color( 1, 1, 1, 1 )
+bbcode_enabled = true
+bbcode_text = "[b]Original[/b]"
+text = "Original"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Original" type="HBoxContainer" parent="Choose"]
+margin_left = 350.479
+margin_top = 32.0
+margin_right = 1969.48
+margin_bottom = 301.0
+rect_scale = Vector2( 0.5, 0.5 )
+mouse_filter = 2
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground" type="TextureRect" parent="Choose/Original"]
+margin_right = 266.0
+margin_bottom = 269.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Component" type="TextureRect" parent="Choose/Original/GeneBackground"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 9 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground2" type="TextureRect" parent="Choose/Original"]
+margin_left = 270.0
+margin_right = 536.0
+margin_bottom = 269.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Sensing" type="TextureRect" parent="Choose/Original/GeneBackground2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Blank" type="TextureRect" parent="Choose/Original"]
+margin_left = 540.0
+margin_right = 806.0
+margin_bottom = 269.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 10 )
+expand = true
+
+[node name="GeneBackground3" type="TextureRect" parent="Choose/Original"]
+margin_left = 810.0
+margin_right = 1076.0
+margin_bottom = 269.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Assembly" type="TextureRect" parent="Choose/Original/GeneBackground3"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 11 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground4" type="TextureRect" parent="Choose/Original"]
+margin_left = 1080.0
+margin_right = 1346.0
+margin_bottom = 269.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Replication" type="TextureRect" parent="Choose/Original/GeneBackground4"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 8 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Blank2" type="TextureRect" parent="Choose/Original"]
+margin_left = 1350.0
+margin_right = 1619.0
+margin_bottom = 269.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 10 )
+expand = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Choose"]
+"anims/Splitting Chromosomes" = SubResource( 16 )
+
+[node name="CopyLabel" type="RichTextLabel" parent="Choose/AnimationPlayer"]
+margin_left = 137.176
+margin_top = 185.0
+margin_right = 353.176
+margin_bottom = 264.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.09
+custom_fonts/bold_italics_font = ExtResource( 4 )
+custom_fonts/italics_font = SubResource( 9 )
+custom_fonts/bold_font = SubResource( 10 )
+custom_fonts/normal_font = SubResource( 2 )
+custom_colors/default_color = Color( 1, 1, 1, 1 )
+bbcode_enabled = true
+bbcode_text = "[b]Copy[/b]"
+text = "Copy"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneCopies" type="Control" parent="Choose/AnimationPlayer"]
+margin_left = 300.0
+margin_top = -2.0
+margin_right = 1297.0
+margin_bottom = 175.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies"]
+margin_left = 50.4789
+margin_top = 152.174
+margin_right = 190.479
+margin_bottom = 283.173
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Component" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies/GeneBackground"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 9 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground2" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies"]
+margin_left = 185.893
+margin_top = 150.174
+margin_right = 318.893
+margin_bottom = 280.173
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Sensing" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies/GeneBackground2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Blank" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies"]
+margin_left = 321.414
+margin_top = 147.695
+margin_right = 452.414
+margin_bottom = 280.694
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 10 )
+expand = true
+
+[node name="GeneBackground3" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies"]
+margin_left = 456.414
+margin_top = 147.695
+margin_right = 591.414
+margin_bottom = 280.694
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Assembly" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies/GeneBackground3"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 11 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground4" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies"]
+margin_left = 590.479
+margin_top = 148.695
+margin_right = 722.479
+margin_bottom = 279.695
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Replication" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies/GeneBackground4"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 8 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Blank2" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies"]
+margin_left = 723.0
+margin_top = 150.0
+margin_right = 859.0
+margin_bottom = 276.997
+rect_rotation = 0.064891
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 10 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OriginalLabel2" type="RichTextLabel" parent="Choose/AnimationPlayer"]
+margin_left = 134.761
+margin_top = 330.434
+margin_right = 350.761
+margin_bottom = 409.436
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.09
+custom_fonts/bold_italics_font = ExtResource( 4 )
+custom_fonts/italics_font = SubResource( 9 )
+custom_fonts/bold_font = SubResource( 10 )
+custom_fonts/normal_font = SubResource( 2 )
+custom_colors/default_color = Color( 1, 1, 1, 1 )
+bbcode_enabled = true
+bbcode_text = "[b]Original[/b]"
+text = "Original"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Original2" type="HBoxContainer" parent="Choose/AnimationPlayer"]
+margin_left = 350.761
+margin_top = 310.523
+margin_right = 1969.76
+margin_bottom = 579.517
+rect_scale = Vector2( 0.5, 0.5 )
+mouse_filter = 2
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground" type="TextureRect" parent="Choose/AnimationPlayer/Original2"]
+margin_right = 266.0
+margin_bottom = 268.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Component" type="TextureRect" parent="Choose/AnimationPlayer/Original2/GeneBackground"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 9 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground2" type="TextureRect" parent="Choose/AnimationPlayer/Original2"]
+margin_left = 270.0
+margin_right = 536.0
+margin_bottom = 268.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Sensing" type="TextureRect" parent="Choose/AnimationPlayer/Original2/GeneBackground2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Blank" type="TextureRect" parent="Choose/AnimationPlayer/Original2"]
+margin_left = 540.0
+margin_right = 806.0
+margin_bottom = 268.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 10 )
+expand = true
+
+[node name="GeneBackground3" type="TextureRect" parent="Choose/AnimationPlayer/Original2"]
+margin_left = 810.0
+margin_right = 1076.0
+margin_bottom = 268.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Assembly" type="TextureRect" parent="Choose/AnimationPlayer/Original2/GeneBackground3"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 11 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground4" type="TextureRect" parent="Choose/AnimationPlayer/Original2"]
+margin_left = 1080.0
+margin_right = 1346.0
+margin_bottom = 268.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Replication" type="TextureRect" parent="Choose/AnimationPlayer/Original2/GeneBackground4"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 8 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Blank2" type="TextureRect" parent="Choose/AnimationPlayer/Original2"]
+margin_left = 1350.0
+margin_right = 1618.0
+margin_bottom = 268.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 10 )
+expand = true
+
+[node name="CopyLabel2" type="RichTextLabel" parent="Choose/AnimationPlayer"]
+margin_left = 137.176
+margin_top = 458.0
+margin_right = 353.176
+margin_bottom = 537.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.09
+custom_fonts/bold_italics_font = ExtResource( 4 )
+custom_fonts/italics_font = SubResource( 9 )
+custom_fonts/bold_font = SubResource( 10 )
+custom_fonts/normal_font = SubResource( 2 )
+custom_colors/default_color = Color( 1, 1, 1, 1 )
+bbcode_enabled = true
+bbcode_text = "[b]Copy[/b]"
+text = "Copy"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneCopies2" type="Control" parent="Choose/AnimationPlayer"]
+margin_left = 299.109
+margin_top = 277.776
+margin_right = 1296.11
+margin_bottom = 454.776
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2"]
+margin_left = 50.4789
+margin_top = 152.174
+margin_right = 190.479
+margin_bottom = 283.175
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Component" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2/GeneBackground"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 9 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground2" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2"]
+margin_left = 185.893
+margin_top = 150.174
+margin_right = 319.893
+margin_bottom = 285.174
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Sensing" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2/GeneBackground2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Blank" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2"]
+margin_left = 321.414
+margin_top = 147.695
+margin_right = 452.414
+margin_bottom = 280.695
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 10 )
+expand = true
+
+[node name="GeneBackground3" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2"]
+margin_left = 456.414
+margin_top = 147.695
+margin_right = 591.414
+margin_bottom = 280.695
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Assembly" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2/GeneBackground3"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 11 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground4" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2"]
+margin_left = 590.479
+margin_top = 148.695
+margin_right = 722.479
+margin_bottom = 279.695
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Replication" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2/GeneBackground4"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 8 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Blank2" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2"]
+margin_left = 723.0
+margin_top = 150.0
+margin_right = 857.0
+margin_bottom = 283.999
+rect_rotation = 0.064891
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 10 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CellDisplay" parent="Choose/AnimationPlayer" instance=ExtResource( 1 )]
+margin_left = 1197.14
+margin_top = 48.7089
+margin_right = 1571.14
+margin_bottom = 268.709
+
+[node name="CellDisplay2" parent="Choose/AnimationPlayer" instance=ExtResource( 1 )]
+margin_left = 1197.14
+margin_top = 320.523
+margin_right = 1571.14
+margin_bottom = 540.525
+
+[node name="Keep" type="Button" parent="Choose/AnimationPlayer"]
+margin_top = 118.193
+margin_right = 132.0
+margin_bottom = 201.193
+theme = SubResource( 8 )
+text = "Keep"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Keep2" type="Button" parent="Choose/AnimationPlayer"]
+margin_top = 395.55
+margin_right = 132.0
+margin_bottom = 478.55
+theme = SubResource( 8 )
+text = "Keep"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Transposon" parent="Choose/AnimationPlayer" instance=ExtResource( 2 )]
+margin_left = 150.936
+margin_top = 537.0
+margin_right = -1262.06
+margin_bottom = -176.0
+mouse_filter = 2
+
+[node name="SpeechBubble" type="TextureRect" parent="Choose/AnimationPlayer"]
+margin_left = 291.0
+margin_top = 653.0
+margin_right = 1016.0
+margin_bottom = 873.0
+mouse_filter = 2
+texture = ExtResource( 13 )
+expand = true
+flip_v = true
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="BubbleText" type="RichTextLabel" parent="Choose/AnimationPlayer/SpeechBubble"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -351.5
+margin_top = -38.0
+margin_right = 362.5
+margin_bottom = 101.0
+mouse_filter = 2
+custom_fonts/italics_font = ExtResource( 5 )
+custom_fonts/normal_font = SubResource( 15 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Once your genome has been copied and mitosis completed, choose which cell you will continue your adventure with!
+[/center]"
+text = "Once your genome has been copied and mitosis completed, choose which cell you will continue your adventure with!
+"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="Copying/Skip" to="." method="_on_Skip_pressed"]
+[connection signal="pressed" from="Copying/Next" to="." method="_on_Next_pressed"]
+[connection signal="pressed" from="Choose/Back" to="." method="_on_Back_pressed"]
+[connection signal="pressed" from="Choose/Skip" to="." method="_on_Skip_pressed"]
+[connection signal="pressed" from="Choose/Next" to="." method="_on_Next_pressed"]
