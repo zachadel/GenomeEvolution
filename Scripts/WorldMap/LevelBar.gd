@@ -17,6 +17,8 @@ onready var meter = get_node("Bar/Meter")
 onready var icon = get_node("Icon")
 const COLORS = [Color.red, Color.yellow, Color.green, Color.yellow, Color.red]
 
+var observed = false
+
 #NOTE: Because Bar is rotated, the coordinates on Meter are opposite what they should be
 #i.e. x = y and y = x
 func _ready():
@@ -34,13 +36,29 @@ func _ready():
 func update_value(amount: float):
 	value = amount
 	
+	if value > 0:
+		show()
+	else:
+		hide()
+	
 	update_level_pos()
 	
+func observe():
+	observed = true
+	
+	set_icon_texture(Game.resources[resource]["tile_image"])
+
+func is_observed():
+	return observed
+
 func set_resource(string):
 	resource = string
 	MINIMUM_VALUE = Game.resources[resource]["safe_range"][0]
 	MAXIMUM_VALUE = Game.resources[resource]["safe_range"][1]
-	set_icon_texture(Game.resources[resource]["tile_image"])
+	if observed:
+		set_icon_texture(Game.resources[resource]["tile_image"])
+	else:
+		set_icon_texture(Game.DEFAULT_RESOURCE_PATH)
 	set_gradient(Game.resources[resource]["optimal"], Game.resources[resource]["optimal_radius"], Game.resources[resource]["yellow_radius"])
 	
 func set_MAXIMUM(amount):

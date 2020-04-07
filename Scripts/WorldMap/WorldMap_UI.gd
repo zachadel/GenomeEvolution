@@ -40,7 +40,7 @@ func _ready():
 		test_button.text = "Test Function"
 		$MenuPanel/HBoxContainer.add_child(test_button)
 		test_button.connect("pressed", self, "test_functionality")
-		
+	
 	pass
 	
 func set_organism(org):
@@ -183,8 +183,30 @@ func _on_AcquireResources_pressed():
 #upgrade from energy is broken
 #Seems like energy is quite broken
 func test_functionality():
-	print(irc.organism.get_vision_radius())
+#	print("Organism storage capacity:")
+#	print("Simple Carbs: ", irc.organism.get_estimated_capacity("simple_carbs"))
+#	print("Simple Fats: ", irc.organism.get_estimated_capacity("simple_fats"))
+#	print("Simple Proteins: ", irc.organism.get_estimated_capacity("simple_proteins"))
+#	print("Complex Carbs: ", irc.organism.get_estimated_capacity("complex_carbs"))
+#	print("Complex Fats: ", irc.organism.get_estimated_capacity("complex_fats"))
+#	print("Complex PRoteins: ", irc.organism.get_estimated_capacity("complex_proteins"))
+#	print('Vesicle: Scales:')
+#	print(irc.organism.vesicle_scales)
+#	print('Component Values:')
+#	print(irc.organism.get_behavior_profile().get_behavior("Component"))
+#	print("Resources Before Consume:")
+#	print(irc.organism.cfp_resources)
+#	print("Resources After Consume %d:" % [10])
+#	irc.organism.consume_randomly_from_class("simple_fats", 10)
+#	irc.update_resources(irc.organism.cfp_resources)
+#	print(irc.organism.cfp_resources)
+	for resource_class in irc.organism.cfp_resources:
+		irc.center_resources(resource_class)
 	pass
+
+func center_resources():
+	for resource_class in irc.resources:
+		irc.center_resources(resource_class)
 
 func get_resource_dict_differences(cfp_1:Dictionary, cfp_2: Dictionary):
 	var diff_dict = {}

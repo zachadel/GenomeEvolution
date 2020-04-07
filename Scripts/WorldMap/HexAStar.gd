@@ -1,6 +1,6 @@
 extends AStar
 
-const GODOT_FIX = 1000 #Astar doesn't seem to like decimal weights
+const GODOT_FIX = 1 #Astar doesn't seem to like decimal weights
 
 # Declare member variables here. Examples:
 var radius = 10
@@ -25,7 +25,10 @@ func _ready():
 #I leave this final note for posterity: no sane human should ever have to work
 #in hexagonal coordinates.  It's an affront to the dignity of man.
 
-	
+
+func get_radius():
+	return radius
+
 func set_position_offset(pos: Vector3, costs: FuncRef):
 	offset = pos
 	update_costs(costs)
@@ -68,7 +71,7 @@ func initialize_astar(_radius: int, costs: FuncRef):
 			
 			var index = map_ZxZ_to_N(temp_vec.x, temp_vec.y)
 			
-			add_point(index, temp_vec, GODOT_FIX*costs.call_func(temp_vec + offset) + 1)
+			add_point(index, temp_vec, GODOT_FIX + costs.call_func(temp_vec + offset) + 1)
 		
 	for tile in positions:
 		for neighbor in cube_directions:
@@ -93,7 +96,7 @@ func change_radius(_radius: int, costs: FuncRef):
 			
 			for neighbor in NEIGHBORS:
 				for step in range(0, ring_radius):
-					add_point(map_ZxZ_to_N(tile.x, tile.y), tile, GODOT_FIX*costs.call_func(tile + offset))
+					add_point(map_ZxZ_to_N(tile.x, tile.y), tile, GODOT_FIX + costs.call_func(tile + offset))
 					
 					for neighbor in cube_directions:
 						if has_point(map_ZxZ_to_N(tile.x + neighbor.x, tile.y + neighbor.y)):
@@ -111,7 +114,7 @@ func update_costs(costs: FuncRef):
 			
 			var index = map_ZxZ_to_N(temp_vec.x, temp_vec.y)
 			
-			set_point_weight_scale(index, GODOT_FIX*costs.call_func(temp_vec + offset))
+			set_point_weight_scale(index, GODOT_FIX + costs.call_func(temp_vec + offset))
 
 func get_tile_path_from_to(from: Vector3, to: Vector3):
 	from -= offset
@@ -139,7 +142,7 @@ func get_tile_and_cost_from_to(from:Vector3, to: Vector3):
 		for i in range(len(path)):
 			path_and_cost[i] = {
 				"location": path[i] + offset,
-				"cost": get_point_weight_scale(map_ZxZ_to_N(path[i].x, path[i].y))/GODOT_FIX
+				"cost": get_point_weight_scale(map_ZxZ_to_N(path[i].x, path[i].y)) - GODOT_FIX
 			}
 			path_and_cost["total_cost"] += path_and_cost[i]["cost"]
 		
@@ -169,7 +172,7 @@ func get_positions_and_costs_from_to(from: Vector3, to: Vector3):
 		for i in range(len(path)):
 			path_and_cost[i] = {
 				"location": Game.map_to_world(path[i] + offset),
-				"cost": get_point_weight_scale(map_ZxZ_to_N(path[i].x, path[i].y))/GODOT_FIX
+				"cost": get_point_weight_scale(map_ZxZ_to_N(path[i].x, path[i].y)) - GODOT_FIX
 			}
 			path_and_cost["total_cost"] += path_and_cost[i]["cost"]
 		
@@ -180,6 +183,6 @@ func get_weight_from_point(point: Vector3):
 	
 	var index = map_ZxZ_to_N(point.x, point.y)
 	if has_point(index):
-		return get_point_weight_scale(index)/GODOT_FIX
+		return get_point_weight_scale(index) - GODOT_FIX
 	else:
 		return -1

@@ -10,6 +10,8 @@ var tile_texture_size
 
 enum VISION {CLEAR = -1, HIDDEN = 0, CLOUDS = 1}
 
+const CLOUD_TEXTURE_PATH = "res://Assets/Images/Tiles/Biomes/cloud_tile.png"
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var i = 0
@@ -29,7 +31,13 @@ func setup(_chunk_size = 32, starting_pos = Vector3(0,0,0)):
 	for i in range(-chunk_size + int(center_indices.x), chunk_size + int(center_indices.x) + 1):
 		for j in range(-chunk_size + int(center_indices.y), chunk_size + int(center_indices.y) + 1):
 			set_cell(i, j, VISION.CLOUDS)
-			
+		
+func disable_fog():
+	tile_set.tile_set_texture(1, tile_set.tile_get_texture(0))
+	
+func enable_fog():
+	tile_set.tile_set_texture(1, load(CLOUD_TEXTURE_PATH))
+	
 #These shifts should be in terms of coordinates (so integers)
 #NOTE: Currentlly this assumes that any shift is smaller than the chunk_size
 func shift_map(shift, modified_cells: Dictionary):

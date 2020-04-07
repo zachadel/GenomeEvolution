@@ -524,6 +524,9 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource( 3 )
 stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="DNARight" type="TextureRect" parent="."]
 margin_left = 1449.17

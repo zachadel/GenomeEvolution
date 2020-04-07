@@ -52,32 +52,26 @@ rect_scale = Vector2( 0.433, 0.75 )
 
 [node name="simple_carbs" parent="." instance=ExtResource( 3 )]
 position = Vector2( 70, 191 )
-scale = Vector2( 0.75, 0.75 )
 resource_class = "simple_carbs"
 
 [node name="complex_carbs" parent="." instance=ExtResource( 3 )]
 position = Vector2( 210, 191 )
-scale = Vector2( 0.5, 0.5 )
 resource_class = "complex_carbs"
 
 [node name="simple_fats" parent="." instance=ExtResource( 3 )]
 position = Vector2( 70, 349 )
-scale = Vector2( 0.75, 0.75 )
 resource_class = "simple_fats"
 
 [node name="complex_fats" parent="." instance=ExtResource( 3 )]
 position = Vector2( 210, 349 )
-scale = Vector2( 0.5, 0.5 )
 resource_class = "complex_fats"
 
 [node name="simple_proteins" parent="." instance=ExtResource( 3 )]
 position = Vector2( 70, 507 )
-scale = Vector2( 0.75, 0.75 )
 resource_class = "simple_proteins"
 
 [node name="complex_proteins" parent="." instance=ExtResource( 3 )]
 position = Vector2( 210, 507 )
-scale = Vector2( 0.5, 0.5 )
 resource_class = "complex_proteins"
 
 [node name="LabelColumns" type="HBoxContainer" parent="."]
@@ -96,7 +90,7 @@ mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="SimpleCarbsLabel" type="RichTextLabel" parent="LabelColumns/SimpleLabels"]
+[node name="simple_carbs" type="RichTextLabel" parent="LabelColumns/SimpleLabels"]
 margin_right = 138.0
 margin_bottom = 154.0
 mouse_filter = 2
@@ -109,7 +103,7 @@ bbcode_text = "[center]Sugars[/center]"
 text = "Sugars"
 scroll_active = false
 
-[node name="SimpleFatsLabel" type="RichTextLabel" parent="LabelColumns/SimpleLabels"]
+[node name="simple_fats" type="RichTextLabel" parent="LabelColumns/SimpleLabels"]
 margin_top = 158.0
 margin_right = 138.0
 margin_bottom = 312.0
@@ -123,7 +117,7 @@ bbcode_text = "[center]Simple Fats[/center]"
 text = "Simple Fats"
 scroll_active = false
 
-[node name="SimpleProteinsLabel" type="RichTextLabel" parent="LabelColumns/SimpleLabels"]
+[node name="simple_proteins" type="RichTextLabel" parent="LabelColumns/SimpleLabels"]
 margin_top = 316.0
 margin_right = 138.0
 margin_bottom = 470.0
@@ -145,7 +139,7 @@ mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ComplexCarbsLabel" type="RichTextLabel" parent="LabelColumns/ComplexLabels"]
+[node name="complex_carbs" type="RichTextLabel" parent="LabelColumns/ComplexLabels"]
 margin_right = 138.0
 margin_bottom = 154.0
 mouse_filter = 2
@@ -158,7 +152,7 @@ bbcode_text = "[center]Complex Carbs[/center]"
 text = "Complex Carbs"
 scroll_active = false
 
-[node name="ComplexFatsLabel" type="RichTextLabel" parent="LabelColumns/ComplexLabels"]
+[node name="complex_fats" type="RichTextLabel" parent="LabelColumns/ComplexLabels"]
 margin_top = 158.0
 margin_right = 138.0
 margin_bottom = 312.0
@@ -172,7 +166,7 @@ bbcode_text = "[center]Complex Fats[/center]"
 text = "Complex Fats"
 scroll_active = false
 
-[node name="ComplexProteinsLabel" type="RichTextLabel" parent="LabelColumns/ComplexLabels"]
+[node name="complex_proteins" type="RichTextLabel" parent="LabelColumns/ComplexLabels"]
 margin_top = 316.0
 margin_right = 138.0
 margin_bottom = 470.0

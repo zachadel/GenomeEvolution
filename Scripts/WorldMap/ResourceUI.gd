@@ -7,9 +7,9 @@ func _ready():
 		for resource in Game.resources.keys():
 			if Game.resources[resource]["group"] == group:
 				var Bar = load("res://Scenes/WorldMap/ResourceBar.tscn").instance()
-				Bar.set_texture(Game.resources[resource]["tile_image"])
+				#Bar.set_texture(Game.resources[resource]["tile_image"])
 				
-				Bar.name = resource + 'Bar'
+				Bar.name = resource
 				
 				Bar.update_value(randi() % Game.PRIMARY_RESOURCE_MAX) #For testing
 				Bar.set_resource(resource)
@@ -28,8 +28,14 @@ func _ready():
 	add_child(resource_hbox)
 	pass # Replace with function body.
 
+func observe(resource: String):
+	var resource_bar = get_node(resource)
+	
+	if not resource_bar.is_observed():
+		resource_bar.observe()
+
 #resource_values[resource_index] = values
 func set_resources(resource_values):
 	for child in get_children():
 		if not child is HBoxContainer:
-			child.update_value(resource_values[Game.resources.keys().find(child.name.substr(0, len(child.name) - 3))])
+			child.update_value(resource_values[Game.get_index_from_resource(child.name)])

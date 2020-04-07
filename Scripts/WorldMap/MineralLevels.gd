@@ -34,7 +34,15 @@ func _ready():
 
 func update_resources_values(mineral_resources):
 	for child in get_children():
+		var resource_class = Game.get_class_from_name(child.name)
+			
 		child.update_value(mineral_resources[Game.get_class_from_name(child.name)][child.name])
+
+func observe(resource: String):
+	var level_bar = get_node(resource)
+	
+	if not level_bar.is_observed():
+		level_bar.observe()
 
 func set_input(enabled: bool):
 	enabled_input = enabled
