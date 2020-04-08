@@ -1139,10 +1139,10 @@ __meta__ = {
 }
 
 [node name="ComponentText2" type="RichTextLabel" parent="Chromosomes"]
-margin_left = 53.2607
-margin_top = 532.986
-margin_right = 1491.26
-margin_bottom = 794.986
+margin_left = 53.0
+margin_top = 578.0
+margin_right = 1491.0
+margin_bottom = 718.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1153,12 +1153,8 @@ custom_fonts/bold_font = SubResource( 11 )
 custom_fonts/normal_font = SubResource( 2 )
 custom_colors/default_color = Color( 1, 1, 1, 1 )
 bbcode_enabled = true
-bbcode_text = "[b]All the genes on a single string are called a Chromosome.
-
-All the chromosomes together are called the Genome.[/b]"
-text = "All the genes on a single string are called a Chromosome.
-
-All the chromosomes together are called the Genome."
+bbcode_text = "[b]All the genes on a single string are called a Chromosome. All the chromosomes together are called the Genome.[/b]"
+text = "All the genes on a single string are called a Chromosome. All the chromosomes together are called the Genome."
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1283,6 +1279,7 @@ __meta__ = {
 }
 
 [node name="Breaks" type="Control" parent="."]
+visible = false
 margin_right = 1600.0
 margin_bottom = 900.0
 mouse_filter = 2

@@ -67,15 +67,6 @@ func _on_Next_pressed():
 	else:
 		leave_intro()
 
-func _gui_input(event):
-	if event.is_action_pressed("next_slide"):
-		_on_Next_pressed()
-	if event.is_action_pressed("previous_slide"):
-		_on_Back_pressed()
-	if event.is_action_pressed("exit_slide"):
-		_on_Skip_pressed()
-
-
 func _on_Back_pressed():
 	var slide = get_children()[current_slide]
 

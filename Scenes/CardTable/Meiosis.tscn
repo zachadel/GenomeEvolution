@@ -1141,7 +1141,7 @@ __meta__ = {
 
 [node name="Blank2" type="TextureRect" parent="Explanation/Original2"]
 margin_left = 1350.0
-margin_right = 1618.0
+margin_right = 1619.0
 margin_bottom = 268.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -1353,10 +1353,8 @@ custom_fonts/italics_font = ExtResource( 5 )
 custom_fonts/normal_font = SubResource( 11 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
-bbcode_text = "[center][i]Congratulations, meiosis (pronounced My-O-sis) is now unlocked!  This means you can mix and match your chromosomes with those from other cells![/i]
-[/center]"
-text = "Congratulations, meiosis (pronounced My-O-sis) is now unlocked!  This means you can mix and match your chromosomes with those from other cells!
-"
+bbcode_text = "[center][i]Congratulations, meiosis (pronounced My-O-sis) is now unlocked!  This means you can mix and match your chromosomes with those from other cells![/i][/center]"
+text = "Congratulations, meiosis (pronounced My-O-sis) is now unlocked!  This means you can mix and match your chromosomes with those from other cells!"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1616,10 +1614,8 @@ custom_fonts/italics_font = ExtResource( 5 )
 custom_fonts/normal_font = SubResource( 11 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
-bbcode_text = "[center][i]Choose the one you like the best, and lose the rest![/i]
-[/center]"
-text = "Choose the one you like the best, and lose the rest!
-"
+bbcode_text = "[center][i]Choose the one you like the best, and lose the rest![/i][/center]"
+text = "Choose the one you like the best, and lose the rest!"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1950,7 +1946,7 @@ __meta__ = {
 
 [node name="Blank2" type="TextureRect" parent="PickOne/AnimationPlayer/Original2"]
 margin_left = 1350.0
-margin_right = 1618.0
+margin_right = 1619.0
 margin_bottom = 268.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -2128,6 +2124,7 @@ __meta__ = {
 }
 
 [node name="NewChromosome" type="Control" parent="."]
+visible = false
 margin_right = 1600.0
 margin_bottom = 900.0
 mouse_filter = 2

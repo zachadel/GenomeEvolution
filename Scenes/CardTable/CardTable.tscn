@@ -44,6 +44,7 @@ margin_left = 1177.4
 margin_top = 792.691
 margin_right = 1277.4
 margin_bottom = 892.691
+num = 0
 lbl = "Round"
 
 [node name="lnum_progeny" parent="." instance=ExtResource( 17 )]
@@ -51,6 +52,7 @@ margin_left = 1297.4
 margin_top = 792.691
 margin_right = 1397.4
 margin_bottom = 892.691
+num = 0
 lbl = "Progeny"
 
 [node name="lbl_turnorder" type="Label" parent="."]

@@ -77,9 +77,4 @@ func _on_Back_pressed():
 		play_and_show(previous_slide)
 		
 func _gui_input(event):
-	if event.is_action_pressed("next_slide"):
-		_on_Next_pressed()
-	if event.is_action_pressed("previous_slide"):
-		_on_Back_pressed()
-	if event.is_action_pressed("exit_slide"):
-		_on_Skip_pressed()
+	pass

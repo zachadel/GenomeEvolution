@@ -710,11 +710,11 @@ tracks/16/keys = {
 "values": [ true ]
 }
 
-[sub_resource type="DynamicFont" id=13]
+[sub_resource type="DynamicFont" id=12]
 size = 45
 font_data = ExtResource( 6 )
 
-[sub_resource type="Animation" id=16]
+[sub_resource type="Animation" id=13]
 resource_name = "Splitting Chromosomes"
 length = 15.0
 tracks/0/type = "value"
@@ -1126,7 +1126,7 @@ tracks/33/keys = {
 "values": [ false, true ]
 }
 
-[sub_resource type="DynamicFont" id=15]
+[sub_resource type="DynamicFont" id=14]
 size = 32
 use_mipmaps = true
 use_filter = true
@@ -1186,10 +1186,8 @@ custom_fonts/italics_font = ExtResource( 3 )
 custom_fonts/normal_font = SubResource( 2 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
-bbcode_text = "[i][center]Congratulations, mitosis is now unlocked! This means you can copy your genome so your cell can divide!
-[/center][/i]"
-text = "Congratulations, mitosis is now unlocked! This means you can copy your genome so your cell can divide!
-"
+bbcode_text = "[i][center]Congratulations, mitosis is now unlocked! This means you can copy your genome so your cell can divide![/center][/i]"
+text = "Congratulations, mitosis is now unlocked! This means you can copy your genome so your cell can divide!"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1559,7 +1557,7 @@ size_flags_vertical = 3
 size_flags_stretch_ratio = 1.09
 custom_fonts/bold_italics_font = ExtResource( 2 )
 custom_fonts/italics_font = SubResource( 9 )
-custom_fonts/bold_font = SubResource( 13 )
+custom_fonts/bold_font = SubResource( 12 )
 custom_fonts/normal_font = SubResource( 2 )
 custom_colors/default_color = Color( 1, 1, 1, 1 )
 bbcode_enabled = true
@@ -1571,7 +1569,6 @@ __meta__ = {
 }
 
 [node name="Choose" type="Control" parent="."]
-visible = false
 margin_right = 1600.0
 margin_bottom = 900.0
 mouse_filter = 2
@@ -1782,7 +1779,7 @@ texture = ExtResource( 9 )
 expand = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Choose"]
-"anims/Splitting Chromosomes" = SubResource( 16 )
+"anims/Splitting Chromosomes" = SubResource( 13 )
 
 [node name="CopyLabel" type="RichTextLabel" parent="Choose/AnimationPlayer"]
 margin_left = 137.176
@@ -2104,7 +2101,7 @@ __meta__ = {
 
 [node name="Blank2" type="TextureRect" parent="Choose/AnimationPlayer/Original2"]
 margin_left = 1350.0
-margin_right = 1619.0
+margin_right = 1618.0
 margin_bottom = 268.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -2345,13 +2342,11 @@ margin_right = 362.5
 margin_bottom = 101.0
 mouse_filter = 2
 custom_fonts/italics_font = ExtResource( 3 )
-custom_fonts/normal_font = SubResource( 15 )
+custom_fonts/normal_font = SubResource( 14 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
-bbcode_text = "[center]Once your genome has been copied and mitosis completed, choose which cell you will continue your adventure with!
-[/center]"
-text = "Once your genome has been copied and mitosis completed, choose which cell you will continue your adventure with!
-"
+bbcode_text = "[center]Once your genome has been copied and mitosis completed, choose which cell you will continue your adventure with![/center]"
+text = "Once your genome has been copied and mitosis completed, choose which cell you will continue your adventure with!"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false

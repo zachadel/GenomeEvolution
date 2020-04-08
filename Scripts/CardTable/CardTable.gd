@@ -249,6 +249,33 @@ func close_extra_menus(toggle_menu = null):
 	if restore_justnow:
 		$ctl_justnow.visible = true;
 
+func play_recombination_slides():
+	var slides = load("res://Scenes/CardTable/Recombination.tscn").instance()
+	add_child(slides)
+	slides.start()
+	yield(slides, "exit_recombination_slides")
+	remove_child(slides)
+	slides.queue_free()
+	pass
+
+func play_mitosis_slides():
+	var slides = load("res://Scenes/CardTable/Mitosis.tscn").instance()
+	add_child(slides)
+	slides.start()
+	yield(slides, "exit_mitosis_slides")
+	remove_child(slides)
+	slides.queue_free()
+	pass
+	
+func play_meiosis_slides():
+	var slides = load("res://Scenes/CardTable/Meiosis.tscn").instance()
+	add_child(slides)
+	slides.start()
+	yield(slides, "exit_meiosis_slides")
+	remove_child(slides)
+	slides.queue_free()
+	pass
+
 func _on_btn_filter_pressed():
 	close_extra_menus(ph_filter_panel);
 

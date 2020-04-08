@@ -73,11 +73,3 @@ func _on_Back_pressed():
 		current_slide -= 1
 		var previous_slide = get_children()[current_slide]
 		play_and_show(previous_slide)
-
-func _gui_input(event):
-	if event.is_action_pressed("next_slide"):
-		_on_Next_pressed()
-	if event.is_action_pressed("previous_slide"):
-		_on_Back_pressed()
-	if event.is_action_pressed("exit_slide"):
-		_on_Skip_pressed()

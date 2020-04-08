@@ -97,6 +97,10 @@ var energy_allocations
 var max_equality_dist = 10 setget ,get_max_gene_dist;
 var reproduct_gene_pool = [] setget ,get_gene_pool;
 
+var has_done_recombination = false
+var has_done_mitosis = false
+var has_done_meiosis = false
+
 const RESOURCE_TYPES = ["simple_carbs", "complex_carbs", "simple_fats", "complex_fats", "simple_proteins", "complex_proteins"]
 
 signal gene_clicked();
@@ -1036,6 +1040,9 @@ func recombination():
 	if (is_ai):
 		gene_selection.clear();
 	else:
+		if !has_done_recombination:
+			yield(get_card_table().play_recombination_slides(), "completed")
+			has_done_recombination = true
 		# For some reason, this func bugs out when picking from the first cmsm (see comment at get_other_cmsm below)
 		gene_selection = cmsms.highlight_common_genes(false, true);
 		yield(self, "gene_clicked");
@@ -1088,6 +1095,15 @@ func replicate(idx):
 		perform_anims(false);
 		cmsms.replicate_cmsms([0, 1]);
 		cmsms.hide_all(true);
+		
+		if idx == 0 and !has_done_mitosis:
+			yield(get_card_table().play_mitosis_slides(), "completed")
+			has_done_mitosis = true
+			
+		if idx == 1 and !has_done_meiosis:
+			yield(get_card_table().play_meiosis_slides(), "completed")
+			has_done_meiosis = true
+		
 		cmsms.show_all_choice_buttons(true);
 		perform_anims(true);
 		
@@ -1117,7 +1133,7 @@ func replicate(idx):
 				set_energy(energy_split)
 				
 				num_progeny += 1;
-			1: # Meiosis
+			1: # Meiosis					
 				rep_type = "meiosis";
 				
 				emit_signal("justnow_update", "Choose one chromosome to keep; the others go into the gene pool. Then, receive one randomly from the gene pool.");

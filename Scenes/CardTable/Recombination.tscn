@@ -487,28 +487,28 @@ WindowDialog/icons/close = null
 WindowDialog/icons/close_highlight = null
 WindowDialog/styles/panel = null
 
-[sub_resource type="DynamicFontData" id=9]
+[sub_resource type="DynamicFontData" id=7]
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
 
-[sub_resource type="DynamicFont" id=11]
+[sub_resource type="DynamicFont" id=8]
 size = 32
 use_mipmaps = true
 use_filter = true
 extra_spacing_top = -5
-font_data = SubResource( 9 )
+font_data = SubResource( 7 )
 
-[sub_resource type="DynamicFont" id=7]
+[sub_resource type="DynamicFont" id=9]
 size = 50
 font_data = ExtResource( 7 )
 
-[sub_resource type="DynamicFont" id=8]
+[sub_resource type="DynamicFont" id=10]
 size = 50
 font_data = ExtResource( 8 )
 
-[sub_resource type="DynamicFont" id=10]
+[sub_resource type="DynamicFont" id=11]
 use_mipmaps = true
 use_filter = true
-font_data = SubResource( 9 )
+font_data = SubResource( 7 )
 
 [sub_resource type="Animation" id=12]
 resource_name = "GrowingLines"
@@ -786,7 +786,7 @@ __meta__ = {
 }
 
 [node name="GeneBackground" type="TextureRect" parent="Explanation/Chromosome2"]
-margin_right = 369.0
+margin_right = 368.0
 margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -813,8 +813,8 @@ __meta__ = {
 }
 
 [node name="GeneBackground2" type="TextureRect" parent="Explanation/Chromosome2"]
-margin_left = 373.0
-margin_right = 742.0
+margin_left = 372.0
+margin_right = 740.0
 margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -840,8 +840,8 @@ __meta__ = {
 }
 
 [node name="Blank" type="TextureRect" parent="Explanation/Chromosome2"]
-margin_left = 746.0
-margin_right = 1115.0
+margin_left = 744.0
+margin_right = 1112.0
 margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -850,8 +850,8 @@ texture = ExtResource( 12 )
 expand = true
 
 [node name="GeneBackground3" type="TextureRect" parent="Explanation/Chromosome2"]
-margin_left = 1119.0
-margin_right = 1488.0
+margin_left = 1116.0
+margin_right = 1484.0
 margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -876,8 +876,8 @@ __meta__ = {
 }
 
 [node name="GeneBackground4" type="TextureRect" parent="Explanation/Chromosome2"]
-margin_left = 1492.0
-margin_right = 1861.0
+margin_left = 1488.0
+margin_right = 1856.0
 margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -903,8 +903,8 @@ __meta__ = {
 }
 
 [node name="Blank2" type="TextureRect" parent="Explanation/Chromosome2"]
-margin_left = 1865.0
-margin_right = 2234.0
+margin_left = 1860.0
+margin_right = 2233.0
 margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -1091,13 +1091,11 @@ margin_right = 626.5
 margin_bottom = 27.5
 mouse_filter = 2
 custom_fonts/italics_font = ExtResource( 3 )
-custom_fonts/normal_font = SubResource( 11 )
+custom_fonts/normal_font = SubResource( 8 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
-bbcode_text = "[center][i]Congratulations, recombination is now unlocked! This means you can shuffle your chromosomes![/i]
-[/center]"
-text = "Congratulations, recombination is now unlocked! This means you can shuffle your chromosomes!
-"
+bbcode_text = "[center][i]Congratulations, recombination is now unlocked! This means you can shuffle your chromosomes![/i][/center]"
+text = "Congratulations, recombination is now unlocked! This means you can shuffle your chromosomes!"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1306,7 +1304,7 @@ __meta__ = {
 }
 
 [node name="GeneBackground" type="TextureRect" parent="BrokenGenes/Chromosome2"]
-margin_right = 369.0
+margin_right = 368.0
 margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -1333,8 +1331,8 @@ __meta__ = {
 }
 
 [node name="GeneBackground2" type="TextureRect" parent="BrokenGenes/Chromosome2"]
-margin_left = 373.0
-margin_right = 742.0
+margin_left = 372.0
+margin_right = 740.0
 margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -1360,8 +1358,8 @@ __meta__ = {
 }
 
 [node name="Blank" type="TextureRect" parent="BrokenGenes/Chromosome2"]
-margin_left = 746.0
-margin_right = 1115.0
+margin_left = 744.0
+margin_right = 1112.0
 margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -1370,8 +1368,8 @@ texture = ExtResource( 12 )
 expand = true
 
 [node name="GeneBackground3" type="TextureRect" parent="BrokenGenes/Chromosome2"]
-margin_left = 1119.0
-margin_right = 1488.0
+margin_left = 1116.0
+margin_right = 1484.0
 margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -1396,8 +1394,8 @@ __meta__ = {
 }
 
 [node name="GeneBackground4" type="TextureRect" parent="BrokenGenes/Chromosome2"]
-margin_left = 1492.0
-margin_right = 1861.0
+margin_left = 1488.0
+margin_right = 1856.0
 margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -1423,8 +1421,8 @@ __meta__ = {
 }
 
 [node name="Blank2" type="TextureRect" parent="BrokenGenes/Chromosome2"]
-margin_left = 1865.0
-margin_right = 2234.0
+margin_left = 1860.0
+margin_right = 2233.0
 margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -1464,15 +1462,11 @@ margin_right = 560.5
 margin_bottom = 56.5
 mouse_filter = 2
 custom_fonts/italics_font = ExtResource( 3 )
-custom_fonts/normal_font = SubResource( 11 )
+custom_fonts/normal_font = SubResource( 8 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
-bbcode_text = "[center][i]How does it work? Imagine each chromosome has a 
-different broken gene.[/i]
-[/center]"
-text = "How does it work? Imagine each chromosome has a 
-different broken gene.
-"
+bbcode_text = "[center][i]How does it work? Imagine each chromosome has a different broken gene.[/i][/center]"
+text = "How does it work? Imagine each chromosome has a different broken gene."
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1488,9 +1482,9 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 1.09
 custom_fonts/bold_italics_font = ExtResource( 4 )
-custom_fonts/italics_font = SubResource( 7 )
-custom_fonts/bold_font = SubResource( 8 )
-custom_fonts/normal_font = SubResource( 10 )
+custom_fonts/italics_font = SubResource( 9 )
+custom_fonts/bold_font = SubResource( 10 )
+custom_fonts/normal_font = SubResource( 11 )
 custom_colors/default_color = Color( 1, 1, 1, 1 )
 bbcode_enabled = true
 bbcode_text = "[b][i]Broken Gene[/i][/b]"
@@ -1510,9 +1504,9 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 1.09
 custom_fonts/bold_italics_font = ExtResource( 4 )
-custom_fonts/italics_font = SubResource( 7 )
-custom_fonts/bold_font = SubResource( 8 )
-custom_fonts/normal_font = SubResource( 10 )
+custom_fonts/italics_font = SubResource( 9 )
+custom_fonts/bold_font = SubResource( 10 )
+custom_fonts/normal_font = SubResource( 11 )
 custom_colors/default_color = Color( 1, 1, 1, 1 )
 bbcode_enabled = true
 bbcode_text = "[b][i]Broken Gene[/i][/b]"
@@ -1752,7 +1746,7 @@ __meta__ = {
 }
 
 [node name="GeneBackground" type="TextureRect" parent="SimilarGene/Chromosome2"]
-margin_right = 369.0
+margin_right = 368.0
 margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -1779,8 +1773,8 @@ __meta__ = {
 }
 
 [node name="GeneBackground2" type="TextureRect" parent="SimilarGene/Chromosome2"]
-margin_left = 373.0
-margin_right = 742.0
+margin_left = 372.0
+margin_right = 740.0
 margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -1806,8 +1800,8 @@ __meta__ = {
 }
 
 [node name="Blank" type="TextureRect" parent="SimilarGene/Chromosome2"]
-margin_left = 746.0
-margin_right = 1115.0
+margin_left = 744.0
+margin_right = 1112.0
 margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -1816,8 +1810,8 @@ texture = ExtResource( 12 )
 expand = true
 
 [node name="GeneBackground3" type="TextureRect" parent="SimilarGene/Chromosome2"]
-margin_left = 1119.0
-margin_right = 1488.0
+margin_left = 1116.0
+margin_right = 1484.0
 margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -1842,8 +1836,8 @@ __meta__ = {
 }
 
 [node name="GeneBackground4" type="TextureRect" parent="SimilarGene/Chromosome2"]
-margin_left = 1492.0
-margin_right = 1861.0
+margin_left = 1488.0
+margin_right = 1856.0
 margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -1869,8 +1863,8 @@ __meta__ = {
 }
 
 [node name="Blank2" type="TextureRect" parent="SimilarGene/Chromosome2"]
-margin_left = 1865.0
-margin_right = 2234.0
+margin_left = 1860.0
+margin_right = 2233.0
 margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -1910,15 +1904,11 @@ margin_right = 560.5
 margin_bottom = 56.5
 mouse_filter = 2
 custom_fonts/italics_font = ExtResource( 3 )
-custom_fonts/normal_font = SubResource( 11 )
+custom_fonts/normal_font = SubResource( 8 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
-bbcode_text = "[center][i]As long as there is a similar gene in
-between them...[/i]
-[/center]"
-text = "As long as there is a similar gene in
-between them...
-"
+bbcode_text = "[center][i]As long as there is a similar gene in between them...[/i][/center]"
+text = "As long as there is a similar gene in between them..."
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1934,9 +1924,9 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 1.09
 custom_fonts/bold_italics_font = ExtResource( 4 )
-custom_fonts/italics_font = SubResource( 7 )
-custom_fonts/bold_font = SubResource( 8 )
-custom_fonts/normal_font = SubResource( 10 )
+custom_fonts/italics_font = SubResource( 9 )
+custom_fonts/bold_font = SubResource( 10 )
+custom_fonts/normal_font = SubResource( 11 )
 custom_colors/default_color = Color( 1, 1, 1, 1 )
 bbcode_enabled = true
 bbcode_text = "[b][i]Similar Genes[/i][/b]"
@@ -2048,8 +2038,8 @@ __meta__ = {
 }
 
 [node name="GeneBackground" type="TextureRect" parent="GenesSwitch/Chromosome"]
-margin_right = 369.0
-margin_bottom = 373.0
+margin_right = 368.0
+margin_bottom = 372.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -2075,9 +2065,9 @@ __meta__ = {
 }
 
 [node name="GeneBackground2" type="TextureRect" parent="GenesSwitch/Chromosome"]
-margin_left = 373.0
-margin_right = 742.0
-margin_bottom = 373.0
+margin_left = 372.0
+margin_right = 740.0
+margin_bottom = 372.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -2103,9 +2093,9 @@ __meta__ = {
 }
 
 [node name="Blank" type="TextureRect" parent="GenesSwitch/Chromosome"]
-margin_left = 746.0
-margin_right = 1115.0
-margin_bottom = 373.0
+margin_left = 744.0
+margin_right = 1112.0
+margin_bottom = 372.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -2113,9 +2103,9 @@ texture = ExtResource( 12 )
 expand = true
 
 [node name="GeneBackground3" type="TextureRect" parent="GenesSwitch/Chromosome"]
-margin_left = 1119.0
-margin_right = 1488.0
-margin_bottom = 373.0
+margin_left = 1116.0
+margin_right = 1484.0
+margin_bottom = 372.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -2139,9 +2129,9 @@ __meta__ = {
 }
 
 [node name="GeneBackground4" type="TextureRect" parent="GenesSwitch/Chromosome"]
-margin_left = 1492.0
-margin_right = 1861.0
-margin_bottom = 373.0
+margin_left = 1488.0
+margin_right = 1856.0
+margin_bottom = 372.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -2165,9 +2155,9 @@ __meta__ = {
 }
 
 [node name="Blank2" type="TextureRect" parent="GenesSwitch/Chromosome"]
-margin_left = 1865.0
-margin_right = 2234.0
-margin_bottom = 373.0
+margin_left = 1860.0
+margin_right = 2233.0
+margin_bottom = 372.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -2199,7 +2189,7 @@ __meta__ = {
 }
 
 [node name="GeneBackground" type="TextureRect" parent="GenesSwitch/Chromosome2"]
-margin_right = 369.0
+margin_right = 368.0
 margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -2226,8 +2216,8 @@ __meta__ = {
 }
 
 [node name="GeneBackground2" type="TextureRect" parent="GenesSwitch/Chromosome2"]
-margin_left = 373.0
-margin_right = 742.0
+margin_left = 372.0
+margin_right = 740.0
 margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -2253,8 +2243,8 @@ __meta__ = {
 }
 
 [node name="Blank" type="TextureRect" parent="GenesSwitch/Chromosome2"]
-margin_left = 746.0
-margin_right = 1115.0
+margin_left = 744.0
+margin_right = 1112.0
 margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -2263,8 +2253,8 @@ texture = ExtResource( 12 )
 expand = true
 
 [node name="GeneBackground3" type="TextureRect" parent="GenesSwitch/Chromosome2"]
-margin_left = 1119.0
-margin_right = 1488.0
+margin_left = 1116.0
+margin_right = 1484.0
 margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -2289,8 +2279,8 @@ __meta__ = {
 }
 
 [node name="GeneBackground4" type="TextureRect" parent="GenesSwitch/Chromosome2"]
-margin_left = 1492.0
-margin_right = 1861.0
+margin_left = 1488.0
+margin_right = 1856.0
 margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -2316,8 +2306,8 @@ __meta__ = {
 }
 
 [node name="Blank2" type="TextureRect" parent="GenesSwitch/Chromosome2"]
-margin_left = 1865.0
-margin_right = 2234.0
+margin_left = 1860.0
+margin_right = 2233.0
 margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -2357,13 +2347,11 @@ margin_right = 560.5
 margin_bottom = 56.5
 mouse_filter = 2
 custom_fonts/italics_font = ExtResource( 3 )
-custom_fonts/normal_font = SubResource( 11 )
+custom_fonts/normal_font = SubResource( 8 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
-bbcode_text = "[center][i]The genes can switch![/i]
-[/center]"
-text = "The genes can switch!
-"
+bbcode_text = "[center][i]The genes can switch![/i][/center]"
+text = "The genes can switch!"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -2423,6 +2411,7 @@ points = PoolVector2Array( 0, 0, 367.232, 0 )
 default_color = Color( 0.341176, 0.545098, 0.788235, 1 )
 
 [node name="Switched" type="Control" parent="."]
+visible = false
 margin_right = 1600.0
 margin_bottom = 900.0
 mouse_filter = 2
@@ -2504,15 +2493,11 @@ margin_right = 595.129
 margin_bottom = 56.5
 mouse_filter = 2
 custom_fonts/italics_font = ExtResource( 3 )
-custom_fonts/normal_font = SubResource( 11 )
+custom_fonts/normal_font = SubResource( 8 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
-bbcode_text = "[center][i]Now both damaged genes are together,
-and one chromosome is fine![/i]
-[/center]"
-text = "Now both damaged genes are together,
-and one chromosome is fine!
-"
+bbcode_text = "[center][i]Now both damaged genes are together, and one chromosome is fine![/i][/center]"
+text = "Now both damaged genes are together, and one chromosome is fine!"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -2531,8 +2516,8 @@ __meta__ = {
 }
 
 [node name="GeneBackground" type="TextureRect" parent="Switched/Chromosome4"]
-margin_right = 369.0
-margin_bottom = 373.0
+margin_right = 368.0
+margin_bottom = 372.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -2558,9 +2543,9 @@ __meta__ = {
 }
 
 [node name="GeneBackground2" type="TextureRect" parent="Switched/Chromosome4"]
-margin_left = 373.0
-margin_right = 742.0
-margin_bottom = 373.0
+margin_left = 372.0
+margin_right = 740.0
+margin_bottom = 372.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -2586,9 +2571,9 @@ __meta__ = {
 }
 
 [node name="Blank" type="TextureRect" parent="Switched/Chromosome4"]
-margin_left = 746.0
-margin_right = 1115.0
-margin_bottom = 373.0
+margin_left = 744.0
+margin_right = 1112.0
+margin_bottom = 372.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -2596,9 +2581,9 @@ texture = ExtResource( 12 )
 expand = true
 
 [node name="GeneBackground3" type="TextureRect" parent="Switched/Chromosome4"]
-margin_left = 1119.0
-margin_right = 1488.0
-margin_bottom = 373.0
+margin_left = 1116.0
+margin_right = 1484.0
+margin_bottom = 372.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -2622,9 +2607,9 @@ __meta__ = {
 }
 
 [node name="GeneBackground4" type="TextureRect" parent="Switched/Chromosome4"]
-margin_left = 1492.0
-margin_right = 1861.0
-margin_bottom = 373.0
+margin_left = 1488.0
+margin_right = 1856.0
+margin_bottom = 372.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -2649,9 +2634,9 @@ __meta__ = {
 }
 
 [node name="Blank2" type="TextureRect" parent="Switched/Chromosome4"]
-margin_left = 1865.0
-margin_right = 2234.0
-margin_bottom = 373.0
+margin_left = 1860.0
+margin_right = 2233.0
+margin_bottom = 372.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -2683,7 +2668,7 @@ __meta__ = {
 }
 
 [node name="GeneBackground" type="TextureRect" parent="Switched/Chromosome3"]
-margin_right = 369.0
+margin_right = 368.0
 margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -2710,8 +2695,8 @@ __meta__ = {
 }
 
 [node name="GeneBackground2" type="TextureRect" parent="Switched/Chromosome3"]
-margin_left = 373.0
-margin_right = 742.0
+margin_left = 372.0
+margin_right = 740.0
 margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -2737,8 +2722,8 @@ __meta__ = {
 }
 
 [node name="Blank" type="TextureRect" parent="Switched/Chromosome3"]
-margin_left = 746.0
-margin_right = 1115.0
+margin_left = 744.0
+margin_right = 1112.0
 margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -2747,8 +2732,8 @@ texture = ExtResource( 12 )
 expand = true
 
 [node name="GeneBackground3" type="TextureRect" parent="Switched/Chromosome3"]
-margin_left = 1119.0
-margin_right = 1488.0
+margin_left = 1116.0
+margin_right = 1484.0
 margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -2773,8 +2758,8 @@ __meta__ = {
 }
 
 [node name="GeneBackground4" type="TextureRect" parent="Switched/Chromosome3"]
-margin_left = 1492.0
-margin_right = 1861.0
+margin_left = 1488.0
+margin_right = 1856.0
 margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -2799,8 +2784,8 @@ __meta__ = {
 }
 
 [node name="Blank2" type="TextureRect" parent="Switched/Chromosome3"]
-margin_left = 1865.0
-margin_right = 2234.0
+margin_left = 1860.0
+margin_right = 2233.0
 margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
