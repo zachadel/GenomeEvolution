@@ -1283,7 +1283,6 @@ __meta__ = {
 }
 
 [node name="Breaks" type="Control" parent="."]
-visible = false
 margin_right = 1600.0
 margin_bottom = 900.0
 mouse_filter = 2
@@ -1321,17 +1320,15 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -487.5
 margin_top = -96.5
-margin_right = 487.5
-margin_bottom = 42.5
+margin_right = 499.5
+margin_bottom = 54.5
 mouse_filter = 2
 custom_fonts/italics_font = ExtResource( 9 )
 custom_fonts/normal_font = SubResource( 2 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
-bbcode_text = "[i][center]Just like real strings, the strings that make
-up the genome can be damaged or broken![/center][/i]"
-text = "Just like real strings, the strings that make
-up the genome can be damaged or broken!"
+bbcode_text = "[i][center]Just like real strings, the strings that make up the genome can be damaged or broken![/center][/i]"
+text = "Just like real strings, the strings that make up the genome can be damaged or broken!"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1529,6 +1526,7 @@ __meta__ = {
 }
 
 [node name="Blanks" type="Control" parent="."]
+visible = false
 margin_right = 1600.0
 margin_bottom = 900.0
 mouse_filter = 2
