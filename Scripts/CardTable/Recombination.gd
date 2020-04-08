@@ -5,7 +5,7 @@ extends Control
 # var a = 2
 # var b = "text"
 
-signal exit_mitosis_slides()
+signal exit_recombination_slides()
 
 export var current_slide = 0
 
@@ -18,6 +18,20 @@ func _ready():
 		if child.has_node("AnimationPlayer"):
 			for node in child.get_node("AnimationPlayer").get_children():
 				node.hide()
+
+func play_and_show(slide: Control):
+	if slide.has_node("AnimationPlayer"):
+		var anims = slide.get_node("AnimationPlayer")
+		
+		for node in anims.get_children():
+			node.show()
+		
+		if slide.name == "GenesSwitch":
+			anims.play("GrowingLines")
+	slide.show()
+	
+func leave_intro():
+	emit_signal("exit_recombination_slides")
 
 func start():
 	var first_slide = get_children()[current_slide]
@@ -32,22 +46,6 @@ func stop_and_hide(slide: Control):
 			child.hide()
 		
 	slide.hide()
-	
-func play_and_show(slide: Control):
-	if slide.has_node("AnimationPlayer"):
-		var anims = slide.get_node("AnimationPlayer")
-		
-		for node in anims.get_children():
-			node.show()
-		
-		if slide.name == "Copying":
-			anims.play("Copying Genome")
-		elif slide.name == "Choose":
-			anims.play("Splitting Chromosomes")
-	slide.show()
-
-func leave_intro():
-	emit_signal("exit_mitosis_slides")
 
 func _on_Skip_pressed():
 	var cur_slide = get_children()[current_slide]
@@ -67,15 +65,6 @@ func _on_Next_pressed():
 	else:
 		leave_intro()
 
-func _gui_input(event):
-	if event.is_action_pressed("next_slide"):
-		_on_Next_pressed()
-	if event.is_action_pressed("previous_slide"):
-		_on_Back_pressed()
-	if event.is_action_pressed("exit_slide"):
-		_on_Skip_pressed()
-
-
 func _on_Back_pressed():
 	var slide = get_children()[current_slide]
 
@@ -84,3 +73,11 @@ func _on_Back_pressed():
 		current_slide -= 1
 		var previous_slide = get_children()[current_slide]
 		play_and_show(previous_slide)
+
+func _gui_input(event):
+	if event.is_action_pressed("next_slide"):
+		_on_Next_pressed()
+	if event.is_action_pressed("previous_slide"):
+		_on_Back_pressed()
+	if event.is_action_pressed("exit_slide"):
+		_on_Skip_pressed()

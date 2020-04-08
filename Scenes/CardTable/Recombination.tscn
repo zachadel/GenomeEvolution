@@ -1,19 +1,20 @@
 [gd_scene load_steps=28 format=2]
 
-[ext_resource path="res://Assets/Images/Menus/left_arrow_blue.svg" type="Texture" id=1]
+[ext_resource path="res://Scripts/CardTable/Recombination.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/CardTable/Art/TEs/Hexagon.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Scripts/CardTable/Meiosis.gd" type="Script" id=3]
+[ext_resource path="res://Assets/Fonts/Italics_50.tres" type="DynamicFont" id=3]
 [ext_resource path="res://Assets/Fonts/BoldItalics_50.tres" type="DynamicFont" id=4]
-[ext_resource path="res://Assets/Fonts/Italics_50.tres" type="DynamicFont" id=5]
-[ext_resource path="res://Assets/Images/genes/Sensing.png" type="Texture" id=6]
-[ext_resource path="res://Assets/Fonts/OpenSans-Bold.ttf" type="DynamicFontData" id=7]
-[ext_resource path="res://Assets/Images/genes/Replication.png" type="Texture" id=8]
-[ext_resource path="res://Assets/Images/genes/Component.png" type="Texture" id=9]
-[ext_resource path="res://Assets/Images/genes/Helix.png" type="Texture" id=10]
-[ext_resource path="res://Assets/Images/genes/Construction.png" type="Texture" id=11]
-[ext_resource path="res://Assets/Fonts/OpenSans-Italic.ttf" type="DynamicFontData" id=12]
-[ext_resource path="res://Assets/Images/pngs/SpeechRectLeft.png" type="Texture" id=13]
-[ext_resource path="res://Assets/Images/genes/Helix_Circle.png" type="Texture" id=14]
+[ext_resource path="res://Assets/Images/pngs/SpeechRectLeft.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Images/genes/Helix_Circle.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Fonts/OpenSans-Italic.ttf" type="DynamicFontData" id=7]
+[ext_resource path="res://Assets/Fonts/OpenSans-Bold.ttf" type="DynamicFontData" id=8]
+[ext_resource path="res://Assets/Images/genes/Sensing.png" type="Texture" id=9]
+[ext_resource path="res://Assets/Images/genes/Replication.png" type="Texture" id=10]
+[ext_resource path="res://Assets/Images/genes/Component.png" type="Texture" id=11]
+[ext_resource path="res://Assets/Images/genes/Helix.png" type="Texture" id=12]
+[ext_resource path="res://Assets/Images/genes/Construction.png" type="Texture" id=13]
+[ext_resource path="res://Assets/Images/Menus/left_arrow_blue.svg" type="Texture" id=14]
+[ext_resource path="res://Assets/Images/border.png" type="Texture" id=15]
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
@@ -486,21 +487,8 @@ WindowDialog/icons/close = null
 WindowDialog/icons/close_highlight = null
 WindowDialog/styles/panel = null
 
-[sub_resource type="DynamicFont" id=7]
-size = 50
-font_data = ExtResource( 12 )
-
-[sub_resource type="DynamicFont" id=8]
-size = 50
-font_data = ExtResource( 7 )
-
 [sub_resource type="DynamicFontData" id=9]
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
-
-[sub_resource type="DynamicFont" id=10]
-use_mipmaps = true
-use_filter = true
-font_data = SubResource( 9 )
 
 [sub_resource type="DynamicFont" id=11]
 size = 32
@@ -509,114 +497,99 @@ use_filter = true
 extra_spacing_top = -5
 font_data = SubResource( 9 )
 
+[sub_resource type="DynamicFont" id=7]
+size = 50
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=8]
+size = 50
+font_data = ExtResource( 8 )
+
+[sub_resource type="DynamicFont" id=10]
+use_mipmaps = true
+use_filter = true
+font_data = SubResource( 9 )
+
 [sub_resource type="Animation" id=12]
-resource_name = "Fade Away"
-length = 2.0
+resource_name = "GrowingLines"
+length = 6.0
 tracks/0/type = "value"
-tracks/0/path = NodePath("AnimationPlayer/OriginalLabel:modulate")
+tracks/0/path = NodePath("AnimationPlayer/Chromo1Top:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 2 ),
+"times": PoolRealArray( 0, 3 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+"values": [ Vector2( 1e-05, 1 ), Vector2( 2, 1 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("AnimationPlayer/Original:modulate")
+tracks/1/path = NodePath("AnimationPlayer/Chromo1Diagonal:scale")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 2 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0, 3, 4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+"values": [ Vector2( 1e-05, 1 ), Vector2( 1e-05, 1 ), Vector2( 1, 1 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("AnimationPlayer/CopyLabel2:modulate")
+tracks/2/path = NodePath("AnimationPlayer/Chromo1Bottom:scale")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 2 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0, 4, 6 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+"values": [ Vector2( 0, 1 ), Vector2( 0, 1 ), Vector2( 1, 1 ) ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("AnimationPlayer/GeneCopies2:modulate")
+tracks/3/path = NodePath("AnimationPlayer/Chromo2Bottom:scale")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0, 2 ),
+"times": PoolRealArray( 0, 3 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+"values": [ Vector2( 1e-05, 1 ), Vector2( 2, 1 ) ]
 }
 tracks/4/type = "value"
-tracks/4/path = NodePath("AnimationPlayer/OriginalLabel2:modulate")
+tracks/4/path = NodePath("AnimationPlayer/Chromo2Diagonal:scale")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0, 2 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0, 3, 4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+"values": [ Vector2( 1e-05, 1 ), Vector2( 1e-05, 1 ), Vector2( 1, 1 ) ]
 }
 tracks/5/type = "value"
-tracks/5/path = NodePath("AnimationPlayer/Original2:modulate")
+tracks/5/path = NodePath("AnimationPlayer/Chromo2Top:scale")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
-"times": PoolRealArray( 0, 2 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0, 4, 6 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+"values": [ Vector2( 0, 1 ), Vector2( 0, 1 ), Vector2( 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=13]
-resource_name = "Fade In"
-length = 2.0
-tracks/0/type = "value"
-tracks/0/path = NodePath("AnimationPlayer/NewLabel:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 2 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("AnimationPlayer/New:modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 2 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
-}
-
-[node name="Meiosis" type="Control"]
+[node name="Recombination" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = ExtResource( 3 )
+script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -661,33 +634,11 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="OriginalLabel" type="RichTextLabel" parent="Explanation"]
-margin_left = 137.176
-margin_top = 292.695
-margin_right = 353.176
-margin_bottom = 371.695
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 1.09
-custom_fonts/bold_italics_font = ExtResource( 4 )
-custom_fonts/italics_font = SubResource( 7 )
-custom_fonts/bold_font = SubResource( 8 )
-custom_fonts/normal_font = SubResource( 10 )
-custom_colors/default_color = Color( 1, 1, 1, 1 )
-bbcode_enabled = true
-bbcode_text = "[b]Original[/b]"
-text = "Original"
-scroll_active = false
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Original" type="HBoxContainer" parent="Explanation"]
-margin_left = 352.894
-margin_top = 262.0
-margin_right = 1971.9
-margin_bottom = 531.0
+[node name="Chromosome" type="HBoxContainer" parent="Explanation"]
+margin_left = 86.0
+margin_top = 393.0
+margin_right = 2320.0
+margin_bottom = 766.0
 rect_scale = Vector2( 0.5, 0.5 )
 mouse_filter = 2
 __meta__ = {
@@ -695,89 +646,26 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="GeneBackground" type="TextureRect" parent="Explanation/Original"]
-margin_right = 266.0
-margin_bottom = 269.0
+[node name="GeneBackground" type="TextureRect" parent="Explanation/Chromosome"]
+margin_right = 369.0
+margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Component" type="TextureRect" parent="Explanation/Original/GeneBackground"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 9 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="GeneBackground2" type="TextureRect" parent="Explanation/Original"]
-margin_left = 270.0
-margin_right = 536.0
-margin_bottom = 269.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Sensing" type="TextureRect" parent="Explanation/Original/GeneBackground2"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
 size_flags_vertical = 3
 texture = ExtResource( 6 )
 expand = true
 stretch_mode = 5
 __meta__ = {
-"_edit_use_anchors_": true
-}
-
-[node name="Blank" type="TextureRect" parent="Explanation/Original"]
-margin_left = 540.0
-margin_right = 806.0
-margin_bottom = 269.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 10 )
-expand = true
-
-[node name="GeneBackground3" type="TextureRect" parent="Explanation/Original"]
-margin_left = 810.0
-margin_right = 1076.0
-margin_bottom = 269.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
-__meta__ = {
 "_edit_group_": true,
 "_edit_use_anchors_": false
 }
 
-[node name="Assembly" type="TextureRect" parent="Explanation/Original/GeneBackground3"]
+[node name="Component" type="TextureRect" parent="Explanation/Chromosome/GeneBackground"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 texture = ExtResource( 11 )
 expand = true
 stretch_mode = 5
@@ -785,14 +673,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="GeneBackground4" type="TextureRect" parent="Explanation/Original"]
-margin_left = 1080.0
-margin_right = 1346.0
-margin_bottom = 269.0
+[node name="GeneBackground2" type="TextureRect" parent="Explanation/Chromosome"]
+margin_left = 373.0
+margin_right = 742.0
+margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource( 14 )
+texture = ExtResource( 6 )
 expand = true
 stretch_mode = 5
 __meta__ = {
@@ -800,50 +688,232 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Replication" type="TextureRect" parent="Explanation/Original/GeneBackground4"]
+[node name="Sensing" type="TextureRect" parent="Explanation/Chromosome/GeneBackground2"]
+modulate = Color( 0.733333, 0.67451, 0.0392157, 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-texture = ExtResource( 8 )
+size_flags_vertical = 3
+texture = ExtResource( 9 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Blank" type="TextureRect" parent="Explanation/Chromosome"]
+margin_left = 746.0
+margin_right = 1115.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 12 )
+expand = true
+
+[node name="GeneBackground3" type="TextureRect" parent="Explanation/Chromosome"]
+margin_left = 1119.0
+margin_right = 1488.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Assembly" type="TextureRect" parent="Explanation/Chromosome/GeneBackground3"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 13 )
 expand = true
 stretch_mode = 5
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Blank2" type="TextureRect" parent="Explanation/Original"]
-margin_left = 1350.0
-margin_right = 1619.0
-margin_bottom = 269.0
+[node name="GeneBackground4" type="TextureRect" parent="Explanation/Chromosome"]
+margin_left = 1492.0
+margin_right = 1861.0
+margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Replication" type="TextureRect" parent="Explanation/Chromosome/GeneBackground4"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
 texture = ExtResource( 10 )
 expand = true
-
-[node name="CopyLabel" type="RichTextLabel" parent="Explanation"]
-margin_left = 139.591
-margin_top = 415.0
-margin_right = 355.591
-margin_bottom = 494.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 1.09
-custom_fonts/bold_italics_font = ExtResource( 4 )
-custom_fonts/italics_font = SubResource( 7 )
-custom_fonts/bold_font = SubResource( 8 )
-custom_fonts/normal_font = SubResource( 10 )
-custom_colors/default_color = Color( 1, 1, 1, 1 )
-bbcode_enabled = true
-bbcode_text = "[b]Copy[/b]"
-text = "Copy"
-scroll_active = false
+stretch_mode = 5
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Blank2" type="TextureRect" parent="Explanation/Chromosome"]
+margin_left = 1865.0
+margin_right = 2234.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 12 )
+expand = true
+
+[node name="Chromosome2" type="HBoxContainer" parent="Explanation"]
+margin_left = 85.9344
+margin_top = 542.847
+margin_right = 2319.93
+margin_bottom = 915.847
+rect_scale = Vector2( 0.5, 0.5 )
+mouse_filter = 2
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground" type="TextureRect" parent="Explanation/Chromosome2"]
+margin_right = 369.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Component" type="TextureRect" parent="Explanation/Chromosome2/GeneBackground"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 11 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground2" type="TextureRect" parent="Explanation/Chromosome2"]
+margin_left = 373.0
+margin_right = 742.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Sensing" type="TextureRect" parent="Explanation/Chromosome2/GeneBackground2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_vertical = 3
+texture = ExtResource( 9 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Blank" type="TextureRect" parent="Explanation/Chromosome2"]
+margin_left = 746.0
+margin_right = 1115.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 12 )
+expand = true
+
+[node name="GeneBackground3" type="TextureRect" parent="Explanation/Chromosome2"]
+margin_left = 1119.0
+margin_right = 1488.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Assembly" type="TextureRect" parent="Explanation/Chromosome2/GeneBackground3"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 13 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground4" type="TextureRect" parent="Explanation/Chromosome2"]
+margin_left = 1492.0
+margin_right = 1861.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Replication" type="TextureRect" parent="Explanation/Chromosome2/GeneBackground4"]
+modulate = Color( 0.733333, 0.67451, 0.0392157, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 10 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Blank2" type="TextureRect" parent="Explanation/Chromosome2"]
+margin_left = 1865.0
+margin_right = 2234.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 12 )
+expand = true
+
 [node name="GeneCopies" type="Control" parent="Explanation"]
+visible = false
 margin_left = 302.415
 margin_top = 228.0
 margin_right = 1299.41
@@ -860,7 +930,7 @@ margin_bottom = 283.173
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource( 14 )
+texture = ExtResource( 6 )
 expand = true
 stretch_mode = 5
 __meta__ = {
@@ -874,7 +944,7 @@ anchor_bottom = 1.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource( 9 )
+texture = ExtResource( 11 )
 expand = true
 stretch_mode = 5
 __meta__ = {
@@ -889,7 +959,7 @@ margin_bottom = 280.173
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource( 14 )
+texture = ExtResource( 6 )
 expand = true
 stretch_mode = 5
 __meta__ = {
@@ -902,7 +972,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 size_flags_vertical = 3
-texture = ExtResource( 6 )
+texture = ExtResource( 9 )
 expand = true
 stretch_mode = 5
 __meta__ = {
@@ -917,7 +987,7 @@ margin_bottom = 280.694
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource( 10 )
+texture = ExtResource( 12 )
 expand = true
 
 [node name="GeneBackground3" type="TextureRect" parent="Explanation/GeneCopies"]
@@ -928,7 +998,7 @@ margin_bottom = 280.694
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource( 14 )
+texture = ExtResource( 6 )
 expand = true
 stretch_mode = 5
 __meta__ = {
@@ -940,7 +1010,7 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-texture = ExtResource( 11 )
+texture = ExtResource( 13 )
 expand = true
 stretch_mode = 5
 __meta__ = {
@@ -955,7 +1025,7 @@ margin_bottom = 279.695
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource( 14 )
+texture = ExtResource( 6 )
 expand = true
 stretch_mode = 5
 __meta__ = {
@@ -967,7 +1037,7 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-texture = ExtResource( 8 )
+texture = ExtResource( 10 )
 expand = true
 stretch_mode = 5
 __meta__ = {
@@ -983,336 +1053,7 @@ rect_rotation = 0.064891
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource( 10 )
-expand = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="OriginalLabel2" type="RichTextLabel" parent="Explanation"]
-margin_left = 137.176
-margin_top = 522.965
-margin_right = 353.176
-margin_bottom = 601.967
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 1.09
-custom_fonts/bold_italics_font = ExtResource( 4 )
-custom_fonts/italics_font = SubResource( 7 )
-custom_fonts/bold_font = SubResource( 8 )
-custom_fonts/normal_font = SubResource( 10 )
-custom_colors/default_color = Color( 1, 1, 1, 1 )
-bbcode_enabled = true
-bbcode_text = "[b]Original[/b]"
-text = "Original"
-scroll_active = false
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Original2" type="HBoxContainer" parent="Explanation"]
-margin_left = 353.176
-margin_top = 494.0
-margin_right = 1972.18
-margin_bottom = 762.994
-rect_scale = Vector2( 0.5, 0.5 )
-mouse_filter = 2
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="GeneBackground" type="TextureRect" parent="Explanation/Original2"]
-margin_right = 266.0
-margin_bottom = 268.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Component" type="TextureRect" parent="Explanation/Original2/GeneBackground"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 9 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="GeneBackground2" type="TextureRect" parent="Explanation/Original2"]
-margin_left = 270.0
-margin_right = 536.0
-margin_bottom = 268.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Sensing" type="TextureRect" parent="Explanation/Original2/GeneBackground2"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-size_flags_vertical = 3
-texture = ExtResource( 6 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": true
-}
-
-[node name="Blank" type="TextureRect" parent="Explanation/Original2"]
-margin_left = 540.0
-margin_right = 806.0
-margin_bottom = 268.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 10 )
-expand = true
-
-[node name="GeneBackground3" type="TextureRect" parent="Explanation/Original2"]
-margin_left = 810.0
-margin_right = 1076.0
-margin_bottom = 268.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Assembly" type="TextureRect" parent="Explanation/Original2/GeneBackground3"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource( 11 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="GeneBackground4" type="TextureRect" parent="Explanation/Original2"]
-margin_left = 1080.0
-margin_right = 1346.0
-margin_bottom = 268.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Replication" type="TextureRect" parent="Explanation/Original2/GeneBackground4"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource( 8 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Blank2" type="TextureRect" parent="Explanation/Original2"]
-margin_left = 1350.0
-margin_right = 1618.0
-margin_bottom = 268.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 10 )
-expand = true
-
-[node name="CopyLabel2" type="RichTextLabel" parent="Explanation"]
-margin_left = 139.591
-margin_top = 632.846
-margin_right = 355.591
-margin_bottom = 711.846
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 1.09
-custom_fonts/bold_italics_font = ExtResource( 4 )
-custom_fonts/italics_font = SubResource( 7 )
-custom_fonts/bold_font = SubResource( 8 )
-custom_fonts/normal_font = SubResource( 10 )
-custom_colors/default_color = Color( 1, 1, 1, 1 )
-bbcode_enabled = true
-bbcode_text = "[b]Copy[/b]"
-text = "Copy"
-scroll_active = false
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="GeneCopies2" type="Control" parent="Explanation"]
-margin_left = 301.524
-margin_top = 452.622
-margin_right = 1298.52
-margin_bottom = 629.622
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="GeneBackground" type="TextureRect" parent="Explanation/GeneCopies2"]
-margin_left = 50.4789
-margin_top = 152.174
-margin_right = 190.479
-margin_bottom = 283.175
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Component" type="TextureRect" parent="Explanation/GeneCopies2/GeneBackground"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 9 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="GeneBackground2" type="TextureRect" parent="Explanation/GeneCopies2"]
-margin_left = 185.893
-margin_top = 150.174
-margin_right = 319.893
-margin_bottom = 285.174
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Sensing" type="TextureRect" parent="Explanation/GeneCopies2/GeneBackground2"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-size_flags_vertical = 3
-texture = ExtResource( 6 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": true
-}
-
-[node name="Blank" type="TextureRect" parent="Explanation/GeneCopies2"]
-margin_left = 321.414
-margin_top = 147.695
-margin_right = 452.414
-margin_bottom = 280.695
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 10 )
-expand = true
-
-[node name="GeneBackground3" type="TextureRect" parent="Explanation/GeneCopies2"]
-margin_left = 456.414
-margin_top = 147.695
-margin_right = 591.414
-margin_bottom = 280.695
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Assembly" type="TextureRect" parent="Explanation/GeneCopies2/GeneBackground3"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource( 11 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="GeneBackground4" type="TextureRect" parent="Explanation/GeneCopies2"]
-margin_left = 590.479
-margin_top = 148.695
-margin_right = 722.479
-margin_bottom = 279.695
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Replication" type="TextureRect" parent="Explanation/GeneCopies2/GeneBackground4"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource( 8 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Blank2" type="TextureRect" parent="Explanation/GeneCopies2"]
-margin_left = 723.0
-margin_top = 150.0
-margin_right = 857.0
-margin_bottom = 283.999
-rect_rotation = 0.064891
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 10 )
+texture = ExtResource( 12 )
 expand = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1332,7 +1073,7 @@ margin_top = 32.0
 margin_right = 1418.0
 margin_bottom = 311.0
 mouse_filter = 2
-texture = ExtResource( 13 )
+texture = ExtResource( 5 )
 expand = true
 flip_h = true
 __meta__ = {
@@ -1345,24 +1086,24 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -625.5
-margin_top = -142.0
+margin_top = -111.5
 margin_right = 626.5
-margin_bottom = 54.0
+margin_bottom = 27.5
 mouse_filter = 2
-custom_fonts/italics_font = ExtResource( 5 )
+custom_fonts/italics_font = ExtResource( 3 )
 custom_fonts/normal_font = SubResource( 11 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
-bbcode_text = "[center][i]Congratulations, meiosis (pronounced My-O-sis) is now unlocked!  This means you can mix and match your chromosomes with those from other cells![/i]
+bbcode_text = "[center][i]Congratulations, recombination is now unlocked! This means you can shuffle your chromosomes![/i]
 [/center]"
-text = "Congratulations, meiosis (pronounced My-O-sis) is now unlocked!  This means you can mix and match your chromosomes with those from other cells!
+text = "Congratulations, recombination is now unlocked! This means you can shuffle your chromosomes!
 "
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PickOne" type="Control" parent="."]
+[node name="BrokenGenes" type="Control" parent="."]
 visible = false
 margin_right = 1600.0
 margin_bottom = 900.0
@@ -1371,7 +1112,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ColorRect" type="ColorRect" parent="PickOne"]
+[node name="ColorRect" type="ColorRect" parent="BrokenGenes"]
 margin_right = 1600.0
 margin_bottom = 900.0
 mouse_filter = 2
@@ -1380,18 +1121,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Back" type="Button" parent="PickOne"]
-margin_left = 18.0
-margin_top = 770.708
-margin_right = 279.0
-margin_bottom = 878.708
-theme = SubResource( 6 )
-text = "Back"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Skip" type="Button" parent="PickOne"]
+[node name="Skip" type="Button" parent="BrokenGenes"]
 margin_left = 1038.01
 margin_top = 770.708
 margin_right = 1299.01
@@ -1402,7 +1132,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Next" type="Button" parent="PickOne"]
+[node name="Next" type="Button" parent="BrokenGenes"]
 margin_left = 1312.38
 margin_top = 770.708
 margin_right = 1571.38
@@ -1413,125 +1143,49 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CopyLabel" type="RichTextLabel" parent="PickOne"]
-margin_left = 139.591
-margin_top = 415.0
-margin_right = 355.591
-margin_bottom = 494.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 1.09
-custom_fonts/bold_italics_font = ExtResource( 4 )
-custom_fonts/italics_font = SubResource( 7 )
-custom_fonts/bold_font = SubResource( 8 )
-custom_fonts/normal_font = SubResource( 10 )
-custom_colors/default_color = Color( 1, 1, 1, 1 )
-bbcode_enabled = true
-bbcode_text = "[b]Copy[/b]"
-text = "Copy"
-scroll_active = false
+[node name="Back" type="Button" parent="BrokenGenes"]
+margin_left = 22.0526
+margin_top = 770.708
+margin_right = 281.053
+margin_bottom = 875.708
+theme = SubResource( 6 )
+text = "Back"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="GeneCopies" type="Control" parent="PickOne"]
-margin_left = 302.415
-margin_top = 228.0
-margin_right = 1299.41
-margin_bottom = 405.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="GeneBackground" type="TextureRect" parent="PickOne/GeneCopies"]
-margin_left = 50.4789
-margin_top = 152.174
-margin_right = 190.479
-margin_bottom = 283.173
+[node name="Chromosome" type="HBoxContainer" parent="BrokenGenes"]
+margin_left = 86.0
+margin_top = 393.0
+margin_right = 2320.0
+margin_bottom = 766.0
+rect_scale = Vector2( 0.5, 0.5 )
 mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
 __meta__ = {
 "_edit_group_": true,
 "_edit_use_anchors_": false
 }
 
-[node name="Component" type="TextureRect" parent="PickOne/GeneCopies/GeneBackground"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="GeneBackground" type="TextureRect" parent="BrokenGenes/Chromosome"]
+margin_right = 369.0
+margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 9 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="GeneBackground2" type="TextureRect" parent="PickOne/GeneCopies"]
-margin_left = 185.893
-margin_top = 150.174
-margin_right = 318.893
-margin_bottom = 280.173
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Sensing" type="TextureRect" parent="PickOne/GeneCopies/GeneBackground2"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
 size_flags_vertical = 3
 texture = ExtResource( 6 )
 expand = true
 stretch_mode = 5
 __meta__ = {
-"_edit_use_anchors_": true
-}
-
-[node name="Blank" type="TextureRect" parent="PickOne/GeneCopies"]
-margin_left = 321.414
-margin_top = 147.695
-margin_right = 452.414
-margin_bottom = 280.694
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 10 )
-expand = true
-
-[node name="GeneBackground3" type="TextureRect" parent="PickOne/GeneCopies"]
-margin_left = 456.414
-margin_top = 147.695
-margin_right = 591.414
-margin_bottom = 280.694
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
-__meta__ = {
 "_edit_group_": true,
 "_edit_use_anchors_": false
 }
 
-[node name="Assembly" type="TextureRect" parent="PickOne/GeneCopies/GeneBackground3"]
+[node name="Component" type="TextureRect" parent="BrokenGenes/Chromosome/GeneBackground"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 texture = ExtResource( 11 )
 expand = true
 stretch_mode = 5
@@ -1539,15 +1193,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="GeneBackground4" type="TextureRect" parent="PickOne/GeneCopies"]
-margin_left = 590.479
-margin_top = 148.695
-margin_right = 722.479
-margin_bottom = 279.695
+[node name="GeneBackground2" type="TextureRect" parent="BrokenGenes/Chromosome"]
+margin_left = 373.0
+margin_right = 742.0
+margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource( 14 )
+texture = ExtResource( 6 )
 expand = true
 stretch_mode = 5
 __meta__ = {
@@ -1555,33 +1208,231 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Replication" type="TextureRect" parent="PickOne/GeneCopies/GeneBackground4"]
+[node name="Sensing" type="TextureRect" parent="BrokenGenes/Chromosome/GeneBackground2"]
+modulate = Color( 0.733333, 0.67451, 0.0392157, 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-texture = ExtResource( 8 )
+size_flags_vertical = 3
+texture = ExtResource( 9 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Blank" type="TextureRect" parent="BrokenGenes/Chromosome"]
+margin_left = 746.0
+margin_right = 1115.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 12 )
+expand = true
+
+[node name="GeneBackground3" type="TextureRect" parent="BrokenGenes/Chromosome"]
+margin_left = 1119.0
+margin_right = 1488.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Assembly" type="TextureRect" parent="BrokenGenes/Chromosome/GeneBackground3"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 13 )
 expand = true
 stretch_mode = 5
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Blank2" type="TextureRect" parent="PickOne/GeneCopies"]
-margin_left = 723.0
-margin_top = 150.0
-margin_right = 859.0
-margin_bottom = 276.997
-rect_rotation = 0.064891
+[node name="GeneBackground4" type="TextureRect" parent="BrokenGenes/Chromosome"]
+margin_left = 1492.0
+margin_right = 1861.0
+margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Replication" type="TextureRect" parent="BrokenGenes/Chromosome/GeneBackground4"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
 texture = ExtResource( 10 )
 expand = true
+stretch_mode = 5
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Transposon" parent="PickOne" instance=ExtResource( 2 )]
+[node name="Blank2" type="TextureRect" parent="BrokenGenes/Chromosome"]
+margin_left = 1865.0
+margin_right = 2234.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 12 )
+expand = true
+
+[node name="Chromosome2" type="HBoxContainer" parent="BrokenGenes"]
+margin_left = 85.9344
+margin_top = 542.847
+margin_right = 2319.93
+margin_bottom = 915.847
+rect_scale = Vector2( 0.5, 0.5 )
+mouse_filter = 2
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground" type="TextureRect" parent="BrokenGenes/Chromosome2"]
+margin_right = 369.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Component" type="TextureRect" parent="BrokenGenes/Chromosome2/GeneBackground"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 11 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground2" type="TextureRect" parent="BrokenGenes/Chromosome2"]
+margin_left = 373.0
+margin_right = 742.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Sensing" type="TextureRect" parent="BrokenGenes/Chromosome2/GeneBackground2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_vertical = 3
+texture = ExtResource( 9 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Blank" type="TextureRect" parent="BrokenGenes/Chromosome2"]
+margin_left = 746.0
+margin_right = 1115.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 12 )
+expand = true
+
+[node name="GeneBackground3" type="TextureRect" parent="BrokenGenes/Chromosome2"]
+margin_left = 1119.0
+margin_right = 1488.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Assembly" type="TextureRect" parent="BrokenGenes/Chromosome2/GeneBackground3"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 13 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground4" type="TextureRect" parent="BrokenGenes/Chromosome2"]
+margin_left = 1492.0
+margin_right = 1861.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Replication" type="TextureRect" parent="BrokenGenes/Chromosome2/GeneBackground4"]
+modulate = Color( 0.733333, 0.67451, 0.0392157, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 10 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Blank2" type="TextureRect" parent="BrokenGenes/Chromosome2"]
+margin_left = 1865.0
+margin_right = 2234.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 12 )
+expand = true
+
+[node name="Transposon" parent="BrokenGenes" instance=ExtResource( 2 )]
 margin_left = 1296.11
 margin_top = 262.347
 margin_right = -116.886
@@ -1589,60 +1440,49 @@ margin_bottom = -450.653
 rect_scale = Vector2( 1.5, 1.5 )
 mouse_filter = 2
 
-[node name="SpeechBubble" type="TextureRect" parent="PickOne"]
+[node name="SpeechBubble" type="TextureRect" parent="BrokenGenes"]
 margin_left = 135.0
 margin_top = 32.0
 margin_right = 1418.0
 margin_bottom = 311.0
 mouse_filter = 2
-texture = ExtResource( 13 )
+texture = ExtResource( 5 )
 expand = true
 flip_h = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="BubbleText" type="RichTextLabel" parent="PickOne/SpeechBubble"]
+[node name="BubbleText" type="RichTextLabel" parent="BrokenGenes/SpeechBubble"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -625.5
-margin_top = -72.5
-margin_right = 626.5
-margin_bottom = 0.5
+margin_top = -111.5
+margin_right = 560.5
+margin_bottom = 56.5
 mouse_filter = 2
-custom_fonts/italics_font = ExtResource( 5 )
+custom_fonts/italics_font = ExtResource( 3 )
 custom_fonts/normal_font = SubResource( 11 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
-bbcode_text = "[center][i]Choose the one you like the best, and lose the rest![/i]
+bbcode_text = "[center][i]How does it work? Imagine each chromosome has a 
+different broken gene.[/i]
 [/center]"
-text = "Choose the one you like the best, and lose the rest!
+text = "How does it work? Imagine each chromosome has a 
+different broken gene.
 "
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Arrow" type="TextureRect" parent="PickOne"]
-margin_left = 1162.68
-margin_top = 384.174
-margin_right = 1292.68
-margin_bottom = 487.174
-texture = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="PickOne"]
-"anims/Fade Away" = SubResource( 12 )
-
-[node name="OriginalLabel" type="RichTextLabel" parent="PickOne/AnimationPlayer"]
-margin_left = 137.176
-margin_top = 292.695
-margin_right = 353.176
-margin_bottom = 371.695
+[node name="BrokenGene1Label" type="RichTextLabel" parent="BrokenGenes"]
+margin_left = 125.0
+margin_top = 238.0
+margin_right = 429.0
+margin_bottom = 317.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1653,156 +1493,18 @@ custom_fonts/bold_font = SubResource( 8 )
 custom_fonts/normal_font = SubResource( 10 )
 custom_colors/default_color = Color( 1, 1, 1, 1 )
 bbcode_enabled = true
-bbcode_text = "[b]Original[/b]"
-text = "Original"
+bbcode_text = "[b][i]Broken Gene[/i][/b]"
+text = "Broken Gene"
 scroll_active = false
 __meta__ = {
-"_edit_use_anchors_": false
+"_editor_description_": ""
 }
 
-[node name="Original" type="HBoxContainer" parent="PickOne/AnimationPlayer"]
-margin_left = 352.894
-margin_top = 262.0
-margin_right = 1971.9
-margin_bottom = 531.0
-rect_scale = Vector2( 0.5, 0.5 )
-mouse_filter = 2
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="GeneBackground" type="TextureRect" parent="PickOne/AnimationPlayer/Original"]
-margin_right = 266.0
-margin_bottom = 269.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Component" type="TextureRect" parent="PickOne/AnimationPlayer/Original/GeneBackground"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 9 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="GeneBackground2" type="TextureRect" parent="PickOne/AnimationPlayer/Original"]
-margin_left = 270.0
-margin_right = 536.0
-margin_bottom = 269.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Sensing" type="TextureRect" parent="PickOne/AnimationPlayer/Original/GeneBackground2"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-size_flags_vertical = 3
-texture = ExtResource( 6 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": true
-}
-
-[node name="Blank" type="TextureRect" parent="PickOne/AnimationPlayer/Original"]
-margin_left = 540.0
-margin_right = 806.0
-margin_bottom = 269.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 10 )
-expand = true
-
-[node name="GeneBackground3" type="TextureRect" parent="PickOne/AnimationPlayer/Original"]
-margin_left = 810.0
-margin_right = 1076.0
-margin_bottom = 269.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Assembly" type="TextureRect" parent="PickOne/AnimationPlayer/Original/GeneBackground3"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource( 11 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="GeneBackground4" type="TextureRect" parent="PickOne/AnimationPlayer/Original"]
-margin_left = 1080.0
-margin_right = 1346.0
-margin_bottom = 269.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Replication" type="TextureRect" parent="PickOne/AnimationPlayer/Original/GeneBackground4"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource( 8 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Blank2" type="TextureRect" parent="PickOne/AnimationPlayer/Original"]
-margin_left = 1350.0
-margin_right = 1619.0
-margin_bottom = 269.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 10 )
-expand = true
-
-[node name="OriginalLabel2" type="RichTextLabel" parent="PickOne/AnimationPlayer"]
-margin_left = 137.176
-margin_top = 522.965
-margin_right = 353.176
-margin_bottom = 601.967
+[node name="BrokenGene2Label" type="RichTextLabel" parent="BrokenGenes"]
+margin_left = 680.404
+margin_top = 795.021
+margin_right = 984.404
+margin_bottom = 874.021
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1813,321 +1515,42 @@ custom_fonts/bold_font = SubResource( 8 )
 custom_fonts/normal_font = SubResource( 10 )
 custom_colors/default_color = Color( 1, 1, 1, 1 )
 bbcode_enabled = true
-bbcode_text = "[b]Original[/b]"
-text = "Original"
+bbcode_text = "[b][i]Broken Gene[/i][/b]"
+text = "Broken Gene"
 scroll_active = false
 __meta__ = {
-"_edit_use_anchors_": false
+"_edit_use_anchors_": false,
+"_editor_description_": ""
 }
 
-[node name="Original2" type="HBoxContainer" parent="PickOne/AnimationPlayer"]
-margin_left = 353.176
-margin_top = 494.0
-margin_right = 1972.18
-margin_bottom = 762.994
-rect_scale = Vector2( 0.5, 0.5 )
-mouse_filter = 2
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="GeneBackground" type="TextureRect" parent="PickOne/AnimationPlayer/Original2"]
-margin_right = 266.0
-margin_bottom = 268.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+[node name="Arrow" type="TextureRect" parent="BrokenGenes"]
+margin_left = 317.415
+margin_top = 423.87
+margin_right = 444.415
+margin_bottom = 521.87
+rect_rotation = -89.9999
 texture = ExtResource( 14 )
 expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Component" type="TextureRect" parent="PickOne/AnimationPlayer/Original2/GeneBackground"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 9 )
-expand = true
-stretch_mode = 5
+stretch_mode = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="GeneBackground2" type="TextureRect" parent="PickOne/AnimationPlayer/Original2"]
-margin_left = 270.0
-margin_right = 536.0
-margin_bottom = 268.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+[node name="Arrow2" type="TextureRect" parent="BrokenGenes"]
+margin_left = 975.372
+margin_top = 687.053
+margin_right = 1102.37
+margin_bottom = 785.053
+rect_rotation = -270.0
 texture = ExtResource( 14 )
 expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Sensing" type="TextureRect" parent="PickOne/AnimationPlayer/Original2/GeneBackground2"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-size_flags_vertical = 3
-texture = ExtResource( 6 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": true
-}
-
-[node name="Blank" type="TextureRect" parent="PickOne/AnimationPlayer/Original2"]
-margin_left = 540.0
-margin_right = 806.0
-margin_bottom = 268.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 10 )
-expand = true
-
-[node name="GeneBackground3" type="TextureRect" parent="PickOne/AnimationPlayer/Original2"]
-margin_left = 810.0
-margin_right = 1076.0
-margin_bottom = 268.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Assembly" type="TextureRect" parent="PickOne/AnimationPlayer/Original2/GeneBackground3"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource( 11 )
-expand = true
-stretch_mode = 5
+stretch_mode = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="GeneBackground4" type="TextureRect" parent="PickOne/AnimationPlayer/Original2"]
-margin_left = 1080.0
-margin_right = 1346.0
-margin_bottom = 268.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Replication" type="TextureRect" parent="PickOne/AnimationPlayer/Original2/GeneBackground4"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource( 8 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Blank2" type="TextureRect" parent="PickOne/AnimationPlayer/Original2"]
-margin_left = 1350.0
-margin_right = 1618.0
-margin_bottom = 268.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 10 )
-expand = true
-
-[node name="CopyLabel2" type="RichTextLabel" parent="PickOne/AnimationPlayer"]
-margin_left = 139.591
-margin_top = 632.846
-margin_right = 355.591
-margin_bottom = 711.846
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 1.09
-custom_fonts/bold_italics_font = ExtResource( 4 )
-custom_fonts/italics_font = SubResource( 7 )
-custom_fonts/bold_font = SubResource( 8 )
-custom_fonts/normal_font = SubResource( 10 )
-custom_colors/default_color = Color( 1, 1, 1, 1 )
-bbcode_enabled = true
-bbcode_text = "[b]Copy[/b]"
-text = "Copy"
-scroll_active = false
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="GeneCopies2" type="Control" parent="PickOne/AnimationPlayer"]
-margin_left = 301.524
-margin_top = 452.622
-margin_right = 1298.52
-margin_bottom = 629.622
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="GeneBackground" type="TextureRect" parent="PickOne/AnimationPlayer/GeneCopies2"]
-margin_left = 50.4789
-margin_top = 152.174
-margin_right = 190.479
-margin_bottom = 283.175
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Component" type="TextureRect" parent="PickOne/AnimationPlayer/GeneCopies2/GeneBackground"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 9 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="GeneBackground2" type="TextureRect" parent="PickOne/AnimationPlayer/GeneCopies2"]
-margin_left = 185.893
-margin_top = 150.174
-margin_right = 319.893
-margin_bottom = 285.174
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Sensing" type="TextureRect" parent="PickOne/AnimationPlayer/GeneCopies2/GeneBackground2"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-size_flags_vertical = 3
-texture = ExtResource( 6 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": true
-}
-
-[node name="Blank" type="TextureRect" parent="PickOne/AnimationPlayer/GeneCopies2"]
-margin_left = 321.414
-margin_top = 147.695
-margin_right = 452.414
-margin_bottom = 280.695
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 10 )
-expand = true
-
-[node name="GeneBackground3" type="TextureRect" parent="PickOne/AnimationPlayer/GeneCopies2"]
-margin_left = 456.414
-margin_top = 147.695
-margin_right = 591.414
-margin_bottom = 280.695
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Assembly" type="TextureRect" parent="PickOne/AnimationPlayer/GeneCopies2/GeneBackground3"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource( 11 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="GeneBackground4" type="TextureRect" parent="PickOne/AnimationPlayer/GeneCopies2"]
-margin_left = 590.479
-margin_top = 148.695
-margin_right = 722.479
-margin_bottom = 279.695
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Replication" type="TextureRect" parent="PickOne/AnimationPlayer/GeneCopies2/GeneBackground4"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource( 8 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Blank2" type="TextureRect" parent="PickOne/AnimationPlayer/GeneCopies2"]
-margin_left = 723.0
-margin_top = 150.0
-margin_right = 857.0
-margin_bottom = 283.999
-rect_rotation = 0.064891
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 10 )
-expand = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="NewChromosome" type="Control" parent="."]
+[node name="SimilarGene" type="Control" parent="."]
+visible = false
 margin_right = 1600.0
 margin_bottom = 900.0
 mouse_filter = 2
@@ -2135,7 +1558,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ColorRect" type="ColorRect" parent="NewChromosome"]
+[node name="ColorRect" type="ColorRect" parent="SimilarGene"]
 margin_right = 1600.0
 margin_bottom = 900.0
 mouse_filter = 2
@@ -2144,18 +1567,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Back" type="Button" parent="NewChromosome"]
-margin_left = 18.0
-margin_top = 770.708
-margin_right = 279.0
-margin_bottom = 878.708
-theme = SubResource( 6 )
-text = "Back"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Skip" type="Button" parent="NewChromosome"]
+[node name="Skip" type="Button" parent="SimilarGene"]
 margin_left = 1038.01
 margin_top = 770.708
 margin_right = 1299.01
@@ -2166,7 +1578,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Next" type="Button" parent="NewChromosome"]
+[node name="Next" type="Button" parent="SimilarGene"]
 margin_left = 1312.38
 margin_top = 770.708
 margin_right = 1571.38
@@ -2177,247 +1589,22 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CopyLabel" type="RichTextLabel" parent="NewChromosome"]
-margin_left = 139.591
-margin_top = 415.0
-margin_right = 355.591
-margin_bottom = 494.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 1.09
-custom_fonts/bold_italics_font = ExtResource( 4 )
-custom_fonts/italics_font = SubResource( 7 )
-custom_fonts/bold_font = SubResource( 8 )
-custom_fonts/normal_font = SubResource( 10 )
-custom_colors/default_color = Color( 1, 1, 1, 1 )
-bbcode_enabled = true
-bbcode_text = "[b]Copy[/b]"
-text = "Copy"
-scroll_active = false
+[node name="Back" type="Button" parent="SimilarGene"]
+margin_left = 22.0526
+margin_top = 770.708
+margin_right = 281.053
+margin_bottom = 875.708
+theme = SubResource( 6 )
+text = "Back"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="GeneCopies" type="Control" parent="NewChromosome"]
-margin_left = 302.415
-margin_top = 228.0
-margin_right = 1299.41
-margin_bottom = 405.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="GeneBackground" type="TextureRect" parent="NewChromosome/GeneCopies"]
-margin_left = 50.4789
-margin_top = 152.174
-margin_right = 190.479
-margin_bottom = 283.173
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Component" type="TextureRect" parent="NewChromosome/GeneCopies/GeneBackground"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 9 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="GeneBackground2" type="TextureRect" parent="NewChromosome/GeneCopies"]
-margin_left = 185.893
-margin_top = 150.174
-margin_right = 318.893
-margin_bottom = 280.173
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Sensing" type="TextureRect" parent="NewChromosome/GeneCopies/GeneBackground2"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-size_flags_vertical = 3
-texture = ExtResource( 6 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": true
-}
-
-[node name="Blank" type="TextureRect" parent="NewChromosome/GeneCopies"]
-margin_left = 321.414
-margin_top = 147.695
-margin_right = 452.414
-margin_bottom = 280.694
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 10 )
-expand = true
-
-[node name="GeneBackground3" type="TextureRect" parent="NewChromosome/GeneCopies"]
-margin_left = 456.414
-margin_top = 147.695
-margin_right = 591.414
-margin_bottom = 280.694
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Assembly" type="TextureRect" parent="NewChromosome/GeneCopies/GeneBackground3"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource( 11 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="GeneBackground4" type="TextureRect" parent="NewChromosome/GeneCopies"]
-margin_left = 590.479
-margin_top = 148.695
-margin_right = 722.479
-margin_bottom = 279.695
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Replication" type="TextureRect" parent="NewChromosome/GeneCopies/GeneBackground4"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource( 8 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Blank2" type="TextureRect" parent="NewChromosome/GeneCopies"]
-margin_left = 723.0
-margin_top = 150.0
-margin_right = 859.0
-margin_bottom = 276.997
-rect_rotation = 0.064891
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 10 )
-expand = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Transposon" parent="NewChromosome" instance=ExtResource( 2 )]
-margin_left = 1296.11
-margin_top = 262.347
-margin_right = -116.886
-margin_bottom = -450.653
-rect_scale = Vector2( 1.5, 1.5 )
-mouse_filter = 2
-
-[node name="SpeechBubble" type="TextureRect" parent="NewChromosome"]
-margin_left = 151.0
-margin_top = 32.0
-margin_right = 1418.0
-margin_bottom = 311.0
-mouse_filter = 2
-texture = ExtResource( 13 )
-expand = true
-flip_h = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="BubbleText" type="RichTextLabel" parent="NewChromosome/SpeechBubble"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -497.5
-margin_top = -106.602
-margin_right = 506.5
-margin_bottom = 33.3979
-mouse_filter = 2
-custom_fonts/italics_font = ExtResource( 5 )
-custom_fonts/normal_font = SubResource( 11 )
-custom_colors/default_color = Color( 0, 0, 0, 1 )
-bbcode_enabled = true
-bbcode_text = "[center][i]The chromosome you picked will get paired up with one from another cell like yours![/i][/center]"
-text = "The chromosome you picked will get paired up with one from another cell like yours!"
-scroll_active = false
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="NewChromosome"]
-"anims/Fade In" = SubResource( 13 )
-
-[node name="NewLabel" type="RichTextLabel" parent="NewChromosome/AnimationPlayer"]
-modulate = Color( 1, 1, 1, 0 )
-margin_left = 137.176
-margin_top = 522.965
-margin_right = 353.176
-margin_bottom = 601.967
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 1.09
-custom_fonts/bold_italics_font = ExtResource( 4 )
-custom_fonts/italics_font = SubResource( 7 )
-custom_fonts/bold_font = SubResource( 8 )
-custom_fonts/normal_font = SubResource( 10 )
-custom_colors/default_color = Color( 1, 1, 1, 1 )
-bbcode_enabled = true
-bbcode_text = "[b]New[/b]"
-text = "New"
-scroll_active = false
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="New" type="HBoxContainer" parent="NewChromosome/AnimationPlayer"]
-margin_left = 353.0
-margin_top = 494.0
-margin_right = 2239.0
-margin_bottom = 763.0
+[node name="Chromosome" type="HBoxContainer" parent="SimilarGene"]
+margin_left = 86.0
+margin_top = 393.0
+margin_right = 2320.0
+margin_bottom = 766.0
 rect_scale = Vector2( 0.5, 0.5 )
 mouse_filter = 2
 __meta__ = {
@@ -2425,89 +1612,26 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="GeneBackground" type="TextureRect" parent="NewChromosome/AnimationPlayer/New"]
-margin_right = 266.0
-margin_bottom = 269.0
+[node name="GeneBackground" type="TextureRect" parent="SimilarGene/Chromosome"]
+margin_right = 369.0
+margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Component" type="TextureRect" parent="NewChromosome/AnimationPlayer/New/GeneBackground"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 9 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="GeneBackground2" type="TextureRect" parent="NewChromosome/AnimationPlayer/New"]
-margin_left = 270.0
-margin_right = 536.0
-margin_bottom = 269.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Sensing" type="TextureRect" parent="NewChromosome/AnimationPlayer/New/GeneBackground2"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
 size_flags_vertical = 3
 texture = ExtResource( 6 )
 expand = true
 stretch_mode = 5
 __meta__ = {
-"_edit_use_anchors_": true
-}
-
-[node name="Blank" type="TextureRect" parent="NewChromosome/AnimationPlayer/New"]
-margin_left = 540.0
-margin_right = 806.0
-margin_bottom = 269.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 10 )
-expand = true
-
-[node name="GeneBackground3" type="TextureRect" parent="NewChromosome/AnimationPlayer/New"]
-margin_left = 810.0
-margin_right = 1076.0
-margin_bottom = 269.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
-__meta__ = {
 "_edit_group_": true,
 "_edit_use_anchors_": false
 }
 
-[node name="Assembly" type="TextureRect" parent="NewChromosome/AnimationPlayer/New/GeneBackground3"]
+[node name="Component" type="TextureRect" parent="SimilarGene/Chromosome/GeneBackground"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 texture = ExtResource( 11 )
 expand = true
 stretch_mode = 5
@@ -2515,14 +1639,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="GeneBackground4" type="TextureRect" parent="NewChromosome/AnimationPlayer/New"]
-margin_left = 1080.0
-margin_right = 1346.0
-margin_bottom = 269.0
+[node name="GeneBackground2" type="TextureRect" parent="SimilarGene/Chromosome"]
+margin_left = 373.0
+margin_right = 742.0
+margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource( 14 )
+texture = ExtResource( 6 )
 expand = true
 stretch_mode = 5
 __meta__ = {
@@ -2530,25 +1654,37 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Replication" type="TextureRect" parent="NewChromosome/AnimationPlayer/New/GeneBackground4"]
+[node name="Sensing" type="TextureRect" parent="SimilarGene/Chromosome/GeneBackground2"]
+modulate = Color( 0.733333, 0.67451, 0.0392157, 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-texture = ExtResource( 8 )
+size_flags_vertical = 3
+texture = ExtResource( 9 )
 expand = true
 stretch_mode = 5
 __meta__ = {
-"_edit_use_anchors_": false
+"_edit_use_anchors_": true
 }
 
-[node name="GeneBackground5" type="TextureRect" parent="NewChromosome/AnimationPlayer/New"]
-margin_left = 1350.0
-margin_right = 1616.0
-margin_bottom = 269.0
+[node name="Blank" type="TextureRect" parent="SimilarGene/Chromosome"]
+margin_left = 746.0
+margin_right = 1115.0
+margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource( 14 )
+texture = ExtResource( 12 )
+expand = true
+
+[node name="GeneBackground3" type="TextureRect" parent="SimilarGene/Chromosome"]
+margin_left = 1119.0
+margin_right = 1488.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
 expand = true
 stretch_mode = 5
 __meta__ = {
@@ -2556,31 +1692,1143 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Replication" type="TextureRect" parent="NewChromosome/AnimationPlayer/New/GeneBackground5"]
+[node name="Assembly" type="TextureRect" parent="SimilarGene/Chromosome/GeneBackground3"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-texture = ExtResource( 8 )
+texture = ExtResource( 13 )
 expand = true
 stretch_mode = 5
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Blank2" type="TextureRect" parent="NewChromosome/AnimationPlayer/New"]
-margin_left = 1620.0
-margin_right = 1886.0
-margin_bottom = 269.0
+[node name="GeneBackground4" type="TextureRect" parent="SimilarGene/Chromosome"]
+margin_left = 1492.0
+margin_right = 1861.0
+margin_bottom = 373.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Replication" type="TextureRect" parent="SimilarGene/Chromosome/GeneBackground4"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
 texture = ExtResource( 10 )
 expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Blank2" type="TextureRect" parent="SimilarGene/Chromosome"]
+margin_left = 1865.0
+margin_right = 2234.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 12 )
+expand = true
+
+[node name="Chromosome2" type="HBoxContainer" parent="SimilarGene"]
+margin_left = 85.9344
+margin_top = 542.847
+margin_right = 2319.93
+margin_bottom = 915.847
+rect_scale = Vector2( 0.5, 0.5 )
+mouse_filter = 2
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground" type="TextureRect" parent="SimilarGene/Chromosome2"]
+margin_right = 369.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Component" type="TextureRect" parent="SimilarGene/Chromosome2/GeneBackground"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 11 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground2" type="TextureRect" parent="SimilarGene/Chromosome2"]
+margin_left = 373.0
+margin_right = 742.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Sensing" type="TextureRect" parent="SimilarGene/Chromosome2/GeneBackground2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_vertical = 3
+texture = ExtResource( 9 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Blank" type="TextureRect" parent="SimilarGene/Chromosome2"]
+margin_left = 746.0
+margin_right = 1115.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 12 )
+expand = true
+
+[node name="GeneBackground3" type="TextureRect" parent="SimilarGene/Chromosome2"]
+margin_left = 1119.0
+margin_right = 1488.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Assembly" type="TextureRect" parent="SimilarGene/Chromosome2/GeneBackground3"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 13 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground4" type="TextureRect" parent="SimilarGene/Chromosome2"]
+margin_left = 1492.0
+margin_right = 1861.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Replication" type="TextureRect" parent="SimilarGene/Chromosome2/GeneBackground4"]
+modulate = Color( 0.733333, 0.67451, 0.0392157, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 10 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Blank2" type="TextureRect" parent="SimilarGene/Chromosome2"]
+margin_left = 1865.0
+margin_right = 2234.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 12 )
+expand = true
+
+[node name="Transposon" parent="SimilarGene" instance=ExtResource( 2 )]
+margin_left = 1296.11
+margin_top = 262.347
+margin_right = -116.886
+margin_bottom = -450.653
+rect_scale = Vector2( 1.5, 1.5 )
+mouse_filter = 2
+
+[node name="SpeechBubble" type="TextureRect" parent="SimilarGene"]
+margin_left = 135.0
+margin_top = 32.0
+margin_right = 1418.0
+margin_bottom = 311.0
+mouse_filter = 2
+texture = ExtResource( 5 )
+expand = true
+flip_h = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BubbleText" type="RichTextLabel" parent="SimilarGene/SpeechBubble"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -625.5
+margin_top = -111.5
+margin_right = 560.5
+margin_bottom = 56.5
+mouse_filter = 2
+custom_fonts/italics_font = ExtResource( 3 )
+custom_fonts/normal_font = SubResource( 11 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center][i]As long as there is a similar gene in
+between them...[/i]
+[/center]"
+text = "As long as there is a similar gene in
+between them...
+"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SimilarLabel" type="RichTextLabel" parent="SimilarGene"]
+margin_left = 457.0
+margin_top = 795.0
+margin_right = 797.0
+margin_bottom = 874.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.09
+custom_fonts/bold_italics_font = ExtResource( 4 )
+custom_fonts/italics_font = SubResource( 7 )
+custom_fonts/bold_font = SubResource( 8 )
+custom_fonts/normal_font = SubResource( 10 )
+custom_colors/default_color = Color( 1, 1, 1, 1 )
+bbcode_enabled = true
+bbcode_text = "[b][i]Similar Genes[/i][/b]"
+text = "Similar Genes"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="TextureRect" type="TextureRect" parent="SimilarGene"]
+margin_left = 646.0
+margin_top = 405.0
+margin_right = 832.0
+margin_bottom = 561.0
+texture = ExtResource( 15 )
+expand = true
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect2" type="TextureRect" parent="SimilarGene"]
+margin_left = 646.0
+margin_top = 561.0
+margin_right = 832.0
+margin_bottom = 717.0
+texture = ExtResource( 15 )
+expand = true
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Arrow" type="TextureRect" parent="SimilarGene"]
+margin_left = 787.123
+margin_top = 690.708
+margin_right = 914.123
+margin_bottom = 788.708
+rect_rotation = -270.0
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GenesSwitch" type="Control" parent="."]
+visible = false
+margin_right = 1600.0
+margin_bottom = 900.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="GenesSwitch"]
+margin_right = 1600.0
+margin_bottom = 900.0
+mouse_filter = 2
+color = Color( 0.0431373, 0.0588235, 0.564706, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Skip" type="Button" parent="GenesSwitch"]
+margin_left = 1038.01
+margin_top = 770.708
+margin_right = 1299.01
+margin_bottom = 878.708
+theme = SubResource( 6 )
+text = "Skip"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Next" type="Button" parent="GenesSwitch"]
+margin_left = 1312.38
+margin_top = 770.708
+margin_right = 1571.38
+margin_bottom = 875.708
+theme = SubResource( 6 )
+text = "Next"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Back" type="Button" parent="GenesSwitch"]
+margin_left = 22.0526
+margin_top = 770.708
+margin_right = 281.053
+margin_bottom = 875.708
+theme = SubResource( 6 )
+text = "Back"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Chromosome" type="HBoxContainer" parent="GenesSwitch"]
+margin_left = 85.9344
+margin_top = 300.108
+margin_right = 2319.93
+margin_bottom = 673.108
+rect_scale = Vector2( 0.5, 0.5 )
+mouse_filter = 2
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground" type="TextureRect" parent="GenesSwitch/Chromosome"]
+margin_right = 369.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Component" type="TextureRect" parent="GenesSwitch/Chromosome/GeneBackground"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 11 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground2" type="TextureRect" parent="GenesSwitch/Chromosome"]
+margin_left = 373.0
+margin_right = 742.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Sensing" type="TextureRect" parent="GenesSwitch/Chromosome/GeneBackground2"]
+modulate = Color( 0.733333, 0.67451, 0.0392157, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_vertical = 3
+texture = ExtResource( 9 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Blank" type="TextureRect" parent="GenesSwitch/Chromosome"]
+margin_left = 746.0
+margin_right = 1115.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 12 )
+expand = true
+
+[node name="GeneBackground3" type="TextureRect" parent="GenesSwitch/Chromosome"]
+margin_left = 1119.0
+margin_right = 1488.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Assembly" type="TextureRect" parent="GenesSwitch/Chromosome/GeneBackground3"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 13 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground4" type="TextureRect" parent="GenesSwitch/Chromosome"]
+margin_left = 1492.0
+margin_right = 1861.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Replication" type="TextureRect" parent="GenesSwitch/Chromosome/GeneBackground4"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 10 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Blank2" type="TextureRect" parent="GenesSwitch/Chromosome"]
+margin_left = 1865.0
+margin_right = 2234.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 12 )
+expand = true
+
+[node name="Border" type="TextureRect" parent="GenesSwitch"]
+margin_left = 645.934
+margin_top = 312.108
+margin_right = 831.934
+margin_bottom = 468.108
+texture = ExtResource( 15 )
+expand = true
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Chromosome2" type="HBoxContainer" parent="GenesSwitch"]
+margin_left = 85.9344
+margin_top = 542.847
+margin_right = 2319.93
+margin_bottom = 915.847
+rect_scale = Vector2( 0.5, 0.5 )
+mouse_filter = 2
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground" type="TextureRect" parent="GenesSwitch/Chromosome2"]
+margin_right = 369.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Component" type="TextureRect" parent="GenesSwitch/Chromosome2/GeneBackground"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 11 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground2" type="TextureRect" parent="GenesSwitch/Chromosome2"]
+margin_left = 373.0
+margin_right = 742.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Sensing" type="TextureRect" parent="GenesSwitch/Chromosome2/GeneBackground2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_vertical = 3
+texture = ExtResource( 9 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Blank" type="TextureRect" parent="GenesSwitch/Chromosome2"]
+margin_left = 746.0
+margin_right = 1115.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 12 )
+expand = true
+
+[node name="GeneBackground3" type="TextureRect" parent="GenesSwitch/Chromosome2"]
+margin_left = 1119.0
+margin_right = 1488.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Assembly" type="TextureRect" parent="GenesSwitch/Chromosome2/GeneBackground3"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 13 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground4" type="TextureRect" parent="GenesSwitch/Chromosome2"]
+margin_left = 1492.0
+margin_right = 1861.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Replication" type="TextureRect" parent="GenesSwitch/Chromosome2/GeneBackground4"]
+modulate = Color( 0.733333, 0.67451, 0.0392157, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 10 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Blank2" type="TextureRect" parent="GenesSwitch/Chromosome2"]
+margin_left = 1865.0
+margin_right = 2234.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 12 )
+expand = true
+
+[node name="Transposon" parent="GenesSwitch" instance=ExtResource( 2 )]
+margin_left = 1296.11
+margin_top = 262.347
+margin_right = -116.886
+margin_bottom = -450.653
+rect_scale = Vector2( 1.5, 1.5 )
+mouse_filter = 2
+
+[node name="SpeechBubble" type="TextureRect" parent="GenesSwitch"]
+margin_left = 135.0
+margin_top = 32.0
+margin_right = 1418.0
+margin_bottom = 311.0
+mouse_filter = 2
+texture = ExtResource( 5 )
+expand = true
+flip_h = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BubbleText" type="RichTextLabel" parent="GenesSwitch/SpeechBubble"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -625.5
+margin_top = -76.5
+margin_right = 560.5
+margin_bottom = 56.5
+mouse_filter = 2
+custom_fonts/italics_font = ExtResource( 3 )
+custom_fonts/normal_font = SubResource( 11 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center][i]The genes can switch![/i]
+[/center]"
+text = "The genes can switch!
+"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Border2" type="TextureRect" parent="GenesSwitch"]
+margin_left = 646.0
+margin_top = 561.0
+margin_right = 832.0
+margin_bottom = 717.0
+texture = ExtResource( 15 )
+expand = true
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="GenesSwitch"]
+anims/GrowingLines = SubResource( 12 )
+
+[node name="Chromo1Top" type="Line2D" parent="GenesSwitch/AnimationPlayer"]
+position = Vector2( 86, 468.108 )
+scale = Vector2( 1e-05, 1 )
+points = PoolVector2Array( 0, 0, 280.671, 0 )
+default_color = Color( 0.341176, 0.545098, 0.788235, 1 )
+
+[node name="Chromo1Diagonal" type="Line2D" parent="GenesSwitch/AnimationPlayer"]
+position = Vector2( 645.57, 467.903 )
+rotation = 0.462512
+scale = Vector2( 1e-05, 1 )
+points = PoolVector2Array( 0, 0, 207, 0 )
+default_color = Color( 0.341176, 0.545098, 0.788235, 1 )
+
+[node name="Chromo1Bottom" type="Line2D" parent="GenesSwitch/AnimationPlayer"]
+position = Vector2( 828.339, 560.054 )
+scale = Vector2( 1e-05, 1 )
+points = PoolVector2Array( 0, 0, 367.232, 0 )
+default_color = Color( 1, 0, 0, 1 )
+
+[node name="Chromo2Bottom" type="Line2D" parent="GenesSwitch/AnimationPlayer"]
+position = Vector2( 86, 561 )
+scale = Vector2( 1e-05, 1 )
+points = PoolVector2Array( 0, 0, 280.671, 0 )
+default_color = Color( 1, 0, 0, 1 )
+
+[node name="Chromo2Diagonal" type="Line2D" parent="GenesSwitch/AnimationPlayer"]
+position = Vector2( 645.168, 561.532 )
+rotation = -0.462512
+scale = Vector2( 1e-05, 1 )
+points = PoolVector2Array( 0, 0, 209, 0 )
+default_color = Color( 1, 0, 0, 1 )
+
+[node name="Chromo2Top" type="Line2D" parent="GenesSwitch/AnimationPlayer"]
+position = Vector2( 830.018, 468.782 )
+scale = Vector2( 1e-05, 1 )
+points = PoolVector2Array( 0, 0, 367.232, 0 )
+default_color = Color( 0.341176, 0.545098, 0.788235, 1 )
+
+[node name="Switched" type="Control" parent="."]
+margin_right = 1600.0
+margin_bottom = 900.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="Switched"]
+margin_right = 1600.0
+margin_bottom = 900.0
+mouse_filter = 2
+color = Color( 0.0431373, 0.0588235, 0.564706, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Skip" type="Button" parent="Switched"]
+margin_left = 1038.01
+margin_top = 770.708
+margin_right = 1299.01
+margin_bottom = 878.708
+theme = SubResource( 6 )
+text = "Skip"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Next" type="Button" parent="Switched"]
+margin_left = 1312.38
+margin_top = 770.708
+margin_right = 1571.38
+margin_bottom = 875.708
+theme = SubResource( 6 )
+text = "Next"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Back" type="Button" parent="Switched"]
+margin_left = 22.0526
+margin_top = 770.708
+margin_right = 281.053
+margin_bottom = 875.708
+theme = SubResource( 6 )
+text = "Back"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Transposon" parent="Switched" instance=ExtResource( 2 )]
+margin_left = 1296.11
+margin_top = 262.347
+margin_right = -116.886
+margin_bottom = -450.653
+rect_scale = Vector2( 1.5, 1.5 )
+mouse_filter = 2
+
+[node name="SpeechBubble" type="TextureRect" parent="Switched"]
+margin_left = 135.0
+margin_top = 32.0
+margin_right = 1418.0
+margin_bottom = 311.0
+mouse_filter = 2
+texture = ExtResource( 5 )
+expand = true
+flip_h = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BubbleText" type="RichTextLabel" parent="Switched/SpeechBubble"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -590.871
+margin_top = -111.5
+margin_right = 595.129
+margin_bottom = 56.5
+mouse_filter = 2
+custom_fonts/italics_font = ExtResource( 3 )
+custom_fonts/normal_font = SubResource( 11 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center][i]Now both damaged genes are together,
+and one chromosome is fine![/i]
+[/center]"
+text = "Now both damaged genes are together,
+and one chromosome is fine!
+"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Chromosome4" type="HBoxContainer" parent="Switched"]
+margin_left = 85.9344
+margin_top = 300.108
+margin_right = 2319.93
+margin_bottom = 673.108
+rect_scale = Vector2( 0.5, 0.5 )
+mouse_filter = 2
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground" type="TextureRect" parent="Switched/Chromosome4"]
+margin_right = 369.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Component" type="TextureRect" parent="Switched/Chromosome4/GeneBackground"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 11 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground2" type="TextureRect" parent="Switched/Chromosome4"]
+margin_left = 373.0
+margin_right = 742.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Sensing" type="TextureRect" parent="Switched/Chromosome4/GeneBackground2"]
+modulate = Color( 0.733333, 0.67451, 0.0392157, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_vertical = 3
+texture = ExtResource( 9 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Blank" type="TextureRect" parent="Switched/Chromosome4"]
+margin_left = 746.0
+margin_right = 1115.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 12 )
+expand = true
+
+[node name="GeneBackground3" type="TextureRect" parent="Switched/Chromosome4"]
+margin_left = 1119.0
+margin_right = 1488.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Assembly" type="TextureRect" parent="Switched/Chromosome4/GeneBackground3"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 13 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground4" type="TextureRect" parent="Switched/Chromosome4"]
+margin_left = 1492.0
+margin_right = 1861.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Replication" type="TextureRect" parent="Switched/Chromosome4/GeneBackground4"]
+modulate = Color( 0.733333, 0.67451, 0.0392157, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 10 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Blank2" type="TextureRect" parent="Switched/Chromosome4"]
+margin_left = 1865.0
+margin_right = 2234.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 12 )
+expand = true
+
+[node name="Chromo1Blue" type="Line2D" parent="Switched"]
+position = Vector2( 86.0149, 468.116 )
+rotation = -5.88923e-05
+scale = Vector2( 2.00149, 1.00074 )
+points = PoolVector2Array( 0, 0, 371.921, 0 )
+default_color = Color( 0.341176, 0.545098, 0.788235, 1 )
+
+[node name="Chromo1Red" type="Line2D" parent="Switched"]
+position = Vector2( 830.018, 468.108 )
+points = PoolVector2Array( 0, 0, 367.232, 0 )
+default_color = Color( 1, 0, 0, 1 )
+
+[node name="Chromosome3" type="HBoxContainer" parent="Switched"]
+margin_left = 85.9344
+margin_top = 542.847
+margin_right = 2319.93
+margin_bottom = 915.847
+rect_scale = Vector2( 0.5, 0.5 )
+mouse_filter = 2
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground" type="TextureRect" parent="Switched/Chromosome3"]
+margin_right = 369.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Component" type="TextureRect" parent="Switched/Chromosome3/GeneBackground"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 11 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground2" type="TextureRect" parent="Switched/Chromosome3"]
+margin_left = 373.0
+margin_right = 742.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Sensing" type="TextureRect" parent="Switched/Chromosome3/GeneBackground2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_vertical = 3
+texture = ExtResource( 9 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Blank" type="TextureRect" parent="Switched/Chromosome3"]
+margin_left = 746.0
+margin_right = 1115.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 12 )
+expand = true
+
+[node name="GeneBackground3" type="TextureRect" parent="Switched/Chromosome3"]
+margin_left = 1119.0
+margin_right = 1488.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Assembly" type="TextureRect" parent="Switched/Chromosome3/GeneBackground3"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 13 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneBackground4" type="TextureRect" parent="Switched/Chromosome3"]
+margin_left = 1492.0
+margin_right = 1861.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Replication" type="TextureRect" parent="Switched/Chromosome3/GeneBackground4"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 10 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Blank2" type="TextureRect" parent="Switched/Chromosome3"]
+margin_left = 1865.0
+margin_right = 2234.0
+margin_bottom = 373.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 12 )
+expand = true
+
+[node name="Chromo2Red" type="Line2D" parent="Switched"]
+position = Vector2( 86.0361, 561.018 )
+scale = Vector2( 2.00361, 1.0018 )
+points = PoolVector2Array( 0, 0, 370.44, 0 )
+default_color = Color( 1, 0, 0, 1 )
+
+[node name="Chromo2Blue" type="Line2D" parent="Switched"]
+position = Vector2( 828.339, 560.994 )
+points = PoolVector2Array( 0, 0, 367.232, 0 )
+default_color = Color( 0.341176, 0.545098, 0.788235, 1 )
 [connection signal="pressed" from="Explanation/Skip" to="." method="_on_Skip_pressed"]
 [connection signal="pressed" from="Explanation/Next" to="." method="_on_Next_pressed"]
-[connection signal="pressed" from="PickOne/Back" to="." method="_on_Back_pressed"]
-[connection signal="pressed" from="PickOne/Skip" to="." method="_on_Skip_pressed"]
-[connection signal="pressed" from="PickOne/Next" to="." method="_on_Next_pressed"]
-[connection signal="pressed" from="NewChromosome/Back" to="." method="_on_Back_pressed"]
-[connection signal="pressed" from="NewChromosome/Skip" to="." method="_on_Skip_pressed"]
-[connection signal="pressed" from="NewChromosome/Next" to="." method="_on_Next_pressed"]
+[connection signal="pressed" from="BrokenGenes/Skip" to="." method="_on_Skip_pressed"]
+[connection signal="pressed" from="BrokenGenes/Next" to="." method="_on_Next_pressed"]
+[connection signal="pressed" from="BrokenGenes/Back" to="." method="_on_Back_pressed"]
+[connection signal="pressed" from="SimilarGene/Skip" to="." method="_on_Skip_pressed"]
+[connection signal="pressed" from="SimilarGene/Next" to="." method="_on_Next_pressed"]
+[connection signal="pressed" from="SimilarGene/Back" to="." method="_on_Back_pressed"]
+[connection signal="pressed" from="GenesSwitch/Skip" to="." method="_on_Skip_pressed"]
+[connection signal="pressed" from="GenesSwitch/Next" to="." method="_on_Next_pressed"]
+[connection signal="pressed" from="GenesSwitch/Back" to="." method="_on_Back_pressed"]
+[connection signal="pressed" from="Switched/Skip" to="." method="_on_Skip_pressed"]
+[connection signal="pressed" from="Switched/Next" to="." method="_on_Next_pressed"]
+[connection signal="pressed" from="Switched/Back" to="." method="_on_Back_pressed"]

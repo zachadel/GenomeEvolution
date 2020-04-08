@@ -9,8 +9,6 @@ signal exit_meiosis_slides()
 
 export var current_slide = 0
 
-const EXPLOSION_NUMBER = 60
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	for child in get_children():
@@ -42,16 +40,18 @@ func play_and_show(slide: Control):
 		for node in anims.get_children():
 			node.show()
 		
-		if slide.name == "Copying":
-			anims.play("Copying Genome")
-		elif slide.name == "Choose":
-			anims.play("Splitting Chromosomes")
+		if slide.name == "PickOne":
+			anims.play("Fade Away")
+		elif slide.name == "NewChromosome":
+			anims.play("Fade In")
 	slide.show()
 
 func leave_intro():
 	emit_signal("exit_meiosis_slides")
 
 func _on_Skip_pressed():
+	var cur_slide = get_children()[current_slide]
+	stop_and_hide(cur_slide)
 	leave_intro()
 
 func _on_Next_pressed():
@@ -66,20 +66,6 @@ func _on_Next_pressed():
 		
 	else:
 		leave_intro()
-	
-func _on_Cell_Exploded(dna_array):
-	for dna in dna_array:
-		dna.visible = true
-		$Chaos/ColorRect.add_child(dna)
-
-func _gui_input(event):
-	if event.is_action_pressed("next_slide"):
-		_on_Next_pressed()
-	if event.is_action_pressed("previous_slide"):
-		_on_Back_pressed()
-	if event.is_action_pressed("exit_slide"):
-		leave_intro()
-
 
 func _on_Back_pressed():
 	var slide = get_children()[current_slide]
@@ -89,3 +75,11 @@ func _on_Back_pressed():
 		current_slide -= 1
 		var previous_slide = get_children()[current_slide]
 		play_and_show(previous_slide)
+		
+func _gui_input(event):
+	if event.is_action_pressed("next_slide"):
+		_on_Next_pressed()
+	if event.is_action_pressed("previous_slide"):
+		_on_Back_pressed()
+	if event.is_action_pressed("exit_slide"):
+		_on_Skip_pressed()
