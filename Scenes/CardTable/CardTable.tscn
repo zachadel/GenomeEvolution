@@ -134,22 +134,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="lnum_turn" parent="." instance=ExtResource( 17 )]
-margin_left = 1169.4
-margin_top = 805.0
-margin_right = 1269.4
-margin_bottom = 895.0
-num = 0
-lbl = "Round"
-
-[node name="lnum_progeny" parent="." instance=ExtResource( 17 )]
-margin_left = 1313.4
-margin_top = 805.0
-margin_right = 1413.4
-margin_bottom = 895.0
-num = 0
-lbl = "Progeny"
-
 [node name="lbl_turnorder" type="Label" parent="."]
 anchor_left = 1.0
 anchor_top = 1.0
@@ -620,6 +604,20 @@ stretch_mode = 6
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="lnum_turn" parent="." instance=ExtResource( 17 )]
+margin_left = 1169.4
+margin_top = 805.0
+margin_right = 1269.4
+margin_bottom = 895.0
+lbl = "Round"
+
+[node name="lnum_progeny" parent="." instance=ExtResource( 17 )]
+margin_left = 1313.4
+margin_top = 805.0
+margin_right = 1413.4
+margin_bottom = 895.0
+lbl = "Progeny"
 
 [node name="EnergyBar" parent="." instance=ExtResource( 14 )]
 margin_left = 1.894

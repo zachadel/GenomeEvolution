@@ -378,7 +378,7 @@ func gain_gaps(count = 1):
 const MAX_ENVIRON_INTERNAL_DMG_PERC = 0.5;
 const MIN_ENVIRON_INTERNAL_DMG_PERC = 0.25;
 func environmental_damage():
-	var total_count := 10;#get_rand_environmental_break_count();
+	var total_count := get_rand_environmental_break_count();
 	var internal_dmg_count : int = int(rand_range(MIN_ENVIRON_INTERNAL_DMG_PERC, MAX_ENVIRON_INTERNAL_DMG_PERC) * total_count);
 	var gap_count := total_count - internal_dmg_count;
 	

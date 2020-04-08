@@ -91,7 +91,7 @@ func roll_chance_type(type : String, behavior_profile = null, mods := []) -> int
 	return roll_chances(base_rolls[type], final_mods);
 
 func roll_chance_type_named(type: String, behavior_profile = null, mod_dict := {}) -> String:
-	return ROLL_RESULTS[roll_chance_type(type, behavior_profile, make_result_array(type, mod_dict))];
+	return ROLL_RESULTS[type][roll_chance_type(type, behavior_profile, make_result_array(type, mod_dict))];
 
 func roll_chances(chance_array : Array, mods := []) -> int:
 	# Modify the chances, then find their sum for normalizing
