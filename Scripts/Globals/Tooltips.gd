@@ -15,8 +15,11 @@ func _ready():
 const REPAIR_TTIPS = {
 	"collapse_dupes": "If the genes to the left and the right of the gap are the same, the break can be repaired by discarding one of the duplicates.",
 	"copy_pattern": "If both ends of the gap can be matched to an intact pattern on the other chromosome, you can attempt to copy the pattern. There is a decent chance of complications (duplicates, discarding, etc.).",
-	"join_ends": "You can always just attempt to join ends without a template. There is a high chance for complications (duplications, discarding, etc.)."
+	"join_ends": "You can always just attempt to join ends without a template. There is a high chance for complications (duplications, discarding, etc.).",
+	"repair_scissors": "Before performing a repair, you can choose to remove genes from either side of the gap. You get %d removal%s per turn due to your Disassembly; you have %d left."
 };
+func get_repair_desc(type: String) -> String:
+	return REPAIR_TTIPS.get(type, "MISSING REPAIR TOOLTIP: %s" % type);
 
 const REPLICATE_TTIPS = {
 	"mitosis": "If the genes to the left and the right of the gap are the same, the break can be repaired by discarding one of the duplicates.",

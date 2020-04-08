@@ -462,9 +462,12 @@ func get_damaged_genes() -> Array:
 				dmg_genes.append(g);
 	return dmg_genes;
 
-func highlight_genes(elms: Array):
+func get_genes_next_to_elm(elm) -> Array:
+	return elm.get_cmsm().get_elms_around_pos(elm.get_index());
+
+func highlight_genes(elms: Array, highlight := true):
 	for g in elms:
-		g.disable(false);
+		g.disable(!highlight);
 
 func highlight_gaps():
 	highlight_genes(get_gap_list());

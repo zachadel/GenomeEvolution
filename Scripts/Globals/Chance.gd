@@ -1,7 +1,7 @@
 extends Node
 
 var base_rolls = {
-	"copy_repair": make_result_array("copy_repair", {
+	"copy_pattern": make_result_array("copy_pattern", {
 		"copy_intervening": 10.0,
 		"lose_one": 0.9,
 		"major_down": 0.4,
@@ -13,7 +13,7 @@ var base_rolls = {
 	# no complications, copy intervening, lose one, major down, minor down, dupe, major up, minor up
 	# [0, 10, 0.9, 0.4, 0.3, 0.25, 0.5, 1.25],
 	
-	"copy_repair_correction": make_result_array("copy_repair_correction", {
+	"copy_pattern_correction": make_result_array("copy_pattern_correction", {
 		"no": 2.0,
 		"yes": 1.0
 	}),
@@ -45,8 +45,8 @@ var base_rolls = {
 }
 
 const ROLL_RESULTS = {
-	"copy_repair": ["none", "copy_intervening", "lose_one", "major_down", "minor_down", "dupe", "major_up", "minor_up"],
-	"copy_repair_correction": ["no", "yes"],
+	"copy_pattern": ["none", "copy_intervening", "lose_one", "major_down", "minor_down", "dupe", "major_up", "minor_up"],
+	"copy_pattern_correction": ["no", "yes"],
 	"join_ends": ["none", "lose_one", "major_down", "minor_down", "dupe", "major_up", "minor_up", "merge"],
 	"evolve": ["none", "dead", "major_down", "minor_down", "major_up", "minor_up"]
 }
