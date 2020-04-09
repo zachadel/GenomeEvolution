@@ -199,7 +199,8 @@ func clear_selected_resources():
 	for resource_class in selected_resources:
 		for resource in selected_resources[resource_class]:
 			for node in selected_resources[resource_class][resource]:
-				node.deselect()
+				if node:
+					node.deselect()
 			selected_resources[resource_class][resource].clear()
 
 #NOTE: Energy upgrades and downgrades to energy are still broken, needs to be fixed

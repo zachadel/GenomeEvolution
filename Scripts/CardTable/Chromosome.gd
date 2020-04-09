@@ -275,7 +275,8 @@ func add_elm(elm, pos = null):
 					get_child(i).get_node("Tween").interpolate_property(get_child(i), "rect_position",
 						start_pos, end_pos, duration, Game.animation_ease, Game.animation_trans);
 					get_child(i).get_node("Tween").start();
-				yield(get_child(pos).get_node("Tween"), "tween_completed");
+				if pos < get_child_count():
+					yield(get_child(pos).get_node("Tween"), "tween_completed");
 			yield(get_tree(), "idle_frame");
 		
 		add_child(elm);

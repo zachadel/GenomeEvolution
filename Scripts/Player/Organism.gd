@@ -211,21 +211,21 @@ func get_estimated_capacity(vesicle_name: String, object_length: float = Game.RE
 	
 func recompute_vesicle_total(resource_class: String):
 	var sum = 0
-	var old_total = cfp_resources[resource_class]["total"]
+
 	for resource in cfp_resources[resource_class]:
 		sum += cfp_resources[resource_class][resource]
 		
-	cfp_resources[resource_class]["total"] = sum - old_total
+	cfp_resources[resource_class]["total"] = sum
 	
 	return sum
 	
 func recompute_mineral_total(resource_class):
 	var sum = 0
-	var old_total = mineral_resources[resource_class]["total"]
+
 	for resource in mineral_resources[resource_class]:
 		sum += mineral_resources[resource_class][resource]
 		
-	mineral_resources[resource_class]["total"] = sum - old_total
+	mineral_resources[resource_class]["total"] = sum 
 	
 	return sum
 
@@ -1046,7 +1046,7 @@ func recombination():
 	if (is_ai):
 		gene_selection.clear();
 	else:
-		if !has_done_recombination:
+		if !has_done_recombination and Settings.tutorial():
 			yield(get_card_table().play_recombination_slides(), "completed")
 			has_done_recombination = true
 		# For some reason, this func bugs out when picking from the first cmsm (see comment at get_other_cmsm below)
@@ -1102,11 +1102,11 @@ func replicate(idx):
 		cmsms.replicate_cmsms([0, 1]);
 		cmsms.hide_all(true);
 		
-		if idx == 0 and !has_done_mitosis:
+		if idx == 0 and !has_done_mitosis and Settings.tutorial():
 			yield(get_card_table().play_mitosis_slides(), "completed")
 			has_done_mitosis = true
 			
-		if idx == 1 and !has_done_meiosis:
+		if idx == 1 and !has_done_meiosis and Settings.tutorial():
 			yield(get_card_table().play_meiosis_slides(), "completed")
 			has_done_meiosis = true
 		
@@ -1693,11 +1693,12 @@ func use_resources(action, num_times_performed = 1):
 			for resource in cfp_resources[resource_class]:
 				if cost <= cfp_resources[resource_class][resource]:
 					cfp_resources[resource_class][resource] -= cost
+					cfp_resources[resource_class]["total"] -= cost
 					break
 				else:
 					cost -= cfp_resources[resource_class][resource] 
+					cfp_resources[resource_class]["total"] -= cfp_resources[resource_class][resource] 
 					cfp_resources[resource_class][resource] = 0
-		recompute_vesicle_total(resource_class)
 					
 	for charge in mineral_resources: #should yield charges 1, 2, -2, etc.
 		var cost = get_mineral_cost(action, charge, num_times_performed)
@@ -1705,11 +1706,12 @@ func use_resources(action, num_times_performed = 1):
 			for resource in mineral_resources[charge]:
 				if cost <= mineral_resources[charge][resource]:
 					mineral_resources[charge][resource] -= cost
+					mineral_resources[charge]["total"] -= cost
 					break
 				else:
 					cost -= mineral_resources[charge][resource] 
+					mineral_resources[charge]["total"] -= mineral_resources[charge][resource]
 					mineral_resources[charge][resource] = 0
-		recompute_mineral_total(charge)
 		
 	set_energy(max(0, energy - get_energy_cost(action, num_times_performed)))
 	
@@ -2168,6 +2170,7 @@ func split_cfp_resources(num_splits: int) -> Array:
 		
 		for resource_class in cfp_resources:
 			new_dict[resource_class] = {}
+			new_dict[resource_class]["total"] = 0
 			for resource in cfp_resources[resource_class]:
 				new_dict[resource_class][resource] = 0
 				
@@ -2187,9 +2190,11 @@ func split_cfp_resources(num_splits: int) -> Array:
 						for i in range(num_splits):
 							if resource_total >= amount:
 								cfp_splits[i][resource_class][resource] += amount
+								cfp_splits[i][resource_class]["total"] += amount
 								resource_total -= amount
 							elif resource_total > 0:
 								cfp_splits[i][resource_class][resource] += 1
+								cfp_splits[i][resource_class]["total"] += 1
 								resource_total -= 1
 							else:
 								break
@@ -2205,6 +2210,7 @@ func split_mineral_resources(num_splits: int) -> Array:
 		
 		for resource_class in mineral_resources:
 			new_dict[resource_class] = {}
+			new_dict[resource_class]["total"] = 0
 			for resource in mineral_resources[resource_class]:
 				new_dict[resource_class][resource] = 0
 				
@@ -2224,9 +2230,11 @@ func split_mineral_resources(num_splits: int) -> Array:
 						for i in range(num_splits):
 							if resource_total >= amount:
 								mineral_splits[i][resource_class][resource] += amount
+								mineral_splits[i][resource_class]["total"] += amount
 								resource_total -= amount
 							elif resource_total > 0:
 								mineral_splits[i][resource_class][resource] += 1
+								mineral_splits[i][resource_class]["total"] += 1
 								resource_total -= 1
 							else:
 								break
