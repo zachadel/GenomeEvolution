@@ -169,12 +169,12 @@ func find_gene_count_of_type(class_type):
 			count += 1
 	return count
 
-func find_matching_genes(elm, left_idx_limit = -1, right_idx_limit = -1):
+func find_matching_genes(elm, left_idx_limit := 0, right_idx_limit := -1):
 	var matched = [];
 	if (right_idx_limit < 0):
 		right_idx_limit = get_child_count();
 	for i in range(get_child_count()):
-		if (i > left_idx_limit && i < right_idx_limit):
+		if (i >= left_idx_limit && i < right_idx_limit):
 			var gene = get_child(i);
 			if (elm.is_equal(gene, get_organism().get_max_gene_dist())):
 				matched.append(gene);

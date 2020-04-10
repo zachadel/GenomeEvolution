@@ -14,7 +14,8 @@ var is_ai
 var do_yields
 var born_on_turn
 var died_on_turn
-var num_progeny = 0;
+var num_progeny := 0;
+var num_dmg_genes := 0;
 
 var cell_str = "cell_1"
 
@@ -105,6 +106,7 @@ const RESOURCE_TYPES = ["simple_carbs", "complex_carbs", "simple_fats", "complex
 
 signal gene_clicked();
 signal cmsm_picked(cmsm);
+signal scissors_ended();
 
 signal doing_work(working);
 signal transposon_activity(active);
@@ -377,6 +379,33 @@ func gain_gaps(count = 1):
 			cmsms.create_gap();
 	return cmsms.collapse_gaps();
 
+const MAX_ENVIRON_INTERNAL_DMG_PERC = 0.5;
+const MIN_ENVIRON_INTERNAL_DMG_PERC = 0.25;
+func environmental_damage():
+	var total_count := get_rand_environmental_break_count();
+	var internal_dmg_count : int = int(rand_range(MIN_ENVIRON_INTERNAL_DMG_PERC, MAX_ENVIRON_INTERNAL_DMG_PERC) * total_count);
+	var gap_count := total_count - internal_dmg_count;
+	
+	# Gain internal dmg
+	var gene_list : Array = cmsms.get_all_genes();
+	var true_damaged := 0;
+	for i in range(internal_dmg_count):
+		var rand_idx := randi() % gene_list.size();
+		if rand_idx >= 0:
+			var rand_gene = gene_list[rand_idx];
+			gene_list.remove(rand_idx);
+			rand_gene.damage_gene(true);
+			if rand_gene.is_damaged():
+				true_damaged += 1;
+	# Gain gaps
+	if (do_yields):
+		gap_count = yield(gain_gaps(get_rand_environmental_break_count()), "completed");
+	else:
+		gap_count = gain_gaps(get_rand_environmental_break_count());
+	
+	emit_signal("justnow_update", "%d gene%s were damaged by the environment." % [true_damaged, "" if true_damaged == 1 else "s"]);
+	emit_signal("justnow_update", "%d gap%s appeared due to environmental damage." % [gap_count, "" if gap_count == 1 else "s"]);
+
 func jump_ates():
 	var _actives = cmsms.ate_list + [];
 	var justnow = "";
@@ -464,12 +493,10 @@ func _on_chromes_elm_mouse_exited(elm):
 	pass;
 
 var gene_selection = [];
-var roll_storage = [{}, {}]; # When a player selects a gap, its roll is stored. That way reselection scumming doesn't work
-# The array number refers to the kind of repair being done (i.e. it should reroll if it is using a different repair option)
-# The dictionaries are indexed by the gap object
-var repair_type_possible = [false, false, false];
-var repair_btn_text = ["", "", ""];
-var sel_repair_idx = -1;
+var repair_roll_storage = {"copy_pattern": {}, "join_ends": {}}; # When a player selects a gap, its roll is stored. That way reselection scumming doesn't work
+var repair_type_possible = {"collapse_dupes": false, "copy_pattern": false, "join_ends": false};
+var repair_btn_text = {"collapse_dupes": "", "copy_pattern": "", "join_ends": "", "repair_scissors": ""};
+var sel_repair_type := "";
 var sel_repair_gap = null;
 
 func has_resource_for_action(action, amt = 1):
@@ -489,59 +516,68 @@ func upd_repair_opts(gap):
 		var left_elm = cmsm.get_child(g_idx-1);
 		var right_elm = cmsm.get_child(g_idx+1);
 		
-		repair_type_possible[0] = true;
+		repair_type_possible["repair_scissors"] = true;
+		repair_btn_text["repair_scissors"] = "Trim";
+		if get_scissors_remaining() <= 0:
+			repair_type_possible["repair_scissors"] = false;
+			repair_btn_text["repair_scissors"] = "Need higher Disassembly for more removals";
+		
+		repair_type_possible["collapse_dupes"] = true;
 		if !Unlocks.has_repair_unlock("collapse_dupes"):
-			repair_type_possible[0] = false;
+			repair_type_possible["collapse_dupes"] = false;
 			var cps_remain : int = Unlocks.get_count_remaining(Unlocks.get_repair_key("collapse_dupes"), "cp_duped_genes");
-			repair_btn_text[0] = "Copy %d more gene%s with Copy Repair" % [cps_remain, Game.pluralize(cps_remain)];
+			repair_btn_text["collapse_dupes"] = "Copy %d more gene%s with Copy Repair" % [cps_remain, Game.pluralize(cps_remain)];
 		elif !has_resource_for_action("repair_cd"):
-			repair_type_possible[0] = false;
-			repair_btn_text[0] = "Not enough resources";
+			repair_type_possible["collapse_dupes"] = false;
+			repair_btn_text["collapse_dupes"] = "Not enough resources";
 		elif !cmsm.dupe_block_exists(g_idx):
-			repair_type_possible[0] = false;
-			repair_btn_text[0] = "No duplicates to collapse";
+			repair_type_possible["collapse_dupes"] = false;
+			repair_btn_text["collapse_dupes"] = "No duplicates to collapse";
 		
-		repair_type_possible[1] = true;
+		repair_type_possible["copy_pattern"] = true;
 		if !Unlocks.has_repair_unlock("copy_pattern"):
-			repair_type_possible[1] = false;
+			repair_type_possible["copy_pattern"] = false;
 			var jes_remain : int = Unlocks.get_count_remaining(Unlocks.get_repair_key("copy_pattern"), "repair_je");
-			repair_btn_text[1] = "Perform %d more Join Ends repair%s" % [jes_remain, Game.pluralize(jes_remain)];
+			repair_btn_text["copy_pattern"] = "Perform %d more Join Ends repair%s" % [jes_remain, Game.pluralize(jes_remain)];
 		elif !has_resource_for_action("repair_cp"):
-			repair_type_possible[1] = false;
-			repair_btn_text[1] = "Not enough resources";
+			repair_type_possible["copy_pattern"] = false;
+			repair_btn_text["copy_pattern"] = "Not enough resources";
 		elif !cmsms.get_other_cmsm(cmsm).pair_exists(left_elm, right_elm):
-			repair_type_possible[1] = false;
-			repair_btn_text[1] = "No pattern to copy";
+			repair_type_possible["copy_pattern"] = false;
+			repair_btn_text["copy_pattern"] = "No pattern to copy";
 		
-		repair_type_possible[2] = has_resource_for_action("repair_je");
-		if !repair_type_possible[2]:
-			repair_btn_text[2] = "Not enough resources";
+		repair_type_possible["join_ends"] = has_resource_for_action("repair_je");
+		if !repair_type_possible["join_ends"]:
+			repair_btn_text["join_ends"] = "Not enough resources";
 		
-		sel_repair_idx = 0;
-		while (sel_repair_idx < 2 && !repair_type_possible[sel_repair_idx]):
+		var sel_repair_idx = 0;
+		while (sel_repair_idx < repair_type_possible.size() && !repair_type_possible[repair_type_possible.keys()[sel_repair_idx]]):
 			sel_repair_idx += 1;
+		sel_repair_type = repair_type_possible.keys()[sel_repair_idx];
 	
 	emit_signal("show_repair_opts", true);
 
-func reset_repair_opts():
-	repair_type_possible = [false, false, false];
-	repair_btn_text = ["", "", ""];
-	emit_signal("show_repair_opts", false);
+func reset_repair_opts(and_hide := false):
+	repair_type_possible = {"collapse_dupes": false, "copy_pattern": false, "join_ends": false, "repair_scissors": false};
+	repair_btn_text = {"collapse_dupes": "", "copy_pattern": "", "join_ends": "", "repair_scissors": ""};
+	if and_hide:
+		emit_signal("show_repair_opts", false);
 
-func change_selected_repair(repair_idx):
-	sel_repair_idx = repair_idx;
+func change_selected_repair(rep_type: String):
+	sel_repair_type = rep_type;
 
 func auto_repair():
-	make_repair_choices(sel_repair_gap, sel_repair_idx);
+	make_repair_choices(sel_repair_gap, sel_repair_type);
 
-func apply_repair_choice(idx):
-	make_repair_choices(sel_repair_gap, idx);
+func apply_repair_choice(type: String):
+	make_repair_choices(sel_repair_gap, type);
 
-func make_repair_choices(gap, repair_idx):
+func make_repair_choices(gap, repair_type: String):
 	emit_signal("show_repair_opts", false);
 	var choice_info = {};
-	match repair_idx:
-		0: # Collapse Duplicates
+	var perform_repair := true;
+	match repair_type:
+		"collapse_dupes":
 			var gap_cmsm = gap.get_parent();
 			var g_idx = gap.get_index();
 			
@@ -614,7 +650,7 @@ func make_repair_choices(gap, repair_idx):
 			
 			if (choice_info["right"] == null):
 				return false;
-		1: # Copy Pattern
+		"copy_pattern":
 			var gap_cmsm = gap.get_parent();
 			var g_idx = gap.get_index();
 			var left_elm = gap_cmsm.get_child(g_idx-1);
@@ -658,12 +694,22 @@ func make_repair_choices(gap, repair_idx):
 			if (choice_info["right"] == null):
 				choice_info["left"].disable(true);
 				return false;
-	repair_gap(gap, repair_idx, choice_info);
+		"repair_scissors":
+			perform_repair = false;
+			emit_signal("justnow_update", "Choose up to %d more elements to remove. Click on the gap again to end early." % total_scissors_left);
+			scissors(true, false, "get_genes_next_to_elm", [gap]);
+			yield(self, "scissors_ended");
+			if selected_gap != null:
+				selected_gap.pressed = false;
+				selected_gap.highlight_border(true, true);
+			highlight_gap_choices();
+	if perform_repair:
+		repair_gap(gap, repair_type, choice_info);
 
 var repair_canceled = false;
-func repair_gap(gap, repair_idx, choice_info = {}):
-	if (repair_type_possible[repair_idx]):
-		repair_type_possible = [false, false, false];
+func repair_gap(gap, repair_type, choice_info = {}):
+	if (repair_type_possible[repair_type]):
+		reset_repair_opts();
 		var cmsm = gap.get_parent();
 		var g_idx : int = gap.get_index();
 		var gap_pos_disp = gap.get_position_display();
@@ -678,8 +724,8 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 		var original_select = gene_selection;
 		
 		repair_canceled = false;
-		match (repair_idx):
-			0: # Collapse Duplicates
+		match (repair_type):
+			"collapse_dupes":
 				Unlocks.add_count("repair_cd");
 				
 				var left_idx = choice_info["left"].get_index();
@@ -733,18 +779,18 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 				for times in range(remove_count):
 					use_resources("repair_cd");
 			
-			1: # Copy Pattern
+			"copy_pattern":
 				Unlocks.add_count("repair_cp");
 				
 				choice_info["left"].highlight_border(false);
-				if (!roll_storage[0].has(gap)):
-					roll_storage[0][gap] = roll_chance("copy_repair");
+				if (!repair_roll_storage["copy_pattern"].has(gap)):
+					repair_roll_storage["copy_pattern"][gap] = roll_chance("copy_pattern");
 				
-				var do_correction = bool(roll_chance("copy_repair_correction"));
+				var do_correction = bool(roll_chance("copy_pattern_correction"));
 				var correct_str = "";
 				if (do_correction):
 					correct_str = " One of the genes at the repair site was corrected to match its template gene.";
-				match (roll_storage[0][gap]):
+				match (repair_roll_storage["copy_pattern"][gap]):
 					0:
 						emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome without complications.%s" % (gap_pos_disp + [left_id, right_id, correct_str]));
 					1:
@@ -777,7 +823,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 							var gene = get_gene_selection();
 							var g_id = gene.get_gene_name(); # Saved here cuz it might free the gene in a bit
 							var damage_str = "";
-							match (roll_storage[0][gap]):
+							match (repair_roll_storage["copy_pattern"][gap]):
 								2: # Lose gene
 									damage_str = "was lost"
 									if (do_yields):
@@ -797,7 +843,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 							gene = left_break_gene;
 						
 						var boon_str = "";
-						match (roll_storage[0][gap]):
+						match (repair_roll_storage["copy_pattern"][gap]):
 							5: # Copy gene
 								boon_str = "was duplicated"
 								if (do_yields):
@@ -826,11 +872,11 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 						cmsms.close_gap(gap);
 					use_resources("repair_cp")
 					#print("repair copy pattern");
-			2: # Join Ends
+			"join_ends":
 				Unlocks.add_count("repair_je");
 				var seg_size := 0;
 				var seg_left_of_gap := true;
-				if (!roll_storage[1].has(gap)):
+				if (!repair_roll_storage["join_ends"].has(gap)):
 					var seg_end_right : int = cmsm.find_next_gap(g_idx + 1);
 					var seg_end_left : int = cmsm.find_next_gap(g_idx - 1, -1);
 					
@@ -850,12 +896,12 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 					seg_left_of_gap = seg_size == size_left;
 					
 					if Chance.roll_inversion(seg_size):
-						roll_storage[1][gap] = -1;
+						repair_roll_storage["join_ends"][gap] = -1;
 					else:
-						roll_storage[1][gap] = roll_chance("join_ends");
+						repair_roll_storage["join_ends"][gap] = roll_chance("join_ends");
 				
 				# Do this outside of the match so that it can change the roll val
-				if roll_storage[1][gap] == 7: # Gene merge
+				if repair_roll_storage["join_ends"][gap] == 7: # Gene merge
 					var keep_gene = left_break_gene;
 					var rem_gene = right_break_gene;
 					if right_break_gene.get_merge_priority() < left_break_gene.get_merge_priority():
@@ -867,8 +913,8 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 						cmsms.remove_elm(rem_gene, false);
 						emit_signal("justnow_update", "Joined ends for the gap at %d, %d; the %s and %s genes merged." % (gap_pos_disp+ [left_id, right_id]));
 					else:
-						roll_storage[1][gap] = 0;
-				match (roll_storage[1][gap]):
+						repair_roll_storage["join_ends"][gap] = 0;
+				match (repair_roll_storage["join_ends"][gap]):
 					-1: # Inversion
 						var seg_idxs : Array;
 						var seg_elms : Array;
@@ -904,7 +950,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 							var gene = get_gene_selection();
 							var g_id = gene.get_gene_name(); # Saved here cuz it'll free the gene in a bit
 							var damage_str = "";
-							match (roll_storage[1][gap]):
+							match (repair_roll_storage["join_ends"][gap]):
 								1: # Lose gene
 									damage_str = "was lost"
 									if (do_yields):
@@ -924,7 +970,7 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 							gene = left_break_gene;
 						
 						var boon_str = "";
-						match (roll_storage[1][gap]):
+						match (repair_roll_storage["join_ends"][gap]):
 							4: # Copy gene
 								boon_str = "was duplicated"
 								if (do_yields):
@@ -951,11 +997,12 @@ func repair_gap(gap, repair_idx, choice_info = {}):
 			highlight_gap_choices();
 
 func highlight_gap_choices():
-	reset_repair_opts();
+	cmsms.highlight_genes(gene_selection, false);
+	reset_repair_opts(true);
 	selected_gap = null;
 	cmsms.highlight_gaps();
 	var gap_text = "";
-	for g in cmsms.gap_list:
+	for g in cmsms.get_gap_list():
 		gap_text += "Chromosome %d needs a repair at %d.\n" % g.get_position_display();
 	emit_signal("updated_gaps", cmsms.gap_list.size() > 0, gap_text);
 	if (is_ai && cmsms.gap_list.size() > 0):
@@ -1009,8 +1056,10 @@ func refresh_behavior_profile():
 								
 	refresh_bprof = false
 
-func roll_chance(type : String) -> int:
-	return Chance.roll_chance_type(type, get_behavior_profile());
+func roll_chance(type : String, extra_mods := []) -> int:
+	return Chance.roll_chance_type(type, get_behavior_profile(), extra_mods);
+func roll_chance_named(type : String, extra_mods := {}) -> String:
+	return Chance.roll_chance_type_named(type, get_behavior_profile(), extra_mods);
 
 func evolve_cmsm(cmsm):
 	evolve_candidates(cmsm.get_genes());
@@ -1019,21 +1068,24 @@ func evolve_candidates(candids):
 	if (candids.size() > 0):
 		var justnow = "";
 		for e in candids:
-			var evolve_idx := roll_chance("evolve")
-			match evolve_idx:
-				0:
+			var dmg_mods := {};
+			if e.is_damaged():
+				dmg_mods = {"major_down": 5.0, "minor_down": 2.5};
+			var evolve_name := roll_chance_named("evolve", dmg_mods);
+			match evolve_name:
+				"none":
 					justnow += "%s did not evolve.\n" % e.get_gene_name();
-				1:
+				"dead":
 					justnow += "%s received a fatal mutation.\n" % e.get_gene_name();
-				2:
-					justnow += "%s received a major upgrade!\n" % e.get_gene_name();
-				3:
+				"major_down":
 					justnow += "%s received a major downgrade!\n" % e.get_gene_name();
-				4:
-					justnow += "%s received a minor upgrade.\n" % e.get_gene_name();
-				5:
+				"minor_down":
 					justnow += "%s received a minor downgrade.\n" % e.get_gene_name();
-			e.evolve_by_idx(evolve_idx);
+				"major_up":
+					justnow += "%s received a major upgrade!\n" % e.get_gene_name();
+				"minor_up":
+					justnow += "%s received a minor upgrade.\n" % e.get_gene_name();
+			e.evolve_by_name(evolve_name);
 		emit_signal("justnow_update", justnow);
 	else:
 		emit_signal("justnow_update", "No essential genes were duplicated, so no genes evolve.");
@@ -1060,7 +1112,7 @@ func recombination():
 				g.disable(true);
 			
 			# When first_elm lies on the top cmsm, this line breaks and only highlights genes on the top cmsm
-			gene_selection = cmsms.highlight_this_gene(cmsms.get_other_cmsm(first_elm.get_parent()), first_elm);
+			gene_selection = cmsms.highlight_this_gene(cmsms.get_other_cmsm(first_elm.get_cmsm()), first_elm);
 			yield(self, "gene_clicked");
 			var scnd_elm = get_gene_selection();
 			for g in gene_selection:
@@ -1085,6 +1137,52 @@ func recombination():
 				emit_signal("justnow_update", "Recombination failed.");
 				cont_recombo = false
 				emit_signal("doing_work", false);
+
+var doing_scissors := false;
+var total_scissors_left := 0;
+func scissors(obey_limit, create_gaps := true, cmsms_group_callback := "get_damaged_genes", callback_args := []):
+	if !doing_scissors:
+		doing_scissors = true;
+	
+	if selected_gap == null:
+		gene_selection.clear();
+	else:
+		gene_selection = [selected_gap];
+	gene_selection += cmsms.callv(cmsms_group_callback, callback_args);
+	emit_signal("doing_work", false);
+	if !gene_selection.empty():
+		cmsms.highlight_genes(gene_selection);
+		yield(self, "gene_clicked");
+		# Because this step is optional, by the time a gene is clicked, it might be a different turn
+		if doing_scissors:
+			var rem_elm = get_gene_selection();
+			if rem_elm == selected_gap:
+				emit_signal("scissors_ended");
+			else:
+				var cmsm = rem_elm.get_cmsm();
+				if (do_yields):
+					if create_gaps:
+						yield(cmsm.remove_elm_create_gap(rem_elm), "completed");
+					else:
+						yield(cmsm.remove_elm(rem_elm), "completed");
+				else:
+					if create_gaps:
+						cmsm.remove_elm_create_gap(rem_elm);
+					else:
+						cmsm.remove_elm(rem_elm);
+				cmsms.collapse_gaps();
+				if obey_limit:
+					total_scissors_left -= 1;
+				if doing_scissors:
+					if obey_limit && get_scissors_remaining() <= 0:
+						emit_signal("scissors_ended");
+					else:
+						if (do_yields):
+							yield(scissors(obey_limit, create_gaps, cmsms_group_callback, callback_args), "completed");
+						else:
+							scissors(obey_limit, create_gaps, cmsms_group_callback, callback_args);
+	elif do_yields:
+		yield(get_tree(), "idle_frame");
 
 func prune_cmsms(final_num, add_to_pool = true):
 	while (cmsms.get_cmsms().size() > final_num):
@@ -1190,7 +1288,16 @@ func get_rand_environmental_break_count() -> int:
 	
 	return int(round(norm_uv + randf() * (norm_oxy + norm_temp) / norm_component));
 
+func get_scissors_per_turn() -> int:
+	return int(floor(behavior_profile.get_behavior("Deconstruction")));
+
+func get_scissors_remaining() -> int:
+	return total_scissors_left;
+
 func adv_turn(round_num, turn_idx):
+	doing_scissors = false;
+	cmsms.highlight_genes(gene_selection, false);
+	gene_selection.clear();
 	if (died_on_turn == -1):
 		match (Game.get_turn_type()):
 			Game.TURN_TYPES.Map:
@@ -1214,7 +1321,8 @@ func adv_turn(round_num, turn_idx):
 				emit_signal("transposon_activity", false);
 				emit_signal("doing_work", false);
 			Game.TURN_TYPES.RepairBreaks:
-				roll_storage = [{}, {}];
+				total_scissors_left = get_scissors_per_turn();
+				repair_roll_storage = {"copy_pattern": {}, "join_ends": {}};
 				var num_gaps = cmsms.gap_list.size();
 				if (num_gaps == 0):
 					emit_signal("justnow_update", "No gaps present.");
@@ -1225,15 +1333,20 @@ func adv_turn(round_num, turn_idx):
 				highlight_gap_choices();
 			Game.TURN_TYPES.EnvironmentalDamage:
 				emit_signal("doing_work", true);
-				var rand;
 				if (do_yields):
-					rand = yield(gain_gaps(get_rand_environmental_break_count()), "completed");
+					yield(environmental_damage(), "completed");
 				else:
-					rand = gain_gaps(get_rand_environmental_break_count());
-				var plrl = "s";
-				if (rand == 1):
-					plrl = "";
-				emit_signal("justnow_update", "%d gap%s appeared due to environmental damage." % [rand, plrl]);
+					environmental_damage();
+				emit_signal("doing_work", false);
+			Game.TURN_TYPES.RemoveDamage:
+				if cmsms.get_damaged_genes().empty():
+					emit_signal("justnow_update", "No damaged genes present.");
+				else:
+					emit_signal("justnow_update", "If you want, you can remove damaged genes. They will leave behind gaps, which will need to be repaired.");
+					if (do_yields):
+						yield(scissors(false), "completed");
+					else:
+						scissors(false);
 				emit_signal("doing_work", false);
 			Game.TURN_TYPES.Recombination:
 				emit_signal("justnow_update", "If you want, you can select a gene that is common to both chromosomes. Those genes and every gene to their right swap chromosomes.\nThis recombination has a %d%% chance of success." % (100*recombo_chance));
@@ -1718,7 +1831,8 @@ func use_resources(action, num_times_performed = 1):
 const COST_STR_FORMAT = ", %s %s";
 const COST_STR_COMMA_IDX = 2;
 func get_cost_string(action):
-	
+	if !costs.has(action):
+		return "UNKOWN COST";
 	var cost_mult = get_cost_mult(action);
 	var cost_str = "";
 	for r in costs[action]:

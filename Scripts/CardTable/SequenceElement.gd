@@ -39,6 +39,7 @@ var behavior_to_spec_type := {
 	"Locomotion": "terrain",
 };
 var ph_preference := 7.0;
+var internal_damaged := false;
 
 var ate_activity := 0.0;
 var ate_personality := {};
@@ -110,11 +111,11 @@ func _perf_ate_art_setup():
 	if is_pseudo():
 		AnthroArt.safe_callv("set_eye_droop", [1.0]);
 
-func setup(_type : String, _id := "", _mode := "", _code := "", _par_code := "", _ph := -1.0, _code_dir := false):
+func setup(_type : String, _id := "", _mode := "", _code := "", _par_code := "", _ph := -1.0, _code_dir := false, _dmg := false):
 	id = _id;
 	type = _type;
 	mode = _mode;
-	
+	damage_gene(_dmg);
 	if (_ph < 0 || _ph > 14):
 		ph_preference = Chance.rand_normal_between(0, 14);
 	else:
@@ -177,6 +178,7 @@ func setup_copy(ref_elm):
 			"ate":
 				ate_activity = ref_elm.ate_activity;
 				obtain_ate_personality(ref_elm.ate_personality["key"]);
+	damage_gene(ref_elm.is_damaged());
 	upd_display();
 	
 	code_direction = ref_elm.code_direction;
@@ -188,14 +190,14 @@ func setup_copy(ref_elm):
 	disable(true);
 
 func get_save_data():
-	var elm_data = ["type", "id", "mode", "gene_code", "parent_code", "ph_preference", "code_direction"];
-	for i in range(elm_data.size()):
-		elm_data[i] = get(elm_data[i]);
-	var ate_id_key = Game.get_ate_key_by_name(elm_data[1]);
+	var setup_data = ["type", "id", "mode", "gene_code", "parent_code", "ph_preference", "code_direction", "internal_damaged"];
+	for i in range(setup_data.size()):
+		setup_data[i] = get(setup_data[i]);
+	var ate_id_key = Game.get_ate_key_by_name(setup_data[1]);
 	if !ate_id_key.empty():
-		elm_data[1] = ate_id_key;
+		setup_data[1] = ate_id_key;
 	
-	return [elm_data, get_ess_behavior_raw(), get_specialization()];
+	return [setup_data, get_ess_behavior_raw(), get_specialization()];
 
 func load_from_save(save_data):
 	display_locked = true;
@@ -517,6 +519,10 @@ func kill_elm():
 	
 	mode = "pseudo";
 
+func damage_gene(dmg := true):
+	internal_damaged = is_behavior_gene() && dmg;
+	$Damage.visible = internal_damaged;
+
 func evolve(major : bool, up : bool) -> void:
 	var code_change = 3;
 	
@@ -535,23 +541,24 @@ func evolve(major : bool, up : bool) -> void:
 	
 	modify_code(code_change, code_change * up_sign);
 	
+	damage_gene(false);
 	upd_display();
 	get_cmsm().emit_signal("cmsm_changed");
 
-func evolve_by_idx(idx : int) -> void:
-	if (type == "gene"):
-		match idx:
-			1: # Gene death
+func evolve_by_name(ev_name: String) -> void:
+	if type == "gene":
+		match ev_name:
+			"dead":
 				modify_code(5, -5);
 				kill_elm();
-			2: # Major Upgrade
-				evolve(true, true);
-			3: # Major Downgrade
+			"major_down":
 				evolve(true, false);
-			4: # Minor Upgrade
-				evolve(false, true);
-			5: # Minor Downgrade
+			"minor_down":
 				evolve(false, false);
+			"major_up":
+				evolve(true, true);
+			"minor_up":
+				evolve(false, true);
 
 func get_tooltip_data() -> Array:
 	match type:
@@ -663,23 +670,29 @@ func get_position_display():
 func is_gap():
 	return type == "break";
 
+func is_gene():
+	return type == "gene";
+
 func is_ate():
-	return type == "gene" && mode == "ate";
+	return is_gene() && mode == "ate";
 
 func is_essential():
-	return type == "gene" && mode == "essential";
+	return is_gene() && mode == "essential";
 
 func is_pseudo():
-	return type == "gene" && mode == "pseudo";
+	return is_gene() && mode == "pseudo";
 
 func is_blank():
-	return type == "gene" && mode == "blank";
+	return is_gene() && mode == "blank";
 
 func is_dead():
 	return is_pseudo() || is_blank();
 
 func is_behavior_gene():
 	return is_ate() || is_essential();
+
+func is_damaged():
+	return internal_damaged;
 
 func disable(dis):
 	disabled = dis;
