@@ -6,7 +6,7 @@ var default_te_texture = load("res://Assets/Images/tes/default_te.png");
 var helix_textures = {true: load("res://Assets/Images/genes/Helix_Circle.png"), false: load("res://Assets/Images/genes/Helix.png")}
 
 enum ESSENTIAL_CLASSES {Replication, Locomotion, Helper, Manipulation, Sensing, Component, Construction, Deconstruction};
-enum TURN_TYPES {Map, NewTEs, TEJump, RepairBreaks, EnvironmentalDamage, Recombination, Evolve, CheckViability, Replication};
+enum TURN_TYPES {Map, NewTEs, TEJump, RepairBreaks, EnvironmentalDamage, Recombination, Evolve, CheckViability, Replication, RemoveDamage};
 #These mark what the current state of the player is as it relates to the map
 enum PLAYER_VIEW {
 	DEAD, #What inputs should be available when the player dies on the map
@@ -135,7 +135,7 @@ var SECONDARY_RESOURCE_MIN = 0
 const GEN_SCALING = 100 
 const TOLERANCE = .0001
 
-var turns = [TURN_TYPES.Map, TURN_TYPES.NewTEs, TURN_TYPES.TEJump, TURN_TYPES.RepairBreaks, TURN_TYPES.EnvironmentalDamage,
+var turns = [TURN_TYPES.Map, TURN_TYPES.NewTEs, TURN_TYPES.TEJump, TURN_TYPES.RepairBreaks, TURN_TYPES.EnvironmentalDamage, TURN_TYPES.RemoveDamage,
 	TURN_TYPES.RepairBreaks, TURN_TYPES.Recombination, TURN_TYPES.Replication, TURN_TYPES.CheckViability];
 var turn_idx
 var round_num
@@ -346,6 +346,8 @@ func get_turn_txt(turn_type := -1) -> String:
 			return "Repair Breaks";
 		TURN_TYPES.EnvironmentalDamage:
 			return "Environmental Damage";
+		TURN_TYPES.RemoveDamage:
+			return "Remove Damaged Genes";
 		TURN_TYPES.Recombination:
 			return "Recombination";
 		TURN_TYPES.Evolve:

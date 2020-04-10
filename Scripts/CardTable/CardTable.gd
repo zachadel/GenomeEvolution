@@ -13,6 +13,7 @@ onready var status_bar = $ChromosomeStatus;
 onready var energy_bar = get_node("EnergyBar")
 
 onready var ph_filter_panel := $pnl_ph_filter;
+onready var justnow_ctl := $ctl_justnow;
 
 var has_gaps = false;
 var wait_on_anim = false;
@@ -43,7 +44,7 @@ func get_cmsm_status():
 
 func show_replicate_opts(show):
 	if $pnl_reproduce.visible != show:
-		close_extra_menus($pnl_reproduce);
+		close_extra_menus($pnl_reproduce, true);
 	if show:
 		$pnl_reproduce/hsplit/ilist_choices.select(0);
 		upd_replicate_desc(0);
@@ -107,12 +108,29 @@ func do_replicate(idx):
 
 # Gaps and repairs
 
+const REP_TYPE_TO_IDX = {
+	"collapse_dupes": 0,
+	"copy_pattern": 1,
+	"join_ends": 2,
+	"repair_scissors": 3
+};
+var REP_IDX_TO_TYPE := {};
+func repair_type_to_idx(type: String) -> int:
+	return REP_TYPE_TO_IDX.get(type, -1);
+func repair_idx_to_type(idx: int) -> String:
+	if REP_IDX_TO_TYPE.empty():
+		for k in REP_TYPE_TO_IDX:
+			REP_IDX_TO_TYPE[REP_TYPE_TO_IDX[k]] = k;
+	
+	return REP_IDX_TO_TYPE.get(idx, "");
+
 func show_repair_opts(show):
 	if $pnl_repair_choices.visible != show:
 		close_extra_menus($pnl_repair_choices);
 	if (show):
-		$pnl_repair_choices/hsplit/ilist_choices.select(orgn.sel_repair_idx);
-		upd_repair_desc(orgn.sel_repair_idx);
+		var sel_idx := repair_type_to_idx(orgn.sel_repair_type);
+		$pnl_repair_choices/hsplit/ilist_choices.select(sel_idx);
+		upd_repair_desc(sel_idx);
 
 func _on_Organism_show_repair_opts(show):
 	show_repair_opts(show);
@@ -121,31 +139,34 @@ func hide_repair_opts():
 	close_extra_menus();
 
 const REPAIR_DESC_FORMAT = "Cost:\n%s\n\n%s";
-func get_repair_desc(idx):
+func get_repair_desc(type):
 	var action_name = "";
-	var tooltip_key = "";
-	match (idx):
-		0:
+	var tooltip = Tooltips.get_repair_desc(type);
+	match (type):
+		"collapse_dupes":
 			action_name = "repair_cd";
-			tooltip_key = "collapse_dupes";
-		1:
+		"copy_pattern":
 			action_name = "repair_cp";
-			tooltip_key = "copy_pattern";
-		2:
+		"join_ends":
 			action_name = "repair_je";
-			tooltip_key = "join_ends";
+		"repair_scissors":
+			action_name = "repair_scissors";
+			var cuts_per_turn = orgn.get_scissors_per_turn();
+			var cuts_left = orgn.get_scissors_remaining();
+			tooltip %= [cuts_per_turn, "" if cuts_per_turn == 1 else "s", cuts_left];
 		var _err_idx:
-			return "This is an error! You picked an option (#%d) we are not familiar with!" % _err_idx;
-	return REPAIR_DESC_FORMAT % [orgn.get_cost_string(action_name), Tooltips.REPAIR_TTIPS[tooltip_key]];
+			return "This is an error! You picked an option (%s) we are not familiar with!" % _err_idx;
+	return REPAIR_DESC_FORMAT % [orgn.get_cost_string(action_name), tooltip];
 
 func upd_repair_desc(idx):
+	var type = repair_idx_to_type(idx);
 	var btn = $pnl_repair_choices/hsplit/vsplit/btn_apply_repair;
-	btn.disabled = !orgn.repair_type_possible[idx];
+	btn.disabled = !orgn.repair_type_possible[type];
 	btn.text = "Repair";
-	orgn.change_selected_repair(idx);
+	orgn.change_selected_repair(type);
 	if (btn.disabled):
-		btn.text = orgn.repair_btn_text[idx];
-	$pnl_repair_choices/hsplit/vsplit/scroll/lbl_choice_desc.text = get_repair_desc(idx);
+		btn.text = orgn.repair_btn_text[type];
+	$pnl_repair_choices/hsplit/vsplit/scroll/lbl_choice_desc.text = get_repair_desc(type);
 
 func _on_btn_apply_repair_pressed():
 	$pnl_saveload.new_save(Game.get_save_str());
@@ -220,9 +241,6 @@ func _on_Organism_died(org):
 
 func show():
 	.show();
-	print("show!");
-#	if Game.is_first_turn():
-#		adv_turn();
 	check_if_ready();
 	
 	upd_turn_display(true, true);
@@ -234,6 +252,7 @@ func set_map_btn_texture(texture_path: String) -> void:
 	$ViewMap.texture_disabled = tex;
 	$ViewMap.texture_pressed = tex;
 
+const TURNS_WITHOUT_AUTO_CONTINUE = [ Game.TURN_TYPES.RemoveDamage];
 func check_if_ready():
 	var end_mapturn_on_mapscreen = Game.get_turn_type() == Game.TURN_TYPES.Map && Unlocks.has_turn_unlock(Game.TURN_TYPES.Map);
 	
@@ -245,35 +264,44 @@ func check_if_ready():
 	else:
 		nxt_btn.disabled = true;
 	
+	var auto_continue := true;
+	match Game.get_turn_type():
+		Game.TURN_TYPES.Recombination:
+			auto_continue = false;
+		Game.TURN_TYPES.RemoveDamage:
+			auto_continue = orgn.gene_selection.empty();
 	# Continue automatically
-	if !nxt_btn.disabled && Game.get_turn_type() != Game.TURN_TYPES.Recombination:
+	if !nxt_btn.disabled && auto_continue:
 		$AutoContinue.start();
 
-onready var central_menus := [$pnl_saveload, ph_filter_panel, $pnl_bugreport, $ctl_justnow, $pnl_repair_choices, $pnl_reproduce];
-func close_extra_menus(toggle_menu: Control = null) -> void:
-	var restore_justnow = toggle_menu == null;
+onready var central_menus := [$pnl_saveload, ph_filter_panel, $pnl_bugreport, justnow_ctl, $pnl_repair_choices, $pnl_reproduce];
+onready var default_menu : Control = justnow_ctl;
+func close_extra_menus(toggle_menu: Control = null, make_default := false) -> void:
+	var restore_default = toggle_menu == null;
 	for p in central_menus:
 		if (p == toggle_menu):
 			p.visible = !p.visible;
 			if !p.visible:
-				restore_justnow = true;
+				restore_default = true;
 		else:
 			p.visible = false;
-	if restore_justnow:
-		$ctl_justnow.visible = true;
+	if make_default:
+		if toggle_menu.visible:
+			default_menu = toggle_menu;
+		else:
+			default_menu = justnow_ctl;
+	if restore_default:
+		default_menu.visible = true;
 
 func show_chaos_anim():
 	close_extra_menus($pnl_chaos);
 	$pnl_chaos/Anim.play("show");
-	print("showing");
 
 func hide_chaos_anim():
 	$pnl_chaos/Anim.play("hide");
-	print("hiding");
 
 func _on_chaos_anim_finished(anim_name: String):
 	if anim_name == "hide":
-		print("done hiding");
 		close_extra_menus();
 
 func play_recombination_slides():

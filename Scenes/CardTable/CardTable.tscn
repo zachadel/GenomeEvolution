@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://Scripts/CardTable/CardTable.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player/Organism.tscn" type="PackedScene" id=2]
@@ -17,6 +17,7 @@
 [ext_resource path="res://Scenes/CardTable/TurnList.tscn" type="PackedScene" id=15]
 [ext_resource path="res://Scenes/CardTable/DarkenedBG.tres" type="StyleBox" id=16]
 [ext_resource path="res://Scenes/CardTable/LabeledNumber.tscn" type="PackedScene" id=17]
+[ext_resource path="res://Assets/Images/icons/scissors.png" type="Texture" id=18]
 [ext_resource path="res://Assets/Images/pngs/DNA_small.png" type="Texture" id=19]
 
 [sub_resource type="Theme" id=1]
@@ -133,22 +134,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="lnum_turn" parent="." instance=ExtResource( 17 )]
-margin_left = 1177.4
-margin_top = 792.691
-margin_right = 1277.4
-margin_bottom = 892.691
-num = 0
-lbl = "Round"
-
-[node name="lnum_progeny" parent="." instance=ExtResource( 17 )]
-margin_left = 1297.4
-margin_top = 792.691
-margin_right = 1397.4
-margin_bottom = 892.691
-num = 0
-lbl = "Progeny"
-
 [node name="lbl_turnorder" type="Label" parent="."]
 anchor_left = 1.0
 anchor_top = 1.0
@@ -207,9 +192,9 @@ __meta__ = {
 
 [node name="TurnList" parent="." instance=ExtResource( 15 )]
 margin_left = 1164.0
-margin_top = 621.0
+margin_top = 618.0
 margin_right = 1414.0
-margin_bottom = 788.0
+margin_bottom = 801.0
 
 [node name="button_grid" type="VBoxContainer" parent="."]
 anchor_left = 1.0
@@ -315,35 +300,39 @@ margin_top = -266.0
 margin_right = 296.0
 margin_bottom = -36.0
 __meta__ = {
-"_edit_group_": true
+"_edit_group_": true,
+"_edit_use_anchors_": false
 }
 
 [node name="hsplit" type="HSplitContainer" parent="pnl_repair_choices"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = 15.0
+margin_top = 3.0
 margin_right = -6.0
-margin_bottom = -14.0
+margin_bottom = -2.0
 split_offset = 230
 dragger_visibility = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ilist_choices" type="ItemList" parent="pnl_repair_choices/hsplit"]
 margin_right = 230.0
-margin_bottom = 201.0
-items = [ "Collapse Duplicates", ExtResource( 4 ), false, "Copy Pattern", ExtResource( 5 ), false, "Join Ends", ExtResource( 6 ), false ]
+margin_bottom = 225.0
+items = [ "Collapse Duplicates", ExtResource( 4 ), false, "Copy Pattern", ExtResource( 5 ), false, "Join Ends", ExtResource( 6 ), false, "Trim", ExtResource( 18 ), false ]
 same_column_width = true
 fixed_icon_size = Vector2( 50, 50 )
 
 [node name="vsplit" type="VSplitContainer" parent="pnl_repair_choices/hsplit"]
 margin_left = 242.0
 margin_right = 554.0
-margin_bottom = 201.0
-split_offset = 127
+margin_bottom = 225.0
+split_offset = 160
 dragger_visibility = 1
 
 [node name="scroll" type="ScrollContainer" parent="pnl_repair_choices/hsplit/vsplit"]
 margin_right = 312.0
-margin_bottom = 127.0
+margin_bottom = 160.0
 scroll_horizontal_enabled = false
 
 [node name="lbl_choice_desc" type="Label" parent="pnl_repair_choices/hsplit/vsplit/scroll"]
@@ -354,9 +343,9 @@ text = "This is a big long big long big long big long big long big long big long
 autowrap = true
 
 [node name="btn_apply_repair" type="Button" parent="pnl_repair_choices/hsplit/vsplit"]
-margin_top = 139.0
+margin_top = 172.0
 margin_right = 312.0
-margin_bottom = 201.0
+margin_bottom = 225.0
 text = "Repair"
 
 [node name="pnl_reproduce" type="Panel" parent="."]
@@ -615,6 +604,20 @@ stretch_mode = 6
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="lnum_turn" parent="." instance=ExtResource( 17 )]
+margin_left = 1169.4
+margin_top = 805.0
+margin_right = 1269.4
+margin_bottom = 895.0
+lbl = "Round"
+
+[node name="lnum_progeny" parent="." instance=ExtResource( 17 )]
+margin_left = 1313.4
+margin_top = 805.0
+margin_right = 1413.4
+margin_bottom = 895.0
+lbl = "Progeny"
 
 [node name="EnergyBar" parent="." instance=ExtResource( 14 )]
 margin_left = 1.894
