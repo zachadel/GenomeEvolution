@@ -326,10 +326,12 @@ func setup(card_table):
 			else:
 				nxt_gelm.set_ess_behavior({g: 1.0})
 			nxt_gelm.setup("gene", g, "essential");
+			nxt_gelm.evolve_skill(g);
 		else:
 			nxt_gelm.setup("gene", g, g);
 		
 		cmsms.get_cmsm(0).add_elm(nxt_gelm);
+		nxt_gelm.upd_display();
 		cmsms.get_cmsm(1).add_elm(Game.copy_elm(nxt_gelm));
 		
 	gain_ates(min_tes + randi() % int((max_tes - min_tes + 1)));

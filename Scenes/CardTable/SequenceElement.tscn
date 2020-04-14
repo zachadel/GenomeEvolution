@@ -48,6 +48,7 @@ __meta__ = {
 }
 
 [node name="Damage" type="TextureRect" parent="."]
+visible = false
 self_modulate = Color( 0.670588, 0, 0, 1 )
 show_behind_parent = true
 anchor_right = 1.0

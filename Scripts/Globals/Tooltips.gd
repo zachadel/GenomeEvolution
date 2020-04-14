@@ -81,8 +81,8 @@ const WORLDMAP_TTIPS = {
 const GENE_TYPE_DESC = "This is %s %s.";
 const UNNAMED_GENES = ["Pseudogene", "Transposon"];
 const NO_BEHAVIOR_GENES = ["Pseudogene", "Blank"];
-const GENE_TTIP_FORMAT = "%s\n\n%s";
-const STATUS_TTIP_FORMAT = "%s\n\n%s";
+const GENE_TTIP_FORMAT = "%s\n\n%s\n\n%s"; # "This is an XYZ gene", "An XYZ gene does ABC", "It has these skills:"
+const STATUS_TTIP_FORMAT = "%s\n\n%s\n\n%s"; # "XYZ genes do ABC", "It has these skills:", "Comparison (during replication)"
 
 func _get_gene_desc(type : String) -> String:
 	return BASE_TTIPS[type] % GENE_NAMES[type];
@@ -103,15 +103,41 @@ func _get_gene_title(type : String, capitalize_gene := true, incl_acronym := tru
 	
 	return gene_name + gene_title;
 
-func get_gene_ttip(type : String) -> String:
+func get_gene_ttip(type: String, skills := {}) -> String:
 	var article = "a";
 	if type == "Construction":
 		article = "an"; # "this is *an* Assembly gene"
 	
-	return GENE_TTIP_FORMAT % [(GENE_TYPE_DESC % [article, _get_gene_title(type, false)]), _get_gene_desc(type)];
+	return GENE_TTIP_FORMAT % [
+		(GENE_TYPE_DESC % [article, _get_gene_title(type, false)]),
+		_get_gene_desc(type),
+		get_skill_list(skills, "This gene has the following skills.\n"),
+	];
 
-func get_status_ttip(type : String, compare : String) -> String:
-	return STATUS_TTIP_FORMAT % [_get_gene_desc(type), COMPARE_TTIPS[compare]];
+func get_skill_list(skill_dict: Dictionary, pfx := "", specific_behavior := "") -> String:
+	var list_text := "";
+	if !skill_dict.empty():
+		var list_behaviors := [specific_behavior] if !specific_behavior.empty() else skill_dict.keys();
+		for b in list_behaviors:
+			if list_behaviors.size() > 1:
+				if !list_text.empty():
+					list_text += "\n";
+				list_text += "%s:" % b;
+			for s in skill_dict[b]:
+				if !list_text.empty():
+					list_text += "\n";
+				list_text += "	%s" % Skills.get_skill_desc(b, s);
+	
+	if list_text.empty():
+		return "No associated skills.";
+	return pfx + list_text;
+
+func get_status_ttip(type: String, compare: String, skills := {}) -> String:
+	return STATUS_TTIP_FORMAT % [
+		_get_gene_desc(type),
+		get_skill_list(skills, "The following skills are active.\n", type),
+		COMPARE_TTIPS[compare],
+	];
 
 #	888888ba  oo                   dP                   
 #	88    `8b                      88                   
@@ -200,18 +226,18 @@ func disp_ttip_text(for_node : CanvasItem, body : String, title : String = ""):
 #	                       88                                  
 #	                       dP                                  
 
-func set_gene_ttip(type, ph_pref):
+func set_gene_ttip(type, ph_pref, skills := {}):
 	var gene_title = "%s Gene";
 	if (type in UNNAMED_GENES):
 		gene_title = "%s";
 	
-	var tt_text = get_gene_ttip(type);
+	var tt_text = get_gene_ttip(type, skills);
 	if !(type in NO_BEHAVIOR_GENES):
 		tt_text += "\n\nThis gene operates optimally at a pH of %.2f." % ph_pref;
 	set_tooltip_text(tt_text, gene_title % GENE_NAMES[type]);
 
-func set_status_ttip(type, compare):
-	set_tooltip_text(get_status_ttip(type, compare), GENE_NAMES[type]);
+func set_status_ttip(type, compare, skills := {}):
+	set_tooltip_text(get_status_ttip(type, compare, skills), GENE_NAMES[type]);
 
 func set_energy_ttip(energy):
 	TooltipBody.clear()

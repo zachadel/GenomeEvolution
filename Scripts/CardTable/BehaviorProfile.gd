@@ -19,7 +19,7 @@ func set_skills(skill_profs: Array) -> void:
 		add_skill_dict(p);
 
 func add_skill_dict(skill_dict: Dictionary) -> void:
-	for k in BEHAVIORS:
+	for k in skill_dict:
 		if !skill_prof_data.has(k):
 			skill_prof_data[k] = [];
 		for s in skill_dict[k]:

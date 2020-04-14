@@ -72,9 +72,6 @@ onready var CodeArrow : TextureRect = $direct_arrow;
 func _ready():
 	current_size = DEFAULT_SIZE;
 	Tooltips.setup_delayed_tooltip(self);
-	for k in ess_behavior:
-		get_node("Indic%s" % k).ttip_data = [k, "base"];
-	
 	if type == "gene":
 		set_code_arrow_dir(code_direction);
 	if setup_ate_display_onready || mode == "ate" && !AnthroArt.has_art():
@@ -178,6 +175,7 @@ func setup_copy(ref_elm):
 			"essential":
 				ess_behavior = ref_elm.ess_behavior.duplicate();
 				specialization = ref_elm.specialization.duplicate();
+				skills = ref_elm.skills.duplicate();
 			"ate":
 				ate_activity = ref_elm.ate_activity;
 				obtain_ate_personality(ref_elm.ate_personality["key"]);
@@ -200,13 +198,14 @@ func get_save_data():
 	if !ate_id_key.empty():
 		setup_data[1] = ate_id_key;
 	
-	return [setup_data, get_ess_behavior_raw(), get_specialization()];
+	return [setup_data, get_ess_behavior_raw(), get_specialization(), get_skill_bare_dict()];
 
 func load_from_save(save_data):
 	display_locked = true;
 	callv("setup", save_data[0]);
 	set_ess_behavior(save_data[1]);
 	set_specialization(save_data[2]);
+	set_skills(save_data[3]);
 	display_locked = false;
 	upd_display();
 
@@ -460,10 +459,29 @@ func get_skill_profile(behavior := {}) -> Dictionary:
 		behavior = get_ess_behavior();
 	
 	var skill_prof := {};
-	for k in behavior:
-		if behavior[k] > 0.0:
+	for k in skills:
+		if behavior.get(k, 0.0) > 0.0:
 			skill_prof[k] = skills[k];
 	return skill_prof;
+
+func get_skill_bare_dict() -> Dictionary:
+	var skill_bdict := {};
+	for k in skills:
+		if !skills[k].empty():
+			skill_bdict[k] = skills[k];
+	return skill_bdict;
+
+func set_skills(skill_dict: Dictionary) -> void:
+	for k in skill_dict:
+		skills[k] = skill_dict[k];
+
+func evolve_skill(behave_key: String, gain := true) -> void:
+	var new_skill := Skills.get_random_skill(behave_key);
+	if !new_skill.empty() && !has_skill(behave_key, new_skill):
+		just_evolved_skill = true;
+		if !skills.has(behave_key):
+			skills[behave_key] = [];
+		skills[behave_key].append(new_skill);
 
 func evolve_new_behavior(gain : bool) -> void:
 	if (gain):
@@ -474,10 +492,7 @@ func evolve_new_behavior(gain : bool) -> void:
 		var behave_key : String = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
 		
 		if randf() <= get_skillup_chance():
-			var new_skill := Skills.get_random_skill(behave_key);
-			if !new_skill.empty() && !has_skill(behave_key, new_skill):
-				just_evolved_skill = true;
-				skills[behave_key].append(new_skill);
+			evolve_skill(behave_key);
 		if !just_evolved_skill:
 			if randf() <= get_gain_chance(key_candids.size(), ess_behavior.size()):
 				behave_key = key_candids[randi() % key_candids.size()];
@@ -596,7 +611,7 @@ func get_tooltip_data() -> Array:
 					key = "Pseudogene";
 				"blank":
 					key = "Blank";
-			return ["set_gene_ttip", [key, ph_preference]];
+			return ["set_gene_ttip", [key, ph_preference, skills]];
 		"break":
 			return ["Click on open breaks to repair them. All breaks need to be repaired before more actions can be taken.", "Break"];
 	return ["I don't know what this is!", "Truly a Mystery"];
@@ -605,17 +620,18 @@ func upd_behavior_disp(behavior = ""):
 	match mode:
 		"essential":
 			if (behavior != ""):
-				get_node("Indic" + behavior).set_value(ess_behavior[behavior]);
+				var indicator = get_node("Indic%s" % behavior);
+				indicator.set_value(ess_behavior[behavior]);
+				indicator.set_skilled(!skills.get(behavior, []).empty());
+				indicator.ttip_data = [behavior, "base", skills];
 			else:
-				continue;
+				for b in ess_behavior:
+					upd_behavior_disp(b);
 		"ate":
 			get_node("IndicATE").set_value(ate_activity);
 			var droop_amt = 1.0 - inverse_lerp(0.0, 1.5, ate_activity);
 			if AnthroArt != null:
 				AnthroArt.safe_callv("set_eye_droop", [droop_amt])
-		_:
-			for b in ess_behavior:
-				get_node("Indic" + b).set_value(ess_behavior[b]);
 
 var forced_comparison_color = null;
 func color_comparison(compare_type : String, compare_val : float):
