@@ -357,8 +357,7 @@ func insert_from_behavior(sq_elm, this_cmsm, ref_pos, behave_dict = Game.DEFAULT
 	# Get spots from this cmsm
 	if (behave_dict["this_cmsm"]):
 		for s in [-1, 1]:
-			var start = ref_pos + s * behave_dict["min_dist"];
-			start = clamp(start, 0, this_cmsm.get_child_count());
+			var start = clamp(ref_pos + s * behave_dict["min_dist"], 0, this_cmsm.get_child_count());
 			var end = behave_dict["max_dist"];
 			if (end == -1):
 				end = this_cmsm.get_child_count();
@@ -368,6 +367,7 @@ func insert_from_behavior(sq_elm, this_cmsm, ref_pos, behave_dict = Game.DEFAULT
 				possible_spots += range(start, end + 1); # = [start, start+1, ..., end-1, end]
 			else:
 				possible_spots += range(end + 1, start + 2);
+	var cmsm_change_idx = possible_spots.size(); # Save this, we're about to add to the possible_spots
 	# Get spots from the other cmsm
 	if (behave_dict["other_cmsm"]):
 		var start = round(behave_dict["min_range"] * other_cmsm.get_child_count());
@@ -379,7 +379,7 @@ func insert_from_behavior(sq_elm, this_cmsm, ref_pos, behave_dict = Game.DEFAULT
 	var final_idx = possible_spots[rand_idx];
 	# Determine which cmsm to go to
 	var final_cmsm = this_cmsm;
-	if (rand_idx >= possible_spots.size()):
+	if (rand_idx >= cmsm_change_idx):
 		final_cmsm = other_cmsm;
 	
 	# If applicable, split the gene at that spot

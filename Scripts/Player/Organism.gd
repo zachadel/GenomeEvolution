@@ -832,10 +832,10 @@ func repair_gap(gap, repair_type, choice_info = {}):
 										cmsms.remove_elm(gene, false);
 								3: # Major down
 									damage_str = "received a major downgrade"
-									gene.evolve(true, false);
+									gene.evolve_by_name("major_down");
 								4: # Minor down
 									damage_str = "received a minor downgrade"
-									gene.evolve(false, false);
+									gene.evolve_by_name("minor_down");
 							emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome. A %s gene %s in the repair.%s" % (gap_pos_disp + [left_id, right_id, g_id, damage_str, correct_str]));
 					5, 6, 7:
 						var gene = right_break_gene;
@@ -852,10 +852,10 @@ func repair_gap(gap, repair_type, choice_info = {}):
 									cmsms.dupe_elm(gene);
 							6: # Major up
 								boon_str = "received a major upgrade"
-								gene.evolve(true, true);
+								gene.evolve_by_name("major_up");
 							7: # Minor up
 								boon_str = "received a minor upgrade"
-								gene.evolve(false, true);
+								gene.evolve_by_name("minor_up");
 						emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome. A %s gene %s in the repair.%s" % (gap_pos_disp + [left_id, right_id, gene.get_gene_name(), boon_str, correct_str]));
 				if !repair_canceled:
 					if (do_correction):
@@ -959,10 +959,10 @@ func repair_gap(gap, repair_type, choice_info = {}):
 										cmsms.remove_elm(gene, false);
 								2: # Major down
 									damage_str = "received a major downgrade"
-									gene.evolve(true, false);
+									gene.evolve_by_name("major_down");
 								3: # Minor down
 									damage_str = "received a minor downgrade"
-									gene.evolve(false, false);
+									gene.evolve_by_name("minor_down");
 							emit_signal("justnow_update", "Joined ends for the gap at %d, %d; a %s gene %s in the repair." % (gap_pos_disp + [g_id, damage_str]));
 					4, 5, 6:
 						var gene = right_break_gene;
@@ -979,10 +979,10 @@ func repair_gap(gap, repair_type, choice_info = {}):
 									cmsms.dupe_elm(gene);
 							5: # Major up
 								boon_str = "received a major upgrade"
-								gene.evolve(true, true);
+								gene.evolve_by_name("major_up");
 							6: # Minor up
 								boon_str = "received a minor upgrade"
-								gene.evolve(false, true);
+								gene.evolve_by_name("minor_up");
 						emit_signal("justnow_update", "Joined ends for the gap at %d, %d; a %s gene %s in the repair." % (gap_pos_disp + [gene.get_gene_name(), boon_str]));
 				if !repair_canceled:
 					if (do_yields):
@@ -1040,21 +1040,27 @@ func set_cmsm_from_pool(cmsm, pool_info = null):
 var behavior_profile : BehaviorProfile setget ,get_behavior_profile;
 var refresh_bprof := true;
 func get_behavior_profile():
-	if (refresh_bprof):
-		behavior_profile.set_bhv_prof(get_cmsm_pair().get_cmsm(0).get_behavior_profile(),\
-									 get_cmsm_pair().get_cmsm(1).get_behavior_profile());
-		behavior_profile.set_spec_prof(get_cmsm_pair().get_cmsm(0).get_specialization_profile(),\
-									 get_cmsm_pair().get_cmsm(1).get_specialization_profile());
-		refresh_bprof = false;
+	if refresh_bprof:
+		refresh_behavior_profile();
 	return behavior_profile;
 
 func refresh_behavior_profile():
-	behavior_profile.set_bhv_prof(get_cmsm_pair().get_cmsm(0).get_behavior_profile(),\
-									 get_cmsm_pair().get_cmsm(1).get_behavior_profile());
-	behavior_profile.set_spec_prof(get_cmsm_pair().get_cmsm(0).get_specialization_profile(),\
-								 get_cmsm_pair().get_cmsm(1).get_specialization_profile());
-								
-	refresh_bprof = false
+	var top_cmsm = get_cmsm_pair().get_cmsm(0);
+	var bot_cmsm = get_cmsm_pair().get_cmsm(1);
+	
+	behavior_profile.set_bhv_prof(
+		top_cmsm.get_behavior_profile(),\
+		bot_cmsm.get_behavior_profile());
+	
+	behavior_profile.set_spec_prof(
+		top_cmsm.get_specialization_profile(),\
+		bot_cmsm.get_specialization_profile());
+	
+	behavior_profile.set_skills([
+		top_cmsm.get_skill_profile(),\
+		bot_cmsm.get_skill_profile()]);
+	
+	refresh_bprof = false;
 
 func roll_chance(type : String, extra_mods := []) -> int:
 	return Chance.roll_chance_type(type, get_behavior_profile(), extra_mods);
