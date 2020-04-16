@@ -610,14 +610,18 @@ margin_left = 1169.4
 margin_top = 805.0
 margin_right = 1269.4
 margin_bottom = 895.0
+num = 0
 lbl = "Round"
+show_change = true
 
 [node name="lnum_progeny" parent="." instance=ExtResource( 17 )]
 margin_left = 1313.4
 margin_top = 805.0
 margin_right = 1413.4
 margin_bottom = 895.0
+num = 0
 lbl = "Progeny"
+show_change = true
 
 [node name="EnergyBar" parent="." instance=ExtResource( 14 )]
 margin_left = 1.894

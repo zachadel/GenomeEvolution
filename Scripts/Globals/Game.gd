@@ -76,11 +76,11 @@ const VALID_INTERACTIONS = {
 		"energy": INVALID
 	},
 	"simple_fats": {
-		"simple_carbs": VALID,
+		"simple_carbs": INVALID,
 		"complex_carbs": INVALID,
 		"simple_fats": INVALID, 
 		"complex_fats": VALID,
-		"simple_proteins": VALID,
+		"simple_proteins": INVALID,
 		"complex_proteins": INVALID,
 		"energy": VALID
 	},
@@ -96,11 +96,11 @@ const VALID_INTERACTIONS = {
 	"simple_proteins": {
 		"simple_carbs": VALID,
 		"complex_carbs": INVALID,
-		"simple_fats": VALID,
+		"simple_fats": INVALID,
 		"complex_fats": INVALID,
 		"simple_proteins": INVALID, 
 		"complex_proteins": VALID,
-		"energy": VALID
+		"energy": INVALID
 	},
 	"complex_proteins": {
 		"simple_carbs": INVALID,
@@ -114,9 +114,9 @@ const VALID_INTERACTIONS = {
 	"energy": {
 		"simple_carbs": VALID,
 		"complex_carbs": INVALID,
-		"simple_fats": VALID,
+		"simple_fats": INVALID,
 		"complex_fats": INVALID,
-		"simple_proteins": VALID,
+		"simple_proteins": INVALID,
 		"complex_proteins": INVALID,
 		"energy": INVALID
 	}

@@ -375,7 +375,9 @@ func gain_gaps(count = 1):
 	for i in range(count):
 		if (do_yields):
 			yield(cmsms.create_gap(), "completed");
+			#yield(get_tree(), "idle_frame");
 		else:
+			yield(get_tree(), "idle_frame");
 			cmsms.create_gap();
 	return cmsms.collapse_gaps();
 

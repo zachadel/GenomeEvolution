@@ -19,9 +19,9 @@ font_data = SubResource( 3 )
 [node name="InternalResourceController" type="Panel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = -0.463295
-margin_right = -1320.0
-margin_bottom = -325.463
+margin_top = 5.0
+margin_right = -1205.0
+margin_bottom = -5.0
 mouse_filter = 2
 custom_styles/panel = SubResource( 1 )
 script = ExtResource( 1 )
@@ -29,9 +29,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ComplexCarbsLabel2" type="RichTextLabel" parent="."]
+[node name="EnergyLabel" type="RichTextLabel" parent="."]
 margin_top = 10.0
-margin_right = 280.0
+margin_right = 395.0
 margin_bottom = 35.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -42,57 +42,58 @@ bbcode_enabled = true
 bbcode_text = "[center]Available Energy[/center]"
 text = "Available Energy"
 scroll_active = false
-
-[node name="EnergyBar" parent="." instance=ExtResource( 2 )]
-margin_left = 10.0
-margin_top = 40.0
-margin_right = -270.0
-margin_bottom = -430.0
-rect_scale = Vector2( 0.433, 0.75 )
-
-[node name="simple_carbs" parent="." instance=ExtResource( 3 )]
-position = Vector2( 70, 191 )
-resource_class = "simple_carbs"
-
-[node name="complex_carbs" parent="." instance=ExtResource( 3 )]
-position = Vector2( 210, 191 )
-resource_class = "complex_carbs"
-
-[node name="simple_fats" parent="." instance=ExtResource( 3 )]
-position = Vector2( 70, 349 )
-resource_class = "simple_fats"
-
-[node name="complex_fats" parent="." instance=ExtResource( 3 )]
-position = Vector2( 210, 349 )
-resource_class = "complex_fats"
-
-[node name="simple_proteins" parent="." instance=ExtResource( 3 )]
-position = Vector2( 70, 507 )
-resource_class = "simple_proteins"
-
-[node name="complex_proteins" parent="." instance=ExtResource( 3 )]
-position = Vector2( 210, 507 )
-resource_class = "complex_proteins"
-
-[node name="LabelColumns" type="HBoxContainer" parent="."]
-margin_top = 105.0
-margin_right = 280.0
-margin_bottom = 575.0
-mouse_filter = 2
 __meta__ = {
-"_edit_group_": true
+"_edit_use_anchors_": false
 }
 
-[node name="SimpleLabels" type="VBoxContainer" parent="LabelColumns"]
-margin_right = 138.0
-margin_bottom = 470.0
+[node name="EnergyBar" parent="." instance=ExtResource( 2 )]
+margin_left = 55.0
+margin_top = 45.0
+margin_right = 298.0
+margin_bottom = -785.0
+rect_scale = Vector2( 0.55, 0.75 )
+
+[node name="AminoAcids" type="RichTextLabel" parent="."]
+margin_left = 50.0
+margin_top = 90.0
+margin_right = 185.0
+margin_bottom = 114.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme = SubResource( 2 )
+custom_fonts/normal_font = SubResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[center]Amino Acids[/center]"
+text = "Amino Acids"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="simple_carbs" type="RichTextLabel" parent="LabelColumns/SimpleLabels"]
-margin_right = 138.0
-margin_bottom = 154.0
+[node name="Proteins" type="RichTextLabel" parent="."]
+margin_left = 255.0
+margin_top = 90.0
+margin_right = 388.0
+margin_bottom = 114.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource( 2 )
+custom_fonts/normal_font = SubResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[center]Proteins[/center]"
+text = "Proteins"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sugars" type="RichTextLabel" parent="."]
+margin_left = 45.0
+margin_top = 325.0
+margin_right = 175.0
+margin_bottom = 345.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -102,46 +103,15 @@ bbcode_enabled = true
 bbcode_text = "[center]Sugars[/center]"
 text = "Sugars"
 scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="simple_fats" type="RichTextLabel" parent="LabelColumns/SimpleLabels"]
-margin_top = 158.0
-margin_right = 138.0
-margin_bottom = 312.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme = SubResource( 2 )
-custom_fonts/normal_font = SubResource( 4 )
-bbcode_enabled = true
-bbcode_text = "[center]Simple Fats[/center]"
-text = "Simple Fats"
-scroll_active = false
-
-[node name="simple_proteins" type="RichTextLabel" parent="LabelColumns/SimpleLabels"]
-margin_top = 316.0
-margin_right = 138.0
-margin_bottom = 470.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme = SubResource( 2 )
-custom_fonts/normal_font = SubResource( 4 )
-bbcode_enabled = true
-bbcode_text = "[center]Simple Proteins[/center]"
-text = "Simple Proteins"
-scroll_active = false
-
-[node name="ComplexLabels" type="VBoxContainer" parent="LabelColumns"]
-margin_left = 142.0
-margin_right = 280.0
-margin_bottom = 470.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="complex_carbs" type="RichTextLabel" parent="LabelColumns/ComplexLabels"]
-margin_right = 138.0
-margin_bottom = 154.0
+[node name="Carbs" type="RichTextLabel" parent="."]
+margin_left = 255.0
+margin_top = 330.0
+margin_right = 385.0
+margin_bottom = 350.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -151,11 +121,33 @@ bbcode_enabled = true
 bbcode_text = "[center]Complex Carbs[/center]"
 text = "Complex Carbs"
 scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="complex_fats" type="RichTextLabel" parent="LabelColumns/ComplexLabels"]
-margin_top = 158.0
-margin_right = 138.0
-margin_bottom = 312.0
+[node name="FattyAcids" type="RichTextLabel" parent="."]
+margin_left = 50.0
+margin_top = 560.0
+margin_right = 183.0
+margin_bottom = 582.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource( 2 )
+custom_fonts/normal_font = SubResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[center]Simple Fats[/center]"
+text = "Simple Fats"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Fats" type="RichTextLabel" parent="."]
+margin_left = 255.0
+margin_top = 560.0
+margin_right = 385.0
+margin_bottom = 582.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -165,22 +157,210 @@ bbcode_enabled = true
 bbcode_text = "[center]Complex Fats[/center]"
 text = "Complex Fats"
 scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="complex_proteins" type="RichTextLabel" parent="LabelColumns/ComplexLabels"]
-margin_top = 316.0
-margin_right = 138.0
-margin_bottom = 470.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme = SubResource( 2 )
-custom_fonts/normal_font = SubResource( 4 )
-bbcode_enabled = true
-bbcode_text = "[center]Complex Proteins[/center]"
-text = "Complex Proteins"
-scroll_active = false
+[node name="simple_carbs" parent="." instance=ExtResource( 3 )]
+position = Vector2( 115, 415 )
+scale = Vector2( 1.5, 1.5 )
+resource_class = "simple_carbs"
+
+[node name="complex_carbs" parent="." instance=ExtResource( 3 )]
+position = Vector2( 320, 420 )
+scale = Vector2( 1.5, 1.5 )
+resource_class = "complex_carbs"
+
+[node name="simple_fats" parent="." instance=ExtResource( 3 )]
+position = Vector2( 115, 650 )
+scale = Vector2( 1.5, 1.5 )
+resource_class = "simple_fats"
+
+[node name="complex_fats" parent="." instance=ExtResource( 3 )]
+position = Vector2( 320, 650 )
+scale = Vector2( 1.5, 1.5 )
+resource_class = "complex_fats"
+
+[node name="simple_proteins" parent="." instance=ExtResource( 3 )]
+position = Vector2( 115, 180 )
+scale = Vector2( 1.5, 1.5 )
+resource_class = "simple_proteins"
+
+[node name="complex_proteins" parent="." instance=ExtResource( 3 )]
+position = Vector2( 320, 180 )
+scale = Vector2( 1.5, 1.5 )
+resource_class = "complex_proteins"
 
 [node name="SelectionArea" type="ColorRect" parent="."]
 mouse_filter = 2
 color = Color( 1, 1, 1, 0.490196 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AminoToSugar" type="Line2D" parent="."]
+position = Vector2( 120, 250 )
+rotation = 1.5708
+points = PoolVector2Array( 0, 0, 45, -7.62939e-06 )
+default_color = Color( 1, 1, 1, 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Polygon2D" type="Polygon2D" parent="AminoToSugar"]
+position = Vector2( 45, 5 )
+scale = Vector2( 1, 0.999999 )
+polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
+
+[node name="SugarToAmino" type="Line2D" parent="."]
+position = Vector2( 105, 345 )
+rotation = -1.5708
+points = PoolVector2Array( 20, 0, 65, 0 )
+default_color = Color( 1, 1, 1, 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Polygon2D" type="Polygon2D" parent="SugarToAmino"]
+position = Vector2( 65, 5 )
+scale = Vector2( 1, 0.999999 )
+polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
+
+[node name="AminoToProtein" type="Line2D" parent="."]
+position = Vector2( 175, 175 )
+points = PoolVector2Array( 10, 0, 45, -7.62939e-06 )
+default_color = Color( 1, 1, 1, 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Polygon2D" type="Polygon2D" parent="AminoToProtein"]
+position = Vector2( 45, 5 )
+scale = Vector2( 1, 0.999999 )
+polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
+
+[node name="ProteinToAmino" type="Line2D" parent="."]
+position = Vector2( 280, 190 )
+rotation = -3.14159
+points = PoolVector2Array( 30, 1.52588e-05, 65, 0 )
+default_color = Color( 1, 1, 1, 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Polygon2D" type="Polygon2D" parent="ProteinToAmino"]
+position = Vector2( 65, 5 )
+scale = Vector2( 1, 0.999999 )
+polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
+
+[node name="SugarToCarb" type="Line2D" parent="."]
+position = Vector2( 175, 410 )
+points = PoolVector2Array( 10, 0, 45, -7.62939e-06 )
+default_color = Color( 1, 1, 1, 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Polygon2D" type="Polygon2D" parent="SugarToCarb"]
+position = Vector2( 45, 5 )
+scale = Vector2( 1, 0.999999 )
+polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
+
+[node name="CarbToCarb" type="Line2D" parent="."]
+position = Vector2( 280, 425 )
+rotation = -3.14159
+points = PoolVector2Array( 30, 1.52588e-05, 65, 0 )
+default_color = Color( 1, 1, 1, 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Polygon2D" type="Polygon2D" parent="CarbToCarb"]
+position = Vector2( 65, 5 )
+scale = Vector2( 1, 0.999999 )
+polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
+
+[node name="FattyToFat" type="Line2D" parent="."]
+position = Vector2( 175, 645 )
+points = PoolVector2Array( 10, 0, 45, -7.62939e-06 )
+default_color = Color( 1, 1, 1, 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Polygon2D" type="Polygon2D" parent="FattyToFat"]
+position = Vector2( 45, 5 )
+scale = Vector2( 1, 0.999999 )
+polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
+
+[node name="FatToFatty" type="Line2D" parent="."]
+position = Vector2( 280, 660 )
+rotation = -3.14159
+points = PoolVector2Array( 30, 1.52588e-05, 65, 0 )
+default_color = Color( 1, 1, 1, 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Polygon2D" type="Polygon2D" parent="FatToFatty"]
+position = Vector2( 65, 5 )
+scale = Vector2( 1, 0.999999 )
+polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
+
+[node name="SugarToFat" type="Line2D" parent="."]
+position = Vector2( 120, 485 )
+rotation = 1.5708
+points = PoolVector2Array( 0, 0, 45, 0 )
+default_color = Color( 1, 1, 1, 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Polygon2D" type="Polygon2D" parent="SugarToFat"]
+position = Vector2( 45, 5 )
+scale = Vector2( 1, 0.999999 )
+polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
+
+[node name="SugarToFat2" type="Line2D" parent="."]
+position = Vector2( 110, 485 )
+rotation = -1.5708
+scale = Vector2( -1, 1 )
+points = PoolVector2Array( 0, 0, 45, 0 )
+default_color = Color( 1, 1, 1, 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Polygon2D" type="Polygon2D" parent="SugarToFat2"]
+position = Vector2( 45, 5 )
+scale = Vector2( 1, 0.999999 )
+polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
+
+[node name="FattyToEnergy" type="Line2D" parent="."]
+position = Vector2( 45, 660 )
+points = PoolVector2Array( 0, -10, -35, -10, -35, -605, -15, -605 )
+default_color = Color( 1, 1, 1, 1 )
+joint_mode = 2
+
+[node name="Polygon2D" type="Polygon2D" parent="FattyToEnergy"]
+position = Vector2( -15, -600 )
+scale = Vector2( 0.666667, 0.999999 )
+polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
+
+[node name="EnergyToSugar" type="Line2D" parent="."]
+position = Vector2( 60, 75 )
+scale = Vector2( 1, -1 )
+points = PoolVector2Array( -10, 5, -35, 5, -35, -335, -25, -335 )
+default_color = Color( 1, 1, 1, 1 )
+joint_mode = 2
+
+[node name="Polygon2D" type="Polygon2D" parent="EnergyToSugar"]
+position = Vector2( -25, -340 )
+scale = Vector2( 0.333333, -1 )
+polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
+
+[node name="SugarToEnergy" type="Line2D" parent="."]
+position = Vector2( 45, 415 )
+points = PoolVector2Array( 0, 10, -35, 10 )
+default_color = Color( 1, 1, 1, 1 )
 [connection signal="resource_clicked" from="EnergyBar" to="." method="_on_EnergyBar_resource_clicked"]

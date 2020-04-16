@@ -53,10 +53,6 @@ func get_current_tile():
 	
 func get_vision_radius():
 	return organism.get_vision_radius()
-	
-func add_observed_tiles(tiles):
-	pass
-		
 
 #Checks if still alive based solely on resources
 #It is the responsibility of the calling function to determine what to do
