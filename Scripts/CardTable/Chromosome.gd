@@ -37,8 +37,8 @@ func get_genes():
 	return get_children();
 
 
-func get_behavior_profile():
-	var behavior_profile = {};
+func get_behavior_profile() -> Dictionary:
+	var behavior_profile := {};
 	for g in get_genes():
 		var g_behave = g.get_ess_behavior();
 		for b in g_behave:
@@ -46,10 +46,10 @@ func get_behavior_profile():
 	
 	return behavior_profile;
 
-func get_specialization_profile(behavior_profile = null):
+func get_specialization_profile(behavior_profile = null) -> Dictionary:
 	if (behavior_profile == null):
 		behavior_profile = get_behavior_profile();
-	var spec_behavior = {};
+	var spec_behavior := {};
 	
 	for g in get_genes():
 		var g_specialization = g.get_specialization();
@@ -77,6 +77,18 @@ func get_specialization_profile(behavior_profile = null):
 					spec_behavior[r][b][t] /= behavior_profile[b];
 	
 	return spec_behavior;
+
+func get_skill_profile() -> Dictionary:
+	var skill_profile := {};
+	for g in get_genes():
+		var g_skills = g.get_skill_profile();
+		for b in g_skills:
+			if !skill_profile.has(b):
+				skill_profile[b] = [];
+			for s in g_skills[b]:
+				if !(s in skill_profile[b]):
+					skill_profile[b].append(s);
+	return skill_profile;
 
 func get_pairs(left_elm, right_elm, minimal = false):
 	var pairs = {}; # key is left_idx, value is an array of right_idxs

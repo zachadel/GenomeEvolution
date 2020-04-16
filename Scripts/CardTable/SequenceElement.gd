@@ -17,6 +17,7 @@ var ess_behavior := {
 	"Component": 0.0,
 	"Helper": 0.0
 };
+var skills := {};
 var aura_boost := 0.0 setget set_boost, get_boost;
 
 
@@ -46,6 +47,8 @@ var ate_personality := {};
 var aura := {};
 
 const CODE_LENGTH = 7;
+const MAJOR_CODE_CHANGE = 3;
+const MINOR_CODE_CHANGE = 1;
 var gene_code := "";
 var parent_code := "";
 var code_direction := false;
@@ -69,9 +72,6 @@ onready var CodeArrow : TextureRect = $direct_arrow;
 func _ready():
 	current_size = DEFAULT_SIZE;
 	Tooltips.setup_delayed_tooltip(self);
-	for k in ess_behavior:
-		get_node("Indic%s" % k).ttip_data = [k, "base"];
-	
 	if type == "gene":
 		set_code_arrow_dir(code_direction);
 	if setup_ate_display_onready || mode == "ate" && !AnthroArt.has_art():
@@ -175,6 +175,7 @@ func setup_copy(ref_elm):
 			"essential":
 				ess_behavior = ref_elm.ess_behavior.duplicate();
 				specialization = ref_elm.specialization.duplicate();
+				skills = ref_elm.skills.duplicate();
 			"ate":
 				ate_activity = ref_elm.ate_activity;
 				obtain_ate_personality(ref_elm.ate_personality["key"]);
@@ -197,13 +198,14 @@ func get_save_data():
 	if !ate_id_key.empty():
 		setup_data[1] = ate_id_key;
 	
-	return [setup_data, get_ess_behavior_raw(), get_specialization()];
+	return [setup_data, get_ess_behavior_raw(), get_specialization(), get_skill_bare_dict()];
 
 func load_from_save(save_data):
 	display_locked = true;
 	callv("setup", save_data[0]);
 	set_ess_behavior(save_data[1]);
 	set_specialization(save_data[2]);
+	set_skills(save_data[3]);
 	display_locked = false;
 	upd_display();
 
@@ -248,7 +250,7 @@ func set_ess_behavior(dict):
 func get_ess_behavior_raw() -> Dictionary:
 	var d := {};
 	for k in ess_behavior:
-		if (ess_behavior[k] > 0):
+		if (ess_behavior[k] > 0.0):
 			d[k] = ess_behavior[k];
 	if is_ate():
 		d["ate"] = ate_activity;
@@ -439,9 +441,47 @@ func get_gain_chance(num_missing_behaviors : int, num_max_behaviors : int) -> fl
 		return 1.0;
 	
 	var num_current_behaves = num_max_behaviors - num_missing_behaviors;
-	var log_b10 = log(2.25 * num_current_behaves / float(num_max_behaviors)) / log(10);
 	# log() is actually ln
+	var log_b10 = log(2.25 * num_current_behaves / float(num_max_behaviors)) / log(10);
 	return clamp(-1.25 * log_b10 + .25, 0.0, 1.0);
+
+const SKILL_UP_CHANCE = 0.1;
+var just_evolved_skill = false; # Also used by Organism to know when a new skill was gained
+
+func get_skillup_chance():
+	return SKILL_UP_CHANCE;
+
+func has_skill(skill_behavior: String, skill_name: String) -> bool:
+	return skills.get(skill_behavior, []).has(skill_name);
+
+func get_skill_profile(behavior := {}) -> Dictionary:
+	if behavior.empty():
+		behavior = get_ess_behavior();
+	
+	var skill_prof := {};
+	for k in skills:
+		if behavior.get(k, 0.0) > 0.0:
+			skill_prof[k] = skills[k];
+	return skill_prof;
+
+func get_skill_bare_dict() -> Dictionary:
+	var skill_bdict := {};
+	for k in skills:
+		if !skills[k].empty():
+			skill_bdict[k] = skills[k];
+	return skill_bdict;
+
+func set_skills(skill_dict: Dictionary) -> void:
+	for k in skill_dict:
+		skills[k] = skill_dict[k];
+
+func evolve_skill(behave_key: String, gain := true) -> void:
+	var new_skill := Skills.get_random_skill(behave_key);
+	if !new_skill.empty() && !has_skill(behave_key, new_skill):
+		just_evolved_skill = true;
+		if !skills.has(behave_key):
+			skills[behave_key] = [];
+		skills[behave_key].append(new_skill);
 
 func evolve_new_behavior(gain : bool) -> void:
 	if (gain):
@@ -449,18 +489,18 @@ func evolve_new_behavior(gain : bool) -> void:
 		for k in ess_behavior:
 			if (ess_behavior[k] == 0):
 				key_candids.append(k);
+		var behave_key : String = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
 		
-		var behave_key = "";
-		if (randf() <= get_gain_chance(key_candids.size(), ess_behavior.size())):
-			behave_key = key_candids[randi() % key_candids.size()];
-		else:
-			behave_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
-		
-		evolve_specialization(behave_key, GAIN_AMT);
-		if (ess_behavior.has(behave_key)):
-			ess_behavior[behave_key] += GAIN_AMT;
-		else:
-			ess_behavior[behave_key] = GAIN_AMT;
+		if randf() <= get_skillup_chance():
+			evolve_skill(behave_key);
+		if !just_evolved_skill:
+			if randf() <= get_gain_chance(key_candids.size(), ess_behavior.size()):
+				behave_key = key_candids[randi() % key_candids.size()];
+			evolve_specialization(behave_key, GAIN_AMT);
+			if (ess_behavior.has(behave_key)):
+				ess_behavior[behave_key] += GAIN_AMT;
+			else:
+				ess_behavior[behave_key] = GAIN_AMT;
 	else:
 		var behave_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
 		
@@ -523,19 +563,17 @@ func damage_gene(dmg := true):
 	internal_damaged = is_behavior_gene() && dmg;
 	$Damage.visible = internal_damaged;
 
-func evolve(major : bool, up : bool) -> void:
-	var code_change = 3;
+func perform_evolution(major: bool, up: bool) -> void:
+	just_evolved_skill = false;
 	
-	var up_sign = -1;
-	if (up):
-		up_sign = 1;
-	
+	var up_sign = 1 if up else -1;
+	var code_change = MAJOR_CODE_CHANGE;
 	var rand_ph_mag : float = randf() - (ph_preference / 14);
 	if (major):
 		evolve_major(up);
 		ph_preference += rand_ph_mag * 5;
 	else:
-		code_change = 1;
+		code_change = MINOR_CODE_CHANGE;
 		evolve_minor(0.1 * up_sign);
 		ph_preference += rand_ph_mag * 2.5;
 	
@@ -552,13 +590,13 @@ func evolve_by_name(ev_name: String) -> void:
 				modify_code(5, -5);
 				kill_elm();
 			"major_down":
-				evolve(true, false);
+				perform_evolution(true, false);
 			"minor_down":
-				evolve(false, false);
+				perform_evolution(false, false);
 			"major_up":
-				evolve(true, true);
+				perform_evolution(true, true);
 			"minor_up":
-				evolve(false, true);
+				perform_evolution(false, true);
 
 func get_tooltip_data() -> Array:
 	match type:
@@ -573,7 +611,7 @@ func get_tooltip_data() -> Array:
 					key = "Pseudogene";
 				"blank":
 					key = "Blank";
-			return ["set_gene_ttip", [key, ph_preference]];
+			return ["set_gene_ttip", [key, ph_preference, skills]];
 		"break":
 			return ["Click on open breaks to repair them. All breaks need to be repaired before more actions can be taken.", "Break"];
 	return ["I don't know what this is!", "Truly a Mystery"];
@@ -582,17 +620,18 @@ func upd_behavior_disp(behavior = ""):
 	match mode:
 		"essential":
 			if (behavior != ""):
-				get_node("Indic" + behavior).set_value(ess_behavior[behavior]);
+				var indicator = get_node("Indic%s" % behavior);
+				indicator.set_value(ess_behavior[behavior]);
+				indicator.set_skilled(!skills.get(behavior, []).empty());
+				indicator.ttip_data = [behavior, "base", skills];
 			else:
-				continue;
+				for b in ess_behavior:
+					upd_behavior_disp(b);
 		"ate":
 			get_node("IndicATE").set_value(ate_activity);
 			var droop_amt = 1.0 - inverse_lerp(0.0, 1.5, ate_activity);
 			if AnthroArt != null:
 				AnthroArt.safe_callv("set_eye_droop", [droop_amt])
-		_:
-			for b in ess_behavior:
-				get_node("Indic" + b).set_value(ess_behavior[b]);
 
 var forced_comparison_color = null;
 func color_comparison(compare_type : String, compare_val : float):

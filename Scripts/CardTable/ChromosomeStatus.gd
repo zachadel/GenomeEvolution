@@ -56,16 +56,34 @@ func add_cmsm(cmsm):
 func clear_cmsms():
 	chromes.clear();
 
-func get_behavior():
-	var behavior = {};
+func get_behavior() -> Dictionary:
+	var behavior := {};
 	for c in chromes:
 		behavior = Game.add_numeric_dicts(behavior, c.get_behavior_profile());
 	return behavior;
 
+func get_skills() -> Dictionary:
+	var skills := {};
+	for c in chromes:
+		var skill_dict = c.get_skill_profile();
+		for k in skill_dict:
+			if !skills.has(k):
+				skills[k] = [];
+			for s in skill_dict[k]:
+				if !(s in skills[k]):
+					skills[k].append(s);
+	return skills;
+
 func update():
 	var behavior = get_behavior();
+	var skills = get_skills();
 	for n in container.get_children():
 		var key = n.name;
+		
+		var has_skill = !skills.get(key, []).empty();
+		n.set_skilled(has_skill);
+		if has_skill:
+			n.skill_ttip = skills;
 		
 		if (key in behavior):
 			n.set_value(behavior[key]);

@@ -1,0 +1,34 @@
+extends Node
+
+const SKILLS = {
+	"Replication": {},
+	"Locomotion": {},
+	"Manipulation": {},
+	"Sensing": {},
+	"Construction": {
+		"sugar->am_acid": "Sugars -> Amino Acids",
+		"sugar->carb": "Sugars -> Carbohydrates",
+		"energy->sugar": "Energy -> Sugars",
+		"am_acid->protein": "Amino Acids -> Protein",
+		"fat_acid->fat": "Fatty Acids -> Fats",
+		"uv->energy": "Photosynthesis",
+	},
+	"Deconstruction": {
+		"am_acid->sugar": "Amino Acids -> Sugars",
+		"carb->sugar": "Carbohydrates -> Sugars",
+		"sugar->energy": "Sugars -> Energy",
+		"protein->am_acid": "Proteins -> Amino Acids",
+		"fat->fat_acid": "Fats -> Fatty Acids",
+	},
+	"Helper": {},
+	"Component": {},
+};
+
+func get_random_skill(from_class: String) -> String:
+	var skill_arr : Array = SKILLS.get(from_class, {}).keys();
+	if skill_arr.empty():
+		return "";
+	return skill_arr[randi() % skill_arr.size()];
+
+func get_skill_desc(from_class: String, skill_name: String) -> String:
+	return SKILLS.get(from_class, {}).get(skill_name, "SKILL_NOT_FOUND:%s, %s" % [from_class, skill_name]);
