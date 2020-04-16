@@ -8,6 +8,7 @@ signal resources_selected(resources)
 #error checking and force that to be true.
 #Much of how this is written relies on forcing the player to only put resources
 #where they should go i.e. sugars -> complex_carbs
+
 var dragging = false
 var selected = false
 
@@ -123,6 +124,30 @@ func set_organism(org):
 func update_vesicles():
 	if organism != null:
 		_on_Organism_vesicle_scale_changed(organism.vesicle_scales, organism.cfp_resources)
+
+func update_valid_arrows():
+	var bhv_profile = organism.get_behavior_profile()
+	
+	$Fatty_Energy/From.visible = Game.is_valid_interaction("simple_fats", "energy", bhv_profile)
+	
+	$Sugars_Energy/From.visible = Game.is_valid_interaction("simple_carbs", "energy", bhv_profile)
+	$Sugars_Energy/To.visible = Game.is_valid_interaction("energy", "simple_carbs", bhv_profile)
+	
+	$Amino_Sugars/From.visible = Game.is_valid_interaction("simple_proteins", "simple_carbs", bhv_profile)
+	$Amino_Sugars/To.visible = Game.is_valid_interaction("simple_carbs", "simple_proteins", bhv_profile)
+	
+	$Amino_Proteins/From.visible = Game.is_valid_interaction("simple_proteins", "complex_proteins", bhv_profile)
+	$Amino_Proteins/To.visible = Game.is_valid_interaction("complex_proteins", "simple_proteins", bhv_profile)
+	
+	$Sugars_Carbs/From.visible = Game.is_valid_interaction("simple_carbs", "complex_carbs", bhv_profile)
+	$Sugars_Carbs/To.visible = Game.is_valid_interaction("complex_carbs", "simple_carbs", bhv_profile)
+	
+	$Fatty_Sugars/From.visible = Game.is_valid_interaction("simple_fats", "simple_carbs", bhv_profile)
+	$Fatty_Sugars/To.visible = Game.is_valid_interaction("simple_carbs", "simple_fats", bhv_profile)
+	
+	$Fatty_Fats/From.visible = Game.is_valid_interaction("simple_fats", "complex_fats", bhv_profile)
+	$Fatty_Fats/To.visible = Game.is_valid_interaction("complex_fats", "simple_fats", bhv_profile)
+	
 #cfp_resources[resource_class][resource] = value
 #should not be called when selected_resources has stuff
 func update_resources(cfp_resources: Dictionary):
@@ -208,6 +233,8 @@ func handle_click_with_selection():
 	var mouse_pos = get_global_mouse_position()
 	var resources_to_process = {}
 	
+	var bhv_profile = organism.get_behavior_profile()
+	
 	if !energy_clicked:
 	
 		#Locate which container you're in
@@ -220,7 +247,7 @@ func handle_click_with_selection():
 					for resource in selected_resources[resource_class]:
 						#Check if we can do anything here
 						if len(selected_resources[resource_class][resource]) > 0:
-							if Game.is_valid_interaction(resource, container_name):
+							if Game.is_valid_interaction(resource, container_name, bhv_profile):
 								resources_to_process[resource] = len(selected_resources[resource_class][resource])
 	
 				#Once we know what container we are in, we can leave at the end
@@ -246,7 +273,7 @@ func handle_click_with_selection():
 			for resource in selected_resources[resource_class]:
 				#Check if we can do anything here
 				if len(selected_resources[resource_class][resource]) > 0:
-					if Game.is_valid_interaction(resource, "energy"):
+					if Game.is_valid_interaction(resource, "energy", bhv_profile):
 						resources_to_process[resource] = len(selected_resources[resource_class][resource])
 
 		#Once we know what container we are in, we can leave at the end
@@ -269,8 +296,9 @@ func handle_click_with_selection():
 
 func handle_energy_to_vesicle_click():
 	var vesicle_name = get_vesicle_from_mouse_pos(get_global_mouse_position())
+	var bhv_profile = organism.get_behavior_profile()
 	
-	if vesicle_name and Game.is_valid_interaction("energy", vesicle_name):
+	if vesicle_name and Game.is_valid_interaction("energy", vesicle_name, bhv_profile):
 		var resource_to = Game.get_random_element_from_array(resources[vesicle_name].keys())
 		var results = organism.upgrade_energy(resource_to, 1)
 

@@ -118,8 +118,8 @@ size_flags_vertical = 3
 theme = SubResource( 2 )
 custom_fonts/normal_font = SubResource( 4 )
 bbcode_enabled = true
-bbcode_text = "[center]Complex Carbs[/center]"
-text = "Complex Carbs"
+bbcode_text = "[center]Carbs[/center]"
+text = "Carbs"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -136,8 +136,8 @@ size_flags_vertical = 3
 theme = SubResource( 2 )
 custom_fonts/normal_font = SubResource( 4 )
 bbcode_enabled = true
-bbcode_text = "[center]Simple Fats[/center]"
-text = "Simple Fats"
+bbcode_text = "[center]Fatty Acids[/center]"
+text = "Fatty Acids"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -154,8 +154,8 @@ size_flags_vertical = 3
 theme = SubResource( 2 )
 custom_fonts/normal_font = SubResource( 4 )
 bbcode_enabled = true
-bbcode_text = "[center]Complex Fats[/center]"
-text = "Complex Fats"
+bbcode_text = "[center]Fats[/center]"
+text = "Fats"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -198,7 +198,50 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AminoToSugar" type="Line2D" parent="."]
+[node name="Fatty_Energy" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="From" type="Line2D" parent="Fatty_Energy"]
+position = Vector2( 45, 660 )
+points = PoolVector2Array( 0, -10, -35, -10, -35, -605, -15, -605 )
+default_color = Color( 1, 1, 1, 1 )
+joint_mode = 2
+
+[node name="Polygon2D" type="Polygon2D" parent="Fatty_Energy/From"]
+position = Vector2( -15, -600 )
+scale = Vector2( 0.666667, 0.999999 )
+polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
+
+[node name="Sugars_Energy" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="From" type="Line2D" parent="Sugars_Energy"]
+position = Vector2( 45, 415 )
+points = PoolVector2Array( 0, 10, -35, 10 )
+default_color = Color( 1, 1, 1, 1 )
+
+[node name="To" type="Line2D" parent="Sugars_Energy"]
+position = Vector2( 60, 75 )
+scale = Vector2( 1, -1 )
+points = PoolVector2Array( -10, 5, -35, 5, -35, -335, -25, -335 )
+default_color = Color( 1, 1, 1, 1 )
+joint_mode = 2
+
+[node name="Polygon2D" type="Polygon2D" parent="Sugars_Energy/To"]
+position = Vector2( -25, -340 )
+scale = Vector2( 0.333333, -1 )
+polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
+
+[node name="Amino_Sugars" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="From" type="Line2D" parent="Amino_Sugars"]
 position = Vector2( 120, 250 )
 rotation = 1.5708
 points = PoolVector2Array( 0, 0, 45, -7.62939e-06 )
@@ -207,12 +250,12 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Polygon2D" type="Polygon2D" parent="AminoToSugar"]
+[node name="Polygon2D" type="Polygon2D" parent="Amino_Sugars/From"]
 position = Vector2( 45, 5 )
 scale = Vector2( 1, 0.999999 )
 polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
 
-[node name="SugarToAmino" type="Line2D" parent="."]
+[node name="To" type="Line2D" parent="Amino_Sugars"]
 position = Vector2( 105, 345 )
 rotation = -1.5708
 points = PoolVector2Array( 20, 0, 65, 0 )
@@ -221,12 +264,19 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Polygon2D" type="Polygon2D" parent="SugarToAmino"]
+[node name="Polygon2D" type="Polygon2D" parent="Amino_Sugars/To"]
 position = Vector2( 65, 5 )
 scale = Vector2( 1, 0.999999 )
 polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
 
-[node name="AminoToProtein" type="Line2D" parent="."]
+[node name="Amino_Proteins" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="From" type="Line2D" parent="Amino_Proteins"]
 position = Vector2( 175, 175 )
 points = PoolVector2Array( 10, 0, 45, -7.62939e-06 )
 default_color = Color( 1, 1, 1, 1 )
@@ -234,12 +284,12 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Polygon2D" type="Polygon2D" parent="AminoToProtein"]
+[node name="Polygon2D" type="Polygon2D" parent="Amino_Proteins/From"]
 position = Vector2( 45, 5 )
 scale = Vector2( 1, 0.999999 )
 polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
 
-[node name="ProteinToAmino" type="Line2D" parent="."]
+[node name="To" type="Line2D" parent="Amino_Proteins"]
 position = Vector2( 280, 190 )
 rotation = -3.14159
 points = PoolVector2Array( 30, 1.52588e-05, 65, 0 )
@@ -248,12 +298,16 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Polygon2D" type="Polygon2D" parent="ProteinToAmino"]
+[node name="Polygon2D" type="Polygon2D" parent="Amino_Proteins/To"]
 position = Vector2( 65, 5 )
 scale = Vector2( 1, 0.999999 )
 polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
 
-[node name="SugarToCarb" type="Line2D" parent="."]
+[node name="Sugars_Carbs" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="From" type="Line2D" parent="Sugars_Carbs"]
 position = Vector2( 175, 410 )
 points = PoolVector2Array( 10, 0, 45, -7.62939e-06 )
 default_color = Color( 1, 1, 1, 1 )
@@ -261,12 +315,12 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Polygon2D" type="Polygon2D" parent="SugarToCarb"]
+[node name="Polygon2D" type="Polygon2D" parent="Sugars_Carbs/From"]
 position = Vector2( 45, 5 )
 scale = Vector2( 1, 0.999999 )
 polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
 
-[node name="CarbToCarb" type="Line2D" parent="."]
+[node name="To" type="Line2D" parent="Sugars_Carbs"]
 position = Vector2( 280, 425 )
 rotation = -3.14159
 points = PoolVector2Array( 30, 1.52588e-05, 65, 0 )
@@ -275,12 +329,35 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Polygon2D" type="Polygon2D" parent="CarbToCarb"]
+[node name="Polygon2D" type="Polygon2D" parent="Sugars_Carbs/To"]
 position = Vector2( 65, 5 )
 scale = Vector2( 1, 0.999999 )
 polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
 
-[node name="FattyToFat" type="Line2D" parent="."]
+[node name="Sugars_Fatty" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="From" type="Line2D" parent="Sugars_Fatty"]
+position = Vector2( 115, 485.5 )
+rotation = 1.5708
+points = PoolVector2Array( 0, 0, 45, 0 )
+width = 20.0
+default_color = Color( 1, 1, 1, 1 )
+
+[node name="Polygon2D" type="Polygon2D" parent="Sugars_Fatty/From"]
+position = Vector2( 44.9064, -0.25016 )
+scale = Vector2( 1, 0.999999 )
+polygon = PoolVector2Array( 0, 21.4318, 30, 0, 0, -20 )
+
+[node name="Fatty_Fats" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="From" type="Line2D" parent="Fatty_Fats"]
 position = Vector2( 175, 645 )
 points = PoolVector2Array( 10, 0, 45, -7.62939e-06 )
 default_color = Color( 1, 1, 1, 1 )
@@ -288,12 +365,12 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Polygon2D" type="Polygon2D" parent="FattyToFat"]
+[node name="Polygon2D" type="Polygon2D" parent="Fatty_Fats/From"]
 position = Vector2( 45, 5 )
 scale = Vector2( 1, 0.999999 )
 polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
 
-[node name="FatToFatty" type="Line2D" parent="."]
+[node name="To" type="Line2D" parent="Fatty_Fats"]
 position = Vector2( 280, 660 )
 rotation = -3.14159
 points = PoolVector2Array( 30, 1.52588e-05, 65, 0 )
@@ -302,65 +379,8 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Polygon2D" type="Polygon2D" parent="FatToFatty"]
+[node name="Polygon2D" type="Polygon2D" parent="Fatty_Fats/To"]
 position = Vector2( 65, 5 )
 scale = Vector2( 1, 0.999999 )
 polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
-
-[node name="SugarToFat" type="Line2D" parent="."]
-position = Vector2( 120, 485 )
-rotation = 1.5708
-points = PoolVector2Array( 0, 0, 45, 0 )
-default_color = Color( 1, 1, 1, 1 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="Polygon2D" type="Polygon2D" parent="SugarToFat"]
-position = Vector2( 45, 5 )
-scale = Vector2( 1, 0.999999 )
-polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
-
-[node name="SugarToFat2" type="Line2D" parent="."]
-position = Vector2( 110, 485 )
-rotation = -1.5708
-scale = Vector2( -1, 1 )
-points = PoolVector2Array( 0, 0, 45, 0 )
-default_color = Color( 1, 1, 1, 1 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="Polygon2D" type="Polygon2D" parent="SugarToFat2"]
-position = Vector2( 45, 5 )
-scale = Vector2( 1, 0.999999 )
-polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
-
-[node name="FattyToEnergy" type="Line2D" parent="."]
-position = Vector2( 45, 660 )
-points = PoolVector2Array( 0, -10, -35, -10, -35, -605, -15, -605 )
-default_color = Color( 1, 1, 1, 1 )
-joint_mode = 2
-
-[node name="Polygon2D" type="Polygon2D" parent="FattyToEnergy"]
-position = Vector2( -15, -600 )
-scale = Vector2( 0.666667, 0.999999 )
-polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
-
-[node name="EnergyToSugar" type="Line2D" parent="."]
-position = Vector2( 60, 75 )
-scale = Vector2( 1, -1 )
-points = PoolVector2Array( -10, 5, -35, 5, -35, -335, -25, -335 )
-default_color = Color( 1, 1, 1, 1 )
-joint_mode = 2
-
-[node name="Polygon2D" type="Polygon2D" parent="EnergyToSugar"]
-position = Vector2( -25, -340 )
-scale = Vector2( 0.333333, -1 )
-polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
-
-[node name="SugarToEnergy" type="Line2D" parent="."]
-position = Vector2( 45, 415 )
-points = PoolVector2Array( 0, 10, -35, 10 )
-default_color = Color( 1, 1, 1, 1 )
 [connection signal="resource_clicked" from="EnergyBar" to="." method="_on_EnergyBar_resource_clicked"]

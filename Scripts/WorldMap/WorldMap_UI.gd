@@ -133,6 +133,9 @@ func set_input_state(player_view: int):
 			set_irc_state(true)
 			set_button_states(buttons)
 
+func update_valid_arrows():
+	irc.update_valid_arrows()
+
 #At some point, error checking should be added here, where an error message
 #is printed if the player tries to store too many resources
 func _on_WorldMap_player_resources_changed(cfp_resources, mineral_resources):
@@ -192,16 +195,14 @@ func test_functionality():
 	print("Complex PRoteins: ", irc.organism.get_estimated_capacity("complex_proteins"))
 	print('Vesicle: Scales:')
 	print(irc.organism.vesicle_scales)
-	print('Component Values:')
-	print(irc.organism.get_behavior_profile().get_behavior("Component"))
+	print('Organism Gene Profile (pre-pH):')
+	print(irc.organism.get_behavior_profile().print_profile())
 	print("Resources:")
 	print(irc.organism.cfp_resources)
 	print("Energy:")
 	print(irc.organism.energy)
 	print("Vision Radius:")
 	print(irc.organism.get_vision_radius())
-
-	pass
 
 func center_resources():
 	for resource_class in irc.resources:

@@ -521,6 +521,16 @@ func simple_to_pretty_name(resource: String):
 		#RESOURCE CLASSES:
 		"simple_carbs":
 			return "Sugars"
+		"complex_carbs":
+			return "Carbs"
+		"simple_fats":
+			return "Fatty Acids"
+		"complex_fats":
+			return "Fats"
+		"simple_proteins":
+			return "Amino Acids"
+		"complex_proteins":
+			return "Proteins"
 		var all_others:
 			return all_others.capitalize()
 		
@@ -543,26 +553,73 @@ func get_resource_icon(resource):
 	return icon
 	
 #Can accept energy, resource_class (simple_carbs/complex_fats, etc.), or resource_names
-func is_valid_interaction(resource_from: String, resource_to: String):
-	
+func is_valid_interaction(resource_from: String, resource_to: String, bhv_profile: BehaviorProfile = null):
+	var possible = false
+		
 	if resource_from in resources.keys(): #if resource_from is a valid non-energy resource
 		var resource_from_class = get_class_from_name(resource_from)
 		if resource_to in VALID_INTERACTIONS.keys(): #if resource_to is a vesicle or energy
-			return VALID_INTERACTIONS[resource_from_class][resource_to] == VALID
+			possible = VALID_INTERACTIONS[resource_from_class][resource_to] == VALID
 		elif resource_to == resources[resource_from]["upgraded_form"] or resource_to == resources[resource_from]["downgraded_form"]: #quick check for up/downgrade
-			return true
+			possible = true
 		elif resource_to in resources.keys(): #if we aren't an up/down form, then we must be trying to convert from one cfp to another
-			return VALID_INTERACTIONS[resource_from_class][get_class_from_name(resource_to)] == VALID
+			possible = VALID_INTERACTIONS[resource_from_class][get_class_from_name(resource_to)] == VALID
 		else:
 			print('ERROR: Bad unexpected usage of is_valid_interaction. Arguments: ', resource_from, resource_to)
 	
 	elif resource_from in VALID_INTERACTIONS.keys(): #if we are going from vesicle/energy elsewhere
 		if resource_to in VALID_INTERACTIONS.keys(): #if resource_to is a vesicle or energy
-			return VALID_INTERACTIONS[resource_from][resource_to] == VALID
+			possible = VALID_INTERACTIONS[resource_from][resource_to] == VALID
 		elif resource_to in resources.keys(): #if we aren't an up/down form, then we must be trying to convert from one cfp to another
-			return VALID_INTERACTIONS[resource_from][get_class_from_name(resource_to)] == VALID
+			possible = VALID_INTERACTIONS[resource_from][get_class_from_name(resource_to)] == VALID
 		else:
 			print('ERROR: Bad unexpected usage of is_valid_interaction. Arguments: ', resource_from, resource_to)
+	
+	if bhv_profile != null and possible:
+		var decon_value = bhv_profile.get_behavior("Deconstruction")
+		var assembly_value = bhv_profile.get_behavior("Assembly")
+		
+		if resource_from == "energy" and assembly_value >= 6:
+			return true
+		elif resource_from == "simple_carbs":
+			if resource_to == "energy" and decon_value >= 0:
+				return true
+			elif resource_to == "complex_carbs" and assembly_value >= 4:
+				return true
+			elif resource_to == "simple_fats" and assembly_value >= 6:
+				return true
+			elif resource_to == "simple_proteins" and assembly_value >= 3:
+				return true
+			else:
+				return false
+		elif resource_from == "simple_fats":
+			if resource_to == "complex_fats" and assembly_value >= 8:
+				return true
+			elif resource_to == "energy" and decon_value >= 2:
+				return true
+			else:
+				return false
+		elif resource_from == "simple_proteins":
+			if resource_to == "complex_proteins" and assembly_value >= 6:
+				return true
+			elif resource_to == "simple_carbs" and decon_value >= 2:
+				return true
+			else:
+				return false
+		elif resource_from == "complex_carbs":
+			if resource_to == "simple_carbs" and decon_value >= 2:
+				return true
+		elif resource_from == "complex_fats":
+			if resource_to == "simple_fats" and decon_value >= 6:
+				return true
+		elif resource_from == "complex_proteins":
+			if resource_to == "simple_proteins" and decon_value >= 4:
+				return true
+		else:
+			return false
+	else:
+		return possible
+
 #########################MAP FUNCTIONS AND CONVERTERS##########################
 const cube_to_pixel = Transform2D(Vector2(sqrt(3)/2, 1.0/2.0), Vector2(0, 1), Vector2(0,0))
 const pixel_to_cube = Transform2D(Vector2(2*sqrt(3)/3, -sqrt(3)/3), Vector2(0, 1), Vector2(0,0))

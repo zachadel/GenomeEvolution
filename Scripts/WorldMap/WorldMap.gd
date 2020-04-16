@@ -276,6 +276,8 @@ func _unhandled_input(event):
 							update_vision()
 						observe_tiles(tile_position, new_radius)
 						
+						ui.update_valid_arrows()
+						
 						$MapCamera.position = Game.map_to_world(tile_position)
 						$MapCamera.offset = Vector2(0,0)
 						

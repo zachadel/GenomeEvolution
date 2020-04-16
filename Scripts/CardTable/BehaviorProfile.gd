@@ -47,3 +47,17 @@ func get_res_spec(behavior : String, res : String, tier : int) -> float:
 
 func get_biome_spec(biome : String) -> float:
 	return get_specialization("Locomotion", "biomes", biome);
+	
+func print_profile():
+	print("***BHV_PROF_DATA***")
+	for behavior in bhv_prof_data:
+		print("%s value: %d" % [behavior, bhv_prof_data[behavior]])
+	print("***SPEC_PROF_DATA***")
+	for behavior in spec_prof_data:
+		for spec in spec_prof_data[behavior]:
+			for sub_idx in spec_prof_data[behavior][spec]:
+				print("%s -> %s -> %d value: %d" % [behavior, spec, sub_idx, spec_prof_data[behavior][spec][sub_idx]])
+	print("***SKILL_PROF_DATA***")
+	for behavior in spec_prof_data:
+		for skill in spec_prof_data[behavior]:
+			print("%s behavior with skill %s: true")
