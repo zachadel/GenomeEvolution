@@ -22,8 +22,8 @@ func get_repair_desc(type: String) -> String:
 	return REPAIR_TTIPS.get(type, "MISSING REPAIR TOOLTIP: %s" % type);
 
 const REPLICATE_TTIPS = {
-	"mitosis": "If the genes to the left and the right of the gap are the same, the break can be repaired by discarding one of the duplicates.",
-	"meiosis": "If both ends of the gap can be matched to an intact pattern on the other chromosome, you can attempt to copy the pattern. There is a decent chance of complications (duplicates, discarding, etc.).",
+	"mitosis": "Split your chromosomes, then replicate each to form 2 new organisms.",
+	"meiosis": "Split your chromosomes, then match each with the chromosomes from another individual to form 4 new organisms.",
 	"skip": "You can always choose to not replicate and continue with no offspring."
 };
 

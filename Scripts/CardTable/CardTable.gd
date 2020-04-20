@@ -70,7 +70,6 @@ func get_replicate_desc(idx):
 	var df = orgn.check_resources(action_name);
 	if !df.empty():
 		deficiency_str = "\nDeficient %s" % Game.list_array_string(df);
-	var dingo = [orgn.get_cost_string(action_name), deficiency_str, Tooltips.REPLICATE_TTIPS[tooltip_key]];
 	return REPLICATE_DESC_FORMAT % [orgn.get_cost_string(action_name), deficiency_str, Tooltips.REPLICATE_TTIPS[tooltip_key]];
 
 func upd_replicate_desc(idx):
