@@ -33,6 +33,8 @@ func has_behavior(behavior_key: String) -> bool:
 	return get_behavior(behavior_key) > 0.0;
 
 func has_skill(behavior: String, skill: String) -> bool:
+	if Unlocks.unlock_override:
+		return true;
 	return has_behavior(behavior) && skill_prof_data.get(behavior, []).has(skill);
 
 # Returns a mult for some specialization
