@@ -831,12 +831,10 @@ func repair_gap(gap, repair_type, choice_info = {}):
 									else:
 										cmsms.remove_elm(gene, false);
 								3: # Major down
-									damage_str = "received a major downgrade"
-									gene.evolve_by_name("major_down");
+									damage_str = "received a " + gene.evolve_by_name("major_down");
 								4: # Minor down
-									damage_str = "received a minor downgrade"
-									gene.evolve_by_name("minor_down");
-							emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome. A %s gene %s in the repair.%s" % (gap_pos_disp + [left_id, right_id, g_id, damage_str, correct_str]));
+									damage_str = "received a " + gene.evolve_by_name("minor_down");
+							emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome. During the repair, a %s gene %s.%s" % (gap_pos_disp + [left_id, right_id, g_id, damage_str, correct_str]));
 					5, 6, 7:
 						var gene = right_break_gene;
 						if (randi() % 2):
@@ -851,12 +849,10 @@ func repair_gap(gap, repair_type, choice_info = {}):
 								else:
 									cmsms.dupe_elm(gene);
 							6: # Major up
-								boon_str = "received a major upgrade"
-								gene.evolve_by_name("major_up");
+								boon_str = "received a " + gene.evolve_by_name("major_up");
 							7: # Minor up
-								boon_str = "received a minor upgrade"
-								gene.evolve_by_name("minor_up");
-						emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome. A %s gene %s in the repair.%s" % (gap_pos_disp + [left_id, right_id, gene.get_gene_name(), boon_str, correct_str]));
+								boon_str = "received a " + gene.evolve_by_name("minor_up");
+						emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome. During the repair, a %s gene %s.%s" % (gap_pos_disp + [left_id, right_id, gene.get_gene_name(), boon_str, correct_str]));
 				if !repair_canceled:
 					if (do_correction):
 						var correct_targ = right_break_gene;
@@ -958,12 +954,10 @@ func repair_gap(gap, repair_type, choice_info = {}):
 									else:
 										cmsms.remove_elm(gene, false);
 								2: # Major down
-									damage_str = "received a major downgrade"
-									gene.evolve_by_name("major_down");
+									damage_str = "received a " + gene.evolve_by_name("major_down");
 								3: # Minor down
-									damage_str = "received a minor downgrade"
-									gene.evolve_by_name("minor_down");
-							emit_signal("justnow_update", "Joined ends for the gap at %d, %d; a %s gene %s in the repair." % (gap_pos_disp + [g_id, damage_str]));
+									damage_str = "received a " + gene.evolve_by_name("minor_down");
+							emit_signal("justnow_update", "Joined ends for the gap at %d, %d; during the repair, a %s gene %s." % (gap_pos_disp + [g_id, damage_str]));
 					4, 5, 6:
 						var gene = right_break_gene;
 						if (randi()%2):
@@ -978,12 +972,10 @@ func repair_gap(gap, repair_type, choice_info = {}):
 								else:
 									cmsms.dupe_elm(gene);
 							5: # Major up
-								boon_str = "received a major upgrade"
-								gene.evolve_by_name("major_up");
+								boon_str = "received a " + gene.evolve_by_name("major_up");
 							6: # Minor up
-								boon_str = "received a minor upgrade"
-								gene.evolve_by_name("minor_up");
-						emit_signal("justnow_update", "Joined ends for the gap at %d, %d; a %s gene %s in the repair." % (gap_pos_disp + [gene.get_gene_name(), boon_str]));
+								boon_str = "received a " + gene.evolve_by_name("minor_up");
+						emit_signal("justnow_update", "Joined ends for the gap at %d, %d; during the repair, a %s gene %s." % (gap_pos_disp + [gene.get_gene_name(), boon_str]));
 				if !repair_canceled:
 					if (do_yields):
 						yield(cmsms.close_gap(gap), "completed");
@@ -1078,20 +1070,12 @@ func evolve_candidates(candids):
 			if e.is_damaged():
 				dmg_mods = {"major_down": 5.0, "minor_down": 2.5};
 			var evolve_name := roll_chance_named("evolve", dmg_mods);
+			var evolve_text : String = e.evolve_by_name(evolve_name);
 			match evolve_name:
 				"none":
 					justnow += "%s did not evolve.\n" % e.get_gene_name();
-				"dead":
-					justnow += "%s received a fatal mutation.\n" % e.get_gene_name();
-				"major_down":
-					justnow += "%s received a major downgrade!\n" % e.get_gene_name();
-				"minor_down":
-					justnow += "%s received a minor downgrade.\n" % e.get_gene_name();
-				"major_up":
-					justnow += "%s received a major upgrade!\n" % e.get_gene_name();
-				"minor_up":
-					justnow += "%s received a minor upgrade.\n" % e.get_gene_name();
-			e.evolve_by_name(evolve_name);
+				_:
+					justnow += "%s received a %s.\n" % [e.get_gene_name(), evolve_text];
 		emit_signal("justnow_update", justnow);
 	else:
 		emit_signal("justnow_update", "No essential genes were duplicated, so no genes evolve.");
