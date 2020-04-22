@@ -163,32 +163,7 @@ func set_texture(tex : Texture):
 		AnthroArt.visible = false;
 
 func setup_copy(ref_elm):
-	id = ref_elm.id;
-	type = ref_elm.type;
-	mode = ref_elm.mode;
-	gene_code = ref_elm.gene_code;
-	parent_code = ref_elm.parent_code;
-	ph_preference = ref_elm.ph_preference;
-	var tex = ref_elm.texture_normal;
-	if (ref_elm.type == "gene"):
-		match (ref_elm.mode):
-			"essential":
-				ess_behavior = ref_elm.ess_behavior.duplicate();
-				specialization = ref_elm.specialization.duplicate();
-				skills = ref_elm.skills.duplicate();
-			"ate":
-				ate_activity = ref_elm.ate_activity;
-				obtain_ate_personality(ref_elm.ate_personality["key"]);
-	damage_gene(ref_elm.is_damaged());
-	upd_display();
-	
-	code_direction = ref_elm.code_direction;
-	if ref_elm.mode != "ate":
-		texture_normal = tex;
-		texture_pressed = tex;
-		texture_disabled = tex;
-	
-	disable(true);
+	load_from_save(ref_elm.get_save_data());
 
 func get_save_data():
 	var setup_data = ["type", "id", "mode", "gene_code", "parent_code", "ph_preference", "code_direction", "internal_damaged"];
@@ -425,10 +400,10 @@ func merge_with(other_elm):
 func evolve_minor(amt):
 	match mode:
 		"essential":
-			if (ess_behavior.values().max() > 0):
-				var behave_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
-				evolve_specialization(behave_key, amt);
-				ess_behavior[behave_key] = max(0, ess_behavior[behave_key] + amt);
+			var behave_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
+			evolve_specialization(behave_key, amt);
+			ess_behavior[behave_key] = max(0, ess_behavior[behave_key] + amt);
+			latest_beh_evol = behave_key;
 		"ate":
 			ate_activity += amt;
 	check_for_death();
@@ -585,6 +560,8 @@ func damage_gene(dmg := true):
 # Returns a string describing the evolution that occurred
 func perform_evolution(major: bool, up: bool) -> String:
 	just_evolved_skill = false;
+	latest_skill_evol = "";
+	latest_beh_evol = "";
 	var original_mode = mode;
 	
 	var up_sign = 1 if up else -1;
@@ -613,7 +590,7 @@ func perform_evolution(major: bool, up: bool) -> String:
 			if just_evolved_skill:
 				change_text %= ["gain" if up else "los", "the skill %s" % Skills.get_skill_desc(latest_beh_evol, latest_skill_evol)];
 			else:
-				change_text %= ["improv" if up else "impair", "its %s ability" % Tooltips.GENE_NAMES[latest_beh_evol]];
+				change_text %= ["improv" if up else "impair", "its %s ability" % Tooltips.GENE_NAMES.get(latest_beh_evol, "UNKNOWN")];
 				if mode == "pseudo":
 					change_text += " (the gene is now a pseudogene)";
 		"ate":
