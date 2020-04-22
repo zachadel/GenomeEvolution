@@ -349,7 +349,7 @@ func _on_Organism_show_reprod_opts(show):
 
 func _on_btn_dead_menu_pressed():
 	Game.restart_game()
-	get_tree().reload_current_scene()
+	get_tree().change_scene("res://Scenes/MainMenu/TitleScreen.tscn")
 
 func _on_btn_dead_restart_pressed():
 	Game.restart_game();

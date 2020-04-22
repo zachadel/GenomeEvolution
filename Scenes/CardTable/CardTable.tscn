@@ -196,70 +196,6 @@ margin_top = 618.0
 margin_right = 1414.0
 margin_bottom = 801.0
 
-[node name="button_grid" type="VBoxContainer" parent="."]
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -132.0
-margin_top = 647.0
-margin_right = -10.0
-margin_bottom = -9.0
-grow_horizontal = 0
-grow_vertical = 0
-custom_constants/separation = 20
-alignment = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="btn_dead_menu" type="Button" parent="button_grid"]
-visible = false
-margin_right = 122.0
-margin_bottom = 60.0
-rect_min_size = Vector2( 120, 60 )
-text = "Quit to Menu"
-
-[node name="btn_dead_restart" type="Button" parent="button_grid"]
-visible = false
-margin_top = 80.0
-margin_right = 122.0
-margin_bottom = 140.0
-rect_min_size = Vector2( 120, 60 )
-text = "Restart"
-
-[node name="hsep_dead" type="HSeparator" parent="button_grid"]
-visible = false
-margin_top = 160.0
-margin_right = 122.0
-margin_bottom = 164.0
-
-[node name="btn_bugreport" type="Button" parent="button_grid"]
-margin_right = 122.0
-margin_bottom = 60.0
-rect_min_size = Vector2( 120, 60 )
-text = "Report Bug"
-
-[node name="btn_saveload" type="Button" parent="button_grid"]
-margin_top = 80.0
-margin_right = 122.0
-margin_bottom = 140.0
-rect_min_size = Vector2( 120, 60 )
-text = "Save/Load"
-
-[node name="btn_filter" type="Button" parent="button_grid"]
-margin_top = 160.0
-margin_right = 122.0
-margin_bottom = 220.0
-rect_min_size = Vector2( 120, 60 )
-text = "pH Effectiveness"
-
-[node name="btn_nxt" type="Button" parent="button_grid"]
-margin_top = 240.0
-margin_right = 122.0
-margin_bottom = 300.0
-rect_min_size = Vector2( 120, 60 )
-text = "Continue"
-
 [node name="Organism" parent="." instance=ExtResource( 2 )]
 
 [node name="lbl_behavior" type="Label" parent="."]
@@ -610,18 +546,14 @@ margin_left = 1169.4
 margin_top = 805.0
 margin_right = 1269.4
 margin_bottom = 895.0
-num = 0
 lbl = "Round"
-show_change = true
 
 [node name="lnum_progeny" parent="." instance=ExtResource( 17 )]
 margin_left = 1313.4
 margin_top = 805.0
 margin_right = 1413.4
 margin_bottom = 895.0
-num = 0
 lbl = "Progeny"
-show_change = true
 
 [node name="EnergyBar" parent="." instance=ExtResource( 14 )]
 margin_left = 1.894
@@ -633,6 +565,72 @@ rect_scale = Vector2( 0.8, 0.75 )
 [node name="AutoContinue" type="Timer" parent="."]
 wait_time = 0.01
 one_shot = true
+
+[node name="button_grid" type="VBoxContainer" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -132.0
+margin_top = 511.0
+margin_right = -10.0
+margin_bottom = -9.0
+grow_horizontal = 0
+grow_vertical = 0
+custom_constants/separation = 10
+alignment = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="btn_dead_menu" type="Button" parent="button_grid"]
+margin_top = 115.0
+margin_right = 122.0
+margin_bottom = 160.0
+rect_min_size = Vector2( 120, 45 )
+text = "Quit to Menu"
+
+[node name="btn_dead_restart" type="Button" parent="button_grid"]
+visible = false
+margin_top = 80.0
+margin_right = 122.0
+margin_bottom = 140.0
+rect_min_size = Vector2( 120, 45 )
+text = "Restart"
+
+[node name="hsep_dead" type="HSeparator" parent="button_grid"]
+visible = false
+margin_top = 160.0
+margin_right = 122.0
+margin_bottom = 164.0
+rect_min_size = Vector2( 0, 45 )
+
+[node name="btn_bugreport" type="Button" parent="button_grid"]
+margin_top = 170.0
+margin_right = 122.0
+margin_bottom = 215.0
+rect_min_size = Vector2( 120, 45 )
+text = "Report Bug"
+
+[node name="btn_saveload" type="Button" parent="button_grid"]
+margin_top = 225.0
+margin_right = 122.0
+margin_bottom = 270.0
+rect_min_size = Vector2( 120, 45 )
+text = "Save/Load"
+
+[node name="btn_filter" type="Button" parent="button_grid"]
+margin_top = 280.0
+margin_right = 122.0
+margin_bottom = 325.0
+rect_min_size = Vector2( 120, 45 )
+text = "pH Effectiveness"
+
+[node name="btn_nxt" type="Button" parent="button_grid"]
+margin_top = 335.0
+margin_right = 122.0
+margin_bottom = 380.0
+rect_min_size = Vector2( 120, 45 )
+text = "Continue"
 
 [node name="ViewMap" type="TextureButton" parent="."]
 anchor_right = 1.0
@@ -663,12 +661,6 @@ valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="pressed" from="button_grid/btn_dead_menu" to="." method="_on_btn_dead_menu_pressed"]
-[connection signal="pressed" from="button_grid/btn_dead_restart" to="." method="_on_btn_dead_restart_pressed"]
-[connection signal="pressed" from="button_grid/btn_bugreport" to="." method="_on_btn_bugreport_pressed"]
-[connection signal="pressed" from="button_grid/btn_saveload" to="." method="_on_btn_saveload_pressed"]
-[connection signal="pressed" from="button_grid/btn_filter" to="." method="_on_btn_filter_pressed"]
-[connection signal="pressed" from="button_grid/btn_nxt" to="." method="_on_btn_nxt_pressed"]
 [connection signal="cmsm_changed" from="Organism" to="ChromosomeStatus" method="update"]
 [connection signal="died" from="Organism" to="." method="_on_Organism_died"]
 [connection signal="doing_work" from="Organism" to="." method="_on_Organism_doing_work"]
@@ -694,4 +686,10 @@ __meta__ = {
 [connection signal="value_changed" from="pnl_ph_filter/slider_ph" to="pnl_ph_filter" method="_on_slider_ph_value_changed"]
 [connection signal="animation_finished" from="pnl_chaos/Anim" to="." method="_on_chaos_anim_finished"]
 [connection signal="timeout" from="AutoContinue" to="." method="_on_AutoContinue_timeout"]
+[connection signal="pressed" from="button_grid/btn_dead_menu" to="." method="_on_btn_dead_menu_pressed"]
+[connection signal="pressed" from="button_grid/btn_dead_restart" to="." method="_on_btn_dead_restart_pressed"]
+[connection signal="pressed" from="button_grid/btn_bugreport" to="." method="_on_btn_bugreport_pressed"]
+[connection signal="pressed" from="button_grid/btn_saveload" to="." method="_on_btn_saveload_pressed"]
+[connection signal="pressed" from="button_grid/btn_filter" to="." method="_on_btn_filter_pressed"]
+[connection signal="pressed" from="button_grid/btn_nxt" to="." method="_on_btn_nxt_pressed"]
 [connection signal="pressed" from="ViewMap" to="." method="_on_ViewMap_pressed"]
