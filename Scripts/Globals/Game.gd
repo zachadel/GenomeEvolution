@@ -224,6 +224,7 @@ func restart_game():
 	round_num = 1
 	current_players = 0
 	all_time_players = 0
+	Unlocks.reset()
 
 func is_first_turn():
 	return turn_idx == 0 && round_num == 1;

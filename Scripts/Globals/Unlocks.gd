@@ -17,6 +17,12 @@ func _ready():
 	else:
 		print("Failed to load unlocks data file. Very bad!");
 
+func reset() -> void:
+	for c in counts:
+		counts[c] = 0;
+	for u in unlocks:
+		switch_unlock(u, false);
+
 func _has_unlock(unlock_key : String) -> bool:
 	if unlocks.has(unlock_key):
 		if unlock_override:
@@ -53,16 +59,16 @@ func switch_unlock(unlock_key : String, on : bool):
 	set_unlock(unlock_key, switch_to);
 
 func add_count(count_key : String, amt := 1):
-	if !counts.has(count_key):
-		counts[count_key] = amt;
-	else:
+	if counts.has(count_key):
 		counts[count_key] += amt;
+	else:
+		counts[count_key] = amt;
 	
 	for u in unlocks:
 		if !_is_unlock_switched(u) && unlock_watches_count(u, count_key) && unlock_counts_met(u):
 			switch_unlock(u, true);
 
-func get_count(count_key : String):
+func get_count(count_key : String) -> int:
 	return counts.get(count_key, 0);
 
 func unlock_watches_count(unlock_key : String, count_key : String) -> bool:
@@ -73,12 +79,11 @@ func get_count_remaining(unlock_key : String, count_key : String):
 		return unlocks[unlock_key][COUNT_THRESH_KEY][count_key] - get_count(count_key);
 	return null;
 
-func unlock_counts_met(unlock_key : String):
+func unlock_counts_met(unlock_key : String) -> bool:
 	for c in unlocks[unlock_key][COUNT_THRESH_KEY]:
 		if get_count_remaining(unlock_key, c) > 0:
 			return false;
 	return true;
-
 
 
 func get_turn_key(turn : int) -> String:

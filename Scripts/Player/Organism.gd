@@ -118,7 +118,7 @@ signal justnow_update(text);
 signal show_repair_opts(show);
 signal show_reprod_opts(show);
 
-signal died(org);
+signal died(org, death_descr);
 signal resources_changed(cfp_resources, mineral_resources);
 signal vesicle_scale_changed(vesicle_scales, cfp_resources)
 
@@ -1357,12 +1357,16 @@ func adv_turn(round_num, turn_idx):
 					died_on_turn = Game.round_num;
 					#$lbl_dead.text = "Died after %d rounds." % (died_on_turn - born_on_turn);
 					#$lbl_dead.visible = true;
-					emit_signal("justnow_update", "You're missing essential behavior: %s" % PoolStringArray(missing).join(", "));
-					emit_signal("died", self);
+					var missing_list = PoolStringArray(missing).join(", ");
+					emit_signal("justnow_update", "You're missing essential behavior: %s" % missing_list);
+					kill("lost essential behavior (%s)" % missing_list);
 			Game.TURN_TYPES.Replication:
 				emit_signal("justnow_update", "Choose replication method.");
 				emit_signal("doing_work", true);
 				emit_signal("show_reprod_opts", true);
+
+func kill(descr := "died"):
+	emit_signal("died", self, descr);
 
 func is_viable(missing_classes: Array) -> bool:
 	if missing_classes.size() == 0:
