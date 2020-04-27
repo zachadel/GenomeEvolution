@@ -70,7 +70,6 @@ func get_replicate_desc(idx):
 	var df = orgn.check_resources(action_name);
 	if !df.empty():
 		deficiency_str = "\nDeficient %s" % Game.list_array_string(df);
-	var dingo = [orgn.get_cost_string(action_name), deficiency_str, Tooltips.REPLICATE_TTIPS[tooltip_key]];
 	return REPLICATE_DESC_FORMAT % [orgn.get_cost_string(action_name), deficiency_str, Tooltips.REPLICATE_TTIPS[tooltip_key]];
 
 func upd_replicate_desc(idx):
@@ -231,13 +230,14 @@ func _on_Organism_doing_work(working):
 	wait_on_select = working;
 	check_if_ready();
 
-#Maybe causes issues with AI dying later?
-func _on_Organism_died(org):
+func _on_Organism_died(org, reason):
 	Game.round_num = 0
 	nxt_btn.visible = false;
-	$button_grid/btn_dead_menu.visible = true;
 	$button_grid/btn_dead_restart.visible = true;
-	$button_grid/hsep_dead.visible = true;
+	$button_grid/btn_dead_quit.visible = true;
+	$button_grid/btn_qtmenu.visible = false;
+	$button_grid/btn_nxt.visible = false;
+	death_descr = reason;
 
 func show():
 	.show();
@@ -348,9 +348,18 @@ func _on_pnl_saveload_loaded():
 func _on_Organism_show_reprod_opts(show):
 	show_replicate_opts(show);
 
-func _on_btn_dead_menu_pressed():
+func quit_to_menu():
 	Game.restart_game()
-	get_tree().reload_current_scene()
+	get_tree().change_scene("res://Scenes/MainMenu/TitleScreen.tscn")
+
+const OVERVIEW_FORMAT = "You survived for %d rounds.\nYou produced %d progeny.\nYou repaired %d gaps.\nYour organism %s.";
+var death_descr := "died";
+func _on_btn_dead_quit_pressed():
+	var gaps_repaired := 0;
+	for rtype in ["repair_cp", "repair_cd", "repair_je"]:
+		gaps_repaired += Unlocks.get_count(rtype);
+	$pnl_dead_overview/LblOverview.text = OVERVIEW_FORMAT % [Game.round_num, orgn.num_progeny, gaps_repaired, death_descr]
+	$pnl_dead_overview.visible = true;
 
 func _on_btn_dead_restart_pressed():
 	Game.restart_game();

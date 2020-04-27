@@ -163,32 +163,7 @@ func set_texture(tex : Texture):
 		AnthroArt.visible = false;
 
 func setup_copy(ref_elm):
-	id = ref_elm.id;
-	type = ref_elm.type;
-	mode = ref_elm.mode;
-	gene_code = ref_elm.gene_code;
-	parent_code = ref_elm.parent_code;
-	ph_preference = ref_elm.ph_preference;
-	var tex = ref_elm.texture_normal;
-	if (ref_elm.type == "gene"):
-		match (ref_elm.mode):
-			"essential":
-				ess_behavior = ref_elm.ess_behavior.duplicate();
-				specialization = ref_elm.specialization.duplicate();
-				skills = ref_elm.skills.duplicate();
-			"ate":
-				ate_activity = ref_elm.ate_activity;
-				obtain_ate_personality(ref_elm.ate_personality["key"]);
-	damage_gene(ref_elm.is_damaged());
-	upd_display();
-	
-	code_direction = ref_elm.code_direction;
-	if ref_elm.mode != "ate":
-		texture_normal = tex;
-		texture_pressed = tex;
-		texture_disabled = tex;
-	
-	disable(true);
+	load_from_save(ref_elm.get_save_data());
 
 func get_save_data():
 	var setup_data = ["type", "id", "mode", "gene_code", "parent_code", "ph_preference", "code_direction", "internal_damaged"];
@@ -425,10 +400,10 @@ func merge_with(other_elm):
 func evolve_minor(amt):
 	match mode:
 		"essential":
-			if (ess_behavior.values().max() > 0):
-				var behave_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
-				evolve_specialization(behave_key, amt);
-				ess_behavior[behave_key] = max(0, ess_behavior[behave_key] + amt);
+			var behave_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
+			evolve_specialization(behave_key, amt);
+			ess_behavior[behave_key] = max(0, ess_behavior[behave_key] + amt);
+			latest_beh_evol = behave_key;
 		"ate":
 			ate_activity += amt;
 	check_for_death();
@@ -445,11 +420,8 @@ func get_gain_chance(num_missing_behaviors : int, num_max_behaviors : int) -> fl
 	var log_b10 = log(2.25 * num_current_behaves / float(num_max_behaviors)) / log(10);
 	return clamp(-1.25 * log_b10 + .25, 0.0, 1.0);
 
-const SKILL_UP_CHANCE = 0.1;
-var just_evolved_skill = false; # Also used by Organism to know when a new skill was gained
-
-func get_skillup_chance():
-	return SKILL_UP_CHANCE;
+func get_skill_evolve_chance():
+	return SKILL_EVOLVE_CHANCE;
 
 func has_skill(skill_behavior: String, skill_name: String) -> bool:
 	return skills.get(skill_behavior, []).has(skill_name);
@@ -475,25 +447,48 @@ func set_skills(skill_dict: Dictionary) -> void:
 	for k in skill_dict:
 		skills[k] = skill_dict[k];
 
+const SKILL_EVOLVE_CHANCE = 0.1;
+var just_evolved_skill := false;
+var latest_skill_evol := "";
+var latest_beh_evol := "";
+
 func evolve_skill(behave_key: String, gain := true) -> void:
-	var new_skill := Skills.get_random_skill(behave_key);
-	if !new_skill.empty() && !has_skill(behave_key, new_skill):
-		just_evolved_skill = true;
-		if !skills.has(behave_key):
-			skills[behave_key] = [];
-		skills[behave_key].append(new_skill);
+	if gain:
+		var new_skill := Skills.get_random_skill(behave_key);
+		if !new_skill.empty() && !has_skill(behave_key, new_skill):
+			just_evolved_skill = true;
+			latest_skill_evol = new_skill;
+			
+			if !skills.has(behave_key):
+				skills[behave_key] = [];
+			skills[behave_key].append(new_skill);
+	else:
+		if !skills.get(behave_key, []).empty():
+			var rand_skill_idx : int = randi() % skills[behave_key].size();
+			
+			just_evolved_skill = true;
+			latest_skill_evol = skills[behave_key][rand_skill_idx];
+			
+			skills[behave_key].remove(rand_skill_idx);
+			if skills[behave_key].empty():
+				skills.erase(behave_key);
 
 func evolve_new_behavior(gain : bool) -> void:
-	if (gain):
-		var key_candids = [];
-		for k in ess_behavior:
-			if (ess_behavior[k] == 0):
-				key_candids.append(k);
-		var behave_key : String = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
-		
-		if randf() <= get_skillup_chance():
-			evolve_skill(behave_key);
-		if !just_evolved_skill:
+	var behave_key : String = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
+	
+	just_evolved_skill = false;
+	if randf() <= get_skill_evolve_chance():
+		evolve_skill(behave_key, gain);
+	
+	# just_evolved_skill is used because sometimes evolve_skill() fails
+	# for non-obvious reasons (eg no new skills available to gain)
+	if !just_evolved_skill:
+		if gain:
+			var key_candids = [];
+			for k in ess_behavior:
+				if (ess_behavior[k] == 0):
+					key_candids.append(k);
+			
 			if randf() <= get_gain_chance(key_candids.size(), ess_behavior.size()):
 				behave_key = key_candids[randi() % key_candids.size()];
 			evolve_specialization(behave_key, GAIN_AMT);
@@ -501,11 +496,10 @@ func evolve_new_behavior(gain : bool) -> void:
 				ess_behavior[behave_key] += GAIN_AMT;
 			else:
 				ess_behavior[behave_key] = GAIN_AMT;
-	else:
-		var behave_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
-		
-		evolve_specialization(behave_key, -ess_behavior[behave_key]);
-		ess_behavior[behave_key] = 0.0;
+		else:
+			evolve_specialization(behave_key, -ess_behavior[behave_key]);
+			ess_behavior[behave_key] = 0.0;
+	latest_beh_evol = behave_key;
 
 const BLANK_EVOLVE_DIFF = 4;
 func evolve_major(gain):
@@ -563,8 +557,12 @@ func damage_gene(dmg := true):
 	internal_damaged = is_behavior_gene() && dmg;
 	$Damage.visible = internal_damaged;
 
-func perform_evolution(major: bool, up: bool) -> void:
+# Returns a string describing the evolution that occurred
+func perform_evolution(major: bool, up: bool) -> String:
 	just_evolved_skill = false;
+	latest_skill_evol = "";
+	latest_beh_evol = "";
+	var original_mode = mode;
 	
 	var up_sign = 1 if up else -1;
 	var code_change = MAJOR_CODE_CHANGE;
@@ -582,21 +580,43 @@ func perform_evolution(major: bool, up: bool) -> void:
 	damage_gene(false);
 	upd_display();
 	get_cmsm().emit_signal("cmsm_changed");
+	
+	var magn_text := "major" if major else "minor";
+	var updown_text := "upgrade" if up else "downgrade";
+	var change_text := "";
+	match original_mode:
+		"essential":
+			change_text = ", %sing %s";
+			if just_evolved_skill:
+				change_text %= ["gain" if up else "los", "the skill %s" % Skills.get_skill_desc(latest_beh_evol, latest_skill_evol)];
+			else:
+				change_text %= ["improv" if up else "impair", "its %s ability" % Tooltips.GENE_NAMES.get(latest_beh_evol, "UNKNOWN")];
+				if mode == "pseudo":
+					change_text += " (the gene is now a pseudogene)";
+		"ate":
+			change_text = ", becoming %s active" % ("more" if up else "less");
+			if mode == "pseudo":
+				change_text += " (the transposon is now entirely inactive)";
+	return "%s %s%s" % [magn_text, updown_text, change_text];
 
-func evolve_by_name(ev_name: String) -> void:
+# Returns a string describing the evolution that occurred
+# eg "major upgrade, improving its Replication ability"
+func evolve_by_name(ev_name: String) -> String:
 	if type == "gene":
 		match ev_name:
 			"dead":
 				modify_code(5, -5);
 				kill_elm();
+				return "a fatal mutation";
 			"major_down":
-				perform_evolution(true, false);
+				return perform_evolution(true, false);
 			"minor_down":
-				perform_evolution(false, false);
+				return perform_evolution(false, false);
 			"major_up":
-				perform_evolution(true, true);
+				return perform_evolution(true, true);
 			"minor_up":
-				perform_evolution(false, true);
+				return perform_evolution(false, true);
+	return "";
 
 func get_tooltip_data() -> Array:
 	match type:

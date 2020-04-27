@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://Scripts/CardTable/CardTable.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player/Organism.tscn" type="PackedScene" id=2]
@@ -19,6 +19,9 @@
 [ext_resource path="res://Scenes/CardTable/LabeledNumber.tscn" type="PackedScene" id=17]
 [ext_resource path="res://Assets/Images/icons/scissors.png" type="Texture" id=18]
 [ext_resource path="res://Assets/Images/pngs/DNA_small.png" type="Texture" id=19]
+[ext_resource path="res://Scenes/MainMenu/Credits.tscn" type="PackedScene" id=20]
+[ext_resource path="res://Assets/Fonts/OpenSans-48.tres" type="DynamicFont" id=21]
+[ext_resource path="res://Assets/Fonts/OpenSans-64.tres" type="DynamicFont" id=22]
 
 [sub_resource type="Theme" id=1]
 Button/colors/font_color_disabled = Color( 0, 0, 0, 1 )
@@ -183,9 +186,11 @@ margin_left = 4.0
 margin_top = 32.0
 margin_right = -5.0
 margin_bottom = -5.0
+focus_mode = 2
 custom_styles/normal = ExtResource( 16 )
 bbcode_enabled = true
 scroll_following = true
+selection_enabled = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -195,70 +200,6 @@ margin_left = 1164.0
 margin_top = 618.0
 margin_right = 1414.0
 margin_bottom = 801.0
-
-[node name="button_grid" type="VBoxContainer" parent="."]
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -132.0
-margin_top = 647.0
-margin_right = -10.0
-margin_bottom = -9.0
-grow_horizontal = 0
-grow_vertical = 0
-custom_constants/separation = 20
-alignment = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="btn_dead_menu" type="Button" parent="button_grid"]
-visible = false
-margin_right = 122.0
-margin_bottom = 60.0
-rect_min_size = Vector2( 120, 60 )
-text = "Quit to Menu"
-
-[node name="btn_dead_restart" type="Button" parent="button_grid"]
-visible = false
-margin_top = 80.0
-margin_right = 122.0
-margin_bottom = 140.0
-rect_min_size = Vector2( 120, 60 )
-text = "Restart"
-
-[node name="hsep_dead" type="HSeparator" parent="button_grid"]
-visible = false
-margin_top = 160.0
-margin_right = 122.0
-margin_bottom = 164.0
-
-[node name="btn_bugreport" type="Button" parent="button_grid"]
-margin_right = 122.0
-margin_bottom = 60.0
-rect_min_size = Vector2( 120, 60 )
-text = "Report Bug"
-
-[node name="btn_saveload" type="Button" parent="button_grid"]
-margin_top = 80.0
-margin_right = 122.0
-margin_bottom = 140.0
-rect_min_size = Vector2( 120, 60 )
-text = "Save/Load"
-
-[node name="btn_filter" type="Button" parent="button_grid"]
-margin_top = 160.0
-margin_right = 122.0
-margin_bottom = 220.0
-rect_min_size = Vector2( 120, 60 )
-text = "pH Effectiveness"
-
-[node name="btn_nxt" type="Button" parent="button_grid"]
-margin_top = 240.0
-margin_right = 122.0
-margin_bottom = 300.0
-rect_min_size = Vector2( 120, 60 )
-text = "Continue"
 
 [node name="Organism" parent="." instance=ExtResource( 2 )]
 
@@ -634,6 +575,73 @@ rect_scale = Vector2( 0.8, 0.75 )
 wait_time = 0.01
 one_shot = true
 
+[node name="button_grid" type="VBoxContainer" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -132.0
+margin_top = 511.0
+margin_right = -10.0
+margin_bottom = -9.0
+grow_horizontal = 0
+grow_vertical = 0
+custom_constants/separation = 10
+alignment = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="btn_dead_restart" type="Button" parent="button_grid"]
+visible = false
+margin_top = 60.0
+margin_right = 122.0
+margin_bottom = 105.0
+rect_min_size = Vector2( 120, 45 )
+text = "Retry"
+
+[node name="btn_dead_quit" type="Button" parent="button_grid"]
+visible = false
+margin_top = 60.0
+margin_right = 122.0
+margin_bottom = 105.0
+rect_min_size = Vector2( 120, 45 )
+text = "Quit"
+
+[node name="btn_qtmenu" type="Button" parent="button_grid"]
+margin_top = 115.0
+margin_right = 122.0
+margin_bottom = 160.0
+rect_min_size = Vector2( 120, 45 )
+text = "Quit to Menu"
+
+[node name="btn_bugreport" type="Button" parent="button_grid"]
+margin_top = 170.0
+margin_right = 122.0
+margin_bottom = 215.0
+rect_min_size = Vector2( 120, 45 )
+text = "Report Bug"
+
+[node name="btn_saveload" type="Button" parent="button_grid"]
+margin_top = 225.0
+margin_right = 122.0
+margin_bottom = 270.0
+rect_min_size = Vector2( 120, 45 )
+text = "Save/Load"
+
+[node name="btn_filter" type="Button" parent="button_grid"]
+margin_top = 280.0
+margin_right = 122.0
+margin_bottom = 325.0
+rect_min_size = Vector2( 120, 45 )
+text = "pH Effectiveness"
+
+[node name="btn_nxt" type="Button" parent="button_grid"]
+margin_top = 335.0
+margin_right = 122.0
+margin_bottom = 380.0
+rect_min_size = Vector2( 120, 45 )
+text = "Continue"
+
 [node name="ViewMap" type="TextureButton" parent="."]
 anchor_right = 1.0
 anchor_bottom = 0.995
@@ -663,12 +671,79 @@ valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="pressed" from="button_grid/btn_dead_menu" to="." method="_on_btn_dead_menu_pressed"]
-[connection signal="pressed" from="button_grid/btn_dead_restart" to="." method="_on_btn_dead_restart_pressed"]
-[connection signal="pressed" from="button_grid/btn_bugreport" to="." method="_on_btn_bugreport_pressed"]
-[connection signal="pressed" from="button_grid/btn_saveload" to="." method="_on_btn_saveload_pressed"]
-[connection signal="pressed" from="button_grid/btn_filter" to="." method="_on_btn_filter_pressed"]
-[connection signal="pressed" from="button_grid/btn_nxt" to="." method="_on_btn_nxt_pressed"]
+
+[node name="pnl_dead_overview" type="Panel" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSplitContainer" type="HSplitContainer" parent="pnl_dead_overview"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+split_offset = 50
+dragger_visibility = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="pnl_dead_overview/HSplitContainer"]
+margin_right = 300.0
+margin_bottom = 900.0
+
+[node name="Credits" parent="pnl_dead_overview/HSplitContainer/CenterContainer" instance=ExtResource( 20 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 24.0
+margin_top = 224.0
+margin_right = 274.0
+margin_bottom = 674.0
+rect_min_size = Vector2( 250, 450 )
+
+[node name="Control" type="Control" parent="pnl_dead_overview/HSplitContainer"]
+margin_left = 300.0
+margin_right = 1600.0
+margin_bottom = 900.0
+
+[node name="LblOverview" type="Label" parent="pnl_dead_overview/HSplitContainer/Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/font = ExtResource( 22 )
+text = "You survived for %d rounds.
+You produced %d progeny.
+You repaired %d gaps.
+Your organism %s."
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LblGameOver" type="Label" parent="pnl_dead_overview/HSplitContainer/Control"]
+anchor_right = 1.0
+margin_bottom = 129.0
+custom_fonts/font = ExtResource( 21 )
+text = "Game Over!"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="btn_qtmenu" type="Button" parent="pnl_dead_overview/HSplitContainer/Control"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -248.0
+margin_top = -115.0
+margin_right = -64.0
+margin_bottom = -48.0
+rect_min_size = Vector2( 120, 45 )
+custom_fonts/font = ExtResource( 13 )
+text = "Quit to Menu"
 [connection signal="cmsm_changed" from="Organism" to="ChromosomeStatus" method="update"]
 [connection signal="died" from="Organism" to="." method="_on_Organism_died"]
 [connection signal="doing_work" from="Organism" to="." method="_on_Organism_doing_work"]
@@ -694,4 +769,12 @@ __meta__ = {
 [connection signal="value_changed" from="pnl_ph_filter/slider_ph" to="pnl_ph_filter" method="_on_slider_ph_value_changed"]
 [connection signal="animation_finished" from="pnl_chaos/Anim" to="." method="_on_chaos_anim_finished"]
 [connection signal="timeout" from="AutoContinue" to="." method="_on_AutoContinue_timeout"]
+[connection signal="pressed" from="button_grid/btn_dead_restart" to="." method="_on_btn_dead_restart_pressed"]
+[connection signal="pressed" from="button_grid/btn_dead_quit" to="." method="_on_btn_dead_quit_pressed"]
+[connection signal="pressed" from="button_grid/btn_qtmenu" to="." method="quit_to_menu"]
+[connection signal="pressed" from="button_grid/btn_bugreport" to="." method="_on_btn_bugreport_pressed"]
+[connection signal="pressed" from="button_grid/btn_saveload" to="." method="_on_btn_saveload_pressed"]
+[connection signal="pressed" from="button_grid/btn_filter" to="." method="_on_btn_filter_pressed"]
+[connection signal="pressed" from="button_grid/btn_nxt" to="." method="_on_btn_nxt_pressed"]
 [connection signal="pressed" from="ViewMap" to="." method="_on_ViewMap_pressed"]
+[connection signal="pressed" from="pnl_dead_overview/HSplitContainer/Control/btn_qtmenu" to="." method="quit_to_menu"]

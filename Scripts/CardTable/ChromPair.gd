@@ -394,6 +394,10 @@ func insert_from_behavior(sq_elm, this_cmsm, ref_pos, behave_dict = Game.DEFAULT
 	else:
 		final_cmsm.add_elm(sq_elm, final_idx);
 	
+	# Insert in a random direction
+	if randf() < 0.5:
+		sq_elm.reverse_code();
+	
 	return final_idx;
 
 func jump_ate(ate_elm):

@@ -1,10 +1,11 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Scripts/MainMenu/title_screen.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Images/pngs/CHAOS.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Images/pngs/DNA_left.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Images/pngs/DNA_right.png" type="Texture" id=4]
 [ext_resource path="res://Scenes/MainMenu/TitleCell.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scenes/MainMenu/Credits.tscn" type="PackedScene" id=6]
 
 [sub_resource type="Curve2D" id=1]
 _data = {
@@ -611,6 +612,14 @@ text = "Exit"
 __meta__ = {
 "_editor_description_": ""
 }
+
+[node name="Credits" parent="ButtonContainer" instance=ExtResource( 6 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 138.0
+margin_right = 494.0
+margin_bottom = 588.0
+rect_min_size = Vector2( 250, 450 )
 
 [node name="CellTimer" type="Timer" parent="."]
 wait_time = 0.5

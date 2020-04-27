@@ -71,8 +71,8 @@ func acquire_resources():
 	organism.acquire_resources()
 
 	if not is_alive_resource_check():
-		organism.emit_signal("died", organism)
-		emit_signal("player_died", self)
+		organism.kill("ran out of resources")
+		emit_signal("player_died")
 	return
 
 #resource should be "carbs", "fats", "proteins", or a mineral
@@ -80,29 +80,29 @@ func downgrade_internal_cfp_resource(resource, tier, amount = 1):
 	organism.downgrade_internal_cfp_resource(resource, tier, amount)
 	
 	if not is_alive_resource_check():
-		organism.emit_signal("died", organism)
-		emit_signal("player_died", self)
+		organism.kill("ran out of resources")
+		emit_signal("player_died")
 	pass
 	
 func breakdown_external_resource(resource_index, amount = 1):
 	organism.breakdown_resource(resource_index, amount)
 	
 	if not is_alive_resource_check():
-		organism.emit_signal("died", organism)
-		emit_signal("player_died", self)
+		organism.kill("ran out of resources")
+		emit_signal("player_died")
 	pass
 	
 func eject_mineral_resource(resource, amount = 1):
 	organism.eject_mineral_resource(resource, amount)
 	
 	if not is_alive_resource_check():
-		organism.emit_signal("died", organism)
-		emit_signal("player_died", self)
+		organism.kill("ran out of resources")
+		emit_signal("player_died")
 	pass
 
 #It might be better here to emit a player signal rather than an organism signal
 func consume_resources(action):
 	organism.use_resources(action)
 	if not is_alive_resource_check():
-		organism.emit_signal("died", organism)
-		emit_signal("player_died", self)
+		organism.kill("ran out of resources")
+		emit_signal("player_died")
