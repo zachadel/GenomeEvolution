@@ -9,6 +9,9 @@ signal resources_selected(resources)
 #Much of how this is written relies on forcing the player to only put resources
 #where they should go i.e. sugars -> complex_carbs
 
+const VISIBLE = Color(1,1,1,1)
+const INVISIBLE = Color(0,0,0,.5)
+
 var dragging = false
 var selected = false
 
@@ -23,9 +26,6 @@ var organism = null
 onready var draw_rect = get_node("SelectionArea")
 onready var energy_bar = get_node("EnergyBar")
 var energy_icon = load("res://Assets/Images/Tiles/Resources/energy_icon.png")
-
-onready var simple_column = get_node("LabelColumns/SimpleLabels")
-onready var complex_column = get_node("LabelColumns/ComplexLabels")
 
 var resources = {
 	"simple_carbs": {},
@@ -92,9 +92,10 @@ func _unhandled_input(event):
 		true_end = Vector2.ZERO
 		true_start = Vector2.ZERO
 	
-	if event.is_action_pressed("mouse_right") and energy_clicked and enable_input:
+	if event.is_action_pressed("mouse_right"):
 		energy_clicked = false
 		Input.set_custom_mouse_cursor(null)
+		clear_selected_resources()
 	
 func _input(event):
 	if event.is_action_pressed("mouse_right") and enable_input:
@@ -119,6 +120,42 @@ func set_organism(org):
 	organism = org
 	organism.connect("energy_changed", energy_bar, "_on_Organism_energy_changed")
 	organism.connect("vesicle_scale_changed", self, "_on_Organism_vesicle_scale_changed")
+	
+	$Fatty_Sugars_Costs_From.set_functions(org)
+	$Fatty_Sugars_Costs_From.set_action("simple_carbs_to_simple_fats")
+	
+	$Fatty_Fats_Costs_To.set_functions(org)
+	$Fatty_Fats_Costs_To.set_action("simple_fats_to_complex_fats")
+	$Fatty_Fats_Costs_From.set_functions(org)
+	$Fatty_Fats_Costs_From.set_action("complex_fats_to_simple_fats")
+	
+	$Amino_Sugars_Costs_From.set_functions(org)
+	$Amino_Sugars_Costs_From.set_action("simple_proteins_to_simple_carbs")
+	$Amino_Sugars_Costs_To.set_functions(org)
+	$Amino_Sugars_Costs_To.set_action("simple_carbs_to_simple_proteins")
+	
+	$Amino_Proteins_Costs_From.set_functions(org)
+	$Amino_Proteins_Costs_From.set_action("simple_proteins_to_complex_proteins")
+	$Amino_Proteins_Costs_To.set_functions(org)
+	$Amino_Proteins_Costs_To.set_action("complex_proteins_to_simple_proteins")
+	
+	$Sugars_Carbs_Costs_From.set_functions(org)
+	$Sugars_Carbs_Costs_From.set_action("simple_carbs_to_complex_carbs")
+	$Sugars_Carbs_Costs_To.set_functions(org)
+	$Sugars_Carbs_Costs_To.set_action("complex_carbs_to_simple_carbs")
+
+func update_costs():
+	for node in get_children():
+		if node is GridContainer:
+			var node_split = node.name.split(Game.SEPARATOR)
+			var arrow_name = node_split[0] + Game.SEPARATOR + node_split[1]
+			var direction = node_split[3]
+			
+			if get_node(arrow_name).get_node(direction).default_color == VISIBLE:
+				node.visible = true
+				node.update_costs()
+			else:
+				node.visible = false
 
 #TO BE FIXED SOON
 func update_vesicles():
@@ -128,26 +165,36 @@ func update_vesicles():
 func update_valid_arrows():
 	var bhv_profile = organism.get_behavior_profile()
 	
-	$Fatty_Energy/From.visible = Game.is_valid_interaction("simple_fats", "energy", bhv_profile)
+	set_visibility($Fatty_Energy/From, Game.is_valid_interaction("simple_fats", "energy", bhv_profile) )
 	
-	$Sugars_Energy/From.visible = Game.is_valid_interaction("simple_carbs", "energy", bhv_profile)
-	$Sugars_Energy/To.visible = Game.is_valid_interaction("energy", "simple_carbs", bhv_profile)
+	set_visibility($Sugars_Energy/From, Game.is_valid_interaction("simple_carbs", "energy", bhv_profile))
+	set_visibility($Sugars_Energy/To, Game.is_valid_interaction("energy", "simple_carbs", bhv_profile))
 	
-	$Amino_Sugars/From.visible = Game.is_valid_interaction("simple_proteins", "simple_carbs", bhv_profile)
-	$Amino_Sugars/To.visible = Game.is_valid_interaction("simple_carbs", "simple_proteins", bhv_profile)
+	set_visibility($Amino_Sugars/From, Game.is_valid_interaction("simple_proteins", "simple_carbs", bhv_profile))
+	set_visibility($Amino_Sugars/To, Game.is_valid_interaction("simple_carbs", "simple_proteins", bhv_profile))
 	
-	$Amino_Proteins/From.visible = Game.is_valid_interaction("simple_proteins", "complex_proteins", bhv_profile)
-	$Amino_Proteins/To.visible = Game.is_valid_interaction("complex_proteins", "simple_proteins", bhv_profile)
+	set_visibility($Amino_Proteins/From, Game.is_valid_interaction("simple_proteins", "complex_proteins", bhv_profile))
+	set_visibility($Amino_Proteins/To, Game.is_valid_interaction("complex_proteins", "simple_proteins", bhv_profile))
 	
-	$Sugars_Carbs/From.visible = Game.is_valid_interaction("simple_carbs", "complex_carbs", bhv_profile)
-	$Sugars_Carbs/To.visible = Game.is_valid_interaction("complex_carbs", "simple_carbs", bhv_profile)
+	set_visibility($Sugars_Carbs/From, Game.is_valid_interaction("simple_carbs", "complex_carbs", bhv_profile))
+	set_visibility($Sugars_Carbs/To, Game.is_valid_interaction("complex_carbs", "simple_carbs", bhv_profile))
 	
-	$Fatty_Sugars/From.visible = Game.is_valid_interaction("simple_fats", "simple_carbs", bhv_profile)
-	$Fatty_Sugars/To.visible = Game.is_valid_interaction("simple_carbs", "simple_fats", bhv_profile)
+	set_visibility($Fatty_Sugars/From, Game.is_valid_interaction("simple_carbs", "simple_fats", bhv_profile))
 	
-	$Fatty_Fats/From.visible = Game.is_valid_interaction("simple_fats", "complex_fats", bhv_profile)
-	$Fatty_Fats/To.visible = Game.is_valid_interaction("complex_fats", "simple_fats", bhv_profile)
+	set_visibility($Fatty_Fats/From, Game.is_valid_interaction("simple_fats", "complex_fats", bhv_profile))
+	set_visibility($Fatty_Fats/To, Game.is_valid_interaction("complex_fats", "simple_fats", bhv_profile))
 	
+func set_visibility(node: Line2D, status: bool):
+	if status == true:
+		node.default_color = VISIBLE
+		node.get_node("Polygon2D").color = VISIBLE
+		#node.get_node("Lock").visible = false
+	
+	else:
+		node.default_color = INVISIBLE
+		node.get_node("Polygon2D").color = INVISIBLE
+		#node.get_node("Lock").visible = true
+
 #cfp_resources[resource_class][resource] = value
 #should not be called when selected_resources has stuff
 func update_resources(cfp_resources: Dictionary):

@@ -555,11 +555,14 @@ func get_resource_icon(resource):
 #Can accept energy, resource_class (simple_carbs/complex_fats, etc.), or resource_names
 func is_valid_interaction(resource_from: String, resource_to: String, bhv_profile: BehaviorProfile = null):
 	var possible = false
-		
+	var from_is_class = false
+	var to_is_class = false
+	
 	if resource_from in resources.keys(): #if resource_from is a valid non-energy resource
 		var resource_from_class = get_class_from_name(resource_from)
 		if resource_to in VALID_INTERACTIONS.keys(): #if resource_to is a vesicle or energy
 			possible = VALID_INTERACTIONS[resource_from_class][resource_to] == VALID
+			to_is_class = true
 		elif resource_to == resources[resource_from]["upgraded_form"] or resource_to == resources[resource_from]["downgraded_form"]: #quick check for up/downgrade
 			possible = true
 		elif resource_to in resources.keys(): #if we aren't an up/down form, then we must be trying to convert from one cfp to another
@@ -568,8 +571,10 @@ func is_valid_interaction(resource_from: String, resource_to: String, bhv_profil
 			print('ERROR: Bad unexpected usage of is_valid_interaction. Arguments: ', resource_from, resource_to)
 	
 	elif resource_from in VALID_INTERACTIONS.keys(): #if we are going from vesicle/energy elsewhere
+		from_is_class = true
 		if resource_to in VALID_INTERACTIONS.keys(): #if resource_to is a vesicle or energy
 			possible = VALID_INTERACTIONS[resource_from][resource_to] == VALID
+			to_is_class = true
 		elif resource_to in resources.keys(): #if we aren't an up/down form, then we must be trying to convert from one cfp to another
 			possible = VALID_INTERACTIONS[resource_from][get_class_from_name(resource_to)] == VALID
 		else:
@@ -577,44 +582,62 @@ func is_valid_interaction(resource_from: String, resource_to: String, bhv_profil
 	
 	if bhv_profile != null and possible:
 		var decon_value = bhv_profile.get_behavior("Deconstruction")
-		var assembly_value = bhv_profile.get_behavior("Assembly")
+		var con_value = bhv_profile.get_behavior("Construction")
 		
-		if resource_from == "energy" and assembly_value >= 6:
-			return true
-		elif resource_from == "simple_carbs":
-			if resource_to == "energy" and decon_value >= 0:
-				return true
-			elif resource_to == "complex_carbs" and assembly_value >= 4:
-				return true
-			elif resource_to == "simple_fats" and assembly_value >= 6:
-				return true
-			elif resource_to == "simple_proteins" and assembly_value >= 3:
-				return true
-			else:
-				return false
-		elif resource_from == "simple_fats":
-			if resource_to == "complex_fats" and assembly_value >= 8:
-				return true
-			elif resource_to == "energy" and decon_value >= 2:
+		var resource_from_class = resource_from
+		var resource_to_class = resource_to
+		
+		#Ensure everything is in class form, not resource form
+		if not from_is_class:
+			resource_from_class = get_class_from_name(resource_from)
+		if not to_is_class:
+			resource_to_class = get_class_from_name(resource_to)
+		
+		if resource_from_class == "energy":
+			if resource_to_class == "simple_carbs" and con_value >= 6 and bhv_profile.has_skill("Construction", "energy->sugar"):
 				return true
 			else:
 				return false
-		elif resource_from == "simple_proteins":
-			if resource_to == "complex_proteins" and assembly_value >= 6:
+		elif resource_from_class == "simple_carbs":
+			if resource_to_class == "energy" and decon_value >= 0:
 				return true
-			elif resource_to == "simple_carbs" and decon_value >= 2:
+			elif resource_to_class == "complex_carbs" and con_value >= 4 and bhv_profile.has_skill("Construction", "sugar->carb"):
+				return true
+			elif resource_to_class == "simple_fats" and con_value >= 6 and bhv_profile.has_skill("Construction", "sugar->fat_acid"):
+				return true
+			elif resource_to_class == "simple_proteins" and con_value >= 3 and bhv_profile.has_skill("Construction", "sugar->am_acid"):
 				return true
 			else:
 				return false
-		elif resource_from == "complex_carbs":
-			if resource_to == "simple_carbs" and decon_value >= 2:
+		elif resource_from_class == "simple_fats":
+			if resource_to_class == "complex_fats" and con_value >= 8 and bhv_profile.has_skill("Construction", "fat_acid->fat"):
 				return true
-		elif resource_from == "complex_fats":
-			if resource_to == "simple_fats" and decon_value >= 6:
+			elif resource_to_class == "energy" and decon_value >= 2 and bhv_profile.has_skill("Deconstruction", "fat_acid->energy"):
 				return true
-		elif resource_from == "complex_proteins":
-			if resource_to == "simple_proteins" and decon_value >= 4:
+			else:
+				return false
+		elif resource_from_class == "simple_proteins":
+			if resource_to_class == "complex_proteins" and con_value >= 6 and bhv_profile.has_skill("Construction", "am_acid->protein"):
 				return true
+			elif resource_to_class == "simple_carbs" and decon_value >= 2 and bhv_profile.has_skill("Deconstruction", "am_acid->sugar"):
+				return true
+			else:
+				return false
+		elif resource_from_class == "complex_carbs":
+			if resource_to_class == "simple_carbs" and decon_value >= 2 and bhv_profile.has_skill("Deconstruction", "carb->sugar"):
+				return true
+			else:
+				return false
+		elif resource_from_class == "complex_fats":
+			if resource_to_class == "simple_fats" and decon_value >= 6 and bhv_profile.has_skill("Deconstruction", "fat->fat_acid"):
+				return true
+			else:
+				return false
+		elif resource_from_class == "complex_proteins":
+			if resource_to_class == "simple_proteins" and decon_value >= 4 and bhv_profile.has_skill("Deconstruction", "protein->am_acid"):
+				return true
+			else:
+				return false
 		else:
 			return false
 	else:

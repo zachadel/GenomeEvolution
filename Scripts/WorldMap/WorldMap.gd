@@ -132,8 +132,12 @@ func setup(biome_seed, hazard_seed, resource_seed, tiebreak_seed, _chunk_size, p
 	ui.resource_ui.set_resources(current_player.organism.current_tile["resources"])
 	ui.hazards_ui.set_hazards(current_player.organism.current_tile["hazards"])
 	ui.irc.energy_bar.MAX_ENERGY = current_player.organism.MAX_ENERGY
-	update_ui_resources()
+	
 	ui.irc.set_organism(current_player.organism)
+	update_ui_resources()
+	ui.update_costs()
+	ui.update_valid_arrows()
+	
 	current_player.organism.update_vesicle_sizes()
 	connect("player_energy_changed", ui.irc.energy_bar, "_on_Organism_energy_changed")
 	
@@ -276,6 +280,7 @@ func _unhandled_input(event):
 							update_vision()
 						observe_tiles(tile_position, new_radius)
 						
+						ui.update_costs()
 						ui.update_valid_arrows()
 						
 						$MapCamera.position = Game.map_to_world(tile_position)

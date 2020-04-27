@@ -29,8 +29,39 @@ const MAX_START_RESOURCES = 2
 const MIN_START_RESOURCES = 1
 
 const NECESSARY_OXYGEN_LEVEL = 75
+const NECESSARY_TEMP_LEVEL = 30
 const LARGEST_MULTIPLIER = 2
-const OXYGEN_ACTIONS = ["energy_to_simple", "simple_to_simple", "simple_to_complex", "complex_to_simple", "simple_to_energy"]
+const PROCESSING_ACTIONS = []
+const OXYGEN_ACTIONS = ["energy_to_simple_carbs", "simple_carbs_to_energy", "simple_carbs_to_simple_proteins", "simple_proteins_to_simple_carbs", 
+						"simple_proteins_to_complex_proteins", "complex_proteins_to_simple_proteins", 
+						"simple_carbs_to_complex_carbs", "complex_carbs_to_simple_carbs",
+						"simple_carbs_to_simple_fats", 
+						"simple_fats_to_energy", "simple_fats_to_complex_fats",
+						"complex_fats_to_simple_fats"]
+
+const TEMPERATURE_ACTIONS = ["energy_to_simple_carbs", "simple_carbs_to_energy", "simple_carbs_to_simple_proteins", "simple_proteins_to_simple_carbs", 
+						"simple_proteins_to_complex_proteins", "complex_proteins_to_simple_proteins", 
+						"simple_carbs_to_complex_carbs", "complex_carbs_to_simple_carbs",
+						"simple_carbs_to_simple_fats", 
+						"simple_fats_to_energy", "simple_fats_to_complex_fats",
+						"complex_fats_to_simple_fats"]
+						
+const MINERAL_ACTIONS = ["energy_to_simple_carbs", "simple_carbs_to_energy", "simple_carbs_to_simple_proteins", "simple_proteins_to_simple_carbs", 
+						"simple_proteins_to_complex_proteins", "complex_proteins_to_simple_proteins", 
+						"simple_carbs_to_complex_carbs", "complex_carbs_to_simple_carbs",
+						"simple_carbs_to_simple_fats", 
+						"simple_fats_to_energy", "simple_fats_to_complex_fats",
+						"complex_fats_to_simple_fats"]
+
+const MAX_BASE_ENERGY_COST = 8
+const MAX_OXYGEN_ENERGY_COST = 4
+const MAX_TEMPERATURE_ENERGY_COST = 4
+const MAX_MINERAL_ENERGY_COST = 4
+
+const MIN_BASE_ENERGY_COST = 1
+const MIN_OXYGEN_ENERGY_COST = 4
+const MIN_TEMPERATURE_ENERGY_COST = 4
+const MIN_MINERAL_ENERGY_COST = 4
 
 const MITOSIS_SPLITS = 2
 const MEIOSIS_SPLITS = 4
@@ -1388,7 +1419,7 @@ func is_viable(missing_classes: Array) -> bool:
 	else:
 		return not (missing_classes.has("Component") or missing_classes.has("Deconstruction") or \
 			   missing_classes.has("Construction") or missing_classes.has("Locomotion") or \
-			   missing_classes.has("Manipulation"))
+			   missing_classes.has("Manipulation") or missing_classes.has("Replication"))
 
 func is_dead():
 	return died_on_turn > -1;
@@ -1416,61 +1447,129 @@ func check_resources(action, amount = 1):
 
 #Can take a cfp resource or a resource class (simple_carbs, etc.)
 #Returns total energy content after downgrading it to energy and calculating costs
+#BROKEN
 func get_processed_energy_value(resource: String) -> float:
 	var processed_energy = 0
 	
+	var bhv_prof = get_behavior_profile()
+
 	if resource in cfp_resources:
-		if resource.split(Game.SEPARATOR)[0] == "simple":
+		if resource == "complex_proteins" and Game.is_valid_interaction(resource, "simple_proteins", bhv_prof) and energy > get_energy_cost("complex_proteins_to_simple_proteins"):
+			var simp_prots = {}
 			for resource_name in cfp_resources[resource]:
-				if resource_name != "total":
-					var amount = cfp_resources[resource][resource_name]
-					processed_energy += (amount * Game.resources[resource_name]["factor"])
-					processed_energy -= get_energy_cost("simple_to_energy", amount)
+				simp_prots[Game.resources[resource_name]["downgraded_form"]] = cfp_resources[resource][resource_name]*Game.resources[resource_name]["factor"]
+				processed_energy -= get_energy_cost("complex_proteins_to_simple_proteins", cfp_resources[resource][resource_name])
+			
+			if Game.is_valid_interaction(resource, "simple_carbs", bhv_prof) and energy - get_energy_cost("simple_proteins_to_simple_carbs") > get_energy_cost("complex_proteins_to_simple_proteins"):
+				var simp_sugars = {}
+				for resource_name in simp_prots:	
+					var conversion_amount = simp_prots[resource_name] / (Game.resources[cfp_resources["simple_carbs"].keys()[0]]["factor"] / Game.resources[resource_name]["factor"])
+					if simp_sugars.has(cfp_resources["simple_carbs"].keys()[0]):
+						simp_sugars[cfp_resources["simple_carbs"].keys()[0]] += conversion_amount
+					else:
+						simp_sugars[cfp_resources["simple_carbs"].keys()[0]] = conversion_amount
+					processed_energy -= get_energy_cost("simple_proteins_to_simple_carbs", conversion_amount)	
+			
+				if Game.is_valid_interaction("simple_carbs", "energy", bhv_prof):
+					for resource_name in simp_sugars:
+						processed_energy += simp_sugars[resource_name] * Game.resources[resource_name]["factor"]
+						processed_energy -= get_energy_cost("simple_carbs_to_energy", simp_sugars[resource_name])
+			else:
+				processed_energy = 0
+				
+		elif resource == "simple_proteins" and Game.is_valid_interaction(resource, "simple_carbs", bhv_prof) and energy > get_energy_cost("simple_proteins_to_simple_carbs"):
+			var simp_sugars = {}
+			for resource_name in cfp_resources[resource]:	
+				var conversion_amount = cfp_resources[resource][resource_name] / (Game.resources[cfp_resources["simple_carbs"].keys()[0]]["factor"] / Game.resources[resource_name]["factor"])
+				if simp_sugars.has(cfp_resources["simple_carbs"].keys()[0]):
+					simp_sugars[cfp_resources["simple_carbs"].keys()[0]] += conversion_amount
+				else:
+					simp_sugars[cfp_resources["simple_carbs"].keys()[0]] = conversion_amount
+				processed_energy -= get_energy_cost("simple_proteins_to_simple_carbs", conversion_amount)	
+			
+			for resource_name in simp_sugars:
+				processed_energy += simp_sugars[resource_name] * Game.resources[resource_name]["factor"]
 				
 		else:
-			var need_to_process = {}
 			for resource_name in cfp_resources[resource]:
-				if resource_name != "total" and cfp_resources[resource][resource_name] > 0:
-					var downgrade_name = Game.resources[resource_name]["downgraded_form"]
-					var amount = cfp_resources[resource][resource_name]
+				var downgraded_resource = Game.resources[resource_name]["downgraded_form"]
+				
+				if downgraded_resource == "energy" and Game.is_valid_interaction(resource, "energy", bhv_prof):
+					processed_energy -= get_energy_cost(resource + "_to_energy", cfp_resources[resource][resource_name])
+					processed_energy += cfp_resources[resource][resource_name] * Game.resources[resource_name]["factor"]
 					
-					need_to_process[downgrade_name] = amount * Game.resources[resource_name]["factor"]
-					processed_energy -= get_energy_cost("complex_to_simple", amount)
-			
-			for resource_name in need_to_process:
-				processed_energy += (need_to_process[resource_name] * Game.resources[resource_name]["factor"])
-				processed_energy -= get_energy_cost("simple_to_energy", need_to_process[resource_name])
+				else:
+					var downgraded_class = Game.get_class_from_name(downgraded_resource)
+					if Game.is_valid_interaction(resource, downgraded_class, bhv_prof) and energy > get_energy_cost(resource + "_to_" + downgraded_class):
+						processed_energy -= get_energy_cost(resource + "_to_" + downgraded_class, cfp_resources[resource][resource_name])
+						processed_energy -= get_energy_cost(downgraded_class + "_to_energy", cfp_resources[resource][resource_name] * Game.resources[resource_name]["factor"])
+						processed_energy += cfp_resources[resource][resource_name] * Game.resources[resource_name]["factor"] * Game.resources[downgraded_resource]["factor"]
 	
 	#In the case we are dealing with a resource name		
 	else:
-		if Game.resources[resource]["tier"] == "complex":
-			var downgraded_form = Game.resources[resource]["downgraded_form"]
-			var amount = cfp_resources[Game.get_class_from_name(resource)][resource]
-			processed_energy -= get_energy_cost("complex_to_simple", amount)
-			
-			#What we will now need to convert to energy
-			amount *= Game.resources[resource]["factor"]
-			processed_energy -= get_energy_cost("simple_to_energy", amount)
-			processed_energy += (amount * Game.resources[downgraded_form]["factor"])
-		else:
-			var amount = cfp_resources[Game.get_class_from_name(resource)][resource]
-			processed_energy -= get_energy_cost("simple_to_energy", amount)
-			processed_energy += amount * Game.resources[resource]["factor"]
+		print('Resource names not accepted for get_processed_energy_value')
 			
 	return processed_energy
 
 func get_energy_cost(action, amount = 1):
-	var cost = costs[action]["energy"] * get_cost_mult(action) * amount
+	var cost = get_base_energy_cost(action, amount)
 	
-	if action in OXYGEN_ACTIONS:
-		var oxygen_multiplier = get_oxygen_multiplier(current_tile["hazards"]["oxygen"])
-		cost *= oxygen_multiplier
+	if action in OXYGEN_ACTIONS: #OXYGEN_ACTIONS should be replaced with temp, mineral, oxygen actions
+		cost += get_oxygen_energy_cost(action, amount, cost)
+		
+	if action in MINERAL_ACTIONS:
+		cost += get_mineral_energy_cost(action, amount, cost)
+		
+	if action in TEMPERATURE_ACTIONS:
+		cost += get_temperature_energy_cost(action, amount, cost)
 			
 	return cost
+	
+func get_base_energy_cost(action, amount = 1):
+	var cost = ceil(costs[action]["energy"] * get_cost_mult(action) * amount)
+	
+	return clamp(cost, MIN_BASE_ENERGY_COST, MAX_BASE_ENERGY_COST)
+	
+#It is assumed that base cost uses the amount to calculate it
+func get_oxygen_energy_cost(action, amount = 1, base_cost: float = -1):
+	var ox_mult = get_oxygen_multiplier(current_tile["hazards"]["oxygen"])
+	
+	#in the case of a valid base_cost
+	if base_cost > 0:
+		return clamp(floor((ox_mult - 1) * base_cost), -MIN_OXYGEN_ENERGY_COST, MAX_OXYGEN_ENERGY_COST)
+	else:
+		return clamp(floor((ox_mult - 1) * get_base_energy_cost(action, amount)), -MIN_OXYGEN_ENERGY_COST, MAX_OXYGEN_ENERGY_COST)
 
 #Ranges from 2 to .5 over 0 to 100 (2 should double the energy cost and .5 should halve it)
 func get_oxygen_multiplier(oxygen_level: float):
 	var multiplier = exp(-log(LARGEST_MULTIPLIER)/NECESSARY_OXYGEN_LEVEL*(oxygen_level - NECESSARY_OXYGEN_LEVEL))
+	
+	return multiplier
+		
+#This is the effect that minerals have on energy, not the necessary number
+#of minerals for a given action.
+func get_mineral_energy_cost(action, amount = 1, base_cost: float = -1) -> float:
+	var mineral_mult = get_mineral_multiplier(action)	
+	
+	if base_cost > 0:
+		return clamp(0 * base_cost, -MIN_MINERAL_ENERGY_COST, MAX_MINERAL_ENERGY_COST)
+	else:
+		return clamp(0 * get_base_energy_cost(action, amount), -MIN_MINERAL_ENERGY_COST, MAX_MINERAL_ENERGY_COST) 
+
+func get_mineral_multiplier(action) -> float:
+	return 0.0
+	
+func get_temperature_energy_cost(action, amount = 1, base_cost: float = -1):
+	var temp_mult = get_temperature_multiplier(current_tile["hazards"]["temperature"])
+	
+	#in the case of a valid base_cost
+	if base_cost > 0:
+		return clamp(floor((temp_mult - 1) * base_cost), -MIN_TEMPERATURE_ENERGY_COST, MAX_TEMPERATURE_ENERGY_COST)
+	else:
+		return clamp(floor((temp_mult - 1) * get_base_energy_cost(action, amount)), -MIN_TEMPERATURE_ENERGY_COST, MAX_TEMPERATURE_ENERGY_COST)
+	
+func get_temperature_multiplier(temperature: float) -> float:
+	var multiplier = exp(-log(LARGEST_MULTIPLIER)/NECESSARY_TEMP_LEVEL*(temperature - NECESSARY_TEMP_LEVEL))
 	
 	return multiplier
 
@@ -1500,6 +1599,7 @@ func get_cfp_cost(action, resource, amount = 1):
 #Integer values only for minerals
 #In the future, this will likely be changed to reflect minerals purpose
 #in acting as catalysts rather than being actually used
+#NOTE: NOT IMPLEMENTED YET, BEGIN WORK HERE. 1:47 am 4/19/20
 func get_mineral_cost(action, mineral, amount = 1):
 	var cost = 0
 	var minimum_cost = 0
@@ -1639,7 +1739,52 @@ var costs = {
 
 	#Minerals are required to ensure that there are no penalties
 	#associated with the action.
-	"simple_to_simple": {
+	"simple_proteins_to_complex_proteins": {
+		"simple_carbs": 0, 
+		"simple_fats": 0, 
+		"simple_proteins": 0, 
+		"complex_carbs": 0,
+		"complex_fats": 0,
+		"complex_proteins": 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
+		"energy": 5
+	},
+	
+	#associated with the action.
+	"complex_proteins_to_simple_proteins": {
+		"simple_carbs": 0, 
+		"simple_fats": 0, 
+		"simple_proteins": 0, 
+		"complex_carbs": 0,
+		"complex_fats": 0,
+		"complex_proteins": 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
+		"energy": 5
+	},
+	
+	#associated with the action.
+	"simple_proteins_to_simple_carbs": {
+		"simple_carbs": 0, 
+		"simple_fats": 0, 
+		"simple_proteins": 0, 
+		"complex_carbs": 0,
+		"complex_fats": 0,
+		"complex_proteins": 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
+		"energy": 5
+	},
+	
+	#associated with the action.
+	"simple_carbs_to_simple_proteins": {
 		"simple_carbs": 0, 
 		"simple_fats": 0, 
 		"simple_proteins": 0, 
@@ -1653,7 +1798,7 @@ var costs = {
 		"energy": 5
 	},
 
-	"simple_to_energy": {
+	"simple_carbs_to_energy": {
 		"simple_carbs": 0, 
 		"simple_fats": 0, 
 		"simple_proteins": 0,
@@ -1667,21 +1812,7 @@ var costs = {
 		"energy": 2	
 	},
 
-	"simple_to_complex": {
-		"simple_carbs": 0, 
-		"simple_fats": 0, 
-		"simple_proteins": 0,
-		"complex_carbs": 0,
-		"complex_fats": 0,
-		"complex_proteins": 0, 
-		"structure": 0,
-		"consumption": 0,
-		"processing": 0,
-		"hazardous": 0,
-		"energy": 8
-	},
-
-	"energy_to_simple": {
+	"energy_to_simple_carbs": {
 		"simple_carbs": 0, 
 		"simple_fats": 0, 
 		"simple_proteins": 0,
@@ -1695,7 +1826,78 @@ var costs = {
 		"energy": 5
 	},
 
-	"complex_to_simple": {
+	"simple_carbs_to_complex_carbs": {
+		"simple_carbs": 0, 
+		"simple_fats": 0, 
+		"simple_proteins": 0,
+		"complex_carbs": 0,
+		"complex_fats": 0,
+		"complex_proteins": 0, 
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
+		"energy": 8
+	},
+	
+	#associated with the action.
+	"complex_carbs_to_simple_carbs": {
+		"simple_carbs": 0, 
+		"simple_fats": 0, 
+		"simple_proteins": 0, 
+		"complex_carbs": 0,
+		"complex_fats": 0,
+		"complex_proteins": 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
+		"energy": 5
+	},
+
+	"simple_carbs_to_simple_fats": {
+		"simple_carbs": 0, 
+		"simple_fats": 0, 
+		"simple_proteins": 0,
+		"complex_carbs": 0,
+		"complex_fats": 0,
+		"complex_proteins": 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
+		"energy": 5
+	},
+	
+	"simple_fats_to_energy": {
+		"simple_carbs": 0, 
+		"simple_fats": 0, 
+		"simple_proteins": 0,
+		"complex_carbs": 0,
+		"complex_fats": 0,
+		"complex_proteins": 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
+		"energy": 5
+	},
+	
+	"simple_fats_to_complex_fats": {
+		"simple_carbs": 0, 
+		"simple_fats": 0, 
+		"simple_proteins": 0,
+		"complex_carbs": 0,
+		"complex_fats": 0,
+		"complex_proteins": 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
+		"energy": 5
+	},
+	
+	"complex_fats_to_simple_fats": {
 		"simple_carbs": 0, 
 		"simple_fats": 0, 
 		"simple_proteins": 0,
@@ -1775,14 +1977,19 @@ const BEHAVIOR_TO_COST_MULT = {
 	"Deconstruction": {
 		"breakdown_resource": -0.05,
 		"tier_downgrade": -0.05,
-		"complex_to_simple": -.05,
-		"simple_to_energy": -.05
+		"complex_proteins_to_simple_proteins": -0.05,
+		"complex_carbs_to_simple_carbs": -0.05,
+		"complex_fats_to_simple_fats": -0.05,
 	},
 	"Construction": {
 		"tier_upgrade": -0.05,
-		"simple_to_complex": -.05,
-		"energy_to_simple": -.05,
-		"simple_to_simple": -.05
+		"simple_proteins_to_complex_proteins": -.05,
+		"simple_carbs_to_complex_carbs": -0.05,
+		"simple_fats_to_complex_fats": -0.05,
+		"simple_carbs_to_simple_proteins": -0.05,
+		"simple_carbs_to_simple_fats": -0.05,
+		"simple_proteins_to_simple_carbs": -0.05,
+		"energy_to_simple_carbs": -0.05
 	},
 	"Manipulation": {
 		"tier_downgrade": -0.05,
@@ -1791,11 +1998,18 @@ const BEHAVIOR_TO_COST_MULT = {
 		"breakdown_resource": -0.05,
 		"mineral_ejection": -0.05,
 		"cfp_ejection": -.05,
-		"energy_to_simple": -.1,
-		"simple_to_simple": -.05,
-		"complex_to_simple": -.05,
-		"simple_to_energy": -.01,
-		"simple_to_complex": -.1
+		"energy_to_simple_carbs": -.1,
+		"simple_carbs_to_simple_proteins": -0.05,
+		"simple_carbs_to_simple_fats": -0.05,
+		"simple_proteins_to_simple_carbs": -0.05,
+		"complex_proteins_to_simple_proteins": -.05,
+		"complex_carbs_to_simple_carbs": -.05,
+		"complex_fats_to_simple_fats": -.05,
+		"simple_carbs_to_energy": -.01,
+		"simple_fats_to_energy": -.01,
+		"simple_proteins_to_complex_proteins": -.1,
+		"simple_carbs_to_complex_carbs": -.1,
+		"simple_fats_to_complex_fats": -.1
 	},
 	
 	"Replication": {
@@ -1942,7 +2156,7 @@ func upgrade_cfp_resource(resource_from: String, amount: int):
 	var required_from_per_up = Game.resources[resource_from]["factor"]
 	#Is there anything to do?
 	if upgraded_amount > 0:
-		var energy_cost = get_energy_cost("simple_to_complex", 1)
+		var energy_cost = get_energy_cost(resource_class + "_to_" + upgraded_class, 1)
 		var vesicle_capacity = get_estimated_capacity(upgraded_class)
 		
 		#Upgrade all resources that you can
@@ -1968,7 +2182,7 @@ func upgrade_energy(resource_to: String, amount_to: int = 1):
 	var factor = Game.resources[resource_to]["factor"]
 	var resource_to_class = Game.get_class_from_name(resource_to)
 	
-	var energy_cost = get_energy_cost("energy_to_simple", 1)
+	var energy_cost = get_energy_cost("energy_to_" + resource_to_class, 1)
 	var vesicle_capacity = get_estimated_capacity(resource_to_class)
 	
 	while(amount_to > 0 and energy_cost + factor <= energy and cfp_resources[resource_to_class]["total"] < vesicle_capacity):
@@ -1998,12 +2212,11 @@ func upgrade_cfp_resources(resources_from: Dictionary) -> Dictionary:
 #results[resource] = {"new_resource_amount": upgraded_amount, "leftover_resource_amount": energy, "new_resource_name": resource_to}
 func convert_cfp_to_cfp(resources_from: Dictionary, resource_to: String):
 	var results = {}
-		
-	var energy_to_to = Game.resources[resource_to]["factor"]
-	var energy_cost = get_energy_cost("simple_to_simple", 1)
 	
 	var resource_to_class = Game.get_class_from_name(resource_to)
 	var vesicle_capacity = get_estimated_capacity(resource_to_class)
+	
+	var energy_to_to = Game.resources[resource_to]["factor"]
 	
 	#Draw from highest energy value first
 	var sorted_resources = resources_from.keys()
@@ -2020,6 +2233,8 @@ func convert_cfp_to_cfp(resources_from: Dictionary, resource_to: String):
 		var add_resource = max(ratio, 1)
 		
 		var resource_from_class = Game.get_class_from_name(resource)
+		
+		var energy_cost = get_energy_cost(resource_from_class + "_to_" + resource_to_class, 1)
 		
 		#Do you have enough resources from what was requested to be converted?
 		#Do you have enough room to store converted resources?
@@ -2060,7 +2275,7 @@ func downgrade_cfp_resource(resource_from: String, amount: int):
 		if downgraded_form == "energy":
 			downgraded_amount = energy #Store old energy amount
 			
-			var energy_cost = get_energy_cost("simple_to_energy", 1)
+			var energy_cost = get_energy_cost(resource_from + "_to_energy", 1)
 			var energy_gained = Game.resources[resource_from]["factor"]
 			
 			#Downgrade all resources that you can
@@ -2080,7 +2295,7 @@ func downgrade_cfp_resource(resource_from: String, amount: int):
 			
 			downgraded_amount = energy - downgraded_amount
 		else:
-			var energy_cost = get_energy_cost("complex_to_simple", 1)
+			var energy_cost = get_energy_cost(resource_class + "_to_" + downgraded_class, 1)
 			var vesicle_capacity = get_estimated_capacity(downgraded_class)
 			var resources_per_downgrade = Game.resources[resource_from]["factor"]
 			

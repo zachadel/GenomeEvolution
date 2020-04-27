@@ -8,6 +8,7 @@ const SKILLS = {
 	"Construction": {
 		"sugar->am_acid": "Sugars -> Amino Acids",
 		"sugar->carb": "Sugars -> Carbohydrates",
+		"sugar->fat_acid": "Sugars -> Fatty Acids",
 		"energy->sugar": "Energy -> Sugars",
 		"am_acid->protein": "Amino Acids -> Protein",
 		"fat_acid->fat": "Fatty Acids -> Fats",
@@ -19,6 +20,7 @@ const SKILLS = {
 		"sugar->energy": "Sugars -> Energy",
 		"protein->am_acid": "Proteins -> Amino Acids",
 		"fat->fat_acid": "Fats -> Fatty Acids",
+		"fat_acid->energy": "Fatty Acids -> Energy",
 	},
 	"Helper": {},
 	"Component": {},

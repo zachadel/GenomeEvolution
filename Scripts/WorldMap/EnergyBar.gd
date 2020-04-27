@@ -11,7 +11,6 @@ var MAX_ENERGY = 25
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	update_energy_allocation(energy)
-	Tooltips.setup_delayed_tooltip(self)
 	pass # Replace with function body.
 	
 #func _input(event):

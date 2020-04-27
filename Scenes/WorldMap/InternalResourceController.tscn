@@ -1,11 +1,12 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Scripts/WorldMap/InternalResourceController.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/WorldMap/EnergyBar.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/WorldMap/Vesicle.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/TestScenes/EnergyCosts.tscn" type="PackedScene" id=4]
 
 [sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0.6, 0.6, 0.6, 0.545098 )
+bg_color = Color( 0.392157, 0.392157, 0.392157, 1 )
 
 [sub_resource type="Theme" id=2]
 
@@ -21,7 +22,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = 5.0
 margin_right = -1205.0
-margin_bottom = -5.0
+margin_bottom = -50.0
 mouse_filter = 2
 custom_styles/panel = SubResource( 1 )
 script = ExtResource( 1 )
@@ -161,6 +162,34 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Ejection" type="RichTextLabel" parent="."]
+margin_left = 150.0
+margin_top = 720.0
+margin_right = 280.0
+margin_bottom = 742.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource( 2 )
+custom_fonts/normal_font = SubResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[center]Ejection[/center]"
+text = "Ejection"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="simple_proteins" parent="." instance=ExtResource( 3 )]
+position = Vector2( 115, 180 )
+scale = Vector2( 1.5, 1.5 )
+resource_class = "simple_proteins"
+
+[node name="complex_proteins" parent="." instance=ExtResource( 3 )]
+position = Vector2( 320, 180 )
+scale = Vector2( 1.5, 1.5 )
+resource_class = "complex_proteins"
+
 [node name="simple_carbs" parent="." instance=ExtResource( 3 )]
 position = Vector2( 115, 415 )
 scale = Vector2( 1.5, 1.5 )
@@ -181,21 +210,82 @@ position = Vector2( 320, 650 )
 scale = Vector2( 1.5, 1.5 )
 resource_class = "complex_fats"
 
-[node name="simple_proteins" parent="." instance=ExtResource( 3 )]
-position = Vector2( 115, 180 )
-scale = Vector2( 1.5, 1.5 )
-resource_class = "simple_proteins"
-
-[node name="complex_proteins" parent="." instance=ExtResource( 3 )]
-position = Vector2( 320, 180 )
-scale = Vector2( 1.5, 1.5 )
-resource_class = "complex_proteins"
+[node name="ejection" parent="." instance=ExtResource( 3 )]
+position = Vector2( 215, 785 )
+scale = Vector2( 2, 1 )
+resource_class = "ejection"
 
 [node name="SelectionArea" type="ColorRect" parent="."]
 mouse_filter = 2
 color = Color( 1, 1, 1, 0.490196 )
 __meta__ = {
 "_edit_use_anchors_": false
+}
+
+[node name="Fatty_Sugars_Costs_From" parent="." instance=ExtResource( 4 )]
+margin_left = 140.148
+margin_top = 505.0
+margin_right = -193.852
+margin_bottom = -296.0
+
+[node name="Fatty_Fats_Costs_To" parent="." instance=ExtResource( 4 )]
+margin_left = 187.0
+margin_top = 582.0
+margin_right = -147.0
+margin_bottom = -219.0
+
+[node name="Fatty_Fats_Costs_From" parent="." instance=ExtResource( 4 )]
+margin_left = 187.148
+margin_top = 678.0
+margin_right = -146.852
+margin_bottom = -123.0
+
+[node name="Amino_Sugars_Costs_From" parent="." instance=ExtResource( 4 )]
+margin_left = 35.0
+margin_top = 282.267
+margin_right = -299.0
+margin_bottom = -518.733
+
+[node name="Amino_Sugars_Costs_To" parent="." instance=ExtResource( 4 )]
+margin_left = 140.0
+margin_top = 282.267
+margin_right = -194.0
+margin_bottom = -518.733
+
+[node name="Amino_Proteins_Costs_From" parent="." instance=ExtResource( 4 )]
+margin_left = 188.0
+margin_top = 210.0
+margin_right = -146.0
+margin_bottom = -591.0
+
+[node name="Amino_Proteins_Costs_To" parent="." instance=ExtResource( 4 )]
+margin_left = 188.148
+margin_top = 115.0
+margin_right = -145.852
+margin_bottom = -686.0
+
+[node name="Sugars_Carbs_Costs_To" parent="." instance=ExtResource( 4 )]
+margin_left = 187.0
+margin_top = 347.5
+margin_right = -147.0
+margin_bottom = -453.5
+colors = {
+"base": Color( 0, 1, 0, 1 ),
+"mineral": Color( 0.65, 0.16, 0.16, 1 ),
+"oxygen": Color( 0, 0, 1, 1 ),
+"temperature": Color( 1, 0, 0, 1 )
+}
+
+[node name="Sugars_Carbs_Costs_From" parent="." instance=ExtResource( 4 )]
+margin_left = 187.296
+margin_top = 445.0
+margin_right = -146.704
+margin_bottom = -356.0
+colors = {
+"base": Color( 0, 1, 0, 1 ),
+"mineral": Color( 0.65, 0.16, 0.16, 1 ),
+"oxygen": Color( 0, 0, 1, 1 ),
+"temperature": Color( 1, 0, 0, 1 )
 }
 
 [node name="Fatty_Energy" type="Control" parent="."]
@@ -219,11 +309,20 @@ polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
 [node name="Sugars_Energy" type="Control" parent="."]
 margin_right = 40.0
 margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="From" type="Line2D" parent="Sugars_Energy"]
-position = Vector2( 45, 415 )
-points = PoolVector2Array( 0, 10, -35, 10 )
+position = Vector2( 45, 660 )
+points = PoolVector2Array( 0, -235, -35, -235, -35, -605, -15, -605 )
 default_color = Color( 1, 1, 1, 1 )
+joint_mode = 2
+
+[node name="Polygon2D" type="Polygon2D" parent="Sugars_Energy/From"]
+position = Vector2( -15, -600 )
+scale = Vector2( 0.666667, 0.999999 )
+polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
 
 [node name="To" type="Line2D" parent="Sugars_Energy"]
 position = Vector2( 60, 75 )
@@ -240,6 +339,11 @@ polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
 [node name="Amino_Sugars" type="Control" parent="."]
 margin_right = 40.0
 margin_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="From" type="Line2D" parent="Amino_Sugars"]
 position = Vector2( 120, 250 )
@@ -256,7 +360,7 @@ scale = Vector2( 1, 0.999999 )
 polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
 
 [node name="To" type="Line2D" parent="Amino_Sugars"]
-position = Vector2( 105, 345 )
+position = Vector2( 105.05, 345 )
 rotation = -1.5708
 points = PoolVector2Array( 20, 0, 65, 0 )
 default_color = Color( 1, 1, 1, 1 )
@@ -306,6 +410,9 @@ polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
 [node name="Sugars_Carbs" type="Control" parent="."]
 margin_right = 40.0
 margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="From" type="Line2D" parent="Sugars_Carbs"]
 position = Vector2( 175, 410 )
@@ -334,22 +441,22 @@ position = Vector2( 65, 5 )
 scale = Vector2( 1, 0.999999 )
 polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
 
-[node name="Sugars_Fatty" type="Control" parent="."]
+[node name="Fatty_Sugars" type="Control" parent="."]
 margin_right = 40.0
 margin_bottom = 40.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="From" type="Line2D" parent="Sugars_Fatty"]
+[node name="From" type="Line2D" parent="Fatty_Sugars"]
 position = Vector2( 115, 485.5 )
 rotation = 1.5708
 points = PoolVector2Array( 0, 0, 45, 0 )
 width = 20.0
 default_color = Color( 1, 1, 1, 1 )
 
-[node name="Polygon2D" type="Polygon2D" parent="Sugars_Fatty/From"]
-position = Vector2( 44.9064, -0.25016 )
+[node name="Polygon2D" type="Polygon2D" parent="Fatty_Sugars/From"]
+position = Vector2( 44.1507, -0.25016 )
 scale = Vector2( 1, 0.999999 )
 polygon = PoolVector2Array( 0, 21.4318, 30, 0, 0, -20 )
 

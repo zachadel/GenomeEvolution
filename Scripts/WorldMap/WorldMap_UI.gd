@@ -9,7 +9,7 @@ signal eject_resources(resources_dict)
 
 #internal resources controller
 onready var irc = get_node("InternalPanel/InternalResourceController")
-onready var mineral_levels = get_node("InternalPanel/MineralPanel/MineralLevels")
+onready var mineral_levels = get_node("MineralPanel/MineralLevels")
 onready var resource_ui = get_node("ExternalPanel/ResourcePanel/ResourceUI")
 onready var hazards_ui = get_node("ExternalPanel/HazardPanel/HazardsContainer")
 
@@ -30,6 +30,7 @@ var test_cases = ["simple_carbs", "simple_fats", "simple_proteins", "complex_car
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+
 	acquire_resources_button.text = DEFAULT_BUTTON_TEXT[BUTTONS.ACQUIRE]
 	eject_resources_button.text = DEFAULT_BUTTON_TEXT[BUTTONS.EJECT]
 	check_genome_button.text = DEFAULT_BUTTON_TEXT[BUTTONS.CHECK]
@@ -135,6 +136,9 @@ func set_input_state(player_view: int):
 
 func update_valid_arrows():
 	irc.update_valid_arrows()
+	
+func update_costs():
+	irc.update_costs()
 
 #At some point, error checking should be added here, where an error message
 #is printed if the player tries to store too many resources
