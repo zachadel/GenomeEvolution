@@ -149,6 +149,9 @@ func tutorial() -> bool:
 func unlock_everything() -> bool:
 	return settings["unlock_everything"]
 	
+func disable_movement_costs() -> bool:
+	return settings["disable_movement_costs"]
+	
 func disable_fog() -> bool:
 	return settings["disable_fog"]
 	

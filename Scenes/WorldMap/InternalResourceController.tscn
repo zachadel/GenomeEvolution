@@ -3,7 +3,7 @@
 [ext_resource path="res://Scripts/WorldMap/InternalResourceController.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/WorldMap/EnergyBar.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/WorldMap/Vesicle.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Scenes/TestScenes/EnergyCosts.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/WorldMap/EnergyCosts.tscn" type="PackedScene" id=4]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.392157, 0.392157, 0.392157, 1 )
@@ -223,52 +223,52 @@ __meta__ = {
 }
 
 [node name="Fatty_Sugars_Costs_From" parent="." instance=ExtResource( 4 )]
-margin_left = 140.148
+margin_left = 140.0
 margin_top = 505.0
-margin_right = -193.852
-margin_bottom = -296.0
-
-[node name="Fatty_Fats_Costs_To" parent="." instance=ExtResource( 4 )]
-margin_left = 187.0
-margin_top = 582.0
-margin_right = -147.0
-margin_bottom = -219.0
+margin_right = -189.0
+margin_bottom = -292.0
 
 [node name="Fatty_Fats_Costs_From" parent="." instance=ExtResource( 4 )]
-margin_left = 187.148
+margin_left = 186.0
+margin_top = 582.0
+margin_right = -144.0
+margin_bottom = -219.0
+
+[node name="Fatty_Fats_Costs_To" parent="." instance=ExtResource( 4 )]
+margin_left = 186.0
 margin_top = 678.0
-margin_right = -146.852
+margin_right = -144.0
 margin_bottom = -123.0
 
-[node name="Amino_Sugars_Costs_From" parent="." instance=ExtResource( 4 )]
-margin_left = 35.0
-margin_top = 282.267
-margin_right = -299.0
-margin_bottom = -518.733
-
 [node name="Amino_Sugars_Costs_To" parent="." instance=ExtResource( 4 )]
-margin_left = 140.0
-margin_top = 282.267
-margin_right = -194.0
-margin_bottom = -518.733
+margin_left = 33.0
+margin_top = 282.0
+margin_right = -297.0
+margin_bottom = -519.0
 
-[node name="Amino_Proteins_Costs_From" parent="." instance=ExtResource( 4 )]
-margin_left = 188.0
-margin_top = 210.0
-margin_right = -146.0
-margin_bottom = -591.0
+[node name="Amino_Sugars_Costs_From" parent="." instance=ExtResource( 4 )]
+margin_left = 138.0
+margin_top = 282.0
+margin_right = -191.0
+margin_bottom = -519.0
 
 [node name="Amino_Proteins_Costs_To" parent="." instance=ExtResource( 4 )]
-margin_left = 188.148
+margin_left = 185.0
+margin_top = 210.0
+margin_right = -145.0
+margin_bottom = -591.0
+
+[node name="Amino_Proteins_Costs_From" parent="." instance=ExtResource( 4 )]
+margin_left = 185.0
 margin_top = 115.0
-margin_right = -145.852
+margin_right = -145.0
 margin_bottom = -686.0
 
-[node name="Sugars_Carbs_Costs_To" parent="." instance=ExtResource( 4 )]
-margin_left = 187.0
-margin_top = 347.5
-margin_right = -147.0
-margin_bottom = -453.5
+[node name="Sugars_Carbs_Costs_From" parent="." instance=ExtResource( 4 )]
+margin_left = 185.0
+margin_top = 348.0
+margin_right = -145.0
+margin_bottom = -453.0
 colors = {
 "base": Color( 0, 1, 0, 1 ),
 "mineral": Color( 0.65, 0.16, 0.16, 1 ),
@@ -276,10 +276,10 @@ colors = {
 "temperature": Color( 1, 0, 0, 1 )
 }
 
-[node name="Sugars_Carbs_Costs_From" parent="." instance=ExtResource( 4 )]
-margin_left = 187.296
+[node name="Sugars_Carbs_Costs_To" parent="." instance=ExtResource( 4 )]
+margin_left = 185.0
 margin_top = 445.0
-margin_right = -146.704
+margin_right = -141.0
 margin_bottom = -356.0
 colors = {
 "base": Color( 0, 1, 0, 1 ),

@@ -29,7 +29,7 @@ const MAX_START_RESOURCES = 2
 const MIN_START_RESOURCES = 1
 
 const NECESSARY_OXYGEN_LEVEL = 75
-const NECESSARY_TEMP_LEVEL = 30
+const NECESSARY_TEMP_LEVEL = 25
 const LARGEST_MULTIPLIER = 2
 const PROCESSING_ACTIONS = []
 const OXYGEN_ACTIONS = ["energy_to_simple_carbs", "simple_carbs_to_energy", "simple_carbs_to_simple_proteins", "simple_proteins_to_simple_carbs", 
@@ -53,6 +53,7 @@ const MINERAL_ACTIONS = ["energy_to_simple_carbs", "simple_carbs_to_energy", "si
 						"simple_fats_to_energy", "simple_fats_to_complex_fats",
 						"complex_fats_to_simple_fats"]
 
+const MAX_ENERGY_COST = 16
 const MAX_BASE_ENERGY_COST = 8
 const MAX_OXYGEN_ENERGY_COST = 4
 const MAX_TEMPERATURE_ENERGY_COST = 4
@@ -1255,13 +1256,14 @@ func replicate(idx):
 				
 				prune_cmsms(2);
 				
-				var cfp_splits = split_cfp_resources(MITOSIS_SPLITS)
-				var mineral_splits = split_mineral_resources(MITOSIS_SPLITS)
-				var energy_split = split_energy(MITOSIS_SPLITS)
-				
-				cfp_resources = cfp_splits[randi() % MITOSIS_SPLITS]
-				mineral_splits = mineral_splits[randi() % MITOSIS_SPLITS]
-				set_energy(energy_split)
+				if Unlocks.has_mechanic_unlock("resource_costs"):
+					var cfp_splits = split_cfp_resources(MITOSIS_SPLITS)
+					var mineral_splits = split_mineral_resources(MITOSIS_SPLITS)
+					var energy_split = split_energy(MITOSIS_SPLITS)
+					
+					cfp_resources = cfp_splits[randi() % MITOSIS_SPLITS]
+					mineral_splits = mineral_splits[randi() % MITOSIS_SPLITS]
+					set_energy(energy_split)
 				
 				num_progeny += 1;
 			
@@ -1275,13 +1277,14 @@ func replicate(idx):
 				
 				prune_cmsms(1);
 				
-				var cfp_splits = split_cfp_resources(MEIOSIS_SPLITS)
-				var mineral_splits = split_mineral_resources(MEIOSIS_SPLITS)
-				var energy_split = split_energy(MEIOSIS_SPLITS)
-				
-				cfp_resources = cfp_splits[randi() % MEIOSIS_SPLITS]
-				mineral_splits = mineral_splits[randi() % MEIOSIS_SPLITS]
-				set_energy(energy_split)
+				if Unlocks.has_mechanic_unlock("resource_costs"):
+					var cfp_splits = split_cfp_resources(MEIOSIS_SPLITS)
+					var mineral_splits = split_mineral_resources(MEIOSIS_SPLITS)
+					var energy_split = split_energy(MEIOSIS_SPLITS)
+					
+					cfp_resources = cfp_splits[randi() % MEIOSIS_SPLITS]
+					mineral_splits = mineral_splits[randi() % MEIOSIS_SPLITS]
+					set_energy(energy_split)
 				
 				cmsms.add_cmsm(get_random_gene_from_pool(), true);
 				num_progeny += 3;
@@ -1417,19 +1420,19 @@ func is_dead():
 func check_resources(action, amount = 1):
 
 	var deficiencies = []
-	var cost_mult = get_cost_mult(action)
 	
-	for resource_class in cfp_resources.keys():
-		if cfp_resources[resource_class]["total"] < get_cfp_cost(action, resource_class, amount):
-			#print("NOT ENOUGH CASH! STRANGA!")
-			deficiencies.append(resource_class)
-			
-	for group in mineral_resources:
-		if mineral_resources[group]["total"] < get_mineral_cost(action, group, amount):
-			deficiencies.append(group)
-	
-	if energy < get_energy_cost(action, amount):
-		deficiencies.append("energy")
+	if Unlocks.has_mechanic_unlock("resource_costs"):
+		for resource_class in cfp_resources.keys():
+			if cfp_resources[resource_class]["total"] < get_cfp_cost(action, resource_class, amount):
+				#print("NOT ENOUGH CASH! STRANGA!")
+				deficiencies.append(resource_class)
+				
+		for group in mineral_resources:
+			if mineral_resources[group]["total"] < get_mineral_cost(action, group, amount):
+				deficiencies.append(group)
+		
+		if energy < get_energy_cost(action, amount):
+			deficiencies.append("energy")
 		
 	return deficiencies
 
@@ -1445,53 +1448,58 @@ func get_processed_energy_value(resource: String) -> float:
 		if resource == "complex_proteins" and Game.is_valid_interaction(resource, "simple_proteins", bhv_prof) and energy > get_energy_cost("complex_proteins_to_simple_proteins"):
 			var simp_prots = {}
 			for resource_name in cfp_resources[resource]:
-				simp_prots[Game.resources[resource_name]["downgraded_form"]] = cfp_resources[resource][resource_name]*Game.resources[resource_name]["factor"]
-				processed_energy -= get_energy_cost("complex_proteins_to_simple_proteins", cfp_resources[resource][resource_name])
+				if resource_name != "total":
+					simp_prots[Game.resources[resource_name]["downgraded_form"]] = cfp_resources[resource][resource_name]*Game.resources[resource_name]["factor"]
+					processed_energy -= get_energy_cost("complex_proteins_to_simple_proteins", cfp_resources[resource][resource_name])
 			
 			if Game.is_valid_interaction(resource, "simple_carbs", bhv_prof) and energy - get_energy_cost("simple_proteins_to_simple_carbs") > get_energy_cost("complex_proteins_to_simple_proteins"):
 				var simp_sugars = {}
-				for resource_name in simp_prots:	
-					var conversion_amount = simp_prots[resource_name] / (Game.resources[cfp_resources["simple_carbs"].keys()[0]]["factor"] / Game.resources[resource_name]["factor"])
+				for resource_name in simp_prots:
+					if resource_name != "total":	
+						var conversion_amount = simp_prots[resource_name] / (Game.resources[cfp_resources["simple_carbs"].keys()[0]]["factor"] / Game.resources[resource_name]["factor"])
+						if simp_sugars.has(cfp_resources["simple_carbs"].keys()[0]):
+							simp_sugars[cfp_resources["simple_carbs"].keys()[0]] += conversion_amount
+						else:
+							simp_sugars[cfp_resources["simple_carbs"].keys()[0]] = conversion_amount
+						processed_energy -= get_energy_cost("simple_proteins_to_simple_carbs", conversion_amount)	
+			
+				if Game.is_valid_interaction("simple_carbs", "energy", bhv_prof):
+					for resource_name in simp_sugars:
+						if resource_name != "total":
+							processed_energy += simp_sugars[resource_name] * Game.resources[resource_name]["factor"]
+							processed_energy -= get_energy_cost("simple_carbs_to_energy", simp_sugars[resource_name])
+			else:
+				processed_energy = 0
+				
+		elif resource == "simple_proteins" and Game.is_valid_interaction(resource, "simple_carbs", bhv_prof) and energy > get_energy_cost("simple_proteins_to_simple_carbs"):
+			var simp_sugars = {}
+			for resource_name in cfp_resources[resource]:
+				if resource_name != "total":	
+					var conversion_amount = cfp_resources[resource][resource_name] / (Game.resources[cfp_resources["simple_carbs"].keys()[0]]["factor"] / Game.resources[resource_name]["factor"])
 					if simp_sugars.has(cfp_resources["simple_carbs"].keys()[0]):
 						simp_sugars[cfp_resources["simple_carbs"].keys()[0]] += conversion_amount
 					else:
 						simp_sugars[cfp_resources["simple_carbs"].keys()[0]] = conversion_amount
 					processed_energy -= get_energy_cost("simple_proteins_to_simple_carbs", conversion_amount)	
 			
-				if Game.is_valid_interaction("simple_carbs", "energy", bhv_prof):
-					for resource_name in simp_sugars:
-						processed_energy += simp_sugars[resource_name] * Game.resources[resource_name]["factor"]
-						processed_energy -= get_energy_cost("simple_carbs_to_energy", simp_sugars[resource_name])
-			else:
-				processed_energy = 0
-				
-		elif resource == "simple_proteins" and Game.is_valid_interaction(resource, "simple_carbs", bhv_prof) and energy > get_energy_cost("simple_proteins_to_simple_carbs"):
-			var simp_sugars = {}
-			for resource_name in cfp_resources[resource]:	
-				var conversion_amount = cfp_resources[resource][resource_name] / (Game.resources[cfp_resources["simple_carbs"].keys()[0]]["factor"] / Game.resources[resource_name]["factor"])
-				if simp_sugars.has(cfp_resources["simple_carbs"].keys()[0]):
-					simp_sugars[cfp_resources["simple_carbs"].keys()[0]] += conversion_amount
-				else:
-					simp_sugars[cfp_resources["simple_carbs"].keys()[0]] = conversion_amount
-				processed_energy -= get_energy_cost("simple_proteins_to_simple_carbs", conversion_amount)	
-			
 			for resource_name in simp_sugars:
 				processed_energy += simp_sugars[resource_name] * Game.resources[resource_name]["factor"]
 				
 		else:
 			for resource_name in cfp_resources[resource]:
-				var downgraded_resource = Game.resources[resource_name]["downgraded_form"]
-				
-				if downgraded_resource == "energy" and Game.is_valid_interaction(resource, "energy", bhv_prof):
-					processed_energy -= get_energy_cost(resource + "_to_energy", cfp_resources[resource][resource_name])
-					processed_energy += cfp_resources[resource][resource_name] * Game.resources[resource_name]["factor"]
+				if resource_name != "total":
+					var downgraded_resource = Game.resources[resource_name]["downgraded_form"]
 					
-				else:
-					var downgraded_class = Game.get_class_from_name(downgraded_resource)
-					if Game.is_valid_interaction(resource, downgraded_class, bhv_prof) and energy > get_energy_cost(resource + "_to_" + downgraded_class):
-						processed_energy -= get_energy_cost(resource + "_to_" + downgraded_class, cfp_resources[resource][resource_name])
-						processed_energy -= get_energy_cost(downgraded_class + "_to_energy", cfp_resources[resource][resource_name] * Game.resources[resource_name]["factor"])
-						processed_energy += cfp_resources[resource][resource_name] * Game.resources[resource_name]["factor"] * Game.resources[downgraded_resource]["factor"]
+					if downgraded_resource == "energy" and Game.is_valid_interaction(resource, "energy", bhv_prof):
+						processed_energy -= get_energy_cost(resource + "_to_energy", cfp_resources[resource][resource_name])
+						processed_energy += cfp_resources[resource][resource_name] * Game.resources[resource_name]["factor"]
+						
+					else:
+						var downgraded_class = Game.get_class_from_name(downgraded_resource)
+						if Game.is_valid_interaction(resource, downgraded_class, bhv_prof) and energy > get_energy_cost(resource + "_to_" + downgraded_class):
+							processed_energy -= get_energy_cost(resource + "_to_" + downgraded_class, cfp_resources[resource][resource_name])
+							processed_energy -= get_energy_cost(downgraded_class + "_to_energy", cfp_resources[resource][resource_name] * Game.resources[resource_name]["factor"])
+							processed_energy += cfp_resources[resource][resource_name] * Game.resources[resource_name]["factor"] * Game.resources[downgraded_resource]["factor"]
 	
 	#In the case we are dealing with a resource name		
 	else:
@@ -1500,22 +1508,28 @@ func get_processed_energy_value(resource: String) -> float:
 	return processed_energy
 
 func get_energy_cost(action, amount = 1):
-	var cost = get_base_energy_cost(action, amount)
+	var base_cost = get_base_energy_cost(action, amount)
+	var oxygen_cost = 0
+	var temperature_cost = 0
+	var mineral_cost = 0
+	var final_cost = 0
 	
 	if action in OXYGEN_ACTIONS: #OXYGEN_ACTIONS should be replaced with temp, mineral, oxygen actions
-		cost += get_oxygen_energy_cost(action, amount, cost)
+		oxygen_cost = get_oxygen_energy_cost(action, amount, base_cost)
 		
 	if action in MINERAL_ACTIONS:
-		cost += get_mineral_energy_cost(action, amount, cost)
+		mineral_cost = get_mineral_energy_cost(action, amount, base_cost)
 		
 	if action in TEMPERATURE_ACTIONS:
-		cost += get_temperature_energy_cost(action, amount, cost)
-			
-	return cost
+		temperature_cost =  get_temperature_energy_cost(action, amount, base_cost)
+	
+	final_cost = base_cost + oxygen_cost + temperature_cost + mineral_cost
+	
+	return clamp(final_cost, 1, MAX_ENERGY_COST)
 	
 func get_base_energy_cost(action, amount = 1):
-	var cost = ceil(costs[action]["energy"] * get_cost_mult(action) * amount)
-	
+	var cost = costs[action]["energy"] * get_cost_mult(action) * amount
+	cost = ceil(cost)
 	return clamp(cost, MIN_BASE_ENERGY_COST, MAX_BASE_ENERGY_COST)
 	
 #It is assumed that base cost uses the amount to calculate it
@@ -1540,9 +1554,9 @@ func get_mineral_energy_cost(action, amount = 1, base_cost: float = -1) -> float
 	var mineral_mult = get_mineral_multiplier(action)	
 	
 	if base_cost > 0:
-		return clamp(0 * base_cost, -MIN_MINERAL_ENERGY_COST, MAX_MINERAL_ENERGY_COST)
+		return clamp(floor(0 * base_cost), -MIN_MINERAL_ENERGY_COST, MAX_MINERAL_ENERGY_COST)
 	else:
-		return clamp(0 * get_base_energy_cost(action, amount), -MIN_MINERAL_ENERGY_COST, MAX_MINERAL_ENERGY_COST) 
+		return clamp(floor(0 * get_base_energy_cost(action, amount)), -MIN_MINERAL_ENERGY_COST, MAX_MINERAL_ENERGY_COST) 
 
 func get_mineral_multiplier(action) -> float:
 	return 0.0
@@ -2263,7 +2277,7 @@ func downgrade_cfp_resource(resource_from: String, amount: int):
 		if downgraded_form == "energy":
 			downgraded_amount = energy #Store old energy amount
 			
-			var energy_cost = get_energy_cost(resource_from + "_to_energy", 1)
+			var energy_cost = get_energy_cost(resource_class + "_to_energy", 1)
 			var energy_gained = Game.resources[resource_from]["factor"]
 			
 			#Downgrade all resources that you can
@@ -2682,9 +2696,12 @@ func get_vision_radius():
 #Cost to move over a particular tile type
 #biome is an integer
 func get_locomotion_cost(biome):
-	if typeof(biome) == TYPE_INT:
-		return Game.biomes[Game.biomes.keys()[biome]]["base_cost"] * get_cost_mult("move") * get_behavior_profile().get_specialization("Locomotion", "biomes", Game.biomes.keys()[biome])
-	elif typeof(biome) == TYPE_STRING:
-		return Game.biomes[biome]["base_cost"] * get_cost_mult("move") * get_behavior_profile().get_specialization("Locomotion", "biomes", biome)
+	if not Settings.disable_movement_costs():
+		if typeof(biome) == TYPE_INT:
+			return Game.biomes[Game.biomes.keys()[biome]]["base_cost"] * get_cost_mult("move") * get_behavior_profile().get_specialization("Locomotion", "biomes", Game.biomes.keys()[biome])
+		elif typeof(biome) == TYPE_STRING:
+			return Game.biomes[biome]["base_cost"] * get_cost_mult("move") * get_behavior_profile().get_specialization("Locomotion", "biomes", biome)
+		else:
+			return -1
 	else:
-		return -1
+		return 0

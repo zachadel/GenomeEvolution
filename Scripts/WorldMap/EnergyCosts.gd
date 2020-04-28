@@ -64,33 +64,31 @@ func update_costs():
 				costs[cost_type] = functions[cost_type].call_func(action, 1, costs["base"])
 				
 				if costs[cost_type] < 0:
-					bars["base"] -= costs[cost_type]
+					bars["base"] = clamp(bars["base"] + costs[cost_type], 1, 100)
+					#bars[cost_type] = costs[cost_type]
 				elif costs[cost_type] >= 0:
 					bars[cost_type] = costs[cost_type]
 		
-		var index = 0		
-		for unit in get_children():
-			unit.enable()
-			if index < bars["base"]:
-				unit.set_colors(colors["base"], colors["base"])
-				
-			elif index < bars["base"] + bars["temperature"]:
-				unit.set_colors(colors["temperature"], colors["temperature"])
-				
-			elif index < bars["base"] + bars["temperature"] + bars["oxygen"]:
-				unit.set_colors(colors["oxygen"], colors["oxygen"])
-			
-			elif index < bars["base"] + bars["temperature"] + bars["oxygen"] + bars["mineral"]:
-				unit.set_colors(colors["mineral"], colors["mineral"])
-			else:
-				unit.disable()
-				
-			index += 1
-			
-			
-		
-		
+		_update_gui(bars)
 	pass
 	
-func _update_gui():
+func _update_gui(bars: Dictionary):
+	var index = 0		
+	for unit in get_children():
+		unit.enable()
+		if index < bars["base"]:
+			unit.set_colors(colors["base"], colors["base"])
+			
+		elif index < bars["base"] + bars["temperature"]:
+			unit.set_colors(colors["temperature"], colors["temperature"])
+			
+		elif index < bars["base"] + bars["temperature"] + bars["oxygen"]:
+			unit.set_colors(colors["oxygen"], colors["oxygen"])
+		
+		elif index < bars["base"] + bars["temperature"] + bars["oxygen"] + bars["mineral"]:
+			unit.set_colors(colors["mineral"], colors["mineral"])
+		else:
+			unit.disable()
+			
+		index += 1
 	pass

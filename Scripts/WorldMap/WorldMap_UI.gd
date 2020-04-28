@@ -207,6 +207,20 @@ func test_functionality():
 	print(irc.organism.energy)
 	print("Vision Radius:")
 	print(irc.organism.get_vision_radius())
+	print("***Energy Costs***")
+	for action in irc.organism.OXYGEN_ACTIONS:
+		var base_cost = irc.organism.get_base_energy_cost(action, 1)
+		var oxygen_cost = irc.organism.get_oxygen_energy_cost(action, 1)
+		var temp_cost = irc.organism.get_temperature_energy_cost(action, 1)
+		var mineral_cost = irc.organism.get_mineral_energy_cost(action, 1)
+		var final_cost = irc.organism.get_energy_cost(action, 1)
+		print("%s Base Cost: " % [action], base_cost)
+		print("%s Oxygen Cost: " % [action], oxygen_cost)
+		print("%s Temperature Cost: " % [action], temp_cost)
+		print("%s Mineral Cost: " % [action], mineral_cost)
+		print("%s base + oxygen + temp + mineral: " % [action], base_cost+oxygen_cost+temp_cost+mineral_cost)
+		print("%s Final Cost: " % [action], final_cost)
+		print("\n")
 
 func center_resources():
 	for resource_class in irc.resources:

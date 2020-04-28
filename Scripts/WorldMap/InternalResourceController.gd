@@ -144,6 +144,8 @@ func set_organism(org):
 	$Sugars_Carbs_Costs_To.set_functions(org)
 	$Sugars_Carbs_Costs_To.set_action("complex_carbs_to_simple_carbs")
 
+#Costs seem to not update if conditions are extreme
+#BROKEN but not crashing
 func update_costs():
 	for node in get_children():
 		if node is GridContainer:

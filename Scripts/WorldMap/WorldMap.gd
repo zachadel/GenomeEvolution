@@ -185,8 +185,6 @@ func _process(delta):
 					
 				for i in range(len(path) - 1):
 					$Path.add_point(path[i]["location"])
-			else:
-				print('PATH NOT LONG ENOUGH')
 					
 			$Path.show()
 		elif !input_elements["move"] or !move_enabled:
