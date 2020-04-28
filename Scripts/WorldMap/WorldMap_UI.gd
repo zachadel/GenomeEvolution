@@ -38,7 +38,7 @@ func _ready():
 	
 	if OS.is_debug_build():
 		var test_button = Button.new()
-		test_button.text = "Test Function"
+		test_button.text = "Print Debug"
 		$MenuPanel/HBoxContainer.add_child(test_button)
 		test_button.connect("pressed", self, "test_functionality")
 	
