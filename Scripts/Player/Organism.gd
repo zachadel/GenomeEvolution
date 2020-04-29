@@ -1126,10 +1126,11 @@ func evolve_candidates(candids):
 	else:
 		emit_signal("justnow_update", "No essential genes were duplicated, so no genes evolve.");
 
-var recombo_chance = 1;
+var recombo_chance := 1.0;
+var recombos_left := 0;
 const RECOMBO_COMPOUND = 0.85;
-var cont_recombo = true
-var recom_justnow = ""
+var cont_recombo := true
+var recom_justnow := ""
 func recombination():
 	if (is_ai):
 		gene_selection.clear();
@@ -1154,23 +1155,31 @@ func recombination():
 			for g in gene_selection:
 				g.disable(true);
 			
-			if (randf() <= recombo_chance):
+			recombo_chance *= RECOMBO_COMPOUND;
+			cont_recombo = randf() <= recombo_chance;
+			if cont_recombo:
+				recombos_left -= 1;
+				cont_recombo = recombos_left > 0;
+			
+			if cont_recombo:
 				perform_anims(false);
 				var idxs;
 				if (do_yields):
 					idxs = yield(cmsms.recombine(first_elm, scnd_elm), "completed");
 				else:
 					idxs = cmsms.recombine(first_elm, scnd_elm);
-				recombo_chance *= RECOMBO_COMPOUND;
 				perform_anims(true);
-				emit_signal("justnow_update", "Recombination success: swapped %s genes at positions %d and %d.\nNext recombination has a %d%% chance of success." % ([first_elm.get_gene_name()] + idxs + [100*recombo_chance]));
+				emit_signal("justnow_update", "Recombination success: swapped %s genes at positions %d and %d.\nYou have %d attempts left. The next recombination has a %d%% chance of success." % ([first_elm.get_gene_name()] + idxs + [recombos_left, 100*recombo_chance]));
 				emit_signal("doing_work", false);
 				if (do_yields):
 					yield(recombination(), "completed");
 				else:
 					recombination();
 			else:
-				emit_signal("justnow_update", "Recombination failed.");
+				if recombos_left > 0:
+					emit_signal("justnow_update", "Recombination failed.");
+				else:
+					emit_signal("justnow_update", "No more Recombination attempts.");
 				cont_recombo = false
 				emit_signal("doing_work", false);
 
@@ -1332,6 +1341,9 @@ func get_scissors_per_turn() -> int:
 func get_scissors_remaining() -> int:
 	return total_scissors_left;
 
+func get_recombos_per_turn() -> int:
+	return int(floor(behavior_profile.get_behavior("Replication")));
+
 func adv_turn(round_num, turn_idx):
 	doing_scissors = false;
 	cmsms.highlight_genes(gene_selection, false);
@@ -1387,11 +1399,14 @@ func adv_turn(round_num, turn_idx):
 						scissors(false);
 				emit_signal("doing_work", false);
 			Game.TURN_TYPES.Recombination:
-				emit_signal("justnow_update", "If you want, you can select a gene that is common to both chromosomes. Those genes and every gene to their right swap chromosomes.\nThis recombination has a %d%% chance of success." % (100*recombo_chance));
+				recombo_chance = 1;
+				recombos_left = get_recombos_per_turn();
+				emit_signal("justnow_update", "If you want, you can select a gene that is common to both chromosomes. Those genes and every gene to their right swap chromosomes.\nYou have %d recombination attempts left (based on your Replication value). This recombination has a %d%% chance of success." % [recombos_left, (100*recombo_chance)]);
 				if (do_yields):
 					yield(recombination(), "completed");
 				else:
 					recombination();
+				cont_recombo = true;
 			Game.TURN_TYPES.Evolve:
 				for cmsm in cmsms.get_cmsms():
 					evolve_cmsm(cmsm);
@@ -1399,8 +1414,6 @@ func adv_turn(round_num, turn_idx):
 				var missing = get_missing_ess_classes();
 				if is_viable(missing):
 					emit_signal("justnow_update", "You're still kicking!");
-					cont_recombo = true
-					recombo_chance = 1
 				else:
 					died_on_turn = Game.round_num;
 					#$lbl_dead.text = "Died after %d rounds." % (died_on_turn - born_on_turn);
