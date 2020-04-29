@@ -135,7 +135,7 @@ var SECONDARY_RESOURCE_MIN = 0
 const GEN_SCALING = 100 
 const TOLERANCE = .0001
 
-var turns = [TURN_TYPES.Map, TURN_TYPES.NewTEs, TURN_TYPES.TEJump, TURN_TYPES.RepairBreaks, TURN_TYPES.EnvironmentalDamage, TURN_TYPES.RemoveDamage,
+var turns = [TURN_TYPES.Map, TURN_TYPES.EnvironmentalDamage, TURN_TYPES.RemoveDamage, TURN_TYPES.RepairBreaks, TURN_TYPES.NewTEs, TURN_TYPES.TEJump,
 	TURN_TYPES.RepairBreaks, TURN_TYPES.Recombination, TURN_TYPES.Replication, TURN_TYPES.CheckViability];
 var turn_idx
 var round_num

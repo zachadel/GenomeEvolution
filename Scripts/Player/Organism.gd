@@ -16,6 +16,7 @@ var born_on_turn
 var died_on_turn
 var num_progeny := 0;
 var num_dmg_genes := 0;
+var accumulated_dmg := 0.0;
 
 var cell_str = "cell_1"
 
@@ -413,29 +414,40 @@ func gain_gaps(count = 1):
 			cmsms.create_gap();
 	return cmsms.collapse_gaps();
 
+const DMG_FACTOR = 0.33;
+func gain_dmg(amt : float):
+	accumulated_dmg += amt * DMG_FACTOR;
+
 const MAX_ENVIRON_INTERNAL_DMG_PERC = 0.5;
 const MIN_ENVIRON_INTERNAL_DMG_PERC = 0.25;
 func environmental_damage():
-	var total_count := get_rand_environmental_break_count();
+	var total_count : int = floor(accumulated_dmg);
+	accumulated_dmg -= total_count;
+	
 	var internal_dmg_count : int = int(rand_range(MIN_ENVIRON_INTERNAL_DMG_PERC, MAX_ENVIRON_INTERNAL_DMG_PERC) * total_count);
 	var gap_count := total_count - internal_dmg_count;
 	
 	# Gain internal dmg
-	var gene_list : Array = cmsms.get_all_genes();
 	var true_damaged := 0;
-	for i in range(internal_dmg_count):
-		var rand_idx := randi() % gene_list.size();
-		if rand_idx >= 0:
-			var rand_gene = gene_list[rand_idx];
-			gene_list.remove(rand_idx);
-			rand_gene.damage_gene(true);
-			if rand_gene.is_damaged():
-				true_damaged += 1;
+	if internal_dmg_count > 0:
+		var gene_list : Array = cmsms.get_all_genes();
+		for i in range(internal_dmg_count):
+			var rand_idx := randi() % gene_list.size();
+			if rand_idx >= 0:
+				var rand_gene = gene_list[rand_idx];
+				gene_list.remove(rand_idx);
+				rand_gene.damage_gene(true);
+				if rand_gene.is_damaged():
+					true_damaged += 1;
+	
 	# Gain gaps
-	if (do_yields):
-		gap_count = yield(gain_gaps(get_rand_environmental_break_count()), "completed");
-	else:
-		gap_count = gain_gaps(get_rand_environmental_break_count());
+	if gap_count > 0:
+		if (do_yields):
+			gap_count = yield(gain_gaps(gap_count), "completed");
+		else:
+			gap_count = gain_gaps(gap_count);
+	elif do_yields:
+		yield(get_tree(), "idle_frame");
 	
 	emit_signal("justnow_update", "%d gene%s were damaged by the environment." % [true_damaged, "" if true_damaged == 1 else "s"]);
 	emit_signal("justnow_update", "%d gap%s appeared due to environmental damage." % [gap_count, "" if gap_count == 1 else "s"]);

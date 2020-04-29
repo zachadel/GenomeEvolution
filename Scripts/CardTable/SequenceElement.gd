@@ -755,7 +755,6 @@ func is_damaged():
 
 func disable(dis):
 	disabled = dis;
-	#$GrayFilter.visible = dis; #Commented out in order to remove the gray box around the elements in the chomosome
 	highlight_border(!dis);
 
 func highlight_border(on : bool, force_color := false):
@@ -763,7 +762,7 @@ func highlight_border(on : bool, force_color := false):
 	if force_color:
 		$BorderRect.modulate = toggle_rect_clr[pressed];
 	
-	if is_gap() && Unlocks.has_hint_unlock("click_gaps"):
+	if is_gap():
 		$lbl_id.text = "Click to repair!";
 		$lbl_id.visible = on;
 

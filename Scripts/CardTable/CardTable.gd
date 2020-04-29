@@ -160,11 +160,11 @@ func get_repair_desc(type):
 func upd_repair_desc(idx):
 	var type = repair_idx_to_type(idx);
 	var btn = $pnl_repair_choices/hsplit/vsplit/btn_apply_repair;
-	btn.disabled = !orgn.repair_type_possible[type];
-	btn.text = "Repair";
 	orgn.change_selected_repair(type);
-	if (btn.disabled):
-		btn.text = orgn.repair_btn_text[type];
+	btn.disabled = !orgn.repair_type_possible[type];
+	btn.text = orgn.repair_btn_text[type];
+	if btn.text.empty():
+		btn.text = "Repair";
 	$pnl_repair_choices/hsplit/vsplit/scroll/lbl_choice_desc.text = get_repair_desc(type);
 
 func _on_btn_apply_repair_pressed():
