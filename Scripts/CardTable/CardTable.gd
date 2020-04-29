@@ -107,6 +107,7 @@ func do_replicate(idx):
 
 # Gaps and repairs
 
+const LOCKABLE_REPAIRS = ["collapse_dupes", "copy_pattern"];
 const REP_TYPE_TO_IDX = {
 	"collapse_dupes": 0,
 	"copy_pattern": 1,
@@ -129,7 +130,7 @@ func show_repair_opts(show):
 	if (show):
 		var rep_list = $pnl_repair_choices/hsplit/ilist_choices;
 		
-		for rep_type in REP_TYPE_TO_IDX:
+		for rep_type in LOCKABLE_REPAIRS:
 			var img_path : String = "res://Assets/Images/icons/" + rep_type;
 			if !Unlocks.has_repair_unlock(rep_type):
 				img_path += "_locked";

@@ -170,7 +170,7 @@ func _ready():
 	do_yields = false;
 	born_on_turn = -1;
 	died_on_turn = -1;
-
+	
 	set_energy(10);
 	energy_allocations = {};
 	populate_cfp_resources_dict()
