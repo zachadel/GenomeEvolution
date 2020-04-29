@@ -1635,24 +1635,6 @@ func get_mineral_cost(action, mineral, amount = 1):
 		print('ERROR: Invalid resource of %s in function get_mineral_cost' % mineral)
 	
 	return round(cost) + minimum_cost
-	
-#func update_energy(amount):
-#	energy += amount;
-#	if (energy < MIN_ENERGY):
-#		energy = MIN_ENERGY;
-#	elif (energy > MAX_ENERGY):
-#		energy = MAX_ENERGY;
-
-#func update_energy_allocation(type, amount):
-#	#print(type);
-#	if (energy - amount < MIN_ENERGY || energy - amount > MAX_ENERGY):
-#		return;
-#	if (energy_allocations[type] + amount < 0 || energy_allocations[type] + amount > MAX_ALLOCATED_ENERGY):
-#		return;
-#	energy -= amount;
-#	energy_allocations[type] += amount;
-#	energy_allocation_panel.update_energy_allocation(type, energy_allocations[type]);
-#	energy_allocation_panel.update_energy(energy);
 
 #NOTE: Energy costs are always per unit
 var costs = {

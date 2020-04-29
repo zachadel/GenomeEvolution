@@ -414,7 +414,7 @@ func load_cfg(data_name, dict):
 		for s in file.get_sections():
 			dict[s] = Game.cfg_sec_to_dict(file, s)
 	else:
-		print(err)
+		print("Data CFG error: ", err)
 
 func populate_biome_conversion_dicts():
 	var biome_keys = biomes.keys()

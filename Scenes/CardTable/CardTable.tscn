@@ -4,7 +4,7 @@
 [ext_resource path="res://Scenes/Player/Organism.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/CardTable/ChromosomeStatus.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Images/icons/collapse_dupes.png" type="Texture" id=4]
-[ext_resource path="res://Assets/Images/icons/copy_repair.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Images/icons/copy_pattern.png" type="Texture" id=5]
 [ext_resource path="res://Assets/Images/icons/join_ends.png" type="Texture" id=6]
 [ext_resource path="res://Assets/Images/icons/mitosis.png" type="Texture" id=7]
 [ext_resource path="res://Assets/Images/icons/meiosis.png" type="Texture" id=8]
@@ -17,7 +17,7 @@
 [ext_resource path="res://Scenes/CardTable/TurnList.tscn" type="PackedScene" id=15]
 [ext_resource path="res://Scenes/CardTable/DarkenedBG.tres" type="StyleBox" id=16]
 [ext_resource path="res://Scenes/CardTable/LabeledNumber.tscn" type="PackedScene" id=17]
-[ext_resource path="res://Assets/Images/icons/scissors.png" type="Texture" id=18]
+[ext_resource path="res://Assets/Images/icons/repair_scissors.png" type="Texture" id=18]
 [ext_resource path="res://Assets/Images/pngs/DNA_small.png" type="Texture" id=19]
 [ext_resource path="res://Scenes/MainMenu/Credits.tscn" type="PackedScene" id=20]
 [ext_resource path="res://Assets/Fonts/OpenSans-48.tres" type="DynamicFont" id=21]
@@ -696,10 +696,10 @@ margin_bottom = 900.0
 [node name="Credits" parent="pnl_dead_overview/HSplitContainer/CenterContainer" instance=ExtResource( 20 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 24.0
-margin_top = 224.0
-margin_right = 274.0
-margin_bottom = 674.0
+margin_left = 25.0
+margin_top = 225.0
+margin_right = 275.0
+margin_bottom = 675.0
 rect_min_size = Vector2( 250, 450 )
 
 [node name="Control" type="Control" parent="pnl_dead_overview/HSplitContainer"]

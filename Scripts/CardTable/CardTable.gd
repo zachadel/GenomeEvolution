@@ -127,8 +127,16 @@ func show_repair_opts(show):
 	if $pnl_repair_choices.visible != show:
 		close_extra_menus($pnl_repair_choices);
 	if (show):
+		var rep_list = $pnl_repair_choices/hsplit/ilist_choices;
+		
+		for rep_type in REP_TYPE_TO_IDX:
+			var img_path : String = "res://Assets/Images/icons/" + rep_type;
+			if !Unlocks.has_repair_unlock(rep_type):
+				img_path += "_locked";
+			rep_list.set_item_icon(REP_TYPE_TO_IDX[rep_type], load(img_path + ".png"));
+		
 		var sel_idx := repair_type_to_idx(orgn.sel_repair_type);
-		$pnl_repair_choices/hsplit/ilist_choices.select(sel_idx);
+		rep_list.select(sel_idx);
 		upd_repair_desc(sel_idx);
 
 func _on_Organism_show_repair_opts(show):
