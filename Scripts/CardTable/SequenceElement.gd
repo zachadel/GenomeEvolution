@@ -239,8 +239,8 @@ func get_ess_behavior() -> Dictionary:
 	for b in base_behave:
 		base_total += base_behave[b];
 	for b in base_behave:
-		g_behave[b] = g_behave.get(b, 0) +\
-			base_behave[b] * (get_ph_mult() + (get_boost() / base_total));
+		var boost_val : float = base_behave[b] * (get_ph_mult() + (get_boost() / base_total));
+		g_behave[b] = max(0.0, g_behave.get(b, 0) + boost_val);
 	return g_behave;
 
 func get_ate_activity():
