@@ -97,14 +97,17 @@ size_flags_vertical = 3
 
 [node name="RightsideSizer" type="Control" parent="container"]
 visible = false
-margin_left = 1340.0
+margin_left = 1315.0
 margin_right = 1590.0
 margin_bottom = 250.0
-rect_min_size = Vector2( 250, 0 )
+rect_min_size = Vector2( 275, 0 )
 
 [node name="CellImg" type="TextureRect" parent="container/RightsideSizer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 25.0
+margin_right = 3.05176e-05
+margin_bottom = 1.52588e-05
 rect_min_size = Vector2( 0, 60 )
 expand = true
 stretch_mode = 6
@@ -114,7 +117,8 @@ __meta__ = {
 
 [node name="TextureRect" type="TextureRect" parent="container/RightsideSizer/CellImg"]
 anchor_bottom = 1.0
-margin_right = 127.0
+margin_left = -25.0
+margin_right = 102.0
 texture = ExtResource( 4 )
 expand = true
 stretch_mode = 1
