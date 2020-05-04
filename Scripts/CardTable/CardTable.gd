@@ -107,6 +107,7 @@ func do_replicate(idx):
 
 # Gaps and repairs
 
+const LOCKABLE_REPAIRS = ["collapse_dupes", "copy_pattern"];
 const REP_TYPE_TO_IDX = {
 	"collapse_dupes": 0,
 	"copy_pattern": 1,
@@ -127,8 +128,16 @@ func show_repair_opts(show):
 	if $pnl_repair_choices.visible != show:
 		close_extra_menus($pnl_repair_choices);
 	if (show):
+		var rep_list = $pnl_repair_choices/hsplit/ilist_choices;
+		
+		for rep_type in LOCKABLE_REPAIRS:
+			var img_path : String = "res://Assets/Images/icons/" + rep_type;
+			if !Unlocks.has_repair_unlock(rep_type):
+				img_path += "_locked";
+			rep_list.set_item_icon(REP_TYPE_TO_IDX[rep_type], load(img_path + ".png"));
+		
 		var sel_idx := repair_type_to_idx(orgn.sel_repair_type);
-		$pnl_repair_choices/hsplit/ilist_choices.select(sel_idx);
+		rep_list.select(sel_idx);
 		upd_repair_desc(sel_idx);
 
 func _on_Organism_show_repair_opts(show):
@@ -160,11 +169,11 @@ func get_repair_desc(type):
 func upd_repair_desc(idx):
 	var type = repair_idx_to_type(idx);
 	var btn = $pnl_repair_choices/hsplit/vsplit/btn_apply_repair;
-	btn.disabled = !orgn.repair_type_possible[type];
-	btn.text = "Repair";
 	orgn.change_selected_repair(type);
-	if (btn.disabled):
-		btn.text = orgn.repair_btn_text[type];
+	btn.disabled = !orgn.repair_type_possible[type];
+	btn.text = orgn.repair_btn_text[type];
+	if btn.text.empty():
+		btn.text = "Repair";
 	$pnl_repair_choices/hsplit/vsplit/scroll/lbl_choice_desc.text = get_repair_desc(type);
 
 func _on_btn_apply_repair_pressed():
