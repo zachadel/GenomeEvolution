@@ -432,6 +432,7 @@ func move_player(pos: Vector3):
 			emit_signal("player_energy_changed", current_player.organism.energy)
 			loc_highlight.position = current_player.position
 	
+	current_player.organism.gain_dmg(tiles_moved)
 	return tiles_moved
 
 #Checks the mineral and cfp resource banks if they have acquired any particular

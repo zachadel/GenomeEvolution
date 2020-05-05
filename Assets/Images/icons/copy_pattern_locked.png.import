@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/scissors.png-d09341831617cbd547eccb047d5e0e78.stex"
+path="res://.import/copy_pattern_locked.png-d23d3fdc29913c2de444214eb3b75684.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Images/icons/scissors.png"
-dest_files=[ "res://.import/scissors.png-d09341831617cbd547eccb047d5e0e78.stex" ]
+source_file="res://Assets/Images/icons/copy_pattern_locked.png"
+dest_files=[ "res://.import/copy_pattern_locked.png-d23d3fdc29913c2de444214eb3b75684.stex" ]
 
 [params]
 

@@ -17,6 +17,7 @@ var born_on_turn
 var died_on_turn
 var num_progeny := 0;
 var num_dmg_genes := 0;
+var accumulated_dmg := 0.0;
 
 var cell_str = "cell_1"
 
@@ -170,7 +171,7 @@ func _ready():
 	do_yields = false;
 	born_on_turn = -1;
 	died_on_turn = -1;
-
+	
 	set_energy(10);
 	energy_allocations = {};
 	populate_cfp_resources_dict()
@@ -414,31 +415,40 @@ func gain_gaps(count = 1):
 			cmsms.create_gap();
 	return cmsms.collapse_gaps();
 
+const DMG_FACTOR = 0.33;
+func gain_dmg(amt : float):
+	accumulated_dmg += amt * DMG_FACTOR;
+
 const MAX_ENVIRON_INTERNAL_DMG_PERC = 0.5;
 const MIN_ENVIRON_INTERNAL_DMG_PERC = 0.25;
 func environmental_damage():
-	var total_count := get_accumulated_breaks();
+	var total_count : int = floor(accumulated_dmg);
+	accumulated_dmg -= total_count;
+	
 	var internal_dmg_count : int = int(rand_range(MIN_ENVIRON_INTERNAL_DMG_PERC, MAX_ENVIRON_INTERNAL_DMG_PERC) * total_count);
 	var gap_count := total_count - internal_dmg_count;
 	
 	# Gain internal dmg
-	var gene_list : Array = cmsms.get_all_genes();
 	var true_damaged := 0;
-	for i in range(internal_dmg_count):
-		var rand_idx := randi() % gene_list.size();
-		if rand_idx >= 0:
-			var rand_gene = gene_list[rand_idx];
-			gene_list.remove(rand_idx);
-			rand_gene.damage_gene(true);
-			if rand_gene.is_damaged():
-				true_damaged += 1;
-	# Gain gaps
-	if (do_yields):
-		gap_count = yield(gain_gaps(get_accumulated_breaks()), "completed");
-	else:
-		gap_count = gain_gaps(get_accumulated_breaks());
+	if internal_dmg_count > 0:
+		var gene_list : Array = cmsms.get_all_genes();
+		for i in range(internal_dmg_count):
+			var rand_idx := randi() % gene_list.size();
+			if rand_idx >= 0:
+				var rand_gene = gene_list[rand_idx];
+				gene_list.remove(rand_idx);
+				rand_gene.damage_gene(true);
+				if rand_gene.is_damaged():
+					true_damaged += 1;
 	
-	reset_break_count()
+	# Gain gaps
+	if gap_count > 0:
+		if (do_yields):
+			gap_count = yield(gain_gaps(gap_count), "completed");
+		else:
+			gap_count = gain_gaps(gap_count);
+	elif do_yields:
+		yield(get_tree(), "idle_frame");
 	
 	emit_signal("justnow_update", "%d gene%s were damaged by the environment." % [true_damaged, "" if true_damaged == 1 else "s"]);
 	emit_signal("justnow_update", "%d gap%s appeared due to environmental damage." % [gap_count, "" if gap_count == 1 else "s"]);
@@ -1117,10 +1127,11 @@ func evolve_candidates(candids):
 	else:
 		emit_signal("justnow_update", "No essential genes were duplicated, so no genes evolve.");
 
-var recombo_chance = 1;
+var recombo_chance := 1.0;
+var recombos_left := 0;
 const RECOMBO_COMPOUND = 0.85;
-var cont_recombo = true
-var recom_justnow = ""
+var cont_recombo := true
+var recom_justnow := ""
 func recombination():
 	if (is_ai):
 		gene_selection.clear();
@@ -1145,23 +1156,31 @@ func recombination():
 			for g in gene_selection:
 				g.disable(true);
 			
-			if (randf() <= recombo_chance):
+			recombo_chance *= RECOMBO_COMPOUND;
+			cont_recombo = randf() <= recombo_chance;
+			if cont_recombo:
+				recombos_left -= 1;
+				cont_recombo = recombos_left > 0;
+			
+			if cont_recombo:
 				perform_anims(false);
 				var idxs;
 				if (do_yields):
 					idxs = yield(cmsms.recombine(first_elm, scnd_elm), "completed");
 				else:
 					idxs = cmsms.recombine(first_elm, scnd_elm);
-				recombo_chance *= RECOMBO_COMPOUND;
 				perform_anims(true);
-				emit_signal("justnow_update", "Recombination success: swapped %s genes at positions %d and %d.\nNext recombination has a %d%% chance of success." % ([first_elm.get_gene_name()] + idxs + [100*recombo_chance]));
+				emit_signal("justnow_update", "Recombination success: swapped %s genes at positions %d and %d.\nYou have %d attempts left. The next recombination has a %d%% chance of success." % ([first_elm.get_gene_name()] + idxs + [recombos_left, 100*recombo_chance]));
 				emit_signal("doing_work", false);
 				if (do_yields):
 					yield(recombination(), "completed");
 				else:
 					recombination();
 			else:
-				emit_signal("justnow_update", "Recombination failed.");
+				if recombos_left > 0:
+					emit_signal("justnow_update", "Recombination failed.");
+				else:
+					emit_signal("justnow_update", "No more Recombination attempts.");
 				cont_recombo = false
 				emit_signal("doing_work", false);
 
@@ -1332,6 +1351,9 @@ func get_scissors_per_turn() -> int:
 func get_scissors_remaining() -> int:
 	return total_scissors_left;
 
+func get_recombos_per_turn() -> int:
+	return int(floor(behavior_profile.get_behavior("Replication")));
+
 func adv_turn(round_num, turn_idx):
 	doing_scissors = false;
 	cmsms.highlight_genes(gene_selection, false);
@@ -1387,11 +1409,14 @@ func adv_turn(round_num, turn_idx):
 						scissors(false);
 				emit_signal("doing_work", false);
 			Game.TURN_TYPES.Recombination:
-				emit_signal("justnow_update", "If you want, you can select a gene that is common to both chromosomes. Those genes and every gene to their right swap chromosomes.\nThis recombination has a %d%% chance of success." % (100*recombo_chance));
+				recombo_chance = 1;
+				recombos_left = get_recombos_per_turn();
+				emit_signal("justnow_update", "If you want, you can select a gene that is common to both chromosomes. Those genes and every gene to their right swap chromosomes.\nYou have %d recombination attempts left (based on your Replication value). This recombination has a %d%% chance of success." % [recombos_left, (100*recombo_chance)]);
 				if (do_yields):
 					yield(recombination(), "completed");
 				else:
 					recombination();
+				cont_recombo = true;
 			Game.TURN_TYPES.Evolve:
 				for cmsm in cmsms.get_cmsms():
 					evolve_cmsm(cmsm);
@@ -1399,8 +1424,6 @@ func adv_turn(round_num, turn_idx):
 				var missing = get_missing_ess_classes();
 				if is_viable(missing):
 					emit_signal("justnow_update", "You're still kicking!");
-					cont_recombo = true
-					recombo_chance = 1
 				else:
 					died_on_turn = Game.round_num;
 					#$lbl_dead.text = "Died after %d rounds." % (died_on_turn - born_on_turn);
@@ -1635,24 +1658,6 @@ func get_mineral_cost(action, mineral, amount = 1):
 		print('ERROR: Invalid resource of %s in function get_mineral_cost' % mineral)
 	
 	return round(cost) + minimum_cost
-	
-#func update_energy(amount):
-#	energy += amount;
-#	if (energy < MIN_ENERGY):
-#		energy = MIN_ENERGY;
-#	elif (energy > MAX_ENERGY):
-#		energy = MAX_ENERGY;
-
-#func update_energy_allocation(type, amount):
-#	#print(type);
-#	if (energy - amount < MIN_ENERGY || energy - amount > MAX_ENERGY):
-#		return;
-#	if (energy_allocations[type] + amount < 0 || energy_allocations[type] + amount > MAX_ALLOCATED_ENERGY):
-#		return;
-#	energy -= amount;
-#	energy_allocations[type] += amount;
-#	energy_allocation_panel.update_energy_allocation(type, energy_allocations[type]);
-#	energy_allocation_panel.update_energy(energy);
 
 #NOTE: Energy costs are always per unit
 var costs = {

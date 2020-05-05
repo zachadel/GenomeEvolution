@@ -239,8 +239,8 @@ func get_ess_behavior() -> Dictionary:
 	for b in base_behave:
 		base_total += base_behave[b];
 	for b in base_behave:
-		g_behave[b] = g_behave.get(b, 0) +\
-			base_behave[b] * (get_ph_mult() + (get_boost() / base_total));
+		var boost_val : float = base_behave[b] * (get_ph_mult() + (get_boost() / base_total));
+		g_behave[b] = max(0.0, g_behave.get(b, 0) + boost_val);
 	return g_behave;
 
 func get_ate_activity():
@@ -755,7 +755,6 @@ func is_damaged():
 
 func disable(dis):
 	disabled = dis;
-	#$GrayFilter.visible = dis; #Commented out in order to remove the gray box around the elements in the chomosome
 	highlight_border(!dis);
 
 func highlight_border(on : bool, force_color := false):
@@ -763,7 +762,7 @@ func highlight_border(on : bool, force_color := false):
 	if force_color:
 		$BorderRect.modulate = toggle_rect_clr[pressed];
 	
-	if is_gap() && Unlocks.has_hint_unlock("click_gaps"):
+	if is_gap():
 		$lbl_id.text = "Click to repair!";
 		$lbl_id.visible = on;
 

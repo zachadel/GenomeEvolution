@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Assets/Fonts/OpenSans-Bold.ttf" type="DynamicFontData" id=1]
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=1]
 size = 20
 outline_size = 2
 outline_color = Color( 0, 0, 0, 1 )
@@ -10,7 +10,7 @@ use_mipmaps = true
 use_filter = true
 font_data = ExtResource( 1 )
 
-[sub_resource type="DynamicFontData" id=1]
+[sub_resource type="DynamicFontData" id=2]
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
 
 [sub_resource type="DynamicFont" id=3]
@@ -18,7 +18,7 @@ outline_size = 1
 outline_color = Color( 0, 0, 0, 1 )
 use_mipmaps = true
 use_filter = true
-font_data = SubResource( 1 )
+font_data = SubResource( 2 )
 
 [node name="Credits" type="Control"]
 anchor_right = 1.0
@@ -31,7 +31,7 @@ __meta__ = {
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_fonts/bold_font = SubResource( 2 )
+custom_fonts/bold_font = SubResource( 1 )
 custom_fonts/normal_font = SubResource( 3 )
 bbcode_enabled = true
 bbcode_text = "[center][b]A game by[/b]

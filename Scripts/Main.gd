@@ -42,10 +42,6 @@ func _ready():
 	world_map.setup(randi(), hazard_seeds, randi(), randi(), chunk_size, first_player)
 	_show_world_map()
 	world_map.set_input(Game.PLAYER_VIEW.ON_MAP)
-	
-	# Skip the world map if we haven't unlocked it yet
-	if !Unlocks.has_turn_unlock(Game.TURN_TYPES.Map):
-		_on_WorldMap_end_map_turn();
 
 func _on_WorldMap_end_map_turn():
 	_hide_world_map()
@@ -126,11 +122,8 @@ func _hide_world_map():
 
 func _show_card_table():
 	card_table.show()
-	if Unlocks.has_turn_unlock(Game.TURN_TYPES.Map):
-		card_table.show_map_button()
-	else:
-		card_table.hide_map_button()
-		
+	card_table.show_map_button()
+
 func _hide_card_table():
 	card_table.hide()
 

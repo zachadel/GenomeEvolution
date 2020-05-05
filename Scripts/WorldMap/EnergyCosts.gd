@@ -39,7 +39,7 @@ func _ready():
 
 func set_functions(organism):
 	functions["base"] = funcref(organism, "get_base_energy_cost")
-	print(functions["base"].call_func("simple_carbs_to_complex_carbs", 1))
+	#print(functions["base"].call_func("simple_carbs_to_complex_carbs", 1))
 	functions["mineral"] = funcref(organism, "get_mineral_energy_cost")
 	functions["oxygen"] = funcref(organism, "get_oxygen_energy_cost")
 	functions["temperature"] = funcref(organism, "get_temperature_energy_cost")
