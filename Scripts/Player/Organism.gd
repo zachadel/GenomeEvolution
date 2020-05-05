@@ -9,6 +9,7 @@ func fix_bars():
 	Game.change_slider_width($scroll, false);
 
 var selected_gap# = null;
+var break_count = 0
 
 var is_ai
 var do_yields
@@ -416,7 +417,7 @@ func gain_gaps(count = 1):
 const MAX_ENVIRON_INTERNAL_DMG_PERC = 0.5;
 const MIN_ENVIRON_INTERNAL_DMG_PERC = 0.25;
 func environmental_damage():
-	var total_count := get_rand_environmental_break_count();
+	var total_count := get_accumulated_breaks();
 	var internal_dmg_count : int = int(rand_range(MIN_ENVIRON_INTERNAL_DMG_PERC, MAX_ENVIRON_INTERNAL_DMG_PERC) * total_count);
 	var gap_count := total_count - internal_dmg_count;
 	
@@ -433,9 +434,11 @@ func environmental_damage():
 				true_damaged += 1;
 	# Gain gaps
 	if (do_yields):
-		gap_count = yield(gain_gaps(get_rand_environmental_break_count()), "completed");
+		gap_count = yield(gain_gaps(get_accumulated_breaks()), "completed");
 	else:
-		gap_count = gain_gaps(get_rand_environmental_break_count());
+		gap_count = gain_gaps(get_accumulated_breaks());
+	
+	reset_break_count()
 	
 	emit_signal("justnow_update", "%d gene%s were damaged by the environment." % [true_damaged, "" if true_damaged == 1 else "s"]);
 	emit_signal("justnow_update", "%d gap%s appeared due to environmental damage." % [gap_count, "" if gap_count == 1 else "s"]);
@@ -1304,15 +1307,24 @@ func get_missing_ess_classes():
 			missing.append(k);
 	return missing;
 
+func get_accumulated_breaks() -> int:
+	return break_count
+
+func accumulate_environmental_break_count():
+	break_count += get_rand_environmental_break_count()
+	
+func reset_break_count():
+	break_count = 0
+
 func get_rand_environmental_break_count() -> int:
 	var hazards = current_tile.hazards;
 	
-	var norm_temp : float = 2.5 * (hazards["temperature"] + 40.0) / 140.0;
-	var norm_uv : float = 2.5 * hazards["uv_index"] / 100.0;
-	var norm_oxy : float = 2.5 * hazards["oxygen"] / 100.0;
-	var norm_component : float  = 0.25 * get_behavior_profile().get_behavior("Component");
+	var norm_temp : float = (hazards["temperature"] - Game.hazards["temperature"]["min"]) / Game.hazards["temperature"]["max"];
+	var norm_uv : float = (hazards["uv_index"] - Game.hazards["uv_index"]["min"]) / Game.hazards["uv_index"]["max"];
+	var norm_oxy : float = (hazards["oxygen"] - Game.hazards["oxygen"]["min"]) / Game.hazards["oxygen"]["max"];
+	var norm_component : float  = get_behavior_profile().get_behavior("Component");
 	
-	return int(round(norm_uv + randf() * (norm_oxy + norm_temp) / norm_component));
+	return int(round(randf() * (norm_uv + norm_oxy + norm_temp) / norm_component));
 
 func get_scissors_per_turn() -> int:
 	return int(floor(behavior_profile.get_behavior("Deconstruction")));

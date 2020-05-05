@@ -9,6 +9,8 @@ export var large = false
 const HIGHLIGHT_COLOR = Color(2,2,2,2)
 const DEFAULT_MODULATE = Color(1,1,1,1)
 
+const DANGER_MODULATE = Color(5, 0, 0, 5)
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -70,6 +72,13 @@ func highlight_part(part: String):
 		self_modulate = HIGHLIGHT_COLOR
 	elif part in parts:
 		get_node(part.capitalize()).self_modulate = HIGHLIGHT_COLOR
+	
+#Percent should be between 0 and 1
+func danger_modulate(part: String, percent: float):
+	if part == "body":
+		self_modulate = DEFAULT_MODULATE.linear_interpolate(DANGER_MODULATE, percent)
+	elif part in Game.cells[cell_type].keys():
+		get_node(part.capitalize()).self_modulate = DEFAULT_MODULATE.linear_interpolate(DANGER_MODULATE, percent)
 		
 func reset_highlights():
 	self_modulate = DEFAULT_MODULATE

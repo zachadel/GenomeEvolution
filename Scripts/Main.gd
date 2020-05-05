@@ -34,8 +34,12 @@ func _ready():
 	var first_player = create_player()
 	first_player.set_cell_type(Game.current_cell_string)
 	
+	var hazard_seeds = {}
+	for hazard in Game.hazards.keys():
+		hazard_seeds[hazard] = randi()
+	
 	#This order enables the WorldMap to make its camera the current one
-	world_map.setup(randi(), randi(), randi(), randi(), chunk_size, first_player)
+	world_map.setup(randi(), hazard_seeds, randi(), randi(), chunk_size, first_player)
 	_show_world_map()
 	world_map.set_input(Game.PLAYER_VIEW.ON_MAP)
 	

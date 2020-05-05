@@ -8,6 +8,9 @@ extends TextureProgress
 func _ready():
 	value = 0
 	$OxygenLabel.text = str(value)
+	
+	min_value = Game.hazards["oxygen"]["min"]
+	max_value = Game.hazards["oxygen"]["max"]
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

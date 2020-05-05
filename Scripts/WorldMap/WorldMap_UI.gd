@@ -201,6 +201,7 @@ func test_functionality():
 	print(irc.organism.vesicle_scales)
 	print('Organism Gene Profile (pre-pH):')
 	print(irc.organism.get_behavior_profile().print_profile())
+	print("Environmental Break Count: ", irc.organism.get_accumulated_breaks())
 	print("Resources:")
 	print(irc.organism.cfp_resources)
 	print("Energy:")

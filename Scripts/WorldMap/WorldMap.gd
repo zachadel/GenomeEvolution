@@ -38,7 +38,7 @@ var default_start = Vector2(-20,0)
 var biome_generator
 var tiebreak_generator
 var resource_generator
-var hazard_generator
+var hazard_generators
 
 var chunk_size = 5
 var starting_pos = Vector2(0,0)
@@ -74,7 +74,7 @@ func enable_fog():
 	$ObscurityMap.enable_fog()
 
 
-func setup(biome_seed, hazard_seed, resource_seed, tiebreak_seed, _chunk_size, player):
+func setup(biome_seed, hazard_seeds, resource_seed, tiebreak_seed, _chunk_size, player):
 	Game.modified_tiles = {}
 	Game.SECONDARY_RESOURCE_MAX = Settings.resource_abundance()[Settings.MAX]
 	Game.SECONDARY_RESOURCE_MIN = Settings.resource_abundance()[Settings.MIN]
@@ -84,7 +84,12 @@ func setup(biome_seed, hazard_seed, resource_seed, tiebreak_seed, _chunk_size, p
 	biome_generator = OpenSimplexNoise.new()
 	tiebreak_generator = OpenSimplexNoise.new()
 	resource_generator = OpenSimplexNoise.new()
-	hazard_generator = OpenSimplexNoise.new()
+	hazard_generators = {
+		"uv_index": OpenSimplexNoise.new(),
+		"temperature": OpenSimplexNoise.new(),
+		"pH": OpenSimplexNoise.new(),
+		"oxygen": OpenSimplexNoise.new()
+	}
 	
 	biome_generator.seed = biome_seed
 	biome_generator.octaves = 3
@@ -92,11 +97,12 @@ func setup(biome_seed, hazard_seed, resource_seed, tiebreak_seed, _chunk_size, p
 	biome_generator.persistence = .5
 	biome_generator.lacunarity = .7
 	
-	hazard_generator.seed = hazard_seed
-	hazard_generator.octaves = 3
-	hazard_generator.period = 20
-	hazard_generator.persistence = .5
-	hazard_generator.lacunarity = .7
+	for generator in hazard_generators:
+		hazard_generators[generator].seed = hazard_seeds[generator]
+		hazard_generators[generator].octaves = 3
+		hazard_generators[generator].period = 20
+		hazard_generators[generator].persistence = .5
+		hazard_generators[generator].lacunarity = .7
 	
 	tiebreak_generator.seed = tiebreak_seed
 	tiebreak_generator.octaves = 3
@@ -111,7 +117,7 @@ func setup(biome_seed, hazard_seed, resource_seed, tiebreak_seed, _chunk_size, p
 	resource_generator.lacunarity = .7
 	
 	tile_sprite_size = $BiomeMap.tile_texture_size
-	$BiomeMap.setup(biome_generator, tiebreak_generator, hazard_generator, chunk_size, starting_pos)
+	$BiomeMap.setup(biome_generator, tiebreak_generator, hazard_generators, chunk_size, starting_pos)
 	$ResourceMap.setup(biome_generator, resource_generator, tiebreak_generator, chunk_size, starting_pos)
 	$ObscurityMap.setup(chunk_size, starting_pos)
 	
@@ -414,6 +420,10 @@ func move_player(pos: Vector3):
 			current_player.rotate_sprite((new_position - current_player.position).angle())
 			current_player.position = new_position
 			current_player.organism.current_tile = get_tile_at_pos(pos)
+			current_player.organism.accumulate_environmental_break_count()
+			
+			current_player.update_nucleus()
+				
 			
 			astar.set_position_offset(pos, funcref(self, "costs"))
 			

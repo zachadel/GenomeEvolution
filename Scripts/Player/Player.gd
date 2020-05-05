@@ -63,6 +63,18 @@ func is_alive_resource_check():
 func get_observed_tiles():
 	return observed_tiles
 
+
+#MAKE NUCLEUS WHITE TO ENABLE MODULATION
+func update_nucleus():
+	$Body.danger_modulate("nucleus", 0)
+	var multiple = 5
+	var max_multiple = 5
+	
+	for i in range(max_multiple, 0, -1):
+		if organism.get_accumulated_breaks() > i * multiple:
+			$Body.danger_modulate("nucleus", float(i)/max_multiple)
+			break
+		
 #Modify these lines with a function if you need to hide certain resources from the player or modify their acquisition
 #Any time that you call this function from the WorldMap, also make sure to update
 #WorldMap_UI/UIPanel/CFPBank and WorldMap_UI/UIPanel/MineralLevels

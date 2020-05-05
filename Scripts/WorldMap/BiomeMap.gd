@@ -14,7 +14,7 @@ var chunk_size = 32
 
 var biome_generator
 var tiebreak_generator
-var hazard_generator
+var hazard_generators
 var tile_texture_size = Vector2(0, 0)
 
 func _ready():
@@ -35,14 +35,14 @@ func _ready():
 	cell_size.x = tile_texture_size.x - floor(.5 * sqrt(pow(tile_texture_size.x, 2) - pow(tile_texture_size.y, 2)))
 	cell_half_offset = TileMap.HALF_OFFSET_Y 
 	
-func setup(_biome_generator, _tiebreak_generator, _hazard_generator, _chunk_size = 32, starting_pos = Vector2(0,0)):
+func setup(_biome_generator, _tiebreak_generator, _hazard_generators, _chunk_size = 32, starting_pos = Vector2(0,0)):
 	
 	if typeof(starting_pos) == TYPE_VECTOR3:
 		starting_pos = Game.cube_coords_to_offsetv(starting_pos)
 	
 	biome_generator = _biome_generator
 	tiebreak_generator = _tiebreak_generator
-	hazard_generator = _hazard_generator
+	hazard_generators = _hazard_generators
 	chunk_size = _chunk_size
 	
 	center_indices = starting_pos
@@ -166,9 +166,8 @@ func get_hazards(pos):
 	if not [int(pos.x), int(pos.y)] in Game.modified_tiles:
 	
 		#shift hazard value to proper range
-		var noise = hazard_generator.get_noise_2d(pos.x, pos.y)
 		for hazard in Game.hazards.keys():
-			
+			var noise = hazard_generators[hazard].get_noise_2d(pos.x, pos.y)
 			#normalize noise value to be in proper range
 			hazards[hazard] = Game.hazards[hazard][biome][1]/2 *(noise + 1) - Game.hazards[hazard][biome][0]/2 * (noise - 1)
 	else:
