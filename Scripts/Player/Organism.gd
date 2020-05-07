@@ -418,9 +418,9 @@ func gain_gaps(count = 1):
 			cmsms.create_gap();
 	return cmsms.collapse_gaps();
 
-const DMG_FACTOR = 0.33;
+const DMG_GAIN_FACTOR = 0.1;
 func gain_dmg(amt : float):
-	accumulated_dmg += amt * DMG_FACTOR;
+	accumulated_dmg += amt * DMG_GAIN_FACTOR;
 
 const MAX_ENVIRON_INTERNAL_DMG_PERC = 0.5;
 const MIN_ENVIRON_INTERNAL_DMG_PERC = 0.25;
