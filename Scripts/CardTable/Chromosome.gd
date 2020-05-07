@@ -379,6 +379,14 @@ func remove_elm(elm):
 	queue_sort();
 
 func remove_elm_create_gap(elm):
+	var elm_idx = elm.get_index();
+	if (elm_idx > 0 && get_child(elm_idx - 1).is_gap()) || (elm_idx < get_child_count() - 1 && get_child(elm_idx + 1).is_gap()):
+		if do_animations:
+			yield(remove_elm(elm), "completed");
+		else:
+			remove_elm(elm);
+		return null;
+	
 	emit_signal("animating", true);
 	elm.disconnect("elm_clicked", elm.get_cmsm(), "_propogate_click");
 	elm.disconnect("elm_mouse_entered", elm.get_cmsm(), "_propagate_mouse_entered");
@@ -401,8 +409,6 @@ func remove_elm_create_gap(elm):
 			elm.hide();
 			yield(get_tree(), "idle_frame");
 	
-	elm.get_parent().remove_child(elm);
-	
 	var gap = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
 	gap.setup("break");
 	add_child(gap);
@@ -411,6 +417,8 @@ func remove_elm_create_gap(elm):
 	gap.connect("elm_mouse_entered", self, "_propagate_mouse_entered");
 	gap.connect("elm_mouse_exited", self, "_propagate_mouse_exited");
 	
+	if (elm.get_parent() != null):
+		elm.get_parent().remove_child(elm);
 	emit_signal("animating", false);
 	set_elms_size();
 	yield(get_tree(), "idle_frame");

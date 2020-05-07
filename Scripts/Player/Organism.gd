@@ -139,6 +139,7 @@ const RESOURCE_TYPES = ["simple_carbs", "complex_carbs", "simple_fats", "complex
 
 signal gene_clicked();
 signal gap_selected(gap, is_selected);
+signal gene_trimmed(gene);
 signal cmsm_picked(cmsm);
 signal scissors_ended();
 
@@ -505,10 +506,10 @@ func get_gene_selection():
 # Band-aid fix for the mystery crash that results from deselecting gaps
 func seq_elm_deleted(elm):
 	var is_gap = elm.is_gap();
-	if (elm in gene_selection):
+	if elm in gene_selection:
 		gene_selection.erase(elm);
 	elm.queue_free();
-	if (is_gap):
+	if is_gap:
 		get_cmsm_pair().collapse_gaps();
 
 func clear_repair_elm_selections():
@@ -518,7 +519,7 @@ func clear_repair_elm_selections():
 	
 	repair_canceled = true;
 	doing_scissors = false;
-	for g in gene_selection + cmsms.get_gap_list():
+	for g in cmsms.get_all_genes():
 		g.disable(true);
 	gene_selection.clear();
 
@@ -536,7 +537,10 @@ func _on_chromes_elm_clicked(elm):
 			for g in cmsms.gap_list:
 				g.disable(selected_gap != null && g != selected_gap);
 		"gene":
-			if (elm in gene_selection):
+			if doing_scissors:
+				scissors_trim_elm(elm);
+				clear_repair_elm_selections();
+			elif elm in gene_selection:
 				gene_selection.append(elm); # The selection is accessed via get_gene_selection()
 				emit_signal("gene_clicked");
 
@@ -747,15 +751,6 @@ func make_repair_choices(gap, repair_type: String):
 			if (choice_info["right"] == null):
 				choice_info["left"].disable(true);
 				return false;
-#		"repair_scissors": # moved ALXL
-#			perform_repair = false;
-#			emit_signal("justnow_update", "Choose up to %d more elements to remove. Click on the gap again to end early." % total_scissors_left);
-#			scissors(true, false, "get_genes_next_to_elm", [gap]);
-#			yield(self, "scissors_ended");
-#			if selected_gap != null:
-#				selected_gap.pressed = false;
-#				selected_gap.highlight_border(true, true);
-#			highlight_gap_choices();
 	if perform_repair:
 		repair_gap(gap, repair_type, choice_info);
 
@@ -1059,10 +1054,10 @@ func highlight_gap_choices():
 		auto_repair();
 
 func highlight_dmg_genes():
-	scissors(false);
+	start_scissors("get_damaged_genes");
 
 func highlight_gap_end_genes():
-	scissors(true, false, "get_genes_around_gaps");
+	start_scissors("get_genes_around_gaps");
 
 func get_all_genes(include_past_two_cmsms = false):
 	return cmsms.get_all_genes(include_past_two_cmsms);
@@ -1202,49 +1197,26 @@ func recombination():
 
 var doing_scissors := false;
 var total_scissors_left := 0;
-func scissors(obey_limit, create_gaps := true, cmsms_group_callback := "get_damaged_genes", callback_args := []):
+func start_scissors(cmsms_group_callback: String, callback_args := []):
 	if !doing_scissors:
-		doing_scissors = true;
-	
-	if selected_gap == null:
-		gene_selection.clear();
-	else:
-		gene_selection = [selected_gap];
-	gene_selection += cmsms.callv(cmsms_group_callback, callback_args);
-	emit_signal("doing_work", false);
-	if !gene_selection.empty():
-		cmsms.highlight_genes(gene_selection);
-		yield(self, "gene_clicked");
-		# Because this step is optional, by the time a gene is clicked, it might be a different turn
+		gene_selection = cmsms.callv(cmsms_group_callback, callback_args);
+		doing_scissors = !gene_selection.empty();
 		if doing_scissors:
-			var rem_elm = get_gene_selection();
-			if rem_elm == selected_gap:
-				emit_signal("scissors_ended");
-			else:
-				var cmsm = rem_elm.get_cmsm();
-				if (do_yields):
-					if create_gaps:
-						yield(cmsm.remove_elm_create_gap(rem_elm), "completed");
-					else:
-						yield(cmsm.remove_elm(rem_elm), "completed");
-				else:
-					if create_gaps:
-						cmsm.remove_elm_create_gap(rem_elm);
-					else:
-						cmsm.remove_elm(rem_elm);
-				cmsms.collapse_gaps();
-				if obey_limit:
-					total_scissors_left -= 1;
-				if doing_scissors:
-					if obey_limit && get_scissors_remaining() <= 0:
-						emit_signal("scissors_ended");
-					else:
-						if (do_yields):
-							yield(scissors(obey_limit, create_gaps, cmsms_group_callback, callback_args), "completed");
-						else:
-							scissors(obey_limit, create_gaps, cmsms_group_callback, callback_args);
-	elif do_yields:
-		yield(get_tree(), "idle_frame");
+			cmsms.highlight_genes(gene_selection);
+
+func scissors_trim_elm(rem_elm) -> void:
+	if doing_scissors:
+		var cmsm = rem_elm.get_cmsm();
+		total_scissors_left -= 1;
+		if get_scissors_remaining() <= 0:
+			emit_signal("scissors_ended");
+			doing_scissors = false;
+		if do_yields:
+			yield(cmsm.remove_elm_create_gap(rem_elm), "completed");
+		else:
+			cmsm.remove_elm_create_gap(rem_elm);
+		cmsms.collapse_gaps();
+		emit_signal("gene_trimmed", rem_elm);
 
 func prune_cmsms(final_num, add_to_pool = true):
 	while (cmsms.get_cmsms().size() > final_num):
@@ -1409,16 +1381,6 @@ func adv_turn(round_num, turn_idx):
 				else:
 					environmental_damage();
 				emit_signal("doing_work", false);
-#			Game.TURN_TYPES.RemoveDamage: # Consolidated into RepairDmg #ALXL
-#				if cmsms.get_damaged_genes().empty():
-#					emit_signal("justnow_update", "No damaged genes present.");
-#				else:
-#					emit_signal("justnow_update", "If you want, you can remove damaged genes. They will leave behind gaps, which will need to be repaired.");
-#					if (do_yields):
-#						yield(scissors(false), "completed");
-#					else:
-#						scissors(false);
-#				emit_signal("doing_work", false);
 			Game.TURN_TYPES.Recombination:
 				recombo_chance = 1;
 				recombos_left = get_recombos_per_turn();

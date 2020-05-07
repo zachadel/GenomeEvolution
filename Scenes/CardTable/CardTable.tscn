@@ -852,6 +852,7 @@ text = "Quit to Menu"
 [connection signal="finished_replication" from="Organism" to="." method="_on_Organism_finished_replication"]
 [connection signal="gap_close_msg" from="Organism" to="." method="_on_Organism_gap_close_msg"]
 [connection signal="gap_selected" from="Organism" to="." method="_on_Organism_gap_selected"]
+[connection signal="gene_trimmed" from="Organism" to="." method="_on_Organism_gene_trimmed"]
 [connection signal="justnow_update" from="Organism" to="." method="_on_Organism_justnow_update"]
 [connection signal="resources_changed" from="Organism" to="." method="_on_Organism_resources_changed"]
 [connection signal="show_repair_opts" from="Organism" to="." method="_on_Organism_show_repair_opts"]

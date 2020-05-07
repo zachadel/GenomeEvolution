@@ -160,13 +160,18 @@ func show_repair_opts(show):
 	if show:
 		upd_repair_lock_display();
 		yield(get_tree(), "idle_frame");
-		$RepairTabs.current_tab = 0;
-		_on_RepairTabs_tab_changed(0, false);
+		show_repair_tab(0);
+#		$RepairTabs.current_tab = 0;
+#		orgn.highlight_gap_choices();
 	if $RepairTabs.visible != show:
 		close_extra_menus($RepairTabs);
 
 func _on_Organism_gap_selected(_gap, sel: bool):
 	show_repair_types(sel);
+
+func _on_Organism_gene_trimmed(_gene):
+	upd_repair_lock_display();
+	show_repair_tab($RepairTabs.current_tab);
 
 func upd_gap_select_instruction_visibility():
 	$RepairTabs/pnl_repair_choices/vbox/LblInstr.visible = orgn.selected_gap == null;
@@ -176,19 +181,27 @@ func show_repair_types(show: bool) -> void:
 	var rep_pnl = $RepairTabs/pnl_repair_choices/hsplit;
 	rep_pnl.visible = show;
 	$RepairTabs/pnl_repair_choices/vbox.visible = !show;
-	upd_gap_select_instruction_visibility();
 	if show:
 		var sel_idx := repair_type_to_idx(orgn.sel_repair_type);
 		$RepairTabs/pnl_repair_choices/hsplit/ilist_choices.select(sel_idx);
 		upd_repair_desc(sel_idx);
 
-func _on_RepairTabs_tab_changed(idx: int, upd_locks_disp := true):
-	upd_repair_lock_display();
+func _on_RepairTabs_tab_changed(idx: int):
+	show_repair_tab(idx);
+
+func show_repair_tab(tab_idx: int, upd_locks_disp := true) -> void:
+	$RepairTabs.current_tab = tab_idx;
+	if upd_locks_disp:
+		upd_repair_lock_display();
+	
 	orgn.clear_repair_elm_selections();
-	_on_Organism_gap_selected(null, false);
-	match idx:
+	show_repair_types(false);
+	match tab_idx:
 		0:
 			orgn.highlight_gap_choices();
+		1, 2:
+			if orgn.total_scissors_left > 0:
+				continue;
 		1:
 			if orgn.get_behavior_profile().has_skill("Deconstruction", "trim_dmg_genes"):
 				orgn.highlight_dmg_genes();
@@ -260,7 +273,6 @@ func _on_Organism_clear_gap_msg():
 
 func _on_Organism_updated_gaps(gaps_exist, gap_text):
 	has_gaps = gaps_exist;
-	
 	if !$RepairTabs/pnl_repair_choices/vbox/LblInstr.visible:
 		upd_gap_select_instruction_visibility();
 		_on_Organism_gap_close_msg(gap_text);
