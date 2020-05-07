@@ -514,7 +514,7 @@ func clear_repair_elm_selections():
 	selected_gap = null;
 	repair_canceled = true;
 	doing_scissors = false;
-	for g in gene_selection:
+	for g in gene_selection + cmsms.get_gap_list():
 		g.disable(true);
 	gene_selection.clear();
 
@@ -523,7 +523,7 @@ func _on_chromes_elm_clicked(elm):
 		"break":
 			if (elm == selected_gap):
 				clear_repair_elm_selections();
-				highlight_gap_choices();
+				#highlight_gap_choices();
 				
 				emit_signal("gene_clicked"); # Used to continue the yields
 			else:
@@ -1034,7 +1034,7 @@ func repair_gap(gap, repair_type, choice_info = {}):
 		if !repair_canceled:
 			gene_selection = original_select;
 			gene_selection.erase(gap);
-			highlight_gap_choices();
+			#highlight_gap_choices();
 
 func highlight_gap_choices():
 	cmsms.highlight_genes(gene_selection, false);
@@ -1399,7 +1399,7 @@ func adv_turn(round_num, turn_idx):
 				else:
 					emit_signal("gap_close_msg", "%d breaks need repair." % num_gaps);
 				emit_signal("show_repair_opts", true);
-				highlight_gap_choices();
+				#highlight_gap_choices();
 			Game.TURN_TYPES.EnvironmentalDamage:
 				emit_signal("doing_work", true);
 				if (do_yields):

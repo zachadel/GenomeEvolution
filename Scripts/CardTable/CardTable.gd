@@ -130,7 +130,6 @@ func repair_idx_to_type(idx: int) -> String:
 
 func show_repair_opts(show):
 	if show:
-		$RepairTabs.current_tab = 0;
 		for rep_type in LOCKABLE_REPAIRS:
 			var img_path : String = "res://Assets/Images/icons/" + rep_type;
 			if !Unlocks.has_repair_unlock(rep_type):
@@ -158,6 +157,9 @@ func show_repair_opts(show):
 			trim_end_lbl.text += "You are lacking the required '%s' Disassembly skill to use this function." % Skills.get_skill_desc("Deconstruction", "trim_gap_genes");
 		trim_end_lbl.text += num_left_txt;
 	
+	yield(get_tree(), "idle_frame");
+	$RepairTabs.current_tab = 0;
+	orgn.highlight_gap_choices();
 	if $RepairTabs.visible != show:
 		close_extra_menus($RepairTabs);
 
@@ -176,9 +178,11 @@ func _on_RepairTabs_tab_changed(idx):
 		0:
 			orgn.highlight_gap_choices();
 		1:
-			orgn.highlight_dmg_genes();
+			if orgn.get_behavior_profile().has_skill("Deconstruction", "trim_dmg_genes"):
+				orgn.highlight_dmg_genes();
 		2:
-			orgn.highlight_gap_end_genes();
+			if orgn.get_behavior_profile().has_skill("Deconstruction", "trim_gap_genes"):
+				orgn.highlight_gap_end_genes();
 
 func _on_Organism_show_repair_opts(show):
 	show_repair_opts(show);
