@@ -128,52 +128,64 @@ func repair_idx_to_type(idx: int) -> String:
 	
 	return REP_IDX_TO_TYPE.get(idx, "");
 
+func upd_repair_lock_display():
+	for rep_type in LOCKABLE_REPAIRS:
+		var img_path : String = "res://Assets/Images/icons/" + rep_type;
+		if !Unlocks.has_repair_unlock(rep_type):
+			img_path += "_locked";
+		$RepairTabs/pnl_repair_choices/hsplit/ilist_choices.set_item_icon(REP_TYPE_TO_IDX[rep_type], load(img_path + ".png"));
+	
+	var num_left_txt = "\n\nThe number of genes you can remove is based on your Disassembly skill.\nYou can remove %d more this turn." % orgn.total_scissors_left;
+	var trim_dmg_lbl = $RepairTabs/pnl_rem_dmg/LblInstr;
+	trim_dmg_lbl.text = "\n\n";
+	if orgn.get_behavior_profile().has_skill("Deconstruction", "trim_dmg_genes"):
+		$RepairTabs.set_tab_icon(1, null);
+		trim_dmg_lbl.text += "Click a damaged gene to remove it.";
+	else:
+		$RepairTabs.set_tab_icon(1, load("res://Assets/Images/icons/padlock.png"));
+		trim_dmg_lbl.text += "You are lacking the required '%s' Disassembly skill to use this function." % Skills.get_skill_desc("Deconstruction", "trim_dmg_genes");
+	trim_dmg_lbl.text += num_left_txt;
+	
+	var trim_end_lbl = $RepairTabs/pnl_rem_sides/LblInstr;
+	trim_end_lbl.text = "\n\n";
+	if orgn.get_behavior_profile().has_skill("Deconstruction", "trim_gap_genes"):
+		$RepairTabs.set_tab_icon(2, null);
+		trim_end_lbl.text += "Click a gene on either ends of a break to remove the gene.";
+	else:
+		$RepairTabs.set_tab_icon(2, load("res://Assets/Images/icons/padlock.png"));
+		trim_end_lbl.text += "You are lacking the required '%s' Disassembly skill to use this function." % Skills.get_skill_desc("Deconstruction", "trim_gap_genes");
+	trim_end_lbl.text += num_left_txt;
+
 func show_repair_opts(show):
 	if show:
-		for rep_type in LOCKABLE_REPAIRS:
-			var img_path : String = "res://Assets/Images/icons/" + rep_type;
-			if !Unlocks.has_repair_unlock(rep_type):
-				img_path += "_locked";
-			$RepairTabs/pnl_repair_choices/hsplit/ilist_choices.set_item_icon(REP_TYPE_TO_IDX[rep_type], load(img_path + ".png"));
-		
-		var num_left_txt = "\n\nThe number of genes you can remove is based on your Disassembly skill.\nYou can remove %d more this turn." % orgn.total_scissors_left;
-		var trim_dmg_lbl = $RepairTabs/pnl_rem_dmg/LblInstr;
-		trim_dmg_lbl.text = "\n\n";
-		if orgn.get_behavior_profile().has_skill("Deconstruction", "trim_dmg_genes"):
-			$RepairTabs.set_tab_icon(1, null);
-			trim_dmg_lbl.text += "Click a damaged gene to remove it.";
-		else:
-			$RepairTabs.set_tab_icon(1, load("res://Assets/Images/icons/padlock.png"));
-			trim_dmg_lbl.text += "You are lacking the required '%s' Disassembly skill to use this function." % Skills.get_skill_desc("Deconstruction", "trim_dmg_genes");
-		trim_dmg_lbl.text += num_left_txt;
-		
-		var trim_end_lbl = $RepairTabs/pnl_rem_sides/LblInstr;
-		trim_end_lbl.text = "\n\n";
-		if orgn.get_behavior_profile().has_skill("Deconstruction", "trim_gap_genes"):
-			$RepairTabs.set_tab_icon(2, null);
-			trim_end_lbl.text += "Click a gene on either ends of a break to remove the gene.";
-		else:
-			$RepairTabs.set_tab_icon(2, load("res://Assets/Images/icons/padlock.png"));
-			trim_end_lbl.text += "You are lacking the required '%s' Disassembly skill to use this function." % Skills.get_skill_desc("Deconstruction", "trim_gap_genes");
-		trim_end_lbl.text += num_left_txt;
-	
-	yield(get_tree(), "idle_frame");
-	$RepairTabs.current_tab = 0;
-	orgn.highlight_gap_choices();
+		upd_repair_lock_display();
+		yield(get_tree(), "idle_frame");
+		$RepairTabs.current_tab = 0;
+		_on_RepairTabs_tab_changed(0, false);
 	if $RepairTabs.visible != show:
 		close_extra_menus($RepairTabs);
 
-func _on_Organism_gene_clicked():
-	if $RepairTabs.visible:
-		var rep_list = $RepairTabs/pnl_repair_choices/hsplit/ilist_choices;
-		if rep_list.visible:
-			rep_list.visible = orgn.selected_gap != null;
-			var sel_idx := repair_type_to_idx(orgn.sel_repair_type);
-			rep_list.select(sel_idx);
-			upd_repair_desc(sel_idx);
+func _on_Organism_gap_selected(_gap, sel: bool):
+	show_repair_types(sel);
 
-func _on_RepairTabs_tab_changed(idx):
+func upd_gap_select_instruction_visibility():
+	$RepairTabs/pnl_repair_choices/vbox/LblInstr.visible = orgn.selected_gap == null;
+
+func show_repair_types(show: bool) -> void:
+	upd_repair_lock_display();
+	var rep_pnl = $RepairTabs/pnl_repair_choices/hsplit;
+	rep_pnl.visible = show;
+	$RepairTabs/pnl_repair_choices/vbox.visible = !show;
+	upd_gap_select_instruction_visibility();
+	if show:
+		var sel_idx := repair_type_to_idx(orgn.sel_repair_type);
+		$RepairTabs/pnl_repair_choices/hsplit/ilist_choices.select(sel_idx);
+		upd_repair_desc(sel_idx);
+
+func _on_RepairTabs_tab_changed(idx: int, upd_locks_disp := true):
+	upd_repair_lock_display();
 	orgn.clear_repair_elm_selections();
+	_on_Organism_gap_selected(null, false);
 	match idx:
 		0:
 			orgn.highlight_gap_choices();
@@ -223,6 +235,7 @@ func upd_repair_desc(idx):
 func _on_btn_apply_repair_pressed():
 	$pnl_saveload.new_save(Game.get_save_str());
 	orgn.auto_repair();
+	show_repair_types(false);
 
 func _add_justnow_bbcode(bbcode : String, tags := {}):
 	if !tags.has("align"):
@@ -240,19 +253,22 @@ func _on_Organism_justnow_update(text):
 func _on_Organism_gap_close_msg(text):
 	var t = "\n%s\n" % text;
 	_add_justnow_bbcode(t);
-	if $RepairTabs.visible:
-		$RepairTabs/pnl_repair_choices/vbox/RTLRepairResult.text += t;
+	$RepairTabs/pnl_repair_choices/vbox/scroll/RTLRepairResult.text += t;
 
 func _on_Organism_clear_gap_msg():
-	$RepairTabs/pnl_repair_choices/vbox/RTLRepairResult.text = "";
+	$RepairTabs/pnl_repair_choices/vbox/scroll/RTLRepairResult.text = "";
 
 func _on_Organism_updated_gaps(gaps_exist, gap_text):
 	has_gaps = gaps_exist;
-	_add_justnow_bbcode(gap_text);
+	
+	if !$RepairTabs/pnl_repair_choices/vbox/LblInstr.visible:
+		upd_gap_select_instruction_visibility();
+		_on_Organism_gap_close_msg(gap_text);
 	check_if_ready();
 
 func _on_ilist_choices_item_activated(idx):
 	orgn.apply_repair_choice(idx);
+	show_repair_types(false);
 
 # Next Turn button and availability
 
@@ -363,8 +379,9 @@ func hide_chaos_anim():
 	$pnl_chaos/Anim.play("hide");
 
 func _on_chaos_anim_finished(anim_name: String):
-	if anim_name == "hide":
-		close_extra_menus();
+#	if anim_name == "hide":
+#		show_replicate_opts(true);
+	pass;
 
 func play_recombination_slides():
 	var slides = load("res://Scenes/CardTable/Recombination.tscn").instance()
@@ -432,7 +449,7 @@ func _on_Organism_finished_replication():
 	status_bar.visible = true;
 
 func refresh_visible_options():
-	if ($RepairTabs.visible):
+	if ($RepairTabs/pnl_repair_choices/hsplit.visible):
 		orgn.upd_repair_opts(orgn.sel_repair_gap);
 		upd_repair_desc(orgn.sel_repair_idx);
 	if ($pnl_reproduce.visible):

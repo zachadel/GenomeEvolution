@@ -303,27 +303,44 @@ text = "Repair"
 [node name="vbox" type="VBoxContainer" parent="RepairTabs/pnl_repair_choices"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_constants/separation = 20
+custom_constants/separation = 8
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="LblInstr" type="Label" parent="RepairTabs/pnl_repair_choices/vbox"]
+visible = false
 margin_right = 605.0
 margin_bottom = 31.0
 text = "
-Select a gap to repair."
+Select a break to repair."
 align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RTLRepairResult" type="RichTextLabel" parent="RepairTabs/pnl_repair_choices/vbox"]
+[node name="HSeparator" type="HSeparator" parent="RepairTabs/pnl_repair_choices/vbox"]
+margin_top = 39.0
+margin_right = 605.0
+margin_bottom = 43.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="scroll" type="ScrollContainer" parent="RepairTabs/pnl_repair_choices/vbox"]
 margin_top = 51.0
 margin_right = 605.0
 margin_bottom = 232.0
 size_flags_vertical = 3
-scroll_following = true
+scroll_horizontal_enabled = false
+
+[node name="RTLRepairResult" type="Label" parent="RepairTabs/pnl_repair_choices/vbox/scroll"]
+margin_right = 605.0
+margin_bottom = 181.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+align = 1
+autowrap = true
 
 [node name="pnl_rem_dmg" type="Panel" parent="RepairTabs"]
 visible = false
@@ -572,7 +589,6 @@ clip_text = true
 
 [node name="pnl_chaos" type="Panel" parent="."]
 visible = false
-modulate = Color( 1, 1, 1, 0 )
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -835,7 +851,7 @@ text = "Quit to Menu"
 [connection signal="energy_changed" from="Organism" to="." method="_on_Organism_energy_changed"]
 [connection signal="finished_replication" from="Organism" to="." method="_on_Organism_finished_replication"]
 [connection signal="gap_close_msg" from="Organism" to="." method="_on_Organism_gap_close_msg"]
-[connection signal="gene_clicked" from="Organism" to="." method="_on_Organism_gene_clicked"]
+[connection signal="gap_selected" from="Organism" to="." method="_on_Organism_gap_selected"]
 [connection signal="justnow_update" from="Organism" to="." method="_on_Organism_justnow_update"]
 [connection signal="resources_changed" from="Organism" to="." method="_on_Organism_resources_changed"]
 [connection signal="show_repair_opts" from="Organism" to="." method="_on_Organism_show_repair_opts"]

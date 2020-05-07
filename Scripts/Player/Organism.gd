@@ -138,6 +138,7 @@ var has_done_meiosis = false
 const RESOURCE_TYPES = ["simple_carbs", "complex_carbs", "simple_fats", "complex_fats", "simple_proteins", "complex_proteins"]
 
 signal gene_clicked();
+signal gap_selected(gap, is_selected);
 signal cmsm_picked(cmsm);
 signal scissors_ended();
 
@@ -511,7 +512,10 @@ func seq_elm_deleted(elm):
 		get_cmsm_pair().collapse_gaps();
 
 func clear_repair_elm_selections():
-	selected_gap = null;
+	if selected_gap != null:
+		selected_gap.pressed = false;
+		selected_gap = null;
+	
 	repair_canceled = true;
 	doing_scissors = false;
 	for g in gene_selection + cmsms.get_gap_list():
@@ -523,12 +527,12 @@ func _on_chromes_elm_clicked(elm):
 		"break":
 			if (elm == selected_gap):
 				clear_repair_elm_selections();
-				#highlight_gap_choices();
-				
+				emit_signal("gap_selected", elm, false);
 				emit_signal("gene_clicked"); # Used to continue the yields
 			else:
 				selected_gap = elm;
 				upd_repair_opts(elm);
+				emit_signal("gap_selected", elm, true);
 			for g in cmsms.gap_list:
 				g.disable(selected_gap != null && g != selected_gap);
 		"gene":
@@ -622,6 +626,7 @@ func apply_repair_choice(type: String):
 	make_repair_choices(sel_repair_gap, type);
 
 func make_repair_choices(gap, repair_type: String):
+	emit_signal("clear_gap_msg");
 	var choice_info = {};
 	var perform_repair := true;
 	match repair_type:
@@ -756,6 +761,7 @@ func make_repair_choices(gap, repair_type: String):
 
 var repair_canceled = false;
 func repair_gap(gap, repair_type, choice_info = {}):
+	emit_signal("clear_gap_msg");
 	if (repair_type_possible[repair_type]):
 		reset_repair_opts();
 		var cmsm = gap.get_parent();
@@ -1032,18 +1038,21 @@ func repair_gap(gap, repair_type, choice_info = {}):
 					use_resources("repair_je")
 		
 		if !repair_canceled:
+			sel_repair_gap = null;
 			gene_selection = original_select;
 			gene_selection.erase(gap);
-			#highlight_gap_choices();
+			highlight_gap_choices();
 
 func highlight_gap_choices():
 	cmsms.highlight_genes(gene_selection, false);
 	reset_repair_opts();
 	selected_gap = null;
 	cmsms.highlight_gaps();
-	var gap_text = "";
+	var gap_text := "";
 	for g in cmsms.get_gap_list():
 		gap_text += "Chromosome %d needs a repair at %d.\n" % g.get_position_display();
+	if gap_text.empty():
+		gap_text = "There are no breaks present in your chromosomes!";
 	emit_signal("updated_gaps", cmsms.gap_list.size() > 0, gap_text);
 	if (is_ai && cmsms.gap_list.size() > 0):
 		upd_repair_opts(cmsms.gap_list[0]);
@@ -1368,6 +1377,7 @@ func adv_turn(round_num, turn_idx):
 				emit_signal("justnow_update", "Get your genome in order!");
 			Game.TURN_TYPES.TEJump:
 				emit_signal("doing_work", true);
+				emit_signal("transposon_activity", true);
 				
 				# Add new TEs
 				Game.SeqElm_time_limit = Game.TE_INSERT_TIME_LIMIT;
@@ -1380,26 +1390,18 @@ func adv_turn(round_num, turn_idx):
 				
 				# Do TE activity
 				Game.SeqElm_time_limit = Game.TE_JUMP_TIME_LIMIT;
-				emit_signal("transposon_activity", true);
 				if (do_yields):
 					yield(jump_ates(), "completed");
 				else:
 					jump_ates();
-				emit_signal("transposon_activity", false);
 				
+				emit_signal("transposon_activity", false);
 				emit_signal("doing_work", false);
 			Game.TURN_TYPES.RepairDmg:
 				total_scissors_left = get_scissors_per_turn();
 				repair_roll_storage = {"copy_pattern": {}, "join_ends": {}};
-				var num_gaps = cmsms.gap_list.size();
-				if (num_gaps == 0):
-					emit_signal("gap_close_msg", "No breaks present.");
-				elif (num_gaps == 1):
-					emit_signal("gap_close_msg", "1 break needs repair.");
-				else:
-					emit_signal("gap_close_msg", "%d breaks need repair." % num_gaps);
+				emit_signal("clear_gap_msg");
 				emit_signal("show_repair_opts", true);
-				#highlight_gap_choices();
 			Game.TURN_TYPES.EnvironmentalDamage:
 				emit_signal("doing_work", true);
 				if (do_yields):
