@@ -466,6 +466,12 @@ func get_damaged_genes() -> Array:
 				dmg_genes.append(g);
 	return dmg_genes;
 
+func get_genes_around_gaps() -> Array:
+	var gap_genes := [];
+	for g in get_gap_list():
+		gap_genes += get_genes_next_to_elm(g);
+	return gap_genes;
+
 func get_genes_next_to_elm(elm) -> Array:
 	return elm.get_cmsm().get_elms_around_pos(elm.get_index());
 

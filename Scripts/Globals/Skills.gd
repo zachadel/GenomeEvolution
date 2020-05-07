@@ -21,6 +21,8 @@ const SKILLS = {
 		"protein->am_acid": "Proteins -> Amino Acids",
 		"fat->fat_acid": "Fats -> Fatty Acids",
 		"fat_acid->energy": "Fatty Acids -> Energy",
+		"trim_dmg_genes": "Trim Damaged Genes",
+		"trim_gap_genes": "Trim Genes from Breaks",
 	},
 	"Helper": {},
 	"Component": {},
@@ -33,4 +35,4 @@ func get_random_skill(from_class: String) -> String:
 	return skill_arr[randi() % skill_arr.size()];
 
 func get_skill_desc(from_class: String, skill_name: String) -> String:
-	return SKILLS.get(from_class, {}).get(skill_name, "SKILL_NOT_FOUND:%s, %s" % [from_class, skill_name]);
+	return SKILLS.get(from_class, {}).get(skill_name, "SKILL_NOT_FOUND:%s::%s|" % [from_class, skill_name]);

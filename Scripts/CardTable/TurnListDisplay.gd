@@ -1,30 +1,49 @@
+tool
 extends Control
 
 const LOCKED_TEXT_COLOR = Color(0, 0, 0);
 const UNLOCKED_TEXT_COLOR = Color(1, 1, 1);
 
-var locked := false setget set_locked;
+export var idx := 0 setget set_idx, get_idx;
+export var locked := false setget set_locked, get_locked;
+export var title := "" setget set_title, get_title;
 
-onready var ImgPadlock : TextureRect = $texLock;
-onready var LblTitle : Label = $lblTitle;
-onready var LblNum : Label = $lblNum;
-onready var Highlight : Panel = $pnlHighlight;
+func set_idx(i: int) -> void:
+	idx = i;
+	$lblNum.text = "%d)" % i;
+	
+	# This hides the map turn from the turn list
+	# pretty hacky but meh
+	visible = i > 0;
 
-func set_locked(l : bool) -> void:
+func get_idx() -> int:
+	return idx;
+
+func set_locked(l: bool) -> void:
 	locked = l;
-	ImgPadlock.visible = l;
+	$texLock.visible = l;
 	
 	if l:
-		LblTitle.self_modulate = LOCKED_TEXT_COLOR;
-		LblNum.self_modulate = LOCKED_TEXT_COLOR;
+		$lblTitle.self_modulate = LOCKED_TEXT_COLOR;
+		$lblNum.self_modulate = LOCKED_TEXT_COLOR;
 	else:
-		LblTitle.self_modulate = UNLOCKED_TEXT_COLOR;
-		LblNum.self_modulate = UNLOCKED_TEXT_COLOR;
+		$lblTitle.self_modulate = UNLOCKED_TEXT_COLOR;
+		$lblNum.self_modulate = UNLOCKED_TEXT_COLOR;
 
-func set_highlighted(h : bool) -> void:
-	Highlight.visible = h;
+func get_locked() -> bool:
+	return locked;
 
-func setup(idx : int, title : String, start_locked : bool) -> void:
-	LblNum.text = "%d)" % (idx + 1);
-	LblTitle.text = title;
+func set_title(t: String) -> void:
+	title = t;
+	$lblTitle.text = t;
+
+func get_title() -> String:
+	return title;
+
+func set_highlighted(h: bool) -> void:
+	$pnlHighlight.visible = h;
+
+func setup(idx: int, title: String, start_locked: bool) -> void:
+	set_idx(idx);
+	set_title(title);
 	set_locked(start_locked);
