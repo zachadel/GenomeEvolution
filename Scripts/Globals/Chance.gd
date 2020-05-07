@@ -10,15 +10,21 @@ var base_rolls = {
 		"major_up": 0.5,
 		"minor_up": 1.25
 	}),
-	# no complications, copy intervening, lose one, major down, minor down, dupe, major up, minor up
-	# [0, 10, 0.9, 0.4, 0.3, 0.25, 0.5, 1.25],
 	
 	"copy_pattern_correction": make_result_array("copy_pattern_correction", {
 		"no": 2.0,
 		"yes": 1.0
 	}),
-	# no correction, yes correction
-	# [2, 1],
+	
+	"repair_dmg_gene": make_result_array("join_ends", {
+		"none": 3.0,
+		"lose_one": 1.0,
+		"major_down": 4.0,
+		"minor_down": 1.0,
+		"dupe": 0.25,
+		"major_up": 0.5,
+		"minor_up": 1.25
+	}),
 	
 	"join_ends": make_result_array("join_ends", {
 		"none": 3.0,
@@ -30,8 +36,6 @@ var base_rolls = {
 		"minor_up": 1.25,
 		"merge": 1.0
 	}),
-	# no complications, lose one, major down, minor down, dupe, major up, minor up, merge
-	# [3, 1, 4, 1, 0.25, 0.5, 1.25, 1],
 	
 	"evolve": make_result_array("evolve", {
 		"none": 10.0,
@@ -40,8 +44,6 @@ var base_rolls = {
 		"major_up": 5.0,
 		"minor_up": 15.0
 	}),
-	# none, dead, major down, minor down, major up, minor up
-	# [10, 0, 4, 14, 5, 15]
 }
 
 const ROLL_RESULTS = {
@@ -50,12 +52,12 @@ const ROLL_RESULTS = {
 	"join_ends": ["none", "lose_one", "major_down", "minor_down", "dupe", "major_up", "minor_up", "merge"],
 	"evolve": ["none", "dead", "major_down", "minor_down", "major_up", "minor_up"]
 }
+
 # These are added together, multiplied by the value from the behavior profile (e.g. the overall Replication value)
 # Then they are added with +1.0, and multiplied as a modifier to the corresponding base_roll
 var BEHAVIOR_TO_MOD = {
 	"Replication": {
 		"evolve": make_result_array("evolve", {"none": 0.2, "minor_up": 0.05, "minor_down": 0.05}),
-		#"evolve": [0.2, 0, 0, 0, 0.05, 0.05]
 	}
 }
 

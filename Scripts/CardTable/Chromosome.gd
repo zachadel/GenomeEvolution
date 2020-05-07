@@ -239,13 +239,8 @@ func get_elm_anim_duration(distance):
 	if (Game.turns[Game.turn_idx] == Game.TURN_TYPES.TEJump):
 		var _actives = get_cmsm_pair().ate_list + [];
 		if (_actives.size() > 0):
-			return min(distance / Game.animation_speed, (0.5 * Game.TE_jump_time_limit) / _actives.size());
-		else:
-			return min(distance / Game.animation_speed, Game.SeqElm_time_limit);
-	elif (Game.turns[Game.turn_idx] == Game.TURN_TYPES.NewTEs):
-		return min(distance / Game.animation_speed, Game.TE_insertion_time_limit);
-	else:
-		return min(distance / Game.animation_speed, Game.SeqElm_time_limit);
+			return min(distance / Game.animation_speed, (0.5 * Game.SeqElm_time_limit) / _actives.size());
+	return min(distance / Game.animation_speed, Game.SeqElm_time_limit);
 
 # CHROMOSOME MODIFICATION FUNCTIONS
 

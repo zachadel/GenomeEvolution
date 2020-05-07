@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://Scripts/CardTable/CardTable.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player/Organism.tscn" type="PackedScene" id=2]
@@ -17,7 +17,6 @@
 [ext_resource path="res://Scenes/CardTable/TurnList.tscn" type="PackedScene" id=15]
 [ext_resource path="res://Scenes/CardTable/DarkenedBG.tres" type="StyleBox" id=16]
 [ext_resource path="res://Scenes/CardTable/LabeledNumber.tscn" type="PackedScene" id=17]
-[ext_resource path="res://Assets/Images/icons/repair_scissors.png" type="Texture" id=18]
 [ext_resource path="res://Assets/Images/pngs/DNA_small.png" type="Texture" id=19]
 [ext_resource path="res://Scenes/MainMenu/Credits.tscn" type="PackedScene" id=20]
 [ext_resource path="res://Assets/Fonts/OpenSans-48.tres" type="DynamicFont" id=21]
@@ -230,22 +229,34 @@ margin_right = 303.481
 margin_bottom = 674.836
 rect_min_size = Vector2( 0, 50 )
 
-[node name="pnl_repair_choices" type="Panel" parent="."]
+[node name="RepairTabs" type="TabContainer" parent="."]
 visible = false
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -264.0
-margin_top = -266.0
-margin_right = 296.0
-margin_bottom = -36.0
+margin_left = -294.0
+margin_top = -298.0
+margin_right = 319.0
+margin_bottom = -30.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="pnl_repair_choices" type="Panel" parent="RepairTabs"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
 __meta__ = {
 "_edit_group_": true,
 "_edit_use_anchors_": false
 }
 
-[node name="hsplit" type="HSplitContainer" parent="pnl_repair_choices"]
+[node name="hsplit" type="HSplitContainer" parent="RepairTabs/pnl_repair_choices"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = 3.0
@@ -257,37 +268,110 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ilist_choices" type="ItemList" parent="pnl_repair_choices/hsplit"]
+[node name="ilist_choices" type="ItemList" parent="RepairTabs/pnl_repair_choices/hsplit"]
 margin_right = 230.0
-margin_bottom = 225.0
-items = [ "Collapse Duplicates", ExtResource( 4 ), false, "Copy Pattern", ExtResource( 5 ), false, "Join Ends", ExtResource( 6 ), false, "Trim", ExtResource( 18 ), false ]
+margin_bottom = 227.0
+items = [ "Collapse Duplicates", ExtResource( 4 ), false, "Copy Pattern", ExtResource( 5 ), false, "Join Ends", ExtResource( 6 ), false ]
 same_column_width = true
 fixed_icon_size = Vector2( 50, 50 )
 
-[node name="vsplit" type="VSplitContainer" parent="pnl_repair_choices/hsplit"]
+[node name="vsplit" type="VSplitContainer" parent="RepairTabs/pnl_repair_choices/hsplit"]
 margin_left = 242.0
-margin_right = 554.0
-margin_bottom = 225.0
+margin_right = 599.0
+margin_bottom = 227.0
 split_offset = 160
 dragger_visibility = 1
 
-[node name="scroll" type="ScrollContainer" parent="pnl_repair_choices/hsplit/vsplit"]
-margin_right = 312.0
+[node name="scroll" type="ScrollContainer" parent="RepairTabs/pnl_repair_choices/hsplit/vsplit"]
+margin_right = 357.0
 margin_bottom = 160.0
 scroll_horizontal_enabled = false
 
-[node name="lbl_choice_desc" type="Label" parent="pnl_repair_choices/hsplit/vsplit/scroll"]
+[node name="lbl_choice_desc" type="Label" parent="RepairTabs/pnl_repair_choices/hsplit/vsplit/scroll"]
 margin_right = 295.0
 margin_bottom = 235.0
 rect_min_size = Vector2( 295, 0 )
 text = "This is a big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long text."
 autowrap = true
 
-[node name="btn_apply_repair" type="Button" parent="pnl_repair_choices/hsplit/vsplit"]
+[node name="btn_apply_repair" type="Button" parent="RepairTabs/pnl_repair_choices/hsplit/vsplit"]
 margin_top = 172.0
-margin_right = 312.0
-margin_bottom = 225.0
+margin_right = 357.0
+margin_bottom = 227.0
 text = "Repair"
+
+[node name="vbox" type="VBoxContainer" parent="RepairTabs/pnl_repair_choices"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 20
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LblInstr" type="Label" parent="RepairTabs/pnl_repair_choices/vbox"]
+margin_right = 605.0
+margin_bottom = 31.0
+text = "
+Select a gap to repair."
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RTLRepairResult" type="RichTextLabel" parent="RepairTabs/pnl_repair_choices/vbox"]
+margin_top = 51.0
+margin_right = 605.0
+margin_bottom = 232.0
+size_flags_vertical = 3
+scroll_following = true
+
+[node name="pnl_rem_dmg" type="Panel" parent="RepairTabs"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="LblInstr" type="Label" parent="RepairTabs/pnl_rem_dmg"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "
+
+Click a damaged gene to remove it.
+
+The number of genes you can remove is based on your Disassembly skill.
+You have %d removals remaining this turn."
+align = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="pnl_rem_sides" type="Panel" parent="RepairTabs"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="LblInstr" type="Label" parent="RepairTabs/pnl_rem_sides"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "
+
+Click a gene on either end of a break to remove the gene.
+
+The amount you remove is based on your Disassembly skill.
+You have %d removals remaining."
+align = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="pnl_reproduce" type="Panel" parent="."]
 visible = false
@@ -744,20 +828,24 @@ margin_bottom = -48.0
 rect_min_size = Vector2( 120, 45 )
 custom_fonts/font = ExtResource( 13 )
 text = "Quit to Menu"
+[connection signal="clear_gap_msg" from="Organism" to="." method="_on_Organism_clear_gap_msg"]
 [connection signal="cmsm_changed" from="Organism" to="ChromosomeStatus" method="update"]
 [connection signal="died" from="Organism" to="." method="_on_Organism_died"]
 [connection signal="doing_work" from="Organism" to="." method="_on_Organism_doing_work"]
 [connection signal="energy_changed" from="Organism" to="." method="_on_Organism_energy_changed"]
 [connection signal="finished_replication" from="Organism" to="." method="_on_Organism_finished_replication"]
+[connection signal="gap_close_msg" from="Organism" to="." method="_on_Organism_gap_close_msg"]
+[connection signal="gene_clicked" from="Organism" to="." method="_on_Organism_gene_clicked"]
 [connection signal="justnow_update" from="Organism" to="." method="_on_Organism_justnow_update"]
 [connection signal="resources_changed" from="Organism" to="." method="_on_Organism_resources_changed"]
 [connection signal="show_repair_opts" from="Organism" to="." method="_on_Organism_show_repair_opts"]
 [connection signal="show_reprod_opts" from="Organism" to="." method="_on_Organism_show_reprod_opts"]
 [connection signal="transposon_activity" from="Organism" to="." method="_on_Organism_transposon_activity"]
 [connection signal="updated_gaps" from="Organism" to="." method="_on_Organism_updated_gaps"]
-[connection signal="item_activated" from="pnl_repair_choices/hsplit/ilist_choices" to="." method="_on_ilist_choices_item_activated"]
-[connection signal="item_selected" from="pnl_repair_choices/hsplit/ilist_choices" to="." method="upd_repair_desc"]
-[connection signal="pressed" from="pnl_repair_choices/hsplit/vsplit/btn_apply_repair" to="." method="_on_btn_apply_repair_pressed"]
+[connection signal="tab_changed" from="RepairTabs" to="." method="_on_RepairTabs_tab_changed"]
+[connection signal="item_activated" from="RepairTabs/pnl_repair_choices/hsplit/ilist_choices" to="." method="_on_ilist_choices_item_activated"]
+[connection signal="item_selected" from="RepairTabs/pnl_repair_choices/hsplit/ilist_choices" to="." method="upd_repair_desc"]
+[connection signal="pressed" from="RepairTabs/pnl_repair_choices/hsplit/vsplit/btn_apply_repair" to="." method="_on_btn_apply_repair_pressed"]
 [connection signal="item_activated" from="pnl_reproduce/hsplit/ilist_choices" to="." method="_on_replic_choices_item_activated"]
 [connection signal="item_selected" from="pnl_reproduce/hsplit/ilist_choices" to="." method="upd_replicate_desc"]
 [connection signal="pressed" from="pnl_reproduce/hsplit/vsplit/btn_apply_replic" to="." method="_on_btn_apply_replic_pressed"]
