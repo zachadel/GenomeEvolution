@@ -140,6 +140,7 @@ const RESOURCE_TYPES = ["simple_carbs", "complex_carbs", "simple_fats", "complex
 signal gene_clicked();
 signal gap_selected(gap, is_selected);
 signal gene_trimmed(gene);
+signal gene_bandaged(gene);
 signal cmsm_picked(cmsm);
 signal scissors_ended();
 
@@ -150,6 +151,7 @@ signal finished_replication();
 signal updated_gaps(has_gaps, gap_text);
 signal justnow_update(text);
 signal gap_close_msg(text);
+signal bandage_msg(text);
 signal clear_gap_msg();
 
 signal show_repair_opts(show);
@@ -363,11 +365,14 @@ func setup(card_table):
 				augment_genes[g] = false
 			else:
 				nxt_gelm.set_ess_behavior({g: 1.0})
+			
+			if g == "Replication":
+				nxt_gelm.gain_specific_skill("Replication", "fix_dmg_genes");
+			
 			nxt_gelm.setup("gene", g, "essential");
 		else:
 			nxt_gelm.setup("gene", g, g);
 		
-		nxt_gelm.evolve_skill(g);
 		cmsms.get_cmsm(0).add_elm(nxt_gelm);
 		cmsms.get_cmsm(1).add_elm(Game.copy_elm(nxt_gelm));
 	
@@ -436,6 +441,9 @@ func environmental_damage():
 	# Gain internal dmg
 	var true_damaged := 0;
 	if internal_dmg_count > 0:
+		# This isn't strictly necessary, but sometimes there's a race and gene_list ends up empty
+		yield(get_tree(), "idle_frame");
+		
 		var gene_list : Array = cmsms.get_all_genes();
 		for i in range(internal_dmg_count):
 			var rand_idx := randi() % gene_list.size();
@@ -520,7 +528,7 @@ func clear_repair_elm_selections():
 		selected_gap = null;
 	
 	repair_canceled = true;
-	doing_scissors = false;
+	click_mode = "";
 	for g in cmsms.get_all_genes():
 		g.disable(true);
 	gene_selection.clear();
@@ -539,12 +547,17 @@ func _on_chromes_elm_clicked(elm):
 			for g in cmsms.gap_list:
 				g.disable(selected_gap != null && g != selected_gap);
 		"gene":
-			if doing_scissors:
-				scissors_trim_elm(elm);
-				clear_repair_elm_selections();
-			elif elm in gene_selection:
-				gene_selection.append(elm); # The selection is accessed via get_gene_selection()
-				emit_signal("gene_clicked");
+			match click_mode:
+				"scissors":
+					scissors_trim_elm(elm);
+					clear_repair_elm_selections();
+				"bandage":
+					bandage_elm(elm);
+					clear_repair_elm_selections();
+				_:
+					if elm in gene_selection:
+						gene_selection.append(elm); # The selection is accessed via get_gene_selection()
+						emit_signal("gene_clicked");
 
 func _on_chromes_cmsm_picked(cmsm):
 	emit_signal("cmsm_picked", cmsm);
@@ -1055,8 +1068,14 @@ func highlight_gap_choices():
 		upd_repair_opts(cmsms.gap_list[0]);
 		auto_repair();
 
-func highlight_dmg_genes():
-	start_scissors("get_damaged_genes");
+func highlight_dmg_genes(mode: String):
+	match mode:
+		"scissors":
+			start_scissors("get_damaged_genes");
+		"bandage":
+			start_bandage();
+		_:
+			print("Error! Trying to highlight damaged genes for unknown purpose: %s" % mode);
 
 func highlight_gap_end_genes():
 	start_scissors("get_genes_around_gaps");
@@ -1197,28 +1216,96 @@ func recombination():
 				cont_recombo = false
 				emit_signal("doing_work", false);
 
-var doing_scissors := false;
+var click_mode := "";""
+# Expects an "is_doing_<mode>() -> bool" function
+func _set_clickmode_on_criteria(to_doing: bool, mode: String) -> void:
+	if call("is_doing_%s" % mode) != to_doing:
+		if to_doing:
+			click_mode = mode;
+		else:
+			click_mode = "";
+
+func set_doing_scissors(is_doing: bool) -> void:
+	_set_clickmode_on_criteria(is_doing, "scissors");
+func is_doing_scissors() -> bool:
+	return click_mode == "scissors";
+
+func set_doing_bandage(is_doing: bool) -> void:
+	_set_clickmode_on_criteria(is_doing, "bandage");
+func is_doing_bandage() -> bool:
+	return click_mode == "bandage";
+
 var total_scissors_left := 0;
 func start_scissors(cmsms_group_callback: String, callback_args := []):
-	if !doing_scissors:
+	if !is_doing_scissors():
 		gene_selection = cmsms.callv(cmsms_group_callback, callback_args);
-		doing_scissors = !gene_selection.empty();
-		if doing_scissors:
+		set_doing_scissors(!gene_selection.empty());
+		if is_doing_scissors():
 			cmsms.highlight_genes(gene_selection);
 
 func scissors_trim_elm(rem_elm) -> void:
-	if doing_scissors:
+	if is_doing_scissors():
 		var cmsm = rem_elm.get_cmsm();
 		total_scissors_left -= 1;
 		if get_scissors_remaining() <= 0:
 			emit_signal("scissors_ended");
-			doing_scissors = false;
+			set_doing_scissors(false);
 		if do_yields:
 			yield(cmsm.remove_elm_create_gap(rem_elm), "completed");
 		else:
 			cmsm.remove_elm_create_gap(rem_elm);
 		cmsms.collapse_gaps();
 		emit_signal("gene_trimmed", rem_elm);
+
+func start_bandage():
+	if !is_doing_bandage():
+		gene_selection = cmsms.get_damaged_genes();
+		set_doing_bandage(!gene_selection.empty());
+		if is_doing_bandage():
+			cmsms.highlight_genes(gene_selection);
+
+func bandage_elm(rep_elm) -> void:
+	if is_doing_bandage():
+		var g_pos_disp = rep_elm.get_position_display();
+		var g_id = rep_elm.get_gene_name();
+		
+		var roll = roll_chance("repair_dmg_gene");
+		match roll:
+			0: # No complications
+				emit_signal("bandage_msg", "Repaired the %s gene at %d, %d without complications." % ([g_id] + g_pos_disp));
+			1, 2, 3:
+				var damage_str = "";
+				match roll:
+					1: # Lose gene
+						damage_str = "was lost"
+						if (do_yields):
+							yield(cmsms.remove_elm(rep_elm), "completed");
+						else:
+							cmsms.remove_elm(rep_elm);
+						rep_elm = null;
+					2: # Major down
+						damage_str = "received a " + rep_elm.evolve_by_name("major_down");
+					3: # Minor down
+						damage_str = "received a " + rep_elm.evolve_by_name("minor_down");
+				emit_signal("bandage_msg", "Attempted to repair the %s gene at %d, %d; it %s." % ([g_id] + g_pos_disp + [damage_str]));
+			4, 5, 6:
+				var boon_str = "";
+				match roll:
+					4: # Copy gene
+						boon_str = "was duplicated"
+						if (do_yields):
+							yield(cmsms.dupe_elm(rep_elm), "completed");
+						else:
+							cmsms.dupe_elm(rep_elm);
+					5: # Major up
+						boon_str = "received a " + rep_elm.evolve_by_name("major_up");
+					6: # Minor up
+						boon_str = "received a " + rep_elm.evolve_by_name("minor_up");
+				emit_signal("bandage_msg", "Attempted to repair the %s gene at %d, %d; it %s." % ([g_id] + g_pos_disp + [boon_str]));
+		
+		if rep_elm != null:
+			rep_elm.damage_gene(false);
+		emit_signal("gene_bandaged", rep_elm);
 
 func prune_cmsms(final_num, add_to_pool = true):
 	while (cmsms.get_cmsms().size() > final_num):
@@ -1342,7 +1429,7 @@ func get_recombos_per_turn() -> int:
 	return int(floor(behavior_profile.get_behavior("Replication")));
 
 func adv_turn(round_num, turn_idx):
-	doing_scissors = false;
+	click_mode = "";
 	cmsms.highlight_genes(gene_selection, false);
 	gene_selection.clear();
 	if (died_on_turn == -1):

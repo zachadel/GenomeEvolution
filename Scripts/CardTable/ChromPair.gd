@@ -296,7 +296,7 @@ func create_gap(truepos = null) -> bool:
 		yield(get_tree(), "idle_frame");
 	return false;
 
-func remove_elm(elm, place_gap = true):	
+func remove_elm(elm, place_gap = true):
 	var displaced;
 	if (do_yields):
 		displaced = yield(extract_elm(elm, place_gap), "completed");

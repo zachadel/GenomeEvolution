@@ -235,9 +235,9 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -294.0
+margin_left = -308.0
 margin_top = -298.0
-margin_right = 319.0
+margin_right = 356.0
 margin_bottom = -30.0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -320,23 +320,22 @@ __meta__ = {
 }
 
 [node name="HSeparator" type="HSeparator" parent="RepairTabs/pnl_repair_choices/vbox"]
-margin_top = 39.0
-margin_right = 605.0
-margin_bottom = 43.0
+margin_right = 656.0
+margin_bottom = 4.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="scroll" type="ScrollContainer" parent="RepairTabs/pnl_repair_choices/vbox"]
-margin_top = 51.0
-margin_right = 605.0
+margin_top = 12.0
+margin_right = 656.0
 margin_bottom = 232.0
 size_flags_vertical = 3
 scroll_horizontal_enabled = false
 
 [node name="RTLRepairResult" type="Label" parent="RepairTabs/pnl_repair_choices/vbox/scroll"]
-margin_right = 605.0
-margin_bottom = 181.0
+margin_right = 656.0
+margin_bottom = 220.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 align = 1
@@ -389,6 +388,58 @@ autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="pnl_bandage_dmg" type="Panel" parent="RepairTabs"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="vbox" type="VBoxContainer" parent="RepairTabs/pnl_bandage_dmg"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 8
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LblInstr" type="Label" parent="RepairTabs/pnl_bandage_dmg/vbox"]
+margin_right = 656.0
+margin_bottom = 65.0
+text = "
+Click a damaged gene to attempt to repair it.
+
+Damaged genes are more likely to obtain harmful mutations during replication."
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSeparator" type="HSeparator" parent="RepairTabs/pnl_bandage_dmg/vbox"]
+margin_top = 73.0
+margin_right = 656.0
+margin_bottom = 77.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="scroll" type="ScrollContainer" parent="RepairTabs/pnl_bandage_dmg/vbox"]
+margin_top = 85.0
+margin_right = 656.0
+margin_bottom = 232.0
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+
+[node name="RTLRepairResult" type="Label" parent="RepairTabs/pnl_bandage_dmg/vbox/scroll"]
+margin_right = 656.0
+margin_bottom = 147.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+align = 1
+autowrap = true
 
 [node name="pnl_reproduce" type="Panel" parent="."]
 visible = false
@@ -844,6 +895,7 @@ margin_bottom = -48.0
 rect_min_size = Vector2( 120, 45 )
 custom_fonts/font = ExtResource( 13 )
 text = "Quit to Menu"
+[connection signal="bandage_msg" from="Organism" to="." method="_on_Organism_bandage_msg"]
 [connection signal="clear_gap_msg" from="Organism" to="." method="_on_Organism_clear_gap_msg"]
 [connection signal="cmsm_changed" from="Organism" to="ChromosomeStatus" method="update"]
 [connection signal="died" from="Organism" to="." method="_on_Organism_died"]
@@ -852,6 +904,7 @@ text = "Quit to Menu"
 [connection signal="finished_replication" from="Organism" to="." method="_on_Organism_finished_replication"]
 [connection signal="gap_close_msg" from="Organism" to="." method="_on_Organism_gap_close_msg"]
 [connection signal="gap_selected" from="Organism" to="." method="_on_Organism_gap_selected"]
+[connection signal="gene_bandaged" from="Organism" to="." method="_on_Organism_gene_bandaged"]
 [connection signal="gene_trimmed" from="Organism" to="." method="_on_Organism_gene_trimmed"]
 [connection signal="justnow_update" from="Organism" to="." method="_on_Organism_justnow_update"]
 [connection signal="resources_changed" from="Organism" to="." method="_on_Organism_resources_changed"]

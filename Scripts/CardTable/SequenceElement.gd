@@ -455,6 +455,15 @@ var just_evolved_skill := false;
 var latest_skill_evol := "";
 var latest_beh_evol := "";
 
+func gain_specific_skill(behavior: String, skill: String) -> void:
+	if !skills.has(behavior):
+		skills[behavior] = {};
+	
+	if skills[behavior].has(skill):
+		skills[behavior][skill] += 1;
+	else:
+		skills[behavior][skill] = 1;
+
 func evolve_skill(behave_key: String, gain := true) -> void:
 	if gain:
 		var new_skill := Skills.get_random_skill(behave_key);
@@ -465,18 +474,15 @@ func evolve_skill(behave_key: String, gain := true) -> void:
 			if !skills.has(behave_key):
 				skills[behave_key] = {};
 			
-			if skills[behave_key].has(new_skill):
-				skills[behave_key][new_skill] += 1;
-			else:
-				skills[behave_key][new_skill] = 1;
+			gain_specific_skill(behave_key, new_skill);
 	else:
-		if !skills.get(behave_key, []).empty():
-			var rand_skill_idx : int = randi() % skills[behave_key].size();
+		if !skills.get(behave_key, {}).empty():
+			var rand_skill : String = skills[behave_key].keys()[randi() % skills[behave_key].size()];
 			
 			just_evolved_skill = true;
-			latest_skill_evol = skills[behave_key][rand_skill_idx];
+			latest_skill_evol = skills[behave_key][rand_skill];
 			
-			skills[behave_key].remove(rand_skill_idx);
+			skills[behave_key].remove(rand_skill);
 			if skills[behave_key].empty():
 				skills.erase(behave_key);
 

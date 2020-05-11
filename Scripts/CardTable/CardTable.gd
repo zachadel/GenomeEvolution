@@ -32,6 +32,7 @@ func _ready():
 	$RepairTabs.set_tab_title(0, "Repair Breaks");
 	$RepairTabs.set_tab_title(1, "Trim Damaged Genes");
 	$RepairTabs.set_tab_title(2, "Trim Genes from Breaks");
+	$RepairTabs.set_tab_title(3, "Fix Damaged Genes");
 	
 	$EnergyBar.MAX_ENERGY = orgn.MAX_ENERGY
 
@@ -115,8 +116,7 @@ const LOCKABLE_REPAIRS = ["collapse_dupes", "copy_pattern"];
 const REP_TYPE_TO_IDX = {
 	"collapse_dupes": 0,
 	"copy_pattern": 1,
-	"join_ends": 2,
-	"repair_scissors": 3
+	"join_ends": 2
 };
 var REP_IDX_TO_TYPE := {};
 func repair_type_to_idx(type: String) -> int:
@@ -126,7 +126,7 @@ func repair_idx_to_type(idx: int) -> String:
 		for k in REP_TYPE_TO_IDX:
 			REP_IDX_TO_TYPE[REP_TYPE_TO_IDX[k]] = k;
 	
-	return REP_IDX_TO_TYPE.get(idx, "");
+	return REP_IDX_TO_TYPE.get(idx, "join_ends");
 
 func upd_repair_lock_display():
 	for rep_type in LOCKABLE_REPAIRS:
@@ -159,10 +159,9 @@ func upd_repair_lock_display():
 func show_repair_opts(show):
 	if show:
 		upd_repair_lock_display();
+		$RepairTabs/pnl_bandage_dmg/vbox/scroll/RTLRepairResult.text = "";
 		yield(get_tree(), "idle_frame");
 		show_repair_tab(0);
-#		$RepairTabs.current_tab = 0;
-#		orgn.highlight_gap_choices();
 	if $RepairTabs.visible != show:
 		close_extra_menus($RepairTabs);
 
@@ -170,7 +169,14 @@ func _on_Organism_gap_selected(_gap, sel: bool):
 	show_repair_types(sel);
 
 func _on_Organism_gene_trimmed(_gene):
+	_refresh_repair_tab();
+
+func _on_Organism_gene_bandaged(_gene):
+	_refresh_repair_tab();
+
+func _refresh_repair_tab():
 	upd_repair_lock_display();
+	yield(get_tree(), "idle_frame");
 	show_repair_tab($RepairTabs.current_tab);
 
 func upd_gap_select_instruction_visibility():
@@ -204,10 +210,12 @@ func show_repair_tab(tab_idx: int, upd_locks_disp := true) -> void:
 				continue;
 		1:
 			if orgn.get_behavior_profile().has_skill("Deconstruction", "trim_dmg_genes"):
-				orgn.highlight_dmg_genes();
+				orgn.highlight_dmg_genes("scissors");
 		2:
 			if orgn.get_behavior_profile().has_skill("Deconstruction", "trim_gap_genes"):
 				orgn.highlight_gap_end_genes();
+		3:
+			orgn.highlight_dmg_genes("bandage");
 
 func _on_Organism_show_repair_opts(show):
 	show_repair_opts(show);
@@ -226,11 +234,6 @@ func get_repair_desc(type):
 			action_name = "repair_cp";
 		"join_ends":
 			action_name = "repair_je";
-		"repair_scissors":
-			action_name = "repair_scissors";
-			var cuts_per_turn = orgn.get_scissors_per_turn();
-			var cuts_left = orgn.get_scissors_remaining();
-			tooltip %= [cuts_per_turn, "" if cuts_per_turn == 1 else "s", cuts_left];
 		var _err_idx:
 			return "Error! Picked an invalid repair option (%s)!" % _err_idx;
 	return REPAIR_DESC_FORMAT % [orgn.get_cost_string(action_name), tooltip];
@@ -270,6 +273,9 @@ func _on_Organism_gap_close_msg(text):
 
 func _on_Organism_clear_gap_msg():
 	$RepairTabs/pnl_repair_choices/vbox/scroll/RTLRepairResult.text = "";
+
+func _on_Organism_bandage_msg(text):
+	$RepairTabs/pnl_bandage_dmg/vbox/scroll/RTLRepairResult.text += "\n%s\n" % text;
 
 func _on_Organism_updated_gaps(gaps_exist, gap_text):
 	has_gaps = gaps_exist;
