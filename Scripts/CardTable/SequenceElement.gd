@@ -554,7 +554,7 @@ func kill_elm():
 	mode = "pseudo";
 
 func damage_gene(dmg := true):
-	internal_damaged = is_behavior_gene() && dmg;
+	internal_damaged = is_gene() && dmg;
 	$Damage.visible = internal_damaged;
 
 # Returns a string describing the evolution that occurred
