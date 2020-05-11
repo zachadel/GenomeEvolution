@@ -1,7 +1,10 @@
 extends Node
 
 const SKILLS = {
-	"Replication": {},
+	"Replication": {
+		"fix_dmg_genes": "Fix Damaged Genes",
+		"extend_cmsm": "Extend Chromosome",
+	},
 	"Locomotion": {},
 	"Manipulation": {},
 	"Sensing": {},
@@ -13,6 +16,7 @@ const SKILLS = {
 		"am_acid->protein": "Amino Acids -> Protein",
 		"fat_acid->fat": "Fatty Acids -> Fats",
 		"uv->energy": "Photosynthesis",
+		"anaerobic": "Anaerobic",
 	},
 	"Deconstruction": {
 		"am_acid->sugar": "Amino Acids -> Sugars",

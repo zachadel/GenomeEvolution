@@ -424,7 +424,7 @@ func get_skill_evolve_chance():
 	return SKILL_EVOLVE_CHANCE;
 
 func has_skill(skill_behavior: String, skill_name: String) -> bool:
-	return skills.get(skill_behavior, []).has(skill_name);
+	return skills.get(skill_behavior, {}).get(skill_name, 0) > 0;
 
 func get_skill_profile(behavior := {}) -> Dictionary:
 	if behavior.empty():
@@ -436,6 +436,8 @@ func get_skill_profile(behavior := {}) -> Dictionary:
 			skill_prof[k] = skills[k];
 	return skill_prof;
 
+# Used in save/loads
+# Identical to the "skills" var but it excludes any behaviors without skills
 func get_skill_bare_dict() -> Dictionary:
 	var skill_bdict := {};
 	for k in skills:
@@ -443,6 +445,7 @@ func get_skill_bare_dict() -> Dictionary:
 			skill_bdict[k] = skills[k];
 	return skill_bdict;
 
+# Used in save/loads
 func set_skills(skill_dict: Dictionary) -> void:
 	for k in skill_dict:
 		skills[k] = skill_dict[k];
@@ -455,13 +458,17 @@ var latest_beh_evol := "";
 func evolve_skill(behave_key: String, gain := true) -> void:
 	if gain:
 		var new_skill := Skills.get_random_skill(behave_key);
-		if !new_skill.empty() && !has_skill(behave_key, new_skill):
+		if !new_skill.empty():
 			just_evolved_skill = true;
 			latest_skill_evol = new_skill;
 			
 			if !skills.has(behave_key):
-				skills[behave_key] = [];
-			skills[behave_key].append(new_skill);
+				skills[behave_key] = {};
+			
+			if skills[behave_key].has(new_skill):
+				skills[behave_key][new_skill] += 1;
+			else:
+				skills[behave_key][new_skill] = 1;
 	else:
 		if !skills.get(behave_key, []).empty():
 			var rand_skill_idx : int = randi() % skills[behave_key].size();

@@ -337,21 +337,22 @@ func setup(card_table):
 	var max_random_ess = Settings.starting_additional_genes()[Settings.MAX]
 	var min_random_ess = Settings.starting_additional_genes()[Settings.MIN]
 
-	# Start with the essentials + some blanks, shuffled
+	# Start with the essentials + some blanks
 	var starter_genes = essential_names + ["blank"];
 	for _i in range(min_blanks + randi() % int((max_blanks - min_blanks + 1))):
 		starter_genes.append("blank");
-		
+	
 	# Add the random additional essential genes
 	for _i in range(min_random_ess  + randi() % int(max_random_ess - min_random_ess + 1)):
 		starter_genes.append(essential_names[randi() % len(essential_names)])
-		
+	
 	# Prepare cell specific modifications
 	for g in default_genome:
 		augment_genes[g] = false
 		if default_genome[g] > 2: # 1 per chromosome is default value
 			augment_genes[g] = true
-		
+	
+	# Shuffle the gene order
 	starter_genes.shuffle();
 	
 	for g in starter_genes:
@@ -366,9 +367,10 @@ func setup(card_table):
 		else:
 			nxt_gelm.setup("gene", g, g);
 		
+		nxt_gelm.evolve_skill(g);
 		cmsms.get_cmsm(0).add_elm(nxt_gelm);
 		cmsms.get_cmsm(1).add_elm(Game.copy_elm(nxt_gelm));
-		
+	
 	gain_ates(min_tes + randi() % int((max_tes - min_tes + 1)));
 	perform_anims(true);
 	
