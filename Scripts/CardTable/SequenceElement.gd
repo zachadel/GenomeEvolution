@@ -486,12 +486,14 @@ func evolve_skill(behave_key: String, gain := true) -> void:
 			if skills[behave_key].empty():
 				skills.erase(behave_key);
 
-func evolve_new_behavior(gain : bool) -> void:
-	var behave_key : String = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
+func evolve_new_behavior(gain: bool, behavior_key := "") -> void:
+	if behavior_key.empty():
+		behavior_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
 	
 	just_evolved_skill = false;
+	# if evolve_skill succeeds, then just_evolved_skill is set to true
 	if randf() <= get_skill_evolve_chance():
-		evolve_skill(behave_key, gain);
+		evolve_skill(behavior_key, gain);
 	
 	# just_evolved_skill is used because sometimes evolve_skill() fails
 	# for non-obvious reasons (eg no new skills available to gain)
@@ -503,43 +505,44 @@ func evolve_new_behavior(gain : bool) -> void:
 					key_candids.append(k);
 			
 			if randf() <= get_gain_chance(key_candids.size(), ess_behavior.size()):
-				behave_key = key_candids[randi() % key_candids.size()];
-			evolve_specialization(behave_key, GAIN_AMT);
-			if (ess_behavior.has(behave_key)):
-				ess_behavior[behave_key] += GAIN_AMT;
+				behavior_key = key_candids[randi() % key_candids.size()];
+			evolve_specialization(behavior_key, GAIN_AMT);
+			if (ess_behavior.has(behavior_key)):
+				ess_behavior[behavior_key] += GAIN_AMT;
 			else:
-				ess_behavior[behave_key] = GAIN_AMT;
+				ess_behavior[behavior_key] = GAIN_AMT;
 		else:
-			evolve_specialization(behave_key, -ess_behavior[behave_key]);
-			ess_behavior[behave_key] = 0.0;
-	latest_beh_evol = behave_key;
+			evolve_specialization(behavior_key, -ess_behavior[behavior_key]);
+			ess_behavior[behavior_key] = 0.0;
+	latest_beh_evol = behavior_key;
 
 const BLANK_EVOLVE_DIFF = 4;
-func evolve_major(gain):
+func evolve_major(gain: bool) -> void:
 	# oustide of match so we can change the mode and use the match behaviors
-	if mode == "blank" && get_code_dist_to_parent() >= BLANK_EVOLVE_DIFF:
-		if gain:
-			mode = "essential";
-		else:
-			# Major Down on a blank becomes a Major Up forming an ATE
-			gain = !gain;
-			obtain_ate_personality();
-			mode = "ate";
+	if mode == "blank" && get_code_dist_to_parent() >= BLANK_EVOLVE_DIFF && !gain:
+		# Major Down on a blank becomes a Major Up forming an ATE
+		gain = !gain;
+		obtain_ate_personality();
+		mode = "ate";
 	
 	match mode:
+		"blank":
+			if gain:
+				mode = "essential";
+				evolve_new_behavior(true, "Helper");
 		"essential":
 			evolve_new_behavior(gain);
 		"pseudo":
 			if !gain:
 				blank_out_gene();
 		"ate":
-			if (gain):
+			if gain:
 				ate_activity += GAIN_AMT;
 			else:
 				ate_activity -= ATE_LOSS_AMT;
 	check_for_death();
 
-func blank_out_gene():
+func blank_out_gene() -> void:
 	set_texture(null);
 	aura.clear();
 	parent_code = gene_code;
