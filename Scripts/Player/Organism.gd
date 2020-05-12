@@ -1321,6 +1321,14 @@ func replicate(idx):
 	else:
 		perform_anims(false);
 		cmsms.replicate_cmsms([0, 1]);
+		
+		var num_extend_blanks := int(floor(get_behavior_profile().get_skill_count("Replication", "extend_cmsm")));
+		var heavy_cmsm := 1 if randf() > 0.5 else 3;
+		var light_cmsm := 3 if heavy_cmsm == 1 else 1;
+		var heavy_count := int(ceil(num_extend_blanks * 0.5));
+		cmsms.extend_with_blanks(heavy_cmsm, heavy_count);
+		cmsms.extend_with_blanks(light_cmsm, num_extend_blanks - heavy_count);
+		
 		cmsms.hide_all(true);
 		
 		if idx == 0 and !has_done_mitosis and Settings.tutorial():

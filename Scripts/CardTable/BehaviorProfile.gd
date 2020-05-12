@@ -31,7 +31,14 @@ func has_behavior(behavior_key: String) -> bool:
 	return get_behavior(behavior_key) > 0.0;
 
 func get_skill_count(behavior: String, skill: String) -> int:
-	return skill_prof_data.get(behavior, {}).get(skill, 0);
+	var count_limit = Skills.get_skill_limit(behavior, skill);
+	if Unlocks.unlock_override:
+		return count_limit if count_limit > 0 else 25;
+	
+	var count = skill_prof_data.get(behavior, {}).get(skill, 0);
+	if count_limit > 0:
+		return int(min(count, count_limit));
+	return count;
 
 func has_skill(behavior: String, skill: String) -> bool:
 	if Unlocks.unlock_override:
