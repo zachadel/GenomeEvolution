@@ -486,13 +486,20 @@ func evolve_skill(behave_key: String, gain := true) -> void:
 			if skills[behave_key].empty():
 				skills.erase(behave_key);
 
+func is_purely_helper() -> bool:
+	if ess_behavior.get("Helper", 0) <= 0:
+		return false;
+	for b in ess_behavior:
+		if b != "Helper" && ess_behavior[b] > 0:
+			return false;
+	return true;
+
 func evolve_new_behavior(gain: bool, behavior_key := "") -> void:
 	if behavior_key.empty():
 		behavior_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
 	
 	just_evolved_skill = false;
-	# if evolve_skill succeeds, then just_evolved_skill is set to true
-	if randf() <= get_skill_evolve_chance():
+	if ess_behavior[behavior_key] > 0 && randf() <= get_skill_evolve_chance():
 		evolve_skill(behavior_key, gain);
 	
 	# just_evolved_skill is used because sometimes evolve_skill() fails
@@ -507,10 +514,14 @@ func evolve_new_behavior(gain: bool, behavior_key := "") -> void:
 			if randf() <= get_gain_chance(key_candids.size(), ess_behavior.size()):
 				behavior_key = key_candids[randi() % key_candids.size()];
 			evolve_specialization(behavior_key, GAIN_AMT);
+			
 			if (ess_behavior.has(behavior_key)):
 				ess_behavior[behavior_key] += GAIN_AMT;
 			else:
+				var free_skill_gain := is_purely_helper();
 				ess_behavior[behavior_key] = GAIN_AMT;
+				if free_skill_gain:
+					evolve_skill(behavior_key, true);
 		else:
 			evolve_specialization(behavior_key, -ess_behavior[behavior_key]);
 			ess_behavior[behavior_key] = 0.0;
