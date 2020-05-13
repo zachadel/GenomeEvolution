@@ -1024,7 +1024,7 @@ func repair_gap(gap, repair_type, choice_info = {}):
 							emit_signal("gap_close_msg", "Joined ends for the gap at %d, %d; during the repair, a %s gene %s." % (gap_pos_disp + [g_id, damage_str]));
 					4, 5, 6:
 						var gene = right_break_gene;
-						if (randi()%2):
+						if randi() % 2:
 							gene = left_break_gene;
 						
 						var boon_str = "";

@@ -495,7 +495,8 @@ func is_purely_helper() -> bool:
 	return true;
 
 func evolve_new_behavior(gain: bool, behavior_key := "") -> void:
-	if behavior_key.empty():
+	var explicit_key := !behavior_key.empty();
+	if !explicit_key:
 		behavior_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
 	
 	just_evolved_skill = false;
@@ -506,22 +507,23 @@ func evolve_new_behavior(gain: bool, behavior_key := "") -> void:
 	# for non-obvious reasons (eg no new skills available to gain)
 	if !just_evolved_skill:
 		if gain:
-			var key_candids = [];
-			for k in ess_behavior:
-				if (ess_behavior[k] == 0):
-					key_candids.append(k);
-			
-			if randf() <= get_gain_chance(key_candids.size(), ess_behavior.size()):
-				behavior_key = key_candids[randi() % key_candids.size()];
+			if !explicit_key:
+				var key_candids = [];
+				for k in ess_behavior:
+					if (ess_behavior[k] == 0):
+						key_candids.append(k);
+				
+				if randf() <= get_gain_chance(key_candids.size(), ess_behavior.size()):
+					behavior_key = key_candids[randi() % key_candids.size()];
 			evolve_specialization(behavior_key, GAIN_AMT);
 			
-			if (ess_behavior.has(behavior_key)):
+			var free_skill_gain := is_purely_helper();
+			if ess_behavior.has(behavior_key):
 				ess_behavior[behavior_key] += GAIN_AMT;
 			else:
-				var free_skill_gain := is_purely_helper();
 				ess_behavior[behavior_key] = GAIN_AMT;
-				if free_skill_gain:
-					evolve_skill(behavior_key, true);
+			if free_skill_gain:
+				evolve_skill(behavior_key, true);
 		else:
 			evolve_specialization(behavior_key, -ess_behavior[behavior_key]);
 			ess_behavior[behavior_key] = 0.0;

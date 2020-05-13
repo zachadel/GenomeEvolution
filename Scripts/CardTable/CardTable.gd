@@ -163,7 +163,7 @@ func show_repair_opts(show):
 		yield(get_tree(), "idle_frame");
 		show_repair_tab(0);
 	if $RepairTabs.visible != show:
-		close_extra_menus($RepairTabs);
+		close_extra_menus($RepairTabs, true);
 
 func _on_Organism_gap_selected(_gap, sel: bool):
 	show_repair_types(sel);
