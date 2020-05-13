@@ -46,6 +46,22 @@ func set_skilled(s: bool) -> void:
 	$LblSkilled.visible = s;
 	skilled = s;
 
+func set_skilled_indicator(type := "HAS"):
+	match type:
+		"HAS":
+			type = "*";
+		"MORE":
+			type = "+";
+		"LESS":
+			type = "-";
+		"MIXED":
+			type = "±";
+		"NONE":
+			type = "";
+		_:
+			type = "%s!" % type;
+	$LblSkilled.text = type;
+
 func is_skilled() -> bool:
 	return skilled;
 

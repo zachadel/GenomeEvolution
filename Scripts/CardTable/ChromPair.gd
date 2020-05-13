@@ -58,6 +58,15 @@ func remove_cmsm(cmsm_idx):
 func move_cmsm(from_idx, to_idx):
 	move_child(get_child(from_idx), to_idx);
 
+func extend_with_blanks(cmsm_idx: int, num_blanks: int):
+	for _i in range(num_blanks):
+		var blank_elm = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
+		blank_elm.setup("gene", "blank", "blank");
+		if (do_yields):
+			yield(get_cmsm(cmsm_idx).add_elm(blank_elm), "completed");
+		else:
+			get_cmsm(cmsm_idx).add_elm(blank_elm);
+
 func replicate_cmsms(cmsm_idxs):
 	var cmsm_parents = [];
 	for i in cmsm_idxs:
@@ -296,7 +305,7 @@ func create_gap(truepos = null) -> bool:
 		yield(get_tree(), "idle_frame");
 	return false;
 
-func remove_elm(elm, place_gap = true):	
+func remove_elm(elm, place_gap = true):
 	var displaced;
 	if (do_yields):
 		displaced = yield(extract_elm(elm, place_gap), "completed");

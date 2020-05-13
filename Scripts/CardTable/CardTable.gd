@@ -21,7 +21,6 @@ var wait_on_select = false;
 
 func _ready():
 	visible = false; # Prevents an auto-turn before the game begins
-	Game.card_table = self;
 	orgn.setup(self);
 	reset_status_bar();
 	$ViewMap.texture_normal = load(Game.get_large_cell_path(Game.current_cell_string))
@@ -32,6 +31,7 @@ func _ready():
 	$RepairTabs.set_tab_title(0, "Repair Breaks");
 	$RepairTabs.set_tab_title(1, "Trim Damaged Genes");
 	$RepairTabs.set_tab_title(2, "Trim Genes from Breaks");
+	$RepairTabs.set_tab_title(3, "Fix Damaged Genes");
 	
 	$EnergyBar.MAX_ENERGY = orgn.MAX_ENERGY
 
@@ -115,8 +115,7 @@ const LOCKABLE_REPAIRS = ["collapse_dupes", "copy_pattern"];
 const REP_TYPE_TO_IDX = {
 	"collapse_dupes": 0,
 	"copy_pattern": 1,
-	"join_ends": 2,
-	"repair_scissors": 3
+	"join_ends": 2
 };
 var REP_IDX_TO_TYPE := {};
 func repair_type_to_idx(type: String) -> int:
@@ -126,7 +125,7 @@ func repair_idx_to_type(idx: int) -> String:
 		for k in REP_TYPE_TO_IDX:
 			REP_IDX_TO_TYPE[REP_TYPE_TO_IDX[k]] = k;
 	
-	return REP_IDX_TO_TYPE.get(idx, "");
+	return REP_IDX_TO_TYPE.get(idx, "join_ends");
 
 func upd_repair_lock_display():
 	for rep_type in LOCKABLE_REPAIRS:
@@ -142,7 +141,7 @@ func upd_repair_lock_display():
 		$RepairTabs.set_tab_icon(1, null);
 		trim_dmg_lbl.text += "Click a damaged gene to remove it.";
 	else:
-		$RepairTabs.set_tab_icon(1, load("res://Assets/Images/icons/padlock.png"));
+		$RepairTabs.set_tab_icon(1, load("res://Assets/Images/icons/padlock_small.png"));
 		trim_dmg_lbl.text += "You are lacking the required '%s' Disassembly skill to use this function." % Skills.get_skill_desc("Deconstruction", "trim_dmg_genes");
 	trim_dmg_lbl.text += num_left_txt;
 	
@@ -152,25 +151,31 @@ func upd_repair_lock_display():
 		$RepairTabs.set_tab_icon(2, null);
 		trim_end_lbl.text += "Click a gene on either ends of a break to remove the gene.";
 	else:
-		$RepairTabs.set_tab_icon(2, load("res://Assets/Images/icons/padlock.png"));
+		$RepairTabs.set_tab_icon(2, load("res://Assets/Images/icons/padlock_small.png"));
 		trim_end_lbl.text += "You are lacking the required '%s' Disassembly skill to use this function." % Skills.get_skill_desc("Deconstruction", "trim_gap_genes");
 	trim_end_lbl.text += num_left_txt;
 
 func show_repair_opts(show):
 	if show:
 		upd_repair_lock_display();
+		$RepairTabs/pnl_bandage_dmg/vbox/scroll/RTLRepairResult.text = "";
 		yield(get_tree(), "idle_frame");
 		show_repair_tab(0);
-#		$RepairTabs.current_tab = 0;
-#		orgn.highlight_gap_choices();
 	if $RepairTabs.visible != show:
-		close_extra_menus($RepairTabs);
+		close_extra_menus($RepairTabs, true);
 
 func _on_Organism_gap_selected(_gap, sel: bool):
 	show_repair_types(sel);
 
 func _on_Organism_gene_trimmed(_gene):
+	_refresh_repair_tab();
+
+func _on_Organism_gene_bandaged(_gene):
+	_refresh_repair_tab();
+
+func _refresh_repair_tab():
 	upd_repair_lock_display();
+	yield(get_tree(), "idle_frame");
 	show_repair_tab($RepairTabs.current_tab);
 
 func upd_gap_select_instruction_visibility():
@@ -204,10 +209,12 @@ func show_repair_tab(tab_idx: int, upd_locks_disp := true) -> void:
 				continue;
 		1:
 			if orgn.get_behavior_profile().has_skill("Deconstruction", "trim_dmg_genes"):
-				orgn.highlight_dmg_genes();
+				orgn.highlight_dmg_genes("scissors");
 		2:
 			if orgn.get_behavior_profile().has_skill("Deconstruction", "trim_gap_genes"):
 				orgn.highlight_gap_end_genes();
+		3:
+			orgn.highlight_dmg_genes("bandage");
 
 func _on_Organism_show_repair_opts(show):
 	show_repair_opts(show);
@@ -226,11 +233,6 @@ func get_repair_desc(type):
 			action_name = "repair_cp";
 		"join_ends":
 			action_name = "repair_je";
-		"repair_scissors":
-			action_name = "repair_scissors";
-			var cuts_per_turn = orgn.get_scissors_per_turn();
-			var cuts_left = orgn.get_scissors_remaining();
-			tooltip %= [cuts_per_turn, "" if cuts_per_turn == 1 else "s", cuts_left];
 		var _err_idx:
 			return "Error! Picked an invalid repair option (%s)!" % _err_idx;
 	return REPAIR_DESC_FORMAT % [orgn.get_cost_string(action_name), tooltip];
@@ -246,7 +248,7 @@ func upd_repair_desc(idx):
 	$RepairTabs/pnl_repair_choices/hsplit/vsplit/scroll/lbl_choice_desc.text = get_repair_desc(type);
 
 func _on_btn_apply_repair_pressed():
-	$pnl_saveload.new_save(Game.get_save_str());
+	$pnl_saveload.new_save(SaveExports.get_save_str(self));
 	orgn.auto_repair();
 	show_repair_types(false);
 
@@ -270,6 +272,9 @@ func _on_Organism_gap_close_msg(text):
 
 func _on_Organism_clear_gap_msg():
 	$RepairTabs/pnl_repair_choices/vbox/scroll/RTLRepairResult.text = "";
+
+func _on_Organism_bandage_msg(text):
+	$RepairTabs/pnl_bandage_dmg/vbox/scroll/RTLRepairResult.text += "\n%s\n" % text;
 
 func _on_Organism_updated_gaps(gaps_exist, gap_text):
 	has_gaps = gaps_exist;
@@ -310,7 +315,7 @@ func adv_turn():
 	_add_justnow_bbcode("\n\n%s" % Game.get_turn_txt(), {"color": Color(1, 0.75, 0)});
 	
 	emit_signal("next_turn", Game.round_num, Game.turn_idx);
-	$pnl_saveload.new_save(Game.get_save_str());
+	$pnl_saveload.new_save(SaveExports.get_save_str(self));
 
 func _on_animating_changed(state):
 	wait_on_anim = state;
@@ -321,13 +326,11 @@ func _on_Organism_doing_work(working):
 	check_if_ready();
 
 func _on_Organism_died(org, reason):
-	Game.round_num = 0
 	nxt_btn.visible = false;
-	$button_grid/btn_dead_restart.visible = true;
-	$button_grid/btn_dead_quit.visible = true;
 	$button_grid/btn_qtmenu.visible = false;
 	$button_grid/btn_nxt.visible = false;
 	death_descr = reason;
+	show_death_screen();
 
 func show():
 	.show();
@@ -443,18 +446,14 @@ func quit_to_menu():
 	Game.restart_game()
 	get_tree().change_scene("res://Scenes/MainMenu/TitleScreen.tscn")
 
-const OVERVIEW_FORMAT = "You survived for %d rounds.\nYou produced %d progeny.\nYou repaired %d gaps.\nYour organism %s.";
+const OVERVIEW_FORMAT = "Your organism %s.\n\nYou survived for %d rounds.\nYou produced %d progeny.\nYou repaired %d gaps.";
 var death_descr := "died";
-func _on_btn_dead_quit_pressed():
+func show_death_screen():
 	var gaps_repaired := 0;
 	for rtype in ["repair_cp", "repair_cd", "repair_je"]:
 		gaps_repaired += Unlocks.get_count(rtype);
-	$pnl_dead_overview/LblOverview.text = OVERVIEW_FORMAT % [Game.round_num, orgn.num_progeny, gaps_repaired, death_descr]
+	$pnl_dead_overview/HSplitContainer/Panel/LblOverview.text = OVERVIEW_FORMAT % [death_descr, Game.round_num, orgn.num_progeny, gaps_repaired]
 	$pnl_dead_overview.visible = true;
-
-func _on_btn_dead_restart_pressed():
-	Game.restart_game();
-	get_tree().reload_current_scene();
 
 func _on_Organism_finished_replication():
 	reset_status_bar();

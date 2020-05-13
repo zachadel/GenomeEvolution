@@ -1,7 +1,10 @@
 extends Node
 
 const SKILLS = {
-	"Replication": {},
+	"Replication": {
+		"fix_dmg_genes": "Fix Damaged Genes",
+		"extend_cmsm": "Extend Chromosome",
+	},
 	"Locomotion": {},
 	"Manipulation": {},
 	"Sensing": {},
@@ -28,6 +31,12 @@ const SKILLS = {
 	"Component": {},
 };
 
+const SKILL_LIMITS = {
+	"Replication": {
+		"extend_cmsm": 6,
+	},
+};
+
 func get_random_skill(from_class: String) -> String:
 	var skill_arr : Array = SKILLS.get(from_class, {}).keys();
 	if skill_arr.empty():
@@ -36,3 +45,6 @@ func get_random_skill(from_class: String) -> String:
 
 func get_skill_desc(from_class: String, skill_name: String) -> String:
 	return SKILLS.get(from_class, {}).get(skill_name, "SKILL_NOT_FOUND:%s::%s|" % [from_class, skill_name]);
+
+func get_skill_limit(from_class: String, skill_name: String) -> int:
+	return SKILL_LIMITS.get(from_class, {}).get(skill_name, 0);

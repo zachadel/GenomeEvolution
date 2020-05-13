@@ -65,13 +65,7 @@ func get_behavior() -> Dictionary:
 func get_skills() -> Dictionary:
 	var skills := {};
 	for c in chromes:
-		var skill_dict = c.get_skill_profile();
-		for k in skill_dict:
-			if !skills.has(k):
-				skills[k] = [];
-			for s in skill_dict[k]:
-				if !(s in skills[k]):
-					skills[k].append(s);
+		skills = Game.add_numeric_dicts(skills, c.get_skill_profile());
 	return skills;
 
 func update():
@@ -80,10 +74,11 @@ func update():
 	for n in container.get_children():
 		var key = n.name;
 		
-		var has_skill = !skills.get(key, []).empty();
+		var n_skills = skills.get(key, {});
+		var has_skill = !n_skills.empty();
 		n.set_skilled(has_skill);
 		if has_skill:
-			n.skill_ttip = skills;
+			n.skill_ttip = {key: n_skills};
 		
 		if (key in behavior):
 			n.set_value(behavior[key]);

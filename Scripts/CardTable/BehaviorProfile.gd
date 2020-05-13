@@ -21,10 +21,8 @@ func set_skills(skill_profs: Array) -> void:
 func add_skill_dict(skill_dict: Dictionary) -> void:
 	for k in skill_dict:
 		if !skill_prof_data.has(k):
-			skill_prof_data[k] = [];
-		for s in skill_dict[k]:
-			if !(s in skill_prof_data[k]):
-				skill_prof_data[k].append(s);
+			skill_prof_data[k] = {};
+		Game.add_numeric_dicts(skill_prof_data[k], skill_dict[k]);
 
 func get_behavior(behavior_key: String) -> float:
 	return bhv_prof_data.get(behavior_key, 0.0);
@@ -32,10 +30,20 @@ func get_behavior(behavior_key: String) -> float:
 func has_behavior(behavior_key: String) -> bool:
 	return get_behavior(behavior_key) > 0.0;
 
+func get_skill_count(behavior: String, skill: String) -> int:
+	var count_limit = Skills.get_skill_limit(behavior, skill);
+	if Unlocks.unlock_override:
+		return count_limit if count_limit > 0 else 25;
+	
+	var count = skill_prof_data.get(behavior, {}).get(skill, 0);
+	if count_limit > 0:
+		return int(min(count, count_limit));
+	return count;
+
 func has_skill(behavior: String, skill: String) -> bool:
 	if Unlocks.unlock_override:
 		return true;
-	return has_behavior(behavior) && skill_prof_data.get(behavior, []).has(skill);
+	return has_behavior(behavior) && get_skill_count(behavior, skill) > 0;
 
 # Returns a mult for some specialization
 # e.g. get_specialization("Locomotion", "biomes", biome_key_str);

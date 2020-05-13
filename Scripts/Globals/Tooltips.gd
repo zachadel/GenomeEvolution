@@ -111,7 +111,7 @@ func get_gene_ttip(type: String, skills := {}) -> String:
 	return GENE_TTIP_FORMAT % [
 		(GENE_TYPE_DESC % [article, _get_gene_title(type, false)]),
 		_get_gene_desc(type),
-		get_skill_list(skills, "This gene has the following skills.\n"),
+		get_skill_list(skills, "This gene has the following skills:\n"),
 	];
 
 func get_skill_list(skill_dict: Dictionary, pfx := "", specific_behavior := "") -> String:
@@ -126,7 +126,9 @@ func get_skill_list(skill_dict: Dictionary, pfx := "", specific_behavior := "") 
 			for s in skill_dict[b]:
 				if !list_text.empty():
 					list_text += "\n";
-				list_text += "	%s" % Skills.get_skill_desc(b, s);
+				list_text += "\t%s" % Skills.get_skill_desc(b, s);
+				if skill_dict[b][s] > 1:
+					list_text += " (x%d)" % skill_dict[b][s];
 	
 	if list_text.empty():
 		return "No associated skills.";
@@ -135,7 +137,7 @@ func get_skill_list(skill_dict: Dictionary, pfx := "", specific_behavior := "") 
 func get_status_ttip(type: String, compare: String, skills := {}) -> String:
 	return STATUS_TTIP_FORMAT % [
 		_get_gene_desc(type),
-		get_skill_list(skills, "The following skills are active.\n", type),
+		get_skill_list(skills, "The following skills are active:\n", type),
 		COMPARE_TTIPS[compare],
 	];
 
