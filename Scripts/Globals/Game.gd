@@ -146,8 +146,6 @@ var current_players = 0
 
 var current_cell_string = "cell_1"
 
-var card_table
-
 var animation_speed = 600
 var animation_ease = Tween.EASE_IN
 var animation_trans = Tween.TRANS_LINEAR
@@ -357,19 +355,6 @@ func get_turn_txt(turn_type := -1) -> String:
 			return "Map Turn";
 		var _x:
 			return "Unknown turn type (#%d)" % _x;
-
-func get_save_str():
-	var savestr = var2str([turn_idx, round_num, card_table.orgn.get_save(), card_table.orgn.get_gene_pool()]).replace("\n", "")
-	SaveExports.exp_save_code(savestr);
-	return savestr
-
-func load_from_save(save):
-	var s = str2var(save)
-	turn_idx = int(s[0]) - 1
-	round_num = int(s[1])
-	card_table.orgn.load_from_save(s[2])
-	card_table.orgn.reproduct_gene_pool = s[3]
-
 
 func copy_elm(elm):
 	var copy_elm = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
