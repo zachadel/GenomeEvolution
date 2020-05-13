@@ -34,7 +34,7 @@ func get_skill_count(behavior: String, skill: String) -> int:
 	if !has_behavior(behavior):
 		return 0;
 	
-	var count_limit := Skills.get_skill_limit(behavior, skill);
+	var count_limit : int = Skills.get_skill_limit(behavior, skill);
 	var has_limit := count_limit >= 0;
 	if Unlocks.unlock_override:
 		return count_limit if has_limit else Skills.OVERRIDE_COUNT;
