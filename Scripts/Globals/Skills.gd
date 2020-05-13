@@ -1,5 +1,9 @@
 extends Node
 
+# If using the "unlock everything" override, how many "counts" of a skill should you have?
+# If a limit (SKILL_LIMITS) isn't defined, use this number instead
+const OVERRIDE_COUNT = 25;
+
 const SKILLS = {
 	"Replication": {
 		"fix_dmg_genes": "Fix Damaged Genes",
@@ -31,6 +35,8 @@ const SKILLS = {
 	"Component": {},
 };
 
+# A limit of 0 prevents the skill from being obtained
+# An unlisted limit or limit < 0 indicates no limit
 const SKILL_LIMITS = {
 	"Replication": {
 		"extend_cmsm": 6,
@@ -47,4 +53,4 @@ func get_skill_desc(from_class: String, skill_name: String) -> String:
 	return SKILLS.get(from_class, {}).get(skill_name, "SKILL_NOT_FOUND:%s::%s|" % [from_class, skill_name]);
 
 func get_skill_limit(from_class: String, skill_name: String) -> int:
-	return SKILL_LIMITS.get(from_class, {}).get(skill_name, 0);
+	return SKILL_LIMITS.get(from_class, {}).get(skill_name, -1);
