@@ -184,11 +184,6 @@ func _on_AcquireResources_pressed():
 	emit_signal("acquire_resources")
 	pass # Replace with function body.
 	
-#Downgrade to energy is broken
-#Downgrade to resource is not
-#Upgrade might have some issues
-#upgrade from energy is broken
-#Seems like energy is quite broken
 func test_functionality():
 	print("Organism storage capacity:")
 	print("Simple Carbs: ", irc.organism.get_estimated_capacity("simple_carbs"))
@@ -201,13 +196,15 @@ func test_functionality():
 	print(irc.organism.vesicle_scales)
 	print('Organism Gene Profile (pre-pH):')
 	print(irc.organism.get_behavior_profile().print_profile())
-	print("Environmental Break Count: ", irc.organism.get_accumulated_breaks())
+	print("Environmental Break Count: ", irc.organism.get_dmg())
 	print("Resources:")
 	print(irc.organism.cfp_resources)
 	print("Energy:")
 	print(irc.organism.energy)
 	print("Vision Radius:")
 	print(irc.organism.get_vision_radius())
+	print("Movement Radius:")
+	print(irc.organism.get_locomotion_radius())
 	print("***Energy Costs***")
 	for action in irc.organism.OXYGEN_ACTIONS:
 		var base_cost = irc.organism.get_base_energy_cost(action, 1)

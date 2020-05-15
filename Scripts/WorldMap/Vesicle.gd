@@ -14,10 +14,14 @@ export var resource_class: String
 
 const DEFAULT_MODULATE = Color(1,1,1,1)
 const MOUSE_ENTERED_MODULATE = Color(1.5,1.5,1.5,1.5)
+var glow_color = Color(0.035294, 0.227451, 0.411765)
 #const RADIUS_OFFSET = 12
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	var mat = sprite.get_material().duplicate(true)
+	sprite.set_material(mat)
+
 	#scale(scale)
 #	capacity = update_radius()
 	#add_resource("egg", capacity)
@@ -72,6 +76,12 @@ func _ready():
 #		scale = new_scale
 #
 #	update_radius()
+
+func glow(enable: bool = true):
+	if enable:
+		sprite.get_material().set_shader_param("aura_color", glow_color)
+	else:
+		sprite.get_material().set_shader_param("aura_color", Color.black)
 	
 func get_size():
 	var size = sprite.texture.get_size()

@@ -1,6 +1,7 @@
 extends Panel
 
 signal resources_selected(resources)
+signal invalid_action(gene_type, low_or_high, action)
 
 #NOTE: Do NOT for any reason scale this node.  Everything will break.
 #We assume at all times that resources are where they should be.
@@ -47,6 +48,9 @@ var selected_resources = {
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
+	$complex_proteins.glow()
+
 	for resource in Game.resources:
 		var resource_class = Game.get_class_from_name(resource)
 		
@@ -283,7 +287,7 @@ func handle_click_with_selection():
 	var resources_to_process = {}
 	
 	var bhv_profile = organism.get_behavior_profile()
-	
+	var did_anything = false
 	if !energy_clicked:
 	
 		#Locate which container you're in
@@ -309,10 +313,18 @@ func handle_click_with_selection():
 						var diff = len(selected_resources[resource_class][resource]) - results[resource]["leftover_resource_amount"]
 						if diff > 0:
 							remove_resource_by_name(resource, diff, true)
+							did_anything = true
 						
 						#Process for adding nodes to vesicles according to upgraded amount
-						add_resource(results[resource]["new_resource_name"], results[resource]["new_resource_amount"])
+						if results[resource]["new_resource_amount"] > 0:
+							add_resource(results[resource]["new_resource_name"], results[resource]["new_resource_amount"])
+							did_anything = true
 					energy_bar.update_energy_allocation(organism.energy)	
+				else:
+					emit_warning(container_name)
+					
+				if not did_anything:
+					emit_warning(container_name)
 				break
 				
 	#if we have selected resources and have clicked on energy
@@ -355,6 +367,10 @@ func handle_energy_to_vesicle_click():
 			add_resource(resource_to, 1)
 		energy_bar.update_energy_allocation(organism.energy)
 		Input.set_custom_mouse_cursor(null)
+	
+func emit_warning(container_name: String):
+	
+	pass
 	
 func get_vesicle_from_mouse_pos(mouse_pos: Vector2):
 	var vesicle_name = ""

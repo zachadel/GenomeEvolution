@@ -9,6 +9,8 @@ signal player_resources_changed(cfp_resources, mineral_resources)
 signal player_energy_changed(energy)
 signal tile_changed(tile_dict)
 
+signal invalid_action(gene_type, low_or_high, action)
+
 """
 A tile dict should always look like this: 
 curr_tile = {
@@ -52,8 +54,10 @@ onready var camera = get_node("MapCamera")
 onready var loc_highlight = get_node("CurrentLocation")
 
 onready var ui = get_node("WorldMap_UI")
+onready var msg = get_node("CanvasLayer/WarningMessage")
 
 const FINAL_TWEEN_ZOOM = Vector2(.1, .1)
+const BASE_LOCOMOTION_TAX = 2
 
 #For moving around the map (does not include ui as parts of the ui can be turned)
 #off individually
@@ -73,7 +77,9 @@ func disable_fog():
 func enable_fog():
 	$ObscurityMap.enable_fog()
 
-
+func _ready():
+	connect("invalid_action", msg, "show_high_low_warning")
+	
 func setup(biome_seed, hazard_seeds, resource_seed, tiebreak_seed, _chunk_size, player):
 	Game.modified_tiles = {}
 	Game.SECONDARY_RESOURCE_MAX = Settings.resource_abundance()[Settings.MAX]
@@ -130,10 +136,11 @@ func setup(biome_seed, hazard_seeds, resource_seed, tiebreak_seed, _chunk_size, 
 	
 	loc_highlight.self_modulate = Color.blue
 	loc_highlight.position = current_player.position
+	current_player.organism.refresh_behavior_profile()
 	
 	observe_tiles(Game.world_to_map(default_start), current_player.organism.get_vision_radius())
-	
-	astar.initialize_astar(max(1, current_player.organism.get_vision_radius()), funcref(self, "costs"))
+	print(current_player.organism.get_vision_radius())
+	astar.initialize_astar(max(1, min(current_player.organism.get_vision_radius(), current_player.organism.get_locomotion_radius())), funcref(self, "costs"))
 	
 	ui.resource_ui.set_resources(current_player.organism.current_tile["resources"])
 	ui.hazards_ui.set_hazards(current_player.organism.current_tile["hazards"])
@@ -146,6 +153,7 @@ func setup(biome_seed, hazard_seeds, resource_seed, tiebreak_seed, _chunk_size, 
 	
 	current_player.organism.update_vesicle_sizes()
 	connect("player_energy_changed", ui.irc.energy_bar, "_on_Organism_energy_changed")
+	current_player.organism.connect("invalid_action", msg, "show_high_low_warning")
 	
 	$MapCamera.position = current_player.position
 	
@@ -178,7 +186,7 @@ func _process(delta):
 		var tile_index = $BiomeMap.get_cellv(tile_position_offset)
 		var player_tile = Game.world_to_map(current_player.position)
 		
-		if Game.get_distance_cubev(tile_position, player_tile) <= max(1, current_player.organism.get_vision_radius()) and input_elements["move"] and move_enabled:
+		if Game.get_distance_cubev(tile_position, player_tile) <= max(1, min(current_player.organism.get_vision_radius(), current_player.organism.get_locomotion_radius())) and input_elements["move"] and move_enabled:
 			$Path.clear_points()
 			
 			var path = astar.get_positions_and_costs_from_to(player_tile, tile_position)
@@ -271,18 +279,23 @@ func _unhandled_input(event):
 				if tile_position != player_tile:
 					
 					if move_player(tile_position) > 0:
-						var old_radius = current_player.organism.get_vision_radius()
+						var old_radius_vis = current_player.organism.get_vision_radius()
+						var old_radius_loc = current_player.organism.get_locomotion_radius()
 						
 						#Hide the old stuff
-						hide_tiles(player_tile, old_radius)
+						hide_tiles(player_tile, old_radius_vis)
 						
 						#Observe the new stuff
 						current_player.organism.refresh_behavior_profile()
-						var new_radius = current_player.organism.get_vision_radius()
+						var new_radius_vis = current_player.organism.get_vision_radius()
+						var new_radius_loc = current_player.organism.get_locomotion_radius()
 						#Handles the case where pH may be affecting sensing genes
-						if old_radius != new_radius:
-							update_vision()
-						observe_tiles(tile_position, new_radius)
+						if old_radius_vis != new_radius_vis:
+							update_vision(old_radius_vis)
+							
+						if old_radius_loc != new_radius_loc:
+							update_movement()
+						observe_tiles(tile_position, new_radius_vis)
 						
 						ui.update_costs()
 						ui.update_valid_arrows()
@@ -330,15 +343,19 @@ func enable_camera():
 	$MapCamera.make_current()
 	$MapCamera.zoom = Vector2(1, 1)
 
-func update_vision():
-	var old_radius = astar.get_radius()
-	var new_radius = current_player.organism.get_vision_radius()
+func update_vision(old_radius = -1):
 	
+	if old_radius == -1:
+		old_radius = current_player.organism.get_vision_radius()
+		current_player.organism.refresh_behavior_profile()
+		
+	var new_radius = current_player.organism.get_vision_radius()
 	if old_radius != new_radius:
 		hide_tiles(Game.world_to_map(current_player.position), old_radius)
-	observe_tiles(Game.world_to_map(current_player.position), current_player.organism.get_vision_radius())
-	
-	astar.change_radius(max(1, current_player.organism.get_vision_radius()), funcref(self, "costs"))
+	observe_tiles(Game.world_to_map(current_player.position), new_radius)
+
+func update_movement():
+	astar.change_radius(max(1, min(current_player.organism.get_vision_radius(), current_player.organism.get_locomotion_radius())), funcref(self, "costs"))
 
 #Enter the use case as an int from Game.PLAYER_VIEW
 #In the case of the title screen, the map is hidden, so this is not necessary
@@ -408,30 +425,44 @@ func move_player(pos: Vector3):
 	var player_tile = Game.world_to_map(current_player.position)
 	var tiles_moved = 0
 	
-	if player_tile != pos and Game.get_distance_cubev(player_tile, pos) <= max(1, current_player.organism.get_vision_radius()):
+	var loc_radius = current_player.organism.get_locomotion_radius()
+	var vis_radius = current_player.organism.get_vision_radius()
+	
+	var distance = Game.get_distance_cubev(player_tile, pos)
+	
+	if player_tile != pos and distance <= max(1, min(vis_radius, loc_radius)):
 		var path_and_cost = astar.get_tile_and_cost_from_to(player_tile, pos)
 		
-		if len(path_and_cost) > 0 and path_and_cost["total_cost"] <= current_player.organism.energy:
+		if len(path_and_cost) > 0 and path_and_cost["total_cost"] + BASE_LOCOMOTION_TAX <= current_player.organism.energy:
 			tiles_moved = len(path_and_cost) - 1
-			current_player.organism.energy -= path_and_cost["total_cost"]
+			current_player.organism.energy -= (path_and_cost["total_cost"] + BASE_LOCOMOTION_TAX)
 			
 			var new_position = Game.map_to_world(pos)
 		
 			current_player.rotate_sprite((new_position - current_player.position).angle())
 			current_player.position = new_position
 			current_player.organism.current_tile = get_tile_at_pos(pos)
-			current_player.organism.accumulate_environmental_break_count()
+			#current_player.organism.accumulate_environmental_break_count()
 			
-			current_player.update_nucleus()
-				
+			#current_player.update_nucleus()
 			
 			astar.set_position_offset(pos, funcref(self, "costs"))
 			
-			
-			
 			emit_signal("player_energy_changed", current_player.organism.energy)
 			loc_highlight.position = current_player.position
-	
+		
+		elif path_and_cost["total_cost"] > current_player.organism.energy:
+			emit_signal("invalid_action", "energy", true, "moving there")
+			
+		elif len(path_and_cost) == 0:
+			print('ERROR: Something has gone wrong with HexAstar.')
+			
+	elif player_tile != pos and distance > vis_radius:
+		emit_signal("invalid_action", "vision", true, "moving there")
+		
+	elif player_tile != pos and distance > loc_radius:
+		emit_signal("invalid_action", "movement", true, "moving there")
+			
 	current_player.organism.gain_dmg(tiles_moved)
 	return tiles_moved
 

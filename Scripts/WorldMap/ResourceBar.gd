@@ -23,7 +23,7 @@ func _ready():
 	
 	set_texture(Game.DEFAULT_RESOURCE_PATH)
 	
-	Tooltips.setup_delayed_tooltip(self)
+#	Tooltips.setup_delayed_tooltip(self)
 
 	pass # Replace with function body.
 

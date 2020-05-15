@@ -65,13 +65,14 @@ func get_observed_tiles():
 
 
 #MAKE NUCLEUS WHITE TO ENABLE MODULATION
+#BROKEN: Needs to be updated to new damage system (gain_dmg/total_count)
 func update_nucleus():
 	$Body.danger_modulate("nucleus", 0)
 	var multiple = 5
 	var max_multiple = 5
 	
 	for i in range(max_multiple, 0, -1):
-		if organism.get_accumulated_breaks() > i * multiple:
+		if organism.get_dmg() > i * multiple:
 			$Body.danger_modulate("nucleus", float(i)/max_multiple)
 			break
 		

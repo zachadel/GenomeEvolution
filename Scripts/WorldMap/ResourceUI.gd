@@ -1,4 +1,6 @@
-extends VBoxContainer
+extends ScrollContainer
+
+onready var container = get_node("VBoxContainer")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -19,23 +21,23 @@ func _ready():
 
 				#Bar.get_node("ResourceAmount").text = str(Bar.value)
 			
-				add_child(Bar)
+				container.add_child(Bar)
 				
 	#This is a hack because scroll bars don't work well in Godot
 	var resource_hbox = HBoxContainer.new()
 	resource_hbox.size_flags_vertical = SIZE_EXPAND_FILL
 	resource_hbox.size_flags_vertical = SIZE_EXPAND_FILL
-	add_child(resource_hbox)
+	container.add_child(resource_hbox)
 	pass # Replace with function body.
 
 func observe(resource: String):
-	var resource_bar = get_node(resource)
+	var resource_bar = container.get_node(resource)
 	
 	if not resource_bar.is_observed():
 		resource_bar.observe()
 
 #resource_values[resource_index] = values
 func set_resources(resource_values):
-	for child in get_children():
+	for child in container.get_children():
 		if not child is HBoxContainer:
 			child.update_value(resource_values[Game.get_index_from_resource(child.name)])

@@ -13,9 +13,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="GameOverLayer" type="CanvasLayer" parent="."]
+[node name="MessageLayer" type="CanvasLayer" parent="."]
 
-[node name="GameOver" type="AcceptDialog" parent="GameOverLayer"]
+[node name="GameOver" type="AcceptDialog" parent="MessageLayer"]
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
@@ -34,7 +34,7 @@ visible = false
 layer = 2
 
 [node name="CardTable" parent="Canvas_CardTable" instance=ExtResource( 4 )]
-[connection signal="confirmed" from="GameOverLayer/GameOver" to="." method="_on_GameOver_confirmed"]
+[connection signal="confirmed" from="MessageLayer/GameOver" to="." method="_on_GameOver_confirmed"]
 [connection signal="change_to_main_menu" from="WorldMap" to="." method="_on_WorldMap_change_to_main_menu"]
 [connection signal="end_map_turn" from="WorldMap" to="." method="_on_WorldMap_end_map_turn"]
 [connection signal="switch_to_card_table" from="WorldMap" to="." method="_on_WorldMap_switch_to_card_table"]

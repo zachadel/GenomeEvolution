@@ -274,6 +274,7 @@ func clear_vesicle(resource_class: String):
 func update_vesicle_sizes():
 	var scale_str = "_scales"
 	var component = get_behavior_profile().get_behavior("Component")
+	var cleared = false
 	
 	for i in len(Game.cells[cell_str]["vesicle_thresholds"]):
 		if len(Game.cells[cell_str]["vesicle_thresholds"][i]) == 2: #Case where we have two things to compare
@@ -284,6 +285,7 @@ func update_vesicle_sizes():
 					
 					if new_capacity <= 0:
 						clear_vesicle(resource_class)
+						cleared = true
 					elif cfp_resources[resource_class]["total"] > new_capacity:
 						consume_randomly_from_class(resource_class, cfp_resources[resource_class]["total"] - new_capacity)	
 				break #We can exit because the intervals are mutually exclusive
@@ -291,7 +293,9 @@ func update_vesicle_sizes():
 			for resource_class in vesicle_scales:
 				vesicle_scales[resource_class]["scale"] = Vector2(Game.cells[cell_str][resource_class + scale_str][i], Game.cells[cell_str][resource_class + scale_str][i])
 			break #We can exit because the intervals are mutually exclusive
-				
+			
+	if cleared:
+		emit_signal("invalid_action", "Component", true, "process complex resources")	
 	emit_signal("vesicle_scale_changed", vesicle_scales, cfp_resources)
 		
 func reset():
@@ -418,6 +422,9 @@ func gain_gaps(count = 1):
 const DMG_FACTOR = 0.33;
 func gain_dmg(amt : float):
 	accumulated_dmg += amt * DMG_FACTOR;
+	
+func get_dmg() -> float:
+	return accumulated_dmg
 
 const MAX_ENVIRON_INTERNAL_DMG_PERC = 0.5;
 const MIN_ENVIRON_INTERNAL_DMG_PERC = 0.25;
@@ -547,7 +554,10 @@ var sel_repair_type := "";
 var sel_repair_gap = null;
 
 func has_resource_for_action(action, amt = 1):
-	return check_resources(action, amt).empty();
+	if action in ["recombination", "mitosis", "meiosis"]:
+		return check_resources(action, amt).empty();
+	else:
+		return check_resources(action, amt).empty();
 
 func upd_repair_opts(gap):
 	sel_repair_gap = gap;
@@ -1326,14 +1336,14 @@ func get_missing_ess_classes():
 			missing.append(k);
 	return missing;
 
-func get_accumulated_breaks() -> int:
-	return break_count
-
-func accumulate_environmental_break_count():
-	break_count += get_rand_environmental_break_count()
-	
-func reset_break_count():
-	break_count = 0
+#func get_accumulated_breaks() -> int:
+#	return break_count
+#
+#func accumulate_environmental_break_count():
+#	break_count += get_rand_environmental_break_count()
+#
+#func reset_break_count():
+#	break_count = 0
 
 func get_rand_environmental_break_count() -> int:
 	var hazards = current_tile.hazards;
@@ -2709,6 +2719,9 @@ func _on_chromes_on_cmsm_changed():
 #This is what you can directly see, not counting the cone system
 func get_vision_radius():
 	return floor(get_behavior_profile().get_behavior("Sensing"))
+	
+func get_locomotion_radius():
+	return floor(get_behavior_profile().get_behavior("Locomotion"))
 	
 #Cost to move over a particular tile type
 #biome is an integer

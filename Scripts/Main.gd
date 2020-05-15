@@ -19,7 +19,7 @@ const Player = preload("res://Scenes/Player/Player.tscn")
 
 onready var world_map = get_node("WorldMap") #access world_map ui via world_map.ui
 onready var card_table = get_node("Canvas_CardTable/CardTable")
-onready var game_over = get_node("GameOverLayer/GameOver")
+onready var game_over = get_node("MessageLayer/GameOver")
 
 #NOTE: $Player should NEVER be called. Ever.  For any reason.
 #Eventually, I will put documentation in here explaining the workflow that

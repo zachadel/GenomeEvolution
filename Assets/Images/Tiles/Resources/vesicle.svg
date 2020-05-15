@@ -16,9 +16,9 @@
    inkscape:export-filename="C:\Users\lemon\Documents\GenomeEvolution\Assets\Images\Tiles\Resources\vesicle.png"
    id="svg8"
    version="1.1"
-   viewBox="0 0 23.812499 23.812499"
-   height="90"
-   width="90">
+   viewBox="0 0 29.104165 29.104165"
+   height="110"
+   width="110">
   <defs
      id="defs2" />
   <sodipodi:namedview
@@ -29,8 +29,8 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:zoom="8"
-     inkscape:cx="31.781809"
-     inkscape:cy="37.356655"
+     inkscape:cx="10.469309"
+     inkscape:cy="47.356655"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -49,7 +49,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -57,10 +57,10 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-273.18748)">
+     transform="translate(0,-267.89581)">
     <g
        id="g20641"
-       transform="matrix(0.97037289,0,0,0.97037267,0.3527478,8.446566)">
+       transform="matrix(0.97037289,0,0,0.97037267,2.9985808,5.800729)">
       <path
          inkscape:connector-curvature="0"
          id="rect2024"
