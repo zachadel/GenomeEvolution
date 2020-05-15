@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Assets/Fonts/OpenSans-Bold.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Scripts/MainMenu/Credits.gd" type="Script" id=2]
 
 [sub_resource type="DynamicFont" id=1]
 size = 20
@@ -24,6 +25,7 @@ font_data = SubResource( 2 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_min_size = Vector2( 250, 100 )
+script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -34,23 +36,6 @@ anchor_bottom = 1.0
 custom_fonts/bold_font = SubResource( 1 )
 custom_fonts/normal_font = SubResource( 3 )
 bbcode_enabled = true
-bbcode_text = "[center][b]A game by[/b]
-Dr. Zach Adelman
-
-[b]Programming[/b]
-Alex Cavasso
-Ryan Malthaner
-Edward Mondragon
-
-[b]Additional Programming[/b]
-Marco Ravelo
-Travis Stebbins
-
-[b]Art[/b]
-McKenzie Burch
-Alex Cavasso
-Ryan Malthaner
-Marco Ravelo[/center]"
 text = "A game by
 Dr. Zach Adelman
 

@@ -6,7 +6,7 @@ var default_te_texture = load("res://Assets/Images/tes/default_te.png");
 var helix_textures = {true: load("res://Assets/Images/genes/Helix_Circle.png"), false: load("res://Assets/Images/genes/Helix.png")}
 
 enum ESSENTIAL_CLASSES {Replication, Locomotion, Helper, Manipulation, Sensing, Component, Construction, Deconstruction};
-enum TURN_TYPES {Map, NewTEs, TEJump, RepairBreaks, EnvironmentalDamage, Recombination, Evolve, CheckViability, Replication, RemoveDamage};
+enum TURN_TYPES {Map, TEJump, RepairDmg, EnvironmentalDamage, Recombination, Evolve, CheckViability, Replication};
 #These mark what the current state of the player is as it relates to the map
 enum PLAYER_VIEW {
 	DEAD, #What inputs should be available when the player dies on the map
@@ -135,8 +135,8 @@ var SECONDARY_RESOURCE_MIN = 0
 const GEN_SCALING = 100 
 const TOLERANCE = .0001
 
-var turns = [TURN_TYPES.Map, TURN_TYPES.EnvironmentalDamage, TURN_TYPES.RemoveDamage, TURN_TYPES.RepairBreaks, TURN_TYPES.NewTEs, TURN_TYPES.TEJump,
-	TURN_TYPES.RepairBreaks, TURN_TYPES.Recombination, TURN_TYPES.Replication, TURN_TYPES.CheckViability];
+var turns = [TURN_TYPES.Map, TURN_TYPES.EnvironmentalDamage, TURN_TYPES.RepairDmg, TURN_TYPES.TEJump,
+	TURN_TYPES.RepairDmg, TURN_TYPES.Recombination, TURN_TYPES.Replication, TURN_TYPES.CheckViability];
 var turn_idx
 var round_num
 
@@ -146,14 +146,12 @@ var current_players = 0
 
 var current_cell_string = "cell_1"
 
-var card_table
-
 var animation_speed = 600
 var animation_ease = Tween.EASE_IN
 var animation_trans = Tween.TRANS_LINEAR
-var TE_jump_time_limit = 5
-var TE_insertion_time_limit = 0.75
-var SeqElm_time_limit = .75
+const TE_JUMP_TIME_LIMIT = 5.0 # TE_jump_time_limit
+const TE_INSERT_TIME_LIMIT = 0.75 # TE_insertion_time_limit
+var SeqElm_time_limit = 3.0
 
 var ate_personalities = {};
 var resource_mult = 0.1;
@@ -339,16 +337,12 @@ func get_turn_txt(turn_type := -1) -> String:
 	if turn_type < 0:
 		turn_type = get_turn_type();
 	match turn_type:
-		TURN_TYPES.NewTEs:
-			return "New Transposons";
 		TURN_TYPES.TEJump:
 			return "Transposon Activity";
-		TURN_TYPES.RepairBreaks:
-			return "Repair Breaks";
+		TURN_TYPES.RepairDmg:
+			return "Repair Damage";
 		TURN_TYPES.EnvironmentalDamage:
 			return "Environmental Damage";
-		TURN_TYPES.RemoveDamage:
-			return "Remove Damaged Genes";
 		TURN_TYPES.Recombination:
 			return "Recombination";
 		TURN_TYPES.Evolve:
@@ -361,19 +355,6 @@ func get_turn_txt(turn_type := -1) -> String:
 			return "Map Turn";
 		var _x:
 			return "Unknown turn type (#%d)" % _x;
-
-func get_save_str():
-	var savestr = var2str([turn_idx, round_num, card_table.orgn.get_save(), card_table.orgn.get_gene_pool()]).replace("\n", "")
-	SaveExports.exp_save_code(savestr);
-	return savestr
-
-func load_from_save(save):
-	var s = str2var(save)
-	turn_idx = int(s[0]) - 1
-	round_num = int(s[1])
-	card_table.orgn.load_from_save(s[2])
-	card_table.orgn.reproduct_gene_pool = s[3]
-
 
 func copy_elm(elm):
 	var copy_elm = load("res://Scenes/CardTable/SequenceElement.tscn").instance();

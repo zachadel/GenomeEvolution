@@ -81,13 +81,7 @@ func get_specialization_profile(behavior_profile = null) -> Dictionary:
 func get_skill_profile() -> Dictionary:
 	var skill_profile := {};
 	for g in get_genes():
-		var g_skills = g.get_skill_profile();
-		for b in g_skills:
-			if !skill_profile.has(b):
-				skill_profile[b] = [];
-			for s in g_skills[b]:
-				if !(s in skill_profile[b]):
-					skill_profile[b].append(s);
+		skill_profile = Game.add_numeric_dicts(skill_profile, g.get_skill_profile());
 	return skill_profile;
 
 func get_pairs(left_elm, right_elm, minimal = false):
@@ -239,13 +233,8 @@ func get_elm_anim_duration(distance):
 	if (Game.turns[Game.turn_idx] == Game.TURN_TYPES.TEJump):
 		var _actives = get_cmsm_pair().ate_list + [];
 		if (_actives.size() > 0):
-			return min(distance / Game.animation_speed, (0.5 * Game.TE_jump_time_limit) / _actives.size());
-		else:
-			return min(distance / Game.animation_speed, Game.SeqElm_time_limit);
-	elif (Game.turns[Game.turn_idx] == Game.TURN_TYPES.NewTEs):
-		return min(distance / Game.animation_speed, Game.TE_insertion_time_limit);
-	else:
-		return min(distance / Game.animation_speed, Game.SeqElm_time_limit);
+			return min(distance / Game.animation_speed, (0.5 * Game.SeqElm_time_limit) / _actives.size());
+	return min(distance / Game.animation_speed, Game.SeqElm_time_limit);
 
 # CHROMOSOME MODIFICATION FUNCTIONS
 
@@ -384,6 +373,14 @@ func remove_elm(elm):
 	queue_sort();
 
 func remove_elm_create_gap(elm):
+	var elm_idx = elm.get_index();
+	if (elm_idx > 0 && get_child(elm_idx - 1).is_gap()) || (elm_idx < get_child_count() - 1 && get_child(elm_idx + 1).is_gap()):
+		if do_animations:
+			yield(remove_elm(elm), "completed");
+		else:
+			remove_elm(elm);
+		return null;
+	
 	emit_signal("animating", true);
 	elm.disconnect("elm_clicked", elm.get_cmsm(), "_propogate_click");
 	elm.disconnect("elm_mouse_entered", elm.get_cmsm(), "_propagate_mouse_entered");
@@ -406,8 +403,6 @@ func remove_elm_create_gap(elm):
 			elm.hide();
 			yield(get_tree(), "idle_frame");
 	
-	elm.get_parent().remove_child(elm);
-	
 	var gap = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
 	gap.setup("break");
 	add_child(gap);
@@ -416,6 +411,8 @@ func remove_elm_create_gap(elm):
 	gap.connect("elm_mouse_entered", self, "_propagate_mouse_entered");
 	gap.connect("elm_mouse_exited", self, "_propagate_mouse_exited");
 	
+	if (elm.get_parent() != null):
+		elm.get_parent().remove_child(elm);
 	emit_signal("animating", false);
 	set_elms_size();
 	yield(get_tree(), "idle_frame");

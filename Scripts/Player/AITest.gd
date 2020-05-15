@@ -32,7 +32,7 @@ func start_sim(count):
 
 func _on_wait_timer_timeout():
 	_on_btn_next_pressed();
-	if (Game.get_turn_txt() == "Check Viability"):
+	if (Game.get_turn_type() == Game.TURN_TYPES.CheckViability):
 		simd += 1;
 		if (simd == simfor):
 			$ctl_sims/wait_timer.stop();
@@ -43,7 +43,7 @@ func _on_btn_add_pressed():
 	add_ais();
 
 func add_ais():
-	if (Game.get_turn_txt() == "Check Viability"):
+	if (Game.get_turn_type() == Game.TURN_TYPES.CheckViability):
 		for i in range(new_ai):
 			force_add();
 		new_ai = 0;

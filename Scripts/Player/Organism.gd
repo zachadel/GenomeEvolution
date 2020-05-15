@@ -139,6 +139,9 @@ var has_done_meiosis = false
 const RESOURCE_TYPES = ["simple_carbs", "complex_carbs", "simple_fats", "complex_fats", "simple_proteins", "complex_proteins"]
 
 signal gene_clicked();
+signal gap_selected(gap, is_selected);
+signal gene_trimmed(gene);
+signal gene_bandaged(gene);
 signal cmsm_picked(cmsm);
 signal scissors_ended();
 
@@ -148,6 +151,9 @@ signal finished_replication();
 
 signal updated_gaps(has_gaps, gap_text);
 signal justnow_update(text);
+signal gap_close_msg(text);
+signal bandage_msg(text);
+signal clear_gap_msg();
 
 signal show_repair_opts(show);
 signal show_reprod_opts(show);
@@ -338,21 +344,22 @@ func setup(card_table):
 	var max_random_ess = Settings.starting_additional_genes()[Settings.MAX]
 	var min_random_ess = Settings.starting_additional_genes()[Settings.MIN]
 
-	# Start with the essentials + some blanks, shuffled
+	# Start with the essentials + some blanks
 	var starter_genes = essential_names + ["blank"];
 	for _i in range(min_blanks + randi() % int((max_blanks - min_blanks + 1))):
 		starter_genes.append("blank");
-		
+	
 	# Add the random additional essential genes
 	for _i in range(min_random_ess  + randi() % int(max_random_ess - min_random_ess + 1)):
 		starter_genes.append(essential_names[randi() % len(essential_names)])
-		
+	
 	# Prepare cell specific modifications
 	for g in default_genome:
 		augment_genes[g] = false
 		if default_genome[g] > 2: # 1 per chromosome is default value
 			augment_genes[g] = true
-		
+	
+	# Shuffle the gene order
 	starter_genes.shuffle();
 	
 	for g in starter_genes:
@@ -363,13 +370,17 @@ func setup(card_table):
 				augment_genes[g] = false
 			else:
 				nxt_gelm.set_ess_behavior({g: 1.0})
+			
+			if g == "Replication":
+				nxt_gelm.gain_specific_skill("Replication", "fix_dmg_genes");
+			
 			nxt_gelm.setup("gene", g, "essential");
 		else:
 			nxt_gelm.setup("gene", g, g);
 		
 		cmsms.get_cmsm(0).add_elm(nxt_gelm);
 		cmsms.get_cmsm(1).add_elm(Game.copy_elm(nxt_gelm));
-		
+	
 	gain_ates(min_tes + randi() % int((max_tes - min_tes + 1)));
 	perform_anims(true);
 	
@@ -419,7 +430,7 @@ func gain_gaps(count = 1):
 			cmsms.create_gap();
 	return cmsms.collapse_gaps();
 
-const DMG_FACTOR = 0.33;
+const DMG_GAIN_FACTOR = 0.1;
 func gain_dmg(amt : float):
 	accumulated_dmg += amt * DMG_FACTOR;
 	
@@ -438,6 +449,9 @@ func environmental_damage():
 	# Gain internal dmg
 	var true_damaged := 0;
 	if internal_dmg_count > 0:
+		# This isn't strictly necessary, but sometimes there's a race and gene_list ends up empty
+		yield(get_tree(), "idle_frame");
+		
 		var gene_list : Array = cmsms.get_all_genes();
 		for i in range(internal_dmg_count):
 			var rand_idx := randi() % gene_list.size();
@@ -510,32 +524,48 @@ func get_gene_selection():
 # Band-aid fix for the mystery crash that results from deselecting gaps
 func seq_elm_deleted(elm):
 	var is_gap = elm.is_gap();
-	if (elm in gene_selection):
+	if elm in gene_selection:
 		gene_selection.erase(elm);
 	elm.queue_free();
-	if (is_gap):
+	if is_gap:
 		get_cmsm_pair().collapse_gaps();
+
+func clear_repair_elm_selections():
+	if selected_gap != null:
+		selected_gap.pressed = false;
+		selected_gap = null;
+	
+	repair_canceled = true;
+	click_mode = "";
+	for g in cmsms.get_all_genes():
+		g.disable(true);
+	gene_selection.clear();
 
 func _on_chromes_elm_clicked(elm):
 	match (elm.type):
 		"break":
 			if (elm == selected_gap):
-				repair_canceled = true;
-				for g in gene_selection:
-					g.disable(true);
-				highlight_gap_choices();
-				gene_selection.clear();
-				
+				clear_repair_elm_selections();
+				emit_signal("gap_selected", elm, false);
 				emit_signal("gene_clicked"); # Used to continue the yields
 			else:
 				selected_gap = elm;
 				upd_repair_opts(elm);
+				emit_signal("gap_selected", elm, true);
 			for g in cmsms.gap_list:
 				g.disable(selected_gap != null && g != selected_gap);
 		"gene":
-			if (elm in gene_selection):
-				gene_selection.append(elm); # The selection is accessed via get_gene_selection()
-				emit_signal("gene_clicked");
+			match click_mode:
+				"scissors":
+					scissors_trim_elm(elm);
+					clear_repair_elm_selections();
+				"bandage":
+					bandage_elm(elm);
+					clear_repair_elm_selections();
+				_:
+					if elm in gene_selection:
+						gene_selection.append(elm); # The selection is accessed via get_gene_selection()
+						emit_signal("gene_clicked");
 
 func _on_chromes_cmsm_picked(cmsm):
 	emit_signal("cmsm_picked", cmsm);
@@ -611,14 +641,10 @@ func upd_repair_opts(gap):
 		while (sel_repair_idx < repair_type_possible.size() && !repair_type_possible[repair_type_possible.keys()[sel_repair_idx]]):
 			sel_repair_idx += 1;
 		sel_repair_type = repair_type_possible.keys()[sel_repair_idx];
-	
-	emit_signal("show_repair_opts", true);
 
-func reset_repair_opts(and_hide := false):
+func reset_repair_opts():
 	repair_type_possible = {"collapse_dupes": false, "copy_pattern": false, "join_ends": false, "repair_scissors": false};
 	repair_btn_text = {"collapse_dupes": "", "copy_pattern": "", "join_ends": "", "repair_scissors": ""};
-	if and_hide:
-		emit_signal("show_repair_opts", false);
 
 func change_selected_repair(rep_type: String):
 	sel_repair_type = rep_type;
@@ -630,7 +656,7 @@ func apply_repair_choice(type: String):
 	make_repair_choices(sel_repair_gap, type);
 
 func make_repair_choices(gap, repair_type: String):
-	emit_signal("show_repair_opts", false);
+	emit_signal("clear_gap_msg");
 	var choice_info = {};
 	var perform_repair := true;
 	match repair_type:
@@ -640,7 +666,7 @@ func make_repair_choices(gap, repair_type: String):
 			
 			var blocks_dict = gap_cmsm.find_dupe_blocks(g_idx);
 			
-			emit_signal("justnow_update", "Select the leftmost element of the pattern you will collapse.");
+			emit_signal("gap_close_msg", "Select the leftmost element of the pattern you will collapse.");
 			gene_selection.clear();
 			if (is_ai || blocks_dict.size() == 1):
 				choice_info["left"] = gap_cmsm.get_child(blocks_dict.keys()[0]);
@@ -658,7 +684,7 @@ func make_repair_choices(gap, repair_type: String):
 			var left_idx = choice_info["left"].get_index();
 			choice_info["left"].highlight_border(true, true);
 			
-			emit_signal("justnow_update", "Select the rightmost element of the pattern you will collapse.\n\nThe leftmost element is %s." % choice_info["left"].get_gene_name());
+			emit_signal("gap_close_msg", "Select the rightmost element of the pattern you will collapse.\n\nThe leftmost element is %s." % choice_info["left"].get_gene_name());
 			gene_selection.clear();
 			var sel_size_gene = null;
 			if (is_ai || blocks_dict[left_idx].size() == 1):
@@ -686,7 +712,7 @@ func make_repair_choices(gap, repair_type: String):
 				gap_cmsm.get_child(left_idx + i).highlight_border(true, true);
 				pattern_array.append(gap_cmsm.get_child(left_idx + i));
 			
-			emit_signal("justnow_update", "Select the first element of the pattern you will collapse to the right of the gap.\n\nThe pattern is: %s" % Game.pretty_element_name_list(pattern_array));
+			emit_signal("gap_close_msg", "Select the first element of the pattern you will collapse to the right of the gap.\n\nThe pattern is: %s" % Game.pretty_element_name_list(pattern_array));
 			gene_selection.clear();
 			var right_choice_opts = blocks_dict[left_idx][choice_info["size"]];
 			if (is_ai || right_choice_opts.size() == 1):
@@ -717,7 +743,7 @@ func make_repair_choices(gap, repair_type: String):
 			
 			var pairs_dict = template_cmsm.get_pairs(left_elm, right_elm);
 			
-			emit_signal("justnow_update", "Select the leftmost element of the pattern you will copy.");
+			emit_signal("gap_close_msg", "Select the leftmost element of the pattern you will copy.");
 			gene_selection.clear();
 			if (is_ai || pairs_dict.size() == 1):
 				choice_info["left"] = template_cmsm.get_child(pairs_dict.keys()[0]);
@@ -734,7 +760,7 @@ func make_repair_choices(gap, repair_type: String):
 				return false;
 			choice_info["left"].highlight_border(true, true);
 			
-			emit_signal("justnow_update", "Select the rightmost element of the pattern you will copy.\n\nThe leftmost element is %s." % choice_info["left"].get_gene_name());
+			emit_signal("gap_close_msg", "Select the rightmost element of the pattern you will copy.\n\nThe leftmost element is %s." % choice_info["left"].get_gene_name());
 			gene_selection.clear();
 			var right_idxs = pairs_dict[choice_info["left"].get_index()];
 			if (is_ai || right_idxs.size() == 1):
@@ -751,20 +777,12 @@ func make_repair_choices(gap, repair_type: String):
 			if (choice_info["right"] == null):
 				choice_info["left"].disable(true);
 				return false;
-		"repair_scissors":
-			perform_repair = false;
-			emit_signal("justnow_update", "Choose up to %d more elements to remove. Click on the gap again to end early." % total_scissors_left);
-			scissors(true, false, "get_genes_next_to_elm", [gap]);
-			yield(self, "scissors_ended");
-			if selected_gap != null:
-				selected_gap.pressed = false;
-				selected_gap.highlight_border(true, true);
-			highlight_gap_choices();
 	if perform_repair:
 		repair_gap(gap, repair_type, choice_info);
 
 var repair_canceled = false;
 func repair_gap(gap, repair_type, choice_info = {}):
+	emit_signal("clear_gap_msg");
 	if (repair_type_possible[repair_type]):
 		reset_repair_opts();
 		var cmsm = gap.get_parent();
@@ -831,7 +849,7 @@ func repair_gap(gap, repair_type, choice_info = {}):
 					yield(cmsms.close_gap(gap), "completed");
 				else:
 					cmsms.close_gap(gap);
-				emit_signal("justnow_update", "Gap at %d, %d closed: collapsed %d genes and ended due to %s." % (gap_pos_disp + [remove_count, ended_due_to]));
+				emit_signal("gap_close_msg", "Gap at %d, %d closed: collapsed %d genes and ended due to %s." % (gap_pos_disp + [remove_count, ended_due_to]));
 				
 				for times in range(remove_count):
 					use_resources("repair_cd");
@@ -849,9 +867,9 @@ func repair_gap(gap, repair_type, choice_info = {}):
 					correct_str = " One of the genes at the repair site was corrected to match its template gene.";
 				match (repair_roll_storage["copy_pattern"][gap]):
 					0:
-						emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome without complications.%s" % (gap_pos_disp + [left_id, right_id, correct_str]));
+						emit_signal("gap_close_msg", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome without complications.%s" % (gap_pos_disp + [left_id, right_id, correct_str]));
 					1:
-						emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome along with intervening genes.%s" % (gap_pos_disp + [left_id, right_id, correct_str]));
+						emit_signal("gap_close_msg", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome along with intervening genes.%s" % (gap_pos_disp + [left_id, right_id, correct_str]));
 						var copied_section = range(choice_info["left"].get_index()+1, choice_info["right"].get_index());
 						if (do_yields):
 							for i in copied_section:
@@ -864,7 +882,7 @@ func repair_gap(gap, repair_type, choice_info = {}):
 						Unlocks.add_count("cp_duped_genes", copied_section.size());
 					2, 3, 4:
 						gene_selection = cmsm.get_elms_around_pos(g_idx, true);
-						emit_signal("justnow_update", "Trying to copy the pattern from the other chromosome, but 1 gene is harmed; choose which.");
+						emit_signal("gap_close_msg", "Trying to copy the pattern from the other chromosome, but 1 gene is harmed; choose which.");
 						if (is_ai):
 							if (gene_selection[0].mode == "ate" || gene_selection[1].mode == "te"):
 								gene_selection.append(gene_selection[0]);
@@ -891,7 +909,7 @@ func repair_gap(gap, repair_type, choice_info = {}):
 									damage_str = "received a " + gene.evolve_by_name("major_down");
 								4: # Minor down
 									damage_str = "received a " + gene.evolve_by_name("minor_down");
-							emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome. During the repair, a %s gene %s.%s" % (gap_pos_disp + [left_id, right_id, g_id, damage_str, correct_str]));
+							emit_signal("gap_close_msg", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome. During the repair, a %s gene %s.%s" % (gap_pos_disp + [left_id, right_id, g_id, damage_str, correct_str]));
 					5, 6, 7:
 						var gene = right_break_gene;
 						if (randi() % 2):
@@ -909,7 +927,7 @@ func repair_gap(gap, repair_type, choice_info = {}):
 								boon_str = "received a " + gene.evolve_by_name("major_up");
 							7: # Minor up
 								boon_str = "received a " + gene.evolve_by_name("minor_up");
-						emit_signal("justnow_update", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome. During the repair, a %s gene %s.%s" % (gap_pos_disp + [left_id, right_id, gene.get_gene_name(), boon_str, correct_str]));
+						emit_signal("gap_close_msg", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome. During the repair, a %s gene %s.%s" % (gap_pos_disp + [left_id, right_id, gene.get_gene_name(), boon_str, correct_str]));
 				if !repair_canceled:
 					if (do_correction):
 						var correct_targ = right_break_gene;
@@ -964,7 +982,7 @@ func repair_gap(gap, repair_type, choice_info = {}):
 					if keep_gene.is_essential() && rem_gene.get_merge_priority() >= 0:
 						keep_gene.merge_with(rem_gene);
 						cmsms.remove_elm(rem_gene, false);
-						emit_signal("justnow_update", "Joined ends for the gap at %d, %d; the %s and %s genes merged." % (gap_pos_disp+ [left_id, right_id]));
+						emit_signal("gap_close_msg", "Joined ends for the gap at %d, %d; the %s and %s genes merged." % (gap_pos_disp+ [left_id, right_id]));
 					else:
 						repair_roll_storage["join_ends"][gap] = 0;
 				match (repair_roll_storage["join_ends"][gap]):
@@ -982,12 +1000,12 @@ func repair_gap(gap, repair_type, choice_info = {}):
 							cmsm.move_elm(elm, leftmost_idx);
 							elm.reverse_code();
 						
-						emit_signal("justnow_update", "Joined ends for the gap at %d, %d; resulted in an inversion." % gap_pos_disp);
+						emit_signal("gap_close_msg", "Joined ends for the gap at %d, %d; resulted in an inversion." % gap_pos_disp);
 					0: # No complications
-						emit_signal("justnow_update", "Joined ends for the gap at %d, %d without complications." % gap_pos_disp);
+						emit_signal("gap_close_msg", "Joined ends for the gap at %d, %d without complications." % gap_pos_disp);
 					1, 2, 3:
 						gene_selection = cmsm.get_elms_around_pos(g_idx, true);
-						emit_signal("justnow_update", "Joining ends as a last-ditch effort, but a gene is harmed; choose which.");
+						emit_signal("gap_close_msg", "Joining ends as a last-ditch effort, but a gene is harmed; choose which.");
 						if (is_ai):
 							if (gene_selection[0].mode == "ate" || gene_selection[1].mode == "te"):
 								gene_selection.append(gene_selection[0]);
@@ -1014,10 +1032,10 @@ func repair_gap(gap, repair_type, choice_info = {}):
 									damage_str = "received a " + gene.evolve_by_name("major_down");
 								3: # Minor down
 									damage_str = "received a " + gene.evolve_by_name("minor_down");
-							emit_signal("justnow_update", "Joined ends for the gap at %d, %d; during the repair, a %s gene %s." % (gap_pos_disp + [g_id, damage_str]));
+							emit_signal("gap_close_msg", "Joined ends for the gap at %d, %d; during the repair, a %s gene %s." % (gap_pos_disp + [g_id, damage_str]));
 					4, 5, 6:
 						var gene = right_break_gene;
-						if (randi()%2):
+						if randi() % 2:
 							gene = left_break_gene;
 						
 						var boon_str = "";
@@ -1032,7 +1050,7 @@ func repair_gap(gap, repair_type, choice_info = {}):
 								boon_str = "received a " + gene.evolve_by_name("major_up");
 							6: # Minor up
 								boon_str = "received a " + gene.evolve_by_name("minor_up");
-						emit_signal("justnow_update", "Joined ends for the gap at %d, %d; during the repair, a %s gene %s." % (gap_pos_disp + [gene.get_gene_name(), boon_str]));
+						emit_signal("gap_close_msg", "Joined ends for the gap at %d, %d; during the repair, a %s gene %s." % (gap_pos_disp + [gene.get_gene_name(), boon_str]));
 				if !repair_canceled:
 					if (do_yields):
 						yield(cmsms.close_gap(gap), "completed");
@@ -1041,22 +1059,37 @@ func repair_gap(gap, repair_type, choice_info = {}):
 					use_resources("repair_je")
 		
 		if !repair_canceled:
+			sel_repair_gap = null;
 			gene_selection = original_select;
 			gene_selection.erase(gap);
 			highlight_gap_choices();
 
 func highlight_gap_choices():
 	cmsms.highlight_genes(gene_selection, false);
-	reset_repair_opts(true);
+	reset_repair_opts();
 	selected_gap = null;
 	cmsms.highlight_gaps();
-	var gap_text = "";
+	var gap_text := "";
 	for g in cmsms.get_gap_list():
 		gap_text += "Chromosome %d needs a repair at %d.\n" % g.get_position_display();
+	if gap_text.empty():
+		gap_text = "There are no breaks present in your chromosomes!";
 	emit_signal("updated_gaps", cmsms.gap_list.size() > 0, gap_text);
 	if (is_ai && cmsms.gap_list.size() > 0):
 		upd_repair_opts(cmsms.gap_list[0]);
 		auto_repair();
+
+func highlight_dmg_genes(mode: String):
+	match mode:
+		"scissors":
+			start_scissors("get_damaged_genes");
+		"bandage":
+			start_bandage();
+		_:
+			print("Error! Trying to highlight damaged genes for unknown purpose: %s" % mode);
+
+func highlight_gap_end_genes():
+	start_scissors("get_genes_around_gaps");
 
 func get_all_genes(include_past_two_cmsms = false):
 	return cmsms.get_all_genes(include_past_two_cmsms);
@@ -1194,51 +1227,96 @@ func recombination():
 				cont_recombo = false
 				emit_signal("doing_work", false);
 
-var doing_scissors := false;
+var click_mode := "";""
+# Expects an "is_doing_<mode>() -> bool" function
+func _set_clickmode_on_criteria(to_doing: bool, mode: String) -> void:
+	if call("is_doing_%s" % mode) != to_doing:
+		if to_doing:
+			click_mode = mode;
+		else:
+			click_mode = "";
+
+func set_doing_scissors(is_doing: bool) -> void:
+	_set_clickmode_on_criteria(is_doing, "scissors");
+func is_doing_scissors() -> bool:
+	return click_mode == "scissors";
+
+func set_doing_bandage(is_doing: bool) -> void:
+	_set_clickmode_on_criteria(is_doing, "bandage");
+func is_doing_bandage() -> bool:
+	return click_mode == "bandage";
+
 var total_scissors_left := 0;
-func scissors(obey_limit, create_gaps := true, cmsms_group_callback := "get_damaged_genes", callback_args := []):
-	if !doing_scissors:
-		doing_scissors = true;
-	
-	if selected_gap == null:
-		gene_selection.clear();
-	else:
-		gene_selection = [selected_gap];
-	gene_selection += cmsms.callv(cmsms_group_callback, callback_args);
-	emit_signal("doing_work", false);
-	if !gene_selection.empty():
-		cmsms.highlight_genes(gene_selection);
-		yield(self, "gene_clicked");
-		# Because this step is optional, by the time a gene is clicked, it might be a different turn
-		if doing_scissors:
-			var rem_elm = get_gene_selection();
-			if rem_elm == selected_gap:
-				emit_signal("scissors_ended");
-			else:
-				var cmsm = rem_elm.get_cmsm();
-				if (do_yields):
-					if create_gaps:
-						yield(cmsm.remove_elm_create_gap(rem_elm), "completed");
-					else:
-						yield(cmsm.remove_elm(rem_elm), "completed");
-				else:
-					if create_gaps:
-						cmsm.remove_elm_create_gap(rem_elm);
-					else:
-						cmsm.remove_elm(rem_elm);
-				cmsms.collapse_gaps();
-				if obey_limit:
-					total_scissors_left -= 1;
-				if doing_scissors:
-					if obey_limit && get_scissors_remaining() <= 0:
-						emit_signal("scissors_ended");
-					else:
+func start_scissors(cmsms_group_callback: String, callback_args := []):
+	if !is_doing_scissors():
+		gene_selection = cmsms.callv(cmsms_group_callback, callback_args);
+		set_doing_scissors(!gene_selection.empty());
+		if is_doing_scissors():
+			cmsms.highlight_genes(gene_selection);
+
+func scissors_trim_elm(rem_elm) -> void:
+	if is_doing_scissors():
+		var cmsm = rem_elm.get_cmsm();
+		total_scissors_left -= 1;
+		if get_scissors_remaining() <= 0:
+			emit_signal("scissors_ended");
+			set_doing_scissors(false);
+		if do_yields:
+			yield(cmsm.remove_elm_create_gap(rem_elm), "completed");
+		else:
+			cmsm.remove_elm_create_gap(rem_elm);
+		cmsms.collapse_gaps();
+		emit_signal("gene_trimmed", rem_elm);
+
+func start_bandage():
+	if !is_doing_bandage():
+		gene_selection = cmsms.get_damaged_genes();
+		set_doing_bandage(!gene_selection.empty());
+		if is_doing_bandage():
+			cmsms.highlight_genes(gene_selection);
+
+func bandage_elm(rep_elm) -> void:
+	if is_doing_bandage():
+		var g_pos_disp = rep_elm.get_position_display();
+		var g_id = rep_elm.get_gene_name();
+		
+		var roll = roll_chance("repair_dmg_gene");
+		match roll:
+			0: # No complications
+				emit_signal("bandage_msg", "Repaired the %s gene at %d, %d without complications." % ([g_id] + g_pos_disp));
+			1, 2, 3:
+				var damage_str = "";
+				match roll:
+					1: # Lose gene
+						damage_str = "was lost"
 						if (do_yields):
-							yield(scissors(obey_limit, create_gaps, cmsms_group_callback, callback_args), "completed");
+							yield(cmsms.remove_elm(rep_elm), "completed");
 						else:
-							scissors(obey_limit, create_gaps, cmsms_group_callback, callback_args);
-	elif do_yields:
-		yield(get_tree(), "idle_frame");
+							cmsms.remove_elm(rep_elm);
+						rep_elm = null;
+					2: # Major down
+						damage_str = "received a " + rep_elm.evolve_by_name("major_down");
+					3: # Minor down
+						damage_str = "received a " + rep_elm.evolve_by_name("minor_down");
+				emit_signal("bandage_msg", "Attempted to repair the %s gene at %d, %d; it %s." % ([g_id] + g_pos_disp + [damage_str]));
+			4, 5, 6:
+				var boon_str = "";
+				match roll:
+					4: # Copy gene
+						boon_str = "was duplicated"
+						if (do_yields):
+							yield(cmsms.dupe_elm(rep_elm), "completed");
+						else:
+							cmsms.dupe_elm(rep_elm);
+					5: # Major up
+						boon_str = "received a " + rep_elm.evolve_by_name("major_up");
+					6: # Minor up
+						boon_str = "received a " + rep_elm.evolve_by_name("minor_up");
+				emit_signal("bandage_msg", "Attempted to repair the %s gene at %d, %d; it %s." % ([g_id] + g_pos_disp + [boon_str]));
+		
+		if rep_elm != null:
+			rep_elm.damage_gene(false);
+		emit_signal("gene_bandaged", rep_elm);
 
 func prune_cmsms(final_num, add_to_pool = true):
 	while (cmsms.get_cmsms().size() > final_num):
@@ -1254,6 +1332,14 @@ func replicate(idx):
 	else:
 		perform_anims(false);
 		cmsms.replicate_cmsms([0, 1]);
+		
+		var num_extend_blanks := int(floor(get_behavior_profile().get_skill_count("Replication", "extend_cmsm")));
+		var heavy_cmsm := 1 if randf() > 0.5 else 3;
+		var light_cmsm := 3 if heavy_cmsm == 1 else 1;
+		var heavy_count := int(ceil(num_extend_blanks * 0.5));
+		cmsms.extend_with_blanks(heavy_cmsm, heavy_count);
+		cmsms.extend_with_blanks(light_cmsm, num_extend_blanks - heavy_count);
+		
 		cmsms.hide_all(true);
 		
 		if idx == 0 and !has_done_mitosis and Settings.tutorial():
@@ -1336,14 +1422,11 @@ func get_missing_ess_classes():
 			missing.append(k);
 	return missing;
 
-#func get_accumulated_breaks() -> int:
-#	return break_count
-#
-#func accumulate_environmental_break_count():
-#	break_count += get_rand_environmental_break_count()
-#
-#func reset_break_count():
-#	break_count = 0
+func get_damaged_genes():
+	return cmsms.get_damaged_genes();
+
+func has_damaged_genes():
+	return !get_damaged_genes().empty();
 
 func get_rand_environmental_break_count() -> int:
 	var hazards = current_tile.hazards;
@@ -1365,58 +1448,46 @@ func get_recombos_per_turn() -> int:
 	return int(floor(behavior_profile.get_behavior("Replication")));
 
 func adv_turn(round_num, turn_idx):
-	doing_scissors = false;
+	click_mode = "";
 	cmsms.highlight_genes(gene_selection, false);
 	gene_selection.clear();
 	if (died_on_turn == -1):
 		match (Game.get_turn_type()):
 			Game.TURN_TYPES.Map:
-				emit_signal("justnow_update", "Welcome back!");
-			Game.TURN_TYPES.NewTEs:
+				emit_signal("justnow_update", "Get your genome in order!");
+			Game.TURN_TYPES.TEJump:
 				emit_signal("doing_work", true);
+				emit_signal("transposon_activity", true);
+				
+				# Add new TEs
+				Game.SeqElm_time_limit = Game.TE_INSERT_TIME_LIMIT;
 				var min_max = Settings.transposons_per_turn()
 				var num_ates = min_max[Settings.MIN] + randi() % (min_max[Settings.MAX] - min_max[Settings.MIN] + 1);
 				if (do_yields):
 					yield(gain_ates(num_ates), "completed");
 				else:
 					gain_ates(num_ates);
-				emit_signal("doing_work", false);
-			Game.TURN_TYPES.TEJump:
-				emit_signal("doing_work", true);
-				emit_signal("transposon_activity", true);
+				
+				# Do TE activity
+				Game.SeqElm_time_limit = Game.TE_JUMP_TIME_LIMIT;
 				if (do_yields):
 					yield(jump_ates(), "completed");
 				else:
 					jump_ates();
+				
 				emit_signal("transposon_activity", false);
 				emit_signal("doing_work", false);
-			Game.TURN_TYPES.RepairBreaks:
+			Game.TURN_TYPES.RepairDmg:
 				total_scissors_left = get_scissors_per_turn();
 				repair_roll_storage = {"copy_pattern": {}, "join_ends": {}};
-				var num_gaps = cmsms.gap_list.size();
-				if (num_gaps == 0):
-					emit_signal("justnow_update", "No gaps present.");
-				elif (num_gaps == 1):
-					emit_signal("justnow_update", "1 gap needs repair.");
-				else:
-					emit_signal("justnow_update", "%d gaps need repair." % num_gaps);
-				highlight_gap_choices();
+				emit_signal("clear_gap_msg");
+				emit_signal("show_repair_opts", true);
 			Game.TURN_TYPES.EnvironmentalDamage:
 				emit_signal("doing_work", true);
 				if (do_yields):
 					yield(environmental_damage(), "completed");
 				else:
 					environmental_damage();
-				emit_signal("doing_work", false);
-			Game.TURN_TYPES.RemoveDamage:
-				if cmsms.get_damaged_genes().empty():
-					emit_signal("justnow_update", "No damaged genes present.");
-				else:
-					emit_signal("justnow_update", "If you want, you can remove damaged genes. They will leave behind gaps, which will need to be repaired.");
-					if (do_yields):
-						yield(scissors(false), "completed");
-					else:
-						scissors(false);
 				emit_signal("doing_work", false);
 			Game.TURN_TYPES.Recombination:
 				recombo_chance = 1;
@@ -2415,8 +2486,6 @@ func eject_cfp_resource(resource, amount = 1):
 								"hazards": current_tile["hazards"]
 							}
 		use_resources("cfp_ejection", amount)
-
-	pass
 
 func get_cost_mult(action) -> float:
 	if Unlocks.has_mechanic_unlock("resource_costs"):

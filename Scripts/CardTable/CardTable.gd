@@ -21,13 +21,17 @@ var wait_on_select = false;
 
 func _ready():
 	visible = false; # Prevents an auto-turn before the game begins
-	Game.card_table = self;
 	orgn.setup(self);
 	reset_status_bar();
 	$ViewMap.texture_normal = load(Game.get_large_cell_path(Game.current_cell_string))
 	
 	connect("next_turn", orgn, "adv_turn");
 	orgn.connect("energy_changed", energy_bar, "_on_Organism_energy_changed")
+	
+	$RepairTabs.set_tab_title(0, "Repair Breaks");
+	$RepairTabs.set_tab_title(1, "Trim Damaged Genes");
+	$RepairTabs.set_tab_title(2, "Trim Genes from Breaks");
+	$RepairTabs.set_tab_title(3, "Fix Damaged Genes");
 	
 	$EnergyBar.MAX_ENERGY = orgn.MAX_ENERGY
 
@@ -111,8 +115,7 @@ const LOCKABLE_REPAIRS = ["collapse_dupes", "copy_pattern"];
 const REP_TYPE_TO_IDX = {
 	"collapse_dupes": 0,
 	"copy_pattern": 1,
-	"join_ends": 2,
-	"repair_scissors": 3
+	"join_ends": 2
 };
 var REP_IDX_TO_TYPE := {};
 func repair_type_to_idx(type: String) -> int:
@@ -122,23 +125,96 @@ func repair_idx_to_type(idx: int) -> String:
 		for k in REP_TYPE_TO_IDX:
 			REP_IDX_TO_TYPE[REP_TYPE_TO_IDX[k]] = k;
 	
-	return REP_IDX_TO_TYPE.get(idx, "");
+	return REP_IDX_TO_TYPE.get(idx, "join_ends");
+
+func upd_repair_lock_display():
+	for rep_type in LOCKABLE_REPAIRS:
+		var img_path : String = "res://Assets/Images/icons/" + rep_type;
+		if !Unlocks.has_repair_unlock(rep_type):
+			img_path += "_locked";
+		$RepairTabs/pnl_repair_choices/hsplit/ilist_choices.set_item_icon(REP_TYPE_TO_IDX[rep_type], load(img_path + ".png"));
+	
+	var num_left_txt = "\n\nThe number of genes you can remove is based on your Disassembly skill.\nYou can remove %d more this turn." % orgn.total_scissors_left;
+	var trim_dmg_lbl = $RepairTabs/pnl_rem_dmg/LblInstr;
+	trim_dmg_lbl.text = "\n\n";
+	if orgn.get_behavior_profile().has_skill("Deconstruction", "trim_dmg_genes"):
+		$RepairTabs.set_tab_icon(1, null);
+		trim_dmg_lbl.text += "Click a damaged gene to remove it.";
+	else:
+		$RepairTabs.set_tab_icon(1, load("res://Assets/Images/icons/padlock_small.png"));
+		trim_dmg_lbl.text += "You are lacking the required '%s' Disassembly skill to use this function." % Skills.get_skill_desc("Deconstruction", "trim_dmg_genes");
+	trim_dmg_lbl.text += num_left_txt;
+	
+	var trim_end_lbl = $RepairTabs/pnl_rem_sides/LblInstr;
+	trim_end_lbl.text = "\n\n";
+	if orgn.get_behavior_profile().has_skill("Deconstruction", "trim_gap_genes"):
+		$RepairTabs.set_tab_icon(2, null);
+		trim_end_lbl.text += "Click a gene on either ends of a break to remove the gene.";
+	else:
+		$RepairTabs.set_tab_icon(2, load("res://Assets/Images/icons/padlock_small.png"));
+		trim_end_lbl.text += "You are lacking the required '%s' Disassembly skill to use this function." % Skills.get_skill_desc("Deconstruction", "trim_gap_genes");
+	trim_end_lbl.text += num_left_txt;
 
 func show_repair_opts(show):
-	if $pnl_repair_choices.visible != show:
-		close_extra_menus($pnl_repair_choices);
-	if (show):
-		var rep_list = $pnl_repair_choices/hsplit/ilist_choices;
-		
-		for rep_type in LOCKABLE_REPAIRS:
-			var img_path : String = "res://Assets/Images/icons/" + rep_type;
-			if !Unlocks.has_repair_unlock(rep_type):
-				img_path += "_locked";
-			rep_list.set_item_icon(REP_TYPE_TO_IDX[rep_type], load(img_path + ".png"));
-		
+	if show:
+		upd_repair_lock_display();
+		$RepairTabs/pnl_bandage_dmg/vbox/scroll/RTLRepairResult.text = "";
+		yield(get_tree(), "idle_frame");
+		show_repair_tab(0);
+	if $RepairTabs.visible != show:
+		close_extra_menus($RepairTabs, true);
+
+func _on_Organism_gap_selected(_gap, sel: bool):
+	show_repair_types(sel);
+
+func _on_Organism_gene_trimmed(_gene):
+	_refresh_repair_tab();
+
+func _on_Organism_gene_bandaged(_gene):
+	_refresh_repair_tab();
+
+func _refresh_repair_tab():
+	upd_repair_lock_display();
+	yield(get_tree(), "idle_frame");
+	show_repair_tab($RepairTabs.current_tab);
+
+func upd_gap_select_instruction_visibility():
+	$RepairTabs/pnl_repair_choices/vbox/LblInstr.visible = orgn.selected_gap == null;
+
+func show_repair_types(show: bool) -> void:
+	upd_repair_lock_display();
+	var rep_pnl = $RepairTabs/pnl_repair_choices/hsplit;
+	rep_pnl.visible = show;
+	$RepairTabs/pnl_repair_choices/vbox.visible = !show;
+	if show:
 		var sel_idx := repair_type_to_idx(orgn.sel_repair_type);
-		rep_list.select(sel_idx);
+		$RepairTabs/pnl_repair_choices/hsplit/ilist_choices.select(sel_idx);
 		upd_repair_desc(sel_idx);
+
+func _on_RepairTabs_tab_changed(idx: int):
+	show_repair_tab(idx);
+
+func show_repair_tab(tab_idx: int, upd_locks_disp := true) -> void:
+	$RepairTabs.current_tab = tab_idx;
+	if upd_locks_disp:
+		upd_repair_lock_display();
+	
+	orgn.clear_repair_elm_selections();
+	show_repair_types(false);
+	match tab_idx:
+		0:
+			orgn.highlight_gap_choices();
+		1, 2:
+			if orgn.total_scissors_left > 0:
+				continue;
+		1:
+			if orgn.get_behavior_profile().has_skill("Deconstruction", "trim_dmg_genes"):
+				orgn.highlight_dmg_genes("scissors");
+		2:
+			if orgn.get_behavior_profile().has_skill("Deconstruction", "trim_gap_genes"):
+				orgn.highlight_gap_end_genes();
+		3:
+			orgn.highlight_dmg_genes("bandage");
 
 func _on_Organism_show_repair_opts(show):
 	show_repair_opts(show);
@@ -157,28 +233,24 @@ func get_repair_desc(type):
 			action_name = "repair_cp";
 		"join_ends":
 			action_name = "repair_je";
-		"repair_scissors":
-			action_name = "repair_scissors";
-			var cuts_per_turn = orgn.get_scissors_per_turn();
-			var cuts_left = orgn.get_scissors_remaining();
-			tooltip %= [cuts_per_turn, "" if cuts_per_turn == 1 else "s", cuts_left];
 		var _err_idx:
-			return "This is an error! You picked an option (%s) we are not familiar with!" % _err_idx;
+			return "Error! Picked an invalid repair option (%s)!" % _err_idx;
 	return REPAIR_DESC_FORMAT % [orgn.get_cost_string(action_name), tooltip];
 
 func upd_repair_desc(idx):
 	var type = repair_idx_to_type(idx);
-	var btn = $pnl_repair_choices/hsplit/vsplit/btn_apply_repair;
+	var btn = $RepairTabs/pnl_repair_choices/hsplit/vsplit/btn_apply_repair;
 	orgn.change_selected_repair(type);
 	btn.disabled = !orgn.repair_type_possible[type];
 	btn.text = orgn.repair_btn_text[type];
 	if btn.text.empty():
 		btn.text = "Repair";
-	$pnl_repair_choices/hsplit/vsplit/scroll/lbl_choice_desc.text = get_repair_desc(type);
+	$RepairTabs/pnl_repair_choices/hsplit/vsplit/scroll/lbl_choice_desc.text = get_repair_desc(type);
 
 func _on_btn_apply_repair_pressed():
-	$pnl_saveload.new_save(Game.get_save_str());
+	$pnl_saveload.new_save(SaveExports.get_save_str(self));
 	orgn.auto_repair();
+	show_repair_types(false);
 
 func _add_justnow_bbcode(bbcode : String, tags := {}):
 	if !tags.has("align"):
@@ -193,13 +265,27 @@ func _add_justnow_bbcode(bbcode : String, tags := {}):
 func _on_Organism_justnow_update(text):
 	_add_justnow_bbcode("\n%s\n" % text);
 
+func _on_Organism_gap_close_msg(text):
+	var t = "\n%s\n" % text;
+	_add_justnow_bbcode(t);
+	$RepairTabs/pnl_repair_choices/vbox/scroll/RTLRepairResult.text += t;
+
+func _on_Organism_clear_gap_msg():
+	$RepairTabs/pnl_repair_choices/vbox/scroll/RTLRepairResult.text = "";
+
+func _on_Organism_bandage_msg(text):
+	$RepairTabs/pnl_bandage_dmg/vbox/scroll/RTLRepairResult.text += "\n%s\n" % text;
+
 func _on_Organism_updated_gaps(gaps_exist, gap_text):
 	has_gaps = gaps_exist;
-	_add_justnow_bbcode(gap_text);
+	if !$RepairTabs/pnl_repair_choices/vbox/LblInstr.visible:
+		upd_gap_select_instruction_visibility();
+		_on_Organism_gap_close_msg(gap_text);
 	check_if_ready();
 
 func _on_ilist_choices_item_activated(idx):
 	orgn.apply_repair_choice(idx);
+	show_repair_types(false);
 
 # Next Turn button and availability
 
@@ -229,7 +315,7 @@ func adv_turn():
 	_add_justnow_bbcode("\n\n%s" % Game.get_turn_txt(), {"color": Color(1, 0.75, 0)});
 	
 	emit_signal("next_turn", Game.round_num, Game.turn_idx);
-	$pnl_saveload.new_save(Game.get_save_str());
+	$pnl_saveload.new_save(SaveExports.get_save_str(self));
 
 func _on_animating_changed(state):
 	wait_on_anim = state;
@@ -240,13 +326,11 @@ func _on_Organism_doing_work(working):
 	check_if_ready();
 
 func _on_Organism_died(org, reason):
-	Game.round_num = 0
 	nxt_btn.visible = false;
-	$button_grid/btn_dead_restart.visible = true;
-	$button_grid/btn_dead_quit.visible = true;
 	$button_grid/btn_qtmenu.visible = false;
 	$button_grid/btn_nxt.visible = false;
 	death_descr = reason;
+	show_death_screen();
 
 func show():
 	.show();
@@ -261,7 +345,6 @@ func set_map_btn_texture(texture_path: String) -> void:
 	$ViewMap.texture_disabled = tex;
 	$ViewMap.texture_pressed = tex;
 
-const TURNS_WITHOUT_AUTO_CONTINUE = [ Game.TURN_TYPES.RemoveDamage];
 func check_if_ready():
 	var end_mapturn_on_mapscreen = Game.get_turn_type() == Game.TURN_TYPES.Map && Unlocks.has_turn_unlock(Game.TURN_TYPES.Map);
 	
@@ -277,13 +360,14 @@ func check_if_ready():
 	match Game.get_turn_type():
 		Game.TURN_TYPES.Recombination:
 			auto_continue = false;
-		Game.TURN_TYPES.RemoveDamage:
-			auto_continue = orgn.gene_selection.empty();
-	# Continue automatically
+		Game.TURN_TYPES.RepairDmg:
+			auto_continue = !orgn.has_damaged_genes();
+	
+	# Continue automatically if we can and should
 	if !nxt_btn.disabled && auto_continue:
 		$AutoContinue.start();
 
-onready var central_menus := [$pnl_saveload, ph_filter_panel, $pnl_bugreport, justnow_ctl, $pnl_repair_choices, $pnl_reproduce];
+onready var central_menus := [$pnl_saveload, ph_filter_panel, $pnl_bugreport, justnow_ctl, $RepairTabs, $pnl_reproduce];
 onready var default_menu : Control = justnow_ctl;
 func close_extra_menus(toggle_menu: Control = null, make_default := false) -> void:
 	var restore_default = toggle_menu == null;
@@ -310,8 +394,9 @@ func hide_chaos_anim():
 	$pnl_chaos/Anim.play("hide");
 
 func _on_chaos_anim_finished(anim_name: String):
-	if anim_name == "hide":
-		close_extra_menus();
+#	if anim_name == "hide":
+#		show_replicate_opts(true);
+	pass;
 
 func play_recombination_slides():
 	var slides = load("res://Scenes/CardTable/Recombination.tscn").instance()
@@ -361,25 +446,21 @@ func quit_to_menu():
 	Game.restart_game()
 	get_tree().change_scene("res://Scenes/MainMenu/TitleScreen.tscn")
 
-const OVERVIEW_FORMAT = "You survived for %d rounds.\nYou produced %d progeny.\nYou repaired %d gaps.\nYour organism %s.";
+const OVERVIEW_FORMAT = "Your organism %s.\n\nYou survived for %d rounds.\nYou produced %d progeny.\nYou repaired %d gaps.";
 var death_descr := "died";
-func _on_btn_dead_quit_pressed():
+func show_death_screen():
 	var gaps_repaired := 0;
 	for rtype in ["repair_cp", "repair_cd", "repair_je"]:
 		gaps_repaired += Unlocks.get_count(rtype);
-	$pnl_dead_overview/LblOverview.text = OVERVIEW_FORMAT % [Game.round_num, orgn.num_progeny, gaps_repaired, death_descr]
+	$pnl_dead_overview/HSplitContainer/Panel/LblOverview.text = OVERVIEW_FORMAT % [death_descr, Game.round_num, orgn.num_progeny, gaps_repaired]
 	$pnl_dead_overview.visible = true;
-
-func _on_btn_dead_restart_pressed():
-	Game.restart_game();
-	get_tree().reload_current_scene();
 
 func _on_Organism_finished_replication():
 	reset_status_bar();
 	status_bar.visible = true;
 
 func refresh_visible_options():
-	if ($pnl_repair_choices.visible):
+	if ($RepairTabs/pnl_repair_choices/hsplit.visible):
 		orgn.upd_repair_opts(orgn.sel_repair_gap);
 		upd_repair_desc(orgn.sel_repair_idx);
 	if ($pnl_reproduce.visible):

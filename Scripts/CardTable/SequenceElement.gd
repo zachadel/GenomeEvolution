@@ -424,7 +424,7 @@ func get_skill_evolve_chance():
 	return SKILL_EVOLVE_CHANCE;
 
 func has_skill(skill_behavior: String, skill_name: String) -> bool:
-	return skills.get(skill_behavior, []).has(skill_name);
+	return skills.get(skill_behavior, {}).get(skill_name, 0) > 0;
 
 func get_skill_profile(behavior := {}) -> Dictionary:
 	if behavior.empty():
@@ -436,6 +436,8 @@ func get_skill_profile(behavior := {}) -> Dictionary:
 			skill_prof[k] = skills[k];
 	return skill_prof;
 
+# Used in save/loads
+# Identical to the "skills" var but it excludes any behaviors without skills
 func get_skill_bare_dict() -> Dictionary:
 	var skill_bdict := {};
 	for k in skills:
@@ -443,6 +445,7 @@ func get_skill_bare_dict() -> Dictionary:
 			skill_bdict[k] = skills[k];
 	return skill_bdict;
 
+# Used in save/loads
 func set_skills(skill_dict: Dictionary) -> void:
 	for k in skill_dict:
 		skills[k] = skill_dict[k];
@@ -452,81 +455,107 @@ var just_evolved_skill := false;
 var latest_skill_evol := "";
 var latest_beh_evol := "";
 
+func gain_specific_skill(behavior: String, skill: String) -> void:
+	if !skills.has(behavior):
+		skills[behavior] = {};
+	
+	if skills[behavior].has(skill):
+		skills[behavior][skill] += 1;
+	else:
+		skills[behavior][skill] = 1;
+
 func evolve_skill(behave_key: String, gain := true) -> void:
 	if gain:
 		var new_skill := Skills.get_random_skill(behave_key);
-		if !new_skill.empty() && !has_skill(behave_key, new_skill):
+		if !new_skill.empty():
 			just_evolved_skill = true;
 			latest_skill_evol = new_skill;
 			
 			if !skills.has(behave_key):
-				skills[behave_key] = [];
-			skills[behave_key].append(new_skill);
+				skills[behave_key] = {};
+			
+			gain_specific_skill(behave_key, new_skill);
 	else:
-		if !skills.get(behave_key, []).empty():
-			var rand_skill_idx : int = randi() % skills[behave_key].size();
+		if !skills.get(behave_key, {}).empty():
+			var rand_skill : String = skills[behave_key].keys()[randi() % skills[behave_key].size()];
 			
 			just_evolved_skill = true;
-			latest_skill_evol = skills[behave_key][rand_skill_idx];
+			latest_skill_evol = skills[behave_key][rand_skill];
 			
-			skills[behave_key].remove(rand_skill_idx);
+			skills[behave_key].remove(rand_skill);
 			if skills[behave_key].empty():
 				skills.erase(behave_key);
 
-func evolve_new_behavior(gain : bool) -> void:
-	var behave_key : String = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
+func is_purely_helper() -> bool:
+	if ess_behavior.get("Helper", 0) <= 0:
+		return false;
+	for b in ess_behavior:
+		if b != "Helper" && ess_behavior[b] > 0:
+			return false;
+	return true;
+
+func evolve_new_behavior(gain: bool, behavior_key := "") -> void:
+	var explicit_key := !behavior_key.empty();
+	if !explicit_key:
+		behavior_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
 	
 	just_evolved_skill = false;
-	if randf() <= get_skill_evolve_chance():
-		evolve_skill(behave_key, gain);
+	if ess_behavior[behavior_key] > 0 && randf() <= get_skill_evolve_chance():
+		evolve_skill(behavior_key, gain);
 	
 	# just_evolved_skill is used because sometimes evolve_skill() fails
 	# for non-obvious reasons (eg no new skills available to gain)
 	if !just_evolved_skill:
 		if gain:
-			var key_candids = [];
-			for k in ess_behavior:
-				if (ess_behavior[k] == 0):
-					key_candids.append(k);
+			if !explicit_key:
+				var key_candids = [];
+				for k in ess_behavior:
+					if (ess_behavior[k] == 0):
+						key_candids.append(k);
+				
+				if randf() <= get_gain_chance(key_candids.size(), ess_behavior.size()):
+					behavior_key = key_candids[randi() % key_candids.size()];
+			evolve_specialization(behavior_key, GAIN_AMT);
 			
-			if randf() <= get_gain_chance(key_candids.size(), ess_behavior.size()):
-				behave_key = key_candids[randi() % key_candids.size()];
-			evolve_specialization(behave_key, GAIN_AMT);
-			if (ess_behavior.has(behave_key)):
-				ess_behavior[behave_key] += GAIN_AMT;
+			var free_skill_gain := is_purely_helper();
+			if ess_behavior.has(behavior_key):
+				ess_behavior[behavior_key] += GAIN_AMT;
 			else:
-				ess_behavior[behave_key] = GAIN_AMT;
+				ess_behavior[behavior_key] = GAIN_AMT;
+			if free_skill_gain:
+				evolve_skill(behavior_key, true);
 		else:
-			evolve_specialization(behave_key, -ess_behavior[behave_key]);
-			ess_behavior[behave_key] = 0.0;
-	latest_beh_evol = behave_key;
+			evolve_specialization(behavior_key, -ess_behavior[behavior_key]);
+			ess_behavior[behavior_key] = 0.0;
+	latest_beh_evol = behavior_key;
 
 const BLANK_EVOLVE_DIFF = 4;
-func evolve_major(gain):
+func evolve_major(gain: bool) -> void:
 	# oustide of match so we can change the mode and use the match behaviors
-	if mode == "blank" && get_code_dist_to_parent() >= BLANK_EVOLVE_DIFF:
-		if gain:
-			mode = "essential";
-		else:
-			# Major Down on a blank becomes a Major Up forming an ATE
-			gain = !gain;
-			obtain_ate_personality();
-			mode = "ate";
+	if mode == "blank" && get_code_dist_to_parent() >= BLANK_EVOLVE_DIFF && !gain:
+		# Major Down on a blank becomes a Major Up forming an ATE
+		gain = !gain;
+		obtain_ate_personality();
+		mode = "ate";
 	
 	match mode:
+		"blank":
+			if gain:
+				mode = "essential";
+				evolve_new_behavior(true, "Helper");
 		"essential":
 			evolve_new_behavior(gain);
 		"pseudo":
 			if !gain:
 				blank_out_gene();
 		"ate":
-			if (gain):
+			if gain:
 				ate_activity += GAIN_AMT;
 			else:
 				ate_activity -= ATE_LOSS_AMT;
 	check_for_death();
 
-func blank_out_gene():
+func blank_out_gene() -> void:
 	set_texture(null);
 	aura.clear();
 	parent_code = gene_code;
@@ -554,7 +583,7 @@ func kill_elm():
 	mode = "pseudo";
 
 func damage_gene(dmg := true):
-	internal_damaged = is_behavior_gene() && dmg;
+	internal_damaged = is_gene() && dmg;
 	$Damage.visible = internal_damaged;
 
 # Returns a string describing the evolution that occurred
