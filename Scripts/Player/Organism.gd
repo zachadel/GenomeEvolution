@@ -17,7 +17,8 @@ var born_on_turn
 var died_on_turn
 var num_progeny := 0;
 var num_dmg_genes := 0;
-var accumulated_dmg := 0.0;
+var accumulated_dmg := 0;
+var accumulated_gaps := 0;
 
 var cell_str = "cell_1"
 
@@ -68,6 +69,9 @@ const MIN_MINERAL_ENERGY_COST = 4
 
 const MITOSIS_SPLITS = 2
 const MEIOSIS_SPLITS = 4
+
+const MAX_COMPONENT_REDUCTION = 20
+const MAX_DAMAGE = 5
 
 
 #cfp_resources[resource_class][resource_name] = value
@@ -217,6 +221,9 @@ func populate_mineral_dict():
 						mineral_resources[resource_class][resource] = 0
 					
 					mineral_resources[resource_class]["total"] += mineral_resources[resource_class][resource]
+
+func set_start_tile(tile_dict: Dictionary) -> void:
+	start_tile = tile_dict
 
 func set_cell_type(_cell_str: String):
 	cell_str = _cell_str
@@ -430,30 +437,87 @@ func gain_gaps(count = 1):
 			cmsms.create_gap();
 	return cmsms.collapse_gaps();
 
-const DMG_GAIN_FACTOR = 0.1;
-func gain_dmg(amt : float):
-	accumulated_dmg += amt * DMG_FACTOR;
+#Returns norms[hazard_string_name] in [0, 1]
+func get_start_current_tile_avg_diff() -> float:
+	var average = 0
+	var count = 0
 	
-func get_dmg() -> float:
+	var cur_hazards = current_tile.hazards;
+	var start_hazards = start_tile.hazards
+	
+	for hazard in cur_hazards:
+		var cur_norm = (cur_hazards[hazard] - Game.hazards[hazard]["min"]) / Game.hazards[hazard]["max"];
+		var start_norm = (start_hazards[hazard] - Game.hazards[hazard]["min"]) / Game.hazards[hazard]["max"];
+		
+		
+		if hazard != "pH":
+			average += clamp(cur_norm - start_norm, 0, 1) #if the values are higher, danger.  if not, they get zeroed
+		else:
+			average += abs(cur_norm - start_norm)
+		count += 1
+		
+	return average / count
+
+#Is between [0, 1]
+func get_component_break_multiplier() -> float:
+	var norm_component : float  = get_behavior_profile().get_behavior("Component")
+	
+	#return 1-pow(1.1, -1.212*(norm_component - 6))/2
+	return 1 - pow(1.2, -norm_component)
+	
+#Called after every move of the player
+#Works like a weighted coin flip.
+func apply_break_after_move() -> bool:
+	var add_dmg = false
+	
+	var roll = randf()
+	var avg_diff = get_start_current_tile_avg_diff()
+
+	var dmg_threshold = get_component_break_multiplier()
+	var dmg_weight = (avg_diff*3 + roll) / 4
+	
+#	print("dmg_threshold: ", dmg_threshold)
+#	print("dmg_weight: ", dmg_weight)
+#	print("avg_diff: ", avg_diff)
+#	print("roll: ", roll)
+	
+	if dmg_weight >= dmg_threshold:
+		add_dmg = true
+		
+		if randf() < .5:
+			accumulated_dmg += 1
+		else:
+			accumulated_gaps += 1
+	
+	return add_dmg
+
+#const DMG_GAIN_FACTOR = 0.1;
+#func gain_dmg(amt : float):
+#	accumulated_dmg += amt * DMG_GAIN_FACTOR;
+	
+func get_dmg() -> int:
 	return accumulated_dmg
+	
+func get_gaps() -> int:
+	return accumulated_gaps
 
 const MAX_ENVIRON_INTERNAL_DMG_PERC = 0.5;
 const MIN_ENVIRON_INTERNAL_DMG_PERC = 0.25;
 func environmental_damage():
-	var total_count : int = floor(accumulated_dmg);
-	accumulated_dmg -= total_count;
-	
-	var internal_dmg_count : int = int(rand_range(MIN_ENVIRON_INTERNAL_DMG_PERC, MAX_ENVIRON_INTERNAL_DMG_PERC) * total_count);
-	var gap_count := total_count - internal_dmg_count;
+#	var total_count : int = floor(accumulated_dmg);
+#	accumulated_dmg -= total_count;
+#
+#	var internal_dmg_count : int = int(rand_range(MIN_ENVIRON_INTERNAL_DMG_PERC, MAX_ENVIRON_INTERNAL_DMG_PERC) * total_count);
+	var gap_count := accumulated_gaps;
 	
 	# Gain internal dmg
 	var true_damaged := 0;
-	if internal_dmg_count > 0:
+	if accumulated_dmg > 0:
 		# This isn't strictly necessary, but sometimes there's a race and gene_list ends up empty
 		yield(get_tree(), "idle_frame");
 		
 		var gene_list : Array = cmsms.get_all_genes();
-		for i in range(internal_dmg_count):
+		for i in range(accumulated_dmg):
 			var rand_idx := randi() % gene_list.size();
 			if rand_idx >= 0:
 				var rand_gene = gene_list[rand_idx];
@@ -463,13 +527,16 @@ func environmental_damage():
 					true_damaged += 1;
 	
 	# Gain gaps
-	if gap_count > 0:
+	if accumulated_gaps > 0:
 		if (do_yields):
 			gap_count = yield(gain_gaps(gap_count), "completed");
 		else:
 			gap_count = gain_gaps(gap_count);
 	elif do_yields:
 		yield(get_tree(), "idle_frame");
+	
+	accumulated_dmg = 0
+	accumulated_gaps = 0
 	
 	emit_signal("justnow_update", "%d gene%s were damaged by the environment." % [true_damaged, "" if true_damaged == 1 else "s"]);
 	emit_signal("justnow_update", "%d gap%s appeared due to environmental damage." % [gap_count, "" if gap_count == 1 else "s"]);
@@ -1382,6 +1449,7 @@ func replicate(idx):
 					cfp_resources = cfp_splits[randi() % MITOSIS_SPLITS]
 					mineral_splits = mineral_splits[randi() % MITOSIS_SPLITS]
 					set_energy(energy_split)
+					emit_signal("resources_changed", cfp_resources, mineral_resources)
 				
 				num_progeny += 1;
 			
@@ -1403,6 +1471,7 @@ func replicate(idx):
 					cfp_resources = cfp_splits[randi() % MEIOSIS_SPLITS]
 					mineral_splits = mineral_splits[randi() % MEIOSIS_SPLITS]
 					set_energy(energy_split)
+					emit_signal("resources_changed", cfp_resources, mineral_resources)
 				
 				cmsms.add_cmsm(get_random_gene_from_pool(), true);
 				num_progeny += 3;
@@ -1427,16 +1496,6 @@ func get_damaged_genes():
 
 func has_damaged_genes():
 	return !get_damaged_genes().empty();
-
-func get_rand_environmental_break_count() -> int:
-	var hazards = current_tile.hazards;
-	
-	var norm_temp : float = (hazards["temperature"] - Game.hazards["temperature"]["min"]) / Game.hazards["temperature"]["max"];
-	var norm_uv : float = (hazards["uv_index"] - Game.hazards["uv_index"]["min"]) / Game.hazards["uv_index"]["max"];
-	var norm_oxy : float = (hazards["oxygen"] - Game.hazards["oxygen"]["min"]) / Game.hazards["oxygen"]["max"];
-	var norm_component : float  = get_behavior_profile().get_behavior("Component");
-	
-	return int(round(randf() * (norm_uv + norm_oxy + norm_temp) / norm_component));
 
 func get_scissors_per_turn() -> int:
 	return int(floor(behavior_profile.get_behavior("Deconstruction")));
@@ -1623,25 +1682,34 @@ func get_processed_energy_value(resource: String) -> float:
 			
 	return processed_energy
 
+func get_energy_tax(action, amount = 1):
+	if Settings.disable_resource_costs():
+		return 0
+	else:
+		return taxes[action]["energy"] * amount
+
 func get_energy_cost(action, amount = 1):
-	var base_cost = get_base_energy_cost(action, amount)
-	var oxygen_cost = 0
-	var temperature_cost = 0
-	var mineral_cost = 0
-	var final_cost = 0
-	
-	if action in OXYGEN_ACTIONS: #OXYGEN_ACTIONS should be replaced with temp, mineral, oxygen actions
-		oxygen_cost = get_oxygen_energy_cost(action, amount, base_cost)
+	if Settings.disable_resource_costs():
+		return 0
+	else:
+		var base_cost = get_base_energy_cost(action, amount)
+		var oxygen_cost = 0
+		var temperature_cost = 0
+		var mineral_cost = 0
+		var final_cost = 0
 		
-	if action in MINERAL_ACTIONS:
-		mineral_cost = get_mineral_energy_cost(action, amount, base_cost)
+		if action in OXYGEN_ACTIONS: #OXYGEN_ACTIONS should be replaced with temp, mineral, oxygen actions
+			oxygen_cost = get_oxygen_energy_cost(action, amount, base_cost)
+			
+		if action in MINERAL_ACTIONS:
+			mineral_cost = get_mineral_energy_cost(action, amount, base_cost)
+			
+		if action in TEMPERATURE_ACTIONS:
+			temperature_cost =  get_temperature_energy_cost(action, amount, base_cost)
 		
-	if action in TEMPERATURE_ACTIONS:
-		temperature_cost =  get_temperature_energy_cost(action, amount, base_cost)
-	
-	final_cost = base_cost + oxygen_cost + temperature_cost + mineral_cost
-	
-	return clamp(final_cost, 1, MAX_ENERGY_COST)
+		final_cost = base_cost + oxygen_cost + temperature_cost + mineral_cost + get_energy_tax(action, amount)
+		
+		return clamp(final_cost, 1, MAX_ENERGY_COST)
 	
 func get_base_energy_cost(action, amount = 1):
 	var cost = costs[action]["energy"] * get_cost_mult(action) * amount
@@ -1691,28 +1759,34 @@ func get_temperature_multiplier(temperature: float) -> float:
 	
 	return multiplier
 
+func get_cfp_tax(action, resource, amount = 1):
+	if Settings.disable_resource_costs():
+		return 0
+	else:
+		return taxes[action][resource] * amount
+
 #integer values only for cfp
 func get_cfp_cost(action, resource, amount = 1):
 	var cost = 0
-	var minimum_cost = 0
 	
-	if resource in costs[action]: #if we are asking for totals
-		cost = costs[action][resource] * get_cost_mult(action) * amount
-	
-		if costs[action][resource] > 0:
-			minimum_cost = 1
-			
-	elif resource in Game.resources: #if its just a generic resource name
-		var resource_class = Game.get_class_from_name(resource)
-		
-		cost = costs[action][resource_class] * get_cost_mult(action) * amount
-	
-		if costs[action][resource_class] > 0:
-			minimum_cost = 1
+	if Settings.disable_resource_costs():
+		return 0
 	else:
-		print('ERROR: Invalid resource of %s in function get_cfp_cost' % resource)
-	
-	return round(cost) + minimum_cost
+		if resource in costs[action]: #if we are asking for totals
+			cost = costs[action][resource] * get_cost_mult(action) * amount + get_cfp_tax(action, resource, amount)
+				
+		elif resource in Game.resources: #if its just a generic resource name
+			var resource_class = Game.get_class_from_name(resource)
+			
+			cost = costs[action][resource_class] * get_cost_mult(action) * amount + get_cfp_tax(action, resource_class, amount)
+		
+		else:
+			print('ERROR: Invalid resource of %s in function get_cfp_cost' % [resource])
+		
+		return ceil(cost)
+
+func get_mineral_tax(action, mineral, amount = 1):
+	return taxes[action][mineral] * amount
 
 #Integer values only for minerals
 #In the future, this will likely be changed to reflect minerals purpose
@@ -1720,27 +1794,357 @@ func get_cfp_cost(action, resource, amount = 1):
 #NOTE: NOT IMPLEMENTED YET, BEGIN WORK HERE. 1:47 am 4/19/20
 func get_mineral_cost(action, mineral, amount = 1):
 	var cost = 0
-	var minimum_cost = 0
 	
-	if mineral in costs[action]: #if we are asking for totals
-		cost = costs[action][mineral] * get_cost_mult(action) * amount
-	
-		if costs[action][mineral] > 0:
-			minimum_cost = 1
-			
-	elif mineral in Game.resources: #if its just a generic resource name
-		var resource_class = Game.get_class_from_name(mineral)
-		
-		cost = costs[action][resource_class] * get_cost_mult(action) * amount
-	
-		if costs[action][resource_class] > 0:
-			minimum_cost = 1
+	if Settings.disable_resource_costs():
+		return 0
 	else:
-		print('ERROR: Invalid resource of %s in function get_mineral_cost' % mineral)
+		if mineral in costs[action]: #if we are asking for totals
+			cost = costs[action][mineral] * get_cost_mult(action) * amount + get_mineral_tax(action, mineral, amount)
+				
+		elif mineral in Game.resources: #if its just a generic resource name
+			var resource_class = Game.get_class_from_name(mineral)
+			
+			cost = costs[action][resource_class] * get_cost_mult(action) * amount + get_mineral_tax(action, resource_class, amount)
+		
+		else:
+			print('ERROR: Invalid resource of %s in function get_cfp_cost' % [mineral])
+		
+		return ceil(cost)
+
+#NOTE: Taxes cannot be reduced and are flat costs
+var taxes = {
+	"none": {
+		"simple_carbs": 0, 
+		"simple_fats": 0, 
+		"simple_proteins": 0, 
+		"complex_carbs": 0,
+		"complex_fats": 0,
+		"complex_proteins": 0,
+		"calcium": 0,
+		"nitrogen": 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
+		"energy": 0
+	},
 	
-	return round(cost) + minimum_cost
+	"repair_cd" : {
+		"simple_carbs": 0, 
+		"simple_fats": 0, 
+		"simple_proteins": 0, 
+		"complex_carbs": 0,
+		"complex_fats": 0,
+		"complex_proteins": 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
+		"energy": 0
+	},
+	"repair_cp" : {
+		"simple_carbs": 0, 
+		"simple_fats": 0, 
+		"simple_proteins": 0, 
+		"complex_carbs": 0,
+		"complex_fats": 0,
+		"complex_proteins": 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
+		"energy": 0
+	},
+	"repair_je" : {
+		"simple_carbs": 0, 
+		"simple_fats": 0, 
+		"simple_proteins": 0,
+		"complex_carbs": 0,
+		"complex_fats": 0,
+		"complex_proteins": 0, 
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
+		"energy": 0
+	},
+	"move" : {
+		"simple_carbs": 0, 
+		"simple_fats": 0, 
+		"simple_proteins": 0,
+		"complex_carbs": 0,
+		"complex_fats": 0,
+		"complex_proteins": 0, 
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
+		"energy": 2
+	},
+
+	"mineral_ejection": {
+		"simple_carbs": 0, 
+		"simple_fats": 0, 
+		"simple_proteins": 0,
+		"complex_carbs": 0,
+		"complex_fats": 0,
+		"complex_proteins": 0, 
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
+		"energy": 5
+	},
+	
+	"cfp_ejection": {
+		"simple_carbs": 0, 
+		"simple_fats": 0, 
+		"simple_proteins": 0, 
+		"complex_carbs": 0,
+		"complex_fats": 0,
+		"complex_proteins": 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
+		"energy": 5
+	},
+
+	#Minerals are required to ensure that there are no penalties
+	#associated with the action.
+	"simple_proteins_to_complex_proteins": {
+		"simple_carbs": 0, 
+		"simple_fats": 0, 
+		"simple_proteins": 0, 
+		"complex_carbs": 0,
+		"complex_fats": 0,
+		"complex_proteins": 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
+		"energy": 1
+	},
+	
+	#associated with the action.
+	"complex_proteins_to_simple_proteins": {
+		"simple_carbs": 0, 
+		"simple_fats": 0, 
+		"simple_proteins": 0, 
+		"complex_carbs": 0,
+		"complex_fats": 0,
+		"complex_proteins": 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
+		"energy": 1
+	},
+	
+	#associated with the action.
+	"simple_proteins_to_simple_carbs": {
+		"simple_carbs": 0, 
+		"simple_fats": 0, 
+		"simple_proteins": 0, 
+		"complex_carbs": 0,
+		"complex_fats": 0,
+		"complex_proteins": 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
+		"energy": 1
+	},
+	
+	#associated with the action.
+	"simple_carbs_to_simple_proteins": {
+		"simple_carbs": 0, 
+		"simple_fats": 0, 
+		"simple_proteins": 0, 
+		"complex_carbs": 0,
+		"complex_fats": 0,
+		"complex_proteins": 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
+		"energy": 1
+	},
+
+	"simple_carbs_to_energy": {
+		"simple_carbs": 0, 
+		"simple_fats": 0, 
+		"simple_proteins": 0,
+		"complex_carbs": 0,
+		"complex_fats": 0,
+		"complex_proteins": 0, 
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
+		"energy": 0
+	},
+
+	"energy_to_simple_carbs": {
+		"simple_carbs": 0, 
+		"simple_fats": 0, 
+		"simple_proteins": 0,
+		"complex_carbs": 0,
+		"complex_fats": 0,
+		"complex_proteins": 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
+		"energy": 1
+	},
+
+	"simple_carbs_to_complex_carbs": {
+		"simple_carbs": 0, 
+		"simple_fats": 0, 
+		"simple_proteins": 0,
+		"complex_carbs": 0,
+		"complex_fats": 0,
+		"complex_proteins": 0, 
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
+		"energy": 1
+	},
+	
+	#associated with the action.
+	"complex_carbs_to_simple_carbs": {
+		"simple_carbs": 0, 
+		"simple_fats": 0, 
+		"simple_proteins": 0, 
+		"complex_carbs": 0,
+		"complex_fats": 0,
+		"complex_proteins": 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
+		"energy": 1
+	},
+
+	"simple_carbs_to_simple_fats": {
+		"simple_carbs": 0, 
+		"simple_fats": 0, 
+		"simple_proteins": 0,
+		"complex_carbs": 0,
+		"complex_fats": 0,
+		"complex_proteins": 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
+		"energy": 1
+	},
+	
+	"simple_fats_to_energy": {
+		"simple_carbs": 0, 
+		"simple_fats": 0, 
+		"simple_proteins": 0,
+		"complex_carbs": 0,
+		"complex_fats": 0,
+		"complex_proteins": 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
+		"energy": 0
+	},
+	
+	"simple_fats_to_complex_fats": {
+		"simple_carbs": 0, 
+		"simple_fats": 0, 
+		"simple_proteins": 0,
+		"complex_carbs": 0,
+		"complex_fats": 0,
+		"complex_proteins": 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
+		"energy": 1
+	},
+	
+	"complex_fats_to_simple_fats": {
+		"simple_carbs": 0, 
+		"simple_fats": 0, 
+		"simple_proteins": 0,
+		"complex_carbs": 0,
+		"complex_fats": 0,
+		"complex_proteins": 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
+		"energy": 1
+	},
+
+
+	#Cost per tile
+	"acquire_resources": {
+		"simple_carbs": 0, 
+		"simple_fats": 0, 
+		"simple_proteins": 0,
+		"complex_carbs": 0,
+		"complex_fats": 0,
+		"complex_proteins": 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous":0,
+		"energy": 1
+	},
+
+	"breakdown_resource": {
+		"simple_carbs": 0, 
+		"simple_fats": 0, 
+		"simple_proteins": 0,
+		"complex_carbs": 0,
+		"complex_fats": 0,
+		"complex_proteins": 0,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
+		"energy": 1
+	},
+
+	"replicate_mitosis": {
+		"simple_carbs": 2, 
+		"simple_fats": 2, 
+		"simple_proteins": 2,
+		"complex_carbs": 2,
+		"complex_fats": 2,
+		"complex_proteins": 2,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
+		"energy": 5
+	},
+
+	"replicate_meiosis": {
+		"simple_carbs": 4, 
+		"simple_fats": 4, 
+		"simple_proteins": 4,
+		"complex_carbs": 4,
+		"complex_fats": 4,
+		"complex_proteins": 4,
+		"structure": 0,
+		"consumption": 0,
+		"processing": 0,
+		"hazardous": 0,
+		"energy": 15
+	}
+}
 
 #NOTE: Energy costs are always per unit
+#NOTE: These costs can be reduced by genome
 var costs = {
 	"none": {
 		"simple_carbs": 0, 
@@ -2160,11 +2564,11 @@ func get_cost_string(action):
 	var cost_mult = get_cost_mult(action);
 	var cost_str = "";
 	for r in costs[action]:
-		var res_cost = costs[action][r] * cost_mult;
+		var res_cost = costs[action][r] * cost_mult + taxes[action][r];
 		if (res_cost > 0):
 			cost_str += COST_STR_FORMAT % [res_cost, r];
 	
-	if cost_str.length() < COST_STR_COMMA_IDX:
+	if cost_str.length() < COST_STR_COMMA_IDX or Settings.disable_resource_costs():
 		return "Free!";
 	return cost_str.substr(COST_STR_COMMA_IDX, cost_str.length() - COST_STR_COMMA_IDX);
 
@@ -2236,6 +2640,7 @@ func acquire_resources():
 	
 	if modified:
 		set_energy(energy - energy_cost)
+		emit_signal("resources_changed", cfp_resources, mineral_resources)
 		
 	return modified
 
@@ -2274,6 +2679,8 @@ func upgrade_cfp_resource(resource_from: String, amount: int):
 				leftover_resources -= required_from_per_up 
 			else:
 				break
+	if total_upgraded > 0:
+		emit_signal("resources_changed", cfp_resources, mineral_resources)
 	
 	return {"new_resource_amount": total_upgraded, "leftover_resource_amount": leftover_resources, "new_resource_name": upgraded_form}
 
@@ -2294,6 +2701,9 @@ func upgrade_energy(resource_to: String, amount_to: int = 1):
 		cfp_resources[resource_to_class]["total"] += 1
 		
 		upgraded_amount += 1
+		
+	if upgraded_amount > 0:
+		emit_signal("resources_changed", cfp_resources, mineral_resources)
 		
 	return {"new_resource_amount": upgraded_amount, "leftover_resource_amount": energy, "new_resource_name": resource_to}
 		
@@ -2320,6 +2730,7 @@ func convert_cfp_to_cfp(resources_from: Dictionary, resource_to: String):
 	
 	#Draw from highest energy value first
 	var sorted_resources = resources_from.keys()
+	var conversion_happened = false
 	sorted_resources.sort_custom(self, "sort_by_energy_factor")
 	
 	#Loop over resources and convert as much as you can
@@ -2353,7 +2764,13 @@ func convert_cfp_to_cfp(resources_from: Dictionary, resource_to: String):
 			
 			results[resource]["new_resource_amount"] += add_resource
 			
+			if add_resource > 0:
+				conversion_happened = true
+			
 			results[resource]["leftover_resource_amount"] -= subtract_resource
+	
+	if conversion_happened:
+		emit_signal("resources_changed", cfp_resources, mineral_resources)
 	
 	return results
 	
@@ -2414,6 +2831,9 @@ func downgrade_cfp_resource(resource_from: String, amount: int):
 					downgraded_amount += resources_per_downgrade
 				else:
 					break
+	
+	if downgraded_amount > 0:
+		emit_signal("resources_changed", cfp_resources, mineral_resources)
 	
 	return {"new_resource_amount": downgraded_amount, "leftover_resource_amount": leftover_resources, "new_resource_name": downgraded_form}
 
@@ -2795,7 +3215,7 @@ func get_locomotion_radius():
 #Cost to move over a particular tile type
 #biome is an integer
 func get_locomotion_cost(biome):
-	if not Settings.disable_movement_costs():
+	if not Settings.disable_movement_costs() and not Settings.disable_resource_costs():
 		if typeof(biome) == TYPE_INT:
 			return Game.biomes[Game.biomes.keys()[biome]]["base_cost"] * get_cost_mult("move") * get_behavior_profile().get_specialization("Locomotion", "biomes", Game.biomes.keys()[biome])
 		elif typeof(biome) == TYPE_STRING:
@@ -2804,3 +3224,10 @@ func get_locomotion_cost(biome):
 			return -1
 	else:
 		return 0
+	
+#Cost to perform a movement action (move along a single path, NOT per tile)
+func get_locomotion_tax(amount: int = 1) -> int:
+	if Settings.disable_movement_costs() or Settings.disable_resource_costs():
+		return 0
+	else:
+		return taxes["move"]["energy"] * amount

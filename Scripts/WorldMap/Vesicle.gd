@@ -21,6 +21,7 @@ var glow_color = Color(0.035294, 0.227451, 0.411765)
 func _ready():
 	var mat = sprite.get_material().duplicate(true)
 	sprite.set_material(mat)
+	glow(false)
 
 	#scale(scale)
 #	capacity = update_radius()

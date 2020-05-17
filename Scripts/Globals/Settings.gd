@@ -152,6 +152,9 @@ func unlock_everything() -> bool:
 func disable_movement_costs() -> bool:
 	return settings["disable_movement_costs"]
 	
+func disable_resource_costs() -> bool:
+	return settings["disable_resource_costs"]
+	
 func disable_fog() -> bool:
 	return settings["disable_fog"]
 	

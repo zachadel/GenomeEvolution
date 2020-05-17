@@ -1,7 +1,66 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scripts/WorldMap/EnergyBar.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Images/Tiles/Resources/resources_border.png" type="Texture" id=2]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+render_mode blend_premul_alpha;
+
+// This shader only works properly with premultiplied alpha blend mode.
+uniform float aura_width = 2.0;
+uniform vec4 aura_color: hint_color;
+
+void fragment() {
+	vec4 col = texture(TEXTURE, UV);
+	vec2 ps = TEXTURE_PIXEL_SIZE;
+	float a;
+	float maxa = col.a;
+	float mina = col.a;
+
+	a = texture(TEXTURE, UV + vec2(0.0, -aura_width) * ps).a;
+	maxa = max(a, maxa);
+	mina = min(a, mina);
+
+	a = texture(TEXTURE, UV + vec2(0.0, aura_width) * ps).a;
+	maxa = max(a, maxa);
+	mina = min(a, mina);
+
+	a = texture(TEXTURE, UV + vec2(-aura_width, 0.0) * ps).a;
+	maxa = max(a, maxa);
+	mina = min(a, mina);
+
+	a = texture(TEXTURE, UV + vec2(aura_width, 0.0) * ps).a;
+	maxa = max(a, maxa);
+	mina = min(a, mina);
+	
+	a = texture(TEXTURE, UV + vec2(aura_width, -aura_width) * ps).a;
+	maxa = max(a, maxa);
+	mina = min(a, mina);
+
+	a = texture(TEXTURE, UV + vec2(aura_width, aura_width) * ps).a;
+	maxa = max(a, maxa);
+	mina = min(a, mina);
+
+	a = texture(TEXTURE, UV + vec2(-aura_width, -aura_width) * ps).a;
+	maxa = max(a, maxa);
+	mina = min(a, mina);
+
+	a = texture(TEXTURE, UV + vec2(-aura_width, aura_width) * ps).a;
+	maxa = max(a, maxa);
+	mina = min(a, mina);
+
+	col.rgb *= col.a;
+
+	COLOR = col;
+	COLOR.rgb += aura_color.rgb * (maxa - mina);
+}
+"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/aura_width = 6.0
+shader_param/aura_color = Color( 0.0352941, 0.227451, 0.411765, 1 )
 
 [node name="EnergyBar" type="Control"]
 anchor_right = 1.0
@@ -13,10 +72,26 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Border" type="TextureRect" parent="."]
+material = SubResource( 2 )
+margin_left = -20.0
+margin_top = -15.0
+margin_right = 622.0
+margin_bottom = 75.0
+texture = ExtResource( 2 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
-margin_right = 600.0
+margin_left = 3.0
+margin_right = 598.0
 margin_bottom = 60.0
 custom_constants/separation = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="EnergyUnit_0" type="ColorRect" parent="HBoxContainer"]
 margin_right = 19.0
@@ -211,14 +286,8 @@ color = Color( 0, 1, 0, 1 )
 
 [node name="EnergyUnit_24" type="ColorRect" parent="HBoxContainer"]
 margin_left = 576.0
-margin_right = 600.0
+margin_right = 595.0
 margin_bottom = 60.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 0, 1, 0, 1 )
-
-[node name="Border" type="TextureRect" parent="."]
-margin_right = 600.0
-margin_bottom = 60.0
-texture = ExtResource( 2 )
-expand = true

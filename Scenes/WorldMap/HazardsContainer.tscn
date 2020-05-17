@@ -18,61 +18,73 @@
 [ext_resource path="res://Scripts/WorldMap/OxygenBar.gd" type="Script" id=16]
 [ext_resource path="res://Scripts/WorldMap/OxygenLabel.gd" type="Script" id=17]
 
-[node name="HazardsContainer" type="GridContainer"]
-margin_right = 164.0
-margin_bottom = 191.0
+[node name="HazardsContainer" type="Control"]
+margin_right = 252.0
+margin_bottom = 113.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HazardsContainer" type="GridContainer" parent="."]
+margin_top = 44.5111
+margin_right = 252.0
+margin_bottom = 112.511
 size_flags_horizontal = 0
 size_flags_vertical = 0
 custom_constants/vseparation = 20
 custom_constants/hseparation = 20
-columns = 2
-script = ExtResource( 1 )
+columns = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="TemperatureBar" type="TextureProgress" parent="."]
-margin_left = 12.0
-margin_right = 62.0
-margin_bottom = 96.0
+[node name="TemperatureBar" type="TextureProgress" parent="HazardsContainer"]
+margin_right = 48.0
+margin_bottom = 68.0
 hint_tooltip = "This measures the temperature in Celsius of a given tile."
-size_flags_horizontal = 4
-size_flags_vertical = 4
+size_flags_horizontal = 3
+size_flags_vertical = 3
 min_value = -40.0
 step = 0.1
 value = -40.0
 texture_over = ExtResource( 2 )
 texture_progress = ExtResource( 3 )
 fill_mode = 3
+nine_patch_stretch = true
 script = ExtResource( 4 )
-__meta__ = {
-"_edit_group_": true
-}
 
-[node name="TemperatureLabel" type="Label" parent="TemperatureBar"]
-margin_left = 11.0
-margin_top = 68.0
-margin_right = 39.0
-margin_bottom = 96.0
+[node name="TemperatureLabel" type="Label" parent="HazardsContainer/TemperatureBar"]
+margin_left = 10.3275
+margin_top = 44.0
+margin_right = 38.3275
+margin_bottom = 72.0
 align = 1
 valign = 1
 script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="pHBar" type="TextureProgress" parent="."]
-margin_left = 104.0
-margin_right = 154.0
-margin_bottom = 96.0
+[node name="pHBar" type="TextureProgress" parent="HazardsContainer"]
+margin_left = 68.0
+margin_right = 116.0
+margin_bottom = 68.0
 hint_tooltip = "This measures the pH of a given tile."
-size_flags_horizontal = 4
-size_flags_vertical = 4
+size_flags_horizontal = 3
+size_flags_vertical = 3
 max_value = 14.0
 step = 0.1
 texture_over = ExtResource( 6 )
 texture_progress = ExtResource( 7 )
 fill_mode = 3
+nine_patch_stretch = true
 script = ExtResource( 8 )
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="pHLabel" type="Label" parent="pHBar"]
+[node name="pHLabel" type="Label" parent="HazardsContainer/pHBar"]
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
@@ -84,58 +96,131 @@ align = 1
 valign = 1
 script = ExtResource( 9 )
 
-[node name="UVBar" type="TextureProgress" parent="."]
-margin_top = 116.0
-margin_right = 75.0
-margin_bottom = 191.0
+[node name="UVBar" type="TextureProgress" parent="HazardsContainer"]
+margin_left = 136.0
+margin_right = 184.0
+margin_bottom = 68.0
 hint_tooltip = "This measures the Ultraviolet Radiation Index for a given tile."
-size_flags_horizontal = 4
-size_flags_vertical = 4
+size_flags_horizontal = 3
+size_flags_vertical = 3
 step = 0.1
 texture_over = ExtResource( 10 )
 texture_progress = ExtResource( 11 )
 fill_mode = 3
+nine_patch_stretch = true
 script = ExtResource( 12 )
-__meta__ = {
-"_edit_group_": true
-}
 
-[node name="UVLabel" type="Label" parent="UVBar"]
+[node name="UVLabel" type="Label" parent="HazardsContainer/UVBar"]
 self_modulate = Color( 0, 0, 0, 1 )
-margin_left = 20.0
-margin_top = 19.0
-margin_right = 55.0
-margin_bottom = 56.0
+margin_left = 8.29266
+margin_top = 15.2718
+margin_right = 43.2927
+margin_bottom = 52.2718
 align = 1
 valign = 1
 script = ExtResource( 13 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="OxygenBar" type="TextureProgress" parent="."]
-margin_left = 95.0
-margin_top = 116.0
-margin_right = 164.0
-margin_bottom = 191.0
+[node name="OxygenBar" type="TextureProgress" parent="HazardsContainer"]
+margin_left = 204.0
+margin_right = 252.0
+margin_bottom = 68.0
 hint_tooltip = "This measures the oxygen levels of a given tile."
-size_flags_horizontal = 4
-size_flags_vertical = 4
+size_flags_horizontal = 3
+size_flags_vertical = 3
 step = 0.1
 texture_over = ExtResource( 14 )
 texture_progress = ExtResource( 15 )
 fill_mode = 3
+nine_patch_stretch = true
 script = ExtResource( 16 )
-__meta__ = {
-"_edit_group_": true
-}
 
-[node name="OxygenLabel" type="Label" parent="OxygenBar"]
-margin_left = 9.0
+[node name="OxygenLabel" type="Label" parent="HazardsContainer/OxygenBar"]
+margin_left = -1.0
 margin_top = 15.2718
-margin_right = 55.0
+margin_right = 45.0
 margin_bottom = 51.2718
 align = 1
 valign = 1
 script = ExtResource( 17 )
-[connection signal="value_changed" from="TemperatureBar" to="TemperatureBar/TemperatureLabel" method="_on_TemperatureBar_value_changed"]
-[connection signal="value_changed" from="pHBar" to="pHBar/pHLabel" method="_on_pHBar_value_changed"]
-[connection signal="value_changed" from="UVBar" to="UVBar/UVLabel" method="_on_UVBar_value_changed"]
-[connection signal="value_changed" from="OxygenBar" to="OxygenBar/OxygenLabel" method="_on_OxygenBar_value_changed"]
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TempDiff" type="ColorRect" parent="."]
+margin_left = 4.0
+margin_right = 44.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="TempDiff"]
+margin_right = 40.0
+margin_bottom = 40.0
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="pHDiff" type="ColorRect" parent="."]
+margin_left = 60.1926
+margin_right = 100.193
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="pHDiff"]
+margin_right = 40.0
+margin_bottom = 40.0
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="UVDiff" type="ColorRect" parent="."]
+margin_left = 139.589
+margin_right = 179.589
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="UVDiff"]
+margin_right = 40.0
+margin_bottom = 40.0
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OxygenDiff" type="ColorRect" parent="."]
+margin_left = 206.0
+margin_right = 246.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="OxygenDiff"]
+margin_right = 40.0
+margin_bottom = 40.0
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="value_changed" from="HazardsContainer/TemperatureBar" to="HazardsContainer/TemperatureBar/TemperatureLabel" method="_on_TemperatureBar_value_changed"]
+[connection signal="value_changed" from="HazardsContainer/pHBar" to="HazardsContainer/pHBar/pHLabel" method="_on_pHBar_value_changed"]
+[connection signal="value_changed" from="HazardsContainer/UVBar" to="HazardsContainer/UVBar/UVLabel" method="_on_UVBar_value_changed"]
+[connection signal="value_changed" from="HazardsContainer/OxygenBar" to="HazardsContainer/OxygenBar/OxygenLabel" method="_on_OxygenBar_value_changed"]

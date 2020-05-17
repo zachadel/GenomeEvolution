@@ -23,7 +23,6 @@ anchor_bottom = 1.0
 margin_top = 5.0
 margin_right = -1205.0
 margin_bottom = -50.0
-mouse_filter = 2
 custom_styles/panel = SubResource( 1 )
 script = ExtResource( 1 )
 __meta__ = {
@@ -49,9 +48,9 @@ __meta__ = {
 
 [node name="EnergyBar" parent="." instance=ExtResource( 2 )]
 margin_left = 55.0
-margin_top = 35.0
-margin_right = 298.0
-margin_bottom = -795.0
+margin_top = 36.0
+margin_right = 270.0
+margin_bottom = -740.0
 rect_scale = Vector2( 0.55, 0.5 )
 
 [node name="AminoAcids" type="RichTextLabel" parent="."]
@@ -208,7 +207,6 @@ resource_class = "complex_fats"
 [node name="ejection" parent="." instance=ExtResource( 3 )]
 visible = false
 position = Vector2( 215, 785 )
-scale = Vector2( 1, 0.5 )
 resource_class = "ejection"
 
 [node name="SelectionArea" type="ColorRect" parent="."]

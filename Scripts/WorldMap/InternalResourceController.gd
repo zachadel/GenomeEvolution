@@ -48,9 +48,6 @@ var selected_resources = {
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	
-	$complex_proteins.glow()
-
 	for resource in Game.resources:
 		var resource_class = Game.get_class_from_name(resource)
 		
@@ -60,8 +57,10 @@ func _ready():
 	
 	pass # Replace with function body.
 	
-func _unhandled_input(event):
+func _gui_input(event):
+	var input_handled = false
 	if event.is_action_pressed("mouse_left") and visible and enable_input:
+		input_handled = true
 		if !dragging:
 			if energy_clicked:
 				handle_energy_to_vesicle_click()
@@ -82,6 +81,7 @@ func _unhandled_input(event):
 				draw_rect.set_global_position(true_start)
 		
 	if event.is_action_released("mouse_left") and dragging and visible and enable_input:
+		input_handled = true
 		dragging = false
 		selected = true
 		draw_rect.visible = false
@@ -96,15 +96,14 @@ func _unhandled_input(event):
 		true_end = Vector2.ZERO
 		true_start = Vector2.ZERO
 	
-	if event.is_action_pressed("mouse_right"):
+	if event.is_action_pressed("mouse_right") and enable_input:
+		input_handled = true
 		energy_clicked = false
 		Input.set_custom_mouse_cursor(null)
 		clear_selected_resources()
-	
-func _input(event):
-	if event.is_action_pressed("mouse_right") and enable_input:
-		energy_clicked = false
-		Input.set_custom_mouse_cursor(null)
+		
+	if input_handled:
+		accept_event()
 		
 func _process(delta):
 	if dragging:
@@ -117,13 +116,34 @@ func _process(delta):
 #	if resource_class.split(Game.SEPARATOR)[0] == "simple":
 #		pass
 
+func highlight_energy_bar_if_necessary(energy = 0):
+	if organism.energy > organism.get_energy_cost("replicate_mitosis"):
+		energy_bar.glow(true)
+	else:
+		energy_bar.glow(false)
+
+func highlight_vesicles_if_necessary(cfp_resources: Dictionary = {}, mineral_resources: Dictionary = {}):
+	var vesicles = [$simple_proteins, $complex_proteins, $simple_carbs, $complex_carbs,
+					$simple_fats, $complex_fats]
+					
+	#We assume mitosis is always cheaper
+	var mitosis_deficiencies = organism.check_resources("replicate_mitosis")
+
+	for vesicle in vesicles:
+		if vesicle.name in mitosis_deficiencies:
+			vesicle.glow(false)
+		else:
+			vesicle.glow(true)
+
 func update_energy(energy):
 	energy_bar.update_energy_allocation(energy)
 
 func set_organism(org):
 	organism = org
 	organism.connect("energy_changed", energy_bar, "_on_Organism_energy_changed")
+	organism.connect("energy_changed", self, "highlight_energy_bar_if_necessary")
 	organism.connect("vesicle_scale_changed", self, "_on_Organism_vesicle_scale_changed")
+	organism.connect("resources_changed", self, "highlight_vesicles_if_necessary")
 	
 	$Fatty_Sugars_Costs_From.set_functions(org)
 	$Fatty_Sugars_Costs_From.set_action("simple_carbs_to_simple_fats")
@@ -147,6 +167,9 @@ func set_organism(org):
 	$Sugars_Carbs_Costs_From.set_action("simple_carbs_to_complex_carbs")
 	$Sugars_Carbs_Costs_To.set_functions(org)
 	$Sugars_Carbs_Costs_To.set_action("complex_carbs_to_simple_carbs")
+	
+	highlight_energy_bar_if_necessary()
+	highlight_vesicles_if_necessary()
 
 #Costs seem to not update if conditions are extreme
 #BROKEN but not crashing

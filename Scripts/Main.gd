@@ -141,6 +141,7 @@ func _on_CardTable_switch_to_map():
 	
 	if Game.turn_idx == Game.TURN_TYPES.Map:
 		world_map.set_input(Game.PLAYER_VIEW.ON_MAP)
+		world_map.ui.genome_dmg.clear()
 	else:
 		world_map.set_input(Game.PLAYER_VIEW.SWITCHED_TO_MAP)
 	_show_world_map()

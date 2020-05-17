@@ -8,9 +8,12 @@ const MAX_RECT_SIZE = Vector2(500, 45)
 var energy = 10
 var MAX_ENERGY = 25
 
+var glow_color = Color(0.035294, 0.227451, 0.411765)
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	update_energy_allocation(energy)
+	glow(false)
 	pass # Replace with function body.
 	
 #func _input(event):
@@ -40,6 +43,12 @@ func add_energy(amount):
 		update_energy_allocation(energy + amount)
 	else:
 		update_energy_allocation(MAX_ENERGY)
+
+func glow(enable: bool = true):
+	if enable:
+		$Border.get_material().set_shader_param("aura_color", glow_color)
+	else:
+		$Border.get_material().set_shader_param("aura_color", Color.black)
 
 func _on_Organism_energy_changed(energy):
 	update_energy_allocation(energy)

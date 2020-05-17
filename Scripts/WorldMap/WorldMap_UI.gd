@@ -9,21 +9,22 @@ signal eject_resources(resources_dict)
 
 #internal resources controller
 onready var irc = get_node("InternalPanel/InternalResourceController")
-onready var mineral_levels = get_node("MineralPanel/MineralLevels")
+onready var mineral_levels = get_node("InternalPanel/MineralLevels")
 onready var resource_ui = get_node("ExternalPanel/ResourcePanel/ResourceUI")
 onready var hazards_ui = get_node("ExternalPanel/HazardPanel/HazardsContainer")
+onready var genome_dmg = get_node("GenomePanel/GenomeDamage")
 
 onready var acquire_resources_button = get_node("MenuPanel/HBoxContainer/AcquireResources")
 onready var eject_resources_button = get_node("MenuPanel/HBoxContainer/EjectResources")
 onready var check_genome_button = get_node("MenuPanel/HBoxContainer/CheckGenome")
-onready var end_turn_button = get_node("MenuPanel/HBoxContainer/EndMapTurn")
+onready var end_turn_button = get_node("GenomePanel/RepairGenome")
 
 enum BUTTONS {ACQUIRE, EJECT, CHECK, END}
 const DEFAULT_BUTTON_TEXT = {
 	BUTTONS.ACQUIRE: "Eat", 
 	BUTTONS.EJECT: "Excrete", 
 	BUTTONS.CHECK: "View Genome", 
-	BUTTONS.END: "End Map Phase"
+	BUTTONS.END: "Repair Genome!"
 	}
 
 var test_cases = ["simple_carbs", "simple_fats", "simple_proteins", "complex_carbs", "complex_fats", "complex_proteins", "carbs_0", "carbs_1", "fats_0", "fats_1", "proteins_0", "proteins_1"]

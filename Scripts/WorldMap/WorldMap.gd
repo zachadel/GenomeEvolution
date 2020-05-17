@@ -1,4 +1,4 @@
-extends Control
+extends Node2D
 
 signal tile_clicked
 signal change_to_main_menu
@@ -57,7 +57,6 @@ onready var ui = get_node("WorldMap_UI")
 onready var msg = get_node("CanvasLayer/WarningMessage")
 
 const FINAL_TWEEN_ZOOM = Vector2(.1, .1)
-const BASE_LOCOMOTION_TAX = 2
 
 #For moving around the map (does not include ui as parts of the ui can be turned)
 #off individually
@@ -132,7 +131,7 @@ func setup(biome_seed, hazard_seeds, resource_seed, tiebreak_seed, _chunk_size, 
 	player_sprite_offset = (tile_sprite_size - current_player.get_texture_size()) / 2
 	current_player.position = Game.map_to_world(Game.world_to_map(default_start))
 	current_player.organism.current_tile = get_tile_at_pos(Game.world_to_map(default_start))
-	current_player.organism.start_tile = get_tile_at_pos(Game.world_to_map((default_start)))
+	current_player.organism.set_start_tile(get_tile_at_pos(Game.world_to_map((default_start))))
 	
 	loc_highlight.self_modulate = Color.blue
 	loc_highlight.position = current_player.position
@@ -143,6 +142,7 @@ func setup(biome_seed, hazard_seeds, resource_seed, tiebreak_seed, _chunk_size, 
 	astar.initialize_astar(max(1, min(current_player.organism.get_vision_radius(), current_player.organism.get_locomotion_radius())), funcref(self, "costs"))
 	
 	ui.resource_ui.set_resources(current_player.organism.current_tile["resources"])
+	ui.hazards_ui.set_starting_tile_hazards(current_player.organism.start_tile["hazards"])
 	ui.hazards_ui.set_hazards(current_player.organism.current_tile["hazards"])
 	ui.irc.energy_bar.MAX_ENERGY = current_player.organism.MAX_ENERGY
 	
@@ -328,15 +328,11 @@ func _unhandled_input(event):
 			$MapCamera.zoom.x = clamp($MapCamera.zoom.x + ZOOM_UPDATE, MIN_ZOOM, MAX_ZOOM)
 			$MapCamera.zoom.y = clamp($MapCamera.zoom.y + ZOOM_UPDATE, MIN_ZOOM, MAX_ZOOM)
 			
-			
-
-func _input(event):
-	if event.is_action("center_camera") and input_elements["center"]:
-		erase_current_maps()
-		draw_and_center_maps_to(Game.world_to_map(current_player.position), current_player.observed_tiles)
-
-		$MapCamera.offset = Vector2(0,0)
-		get_tree().set_input_as_handled()
+		if event.is_action("center_camera") and input_elements["center"]:
+			erase_current_maps()
+			draw_and_center_maps_to(Game.world_to_map(current_player.position), current_player.observed_tiles)
+	
+			$MapCamera.offset = Vector2(0,0)
 
 func enable_camera():
 	$MapCamera.zoom = Vector2(1, 1);
@@ -432,19 +428,21 @@ func move_player(pos: Vector3):
 	
 	if player_tile != pos and distance <= max(1, min(vis_radius, loc_radius)):
 		var path_and_cost = astar.get_tile_and_cost_from_to(player_tile, pos)
-		
-		if len(path_and_cost) > 0 and path_and_cost["total_cost"] + BASE_LOCOMOTION_TAX <= current_player.organism.energy:
+		var loc_tax = current_player.organism.get_locomotion_tax()
+
+		if len(path_and_cost) > 0 and !path_and_cost.empty() and path_and_cost["total_cost"] + loc_tax <= current_player.organism.energy:
 			tiles_moved = len(path_and_cost) - 1
-			current_player.organism.energy -= (path_and_cost["total_cost"] + BASE_LOCOMOTION_TAX)
+			current_player.organism.energy -= (path_and_cost["total_cost"] + loc_tax)
 			
 			var new_position = Game.map_to_world(pos)
 		
 			current_player.rotate_sprite((new_position - current_player.position).angle())
 			current_player.position = new_position
 			current_player.organism.current_tile = get_tile_at_pos(pos)
-			#current_player.organism.accumulate_environmental_break_count()
-			
-			#current_player.update_nucleus()
+			if current_player.organism.apply_break_after_move():
+				ui.genome_dmg.add_dmg()
+				#current_player.update_nucleus()
+				pass
 			
 			astar.set_position_offset(pos, funcref(self, "costs"))
 			
@@ -463,7 +461,6 @@ func move_player(pos: Vector3):
 	elif player_tile != pos and distance > loc_radius:
 		emit_signal("invalid_action", "movement", true, "moving there")
 			
-	current_player.organism.gain_dmg(tiles_moved)
 	return tiles_moved
 
 #Checks the mineral and cfp resource banks if they have acquired any particular

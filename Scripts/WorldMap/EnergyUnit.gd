@@ -107,10 +107,7 @@ func _set_colors() -> void:
 		fill.color = unfilled_color
 	fill.color = fill_color
 	color = border_color	
-	
-func _input(event):
-	if event.is_action_pressed("mouse_left"):
-		set_border_width(width + 1)
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
