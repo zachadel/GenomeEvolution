@@ -70,8 +70,7 @@ func initialize_astar(_radius: int, costs: FuncRef):
 			positions.append(temp_vec)
 			
 			var index = map_ZxZ_to_N(temp_vec.x, temp_vec.y)
-			
-			add_point(index, temp_vec, GODOT_FIX + costs.call_func(temp_vec + offset) + 1)
+			add_point(index, temp_vec, GODOT_FIX + costs.call_func(temp_vec + offset))
 		
 	for tile in positions:
 		for neighbor in cube_directions:

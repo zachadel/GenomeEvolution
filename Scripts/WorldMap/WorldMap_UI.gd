@@ -42,6 +42,11 @@ func _ready():
 		test_button.text = "Print Debug"
 		$MenuPanel/HBoxContainer.add_child(test_button)
 		test_button.connect("pressed", self, "test_functionality")
+		
+		var cheat_button = Button.new()
+		cheat_button.text = "Cheat Energy"
+		$MenuPanel/HBoxContainer.add_child(cheat_button)
+		cheat_button.connect("pressed", self, "cheat_energy")
 	
 	pass
 	
@@ -220,6 +225,9 @@ func test_functionality():
 		print("%s base + oxygen + temp + mineral: " % [action], base_cost+oxygen_cost+temp_cost+mineral_cost)
 		print("%s Final Cost: " % [action], final_cost)
 		print("\n")
+
+func cheat_energy():
+	irc.organism.set_energy(irc.organism.energy + 5)
 
 func center_resources():
 	for resource_class in irc.resources:

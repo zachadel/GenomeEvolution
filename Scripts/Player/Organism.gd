@@ -24,7 +24,7 @@ var cell_str = "cell_1"
 
 var start_tile
 
-var energy = 10
+var energy = 20
 #the 4 resource groups with initial tiers of compression
 #tier 0 is immediately useable
 #tier 1 must be broken down into tier 0 using the tier stats
@@ -182,7 +182,7 @@ func _ready():
 	born_on_turn = -1;
 	died_on_turn = -1;
 	
-	set_energy(10);
+	set_energy(20);
 	energy_allocations = {};
 	populate_cfp_resources_dict()
 	populate_mineral_dict()
@@ -1879,7 +1879,7 @@ var taxes = {
 		"consumption": 0,
 		"processing": 0,
 		"hazardous": 0,
-		"energy": 2
+		"energy": 1
 	},
 
 	"mineral_ejection": {
@@ -2210,7 +2210,7 @@ var costs = {
 		"consumption": 0,
 		"processing": 0,
 		"hazardous": 0,
-		"energy": 5
+		"energy": 1
 	},
 
 	"mineral_ejection": {
@@ -3008,7 +3008,7 @@ func process_cfp_resources(resources: Dictionary, container_name: String) -> Dic
 	return results
 
 func set_energy(_energy: float):
-	energy = _energy
+	energy = clamp(_energy, 0, MAX_ENERGY)
 	emit_signal("energy_changed", energy)
 
 func split_energy(num_splits: int) -> float:

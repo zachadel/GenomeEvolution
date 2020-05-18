@@ -138,7 +138,6 @@ func setup(biome_seed, hazard_seeds, resource_seed, tiebreak_seed, _chunk_size, 
 	current_player.organism.refresh_behavior_profile()
 	
 	observe_tiles(Game.world_to_map(default_start), current_player.organism.get_vision_radius())
-	print(current_player.organism.get_vision_radius())
 	astar.initialize_astar(max(1, min(current_player.organism.get_vision_radius(), current_player.organism.get_locomotion_radius())), funcref(self, "costs"))
 	
 	ui.resource_ui.set_resources(current_player.organism.current_tile["resources"])
@@ -153,7 +152,7 @@ func setup(biome_seed, hazard_seeds, resource_seed, tiebreak_seed, _chunk_size, 
 	
 	current_player.organism.update_vesicle_sizes()
 	connect("player_energy_changed", ui.irc.energy_bar, "_on_Organism_energy_changed")
-	current_player.organism.connect("invalid_action", msg, "show_high_low_warning")
+	#current_player.organism.connect("invalid_action", msg, "show_high_low_warning")
 	
 	$MapCamera.position = current_player.position
 	
@@ -192,7 +191,7 @@ func _process(delta):
 			var path = astar.get_positions_and_costs_from_to(player_tile, tile_position)
 
 			if len(path) > 0:
-				if path["total_cost"] <= current_player.organism.energy:
+				if path["total_cost"] + current_player.organism.get_locomotion_tax() <= current_player.organism.energy:
 					$Path.default_color = Color(0,0,1)
 				else:
 					$Path.default_color = Color(1,0,0)
