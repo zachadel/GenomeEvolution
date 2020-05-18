@@ -9,13 +9,16 @@ class Skill:
 	var limit := -1;
 	var override_amt := OVERRIDE_COUNT;
 	
+	var unique := false;
 	var mutates_from := "";
 	var excluded_by := [];
 	
 	func has_limit() -> bool:
 		return limit >= 0;
-	func is_additive() -> bool:
-		return has_limit();
+	
+	# If true, prevents a gene from gaining this same skill a second time
+	func is_unique() -> bool:
+		return unique;
 	
 	func get_override_count() -> int:
 		if has_limit():
@@ -58,7 +61,7 @@ func get_random_skill_id(for_behavior: String, current_skill_ids := []) -> Strin
 	var skill_arr := [];
 	for sid in skill_ids_by_behavior.get(for_behavior, []):
 		var skill := get_skill(sid);
-		if (skill.is_additive() || !current_skill_ids.has(sid)) &&\
+		if (!skill.is_unique() || !current_skill_ids.has(sid)) &&\
 			skill.is_valid_gain(current_skill_ids):
 				skill_arr.append(sid);
 	
