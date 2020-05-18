@@ -20,9 +20,7 @@ func set_skills(skill_profs: Array) -> void:
 
 func add_skill_dict(skill_dict: Dictionary) -> void:
 	for k in skill_dict:
-		if !skill_prof_data.has(k):
-			skill_prof_data[k] = {};
-		Game.add_numeric_dicts(skill_prof_data[k], skill_dict[k]);
+		Game.add_numeric_dicts(skill_prof_data, skill_dict);
 
 func get_behavior(behavior_key: String) -> float:
 	return bhv_prof_data.get(behavior_key, 0.0);
@@ -30,24 +28,24 @@ func get_behavior(behavior_key: String) -> float:
 func has_behavior(behavior_key: String) -> bool:
 	return get_behavior(behavior_key) > 0.0;
 
-func get_skill_count(behavior: String, skill: String) -> int:
-	if !has_behavior(behavior):
+func get_skill_count(skill_name: String) -> int:
+	var skill : Skills.Skill = Skills.get_skill(skill_name);
+	
+	if !has_behavior(skill.behavior):
 		return 0;
 	
-	var count_limit : int = Skills.get_skill_limit(behavior, skill);
-	var has_limit := count_limit >= 0;
 	if Unlocks.unlock_override:
-		return count_limit if has_limit else Skills.OVERRIDE_COUNT;
+		return skill.get_override_count();
 	
-	var count = skill_prof_data.get(behavior, {}).get(skill, 0);
-	if has_limit:
-		return int(min(count, count_limit));
+	var count = skill_prof_data.get(skill, 0);
+	if skill.has_limit():
+		return int(min(count, skill.limit));
 	return count;
 
-func has_skill(behavior: String, skill: String) -> bool:
+func has_skill(skill: String) -> bool:
 	if Unlocks.unlock_override:
 		return true;
-	return get_skill_count(behavior, skill) > 0;
+	return get_skill_count(skill) > 0;
 
 # Returns a mult for some specialization
 # e.g. get_specialization("Locomotion", "biomes", biome_key_str);

@@ -1,56 +1,73 @@
 extends Node
 
 # If using the "unlock everything" override, how many "counts" of a skill should you have?
-# If a limit (SKILL_LIMITS) isn't defined, use this number instead
+# If a limit isn't defined, use this number instead
 const OVERRIDE_COUNT = 25;
+class Skill:
+	var desc := "SKILL NOT FOUND";
+	var behavior := "";
+	var limit := -1;
+	var override_amt := OVERRIDE_COUNT;
+	
+	var mutates_from := "";
+	var excluded_by := [];
+	
+	func has_limit() -> bool:
+		return limit >= 0;
+	func is_additive() -> bool:
+		return has_limit();
+	
+	func get_override_count() -> int:
+		if has_limit():
+			return limit;
+		return override_amt;
+	
+	func is_valid_gain(current_skill_ids: Array) -> bool:
+		if !excluded_by.empty():
+			for e in excluded_by:
+				if current_skill_ids.has(e):
+					return false;
+		
+		if !mutates_from.empty():
+			return current_skill_ids.has(mutates_from);
+		
+		return true;
 
-const SKILLS = {
-	"Replication": {
-		"fix_dmg_genes": "Fix Damaged Genes",
-		"extend_cmsm": "Extend Chromosome",
-	},
-	"Locomotion": {},
-	"Manipulation": {},
-	"Sensing": {},
-	"Construction": {
-		"sugar->am_acid": "Sugars -> Amino Acids",
-		"sugar->carb": "Sugars -> Carbohydrates",
-		"sugar->fat_acid": "Sugars -> Fatty Acids",
-		"energy->sugar": "Energy -> Sugars",
-		"am_acid->protein": "Amino Acids -> Protein",
-		"fat_acid->fat": "Fatty Acids -> Fats",
-		"uv->energy": "Photosynthesis",
-	},
-	"Deconstruction": {
-		"am_acid->sugar": "Amino Acids -> Sugars",
-		"carb->sugar": "Carbohydrates -> Sugars",
-		"sugar->energy": "Sugars -> Energy",
-		"protein->am_acid": "Proteins -> Amino Acids",
-		"fat->fat_acid": "Fats -> Fatty Acids",
-		"fat_acid->energy": "Fatty Acids -> Energy",
-		"trim_dmg_genes": "Trim Damaged Genes",
-		"trim_gap_genes": "Trim Genes from Breaks",
-	},
-	"Helper": {},
-	"Component": {},
-};
+var all_skills := {};
+var skill_ids_by_behavior := {};
 
-# A limit of 0 prevents the skill from being obtained
-# An unlisted limit or limit < 0 indicates no limit
-const SKILL_LIMITS = {
-	"Replication": {
-		"extend_cmsm": 6,
-	},
-};
+func _ready():
+	var cfg_file = ConfigFile.new();
+	
+	var err = cfg_file.load("res://Data/skills.cfg");
+	if err == OK:
+		for s in cfg_file.get_sections():
+			var skill := Skill.new();
+			for k in cfg_file.get_section_keys(s):
+				skill.set(k, cfg_file.get_value(s, k));
+			
+			all_skills[s] = skill;
+			
+			if !skill_ids_by_behavior.has(skill.behavior):
+				skill_ids_by_behavior[skill.behavior] = [];
+			skill_ids_by_behavior[skill.behavior].append(s);
+	else:
+		print("Failed to load skill data");
 
-func get_random_skill(from_class: String) -> String:
-	var skill_arr : Array = SKILLS.get(from_class, {}).keys();
+func get_random_skill_id(for_behavior: String, current_skill_ids := []) -> String:
+	var skill_arr := [];
+	for sid in skill_ids_by_behavior.get(for_behavior, []):
+		var skill := get_skill(sid);
+		if (skill.is_additive() || !current_skill_ids.has(sid)) &&\
+			skill.is_valid_gain(current_skill_ids):
+				skill_arr.append(sid);
+	
 	if skill_arr.empty():
 		return "";
 	return skill_arr[randi() % skill_arr.size()];
 
-func get_skill_desc(from_class: String, skill_name: String) -> String:
-	return SKILLS.get(from_class, {}).get(skill_name, "SKILL_NOT_FOUND:%s::%s|" % [from_class, skill_name]);
+func get_skill(skill_name: String) -> Skill:
+	return all_skills.get(skill_name, null);
 
-func get_skill_limit(from_class: String, skill_name: String) -> int:
-	return SKILL_LIMITS.get(from_class, {}).get(skill_name, -1);
+func skill_exists(skill_name: String) -> bool:
+	return all_skills.has(skill_name);

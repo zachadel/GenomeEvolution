@@ -173,14 +173,14 @@ func get_save_data():
 	if !ate_id_key.empty():
 		setup_data[1] = ate_id_key;
 	
-	return [setup_data, get_ess_behavior_raw(), get_specialization(), get_skill_bare_dict()];
+	return [setup_data, get_ess_behavior_raw(), get_specialization(), get_skill_counts()];
 
 func load_from_save(save_data):
 	display_locked = true;
 	callv("setup", save_data[0]);
 	set_ess_behavior(save_data[1]);
 	set_specialization(save_data[2]);
-	set_skills(save_data[3]);
+	set_skill_profile_from_counts(save_data[3]);
 	display_locked = false;
 	upd_display();
 
@@ -433,56 +433,62 @@ func get_skill_profile(behavior := {}) -> Dictionary:
 	var skill_prof := {};
 	for k in skills:
 		if behavior.get(k, 0.0) > 0.0:
-			skill_prof[k] = skills[k];
+			skill_prof[k] = skills[k].duplicate();
 	return skill_prof;
 
 # Used in save/loads
-# Identical to the "skills" var but it excludes any behaviors without skills
-func get_skill_bare_dict() -> Dictionary:
-	var skill_bdict := {};
-	for k in skills:
-		if !skills[k].empty():
-			skill_bdict[k] = skills[k];
-	return skill_bdict;
+func get_skill_counts() -> Dictionary:
+	var all_skill_counts := {};
+	for b in skills:
+		for s in skills[b]:
+			all_skill_counts[s] = skills[b][s];
+	return all_skill_counts;
 
 # Used in save/loads
-func set_skills(skill_dict: Dictionary) -> void:
-	for k in skill_dict:
-		skills[k] = skill_dict[k];
+func set_skill_profile_from_counts(skill_counts: Dictionary) -> void:
+	for id in skill_counts:
+		var b = Skills.get_skill(id).behavior;
+		if !skills.has(b):
+			skills[b] = {};
+		skills[b][id] = skill_counts[id];
 
 const SKILL_EVOLVE_CHANCE = 0.1;
 var just_evolved_skill := false;
-var latest_skill_evol := "";
+var latest_skill_id_evol := "";
 var latest_beh_evol := "";
 
-func gain_specific_skill(behavior: String, skill: String) -> void:
+func gain_specific_skill(behavior: String, skill_id: String) -> void:
 	if !skills.has(behavior):
 		skills[behavior] = {};
 	
-	if skills[behavior].has(skill):
-		skills[behavior][skill] += 1;
+	if skills[behavior].has(skill_id):
+		skills[behavior][skill_id] += 1;
 	else:
-		skills[behavior][skill] = 1;
+		skills[behavior][skill_id] = 1;
+	
+	var mutated_from = Skills.get_skill(skill_id).mutates_from;
+	if !mutated_from.empty() && skills[behavior].has(mutated_from):
+		if skills[behavior][mutated_from] == 1:
+			skills[behavior].erase(mutated_from);
+		else:
+			skills[behavior][mutated_from] -= 1;
 
 func evolve_skill(behave_key: String, gain := true) -> void:
 	if gain:
-		var new_skill := Skills.get_random_skill(behave_key);
-		if !new_skill.empty():
+		var new_skill_id := Skills.get_random_skill_id(behave_key);
+		if !new_skill_id.empty():
 			just_evolved_skill = true;
-			latest_skill_evol = new_skill;
+			latest_skill_id_evol = new_skill_id;
 			
-			if !skills.has(behave_key):
-				skills[behave_key] = {};
-			
-			gain_specific_skill(behave_key, new_skill);
+			gain_specific_skill(behave_key, new_skill_id);
 	else:
 		if !skills.get(behave_key, {}).empty():
-			var rand_skill : String = skills[behave_key].keys()[randi() % skills[behave_key].size()];
+			var rand_skill_id : String = skills[behave_key].keys()[randi() % skills[behave_key].size()];
 			
 			just_evolved_skill = true;
-			latest_skill_evol = skills[behave_key][rand_skill];
+			latest_skill_id_evol = rand_skill_id;
 			
-			skills[behave_key].remove(rand_skill);
+			skills[behave_key].remove(rand_skill_id);
 			if skills[behave_key].empty():
 				skills.erase(behave_key);
 
@@ -589,7 +595,7 @@ func damage_gene(dmg := true):
 # Returns a string describing the evolution that occurred
 func perform_evolution(major: bool, up: bool) -> String:
 	just_evolved_skill = false;
-	latest_skill_evol = "";
+	latest_skill_id_evol = "";
 	latest_beh_evol = "";
 	var original_mode = mode;
 	
@@ -617,7 +623,7 @@ func perform_evolution(major: bool, up: bool) -> String:
 		"essential":
 			change_text = ", %sing %s";
 			if just_evolved_skill:
-				change_text %= ["gain" if up else "los", "the skill %s" % Skills.get_skill_desc(latest_beh_evol, latest_skill_evol)];
+				change_text %= ["gain" if up else "los", "the skill %s" % Skills.get_skill(latest_skill_id_evol).desc];
 			else:
 				change_text %= ["improv" if up else "impair", "its %s ability" % Tooltips.GENE_NAMES.get(latest_beh_evol, "UNKNOWN")];
 				if mode == "pseudo":

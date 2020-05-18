@@ -1504,7 +1504,7 @@ func get_scissors_remaining() -> int:
 	return total_scissors_left;
 
 func get_recombos_per_turn() -> int:
-	return int(floor(behavior_profile.get_behavior("Replication")));
+	return behavior_profile.get_skill_count("recombo");
 
 func adv_turn(round_num, turn_idx):
 	click_mode = "";

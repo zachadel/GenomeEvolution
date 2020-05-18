@@ -81,7 +81,13 @@ func get_specialization_profile(behavior_profile = null) -> Dictionary:
 func get_skill_profile() -> Dictionary:
 	var skill_profile := {};
 	for g in get_genes():
-		skill_profile = Game.add_numeric_dicts(skill_profile, g.get_skill_profile());
+		var g_skills = g.get_skill_profile();
+		for b in g_skills:
+			for skill_id in g_skills[b]:
+				if skill_profile.has(skill_id):
+					skill_profile[skill_id] += g_skills[b][skill_id];
+				else:
+					skill_profile[skill_id] = g_skills[b][skill_id];
 	return skill_profile;
 
 func get_pairs(left_elm, right_elm, minimal = false):
