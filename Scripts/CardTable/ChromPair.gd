@@ -187,6 +187,9 @@ func get_ate_list():
 		ate_list_is_clean = true;
 	return ate_list;
 
+func get_ate_bunches() -> Array:
+	return get_cmsm(0).get_ate_bunches() + get_cmsm(1).get_ate_bunches();
+
 func get_gap_list():
 	if !gap_list_is_clean:
 		gap_list.clear();
@@ -352,6 +355,15 @@ func add_to_truepos(sq_elm, pos):
 	else:
 		get_cmsm(cmsm_idx).add_elm(sq_elm, pos);
 
+func add_next_to_elm(add_elm, ref_elm, offset := 1):
+	var cmsm_idx = 0 if ref_elm.get_cmsm() == get_cmsm(0) else 1;
+	var pos = ref_elm.get_index() + offset;
+	
+	if do_yields:
+		yield(get_cmsm(cmsm_idx).add_elm(add_elm, pos), "completed");
+	else:
+		get_cmsm(cmsm_idx).add_elm(add_elm, pos);
+
 func add_to_randpos(sq_elm, allow_ends = true):
 	if (do_yields):
 		yield(add_to_truepos(sq_elm, rand_truepos(allow_ends)), "completed");
@@ -420,8 +432,7 @@ func jump_ate(ate_elm):
 		insert_from_behavior(ate_elm, old_cmsm, old_idx, ate_elm.get_active_behavior(true));
 
 func copy_ate(original_ate):
-	var copy_ate = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
-	copy_ate.setup_copy(original_ate);
+	var copy_ate = Game.copy_elm(original_ate);
 	if (do_yields):
 		yield(insert_from_behavior(copy_ate, original_ate.get_parent(), original_ate.get_index(),\
 			original_ate.get_active_behavior(false)), "completed");

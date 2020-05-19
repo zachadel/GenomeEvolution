@@ -541,44 +541,107 @@ func environmental_damage():
 	emit_signal("justnow_update", "%d gene%s were damaged by the environment." % [true_damaged, "" if true_damaged == 1 else "s"]);
 	emit_signal("justnow_update", "%d gap%s appeared due to environmental damage." % [gap_count, "" if gap_count == 1 else "s"]);
 
+func find_most_active_ate(ate_array: Array) -> int:
+	if ate_array.size() == 1:
+		return 0;
+	
+	var most_active_idx := 0;
+	for i in range(1, ate_array.size()):
+		if ate_array[i].ate_activity > ate_array[most_active_idx].ate_activity:
+			most_active_idx = i;
+	
+	return most_active_idx;
+
 func jump_ates():
-	var _actives = cmsms.ate_list + [];
+	var ate_bunches = cmsms.get_ate_bunches();
 	var justnow = "";
 	
-	if _actives.empty():
-		if do_yields:
-			yield(get_tree(), "idle_frame");
+	if ate_bunches.empty():
 		justnow = "There are no transposons in your genes.";
 	else:
-		for ate in _actives:
-			match (ate.get_ate_jump_roll()):
+		for bunch in ate_bunches:
+			var leader_idx := find_most_active_ate(bunch);
+			var leader = bunch[leader_idx];
+			
+			var left_followers := [];
+			var right_followers := [];
+			
+			var bunch_name = leader.get_gene_name();
+			
+			if bunch.size() > 1:
+				bunch_name += " group";
+				
+				for i in range(bunch.size()):
+					if i < leader_idx:
+						left_followers.append(bunch[i]);
+					if i > leader_idx:
+						right_followers.append(bunch[i]);
+			
+			var leader_jump_roll = leader.get_ate_jump_roll()
+			var leader_copy = null;
+			var original_orientation = leader.code_direction;
+			
+			match leader_jump_roll:
 				0:
-					justnow += "%s did not do anything.\n" % ate.get_gene_name();
+					justnow += "%s did not do anything.\n" % bunch_name;
 				1:
-					var old_loc = ate.get_position_display();
-					var old_id = ate.get_gene_name();
+					var old_loc = leader.get_position_display();
 					if (do_yields):
-						yield(cmsms.remove_elm(ate), "completed");
+						yield(cmsms.remove_elm(leader), "completed");
 					else:
-						cmsms.remove_elm(ate);
-					justnow += "%s removed from (%d, %d); left a gap.\n" % ([old_id] + old_loc);
+						cmsms.remove_elm(leader);
+					justnow += "%s removed from (%d, %d); left a gap.\n" % ([bunch_name] + old_loc);
 				2:
-					var old_loc = ate.get_position_display();
+					var old_loc = leader.get_position_display();
 					
 					if (do_yields):
-						yield(cmsms.jump_ate(ate), "completed");
+						yield(cmsms.jump_ate(leader), "completed");
 					else:
-						cmsms.jump_ate(ate);
+						cmsms.jump_ate(leader);
 					justnow += "%s jumped from (%d, %d) to (%d, %d); left a gap.\n" % \
-						([ate.get_gene_name()] + old_loc + ate.get_position_display());
+						([bunch_name] + old_loc + leader.get_position_display());
 				3:
-					var copy_ate;
 					if (do_yields):
-						copy_ate = yield(cmsms.copy_ate(ate), "completed");
+						leader_copy = yield(cmsms.copy_ate(leader), "completed");
 					else:
-						copy_ate = cmsms.copy_ate(ate);
+						leader_copy = cmsms.copy_ate(leader);
 					justnow += "%s copied itself to (%d, %d); left no gap.\n" % \
-						([ate.get_gene_name()] + copy_ate.get_position_display());
+						([bunch_name] + leader_copy.get_position_display());
+			
+			var leader_flipped: bool;
+			if leader_copy == null:
+				leader_flipped = original_orientation != leader.code_direction;
+			else:
+				leader_flipped = original_orientation != leader_copy.code_direction;
+			
+			if leader_flipped:
+				left_followers.invert();
+				right_followers.invert();
+			
+			for follower in left_followers + right_followers:
+				var adj_offset := 1 if follower in right_followers else -1;
+				if leader_flipped:
+					adj_offset *= -1;
+				
+				match leader_jump_roll:
+					1:
+						cmsms.remove_elm(follower);
+					2:
+						cmsms.extract_elm(follower);
+						if leader_flipped:
+							follower.reverse_code();
+						cmsms.add_next_to_elm(follower, leader, adj_offset);
+					3:
+						var follower_copy = Game.copy_elm(follower);
+						if leader_flipped:
+							follower_copy.reverse_code();
+						cmsms.add_next_to_elm(follower_copy, leader_copy, adj_offset);
+				
+				if leader_jump_roll > 0 && !(follower in bunch):
+					justnow += "%s followed.\n" % follower.get_gene_name();
+	
+	if do_yields:
+		yield(get_tree(), "idle_frame");
 	emit_signal("justnow_update", justnow);
 	cmsms.collapse_gaps();
 
@@ -1220,22 +1283,25 @@ func evolve_cmsm(cmsm):
 	evolve_candidates(cmsm.get_genes());
 
 func evolve_candidates(candids):
-	if (candids.size() > 0):
-		var justnow = "";
+	if candids.size() > 0:
+		var justnow := "";
 		for e in candids:
-			var dmg_mods := {};
-			if e.is_damaged():
-				dmg_mods = {"major_down": 5.0, "minor_down": 2.5};
-			var evolve_name := roll_chance_named("evolve", dmg_mods);
-			var evolve_text : String = e.evolve_by_name(evolve_name);
-			match evolve_name:
-				"none":
-					justnow += "%s did not evolve.\n" % e.get_gene_name();
-				_:
-					justnow += "%s received a %s.\n" % [e.get_gene_name(), evolve_text];
+			justnow += evolve_element(e);
 		emit_signal("justnow_update", justnow);
 	else:
-		emit_signal("justnow_update", "No essential genes were duplicated, so no genes evolve.");
+		emit_signal("justnow_update", "No genes evolve.");
+
+func evolve_element(elm) -> String:
+	var dmg_mods := {};
+	if elm.is_damaged():
+		dmg_mods = {"major_down": 5.0, "minor_down": 2.5};
+	var evolve_name := roll_chance_named("evolve", dmg_mods);
+	var evolve_text : String = elm.evolve_by_name(evolve_name);
+	match evolve_name:
+		"none":
+			return "%s did not evolve.\n" % elm.get_gene_name();
+		_:
+			return "%s received a %s.\n" % [elm.get_gene_name(), evolve_text];
 
 var recombo_chance := 1.0;
 var recombos_left := 0;
@@ -1539,7 +1605,7 @@ func adv_turn(round_num, turn_idx):
 			Game.TURN_TYPES.RepairDmg:
 				total_scissors_left = get_scissors_per_turn();
 				repair_roll_storage = {"copy_pattern": {}, "join_ends": {}};
-				emit_signal("clear_gap_msg");
+				#emit_signal("clear_gap_msg");
 				emit_signal("show_repair_opts", true);
 			Game.TURN_TYPES.EnvironmentalDamage:
 				emit_signal("doing_work", true);

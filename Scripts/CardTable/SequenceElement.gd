@@ -88,6 +88,15 @@ func obtain_ate_personality(personality_id := "") -> void:
 	aura = Game.add_numeric_dicts(aura, ate_personality.get("aura", {}));
 	setup_ate_art();
 
+func get_excise_carry_chance() -> float:
+	return ate_personality.get("excise_carry", 0.0);
+
+func is_buncher() -> bool:
+	return ate_personality.get("bunched", false);
+
+func is_ate_bunched_with(other_ate) -> bool:
+	return is_buncher() && other_ate.is_buncher() && is_equal(other_ate);
+
 func setup_ate_art():
 	if AnthroArt == null:
 		setup_ate_display_onready = true;
@@ -313,7 +322,7 @@ func set_code_arrow_dir(left : bool):
 	else:
 		CodeArrow.self_modulate = Color(0, 0.4, 0.75);
 
-func modify_code(spaces = 1, min_mag = 1, allow_negative = false):
+func modify_code(spaces := 1, min_mag := 1, allow_negative := false):
 	for _i in range(spaces):
 		var _idx = randi() % gene_code.length();
 		var _change = min_mag;
@@ -324,11 +333,12 @@ func modify_code(spaces = 1, min_mag = 1, allow_negative = false):
 		_char = (_char + _change) % Game.code_elements.size();
 		gene_code[_idx] = Game.get_code_char(_char);
 
-func get_code_elm_dist(elm0, elm1):
+# The elms here are actually chars (which are not a type in GDScript)
+func get_code_elm_dist(elm0: String, elm1: String) -> int:
 	var _dist = abs(Game.get_code_num(elm0) - Game.get_code_num(elm1));
-	return min(_dist, Game.code_elements.size() - _dist);
+	return int(min(_dist, Game.code_elements.size() - _dist));
 
-func get_code_dist(other_cd, my_cd = ""):
+func get_code_dist(other_cd: String, my_cd := "") -> int:
 	if (my_cd == ""):
 		my_cd = gene_code;
 	
@@ -339,20 +349,17 @@ func get_code_dist(other_cd, my_cd = ""):
 	
 	return _dist;
 
-func get_code_dist_to_parent():
+func get_code_dist_to_parent() -> int:
 	return get_code_dist(parent_code, gene_code);
 
-func can_compare_elm(other_elm):
+func can_compare_elm(other_elm) -> bool:
 	return gene_code.length() > 0 && other_elm.gene_code.length() > 0 && other_elm.type == type;
 
-func get_gene_distance(other_elm):
+func get_gene_distance(other_elm) -> int:
 	return get_code_dist(other_elm.gene_code, gene_code);
 
-func is_equal(other_elm, max_dist = -1):
-	if (max_dist < 0):
-		return can_compare_elm(other_elm);
-	else:
-		return can_compare_elm(other_elm) && get_gene_distance(other_elm) <= max_dist;
+func is_equal(other_elm, max_dist := 8) -> bool:
+	return can_compare_elm(other_elm) && get_gene_distance(other_elm) <= max_dist;
 
 func get_gene_name():
 	match mode:

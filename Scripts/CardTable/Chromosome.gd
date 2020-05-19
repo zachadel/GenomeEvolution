@@ -164,6 +164,21 @@ func block_exists(start_idx, block_elms):
 			return false;
 	return true;
 
+func get_ate_bunches() -> Array:
+	var all_bunches := [];
+	
+	var current_bunch := [];
+	for i in range(get_child_count()):
+		var ate = get_child(i);
+		if ate.is_ate():
+			if current_bunch.empty() || current_bunch.back().is_ate_bunched_with(ate):
+				current_bunch.append(ate);
+			else:
+				all_bunches.append(current_bunch.duplicate());
+				current_bunch.clear();
+	
+	return all_bunches;
+
 func find_next_gap(start_idx : int, step := 1, end_at := -1) -> int:
 	if (step == 0):
 		return start_idx;

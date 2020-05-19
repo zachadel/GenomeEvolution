@@ -508,3 +508,4 @@ func _on_Organism_transposon_activity(active):
 		show_chaos_anim();
 	else:
 		hide_chaos_anim();
+
