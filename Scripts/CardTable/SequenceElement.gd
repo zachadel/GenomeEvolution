@@ -88,9 +88,6 @@ func obtain_ate_personality(personality_id := "") -> void:
 	aura = Game.add_numeric_dicts(aura, ate_personality.get("aura", {}));
 	setup_ate_art();
 
-func get_excise_carry_chance() -> float:
-	return ate_personality.get("excise_carry", 0.0);
-
 var copygene_flag := false;
 func set_copygene_flag(s := true) -> void:
 	copygene_flag = s;

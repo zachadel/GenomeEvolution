@@ -70,4 +70,4 @@ title="Family Name" # The name that shows up in the game
 roll=[] # Described above
 range={} # Described above
 bunched=false # If several of this TE are adjacent, they behave as one
-excise_carry=0.0 # The chance that an adjacent gene is carried with the behavior
+carry=0.0 # The chance that an adjacent gene is carried with the behavior
