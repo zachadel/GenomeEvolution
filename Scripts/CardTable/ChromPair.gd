@@ -409,6 +409,25 @@ func insert_from_behavior(sq_elm, this_cmsm, ref_pos, behave_dict = Game.DEFAULT
 		if !gene_at.is_gap():
 			final_cmsm.split_elm(gene_at);
 			final_idx += 1;
+	
+	# If applicable, damage a gene at that spot
+	if randf() <= behave_dict["impact"]:
+		var rand_adj: int;
+		if final_idx == 0:
+			rand_adj = 1;
+		elif final_idx == final_cmsm.get_child_count() - 1:
+			rand_adj = -1;
+		else:
+			rand_adj = 1 if randf() < 0.5 else -1;
+		
+		var gene_at = final_cmsm.get_child(final_idx + rand_adj);
+		if !gene_at.is_gap():
+			gene_at.damage_gene();
+	
+	# If applicable, flag the elm as triggering a gene-copy (this is handled elsewhere)
+	if randf() <= behave_dict["gene_copy"]:
+		sq_elm.set_copygene_flag();
+	
 	# Move sq_elm to the picked spot
 	if (do_yields):
 		yield(final_cmsm.add_elm(sq_elm, final_idx), "completed");

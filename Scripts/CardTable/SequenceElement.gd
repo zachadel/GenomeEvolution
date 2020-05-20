@@ -91,6 +91,12 @@ func obtain_ate_personality(personality_id := "") -> void:
 func get_excise_carry_chance() -> float:
 	return ate_personality.get("excise_carry", 0.0);
 
+var copygene_flag := false;
+func set_copygene_flag(s := true) -> void:
+	copygene_flag = s;
+func has_copygene_flag() -> bool:
+	return copygene_flag;
+
 func is_buncher() -> bool:
 	return ate_personality.get("bunched", false);
 

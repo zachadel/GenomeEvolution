@@ -612,16 +612,24 @@ func jump_ates():
 					justnow += "%s copied itself to (%d, %d); left no gap.\n" % \
 						([bunch_name] + leader_copy.get_position_display());
 			
+			if (leader_copy != null && leader_copy.has_copygene_flag()) || leader.has_copygene_flag():
+				leader.set_copygene_flag(false);
+				var all_genes = get_cmsm_pair().get_all_genes();
+				var rand_copy = Game.copy_elm(all_genes[randi() % all_genes.size()]);
+				
+				if do_yields:
+					yield(get_cmsm_pair().add_to_randpos(rand_copy), "completed");
+				else:
+					get_cmsm_pair().add_to_randpos(rand_copy);
+				var evolve_text = evolve_element(rand_copy);
+				justnow += "%s caused a %s to be copied to (%d, %d), which %s.\n" % ([bunch_name, rand_copy.get_gene_name()] + rand_copy.get_position_display() + [evolve_text]);
+			
 			var leader_flipped: bool;
 			if leader_copy == null:
 				leader_flipped = original_orientation != leader.code_direction;
 			else:
 				leader_flipped = original_orientation != leader_copy.code_direction;
 			
-			if leader.get_carry_elms("left").size() > 0: # ALXL
-				print("got u lefties")
-			if leader.get_carry_elms("right").size() > 0:
-				print("got u righties")
 			left_followers += leader.get_carry_elms("left");
 			right_followers += leader.get_carry_elms("right");
 			if leader_flipped:
@@ -639,8 +647,6 @@ func jump_ates():
 					1:
 						cmsms.remove_elm(follower);
 					2:
-						print("ok here i come") # ALXL
-						
 						if do_yields:
 							yield(cmsms.extract_elm(follower), "completed")
 							yield(cmsms.add_next_to_elm(follower, leader, adj_offset), "completed")
@@ -1311,7 +1317,7 @@ func evolve_candidates(candids):
 	if candids.size() > 0:
 		var justnow := "";
 		for e in candids:
-			justnow += evolve_element(e);
+			justnow += "%s %s.\n" % [e.get_gene_name(), evolve_element(e)];
 		emit_signal("justnow_update", justnow);
 	else:
 		emit_signal("justnow_update", "No genes evolve.");
@@ -1324,9 +1330,9 @@ func evolve_element(elm) -> String:
 	var evolve_text : String = elm.evolve_by_name(evolve_name);
 	match evolve_name:
 		"none":
-			return "%s did not evolve.\n" % elm.get_gene_name();
+			return "did not evolve";
 		_:
-			return "%s received a %s.\n" % [elm.get_gene_name(), evolve_text];
+			return "received a %s" % evolve_text;
 
 var recombo_chance := 1.0;
 var recombos_left := 0;
