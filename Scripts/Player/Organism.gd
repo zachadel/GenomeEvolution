@@ -1617,13 +1617,13 @@ func adv_turn(round_num, turn_idx):
 				emit_signal("transposon_activity", true);
 				
 				# Add new TEs
-#				Game.SeqElm_time_limit = Game.TE_INSERT_TIME_LIMIT;
-#				var min_max = Settings.transposons_per_turn()
-#				var num_ates = min_max[Settings.MIN] + randi() % (min_max[Settings.MAX] - min_max[Settings.MIN] + 1);
-#				if (do_yields):
-#					yield(gain_ates(num_ates), "completed");
-#				else:
-#					gain_ates(num_ates);
+				Game.SeqElm_time_limit = Game.TE_INSERT_TIME_LIMIT;
+				var min_max = Settings.transposons_per_turn()
+				var num_ates = min_max[Settings.MIN] + randi() % (min_max[Settings.MAX] - min_max[Settings.MIN] + 1);
+				if (do_yields):
+					yield(gain_ates(num_ates), "completed");
+				else:
+					gain_ates(num_ates);
 				
 				# Do TE activity
 				Game.SeqElm_time_limit = Game.TE_JUMP_TIME_LIMIT;
