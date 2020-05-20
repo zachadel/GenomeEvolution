@@ -97,6 +97,32 @@ func is_buncher() -> bool:
 func is_ate_bunched_with(other_ate) -> bool:
 	return is_buncher() && other_ate.is_buncher() && is_equal(other_ate);
 
+var ate_carried_elms := {"left": [], "right": []};
+
+func reset_ate_carried_elms() -> void:
+	ate_carried_elms["left"].clear();
+	ate_carried_elms["right"].clear();
+
+func add_carry_elm(idx_offset: int) -> void:
+	if idx_offset != 0:
+		var carry_idx = get_index() + idx_offset;
+		if get_cmsm() != null && (carry_idx >= 0 || carry_idx < get_cmsm().get_child_count()):
+			var e = get_cmsm().get_child(carry_idx);
+			if e!= null && !e.is_gap():
+				ate_carried_elms["left" if idx_offset < 0 else "right"].append(e);
+
+func add_random_adjacent_carry() -> void:
+	var offset_idx := 1;
+	if randf() < 0.5:
+		offset_idx = -1;
+	add_carry_elm(offset_idx);
+
+func get_carry_elms(left_or_right: String) -> Array:
+	return ate_carried_elms[left_or_right];
+
+func get_carry_chance() -> float:
+	return ate_personality.get("carry", 0.0);
+
 func setup_ate_art():
 	if AnthroArt == null:
 		setup_ate_display_onready = true;

@@ -262,7 +262,6 @@ const DEFAULT_ATE_RANGE_BEHAVIOR = {
 	"max_range": 1.0, #If other_cmsm is true, this is the rightmost spot as a percentage it will jump to
 	"split_chance": 0.03, #The chance this will split a gene upon arrival
 	"impact": 0.0, #The chance that a gene at the landing site gets damaged
-	"carry": 0.0, #The chance that an adjacent gene is carried with the behavior
 	"gene_copy": 0.0, #The chance that a random gene is duplicated in the genome
 };
 

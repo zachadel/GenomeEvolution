@@ -577,6 +577,9 @@ func jump_ates():
 					if i > leader_idx:
 						right_followers.append(bunch[i]);
 			
+			if randf() < leader.get_carry_chance():
+				leader.add_random_adjacent_carry();
+			
 			var leader_jump_roll = leader.get_ate_jump_roll()
 			var leader_copy = null;
 			var original_orientation = leader.code_direction;
@@ -590,6 +593,7 @@ func jump_ates():
 						yield(cmsms.remove_elm(leader), "completed");
 					else:
 						cmsms.remove_elm(leader);
+					
 					justnow += "%s removed from (%d, %d); left a gap.\n" % ([bunch_name] + old_loc);
 				2:
 					var old_loc = leader.get_position_display();
@@ -614,31 +618,52 @@ func jump_ates():
 			else:
 				leader_flipped = original_orientation != leader_copy.code_direction;
 			
+			if leader.get_carry_elms("left").size() > 0: # ALXL
+				print("got u lefties")
+			if leader.get_carry_elms("right").size() > 0:
+				print("got u righties")
+			left_followers += leader.get_carry_elms("left");
+			right_followers += leader.get_carry_elms("right");
 			if leader_flipped:
 				left_followers.invert();
 				right_followers.invert();
 			
 			for follower in left_followers + right_followers:
-				var adj_offset := 1 if follower in right_followers else -1;
+				var adj_offset: int;
 				if leader_flipped:
-					adj_offset *= -1;
+					adj_offset = 1 if follower in left_followers else 0;
+				else:
+					adj_offset = 1 if follower in right_followers else 0;
 				
 				match leader_jump_roll:
 					1:
 						cmsms.remove_elm(follower);
 					2:
-						cmsms.extract_elm(follower);
+						print("ok here i come") # ALXL
+						
+						if do_yields:
+							yield(cmsms.extract_elm(follower), "completed")
+							yield(cmsms.add_next_to_elm(follower, leader, adj_offset), "completed")
+						else:
+							cmsms.extract_elm(follower);
+							cmsms.add_next_to_elm(follower, leader, adj_offset);
+						
 						if leader_flipped:
 							follower.reverse_code();
-						cmsms.add_next_to_elm(follower, leader, adj_offset);
 					3:
 						var follower_copy = Game.copy_elm(follower);
 						if leader_flipped:
 							follower_copy.reverse_code();
-						cmsms.add_next_to_elm(follower_copy, leader_copy, adj_offset);
+						
+						if do_yields:
+							yield(cmsms.add_next_to_elm(follower_copy, leader_copy, adj_offset), "completed");
+						else:
+							cmsms.add_next_to_elm(follower_copy, leader_copy, adj_offset);
 				
 				if leader_jump_roll > 0 && !(follower in bunch):
 					justnow += "%s followed.\n" % follower.get_gene_name();
+			
+			leader.reset_ate_carried_elms();
 	
 	if do_yields:
 		yield(get_tree(), "idle_frame");
@@ -1576,6 +1601,7 @@ func adv_turn(round_num, turn_idx):
 	click_mode = "";
 	cmsms.highlight_genes(gene_selection, false);
 	gene_selection.clear();
+	emit_signal("show_repair_opts", false);
 	if (died_on_turn == -1):
 		match (Game.get_turn_type()):
 			Game.TURN_TYPES.Map:
@@ -1585,13 +1611,13 @@ func adv_turn(round_num, turn_idx):
 				emit_signal("transposon_activity", true);
 				
 				# Add new TEs
-				Game.SeqElm_time_limit = Game.TE_INSERT_TIME_LIMIT;
-				var min_max = Settings.transposons_per_turn()
-				var num_ates = min_max[Settings.MIN] + randi() % (min_max[Settings.MAX] - min_max[Settings.MIN] + 1);
-				if (do_yields):
-					yield(gain_ates(num_ates), "completed");
-				else:
-					gain_ates(num_ates);
+#				Game.SeqElm_time_limit = Game.TE_INSERT_TIME_LIMIT;
+#				var min_max = Settings.transposons_per_turn()
+#				var num_ates = min_max[Settings.MIN] + randi() % (min_max[Settings.MAX] - min_max[Settings.MIN] + 1);
+#				if (do_yields):
+#					yield(gain_ates(num_ates), "completed");
+#				else:
+#					gain_ates(num_ates);
 				
 				# Do TE activity
 				Game.SeqElm_time_limit = Game.TE_JUMP_TIME_LIMIT;

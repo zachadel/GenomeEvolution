@@ -480,7 +480,7 @@ func _on_pnl_ph_filter_update_seqelm_coloration(compare_type):
 		g.color_comparison(compare_type, ph_filter_panel.get_slider_value());
 
 func _on_AutoContinue_timeout():
-	adv_turn();
+	pass;#alxl adv_turn();
 
 func _on_ViewMap_pressed():
 	emit_signal("switch_to_map")

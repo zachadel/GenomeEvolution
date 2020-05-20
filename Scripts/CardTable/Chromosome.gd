@@ -72,7 +72,7 @@ func get_specialization_profile(behavior_profile = null) -> Dictionary:
 	
 	for r in spec_behavior:
 		for b in behavior_profile:
-			if b in spec_behavior[r]:
+			if behavior_profile[b] > 0.0 && b in spec_behavior[r]:
 				for t in spec_behavior[r][b]:
 					spec_behavior[r][b][t] /= behavior_profile[b];
 	
@@ -171,11 +171,12 @@ func get_ate_bunches() -> Array:
 	for i in range(get_child_count()):
 		var ate = get_child(i);
 		if ate.is_ate():
-			if current_bunch.empty() || current_bunch.back().is_ate_bunched_with(ate):
-				current_bunch.append(ate);
-			else:
+			if !current_bunch.empty() && !current_bunch.back().is_ate_bunched_with(ate):
 				all_bunches.append(current_bunch.duplicate());
 				current_bunch.clear();
+			current_bunch.append(ate);
+	if !current_bunch.empty():
+		all_bunches.append(current_bunch);
 	
 	return all_bunches;
 
