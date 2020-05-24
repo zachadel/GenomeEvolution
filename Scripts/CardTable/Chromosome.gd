@@ -72,7 +72,7 @@ func get_specialization_profile(behavior_profile = null) -> Dictionary:
 	
 	for r in spec_behavior:
 		for b in behavior_profile:
-			if b in spec_behavior[r]:
+			if behavior_profile[b] > 0.0 && b in spec_behavior[r]:
 				for t in spec_behavior[r][b]:
 					spec_behavior[r][b][t] /= behavior_profile[b];
 	
@@ -81,7 +81,13 @@ func get_specialization_profile(behavior_profile = null) -> Dictionary:
 func get_skill_profile() -> Dictionary:
 	var skill_profile := {};
 	for g in get_genes():
-		skill_profile = Game.add_numeric_dicts(skill_profile, g.get_skill_profile());
+		var g_skills = g.get_skill_profile();
+		for b in g_skills:
+			for skill_id in g_skills[b]:
+				if skill_profile.has(skill_id):
+					skill_profile[skill_id] += g_skills[b][skill_id];
+				else:
+					skill_profile[skill_id] = g_skills[b][skill_id];
 	return skill_profile;
 
 func get_pairs(left_elm, right_elm, minimal = false):
@@ -157,6 +163,22 @@ func block_exists(start_idx, block_elms):
 		if !(get_child(start_idx + i).is_equal(block_elms[i], get_organism().get_max_gene_dist())):
 			return false;
 	return true;
+
+func get_ate_bunches() -> Array:
+	var all_bunches := [];
+	
+	var current_bunch := [];
+	for i in range(get_child_count()):
+		var ate = get_child(i);
+		if ate.is_ate():
+			if !current_bunch.empty() && !current_bunch.back().is_ate_bunched_with(ate):
+				all_bunches.append(current_bunch.duplicate());
+				current_bunch.clear();
+			current_bunch.append(ate);
+	if !current_bunch.empty():
+		all_bunches.append(current_bunch);
+	
+	return all_bunches;
 
 func find_next_gap(start_idx : int, step := 1, end_at := -1) -> int:
 	if (step == 0):

@@ -261,6 +261,8 @@ const DEFAULT_ATE_RANGE_BEHAVIOR = {
 	"min_range": 0.0, #If other_cmsm is true, this is the leftmost spot as a percentage it will jump to
 	"max_range": 1.0, #If other_cmsm is true, this is the rightmost spot as a percentage it will jump to
 	"split_chance": 0.03, #The chance this will split a gene upon arrival
+	"impact": 0.0, #The chance that a gene at the landing site gets damaged
+	"gene_copy": 0.0, #The chance that a random gene is duplicated in the genome
 };
 
 func load_personalities(data_name, dict):
@@ -387,15 +389,15 @@ func list_array_string(array):
 		return "";
 	return list.substr(2, list.length() - 2);
 
-func load_cfg(data_name, dict):
+func load_cfg(data_name: String, dict: Dictionary):
 	var file = ConfigFile.new()
-	var err = file.load("res://Data/" + data_name + ".cfg")
+	var err = file.load("res://Data/%s.cfg" % data_name)
 	
 	if err == OK:
 		for s in file.get_sections():
 			dict[s] = Game.cfg_sec_to_dict(file, s)
 	else:
-		print("Data CFG error: ", err)
+		print("CFG error for ", data_name, " data: ", err)
 
 func populate_biome_conversion_dicts():
 	var biome_keys = biomes.keys()
@@ -576,47 +578,47 @@ func is_valid_interaction(resource_from: String, resource_to: String, bhv_profil
 			resource_to_class = get_class_from_name(resource_to)
 		
 		if resource_from_class == "energy":
-			if resource_to_class == "simple_carbs" and con_value >= 6 and bhv_profile.has_skill("Construction", "energy->sugar"):
+			if resource_to_class == "simple_carbs" and con_value >= 6 and bhv_profile.has_skill("energy->sugar"):
 				return true
 			else:
 				return false
 		elif resource_from_class == "simple_carbs":
 			if resource_to_class == "energy" and decon_value >= 0:
 				return true
-			elif resource_to_class == "complex_carbs" and con_value >= 4 and bhv_profile.has_skill("Construction", "sugar->carb"):
+			elif resource_to_class == "complex_carbs" and con_value >= 4 and bhv_profile.has_skill("sugar->carb"):
 				return true
-			elif resource_to_class == "simple_fats" and con_value >= 6 and bhv_profile.has_skill("Construction", "sugar->fat_acid"):
+			elif resource_to_class == "simple_fats" and con_value >= 6 and bhv_profile.has_skill("sugar->fat_acid"):
 				return true
-			elif resource_to_class == "simple_proteins" and con_value >= 3 and bhv_profile.has_skill("Construction", "sugar->am_acid"):
+			elif resource_to_class == "simple_proteins" and con_value >= 3 and bhv_profile.has_skill("sugar->am_acid"):
 				return true
 			else:
 				return false
 		elif resource_from_class == "simple_fats":
-			if resource_to_class == "complex_fats" and con_value >= 8 and bhv_profile.has_skill("Construction", "fat_acid->fat"):
+			if resource_to_class == "complex_fats" and con_value >= 8 and bhv_profile.has_skill("fat_acid->fat"):
 				return true
-			elif resource_to_class == "energy" and decon_value >= 2 and bhv_profile.has_skill("Deconstruction", "fat_acid->energy"):
+			elif resource_to_class == "energy" and decon_value >= 2 and bhv_profile.has_skill("fat_acid->energy"):
 				return true
 			else:
 				return false
 		elif resource_from_class == "simple_proteins":
-			if resource_to_class == "complex_proteins" and con_value >= 6 and bhv_profile.has_skill("Construction", "am_acid->protein"):
+			if resource_to_class == "complex_proteins" and con_value >= 6 and bhv_profile.has_skill("am_acid->protein"):
 				return true
-			elif resource_to_class == "simple_carbs" and decon_value >= 2 and bhv_profile.has_skill("Deconstruction", "am_acid->sugar"):
+			elif resource_to_class == "simple_carbs" and decon_value >= 2 and bhv_profile.has_skill("am_acid->sugar"):
 				return true
 			else:
 				return false
 		elif resource_from_class == "complex_carbs":
-			if resource_to_class == "simple_carbs" and decon_value >= 2 and bhv_profile.has_skill("Deconstruction", "carb->sugar"):
+			if resource_to_class == "simple_carbs" and decon_value >= 2 and bhv_profile.has_skill("carb->sugar"):
 				return true
 			else:
 				return false
 		elif resource_from_class == "complex_fats":
-			if resource_to_class == "simple_fats" and decon_value >= 6 and bhv_profile.has_skill("Deconstruction", "fat->fat_acid"):
+			if resource_to_class == "simple_fats" and decon_value >= 6 and bhv_profile.has_skill("fat->fat_acid"):
 				return true
 			else:
 				return false
 		elif resource_from_class == "complex_proteins":
-			if resource_to_class == "simple_proteins" and decon_value >= 4 and bhv_profile.has_skill("Deconstruction", "protein->am_acid"):
+			if resource_to_class == "simple_proteins" and decon_value >= 4 and bhv_profile.has_skill("protein->am_acid"):
 				return true
 			else:
 				return false
