@@ -431,6 +431,9 @@ func merge_with(other_elm):
 	
 	set_ess_behavior(bdict);
 	ph_preference = (ph_preference + other_elm.ph_preference) / 2;
+	if other_elm.is_ate():
+		gain_specific_skill("Replication", "recombo");
+	
 	upd_display();
 
 func evolve_minor(amt):

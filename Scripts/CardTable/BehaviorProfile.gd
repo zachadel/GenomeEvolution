@@ -28,6 +28,7 @@ func get_behavior(behavior_key: String) -> float:
 func has_behavior(behavior_key: String) -> bool:
 	return get_behavior(behavior_key) > 0.0;
 
+# This function already imposes the limit given in the skills config file
 func get_skill_count(skill_name: String) -> int:
 	var skill : Skills.Skill = Skills.get_skill(skill_name);
 	
