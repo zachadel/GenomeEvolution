@@ -1497,7 +1497,7 @@ func replicate(idx):
 		perform_anims(false);
 		cmsms.replicate_cmsms([0, 1]);
 		
-		var num_extend_blanks := int(floor(get_behavior_profile().get_skill_count("Replication", "extend_cmsm")));
+		var num_extend_blanks := int(floor(get_behavior_profile().get_skill_count("extend_cmsm")));
 		var heavy_cmsm := 1 if randf() > 0.5 else 3;
 		var light_cmsm := 3 if heavy_cmsm == 1 else 1;
 		var heavy_count := int(ceil(num_extend_blanks * 0.5));
