@@ -3315,9 +3315,10 @@ func get_locomotion_radius():
 func get_locomotion_cost(biome):
 	if not Settings.disable_movement_costs() and not Settings.disable_resource_costs():
 		if typeof(biome) == TYPE_INT:
-			return Game.biomes[Game.biomes.keys()[biome]]["base_cost"] * get_cost_mult("move") * get_behavior_profile().get_specialization("Locomotion", "biomes", Game.biomes.keys()[biome])
-		elif typeof(biome) == TYPE_STRING:
-			return Game.biomes[biome]["base_cost"] * get_cost_mult("move") * get_behavior_profile().get_specialization("Locomotion", "biomes", biome)
+			biome = Game.biomes.keys()[biome]
+		
+		if typeof(biome) == TYPE_STRING:
+			return Game.biomes[biome]["base_cost"] * get_cost_mult("move") * get_behavior_profile().get_biome_movt_spec(biome)
 		else:
 			return -1
 	else:

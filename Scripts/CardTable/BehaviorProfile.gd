@@ -50,17 +50,48 @@ func has_skill(skill: String) -> bool:
 
 # Returns a mult for some specialization
 # e.g. get_specialization("Locomotion", "biomes", biome_key_str);
-func get_specialization(behavior_key : String, spec : String, sub_idx) -> float:
+func get_specialization(behavior_key: String, spec: String, sub_idx) -> float:
 	if !spec_prof_data.has(spec) || !spec_prof_data[spec].has(behavior_key) || !spec_prof_data[spec][behavior_key].has(sub_idx):
 		return 1.0;
 	return spec_prof_data[spec][behavior_key][sub_idx];
 
-func get_res_spec(behavior : String, res : String, tier : int) -> float:
+func get_res_spec(behavior: String, res: String, tier : int) -> float:
 	return get_specialization(behavior, res, tier);
 
-func get_biome_spec(biome : String) -> float:
-	return get_specialization("Locomotion", "biomes", biome);
+const SKILL_BIOME_COST_MULT = {
+	"move_mtn": {
+		"mountain": 0.75,
+		"basalt": 0.9,
+	},
+	"move_forest": {
+		"forest": 0.75,
+	},
+	"move_sand": {
+		"sand": 0.75,
+	},
+	"move_ocean": {
+		"ocean_fresh": 0.8,
+		"ocean_salt": 0.8,
+	},
+	"move_lake": {
+		"shallow_fresh": 0.8,
+		"shallow_salt": 0.8,
+	},
+	"move_hill": {
+		"grass": 0.75,
+		"dirt": 0.75,
+	},
+};
+func get_biome_movt_spec(biome: String) -> float:
+	var skill_mult := 1.0;
 	
+	for sk in SKILL_BIOME_COST_MULT:
+		if biome in SKILL_BIOME_COST_MULT[sk]:
+			for _i in range(get_skill_count(sk)):
+				skill_mult *= SKILL_BIOME_COST_MULT[sk][biome];
+	
+	return get_specialization("Locomotion", "biomes", biome) * skill_mult;
+
 func print_profile():
 	print("***BHV_PROF_DATA***")
 	for behavior in bhv_prof_data:
