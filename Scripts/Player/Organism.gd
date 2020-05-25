@@ -1303,6 +1303,8 @@ func refresh_behavior_profile():
 		top_cmsm.get_skill_profile(),\
 		bot_cmsm.get_skill_profile()]);
 	
+	behavior_profile.set_average_ph(get_cmsm_pair().get_average_essential_ph());
+	
 	refresh_bprof = false;
 
 func roll_chance(type : String, extra_mods := []) -> int:

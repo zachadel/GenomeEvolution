@@ -3,6 +3,7 @@ class_name BehaviorProfile
 var bhv_prof_data := {};
 var spec_prof_data := {};
 var skill_prof_data := {};
+var average_ph_preference := 7.0;
 
 const BEHAVIORS = ["Replication", "Locomotion", "Helper", "Manipulation", "Sensing", "Component", "Construction", "Deconstruction", "ate"];
 const RESOURCES = ["carbs", "fats", "proteins", "minerals"];
@@ -12,6 +13,9 @@ func set_bhv_prof(prof_dict0: Dictionary, prof_dict1: Dictionary) -> void:
 
 func set_spec_prof(prof_dict0: Dictionary, prof_dict1: Dictionary) -> void:
 	spec_prof_data = Game.add_numeric_dicts(prof_dict0, prof_dict1);
+
+func set_average_ph_preference(aph: float) -> void:
+	average_ph_preference = aph;
 
 func set_skills(skill_profs: Array) -> void:
 	skill_prof_data = {};
@@ -82,6 +86,8 @@ const SKILL_BIOME_COST_MULT = {
 		"dirt": 0.75,
 	},
 };
+
+# Includes adjustments based on various movement skills
 func get_biome_movt_spec(biome: String) -> float:
 	var skill_mult := 1.0;
 	
@@ -91,6 +97,13 @@ func get_biome_movt_spec(biome: String) -> float:
 				skill_mult *= SKILL_BIOME_COST_MULT[sk][biome];
 	
 	return get_specialization("Locomotion", "biomes", biome) * skill_mult;
+
+# Returns how much the pH should change due to the buffer skill
+# eg if the starting_ph is 9 but the ideal pH is 8, then this will return -1 if it has the skill to do it
+func get_buffer_ph_adjustment(starting_ph: float) -> float:
+	var diff := average_ph_preference - starting_ph;
+	var diff_sign := sign(diff);
+	return diff_sign * min(abs(diff), get_skill_count("ph_buffer"));
 
 func print_profile():
 	print("***BHV_PROF_DATA***")
