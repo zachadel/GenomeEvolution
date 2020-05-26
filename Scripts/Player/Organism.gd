@@ -1307,6 +1307,14 @@ func refresh_behavior_profile():
 	
 	refresh_bprof = false;
 
+func get_current_ph(apply_buffer := false):
+	if current_tile.has("hazards"):
+		var ph : float = current_tile.hazards["pH"];
+		if apply_buffer:
+			ph += get_behavior_profile().get_buffer_ph_adjustment(ph);
+		return ph;
+	return null;
+
 func roll_chance(type : String, extra_mods := []) -> int:
 	return Chance.roll_chance_type(type, get_behavior_profile(), extra_mods);
 func roll_chance_named(type : String, extra_mods := {}) -> String:
@@ -3320,7 +3328,7 @@ func get_locomotion_cost(biome):
 			biome = Game.biomes.keys()[biome]
 		
 		if typeof(biome) == TYPE_STRING:
-			return Game.biomes[biome]["base_cost"] * get_cost_mult("move") * get_behavior_profile().get_biome_movt_spec(biome)
+			return Game.biomes[biome]["base_cost"] * get_cost_mult("move") * get_behavior_profile().get_biome_movt_cost_mult(biome)
 		else:
 			return -1
 	else:

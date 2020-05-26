@@ -62,41 +62,71 @@ func get_specialization(behavior_key: String, spec: String, sub_idx) -> float:
 func get_res_spec(behavior: String, res: String, tier : int) -> float:
 	return get_specialization(behavior, res, tier);
 
-const SKILL_BIOME_COST_MULT = {
-	"move_mtn": {
-		"mountain": 0.75,
-		"basalt": 0.9,
+const SKILL_COST_MULTS = {
+	"biome_movt": {
+		"move_mtn": {
+			"mountain": 0.75,
+			"basalt": 0.9,
+		},
+		"move_forest": {
+			"forest": 0.75,
+		},
+		"move_sand": {
+			"sand": 0.75,
+		},
+		"move_ocean": {
+			"ocean_fresh": 0.8,
+			"ocean_salt": 0.8,
+		},
+		"move_lake": {
+			"shallow_fresh": 0.8,
+			"shallow_salt": 0.8,
+		},
+		"move_hill": {
+			"grass": 0.75,
+			"dirt": 0.75,
+		},
 	},
-	"move_forest": {
-		"forest": 0.75,
-	},
-	"move_sand": {
-		"sand": 0.75,
-	},
-	"move_ocean": {
-		"ocean_fresh": 0.8,
-		"ocean_salt": 0.8,
-	},
-	"move_lake": {
-		"shallow_fresh": 0.8,
-		"shallow_salt": 0.8,
-	},
-	"move_hill": {
-		"grass": 0.75,
-		"dirt": 0.75,
+	"mineral_shuttle": {
+		"shuttle": {
+			"phosphorus": 0.9,
+			"nitrogen": 0.9,
+			"calcium": 0.9,
+			"sodium": 0.9,
+			"iron": 0.9,
+			"mercury": 0.9,
+		},
+		"shuttle_salt": {
+			"calcium": 0.75,
+			"sodium": 0.75,
+		},
+		"shuttle_metal": {
+			"iron": 0.75,
+			"mercury": 0.75,
+		},
+		"shuttle_fert": {
+			"phosphorus": 0.75,
+			"nitrogen": 0.75,
+		},
 	},
 };
-
-# Includes adjustments based on various movement skills
-func get_biome_movt_spec(biome: String) -> float:
+func _get_skill_mult(mult_category: String, key: String) -> float:
 	var skill_mult := 1.0;
 	
-	for sk in SKILL_BIOME_COST_MULT:
-		if biome in SKILL_BIOME_COST_MULT[sk]:
+	var specific_costs : Dictionary = SKILL_COST_MULTS[mult_category];
+	for sk in specific_costs:
+		if specific_costs[sk].has(key):
 			for _i in range(get_skill_count(sk)):
-				skill_mult *= SKILL_BIOME_COST_MULT[sk][biome];
-	
-	return get_specialization("Locomotion", "biomes", biome) * skill_mult;
+				skill_mult *= specific_costs[sk][key];
+	return skill_mult;
+
+# Includes adjustments based on various movement skills
+func get_biome_movt_cost_mult(biome: String) -> float:
+	return get_specialization("Locomotion", "biomes", biome) * _get_skill_mult("biome_movt", biome);
+
+func get_mineral_shuttle_cost_mult(mineral: String) -> float:
+	return _get_skill_mult("mineral_shuttle", mineral);
+
 
 # Returns how much the pH should change due to the buffer skill
 # eg if the starting_ph is 9 but the ideal pH is 8, then this will return -1 if it has the skill to do it

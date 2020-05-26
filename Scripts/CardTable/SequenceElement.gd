@@ -225,11 +225,9 @@ func load_from_save(save_data):
 const MAX_PH_MULT = 1.2;
 # with raw_interp=true, this returns a value between 0.0 and 1.0
 func get_ph_mult(compared_to = null, raw_interp = false) -> float:
-	if (compared_to == null):
-		var ct = get_organism().current_tile;
-		if (ct.has("hazards")):
-			compared_to = ct.hazards["pH"];
-		else:
+	if compared_to == null:
+		compared_to = get_organism().get_current_ph(true);
+		if compared_to == null:
 			compared_to = ph_preference;
 	
 	var mult = inverse_lerp(14, 0, abs(ph_preference - compared_to));
