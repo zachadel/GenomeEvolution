@@ -1288,8 +1288,12 @@ func get_behavior_profile():
 	return behavior_profile;
 
 func refresh_behavior_profile():
+	refresh_bprof = false;
+	
 	var top_cmsm = get_cmsm_pair().get_cmsm(0);
 	var bot_cmsm = get_cmsm_pair().get_cmsm(1);
+	
+	behavior_profile.set_average_ph_preference(get_cmsm_pair().get_average_essential_ph());
 	
 	behavior_profile.set_bhv_prof(
 		top_cmsm.get_behavior_profile(),\
@@ -1298,10 +1302,6 @@ func refresh_behavior_profile():
 	behavior_profile.set_skills([
 		top_cmsm.get_skill_profile(),\
 		bot_cmsm.get_skill_profile()]);
-	
-	behavior_profile.set_average_ph(get_cmsm_pair().get_average_essential_ph());
-	
-	refresh_bprof = false;
 
 func get_current_ph(apply_buffer := false):
 	if current_tile.has("hazards"):
