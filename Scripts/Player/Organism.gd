@@ -1295,10 +1295,6 @@ func refresh_behavior_profile():
 		top_cmsm.get_behavior_profile(),\
 		bot_cmsm.get_behavior_profile());
 	
-	behavior_profile.set_spec_prof(
-		top_cmsm.get_specialization_profile(),\
-		bot_cmsm.get_specialization_profile());
-	
 	behavior_profile.set_skills([
 		top_cmsm.get_skill_profile(),\
 		bot_cmsm.get_skill_profile()]);

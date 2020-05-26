@@ -20,25 +20,6 @@ var ess_behavior := {
 var skills := {};
 var aura_boost := 0.0 setget set_boost, get_boost;
 
-
-var specialization = {};
-# tuples take the form spec_type: {spec_sub: mult}
-#
-# for example:
-#specialization={
-#	resource: {0: 1.0, 1: 2.5}
-#}
-var spec_types := {
-	"resource": {"specs": Game.resource_groups.keys().duplicate(), "subs": range(4)},
-	"terrain": {"specs": ["biomes"], "subs": Game.biomes.keys().duplicate()},
-};
-var behavior_to_spec_type := {
-	"Manipulation": "resource",
-	"Sensing": "resource",
-	"Construction": "resource",
-	"Deconstruction": "resource",
-	"Locomotion": "terrain",
-};
 var ph_preference := 7.0;
 var internal_damaged := false;
 
@@ -211,14 +192,13 @@ func get_save_data():
 	if !ate_id_key.empty():
 		setup_data[1] = ate_id_key;
 	
-	return [setup_data, get_ess_behavior_raw(), get_specialization(), get_skill_counts()];
+	return [setup_data, get_ess_behavior_raw(), get_skill_counts()];
 
 func load_from_save(save_data):
 	display_locked = true;
 	callv("setup", save_data[0]);
 	set_ess_behavior(save_data[1]);
-	set_specialization(save_data[2]);
-	set_skill_profile_from_counts(save_data[3]);
+	set_skill_profile_from_counts(save_data[2]);
 	display_locked = false;
 	upd_display();
 
@@ -283,45 +263,6 @@ func get_ate_activity():
 	if is_ate():
 		return ate_activity * get_ph_mult();
 	return 0.0;
-
-func get_specialization():
-	var d = {};
-	if !is_ate():
-		for r in specialization:
-			for t in specialization[r]:
-				var spec_val = get_specific_specialization(r, t);
-				if (spec_val != 1.0):
-					if !(r in d):
-						d[r] = {};
-					d[r][t] = spec_val;
-	return d;
-
-func set_specialization(dict):
-	for r in dict:
-		for t in dict[r]:
-			set_specific_specialization(r, t, dict[r][t]);
-
-func get_specific_specialization(spec, sub_idx):
-	if !(spec in specialization) || !(sub_idx in specialization[spec]):
-		return 1.0;
-	return specialization[spec][sub_idx];
-
-func set_specific_specialization(spec, sub_idx, val):
-	if !(spec in specialization):
-		specialization[spec] = {};
-	specialization[spec][sub_idx] = val;
-
-func modify_specific_specialization(spec, sub_idx, dval):
-	set_specific_specialization(spec, sub_idx, dval + get_specific_specialization(spec, sub_idx));
-
-func evolve_specialization(behavior, ev_amt):
-	if (behavior in behavior_to_spec_type):
-		var spec_info = spec_types[behavior_to_spec_type[behavior]];
-		
-		var spec = spec_info["specs"][randi() % spec_info["specs"].size()];
-		var sub_idx = spec_info["subs"][randi() % spec_info["subs"].size()];
-		
-		modify_specific_specialization(spec, sub_idx, ev_amt);
 
 func get_random_code():
 	var _code = "";
@@ -438,7 +379,6 @@ func evolve_minor(amt):
 	match mode:
 		"essential":
 			var behave_key = ess_behavior.keys()[Chance.roll_chances(ess_behavior.values())];
-			evolve_specialization(behave_key, amt);
 			ess_behavior[behave_key] = max(0, ess_behavior[behave_key] + amt);
 			latest_beh_evol = behave_key;
 		"ate":
@@ -558,7 +498,6 @@ func evolve_new_behavior(gain: bool, behavior_key := "") -> void:
 				
 				if randf() <= get_gain_chance(key_candids.size(), ess_behavior.size()):
 					behavior_key = key_candids[randi() % key_candids.size()];
-			evolve_specialization(behavior_key, GAIN_AMT);
 			
 			var free_skill_gain := is_purely_helper();
 			if ess_behavior.has(behavior_key):
@@ -568,7 +507,6 @@ func evolve_new_behavior(gain: bool, behavior_key := "") -> void:
 			if free_skill_gain:
 				evolve_skill(behavior_key, true);
 		else:
-			evolve_specialization(behavior_key, -ess_behavior[behavior_key]);
 			ess_behavior[behavior_key] = 0.0;
 	latest_beh_evol = behavior_key;
 

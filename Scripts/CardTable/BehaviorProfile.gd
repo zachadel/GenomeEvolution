@@ -1,7 +1,6 @@
 class_name BehaviorProfile
 
 var bhv_prof_data := {};
-var spec_prof_data := {};
 var skill_prof_data := {};
 var average_ph_preference := 7.0;
 
@@ -10,9 +9,6 @@ const RESOURCES = ["carbs", "fats", "proteins", "minerals"];
 
 func set_bhv_prof(prof_dict0: Dictionary, prof_dict1: Dictionary) -> void:
 	bhv_prof_data = Game.add_numeric_dicts(prof_dict0, prof_dict1);
-
-func set_spec_prof(prof_dict0: Dictionary, prof_dict1: Dictionary) -> void:
-	spec_prof_data = Game.add_numeric_dicts(prof_dict0, prof_dict1);
 
 func set_average_ph_preference(aph: float) -> void:
 	average_ph_preference = aph;
@@ -51,16 +47,6 @@ func has_skill(skill: String) -> bool:
 	if Unlocks.unlock_override:
 		return true;
 	return get_skill_count(skill) > 0;
-
-# Returns a mult for some specialization
-# e.g. get_specialization("Locomotion", "biomes", biome_key_str);
-func get_specialization(behavior_key: String, spec: String, sub_idx) -> float:
-	if !spec_prof_data.has(spec) || !spec_prof_data[spec].has(behavior_key) || !spec_prof_data[spec][behavior_key].has(sub_idx):
-		return 1.0;
-	return spec_prof_data[spec][behavior_key][sub_idx];
-
-func get_res_spec(behavior: String, res: String, tier : int) -> float:
-	return get_specialization(behavior, res, tier);
 
 const SKILL_COST_MULTS = {
 	"biome_movt": {
@@ -120,13 +106,11 @@ func _get_skill_mult(mult_category: String, key: String) -> float:
 				skill_mult *= specific_costs[sk][key];
 	return skill_mult;
 
-# Includes adjustments based on various movement skills
 func get_biome_movt_cost_mult(biome: String) -> float:
-	return get_specialization("Locomotion", "biomes", biome) * _get_skill_mult("biome_movt", biome);
+	return _get_skill_mult("biome_movt", biome);
 
 func get_mineral_shuttle_cost_mult(mineral: String) -> float:
 	return _get_skill_mult("mineral_shuttle", mineral);
-
 
 # Returns how much the pH should change due to the buffer skill
 # eg if the starting_ph is 9 but the ideal pH is 8, then this will return -1 if it has the skill to do it
@@ -139,12 +123,7 @@ func print_profile():
 	print("***BHV_PROF_DATA***")
 	for behavior in bhv_prof_data:
 		print("%s value: %d" % [behavior, bhv_prof_data[behavior]])
-	print("***SPEC_PROF_DATA***")
-	for behavior in spec_prof_data:
-		for spec in spec_prof_data[behavior]:
-			for sub_idx in spec_prof_data[behavior][spec]:
-				print("%s -> %s -> %d value: %d" % [behavior, spec, sub_idx, spec_prof_data[behavior][spec][sub_idx]])
 	print("***SKILL_PROF_DATA***")
-	for behavior in spec_prof_data:
-		for skill in spec_prof_data[behavior]:
-			print("%s behavior with skill %s: true")
+	for behavior in skill_prof_data:
+		for skill in skill_prof_data[behavior]:
+			print("%s behavior with skill %s: true" % [behavior, skill])
