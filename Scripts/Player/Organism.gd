@@ -1739,11 +1739,11 @@ func get_processed_energy_value(resource: String) -> float:
 				var simp_sugars = {}
 				for resource_name in simp_prots:
 					if resource_name != "total":	
-						var conversion_amount = simp_prots[resource_name] / (Game.resources[cfp_resources["simple_carbs"].keys()[0]]["factor"] / Game.resources[resource_name]["factor"])
-						if simp_sugars.has(cfp_resources["simple_carbs"].keys()[0]):
-							simp_sugars[cfp_resources["simple_carbs"].keys()[0]] += conversion_amount
+						var conversion_amount = simp_prots[resource_name] / (Game.resources[cfp_resources["simple_carbs"].keys()[1]]["factor"] / Game.resources[resource_name]["factor"])
+						if simp_sugars.has(cfp_resources["simple_carbs"].keys()[1]):
+							simp_sugars[cfp_resources["simple_carbs"].keys()[1]] += conversion_amount
 						else:
-							simp_sugars[cfp_resources["simple_carbs"].keys()[0]] = conversion_amount
+							simp_sugars[cfp_resources["simple_carbs"].keys()[1]] = conversion_amount
 						processed_energy -= get_energy_cost("simple_proteins_to_simple_carbs", conversion_amount)	
 			
 				if Game.is_valid_interaction("simple_carbs", "energy", bhv_prof):
@@ -1758,11 +1758,11 @@ func get_processed_energy_value(resource: String) -> float:
 			var simp_sugars = {}
 			for resource_name in cfp_resources[resource]:
 				if resource_name != "total":	
-					var conversion_amount = cfp_resources[resource][resource_name] / (Game.resources[cfp_resources["simple_carbs"].keys()[0]]["factor"] / Game.resources[resource_name]["factor"])
-					if simp_sugars.has(cfp_resources["simple_carbs"].keys()[0]):
-						simp_sugars[cfp_resources["simple_carbs"].keys()[0]] += conversion_amount
+					var conversion_amount = cfp_resources[resource][resource_name] / (Game.resources[cfp_resources["simple_carbs"].keys()[1]]["factor"] / Game.resources[resource_name]["factor"])
+					if simp_sugars.has(cfp_resources["simple_carbs"].keys()[1]):
+						simp_sugars[cfp_resources["simple_carbs"].keys()[1]] += conversion_amount
 					else:
-						simp_sugars[cfp_resources["simple_carbs"].keys()[0]] = conversion_amount
+						simp_sugars[cfp_resources["simple_carbs"].keys()[1]] = conversion_amount
 					processed_energy -= get_energy_cost("simple_proteins_to_simple_carbs", conversion_amount)	
 			
 			for resource_name in simp_sugars:

@@ -818,6 +818,7 @@ __meta__ = {
 }
 
 [node name="pnl_dead_overview" type="Panel" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_styles/panel = SubResource( 8 )
