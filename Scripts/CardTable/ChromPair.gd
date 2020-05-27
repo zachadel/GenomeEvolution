@@ -206,6 +206,15 @@ func get_max_pos(ends = true):
 	else:
 		return sum - 2;
 
+func get_average_essential_ph() -> float:
+	var num_ess_genes := 0;
+	var total_ph := 0.0;
+	for g in get_all_genes():
+		if g.is_essential():
+			total_ph += g.ph_preference;
+			num_ess_genes += 1;
+	return total_ph / num_ess_genes;
+
 func get_center():
 	return Vector2(get_viewport().size.x / 2.0, 
 	get_begin().y + (get_size().y / 2.0));

@@ -23,6 +23,7 @@ func reset() -> void:
 	for u in unlocks:
 		switch_unlock(u, false);
 
+# If a key isn't found, return true and print a warning
 func _has_unlock(unlock_key : String) -> bool:
 	if unlocks.has(unlock_key):
 		if unlock_override:
@@ -33,7 +34,7 @@ func _has_unlock(unlock_key : String) -> bool:
 	print("Trying to find unlock %s, which doesn't exist" % unlock_key);
 	return true;
 
-# Doesn't print a warning when the key isn't found
+# If a key isn't found, return true but don't print a warning
 func _has_unlock_quiet(unlock_key : String) -> bool:
 	return !unlocks.has(unlock_key) || _has_unlock(unlock_key);
 

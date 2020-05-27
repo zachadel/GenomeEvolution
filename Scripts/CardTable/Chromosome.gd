@@ -46,38 +46,6 @@ func get_behavior_profile() -> Dictionary:
 	
 	return behavior_profile;
 
-func get_specialization_profile(behavior_profile = null) -> Dictionary:
-	if (behavior_profile == null):
-		behavior_profile = get_behavior_profile();
-	var spec_behavior := {};
-	
-	for g in get_genes():
-		var g_specialization = g.get_specialization();
-		for r in g_specialization:
-			if !spec_behavior.has(r):
-				spec_behavior[r] = {};
-			for b in behavior_profile:
-				if b != "ate":
-					if !spec_behavior[r].has(b):
-						spec_behavior[r][b] = {};
-					for t in g_specialization[r]:
-						if spec_behavior[r][b].has(t):
-							spec_behavior[r][b][t] += behavior_profile[b] * g_specialization[r][t];
-						else:
-							spec_behavior[r][b][t] = float(behavior_profile[b] * g_specialization[r][t]);
-					if spec_behavior[r][b].empty():
-						spec_behavior[r].erase(b);
-			if spec_behavior[r].empty():
-				spec_behavior.erase(r);
-	
-	for r in spec_behavior:
-		for b in behavior_profile:
-			if behavior_profile[b] > 0.0 && b in spec_behavior[r]:
-				for t in spec_behavior[r][b]:
-					spec_behavior[r][b][t] /= behavior_profile[b];
-	
-	return spec_behavior;
-
 func get_skill_profile() -> Dictionary:
 	var skill_profile := {};
 	for g in get_genes():

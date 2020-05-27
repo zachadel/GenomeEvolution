@@ -1295,22 +1295,28 @@ func get_behavior_profile():
 	return behavior_profile;
 
 func refresh_behavior_profile():
+	refresh_bprof = false;
+	
 	var top_cmsm = get_cmsm_pair().get_cmsm(0);
 	var bot_cmsm = get_cmsm_pair().get_cmsm(1);
+	
+	behavior_profile.set_average_ph_preference(get_cmsm_pair().get_average_essential_ph());
 	
 	behavior_profile.set_bhv_prof(
 		top_cmsm.get_behavior_profile(),\
 		bot_cmsm.get_behavior_profile());
 	
-	behavior_profile.set_spec_prof(
-		top_cmsm.get_specialization_profile(),\
-		bot_cmsm.get_specialization_profile());
-	
 	behavior_profile.set_skills([
 		top_cmsm.get_skill_profile(),\
 		bot_cmsm.get_skill_profile()]);
-	
-	refresh_bprof = false;
+
+func get_current_ph(apply_buffer := false):
+	if current_tile.has("hazards"):
+		var ph : float = current_tile.hazards["pH"];
+		if apply_buffer:
+			ph += get_behavior_profile().get_buffer_ph_adjustment(ph);
+		return ph;
+	return null;
 
 func roll_chance(type : String, extra_mods := []) -> int:
 	return Chance.roll_chance_type(type, get_behavior_profile(), extra_mods);
@@ -1504,7 +1510,7 @@ func replicate(idx):
 		perform_anims(false);
 		cmsms.replicate_cmsms([0, 1]);
 		
-		var num_extend_blanks := int(floor(get_behavior_profile().get_skill_count("Replication", "extend_cmsm")));
+		var num_extend_blanks := int(floor(get_behavior_profile().get_skill_count("extend_cmsm")));
 		var heavy_cmsm := 1 if randf() > 0.5 else 3;
 		var light_cmsm := 3 if heavy_cmsm == 1 else 1;
 		var heavy_count := int(ceil(num_extend_blanks * 0.5));
@@ -1544,16 +1550,15 @@ func replicate(idx):
 				cmsms.move_cmsm(keep_idx+1, 1);
 				
 				prune_cmsms(2);
+			
+				var cfp_splits = split_cfp_resources(MITOSIS_SPLITS)
+				var mineral_splits = split_mineral_resources(MITOSIS_SPLITS)
+				var energy_split = split_energy(MITOSIS_SPLITS)
 				
-				if Unlocks.has_mechanic_unlock("resource_costs"):
-					var cfp_splits = split_cfp_resources(MITOSIS_SPLITS)
-					var mineral_splits = split_mineral_resources(MITOSIS_SPLITS)
-					var energy_split = split_energy(MITOSIS_SPLITS)
-					
-					cfp_resources = cfp_splits[randi() % MITOSIS_SPLITS]
-					mineral_splits = mineral_splits[randi() % MITOSIS_SPLITS]
-					set_energy(energy_split)
-					emit_signal("resources_changed", cfp_resources, mineral_resources)
+				cfp_resources = cfp_splits[randi() % MITOSIS_SPLITS]
+				mineral_splits = mineral_splits[randi() % MITOSIS_SPLITS]
+				set_energy(energy_split)
+				emit_signal("resources_changed", cfp_resources, mineral_resources)
 				
 				num_progeny += 1;
 			
@@ -1567,15 +1572,14 @@ func replicate(idx):
 				
 				prune_cmsms(1);
 				
-				if Unlocks.has_mechanic_unlock("resource_costs"):
-					var cfp_splits = split_cfp_resources(MEIOSIS_SPLITS)
-					var mineral_splits = split_mineral_resources(MEIOSIS_SPLITS)
-					var energy_split = split_energy(MEIOSIS_SPLITS)
-					
-					cfp_resources = cfp_splits[randi() % MEIOSIS_SPLITS]
-					mineral_splits = mineral_splits[randi() % MEIOSIS_SPLITS]
-					set_energy(energy_split)
-					emit_signal("resources_changed", cfp_resources, mineral_resources)
+				var cfp_splits = split_cfp_resources(MEIOSIS_SPLITS)
+				var mineral_splits = split_mineral_resources(MEIOSIS_SPLITS)
+				var energy_split = split_energy(MEIOSIS_SPLITS)
+				
+				cfp_resources = cfp_splits[randi() % MEIOSIS_SPLITS]
+				mineral_splits = mineral_splits[randi() % MEIOSIS_SPLITS]
+				set_energy(energy_split)
+				emit_signal("resources_changed", cfp_resources, mineral_resources)
 				
 				cmsms.add_cmsm(get_random_gene_from_pool(), true);
 				num_progeny += 3;
@@ -1701,19 +1705,18 @@ func check_resources(action, amount = 1):
 
 	var deficiencies = []
 	
-	if Unlocks.has_mechanic_unlock("resource_costs"):
-		for resource_class in cfp_resources.keys():
-			if cfp_resources[resource_class]["total"] < get_cfp_cost(action, resource_class, amount):
-				#print("NOT ENOUGH CASH! STRANGA!")
-				deficiencies.append(resource_class)
-				
-		for group in mineral_resources:
-			if mineral_resources[group]["total"] < get_mineral_cost(action, group, amount):
-				deficiencies.append(group)
-		
-		if energy < get_energy_cost(action, amount):
-			deficiencies.append("energy")
-		
+	for resource_class in cfp_resources.keys():
+		if cfp_resources[resource_class]["total"] < get_cfp_cost(action, resource_class, amount):
+			#print("NOT ENOUGH CASH! STRANGA!")
+			deficiencies.append(resource_class)
+			
+	for group in mineral_resources:
+		if mineral_resources[group]["total"] < get_mineral_cost(action, group, amount):
+			deficiencies.append(group)
+	
+	if energy < get_energy_cost(action, amount):
+		deficiencies.append("energy")
+	
 	return deficiencies
 
 #Can take a cfp resource or a resource class (simple_carbs, etc.)
@@ -3013,16 +3016,14 @@ func eject_cfp_resource(resource, amount = 1):
 		use_resources("cfp_ejection", amount)
 
 func get_cost_mult(action) -> float:
-	if Unlocks.has_mechanic_unlock("resource_costs"):
-		var cost_mult = 1.0;
-		var bprof = get_behavior_profile();
-		for k in bprof.BEHAVIORS:
-			if (BEHAVIOR_TO_COST_MULT.has(k) && BEHAVIOR_TO_COST_MULT[k].has(action)):
-				cost_mult += BEHAVIOR_TO_COST_MULT[k][action] * bprof.get_behavior(k);
-		cost_mult = max(0.05, cost_mult);
-		
-		return cost_mult * Game.resource_mult;
-	return 0.0;
+	var cost_mult = 1.0;
+	var bprof = get_behavior_profile();
+	for k in bprof.BEHAVIORS:
+		if (BEHAVIOR_TO_COST_MULT.has(k) && BEHAVIOR_TO_COST_MULT[k].has(action)):
+			cost_mult += BEHAVIOR_TO_COST_MULT[k][action] * bprof.get_behavior(k);
+	cost_mult = max(0.05, cost_mult);
+	
+	return cost_mult * Game.resource_mult;
 
 #works for cfp or mineral
 func consume_randomly_from_class(resource_class: String, amount: int):
@@ -3324,9 +3325,10 @@ func get_locomotion_cost(biome):
 	
 	if not Settings.disable_movement_costs() and not Settings.disable_resource_costs():
 		if typeof(biome) == TYPE_INT:
-			return Game.biomes[Game.biomes.keys()[biome]]["base_cost"] * get_cost_mult("move") * get_behavior_profile().get_specialization("Locomotion", "biomes", Game.biomes.keys()[biome])
-		elif typeof(biome) == TYPE_STRING:
-			return Game.biomes[biome]["base_cost"] * get_cost_mult("move") * get_behavior_profile().get_specialization("Locomotion", "biomes", biome)
+			biome = Game.biomes.keys()[biome]
+		
+		if typeof(biome) == TYPE_STRING:
+			return Game.biomes[biome]["base_cost"] * get_cost_mult("move") * get_behavior_profile().get_biome_movt_cost_mult(biome)
 		else:
 			return -1
 	else:

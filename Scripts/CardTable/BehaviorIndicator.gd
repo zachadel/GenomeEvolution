@@ -20,9 +20,11 @@ func _ready():
 func get_tooltip_data() -> Array:
 	if ttip_data.empty():
 		return [];
+	
 	var td = ttip_data.duplicate();
 	if !skill_ttip.empty():
 		td.append(skill_ttip);
+	
 	return ["set_status_ttip", td];
 
 func set_tex(t: Texture) -> void:
@@ -46,21 +48,50 @@ func set_skilled(s: bool) -> void:
 	$LblSkilled.visible = s;
 	skilled = s;
 
-func set_skilled_indicator(type := "HAS"):
+func set_skilled_indicator(type := "HAS") -> void:
+	var lbl = $LblSkilled;
+	
+	lbl.visible = type != "NONE";
 	match type:
 		"HAS":
-			type = "*";
+			lbl.text = "*";
 		"MORE":
-			type = "+";
+			lbl.text = "+";
 		"LESS":
-			type = "-";
+			lbl.text = "-";
 		"MIXED":
-			type = "±";
+			lbl.text = "±";
 		"NONE":
-			type = "";
+			pass;
 		_:
-			type = "%s!" % type;
-	$LblSkilled.text = type;
+			lbl.text = "??";
+
+func get_skill_comparison_type(other_indicator) -> String:
+	var new_skill := false;
+	var lost_skill := false;
+	
+	var my_skills := get_skill_list();
+	var other_skills : Dictionary = other_indicator.get_skill_list();
+	
+	for sk in my_skills.keys() + other_skills.keys():
+		if my_skills.get(sk, 0) > other_skills.get(sk, 0):
+			new_skill = true;
+		if my_skills.get(sk, 0) < other_skills.get(sk, 0):
+			lost_skill = true;
+	
+	if new_skill:
+		if lost_skill:
+			return "MIXED";
+		return "MORE";
+	if lost_skill:
+		return "LESS";
+	
+	if is_skilled():
+		return "HAS";
+	return "NONE";
+
+func get_skill_list() -> Dictionary:
+	return skill_ttip.get(name, {});
 
 func is_skilled() -> bool:
 	return skilled;
