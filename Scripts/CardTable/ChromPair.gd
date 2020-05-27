@@ -187,6 +187,9 @@ func get_ate_list():
 		ate_list_is_clean = true;
 	return ate_list;
 
+func get_ate_bunches() -> Array:
+	return get_cmsm(0).get_ate_bunches() + get_cmsm(1).get_ate_bunches();
+
 func get_gap_list():
 	if !gap_list_is_clean:
 		gap_list.clear();
@@ -352,6 +355,15 @@ func add_to_truepos(sq_elm, pos):
 	else:
 		get_cmsm(cmsm_idx).add_elm(sq_elm, pos);
 
+func add_next_to_elm(add_elm, ref_elm, offset := 1):
+	var cmsm_idx = 0 if ref_elm.get_cmsm() == get_cmsm(0) else 1;
+	var pos = ref_elm.get_index() + offset;
+	
+	if do_yields:
+		yield(get_cmsm(cmsm_idx).add_elm(add_elm, pos), "completed");
+	else:
+		get_cmsm(cmsm_idx).add_elm(add_elm, pos);
+
 func add_to_randpos(sq_elm, allow_ends = true):
 	if (do_yields):
 		yield(add_to_truepos(sq_elm, rand_truepos(allow_ends)), "completed");
@@ -397,6 +409,25 @@ func insert_from_behavior(sq_elm, this_cmsm, ref_pos, behave_dict = Game.DEFAULT
 		if !gene_at.is_gap():
 			final_cmsm.split_elm(gene_at);
 			final_idx += 1;
+	
+	# If applicable, damage a gene at that spot
+	if randf() <= behave_dict["impact"]:
+		var rand_adj: int;
+		if final_idx == 0:
+			rand_adj = 1;
+		elif final_idx == final_cmsm.get_child_count() - 1:
+			rand_adj = -1;
+		else:
+			rand_adj = 1 if randf() < 0.5 else -1;
+		
+		var gene_at = final_cmsm.get_child(final_idx + rand_adj);
+		if !gene_at.is_gap():
+			gene_at.damage_gene();
+	
+	# If applicable, flag the elm as triggering a gene-copy (this is handled elsewhere)
+	if randf() <= behave_dict["gene_copy"]:
+		sq_elm.set_copygene_flag();
+	
 	# Move sq_elm to the picked spot
 	if (do_yields):
 		yield(final_cmsm.add_elm(sq_elm, final_idx), "completed");
@@ -420,8 +451,7 @@ func jump_ate(ate_elm):
 		insert_from_behavior(ate_elm, old_cmsm, old_idx, ate_elm.get_active_behavior(true));
 
 func copy_ate(original_ate):
-	var copy_ate = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
-	copy_ate.setup_copy(original_ate);
+	var copy_ate = Game.copy_elm(original_ate);
 	if (do_yields):
 		yield(insert_from_behavior(copy_ate, original_ate.get_parent(), original_ate.get_index(),\
 			original_ate.get_active_behavior(false)), "completed");

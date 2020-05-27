@@ -126,7 +126,7 @@ func get_skill_list(skill_dict: Dictionary, pfx := "", specific_behavior := "") 
 			for s in skill_dict[b]:
 				if !list_text.empty():
 					list_text += "\n";
-				list_text += "\t%s" % Skills.get_skill_desc(b, s);
+				list_text += "\t%s" % Skills.get_skill(s).desc;
 				if skill_dict[b][s] > 1:
 					list_text += " (x%d)" % skill_dict[b][s];
 	

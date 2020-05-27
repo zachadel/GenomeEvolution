@@ -137,22 +137,24 @@ func upd_repair_lock_display():
 	var num_left_txt = "\n\nThe number of genes you can remove is based on your Disassembly skill.\nYou can remove %d more this turn." % orgn.total_scissors_left;
 	var trim_dmg_lbl = $RepairTabs/pnl_rem_dmg/LblInstr;
 	trim_dmg_lbl.text = "\n\n";
-	if orgn.get_behavior_profile().has_skill("Deconstruction", "trim_dmg_genes"):
+	if orgn.get_behavior_profile().has_skill("trim_dmg_genes"):
 		$RepairTabs.set_tab_icon(1, null);
 		trim_dmg_lbl.text += "Click a damaged gene to remove it.";
 	else:
 		$RepairTabs.set_tab_icon(1, load("res://Assets/Images/icons/padlock_small.png"));
-		trim_dmg_lbl.text += "You are lacking the required '%s' Disassembly skill to use this function." % Skills.get_skill_desc("Deconstruction", "trim_dmg_genes");
+		var needed_skill : Skills.Skill = Skills.get_skill("trim_dmg_genes");
+		trim_dmg_lbl.text += "You are lacking the required '%s' %s skill to use this function." % [needed_skill.desc, needed_skill.behavior];
 	trim_dmg_lbl.text += num_left_txt;
 	
 	var trim_end_lbl = $RepairTabs/pnl_rem_sides/LblInstr;
 	trim_end_lbl.text = "\n\n";
-	if orgn.get_behavior_profile().has_skill("Deconstruction", "trim_gap_genes"):
+	if orgn.get_behavior_profile().has_skill("trim_gap_genes"):
 		$RepairTabs.set_tab_icon(2, null);
 		trim_end_lbl.text += "Click a gene on either ends of a break to remove the gene.";
 	else:
 		$RepairTabs.set_tab_icon(2, load("res://Assets/Images/icons/padlock_small.png"));
-		trim_end_lbl.text += "You are lacking the required '%s' Disassembly skill to use this function." % Skills.get_skill_desc("Deconstruction", "trim_gap_genes");
+		var needed_skill : Skills.Skill = Skills.get_skill("trim_gap_genes");
+		trim_end_lbl.text += "You are lacking the required '%s' %s skill to use this function." % [needed_skill.desc, needed_skill.behavior];
 	trim_end_lbl.text += num_left_txt;
 
 func show_repair_opts(show):
@@ -208,10 +210,10 @@ func show_repair_tab(tab_idx: int, upd_locks_disp := true) -> void:
 			if orgn.total_scissors_left > 0:
 				continue;
 		1:
-			if orgn.get_behavior_profile().has_skill("Deconstruction", "trim_dmg_genes"):
+			if orgn.get_behavior_profile().has_skill("trim_dmg_genes"):
 				orgn.highlight_dmg_genes("scissors");
 		2:
-			if orgn.get_behavior_profile().has_skill("Deconstruction", "trim_gap_genes"):
+			if orgn.get_behavior_profile().has_skill("trim_gap_genes"):
 				orgn.highlight_gap_end_genes();
 		3:
 			orgn.highlight_dmg_genes("bandage");
@@ -506,3 +508,4 @@ func _on_Organism_transposon_activity(active):
 		show_chaos_anim();
 	else:
 		hide_chaos_anim();
+

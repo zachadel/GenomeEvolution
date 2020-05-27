@@ -88,6 +88,44 @@ func obtain_ate_personality(personality_id := "") -> void:
 	aura = Game.add_numeric_dicts(aura, ate_personality.get("aura", {}));
 	setup_ate_art();
 
+var copygene_flag := false;
+func set_copygene_flag(s := true) -> void:
+	copygene_flag = s;
+func has_copygene_flag() -> bool:
+	return copygene_flag;
+
+func is_buncher() -> bool:
+	return ate_personality.get("bunched", false);
+
+func is_ate_bunched_with(other_ate) -> bool:
+	return is_buncher() && other_ate.is_buncher() && is_equal(other_ate);
+
+var ate_carried_elms := {"left": [], "right": []};
+
+func reset_ate_carried_elms() -> void:
+	ate_carried_elms["left"].clear();
+	ate_carried_elms["right"].clear();
+
+func add_carry_elm(idx_offset: int) -> void:
+	if idx_offset != 0:
+		var carry_idx = get_index() + idx_offset;
+		if get_cmsm() != null && (carry_idx >= 0 || carry_idx < get_cmsm().get_child_count()):
+			var e = get_cmsm().get_child(carry_idx);
+			if e!= null && !e.is_gap():
+				ate_carried_elms["left" if idx_offset < 0 else "right"].append(e);
+
+func add_random_adjacent_carry() -> void:
+	var offset_idx := 1;
+	if randf() < 0.5:
+		offset_idx = -1;
+	add_carry_elm(offset_idx);
+
+func get_carry_elms(left_or_right: String) -> Array:
+	return ate_carried_elms[left_or_right];
+
+func get_carry_chance() -> float:
+	return ate_personality.get("carry", 0.0);
+
 func setup_ate_art():
 	if AnthroArt == null:
 		setup_ate_display_onready = true;
@@ -173,14 +211,14 @@ func get_save_data():
 	if !ate_id_key.empty():
 		setup_data[1] = ate_id_key;
 	
-	return [setup_data, get_ess_behavior_raw(), get_specialization(), get_skill_bare_dict()];
+	return [setup_data, get_ess_behavior_raw(), get_specialization(), get_skill_counts()];
 
 func load_from_save(save_data):
 	display_locked = true;
 	callv("setup", save_data[0]);
 	set_ess_behavior(save_data[1]);
 	set_specialization(save_data[2]);
-	set_skills(save_data[3]);
+	set_skill_profile_from_counts(save_data[3]);
 	display_locked = false;
 	upd_display();
 
@@ -313,7 +351,7 @@ func set_code_arrow_dir(left : bool):
 	else:
 		CodeArrow.self_modulate = Color(0, 0.4, 0.75);
 
-func modify_code(spaces = 1, min_mag = 1, allow_negative = false):
+func modify_code(spaces := 1, min_mag := 1, allow_negative := false):
 	for _i in range(spaces):
 		var _idx = randi() % gene_code.length();
 		var _change = min_mag;
@@ -324,11 +362,12 @@ func modify_code(spaces = 1, min_mag = 1, allow_negative = false):
 		_char = (_char + _change) % Game.code_elements.size();
 		gene_code[_idx] = Game.get_code_char(_char);
 
-func get_code_elm_dist(elm0, elm1):
+# The elms here are actually chars (which are not a type in GDScript)
+func get_code_elm_dist(elm0: String, elm1: String) -> int:
 	var _dist = abs(Game.get_code_num(elm0) - Game.get_code_num(elm1));
-	return min(_dist, Game.code_elements.size() - _dist);
+	return int(min(_dist, Game.code_elements.size() - _dist));
 
-func get_code_dist(other_cd, my_cd = ""):
+func get_code_dist(other_cd: String, my_cd := "") -> int:
 	if (my_cd == ""):
 		my_cd = gene_code;
 	
@@ -339,20 +378,17 @@ func get_code_dist(other_cd, my_cd = ""):
 	
 	return _dist;
 
-func get_code_dist_to_parent():
+func get_code_dist_to_parent() -> int:
 	return get_code_dist(parent_code, gene_code);
 
-func can_compare_elm(other_elm):
+func can_compare_elm(other_elm) -> bool:
 	return gene_code.length() > 0 && other_elm.gene_code.length() > 0 && other_elm.type == type;
 
-func get_gene_distance(other_elm):
+func get_gene_distance(other_elm) -> int:
 	return get_code_dist(other_elm.gene_code, gene_code);
 
-func is_equal(other_elm, max_dist = -1):
-	if (max_dist < 0):
-		return can_compare_elm(other_elm);
-	else:
-		return can_compare_elm(other_elm) && get_gene_distance(other_elm) <= max_dist;
+func is_equal(other_elm, max_dist := 8) -> bool:
+	return can_compare_elm(other_elm) && get_gene_distance(other_elm) <= max_dist;
 
 func get_gene_name():
 	match mode:
@@ -433,56 +469,62 @@ func get_skill_profile(behavior := {}) -> Dictionary:
 	var skill_prof := {};
 	for k in skills:
 		if behavior.get(k, 0.0) > 0.0:
-			skill_prof[k] = skills[k];
+			skill_prof[k] = skills[k].duplicate();
 	return skill_prof;
 
 # Used in save/loads
-# Identical to the "skills" var but it excludes any behaviors without skills
-func get_skill_bare_dict() -> Dictionary:
-	var skill_bdict := {};
-	for k in skills:
-		if !skills[k].empty():
-			skill_bdict[k] = skills[k];
-	return skill_bdict;
+func get_skill_counts() -> Dictionary:
+	var all_skill_counts := {};
+	for b in skills:
+		for s in skills[b]:
+			all_skill_counts[s] = skills[b][s];
+	return all_skill_counts;
 
 # Used in save/loads
-func set_skills(skill_dict: Dictionary) -> void:
-	for k in skill_dict:
-		skills[k] = skill_dict[k];
+func set_skill_profile_from_counts(skill_counts: Dictionary) -> void:
+	for id in skill_counts:
+		var b = Skills.get_skill(id).behavior;
+		if !skills.has(b):
+			skills[b] = {};
+		skills[b][id] = skill_counts[id];
 
 const SKILL_EVOLVE_CHANCE = 0.1;
 var just_evolved_skill := false;
-var latest_skill_evol := "";
+var latest_skill_id_evol := "";
 var latest_beh_evol := "";
 
-func gain_specific_skill(behavior: String, skill: String) -> void:
+func gain_specific_skill(behavior: String, skill_id: String) -> void:
 	if !skills.has(behavior):
 		skills[behavior] = {};
 	
-	if skills[behavior].has(skill):
-		skills[behavior][skill] += 1;
+	if skills[behavior].has(skill_id):
+		skills[behavior][skill_id] += 1;
 	else:
-		skills[behavior][skill] = 1;
+		skills[behavior][skill_id] = 1;
+	
+	var mutated_from = Skills.get_skill(skill_id).mutates_from;
+	if !mutated_from.empty() && skills[behavior].has(mutated_from):
+		if skills[behavior][mutated_from] == 1:
+			skills[behavior].erase(mutated_from);
+		else:
+			skills[behavior][mutated_from] -= 1;
 
 func evolve_skill(behave_key: String, gain := true) -> void:
 	if gain:
-		var new_skill := Skills.get_random_skill(behave_key);
-		if !new_skill.empty():
+		var new_skill_id := Skills.get_random_skill_id(behave_key, get_skill_counts().keys());
+		if !new_skill_id.empty():
 			just_evolved_skill = true;
-			latest_skill_evol = new_skill;
+			latest_skill_id_evol = new_skill_id;
 			
-			if !skills.has(behave_key):
-				skills[behave_key] = {};
-			
-			gain_specific_skill(behave_key, new_skill);
+			gain_specific_skill(behave_key, new_skill_id);
 	else:
 		if !skills.get(behave_key, {}).empty():
-			var rand_skill : String = skills[behave_key].keys()[randi() % skills[behave_key].size()];
+			var rand_skill_id : String = skills[behave_key].keys()[randi() % skills[behave_key].size()];
 			
 			just_evolved_skill = true;
-			latest_skill_evol = skills[behave_key][rand_skill];
+			latest_skill_id_evol = rand_skill_id;
 			
-			skills[behave_key].remove(rand_skill);
+			skills[behave_key].remove(rand_skill_id);
 			if skills[behave_key].empty():
 				skills.erase(behave_key);
 
@@ -589,7 +631,7 @@ func damage_gene(dmg := true):
 # Returns a string describing the evolution that occurred
 func perform_evolution(major: bool, up: bool) -> String:
 	just_evolved_skill = false;
-	latest_skill_evol = "";
+	latest_skill_id_evol = "";
 	latest_beh_evol = "";
 	var original_mode = mode;
 	
@@ -617,7 +659,7 @@ func perform_evolution(major: bool, up: bool) -> String:
 		"essential":
 			change_text = ", %sing %s";
 			if just_evolved_skill:
-				change_text %= ["gain" if up else "los", "the skill %s" % Skills.get_skill_desc(latest_beh_evol, latest_skill_evol)];
+				change_text %= ["gain" if up else "los", "the skill %s" % Skills.get_skill(latest_skill_id_evol).desc];
 			else:
 				change_text %= ["improv" if up else "impair", "its %s ability" % Tooltips.GENE_NAMES.get(latest_beh_evol, "UNKNOWN")];
 				if mode == "pseudo":
