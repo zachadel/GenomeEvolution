@@ -23,7 +23,7 @@ enum BUTTONS {ACQUIRE, EJECT, CHECK, END}
 const DEFAULT_BUTTON_TEXT = {
 	BUTTONS.ACQUIRE: "Eat", 
 	BUTTONS.EJECT: "Excrete", 
-	BUTTONS.CHECK: "View Genome", 
+	BUTTONS.CHECK: "Preview Genome", 
 	BUTTONS.END: "Repair Genome!"
 	}
 
@@ -225,6 +225,17 @@ func test_functionality():
 		print("%s base + oxygen + temp + mineral: " % [action], base_cost+oxygen_cost+temp_cost+mineral_cost)
 		print("%s Final Cost: " % [action], final_cost)
 		print("\n")
+	
+	var total_energy = 0
+	var processed_energy = 0
+	for resource in irc.organism.cfp_resources:
+		processed_energy = irc.organism.get_processed_energy_value(resource)
+		total_energy += processed_energy
+		
+		print("Processed energy amount for %s: %d" % [resource, processed_energy])
+	
+	print("Total processed energy: ", total_energy + irc.organism.energy)
+	print("Acquire resources costs: ", irc.organism.get_energy_cost("acquire_resources"))
 
 func cheat_energy():
 	irc.organism.set_energy(irc.organism.energy + 5)

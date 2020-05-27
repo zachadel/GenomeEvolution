@@ -25,7 +25,7 @@ margin_right = -522.213
 margin_bottom = -33.1203
 popup_exclusive = true
 window_title = "Game Over!"
-dialog_text = "You died! Please press OK to return to the Title Screen."
+dialog_text = "You died! Please press OK to go to the death screen."
 
 [node name="WorldMap" parent="." instance=ExtResource( 3 )]
 visible = false

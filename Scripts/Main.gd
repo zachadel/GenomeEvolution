@@ -128,8 +128,11 @@ func _hide_card_table():
 	card_table.hide()
 
 func _on_GameOver_confirmed():
-	Game.restart_game()
-	get_tree().change_scene("res://Scenes/MainMenu/TitleScreen.tscn")
+	_hide_world_map()
+	world_map.ui.test_functionality()
+	_show_card_table()
+#	Game.restart_game()
+#	get_tree().change_scene("res://Scenes/MainMenu/TitleScreen.tscn")
 
 func _on_WorldMap_switch_to_card_table():
 	world_map.set_input(Game.PLAYER_VIEW.SWITCHED_TO_GENOME)

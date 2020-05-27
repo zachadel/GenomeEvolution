@@ -19,9 +19,9 @@ func add_dmg():
 	node.size_flags_vertical = TextureRect.SIZE_EXPAND_FILL
 	node.texture = dmg_icon
 	add_child(node)
-	
-	if get_num_rows() > columns:
-		columns += 1
+	var rows = get_num_rows()
+	if rows > columns:
+		columns = rows
 
 func get_num_rows():
 	return int(ceil(float(len(get_children())) / float(columns)))

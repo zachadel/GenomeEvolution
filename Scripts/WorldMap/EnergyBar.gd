@@ -1,4 +1,4 @@
-extends Control
+extends TextureRect
 
 signal resource_clicked(resource, value)
 
@@ -25,6 +25,7 @@ func _ready():
 func _gui_input(event):
 	if event.is_action_pressed("mouse_left"):
 		emit_signal("resource_clicked", "energy", energy)
+		print('CLICKED')
 
 func update_energy_allocation(amount):
 	var children = $HBoxContainer.get_children()
@@ -46,9 +47,9 @@ func add_energy(amount):
 
 func glow(enable: bool = true):
 	if enable:
-		$Border.get_material().set_shader_param("aura_color", glow_color)
+		get_material().set_shader_param("aura_color", glow_color)
 	else:
-		$Border.get_material().set_shader_param("aura_color", Color.black)
+		get_material().set_shader_param("aura_color", Color.black)
 
 func _on_Organism_energy_changed(energy):
 	update_energy_allocation(energy)
@@ -59,3 +60,18 @@ func get_tooltip_data():
 	data.append("set_energy_ttip")
 	data.append([energy])
 	return data
+
+
+func _on_EnergyBar_mouse_entered():
+	print('INSIDE')
+	pass # Replace with function body.
+
+
+func _on_EnergyBar_mouse_exited():
+	print('EXITED')
+	pass # Replace with function body.
+
+
+func _on_HBoxContainer_mouse_entered():
+	print('ENTERED CONTAINER')
+	pass # Replace with function body.

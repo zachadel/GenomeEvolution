@@ -59,43 +59,39 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id=2]
 shader = SubResource( 1 )
-shader_param/aura_width = 6.0
+shader_param/aura_width = 12.0
 shader_param/aura_color = Color( 0.0352941, 0.227451, 0.411765, 1 )
 
-[node name="EnergyBar" type="Control"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_right = -1100.0
-margin_bottom = -855.0
-script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Border" type="TextureRect" parent="."]
+[node name="EnergyBar" type="TextureRect"]
 material = SubResource( 2 )
 margin_left = -20.0
 margin_top = -15.0
 margin_right = 622.0
 margin_bottom = 75.0
+mouse_filter = 0
 texture = ExtResource( 2 )
 expand = true
+script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
-margin_left = 3.0
-margin_right = 598.0
-margin_bottom = 60.0
+margin_left = 23.0
+margin_top = 16.0
+margin_right = 618.0
+margin_bottom = 74.0
+mouse_filter = 2
 custom_constants/separation = 5
 __meta__ = {
+"_edit_group_": true,
 "_edit_use_anchors_": false
 }
 
 [node name="EnergyUnit_0" type="ColorRect" parent="HBoxContainer"]
 margin_right = 19.0
-margin_bottom = 60.0
+margin_bottom = 58.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 1, 0, 0, 1 )
@@ -103,7 +99,8 @@ color = Color( 1, 0, 0, 1 )
 [node name="EnergyUnit_1" type="ColorRect" parent="HBoxContainer"]
 margin_left = 24.0
 margin_right = 43.0
-margin_bottom = 60.0
+margin_bottom = 58.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 1, 0, 0, 1 )
@@ -111,7 +108,8 @@ color = Color( 1, 0, 0, 1 )
 [node name="EnergyUnit_2" type="ColorRect" parent="HBoxContainer"]
 margin_left = 48.0
 margin_right = 67.0
-margin_bottom = 60.0
+margin_bottom = 58.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 1, 0, 0, 1 )
@@ -119,7 +117,8 @@ color = Color( 1, 0, 0, 1 )
 [node name="EnergyUnit_3" type="ColorRect" parent="HBoxContainer"]
 margin_left = 72.0
 margin_right = 91.0
-margin_bottom = 60.0
+margin_bottom = 58.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 1, 0.498039, 0, 1 )
@@ -127,7 +126,8 @@ color = Color( 1, 0.498039, 0, 1 )
 [node name="EnergyUnit_4" type="ColorRect" parent="HBoxContainer"]
 margin_left = 96.0
 margin_right = 115.0
-margin_bottom = 60.0
+margin_bottom = 58.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 1, 0.498039, 0, 1 )
@@ -135,7 +135,8 @@ color = Color( 1, 0.498039, 0, 1 )
 [node name="EnergyUnit_5" type="ColorRect" parent="HBoxContainer"]
 margin_left = 120.0
 margin_right = 139.0
-margin_bottom = 60.0
+margin_bottom = 58.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 1, 0.498039, 0, 1 )
@@ -143,7 +144,8 @@ color = Color( 1, 0.498039, 0, 1 )
 [node name="EnergyUnit_6" type="ColorRect" parent="HBoxContainer"]
 margin_left = 144.0
 margin_right = 163.0
-margin_bottom = 60.0
+margin_bottom = 58.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 1, 1, 0, 1 )
@@ -151,7 +153,8 @@ color = Color( 1, 1, 0, 1 )
 [node name="EnergyUnit_7" type="ColorRect" parent="HBoxContainer"]
 margin_left = 168.0
 margin_right = 187.0
-margin_bottom = 60.0
+margin_bottom = 58.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 1, 1, 0, 1 )
@@ -159,7 +162,8 @@ color = Color( 1, 1, 0, 1 )
 [node name="EnergyUnit_8" type="ColorRect" parent="HBoxContainer"]
 margin_left = 192.0
 margin_right = 211.0
-margin_bottom = 60.0
+margin_bottom = 58.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 1, 1, 0, 1 )
@@ -167,7 +171,8 @@ color = Color( 1, 1, 0, 1 )
 [node name="EnergyUnit_9" type="ColorRect" parent="HBoxContainer"]
 margin_left = 216.0
 margin_right = 235.0
-margin_bottom = 60.0
+margin_bottom = 58.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 0, 1, 0, 1 )
@@ -175,7 +180,8 @@ color = Color( 0, 1, 0, 1 )
 [node name="EnergyUnit_10" type="ColorRect" parent="HBoxContainer"]
 margin_left = 240.0
 margin_right = 259.0
-margin_bottom = 60.0
+margin_bottom = 58.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 0, 1, 0, 1 )
@@ -183,7 +189,8 @@ color = Color( 0, 1, 0, 1 )
 [node name="EnergyUnit_11" type="ColorRect" parent="HBoxContainer"]
 margin_left = 264.0
 margin_right = 283.0
-margin_bottom = 60.0
+margin_bottom = 58.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 0, 1, 0, 1 )
@@ -191,7 +198,8 @@ color = Color( 0, 1, 0, 1 )
 [node name="EnergyUnit_12" type="ColorRect" parent="HBoxContainer"]
 margin_left = 288.0
 margin_right = 307.0
-margin_bottom = 60.0
+margin_bottom = 58.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 0, 1, 0, 1 )
@@ -199,7 +207,8 @@ color = Color( 0, 1, 0, 1 )
 [node name="EnergyUnit_13" type="ColorRect" parent="HBoxContainer"]
 margin_left = 312.0
 margin_right = 331.0
-margin_bottom = 60.0
+margin_bottom = 58.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 0, 1, 0, 1 )
@@ -207,7 +216,8 @@ color = Color( 0, 1, 0, 1 )
 [node name="EnergyUnit_14" type="ColorRect" parent="HBoxContainer"]
 margin_left = 336.0
 margin_right = 355.0
-margin_bottom = 60.0
+margin_bottom = 58.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 0, 1, 0, 1 )
@@ -215,7 +225,8 @@ color = Color( 0, 1, 0, 1 )
 [node name="EnergyUnit_15" type="ColorRect" parent="HBoxContainer"]
 margin_left = 360.0
 margin_right = 379.0
-margin_bottom = 60.0
+margin_bottom = 58.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 0, 1, 0, 1 )
@@ -223,7 +234,8 @@ color = Color( 0, 1, 0, 1 )
 [node name="EnergyUnit_16" type="ColorRect" parent="HBoxContainer"]
 margin_left = 384.0
 margin_right = 403.0
-margin_bottom = 60.0
+margin_bottom = 58.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 0, 1, 0, 1 )
@@ -231,7 +243,8 @@ color = Color( 0, 1, 0, 1 )
 [node name="EnergyUnit_17" type="ColorRect" parent="HBoxContainer"]
 margin_left = 408.0
 margin_right = 427.0
-margin_bottom = 60.0
+margin_bottom = 58.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 0, 1, 0, 1 )
@@ -239,7 +252,8 @@ color = Color( 0, 1, 0, 1 )
 [node name="EnergyUnit_18" type="ColorRect" parent="HBoxContainer"]
 margin_left = 432.0
 margin_right = 451.0
-margin_bottom = 60.0
+margin_bottom = 58.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 0, 1, 0, 1 )
@@ -247,7 +261,8 @@ color = Color( 0, 1, 0, 1 )
 [node name="EnergyUnit_19" type="ColorRect" parent="HBoxContainer"]
 margin_left = 456.0
 margin_right = 475.0
-margin_bottom = 60.0
+margin_bottom = 58.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 0, 1, 0, 1 )
@@ -255,7 +270,8 @@ color = Color( 0, 1, 0, 1 )
 [node name="EnergyUnit_20" type="ColorRect" parent="HBoxContainer"]
 margin_left = 480.0
 margin_right = 499.0
-margin_bottom = 60.0
+margin_bottom = 58.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 0, 1, 0, 1 )
@@ -263,7 +279,8 @@ color = Color( 0, 1, 0, 1 )
 [node name="EnergyUnit_21" type="ColorRect" parent="HBoxContainer"]
 margin_left = 504.0
 margin_right = 523.0
-margin_bottom = 60.0
+margin_bottom = 58.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 0, 1, 0, 1 )
@@ -271,7 +288,8 @@ color = Color( 0, 1, 0, 1 )
 [node name="EnergyUnit_22" type="ColorRect" parent="HBoxContainer"]
 margin_left = 528.0
 margin_right = 547.0
-margin_bottom = 60.0
+margin_bottom = 58.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 0, 1, 0, 1 )
@@ -279,7 +297,8 @@ color = Color( 0, 1, 0, 1 )
 [node name="EnergyUnit_23" type="ColorRect" parent="HBoxContainer"]
 margin_left = 552.0
 margin_right = 571.0
-margin_bottom = 60.0
+margin_bottom = 58.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 0, 1, 0, 1 )
@@ -287,7 +306,11 @@ color = Color( 0, 1, 0, 1 )
 [node name="EnergyUnit_24" type="ColorRect" parent="HBoxContainer"]
 margin_left = 576.0
 margin_right = 595.0
-margin_bottom = 60.0
+margin_bottom = 58.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 0, 1, 0, 1 )
+[connection signal="mouse_entered" from="." to="." method="_on_EnergyBar_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_EnergyBar_mouse_exited"]
+[connection signal="mouse_entered" from="HBoxContainer" to="." method="_on_HBoxContainer_mouse_entered"]

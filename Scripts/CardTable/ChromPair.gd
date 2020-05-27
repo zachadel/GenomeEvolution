@@ -530,6 +530,7 @@ var sin_period = 2*PI / SIN_FREQ;
 var total_time = 0;
 const OFFSET_FACTOR = 0.5;
 
+#Wait, this runs always?  even if the card table isn't visible?
 func _process(delta):
 	total_time = total_time + delta;
 	

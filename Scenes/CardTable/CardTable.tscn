@@ -126,13 +126,13 @@ use_mipmaps = true
 use_filter = true
 font_data = SubResource( 6 )
 
-[sub_resource type="StyleBoxFlat" id=10]
+[sub_resource type="StyleBoxFlat" id=8]
 bg_color = Color( 0.21875, 0.21875, 0.21875, 1 )
 
-[sub_resource type="StyleBoxFlat" id=8]
+[sub_resource type="StyleBoxFlat" id=9]
 bg_color = Color( 0.145098, 0.145098, 0.164706, 1 )
 
-[sub_resource type="StyleBoxFlat" id=9]
+[sub_resource type="StyleBoxFlat" id=10]
 bg_color = Color( 0.12549, 0.141176, 0.192157, 1 )
 
 [node name="CardTable" type="Control"]
@@ -818,10 +818,9 @@ __meta__ = {
 }
 
 [node name="pnl_dead_overview" type="Panel" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_styles/panel = SubResource( 10 )
+custom_styles/panel = SubResource( 8 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -860,7 +859,7 @@ __meta__ = {
 [node name="LblOverview" type="Label" parent="pnl_dead_overview/HSplitContainer/Panel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_styles/normal = SubResource( 8 )
+custom_styles/normal = SubResource( 9 )
 custom_fonts/font = ExtResource( 22 )
 text = "if ur seein this its a bug lol"
 align = 1
@@ -885,7 +884,7 @@ text = "Quit to Menu"
 [node name="LblGameOver" type="Label" parent="pnl_dead_overview"]
 anchor_right = 1.0
 margin_bottom = 125.0
-custom_styles/normal = SubResource( 9 )
+custom_styles/normal = SubResource( 10 )
 custom_fonts/font = ExtResource( 21 )
 text = "Game Over!"
 align = 1

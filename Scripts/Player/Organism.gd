@@ -19,6 +19,7 @@ var num_progeny := 0;
 var num_dmg_genes := 0;
 var accumulated_dmg := 0;
 var accumulated_gaps := 0;
+var accumulated_transposons := 0;
 
 var cell_str = "cell_1"
 
@@ -484,10 +485,13 @@ func apply_break_after_move() -> bool:
 	if dmg_weight >= dmg_threshold:
 		add_dmg = true
 		
-		if randf() < .5:
-			accumulated_dmg += 1
+		if randf() < .25:
+			accumulated_transposons += 1
 		else:
-			accumulated_gaps += 1
+			if randf() < .57:
+				accumulated_dmg += 1
+			else:
+				accumulated_gaps += 1
 	
 	return add_dmg
 
@@ -500,6 +504,9 @@ func get_dmg() -> int:
 	
 func get_gaps() -> int:
 	return accumulated_gaps
+	
+func get_transposons() -> int:
+	return accumulated_transposons
 
 const MAX_ENVIRON_INTERNAL_DMG_PERC = 0.5;
 const MIN_ENVIRON_INTERNAL_DMG_PERC = 0.25;
@@ -518,7 +525,7 @@ func environmental_damage():
 		
 		var gene_list : Array = cmsms.get_all_genes();
 		for i in range(accumulated_dmg):
-			var rand_idx := randi() % gene_list.size();
+			var rand_idx := randi() % (gene_list.size() + 1);
 			if rand_idx >= 0:
 				var rand_gene = gene_list[rand_idx];
 				gene_list.remove(rand_idx);
@@ -1709,7 +1716,7 @@ func get_energy_cost(action, amount = 1):
 		
 		final_cost = base_cost + oxygen_cost + temperature_cost + mineral_cost + get_energy_tax(action, amount)
 		
-		return clamp(final_cost, 1, MAX_ENERGY_COST)
+		return clamp(final_cost, 0, MAX_ENERGY_COST)
 	
 func get_base_energy_cost(action, amount = 1):
 	var cost = costs[action]["energy"] * get_cost_mult(action) * amount
@@ -2210,7 +2217,7 @@ var costs = {
 		"consumption": 0,
 		"processing": 0,
 		"hazardous": 0,
-		"energy": 1
+		"energy": 0
 	},
 
 	"mineral_ejection": {
@@ -2446,9 +2453,9 @@ var costs = {
 	},
 
 	"replicate_mitosis": {
-		"simple_carbs": 8, 
-		"simple_fats": 3, 
-		"simple_proteins": 5,
+		"simple_carbs": 0, 
+		"simple_fats": 0, 
+		"simple_proteins": 0,
 		"complex_carbs": 0,
 		"complex_fats": 0,
 		"complex_proteins": 0,
@@ -2456,13 +2463,13 @@ var costs = {
 		"consumption": 0,
 		"processing": 0,
 		"hazardous": 0,
-		"energy": 15
+		"energy": 0
 	},
 
 	"replicate_meiosis": {
-		"simple_carbs": 8, 
-		"simple_fats": 3, 
-		"simple_proteins": 5,
+		"simple_carbs": 0, 
+		"simple_fats": 0, 
+		"simple_proteins": 0,
 		"complex_carbs": 0,
 		"complex_fats": 0,
 		"complex_proteins": 0,
@@ -2470,7 +2477,7 @@ var costs = {
 		"consumption": 0,
 		"processing": 0,
 		"hazardous": 0,
-		"energy": 15
+		"energy": 0
 	}
 }
 
@@ -3159,7 +3166,7 @@ func get_random_resource_from_class(resource_class: String):
 	return keys[randi() % len(keys)]
 	
 func is_resource_alive() -> bool:
-	return is_mineral_alive() and is_energy_alive()	
+	return is_energy_alive()	
 	
 func is_mineral_alive() -> bool:
 	var mineral_alive = true
@@ -3212,9 +3219,11 @@ func get_vision_radius():
 func get_locomotion_radius():
 	return floor(get_behavior_profile().get_behavior("Locomotion"))
 	
+const MOVEMENT_THRESHOLD = .6666
 #Cost to move over a particular tile type
 #biome is an integer
 func get_locomotion_cost(biome):
+	
 	if not Settings.disable_movement_costs() and not Settings.disable_resource_costs():
 		if typeof(biome) == TYPE_INT:
 			return Game.biomes[Game.biomes.keys()[biome]]["base_cost"] * get_cost_mult("move") * get_behavior_profile().get_specialization("Locomotion", "biomes", Game.biomes.keys()[biome])
@@ -3227,7 +3236,8 @@ func get_locomotion_cost(biome):
 	
 #Cost to perform a movement action (move along a single path, NOT per tile)
 func get_locomotion_tax(amount: int = 1) -> int:
-	if Settings.disable_movement_costs() or Settings.disable_resource_costs():
+	var coin_flip = randf()
+	if Settings.disable_movement_costs() or Settings.disable_resource_costs() or coin_flip < MOVEMENT_THRESHOLD:
 		return 0
 	else:
 		return taxes["move"]["energy"] * amount

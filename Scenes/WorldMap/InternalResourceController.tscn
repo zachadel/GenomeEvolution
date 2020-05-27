@@ -47,10 +47,10 @@ __meta__ = {
 }
 
 [node name="EnergyBar" parent="." instance=ExtResource( 2 )]
-margin_left = 55.0
-margin_top = 36.0
-margin_right = 270.0
-margin_bottom = -740.0
+margin_left = 44.0
+margin_top = 25.0
+margin_right = 686.0
+margin_bottom = 115.0
 rect_scale = Vector2( 0.55, 0.5 )
 
 [node name="AminoAcids" type="RichTextLabel" parent="."]
@@ -291,13 +291,13 @@ __meta__ = {
 
 [node name="From" type="Line2D" parent="Fatty_Energy"]
 position = Vector2( 45, 660 )
-points = PoolVector2Array( -9.99998, -60, -35, -60, -35, -605, -15, -605 )
+points = PoolVector2Array( -9.99998, -60, -35, -60, -35, -615, -5, -615 )
 width = 6.0
 default_color = Color( 1, 1, 1, 1 )
 joint_mode = 2
 
 [node name="Polygon2D" type="Polygon2D" parent="Fatty_Energy/From"]
-position = Vector2( -9.99998, -601.968 )
+position = Vector2( -9.99998, -612 )
 scale = Vector2( 0.5, 0.901586 )
 polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
 
@@ -310,20 +310,20 @@ __meta__ = {
 
 [node name="From" type="Line2D" parent="Sugars_Energy"]
 position = Vector2( 45, 660 )
-points = PoolVector2Array( -5, -270, -35, -270, -35, -605, -10, -605 )
+points = PoolVector2Array( -5, -270, -35, -270, -35, -615, -5, -615 )
 width = 6.0
 default_color = Color( 1, 1, 1, 1 )
 joint_mode = 2
 
 [node name="Polygon2D" type="Polygon2D" parent="Sugars_Energy/From"]
-position = Vector2( -10, -601.986 )
+position = Vector2( -9.99998, -612 )
 scale = Vector2( 0.5, 0.900716 )
 polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
 
 [node name="To" type="Line2D" parent="Sugars_Energy"]
 position = Vector2( 60, 75 )
 scale = Vector2( 1, -1 )
-points = PoolVector2Array( -10, 5, -40, 5, -40, -305, -30, -305 )
+points = PoolVector2Array( -10, 20, -40, 20, -40, -305, -30, -305 )
 width = 6.0
 default_color = Color( 1, 1, 1, 1 )
 joint_mode = 2

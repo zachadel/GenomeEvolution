@@ -56,6 +56,8 @@ onready var loc_highlight = get_node("CurrentLocation")
 onready var ui = get_node("WorldMap_UI")
 onready var msg = get_node("CanvasLayer/WarningMessage")
 
+onready var notifications = get_node("CanvasLayer/Notifications")
+
 const FINAL_TWEEN_ZOOM = Vector2(.1, .1)
 
 #For moving around the map (does not include ui as parts of the ui can be turned)
@@ -77,7 +79,8 @@ func enable_fog():
 	$ObscurityMap.enable_fog()
 
 func _ready():
-	connect("invalid_action", msg, "show_high_low_warning")
+	#connect("invalid_action", msg, "show_high_low_warning")
+	pass
 	
 func setup(biome_seed, hazard_seeds, resource_seed, tiebreak_seed, _chunk_size, player):
 	Game.modified_tiles = {}
@@ -266,10 +269,12 @@ func _unhandled_input(event):
 	#This if statement prevents the world map from "stealing" inputs from other places
 	#NOTE: This may not be necessary.  Calling $WorldMap.hide() from main should be 
 	#sufficient.
-
+	var debug_bool = false
+	
 	if is_visible_in_tree():
 		if event.is_action_pressed("mouse_left"):
-			
+			print('mouse left pressed')
+			debug_bool = true
 			if input_elements["move"] and move_enabled:
 				var tile_position = Game.world_to_map(get_global_mouse_position())
 				var tile_index = $BiomeMap.get_cellv(Game.cube_coords_to_offsetv(tile_position))
@@ -307,6 +312,9 @@ func _unhandled_input(event):
 						
 						var tile_shift = Game.cube_coords_to_offsetv(tile_position) - $BiomeMap.center_indices
 						shift_maps(tile_shift, current_player.observed_tiles)
+						
+						if not current_player.is_alive_resource_check():
+							current_player.kill("ran out of resources")
 					
 					#Prevents weird interpolation/snapping of camera if smoothing is desired
 		#			if $MapCamera.offset.length_squared() > 0:
@@ -332,6 +340,11 @@ func _unhandled_input(event):
 			draw_and_center_maps_to(Game.world_to_map(current_player.position), current_player.observed_tiles)
 	
 			$MapCamera.offset = Vector2(0,0)
+			
+		if event.is_action_released("mouse_left") and notifications.has_visible_notification():
+			notifications.emit_signal("notification_begin_dismissing")
+			if debug_bool:
+				print('mouse_left released')
 
 func enable_camera():
 	$MapCamera.zoom = Vector2(1, 1);
@@ -429,35 +442,39 @@ func move_player(pos: Vector3):
 		var path_and_cost = astar.get_tile_and_cost_from_to(player_tile, pos)
 		var loc_tax = current_player.organism.get_locomotion_tax()
 
-		if len(path_and_cost) > 0 and !path_and_cost.empty() and path_and_cost["total_cost"] + loc_tax <= current_player.organism.energy:
-			tiles_moved = len(path_and_cost) - 1
-			current_player.organism.energy -= (path_and_cost["total_cost"] + loc_tax)
+		if !path_and_cost.empty():
+			if path_and_cost["total_cost"] + loc_tax <= current_player.organism.energy:
+				tiles_moved = len(path_and_cost) - 1
+				current_player.organism.energy -= (path_and_cost["total_cost"] + loc_tax)
+				
+				var new_position = Game.map_to_world(pos)
 			
-			var new_position = Game.map_to_world(pos)
-		
-			current_player.rotate_sprite((new_position - current_player.position).angle())
-			current_player.position = new_position
-			current_player.organism.current_tile = get_tile_at_pos(pos)
-			if current_player.organism.apply_break_after_move():
-				ui.genome_dmg.add_dmg()
-				#current_player.update_nucleus()
-				pass
-			
-			astar.set_position_offset(pos, funcref(self, "costs"))
-			
-			emit_signal("player_energy_changed", current_player.organism.energy)
-			loc_highlight.position = current_player.position
+				current_player.rotate_sprite((new_position - current_player.position).angle())
+				current_player.position = new_position
+				current_player.organism.current_tile = get_tile_at_pos(pos)
+				if current_player.organism.apply_break_after_move():
+					ui.genome_dmg.add_dmg()
+					#current_player.update_nucleus()
+					pass
+				
+				astar.set_position_offset(pos, funcref(self, "costs"))
+				
+				emit_signal("player_energy_changed", current_player.organism.energy)
+				loc_highlight.position = current_player.position
 		
 		elif path_and_cost["total_cost"] > current_player.organism.energy:
+			notifications.emit_signal("notification_needed", "Energy value too low to move there.")
 			emit_signal("invalid_action", "energy", true, "moving there")
 			
 		elif len(path_and_cost) == 0:
 			print('ERROR: Something has gone wrong with HexAstar.')
 			
 	elif player_tile != pos and distance > vis_radius:
+		notifications.emit_signal("notification_needed", "Vision value too low to move there.")
 		emit_signal("invalid_action", "vision", true, "moving there")
 		
 	elif player_tile != pos and distance > loc_radius:
+		notifications.emit_signal("notification_needed", "Movement value too low to move there.")
 		emit_signal("invalid_action", "movement", true, "moving there")
 			
 	return tiles_moved
