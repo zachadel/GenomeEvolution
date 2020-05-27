@@ -22,9 +22,10 @@ func _ready():
 
 func color_comparison(compare_status_bar = null):
 	for n in container.get_children():
-		var key = n.name;
-		var ttip_type = key;
-		var compare_result = "base";
+		var key : String = n.name;
+		var ttip_type := key;
+		var compare_result := "base";
+		var skill_indicator := "HAS";
 		
 		if (compare_status_bar != null):
 			compare_result = "norm";
@@ -38,17 +39,23 @@ func color_comparison(compare_status_bar = null):
 					compare_result = "up";
 				elif (my_val < comp_val):
 					compare_result = "down";
+			
+			skill_indicator = n.get_skill_comparison_type(compare_status_bar.get_indicator(key));
 		
-		var color_type = "essential";
+		var color_type := "essential";
 		if (key == "ate"):
 			color_type = "ate";
 			ttip_type = "Transposon";
 		
+		n.set_skilled_indicator(skill_indicator);
 		n.modulate = COLORS["%s_%s" % [color_type, compare_result]];
 		n.ttip_data = [ttip_type, compare_result];
 
-func get_value_of(key):
-	return container.get_node(key).get_value();
+func get_indicator(key: String) -> Control:
+	return container.get_node(key);
+
+func get_value_of(key: String) -> float:
+	return get_indicator(key).get_value();
 
 func add_cmsm(cmsm):
 	chromes.append(cmsm);
