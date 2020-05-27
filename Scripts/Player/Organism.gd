@@ -1543,16 +1543,15 @@ func replicate(idx):
 				cmsms.move_cmsm(keep_idx+1, 1);
 				
 				prune_cmsms(2);
+			
+				var cfp_splits = split_cfp_resources(MITOSIS_SPLITS)
+				var mineral_splits = split_mineral_resources(MITOSIS_SPLITS)
+				var energy_split = split_energy(MITOSIS_SPLITS)
 				
-				if Unlocks.has_mechanic_unlock("resource_costs"):
-					var cfp_splits = split_cfp_resources(MITOSIS_SPLITS)
-					var mineral_splits = split_mineral_resources(MITOSIS_SPLITS)
-					var energy_split = split_energy(MITOSIS_SPLITS)
-					
-					cfp_resources = cfp_splits[randi() % MITOSIS_SPLITS]
-					mineral_splits = mineral_splits[randi() % MITOSIS_SPLITS]
-					set_energy(energy_split)
-					emit_signal("resources_changed", cfp_resources, mineral_resources)
+				cfp_resources = cfp_splits[randi() % MITOSIS_SPLITS]
+				mineral_splits = mineral_splits[randi() % MITOSIS_SPLITS]
+				set_energy(energy_split)
+				emit_signal("resources_changed", cfp_resources, mineral_resources)
 				
 				num_progeny += 1;
 			
@@ -1566,15 +1565,14 @@ func replicate(idx):
 				
 				prune_cmsms(1);
 				
-				if Unlocks.has_mechanic_unlock("resource_costs"):
-					var cfp_splits = split_cfp_resources(MEIOSIS_SPLITS)
-					var mineral_splits = split_mineral_resources(MEIOSIS_SPLITS)
-					var energy_split = split_energy(MEIOSIS_SPLITS)
-					
-					cfp_resources = cfp_splits[randi() % MEIOSIS_SPLITS]
-					mineral_splits = mineral_splits[randi() % MEIOSIS_SPLITS]
-					set_energy(energy_split)
-					emit_signal("resources_changed", cfp_resources, mineral_resources)
+				var cfp_splits = split_cfp_resources(MEIOSIS_SPLITS)
+				var mineral_splits = split_mineral_resources(MEIOSIS_SPLITS)
+				var energy_split = split_energy(MEIOSIS_SPLITS)
+				
+				cfp_resources = cfp_splits[randi() % MEIOSIS_SPLITS]
+				mineral_splits = mineral_splits[randi() % MEIOSIS_SPLITS]
+				set_energy(energy_split)
+				emit_signal("resources_changed", cfp_resources, mineral_resources)
 				
 				cmsms.add_cmsm(get_random_gene_from_pool(), true);
 				num_progeny += 3;
@@ -1700,19 +1698,18 @@ func check_resources(action, amount = 1):
 
 	var deficiencies = []
 	
-	if Unlocks.has_mechanic_unlock("resource_costs"):
-		for resource_class in cfp_resources.keys():
-			if cfp_resources[resource_class]["total"] < get_cfp_cost(action, resource_class, amount):
-				#print("NOT ENOUGH CASH! STRANGA!")
-				deficiencies.append(resource_class)
-				
-		for group in mineral_resources:
-			if mineral_resources[group]["total"] < get_mineral_cost(action, group, amount):
-				deficiencies.append(group)
-		
-		if energy < get_energy_cost(action, amount):
-			deficiencies.append("energy")
-		
+	for resource_class in cfp_resources.keys():
+		if cfp_resources[resource_class]["total"] < get_cfp_cost(action, resource_class, amount):
+			#print("NOT ENOUGH CASH! STRANGA!")
+			deficiencies.append(resource_class)
+			
+	for group in mineral_resources:
+		if mineral_resources[group]["total"] < get_mineral_cost(action, group, amount):
+			deficiencies.append(group)
+	
+	if energy < get_energy_cost(action, amount):
+		deficiencies.append("energy")
+	
 	return deficiencies
 
 #Can take a cfp resource or a resource class (simple_carbs, etc.)
@@ -3012,16 +3009,14 @@ func eject_cfp_resource(resource, amount = 1):
 		use_resources("cfp_ejection", amount)
 
 func get_cost_mult(action) -> float:
-	if Unlocks.has_mechanic_unlock("resource_costs"):
-		var cost_mult = 1.0;
-		var bprof = get_behavior_profile();
-		for k in bprof.BEHAVIORS:
-			if (BEHAVIOR_TO_COST_MULT.has(k) && BEHAVIOR_TO_COST_MULT[k].has(action)):
-				cost_mult += BEHAVIOR_TO_COST_MULT[k][action] * bprof.get_behavior(k);
-		cost_mult = max(0.05, cost_mult);
-		
-		return cost_mult * Game.resource_mult;
-	return 0.0;
+	var cost_mult = 1.0;
+	var bprof = get_behavior_profile();
+	for k in bprof.BEHAVIORS:
+		if (BEHAVIOR_TO_COST_MULT.has(k) && BEHAVIOR_TO_COST_MULT[k].has(action)):
+			cost_mult += BEHAVIOR_TO_COST_MULT[k][action] * bprof.get_behavior(k);
+	cost_mult = max(0.05, cost_mult);
+	
+	return cost_mult * Game.resource_mult;
 
 #works for cfp or mineral
 func consume_randomly_from_class(resource_class: String, amount: int):
