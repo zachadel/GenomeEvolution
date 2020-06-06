@@ -9,16 +9,16 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="96"
-   height="82"
-   viewBox="0 0 25.399999 21.695834"
+   width="49.983822"
+   height="63.983826"
+   viewBox="0 0 13.224886 16.929054"
    version="1.1"
    id="svg6916"
    inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
-   sodipodi:docname="calcium.svg"
-   inkscape:export-filename="C:\Users\lemon\Documents\GenomeEvolution\Assets\Images\Tiles\Resources\calcium.png"
-   inkscape:export-xdpi="96"
-   inkscape:export-ydpi="96">
+   sodipodi:docname="sodium_bar_progress.svg"
+   inkscape:export-filename="C:\Users\lemon\Documents\GenomeEvolution\Assets\Images\Tiles\Resources\sodium_bar_progress.png"
+   inkscape:export-xdpi="384.12"
+   inkscape:export-ydpi="384.12">
   <defs
      id="defs6910">
     <clipPath
@@ -39,11 +39,12 @@
     .fil0 {fill:#2B2A29}
    ]]></style>
     <clipPath
-       clip-rule="nonzero"
-       id="a">
+       id="a"
+       style="clip-rule:nonzero">
       <path
          id="path7552"
-         d="m6892 11755h-2727c-7-393-10-629-10-716 0-880 145-1603 439-2174 291-567 873-1207 1749-1919 876-709 1399-1174 1570-1396 265-349 396-734 396-1152 0-578-233-1076-701-1487-466-414-1094-621-1887-621-763 0-1399 218-1915 651-513 436-865 1097-1058 1988l-2748-349c80-1276 622-2356 1628-3246 1007-891 2330-1334 3966-1334 1723 0 3093 451 4111 1348 1018 898 1526 1941 1526 3137 0 658-185 1287-559 1876-375 589-1171 1392-2396 2410-632 523-1025 948-1177 1268-153 320-222 891-207 1716zm-2727 4013v-2988h2727v2988h-2727z" />
+         d="M 6892,11755 H 4165 c -7,-393 -10,-629 -10,-716 0,-880 145,-1603 439,-2174 291,-567 873,-1207 1749,-1919 876,-709 1399,-1174 1570,-1396 265,-349 396,-734 396,-1152 0,-578 -233,-1076 -701,-1487 -466,-414 -1094,-621 -1887,-621 -763,0 -1399,218 -1915,651 -513,436 -865,1097 -1058,1988 L 0,4580 C 80,3304 622,2224 1628,1334 2635,443 3958,0 5594,0 c 1723,0 3093,451 4111,1348 1018,898 1526,1941 1526,3137 0,658 -185,1287 -559,1876 -375,589 -1171,1392 -2396,2410 -632,523 -1025,948 -1177,1268 -153,320 -222,891 -207,1716 z m -2727,4013 v -2988 h 2727 v 2988 z"
+         inkscape:connector-curvature="0" />
     </clipPath>
   </defs>
   <sodipodi:namedview
@@ -54,8 +55,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="7.9195959"
-     inkscape:cx="48.980815"
-     inkscape:cy="38.552404"
+     inkscape:cx="7.9827498"
+     inkscape:cy="29.544317"
      inkscape:document-units="px"
      inkscape:current-layer="layer2"
      showgrid="false"
@@ -65,7 +66,11 @@
      inkscape:window-height="1017"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
-     inkscape:window-maximized="1" />
+     inkscape:window-maximized="1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
   <metadata
      id="metadata6913">
     <rdf:RDF>
@@ -74,25 +79,28 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <g
      inkscape:groupmode="layer"
      id="layer2"
-     inkscape:label="Layer 2">
+     inkscape:label="Layer 2"
+     transform="translate(-6.0875565,-2.3833896)">
     <rect
-       style="fill:#fff800;fill-opacity:1;stroke:#000000;stroke-width:0.26458333;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       style="fill:#ffff00;fill-opacity:1;stroke:#000000;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
        id="rect7663"
        width="12.960303"
        height="16.664471"
        x="6.2198482"
-       y="2.5156813" />
+       y="2.5156813"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
     <flowRoot
        xml:space="preserve"
        id="flowRoot7665"
-       style="fill:black;fill-opacity:1;stroke:none;font-family:sans-serif;font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;letter-spacing:0px;word-spacing:0px"><flowRegion
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"><flowRegion
          id="flowRegion7667"><rect
            id="rect7669"
            width="25.506351"
@@ -110,47 +118,47 @@
          id="tspan7673"
          x="7.6985941"
          y="4.768961"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';stroke-width:0.26220948;stroke-miterlimit:4;stroke-dasharray:none">20</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';stroke-width:0.26220948;stroke-miterlimit:4;stroke-dasharray:none">11</tspan></text>
     <text
        transform="scale(0.85729089,1.1664652)"
        id="text7679"
-       y="11.104391"
-       x="10.532425"
+       y="10.609848"
+       x="10.081083"
        style="font-style:normal;font-weight:normal;font-size:6.20366955px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.58020294;stroke-miterlimit:4;stroke-dasharray:none"
        xml:space="preserve"><tspan
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';stroke-width:0.58020294;stroke-miterlimit:4;stroke-dasharray:none"
-         y="11.104391"
-         x="10.532425"
+         y="10.609848"
+         x="10.081083"
          id="tspan7677"
-         sodipodi:role="line">Ca</tspan></text>
+         sodipodi:role="line">Na</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:1.79510653px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1678887;stroke-miterlimit:4;stroke-dasharray:none"
-       x="10.849622"
-       y="13.292912"
+       x="11.029746"
+       y="12.839262"
        id="text7683"
        transform="scale(0.85729089,1.1664652)"><tspan
          sodipodi:role="line"
          id="tspan7681"
-         x="10.849622"
-         y="13.292912"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';stroke-width:0.1678887;stroke-miterlimit:4;stroke-dasharray:none">Calcium</tspan></text>
+         x="11.029746"
+         y="12.839262"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';stroke-width:0.1678887;stroke-miterlimit:4;stroke-dasharray:none">Sodium</tspan></text>
     <text
        transform="scale(0.85729089,1.1664652)"
        id="text7687"
        y="14.809793"
-       x="12.189512"
+       x="12.15648"
        style="font-style:normal;font-weight:normal;font-size:1.36668515px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.12782027;stroke-miterlimit:4;stroke-dasharray:none"
        xml:space="preserve"><tspan
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';stroke-width:0.12782027;stroke-miterlimit:4;stroke-dasharray:none"
          y="14.809793"
-         x="12.189512"
+         x="12.15648"
          id="tspan7685"
-         sodipodi:role="line">40.078</tspan></text>
+         sodipodi:role="line">22.990</tspan></text>
   </g>
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-275.30416)" />
+     transform="translate(-6.0875565,-277.68755)" />
 </svg>

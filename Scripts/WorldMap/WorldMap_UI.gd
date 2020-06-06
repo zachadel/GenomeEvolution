@@ -13,6 +13,7 @@ onready var mineral_levels = get_node("InternalPanel/MineralLevels")
 onready var resource_ui = get_node("ExternalPanel/ResourcePanel/ResourceUI")
 onready var hazards_ui = get_node("ExternalPanel/HazardPanel/HazardsContainer")
 onready var genome_dmg = get_node("GenomePanel/GenomeDamage")
+onready var transposon_ui = get_node("TransposonPanel/TransposonUI")
 
 onready var acquire_resources_button = get_node("MenuPanel/HBoxContainer/AcquireResources")
 onready var eject_resources_button = get_node("MenuPanel/HBoxContainer/EjectResources")
@@ -26,6 +27,9 @@ const DEFAULT_BUTTON_TEXT = {
 	BUTTONS.CHECK: "Preview Genome", 
 	BUTTONS.END: "Repair Genome!"
 	}
+	
+const REPAIR_DEFAULT_COLOR = Color(0, 0.109804, 1)
+const REPAIR_DANGER_COLOR = Color.red
 
 var test_cases = ["simple_carbs", "simple_fats", "simple_proteins", "complex_carbs", "complex_fats", "complex_proteins", "carbs_0", "carbs_1", "fats_0", "fats_1", "proteins_0", "proteins_1"]
 
@@ -145,7 +149,14 @@ func update_valid_arrows():
 	
 func update_costs():
 	irc.update_costs()
-
+	
+func update_repair_button(total_non_te_dmg: int, max_dmg: int):
+	var ratio = float(total_non_te_dmg) / float(max_dmg)
+	
+	end_turn_button.get_stylebox("normal").bg_color = REPAIR_DEFAULT_COLOR.linear_interpolate(REPAIR_DANGER_COLOR, ratio)
+	
+func reset_repair_button():
+	update_repair_button(0, 1)
 #At some point, error checking should be added here, where an error message
 #is printed if the player tries to store too many resources
 func _on_WorldMap_player_resources_changed(cfp_resources, mineral_resources):
@@ -205,6 +216,7 @@ func test_functionality():
 	print("Environmental Break Count: ", irc.organism.get_dmg())
 	print("Resources:")
 	print(irc.organism.cfp_resources)
+	print(irc.organism.mineral_resources)
 	print("Energy:")
 	print(irc.organism.energy)
 	print("Vision Radius:")

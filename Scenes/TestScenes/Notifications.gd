@@ -1,7 +1,8 @@
 extends Control
 
 signal notification_needed(msg, require_input, centered, auto_dismiss_delay)
-signal notification_begin_dismissing
+signal notification_begin_dismissing()
+signal notification_dismissed()
 
 
 onready var user_input = get_node("UserInput")
@@ -24,7 +25,7 @@ func has_visible_notification():
 func _on_notification_received(msg: String, require_input: bool = false, centered = true, auto_dismiss_delay: float = -1):
 	if require_input:
 		user_input.dialog_text = msg
-		fade_out.interpolate_property(user_input, "modulate", Color(1,1,1,1), Color(0,0,0,0), fade_out_length, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT, 0)
+		#fade_out.interpolate_property(user_input, "modulate", Color(1,1,1,1), Color(0,0,0,0), fade_out_length, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT, 0)
 		
 		if centered:
 			user_input.popup_centered()
@@ -53,6 +54,8 @@ func _on_notification_dismissed():
 	fade_out.reset_all()
 	user_input.modulate = Color(1,1,1,1)
 	no_input.modulate = Color(1,1,1,1)
+	
+	emit_signal("notification_dismissed")
 	
 func _hide():
 	user_input.hide()

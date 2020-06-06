@@ -13,6 +13,7 @@ __meta__ = {
 margin_top = 0.513344
 margin_right = 233.0
 margin_bottom = 58.5133
+popup_exclusive = true
 dialog_autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false

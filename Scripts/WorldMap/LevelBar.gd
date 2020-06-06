@@ -126,10 +126,6 @@ func get_tooltip_data():
 	data[1] = Game.simple_to_pretty_name(resource)
 	return data
 
-func _on_LevelBar_gui_input(event):
-	if event.is_action_pressed("mouse_left"):
-		emit_signal("eject_resource", resource, value)
-
 #func _input(event):
 #	if event.is_action_pressed("mouse_left"):
 #		update_value(value + 1)

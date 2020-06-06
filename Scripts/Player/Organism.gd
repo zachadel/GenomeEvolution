@@ -72,7 +72,8 @@ const MITOSIS_SPLITS = 2
 const MEIOSIS_SPLITS = 4
 
 const MAX_COMPONENT_REDUCTION = 20
-const MAX_DAMAGE = 5
+const MAX_DAMAGE = 8
+const MAX_TRANSPOSONS = 8
 
 
 #cfp_resources[resource_class][resource_name] = value
@@ -171,6 +172,7 @@ signal finished_processing()
 signal energy_changed(energy);
 
 signal insufficient_energy(action);
+signal max_dmg_reached();
 
 #NOTE: Don't call get_behavior_profile in ready
 func _ready():
@@ -329,11 +331,11 @@ func load_from_save(orgn_info):
 	perform_anims(true);
 
 #NOTE: We should probably remove this before releasing it into the wild
-func _input(ev):
-	if (ev.is_action("add_ate") && !ev.is_action_released("add_ate")): # So you can hold it down
-		perform_anims(false);
-		gain_ates();
-		perform_anims(true);
+#func _input(ev):
+#	if (ev.is_action("add_ate") && !ev.is_action_released("add_ate")): # So you can hold it down
+#		perform_anims(false);
+#		gain_ates();
+#		perform_anims(true);
 
 func setup(card_table):
 	perform_anims(false);
@@ -425,6 +427,7 @@ func gain_ates(count = 1):
 			pos = yield(cmsms.insert_ate(nxt_te), "completed");
 		else:
 			pos = cmsms.insert_ate(nxt_te);
+			yield(get_tree(), "idle_frame");
 		justnow += "Inserted %s into position %d (%d, %d).\n" % ([nxt_te.get_gene_name(), pos] + nxt_te.get_position_display());
 	emit_signal("justnow_update", justnow);
 
@@ -464,18 +467,30 @@ func get_component_break_multiplier() -> float:
 	var norm_component : float  = get_behavior_profile().get_behavior("Component")
 	
 	#return 1-pow(1.1, -1.212*(norm_component - 6))/2
-	return 1 - pow(1.2, -norm_component)
+	return 1 - pow(1.13, -norm_component)
 	
 #Called after every move of the player
 #Works like a weighted coin flip.
-func apply_break_after_move() -> bool:
-	var add_dmg = false
+func apply_break_after_move() -> String:
+	var add_dmg = ""
 	
 	var roll = randf()
+	
+	var mineral_dangers = get_minerals_in_danger_zone()
+	var max_minerals = float(get_number_of_minerals())
+	var mineral_value = 0
+	
+	for mineral in mineral_dangers:
+		if Game.resources[mineral]["tier"] == "hazardous":
+			mineral_value = clamp(mineral_value + 2, 0, max_minerals)
+		else:
+			mineral_value = clamp(mineral_value + 1, 0, max_minerals)
+	mineral_value = float(mineral_value) / max_minerals
+	
 	var avg_diff = get_start_current_tile_avg_diff()
-
+	
 	var dmg_threshold = get_component_break_multiplier()
-	var dmg_weight = (avg_diff*3 + roll) / 4
+	var dmg_weight = (avg_diff*3 + roll + mineral_value) / 5
 	
 #	print("dmg_threshold: ", dmg_threshold)
 #	print("dmg_weight: ", dmg_weight)
@@ -485,14 +500,19 @@ func apply_break_after_move() -> bool:
 	if dmg_weight >= dmg_threshold:
 		add_dmg = true
 		
-		if randf() < .25:
+		if randf() < .25 and accumulated_transposons < MAX_TRANSPOSONS:
 			accumulated_transposons += 1
+			add_dmg = "transposon"
 		else:
 			if randf() < .57:
 				accumulated_dmg += 1
+				add_dmg = "dmg"
 			else:
 				accumulated_gaps += 1
+				add_dmg = "gap"
 	
+	if accumulated_dmg + accumulated_gaps == MAX_DAMAGE:
+		emit_signal("max_dmg_reached")
 	return add_dmg
 
 #const DMG_GAIN_FACTOR = 0.1;
@@ -501,6 +521,12 @@ func apply_break_after_move() -> bool:
 	
 func get_dmg() -> int:
 	return accumulated_dmg
+	
+func get_non_te_dmg() -> int:
+	return accumulated_dmg + accumulated_gaps
+	
+func get_max_dmg() -> int:
+	return MAX_DAMAGE
 	
 func get_gaps() -> int:
 	return accumulated_gaps
@@ -525,7 +551,7 @@ func environmental_damage():
 		
 		var gene_list : Array = cmsms.get_all_genes();
 		for i in range(accumulated_dmg):
-			var rand_idx := randi() % (gene_list.size() + 1);
+			var rand_idx := randi() % (gene_list.size() + 1) - 1;
 			if rand_idx >= 0:
 				var rand_gene = gene_list[rand_idx];
 				gene_list.remove(rand_idx);
@@ -1629,12 +1655,14 @@ func adv_turn(round_num, turn_idx):
 				
 				# Add new TEs
 				Game.SeqElm_time_limit = Game.TE_INSERT_TIME_LIMIT;
-				var min_max = Settings.transposons_per_turn()
-				var num_ates = min_max[Settings.MIN] + randi() % (min_max[Settings.MAX] - min_max[Settings.MIN] + 1);
+#				var min_max = Settings.transposons_per_turn()
+#				var num_ates = min_max[Settings.MIN] + randi() % (min_max[Settings.MAX] - min_max[Settings.MIN] + 1);
 				if (do_yields):
-					yield(gain_ates(num_ates), "completed");
+					yield(gain_ates(accumulated_transposons), "completed");
 				else:
-					gain_ates(num_ates);
+					gain_ates(accumulated_transposons);
+					
+				accumulated_transposons = 0
 				
 				# Do TE activity
 				Game.SeqElm_time_limit = Game.TE_JUMP_TIME_LIMIT;
@@ -3251,6 +3279,27 @@ func get_total_mineral_resources() -> int:
 		total += mineral_resources[resource_class]["total"]
 		
 	return total
+	
+func get_minerals_in_danger_zone() -> Array:
+	var danger_minerals = []
+	
+	for mineral_class in mineral_resources:
+		for mineral in mineral_resources[mineral_class]:
+			if mineral != "total":
+				if mineral_resources[mineral_class][mineral] < Game.resources[mineral]["optimal"] - Game.resources[mineral]["optimal_radius"] - Game.resources[mineral]["yellow_radius"] or \
+				   mineral_resources[mineral_class][mineral] >= Game.resources[mineral]["optimal"] + Game.resources[mineral]["optimal_radius"] + Game.resources[mineral]["yellow_radius"]:
+					danger_minerals.append(mineral)
+				
+	return danger_minerals
+	
+func get_number_of_minerals() -> int:
+	var count = 0
+	
+	for mineral_class in mineral_resources:
+		for mineral in mineral_resources[mineral_class]:
+			count += 1
+			
+	return count
 #
 func merge_dictionaries(merged_dictionary: Dictionary, to_be_merged: Dictionary) -> Dictionary:
 	

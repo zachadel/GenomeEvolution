@@ -49,6 +49,8 @@ var map_offset = Vector2(0,0)
 
 var tile_sprite_size = Vector2(0,0)
 
+var max_dmg_reached = false
+
 onready var tween = get_node("MapZoom")
 onready var camera = get_node("MapCamera")
 onready var loc_highlight = get_node("CurrentLocation")
@@ -59,6 +61,8 @@ onready var msg = get_node("CanvasLayer/WarningMessage")
 onready var notifications = get_node("CanvasLayer/Notifications")
 
 const FINAL_TWEEN_ZOOM = Vector2(.1, .1)
+
+const CARD_TABLE_ENERGY = 5
 
 #For moving around the map (does not include ui as parts of the ui can be turned)
 #off individually
@@ -155,6 +159,7 @@ func setup(biome_seed, hazard_seeds, resource_seed, tiebreak_seed, _chunk_size, 
 	
 	current_player.organism.update_vesicle_sizes()
 	connect("player_energy_changed", ui.irc.energy_bar, "_on_Organism_energy_changed")
+	current_player.organism.connect("max_dmg_reached", self, "_on_Organism_max_dmg_reached")
 	#current_player.organism.connect("invalid_action", msg, "show_high_low_warning")
 	
 	$MapCamera.position = current_player.position
@@ -273,7 +278,6 @@ func _unhandled_input(event):
 	
 	if is_visible_in_tree():
 		if event.is_action_pressed("mouse_left"):
-			print('mouse left pressed')
 			debug_bool = true
 			if input_elements["move"] and move_enabled:
 				var tile_position = Game.world_to_map(get_global_mouse_position())
@@ -441,8 +445,8 @@ func move_player(pos: Vector3):
 	if player_tile != pos and distance <= max(1, min(vis_radius, loc_radius)):
 		var path_and_cost = astar.get_tile_and_cost_from_to(player_tile, pos)
 		var loc_tax = current_player.organism.get_locomotion_tax()
-
-		if !path_and_cost.empty():
+	
+		if !path_and_cost.empty() and len(path_and_cost) != 0 and path_and_cost != {}:
 			if path_and_cost["total_cost"] + loc_tax <= current_player.organism.energy:
 				tiles_moved = len(path_and_cost) - 1
 				current_player.organism.energy -= (path_and_cost["total_cost"] + loc_tax)
@@ -452,22 +456,26 @@ func move_player(pos: Vector3):
 				current_player.rotate_sprite((new_position - current_player.position).angle())
 				current_player.position = new_position
 				current_player.organism.current_tile = get_tile_at_pos(pos)
-				if current_player.organism.apply_break_after_move():
-					ui.genome_dmg.add_dmg()
-					#current_player.update_nucleus()
-					pass
+				
+				var break_type = current_player.organism.apply_break_after_move()
+				
+				match(break_type):
+					"transposon":
+						ui.transposon_ui.set_dmg(current_player.organism.get_transposons())
+					"gap", "dmg":
+						ui.genome_dmg.add_dmg()
+				
+				ui.update_repair_button(current_player.organism.get_non_te_dmg(), current_player.organism.get_max_dmg())
+				#current_player.update_nucleus()
 				
 				astar.set_position_offset(pos, funcref(self, "costs"))
 				
 				emit_signal("player_energy_changed", current_player.organism.energy)
 				loc_highlight.position = current_player.position
 		
-		elif path_and_cost["total_cost"] > current_player.organism.energy:
-			notifications.emit_signal("notification_needed", "Energy value too low to move there.")
-			emit_signal("invalid_action", "energy", true, "moving there")
-			
-		elif len(path_and_cost) == 0:
-			print('ERROR: Something has gone wrong with HexAstar.')
+			else: 
+				notifications.emit_signal("notification_needed", "Energy value too low to move there.")
+				emit_signal("invalid_action", "energy", true, "moving there")
 			
 	elif player_tile != pos and distance > vis_radius:
 		notifications.emit_signal("notification_needed", "Vision value too low to move there.")
@@ -584,16 +592,20 @@ func update_ui_energy():
 	pass
 
 func _on_WorldMap_UI_end_map_pressed():
-	var player_pos = Game.world_to_map(current_player.position)
-	var curr_tile = get_tile_at_pos(player_pos)
+	if current_player.organism.energy < CARD_TABLE_ENERGY:
+		notifications.emit_signal("notification_needed", "You need %d energy to repair your genome.  Keep exploring for resources and energy!" % [CARD_TABLE_ENERGY], true, true, -1)
+	#elif max_dmg_reached and current_player.organism.energy < CARD_TABLE_ENERGY :
+	else:
+		var player_pos = Game.world_to_map(current_player.position)
+		var curr_tile = get_tile_at_pos(player_pos)
+		
+		current_player.set_current_tile(curr_tile) 
+		
+		ui.hide()
+		current_player.sprite.highlight_part("nucleus")
 	
-	current_player.set_current_tile(curr_tile) 
-	
-	ui.hide()
-	current_player.sprite.highlight_part("nucleus")
-
-	tween.interpolate_property(camera, "zoom", camera.get_zoom(), FINAL_TWEEN_ZOOM, 1, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-	tween.start()
+		tween.interpolate_property(camera, "zoom", camera.get_zoom(), FINAL_TWEEN_ZOOM, 1, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+		tween.start()
 	pass # Replace with function body.
 
 
@@ -665,4 +677,15 @@ func _on_MapZoom_tween_completed(object, key):
 
 func _on_WorldMap_UI_check_genome():
 	emit_signal("switch_to_card_table")
+	pass # Replace with function body.
+	
+func _on_Organism_max_dmg_reached():
+	max_dmg_reached = true
+	notifications.emit_signal("notification_needed", "Warning!  Max genome damage reached.  Going to repair screen...", true, true, -1)
+
+
+func _on_Notifications_notification_dismissed():
+	if max_dmg_reached:
+		_on_WorldMap_UI_end_map_pressed()
+		
 	pass # Replace with function body.

@@ -1,0 +1,73 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://TransposonUI.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/CardTable/Art/AnthroArt.tscn" type="PackedScene" id=2]
+
+[node name="TransposonUI" type="Control"]
+anchor_right = 0.25625
+anchor_bottom = 0.2
+margin_right = 410.0
+margin_bottom = 180.0
+rect_scale = Vector2( 0.5, 0.5 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="1" parent="." instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 0.0
+margin_bottom = 0.0
+
+[node name="2" parent="." instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 201.259
+margin_right = 201.259
+margin_bottom = 0.0
+
+[node name="3" parent="." instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 400.0
+margin_right = 400.0
+margin_bottom = 0.0
+
+[node name="4" parent="." instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 600.0
+margin_right = 600.0
+margin_bottom = 0.0
+
+[node name="5" parent="." instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 160.0
+margin_right = 0.0
+margin_bottom = 160.0
+
+[node name="6" parent="." instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 201.259
+margin_top = 160.0
+margin_right = 201.259
+margin_bottom = 160.0
+
+[node name="7" parent="." instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 402.518
+margin_top = 160.0
+margin_right = 402.518
+margin_bottom = 160.0
+
+[node name="8" parent="." instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 601.259
+margin_top = 160.0
+margin_right = 601.259
+margin_bottom = 160.0
