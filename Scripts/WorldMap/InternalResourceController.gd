@@ -48,7 +48,7 @@ var selected_resources = {
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	for resource in Game.resources:
+	for resource in Settings.settings["resources"]:
 		var resource_class = Game.get_class_from_name(resource)
 		
 		if resource_class in resources:
@@ -242,7 +242,7 @@ func update_resources(cfp_resources: Dictionary):
 func add_resource(resource_name: String, amount: int = 1):
 	
 	for i in range(amount):
-		var resource = load(Game.resources[resource_name]["collision_scene"]).instance()
+		var resource = load(Settings.settings["resources"][resource_name]["collision_scene"]).instance()
 		var resource_class = Game.get_class_from_name(resource_name)
 		resource.position = get_node(resource_class).get_position()
 		resource.set_default_position(get_node(resource_class).get_global_position())

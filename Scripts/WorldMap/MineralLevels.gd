@@ -15,9 +15,9 @@ var charges = []
 func _ready():
 #	set("custom_constants/separation", bar.instance().get_node("Bar").rect_size.y - bar.instance().get_node("Bar").get("custom_constants/margin_top"))
 	for bar in get_children():
-		bar.hide()
+		bar.make_invis()
 		
-		if Game.resources.has(bar.name):
+		if Settings.settings["resources"].has(bar.name):
 			var value = randi() % int(bar.MAXIMUM_VALUE - bar.MINIMUM_VALUE) + bar.MINIMUM_VALUE
 
 			bar.update_value(value)

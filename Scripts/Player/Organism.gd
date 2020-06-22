@@ -91,7 +91,7 @@ var USEABLE_MINERALS_RANGES = ["iron", "manganese", "potassium", "zinc"]
 
 """
 	current_tile = {
-		'biome': value (index of biome, use Game.biomes to get the true value),
+		'biome': value (index of biome, use Settings.settings["biomes"] to get the true value),
 		'hazards': hazards_dict,
 		'resources': resources_array,
 		'primary_resource': biome_index
@@ -215,11 +215,11 @@ func populate_mineral_dict():
 				mineral_resources[resource_class] = {}
 				mineral_resources[resource_class]["total"] = 0
 				for resource in Game.resource_groups[resource_type][resource_class]:
-					if Game.resources[resource]["tier"] != "hazardous":
+					if Settings.settings["resources"][resource]["tier"] != "hazardous":
 						if randi() % 2 == 0:
-							mineral_resources[resource_class][resource] = clamp(Game.resources[resource]["optimal"] - randi() % (Game.resources[resource]["optimal_radius"]), Game.resources[resource]["safe_range"][0], Game.resources[resource]["safe_range"][1])
+							mineral_resources[resource_class][resource] = clamp(Settings.settings["resources"][resource]["optimal"] - randi() % (Settings.settings["resources"][resource]["optimal_radius"]), Settings.settings["resources"][resource]["safe_range"][0], Settings.settings["resources"][resource]["safe_range"][1])
 						else:
-							mineral_resources[resource_class][resource] = clamp(Game.resources[resource]["optimal"] + randi() % (Game.resources[resource]["optimal_radius"]), Game.resources[resource]["safe_range"][0], Game.resources[resource]["safe_range"][1])
+							mineral_resources[resource_class][resource] = clamp(Settings.settings["resources"][resource]["optimal"] + randi() % (Settings.settings["resources"][resource]["optimal_radius"]), Settings.settings["resources"][resource]["safe_range"][0], Settings.settings["resources"][resource]["safe_range"][1])
 					else:
 						mineral_resources[resource_class][resource] = 0
 					
@@ -292,11 +292,11 @@ func update_vesicle_sizes():
 	var component = get_behavior_profile().get_behavior("Component")
 	var cleared = false
 	
-	for i in len(Game.cells[cell_str]["vesicle_thresholds"]):
-		if len(Game.cells[cell_str]["vesicle_thresholds"][i]) == 2: #Case where we have two things to compare
-			if Game.cells[cell_str]["vesicle_thresholds"][i][0] <= component and component < Game.cells[cell_str]["vesicle_thresholds"][i][1]:
+	for i in len(Settings.settings["cells"][cell_str]["vesicle_thresholds"]):
+		if len(Settings.settings["cells"][cell_str]["vesicle_thresholds"][i]) == 2: #Case where we have two things to compare
+			if Settings.settings["cells"][cell_str]["vesicle_thresholds"][i][0] <= component and component < Settings.settings["cells"][cell_str]["vesicle_thresholds"][i][1]:
 				for resource_class in vesicle_scales:
-					vesicle_scales[resource_class]["scale"] = Vector2(Game.cells[cell_str][resource_class + scale_str][i], Game.cells[cell_str][resource_class + scale_str][i])
+					vesicle_scales[resource_class]["scale"] = Vector2(Settings.settings["cells"][cell_str][resource_class + scale_str][i], Settings.settings["cells"][cell_str][resource_class + scale_str][i])
 					var new_capacity = get_estimated_capacity(resource_class)
 					
 					if new_capacity <= 0:
@@ -305,9 +305,9 @@ func update_vesicle_sizes():
 					elif cfp_resources[resource_class]["total"] > new_capacity:
 						consume_randomly_from_class(resource_class, cfp_resources[resource_class]["total"] - new_capacity)	
 				break #We can exit because the intervals are mutually exclusive
-		elif Game.cells[cell_str]["vesicle_thresholds"][i][0] <= component: #End of vesicle_thresholds
+		elif Settings.settings["cells"][cell_str]["vesicle_thresholds"][i][0] <= component: #End of vesicle_thresholds
 			for resource_class in vesicle_scales:
-				vesicle_scales[resource_class]["scale"] = Vector2(Game.cells[cell_str][resource_class + scale_str][i], Game.cells[cell_str][resource_class + scale_str][i])
+				vesicle_scales[resource_class]["scale"] = Vector2(Settings.settings["cells"][cell_str][resource_class + scale_str][i], Settings.settings["cells"][cell_str][resource_class + scale_str][i])
 			break #We can exit because the intervals are mutually exclusive
 			
 	if cleared:
@@ -418,6 +418,7 @@ func get_max_gene_dist():
 	return max_equality_dist;
 
 func gain_ates(count = 1):
+	yield(get_tree(), "idle_frame")
 	var justnow = "";
 	for i in range(count):
 		var nxt_te = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
@@ -450,8 +451,8 @@ func get_start_current_tile_avg_diff() -> float:
 	var start_hazards = start_tile.hazards
 	
 	for hazard in cur_hazards:
-		var cur_norm = (cur_hazards[hazard] - Game.hazards[hazard]["min"]) / Game.hazards[hazard]["max"];
-		var start_norm = (start_hazards[hazard] - Game.hazards[hazard]["min"]) / Game.hazards[hazard]["max"];
+		var cur_norm = (cur_hazards[hazard] - Settings.settings["hazards"][hazard]["min"]) / Settings.settings["hazards"][hazard]["max"];
+		var start_norm = (start_hazards[hazard] - Settings.settings["hazards"][hazard]["min"]) / Settings.settings["hazards"][hazard]["max"];
 		
 		
 		if hazard != "pH":
@@ -460,59 +461,62 @@ func get_start_current_tile_avg_diff() -> float:
 			average += abs(cur_norm - start_norm)
 		count += 1
 		
-	return average / count
+	return average / float(count)
 
 #Is between [0, 1]
 func get_component_break_multiplier() -> float:
 	var norm_component : float  = get_behavior_profile().get_behavior("Component")
 	
 	#return 1-pow(1.1, -1.212*(norm_component - 6))/2
-	return 1 - pow(1.13, -norm_component)
+	return 1 - pow(Settings.component_curve_exponent(), -norm_component)
 	
 #Called after every move of the player
 #Works like a weighted coin flip.
+var base_damage_probability = Settings.base_damage_probability()
 func apply_break_after_move() -> String:
 	var add_dmg = ""
 	
-	var roll = randf()
-	
-	var mineral_dangers = get_minerals_in_danger_zone()
-	var max_minerals = float(get_number_of_minerals())
-	var mineral_value = 0
-	
-	for mineral in mineral_dangers:
-		if Game.resources[mineral]["tier"] == "hazardous":
-			mineral_value = clamp(mineral_value + 2, 0, max_minerals)
-		else:
-			mineral_value = clamp(mineral_value + 1, 0, max_minerals)
-	mineral_value = float(mineral_value) / max_minerals
-	
-	var avg_diff = get_start_current_tile_avg_diff()
-	
-	var dmg_threshold = get_component_break_multiplier()
-	var dmg_weight = (avg_diff*3 + roll + mineral_value) / 5
-	
-#	print("dmg_threshold: ", dmg_threshold)
-#	print("dmg_weight: ", dmg_weight)
-#	print("avg_diff: ", avg_diff)
-#	print("roll: ", roll)
-	
-	if dmg_weight >= dmg_threshold:
-		add_dmg = true
+	if not Settings.disable_genome_damage():
+		var roll = randf()
 		
-		if randf() < .25 and accumulated_transposons < MAX_TRANSPOSONS:
-			accumulated_transposons += 1
-			add_dmg = "transposon"
-		else:
-			if randf() < .57:
-				accumulated_dmg += 1
-				add_dmg = "dmg"
+		var mineral_dangers = get_minerals_in_danger_zone()
+		var max_minerals = float(get_number_of_minerals())
+		var mineral_value = 0
+		
+		for mineral in mineral_dangers:
+			if Settings.settings["resources"][mineral]["tier"] == "hazardous":
+				mineral_value = clamp(mineral_value + 2, 0, max_minerals)
 			else:
-				accumulated_gaps += 1
-				add_dmg = "gap"
-	
-	if accumulated_dmg + accumulated_gaps == MAX_DAMAGE:
-		emit_signal("max_dmg_reached")
+				mineral_value = clamp(mineral_value + 1, 0, max_minerals)
+		mineral_value = float(mineral_value) / max_minerals
+		
+		var avg_diff = get_start_current_tile_avg_diff()
+		
+		var dmg_threshold = get_component_break_multiplier()
+		var final_damage_probability = clamp(base_damage_probability + (avg_diff*Settings.environment_weight() + mineral_value*Settings.mineral_weight()) / (Settings.environment_weight() + Settings.mineral_weight()) - dmg_threshold, 0.02, 0.98)
+		
+	#	print("dmg_threshold: ", dmg_threshold)
+	#	print("dmg_weight: ", dmg_weight)
+	#	print("avg_diff: ", avg_diff)
+	#	print("roll: ", roll)
+		
+		if roll >= final_damage_probability:
+			add_dmg = true
+			
+			if randf() < .25 and accumulated_transposons < MAX_TRANSPOSONS:
+				accumulated_transposons += 1
+				add_dmg = "transposon"
+			else:
+				if randf() < .57:
+					accumulated_dmg += 1
+					add_dmg = "dmg"
+				else:
+					accumulated_gaps += 1
+					add_dmg = "gap"
+		
+		if accumulated_dmg + accumulated_gaps == MAX_DAMAGE:
+			emit_signal("max_dmg_reached")
+
 	return add_dmg
 
 #const DMG_GAIN_FACTOR = 0.1;
@@ -1382,7 +1386,7 @@ func recombination():
 	if (is_ai):
 		gene_selection.clear();
 	else:
-		if !has_done_recombination and Settings.tutorial():
+		if !has_done_recombination and Settings.tutorial() and get_behavior_profile().get_skill_count("recombo") > 0:
 			yield(get_card_table().play_recombination_slides(), "completed")
 			has_done_recombination = true
 		# For some reason, this func bugs out when picking from the first cmsm (see comment at get_other_cmsm below)
@@ -1580,9 +1584,9 @@ func replicate(idx):
 				var cfp_splits = split_cfp_resources(MITOSIS_SPLITS)
 				var mineral_splits = split_mineral_resources(MITOSIS_SPLITS)
 				var energy_split = split_energy(MITOSIS_SPLITS)
-				
+				print()
 				cfp_resources = cfp_splits[randi() % MITOSIS_SPLITS]
-				mineral_splits = mineral_splits[randi() % MITOSIS_SPLITS]
+				mineral_resources = mineral_splits[randi() % MITOSIS_SPLITS]
 				set_energy(energy_split)
 				emit_signal("resources_changed", cfp_resources, mineral_resources)
 				
@@ -1603,7 +1607,7 @@ func replicate(idx):
 				var energy_split = split_energy(MEIOSIS_SPLITS)
 				
 				cfp_resources = cfp_splits[randi() % MEIOSIS_SPLITS]
-				mineral_splits = mineral_splits[randi() % MEIOSIS_SPLITS]
+				mineral_resources = mineral_splits[randi() % MEIOSIS_SPLITS]
 				set_energy(energy_split)
 				emit_signal("resources_changed", cfp_resources, mineral_resources)
 				
@@ -1760,14 +1764,14 @@ func get_processed_energy_value(resource: String) -> float:
 			var simp_prots = {}
 			for resource_name in cfp_resources[resource]:
 				if resource_name != "total":
-					simp_prots[Game.resources[resource_name]["downgraded_form"]] = cfp_resources[resource][resource_name]*Game.resources[resource_name]["factor"]
+					simp_prots[Settings.settings["resources"][resource_name]["downgraded_form"]] = cfp_resources[resource][resource_name]*Settings.settings["resources"][resource_name]["factor"]
 					processed_energy -= get_energy_cost("complex_proteins_to_simple_proteins", cfp_resources[resource][resource_name])
 			
 			if Game.is_valid_interaction(resource, "simple_carbs", bhv_prof) and energy - get_energy_cost("simple_proteins_to_simple_carbs") > get_energy_cost("complex_proteins_to_simple_proteins"):
 				var simp_sugars = {}
 				for resource_name in simp_prots:
 					if resource_name != "total":	
-						var conversion_amount = simp_prots[resource_name] / (Game.resources[cfp_resources["simple_carbs"].keys()[1]]["factor"] / Game.resources[resource_name]["factor"])
+						var conversion_amount = simp_prots[resource_name] / (Settings.settings["resources"][cfp_resources["simple_carbs"].keys()[1]]["factor"] / Settings.settings["resources"][resource_name]["factor"])
 						if simp_sugars.has(cfp_resources["simple_carbs"].keys()[1]):
 							simp_sugars[cfp_resources["simple_carbs"].keys()[1]] += conversion_amount
 						else:
@@ -1777,7 +1781,7 @@ func get_processed_energy_value(resource: String) -> float:
 				if Game.is_valid_interaction("simple_carbs", "energy", bhv_prof):
 					for resource_name in simp_sugars:
 						if resource_name != "total":
-							processed_energy += simp_sugars[resource_name] * Game.resources[resource_name]["factor"]
+							processed_energy += simp_sugars[resource_name] * Settings.settings["resources"][resource_name]["factor"]
 							processed_energy -= get_energy_cost("simple_carbs_to_energy", simp_sugars[resource_name])
 			else:
 				processed_energy = 0
@@ -1786,7 +1790,7 @@ func get_processed_energy_value(resource: String) -> float:
 			var simp_sugars = {}
 			for resource_name in cfp_resources[resource]:
 				if resource_name != "total":	
-					var conversion_amount = cfp_resources[resource][resource_name] / (Game.resources[cfp_resources["simple_carbs"].keys()[1]]["factor"] / Game.resources[resource_name]["factor"])
+					var conversion_amount = cfp_resources[resource][resource_name] / (Settings.settings["resources"][cfp_resources["simple_carbs"].keys()[1]]["factor"] / Settings.settings["resources"][resource_name]["factor"])
 					if simp_sugars.has(cfp_resources["simple_carbs"].keys()[1]):
 						simp_sugars[cfp_resources["simple_carbs"].keys()[1]] += conversion_amount
 					else:
@@ -1794,23 +1798,23 @@ func get_processed_energy_value(resource: String) -> float:
 					processed_energy -= get_energy_cost("simple_proteins_to_simple_carbs", conversion_amount)	
 			
 			for resource_name in simp_sugars:
-				processed_energy += simp_sugars[resource_name] * Game.resources[resource_name]["factor"]
+				processed_energy += simp_sugars[resource_name] * Settings.settings["resources"][resource_name]["factor"]
 				
 		else:
 			for resource_name in cfp_resources[resource]:
 				if resource_name != "total":
-					var downgraded_resource = Game.resources[resource_name]["downgraded_form"]
+					var downgraded_resource = Settings.settings["resources"][resource_name]["downgraded_form"]
 					
 					if downgraded_resource == "energy" and Game.is_valid_interaction(resource, "energy", bhv_prof):
 						processed_energy -= get_energy_cost(resource + "_to_energy", cfp_resources[resource][resource_name])
-						processed_energy += cfp_resources[resource][resource_name] * Game.resources[resource_name]["factor"]
+						processed_energy += cfp_resources[resource][resource_name] * Settings.settings["resources"][resource_name]["factor"]
 						
 					else:
 						var downgraded_class = Game.get_class_from_name(downgraded_resource)
 						if Game.is_valid_interaction(resource, downgraded_class, bhv_prof) and energy > get_energy_cost(resource + "_to_" + downgraded_class):
 							processed_energy -= get_energy_cost(resource + "_to_" + downgraded_class, cfp_resources[resource][resource_name])
-							processed_energy -= get_energy_cost(downgraded_class + "_to_energy", cfp_resources[resource][resource_name] * Game.resources[resource_name]["factor"])
-							processed_energy += cfp_resources[resource][resource_name] * Game.resources[resource_name]["factor"] * Game.resources[downgraded_resource]["factor"]
+							processed_energy -= get_energy_cost(downgraded_class + "_to_energy", cfp_resources[resource][resource_name] * Settings.settings["resources"][resource_name]["factor"])
+							processed_energy += cfp_resources[resource][resource_name] * Settings.settings["resources"][resource_name]["factor"] * Settings.settings["resources"][downgraded_resource]["factor"]
 	
 	#In the case we are dealing with a resource name		
 	else:
@@ -1911,7 +1915,7 @@ func get_cfp_cost(action, resource, amount = 1):
 		if resource in costs[action]: #if we are asking for totals
 			cost = costs[action][resource] * get_cost_mult(action) * amount + get_cfp_tax(action, resource, amount)
 				
-		elif resource in Game.resources: #if its just a generic resource name
+		elif resource in Settings.settings["resources"]: #if its just a generic resource name
 			var resource_class = Game.get_class_from_name(resource)
 			
 			cost = costs[action][resource_class] * get_cost_mult(action) * amount + get_cfp_tax(action, resource_class, amount)
@@ -1937,7 +1941,7 @@ func get_mineral_cost(action, mineral, amount = 1):
 		if mineral in costs[action]: #if we are asking for totals
 			cost = costs[action][mineral] * get_cost_mult(action) * amount + get_mineral_tax(action, mineral, amount)
 				
-		elif mineral in Game.resources: #if its just a generic resource name
+		elif mineral in Settings.settings["resources"]: #if its just a generic resource name
 			var resource_class = Game.get_class_from_name(mineral)
 			
 			cost = costs[action][resource_class] * get_cost_mult(action) * amount + get_mineral_tax(action, resource_class, amount)
@@ -2718,14 +2722,14 @@ func acquire_resources():
 		#Run through all resources on the tile
 		for index in range(len(current_tile["resources"])):
 			#grab the resource
-			var resource = Game.resources.keys()[index]
+			var resource = Settings.settings["resources"].keys()[index]
 			var resource_class = Game.get_class_from_name(resource)
 			
 			#Later, the resources to be grabbed should be randomly selected from all
 			#possible resources that fit into a certain resource class
 			#Acquire minerals
 			if current_tile["resources"][index] > 0:
-				if Game.resources[resource]["group"] == "minerals":
+				if Settings.settings["resources"][resource]["group"] == "minerals":
 					modified = true
 	
 					mineral_resources[resource_class][resource] += current_tile["resources"][index]
@@ -2755,11 +2759,12 @@ func acquire_resources():
 		modified = false		
 		
 	#Reestablish what the new primary_resource indicator on the tile should be
+	#NOTE: Not currently based on sensing; will cause some weird behavior
 	if modified and current_tile["primary_resource"] != -1:
-		if current_tile["resources"][current_tile["primary_resource"]] < Game.PRIMARY_RESOURCE_MIN:
+		if current_tile["resources"][current_tile["primary_resource"]] < Settings.settings["resources"][Settings.settings["resources"].keys()[current_tile["primary_resource"]]]["primary_resource_min"]:
 			current_tile["primary_resource"] = -1
 			for index in range(len(current_tile["resources"])):
-				if current_tile["resources"][index] >= Game.PRIMARY_RESOURCE_MIN:
+				if current_tile["resources"][index] >= Settings.settings["resources"][Settings.settings["resources"].keys()[index]]["primary_resource_min"]:
 					current_tile["primary_resource"] = index
 					break
 					
@@ -2780,21 +2785,21 @@ func acquire_resources():
 		
 	return modified
 
-#upgrades cfp_resources["simple_#"][resource] to cfp_resources["complex_#"][Game.resources[resource]["upgraded_form"]
+#upgrades cfp_resources["simple_#"][resource] to cfp_resources["complex_#"][Settings.settings["resources"][resource]["upgraded_form"]
 #We can consider adding in manipulation/construction values to reduce the tier_conversion later
 #amount is the amount of resource_from units to be used in the conversion
 #NOTE: Can NOT be used with energy as resource_from
 func upgrade_cfp_resource(resource_from: String, amount: int):
 	var leftover_resources = amount
-	var upgraded_amount = int(floor(amount/Game.resources[resource_from]["factor"]))
+	var upgraded_amount = int(floor(amount/Settings.settings["resources"][resource_from]["factor"]))
 	var total_upgraded = 0
 	
 	var resource_class = Game.get_class_from_name(resource_from)
 	
-	var upgraded_form = Game.resources[resource_from]["upgraded_form"]
+	var upgraded_form = Settings.settings["resources"][resource_from]["upgraded_form"]
 	var upgraded_class = Game.get_class_from_name(upgraded_form)
 
-	var required_from_per_up = Game.resources[resource_from]["factor"]
+	var required_from_per_up = Settings.settings["resources"][resource_from]["factor"]
 	#Is there anything to do?
 	if upgraded_amount > 0:
 		var energy_cost = get_energy_cost(resource_class + "_to_" + upgraded_class, 1)
@@ -2822,7 +2827,7 @@ func upgrade_cfp_resource(resource_from: String, amount: int):
 
 func upgrade_energy(resource_to: String, amount_to: int = 1):
 	var upgraded_amount = 0
-	var factor = Game.resources[resource_to]["factor"]
+	var factor = Settings.settings["resources"][resource_to]["factor"]
 	var resource_to_class = Game.get_class_from_name(resource_to)
 	
 	var energy_cost = get_energy_cost("energy_to_" + resource_to_class, 1)
@@ -2862,7 +2867,7 @@ func convert_cfp_to_cfp(resources_from: Dictionary, resource_to: String):
 	var resource_to_class = Game.get_class_from_name(resource_to)
 	var vesicle_capacity = get_estimated_capacity(resource_to_class)
 	
-	var energy_to_to = Game.resources[resource_to]["factor"]
+	var energy_to_to = Settings.settings["resources"][resource_to]["factor"]
 	
 	#Draw from highest energy value first
 	var sorted_resources = resources_from.keys()
@@ -2871,7 +2876,7 @@ func convert_cfp_to_cfp(resources_from: Dictionary, resource_to: String):
 	
 	#Loop over resources and convert as much as you can
 	for resource in sorted_resources:
-		var energy_from = Game.resources[resource]["factor"]
+		var energy_from = Settings.settings["resources"][resource]["factor"]
 		var ratio = float(energy_from) / energy_to_to
 		
 		results[resource] = {"new_resource_amount": 0, "leftover_resource_amount": resources_from[resource], "new_resource_name": resource_to} #converted amount, leftover_amount
@@ -2920,7 +2925,7 @@ func downgrade_cfp_resource(resource_from: String, amount: int):
 	
 	var resource_class = Game.get_class_from_name(resource_from)
 	
-	var downgraded_form = Game.resources[resource_from]["downgraded_form"]
+	var downgraded_form = Settings.settings["resources"][resource_from]["downgraded_form"]
 	var downgraded_class = Game.get_class_from_name(downgraded_form)
 
 	#Is there anything to do?
@@ -2929,7 +2934,7 @@ func downgrade_cfp_resource(resource_from: String, amount: int):
 			downgraded_amount = energy #Store old energy amount
 			
 			var energy_cost = get_energy_cost(resource_class + "_to_energy", 1)
-			var energy_gained = Game.resources[resource_from]["factor"]
+			var energy_gained = Settings.settings["resources"][resource_from]["factor"]
 			
 			#Downgrade all resources that you can
 			for i in range(amount):
@@ -2950,7 +2955,7 @@ func downgrade_cfp_resource(resource_from: String, amount: int):
 		else:
 			var energy_cost = get_energy_cost(resource_class + "_to_" + downgraded_class, 1)
 			var vesicle_capacity = get_estimated_capacity(downgraded_class)
-			var resources_per_downgrade = Game.resources[resource_from]["factor"]
+			var resources_per_downgrade = Settings.settings["resources"][resource_from]["factor"]
 			
 			#Downgrade all resources that you can
 			for i in range(amount):
@@ -3108,12 +3113,12 @@ func process_cfp_resources(resources: Dictionary, container_name: String) -> Dic
 	var container_split = container_name.split(Game.SEPARATOR)
 	
 	for resource in resources:
-		if Game.resources[resource]["tier"] == "simple":
+		if Settings.settings["resources"][resource]["tier"] == "simple":
 			simple_resources[resource] = resources[resource]
-		elif Game.resources[resource]["tier"] == "complex":
+		elif Settings.settings["resources"][resource]["tier"] == "complex":
 			complex_resources[resource] = resources[resource]
 		else:
-			print('ERROR: Invalid resource tier of %s for resource %s in function process_resources' % [Game.resources[resource]["tier"], resource])
+			print('ERROR: Invalid resource tier of %s for resource %s in function process_resources' % [Settings.settings["resources"][resource]["tier"], resource])
 			
 	var simple_results = {}
 	var complex_results = {}
@@ -3286,8 +3291,8 @@ func get_minerals_in_danger_zone() -> Array:
 	for mineral_class in mineral_resources:
 		for mineral in mineral_resources[mineral_class]:
 			if mineral != "total":
-				if mineral_resources[mineral_class][mineral] < Game.resources[mineral]["optimal"] - Game.resources[mineral]["optimal_radius"] - Game.resources[mineral]["yellow_radius"] or \
-				   mineral_resources[mineral_class][mineral] >= Game.resources[mineral]["optimal"] + Game.resources[mineral]["optimal_radius"] + Game.resources[mineral]["yellow_radius"]:
+				if mineral_resources[mineral_class][mineral] < Settings.settings["resources"][mineral]["optimal"] - Settings.settings["resources"][mineral]["optimal_radius"] - Settings.settings["resources"][mineral]["yellow_radius"] or \
+				   mineral_resources[mineral_class][mineral] >= Settings.settings["resources"][mineral]["optimal"] + Settings.settings["resources"][mineral]["optimal_radius"] + Settings.settings["resources"][mineral]["yellow_radius"]:
 					danger_minerals.append(mineral)
 				
 	return danger_minerals
@@ -3321,7 +3326,7 @@ func is_mineral_alive() -> bool:
 	for charge in mineral_resources:
 		var default_resource = mineral_resources[charge].keys()[1]
 
-		if mineral_resources[charge]["total"] < Game.resources[default_resource]["safe_range"][0] or mineral_resources[charge]["total"] > Game.resources[default_resource]["safe_range"][1]:
+		if mineral_resources[charge]["total"] < Settings.settings["resources"][default_resource]["safe_range"][0] or mineral_resources[charge]["total"] > Settings.settings["resources"][default_resource]["safe_range"][1]:
 			mineral_alive = false
 			break
 
@@ -3349,7 +3354,7 @@ func is_energy_alive() -> bool:
 #Helper function for sorting resources by energy they yield
 #Sorts from largest to smallest
 func sort_by_energy_factor(a, b):
-	if Game.resources[a]["factor"] > Game.resources[b]["factor"]:
+	if Settings.settings["resources"][a]["factor"] > Settings.settings["resources"][b]["factor"]:
 		return true
 	else:
 		return false
@@ -3374,10 +3379,10 @@ func get_locomotion_cost(biome):
 	
 	if not Settings.disable_movement_costs() and not Settings.disable_resource_costs():
 		if typeof(biome) == TYPE_INT:
-			biome = Game.biomes.keys()[biome]
+			biome = Settings.settings["biomes"].keys()[biome]
 		
 		if typeof(biome) == TYPE_STRING:
-			return Game.biomes[biome]["base_cost"] * get_cost_mult("move") * get_behavior_profile().get_biome_movt_cost_mult(biome)
+			return Settings.settings["biomes"][biome]["base_cost"] * get_cost_mult("move") * get_behavior_profile().get_biome_movt_cost_mult(biome)
 		else:
 			return -1
 	else:

@@ -150,10 +150,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -413.257
-margin_top = -310.0
-margin_right = -161.257
-margin_bottom = -279.0
+margin_left = -412.26
+margin_top = -321.0
+margin_right = -160.26
+margin_bottom = -277.0
 custom_fonts/font = ExtResource( 13 )
 text = "Turn Order"
 align = 1
@@ -175,9 +175,9 @@ __meta__ = {
 [node name="lbl_log" type="Label" parent="ctl_justnow"]
 anchor_right = 1.0
 margin_left = 24.0476
-margin_top = -5.0
+margin_top = -16.0
 margin_right = 15.0476
-margin_bottom = 26.0
+margin_bottom = 28.0
 custom_fonts/font = ExtResource( 13 )
 text = "Event Log"
 align = 1
@@ -216,10 +216,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -1594.0
-margin_top = -310.0
-margin_right = -1127.0
-margin_bottom = -279.0
+margin_left = -1596.52
+margin_top = -321.0
+margin_right = -1129.52
+margin_bottom = -277.0
 custom_fonts/font = ExtResource( 13 )
 text = "Gene Content"
 align = 1
@@ -712,25 +712,21 @@ margin_left = 1193.14
 margin_top = 772.178
 margin_right = 1293.14
 margin_bottom = 872.178
-num = 0
 lbl = "Round"
-show_change = true
 
 [node name="lnum_progeny" parent="." instance=ExtResource( 17 )]
 margin_left = 1337.14
 margin_top = 772.178
 margin_right = 1437.14
 margin_bottom = 872.178
-num = 0
 lbl = "Progeny"
-show_change = true
 
 [node name="EnergyBar" parent="." instance=ExtResource( 14 )]
-margin_left = 1.894
-margin_top = 678.426
-margin_right = -998.106
-margin_bottom = -161.574
-rect_scale = Vector2( 0.8, 0.75 )
+margin_left = 3.48102
+margin_top = 672.836
+margin_right = 3.48102
+margin_bottom = 672.836
+rect_scale = Vector2( 0.75, 0.75 )
 
 [node name="AutoContinue" type="Timer" parent="."]
 wait_time = 0.01

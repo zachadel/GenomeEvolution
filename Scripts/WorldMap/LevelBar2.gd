@@ -20,22 +20,25 @@ const OPTIMAL_COLOR = Color.green
 const WARNING_COLOR = Color.orange
 const DANGER_COLOR = Color.red
 
+const INVISIBLE = Color(1,1,1,0)
+const VISIBLE = Color(1,1,1,1)
+
 #NOTE: Because Bar is rotated, the coordinates on Meter are opposite what they should be
 #i.e. x = y and y = x
 func _ready():
-	if Game.resources.has(resource):
-		set_maximum(Game.resources[resource]["safe_range"][1])
-		set_optimal_value(Game.resources[resource]["optimal"])
-		set_optimal_radius(Game.resources[resource]["optimal_radius"])
-		set_yellow_radius(Game.resources[resource]["yellow_radius"])
+	if Settings.settings["resources"].has(resource):
+		set_maximum(Settings.settings["resources"][resource]["safe_range"][1])
+		set_optimal_value(Settings.settings["resources"][resource]["optimal"])
+		set_optimal_radius(Settings.settings["resources"][resource]["optimal_radius"])
+		set_yellow_radius(Settings.settings["resources"][resource]["yellow_radius"])
 	else:
-		hide()
+		make_invis()
 	
 	_update_fill()
 	_update_glow()
 	
 	if not observed:
-		hide()
+		make_invis()
 
 	pass # Replace with function body.
 
@@ -49,20 +52,20 @@ func update_value(amount: float):
 func observe():
 	observed = true
 	
-	if Game.resources.has(resource):
-		show()
+	if Settings.settings["resources"].has(resource):
+		make_vis()
 
 func is_observed():
 	return observed
 
 func set_resource(string):
 	resource = string
-#	MINIMUM_VALUE = Game.resources[resource]["safe_range"][0]
-	MAXIMUM_VALUE = Game.resources[resource]["safe_range"][1]
-	if observed and Game.resources.has(resource):
-		show()
+#	MINIMUM_VALUE = Settings.settings["resources"][resource]["safe_range"][0]
+	MAXIMUM_VALUE = Settings.settings["resources"][resource]["safe_range"][1]
+	if observed and Settings.settings["resources"].has(resource):
+		make_vis()
 	else:
-		hide()
+		make_invis()
 		
 	_update_glow()
 	_update_fill()
@@ -89,6 +92,12 @@ func set_optimal_radius(optimal_radius: float):
 func set_yellow_radius(yellow_radius: float):
 	YELLOW_RANGE_RADIUS = yellow_radius
 	_update_glow()
+	
+func make_invis():
+	modulate = INVISIBLE
+	
+func make_vis():
+	modulate = VISIBLE
 
 func _update_fill():
 	fill.rect_scale.y = clamp(float(value) / float(MAXIMUM_VALUE),0,1)

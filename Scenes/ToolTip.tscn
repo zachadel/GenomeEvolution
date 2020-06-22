@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=2]
 
-[ext_resource path="res://Scripts/Globals/Tooltips.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/Globals/Tooltip.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Fonts/OpenSans-64.tres" type="DynamicFont" id=2]
 
 [sub_resource type="StyleBoxFlat" id=1]

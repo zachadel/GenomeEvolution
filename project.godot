@@ -32,12 +32,12 @@ config/icon="res://icon.png"
 
 [autoload]
 
+Settings="*res://Scripts/Globals/Settings.gd"
 Game="*res://Scripts/Globals/Game.gd"
 Unlocks="*res://Scripts/Globals/Unlocks.gd"
 Chance="*res://Scripts/Globals/Chance.gd"
 Tooltips="*res://Scenes/ToolTip.tscn"
 SaveExports="*res://Scripts/Globals/SaveExports.gd"
-Settings="*res://Scripts/Globals/Settings.gd"
 Skills="*res://Scripts/Globals/Skills.gd"
 
 [display]

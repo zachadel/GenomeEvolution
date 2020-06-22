@@ -32,7 +32,7 @@ func update_genome():
 	for child in genome.get_children():
 		if child is Label:
 			var gene = child.name.split(Game.SEPARATOR)[0]
-			child.text = "x " + str(Game.cells[current_cell]["genome"][gene])
+			child.text = "x " + str(Settings.settings["cells"][current_cell]["genome"][gene])
 	pass
 	
 func get_cell_string():

@@ -9,8 +9,8 @@ func _ready():
 	value = 0
 	$UVLabel.text = str(value)
 	
-	min_value = Game.hazards["uv_index"]["min"]
-	max_value = Game.hazards["uv_index"]["max"]
+	min_value = Settings.settings["hazards"]["uv_index"]["min"]
+	max_value = Settings.settings["hazards"]["uv_index"]["max"]
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

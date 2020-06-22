@@ -9,8 +9,8 @@ func _ready():
 	value = 0
 	$pHLabel.text = str(value)
 	
-	min_value = Game.hazards["pH"]["min"]
-	max_value = Game.hazards["pH"]["max"]
+	min_value = Settings.settings["hazards"]["pH"]["min"]
+	max_value = Settings.settings["hazards"]["pH"]["max"]
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

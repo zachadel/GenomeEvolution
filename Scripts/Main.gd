@@ -35,7 +35,7 @@ func _ready():
 	first_player.set_cell_type(Game.current_cell_string)
 	
 	var hazard_seeds = {}
-	for hazard in Game.hazards.keys():
+	for hazard in Settings.settings["hazards"].keys():
 		hazard_seeds[hazard] = randi()
 	
 	#This order enables the WorldMap to make its camera the current one

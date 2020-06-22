@@ -116,7 +116,7 @@ func set_scale(_scale: Vector2):
 
 #func add_resource(resource_name, amount = 1):
 #	for i in range(amount):
-#		var resource = load(Game.resources[resource_name]["collision_scene"]).instance()
+#		var resource = load(Settings.settings["resources"][resource_name]["collision_scene"]).instance()
 #		resource.position = Vector2(0,0)
 #
 #		stored_resources.append(resource)

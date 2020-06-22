@@ -46,20 +46,20 @@ func update_value(amount: float):
 func observe():
 	observed = true
 	
-	set_icon_texture(Game.resources[resource]["tile_image"])
+	set_icon_texture(Settings.settings["resources"][resource]["tile_image"])
 
 func is_observed():
 	return observed
 
 func set_resource(string):
 	resource = string
-	MINIMUM_VALUE = Game.resources[resource]["safe_range"][0]
-	MAXIMUM_VALUE = Game.resources[resource]["safe_range"][1]
+	MINIMUM_VALUE = Settings.settings["resources"][resource]["safe_range"][0]
+	MAXIMUM_VALUE = Settings.settings["resources"][resource]["safe_range"][1]
 	if observed:
-		set_icon_texture(Game.resources[resource]["tile_image"])
+		set_icon_texture(Settings.settings["resources"][resource]["tile_image"])
 	else:
 		set_icon_texture(Game.DEFAULT_RESOURCE_PATH)
-	set_gradient(Game.resources[resource]["optimal"], Game.resources[resource]["optimal_radius"], Game.resources[resource]["yellow_radius"])
+	set_gradient(Settings.settings["resources"][resource]["optimal"], Settings.settings["resources"][resource]["optimal_radius"], Settings.settings["resources"][resource]["yellow_radius"])
 	
 func set_MAXIMUM(amount):
 	MAXIMUM_VALUE = amount

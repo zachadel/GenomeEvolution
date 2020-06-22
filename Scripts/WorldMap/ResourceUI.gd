@@ -6,15 +6,16 @@ onready var container = get_node("VBoxContainer")
 func _ready():
 	#Organize resources by group
 	for group in Game.resource_groups.keys():
-		for resource in Game.resources.keys():
-			if Game.resources[resource]["group"] == group:
+		for resource in Settings.settings["resources"].keys():
+			if Settings.settings["resources"][resource]["group"] == group:
 				var Bar = load("res://Scenes/WorldMap/ResourceBar.tscn").instance()
-				#Bar.set_texture(Game.resources[resource]["tile_image"])
+				#Bar.set_texture(Settings.settings["resources"][resource]["tile_image"])
 				
 				Bar.name = resource
 				
-				Bar.update_value(randi() % Game.PRIMARY_RESOURCE_MAX) #For testing
 				Bar.set_resource(resource)
+				Bar.update_value(randi() % Settings.settings["resources"][resource]["primary_resource_max"]) #For testing
+				
 				
 				Bar.size_flags_horizontal = SIZE_EXPAND_FILL
 				Bar.size_flags_vertical = SIZE_EXPAND_FILL

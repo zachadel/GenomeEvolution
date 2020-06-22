@@ -323,9 +323,9 @@ func set_resource_ttip(resource, resource_group, tier, amount):
 	else:
 		how_it_can_be_used = "must be broken down by the cell before it can be acquired."
 	
-	var image = "[center][img]" + Game.resources[resource]["tile_image"] + "[/img][/center]\n"
+	var image = "[center][img]" + Settings.settings["resources"][resource]["tile_image"] + "[/img][/center]\n"
 	var description = "[b][u]Description[/b][/u]: %s is a %s resource, and it %s.\n\n" % [pretty_resource_name, pretty_processed_resource, how_it_can_be_used]
-	var yields = "[b][u]Yields[/b][/u]: [img]%s[/img] X %.2f per [img]%s[/img]\n" % [processed_resource_icon, Game.resources[resource]["factor"], resource_icon]
+	var yields = "[b][u]Yields[/b][/u]: [img]%s[/img] X %.2f per [img]%s[/img]\n" % [processed_resource_icon, Settings.settings["resources"][resource]["factor"], resource_icon]
 	var resource_class = "[b][u]Resource Group[/b][/u]: %s\n" % [ext_resource_group] #Complex/Simple Carbs/Fats/Proteins A/B
 	var amount_on_tile = "[b][u]Amount on Current Tile[/b][/u]: [img]%s[/img] X %.2f" % [resource_icon, amount]
 

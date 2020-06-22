@@ -115,9 +115,9 @@ __meta__ = {
 
 [node name="ResourcePanel" type="Panel" parent="ExternalPanel"]
 margin_left = 10.0
-margin_top = 99.0
+margin_top = 75.0
 margin_right = 280.0
-margin_bottom = 260.0
+margin_bottom = 236.0
 mouse_filter = 2
 custom_styles/panel = SubResource( 4 )
 __meta__ = {
@@ -135,9 +135,9 @@ margin_bottom = 0.0
 
 [node name="HazardPanel" type="Panel" parent="ExternalPanel"]
 margin_left = 10.0
-margin_top = 310.0
+margin_top = 274.0
 margin_right = 280.0
-margin_bottom = 450.0
+margin_bottom = 414.0
 mouse_filter = 2
 custom_styles/panel = SubResource( 4 )
 __meta__ = {
@@ -150,15 +150,15 @@ anchor_left = 0.015
 anchor_top = 0.017
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -0.0500002
+margin_left = -0.0499997
 margin_top = 7.62
 margin_right = -5.0
-margin_bottom = -101.47
+margin_bottom = -13.0
 
 [node name="TileResourcesLabel" type="RichTextLabel" parent="ExternalPanel"]
 margin_top = 40.0
 margin_right = 290.0
-margin_bottom = 92.0
+margin_bottom = 75.0
 mouse_filter = 2
 custom_fonts/normal_font = SubResource( 5 )
 bbcode_enabled = true
@@ -168,21 +168,12 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TileResourcesLabel2" type="RichTextLabel" parent="ExternalPanel"]
+[node name="TileResourcesLabel3" type="RichTextLabel" parent="ExternalPanel"]
+margin_top = 236.0
 margin_right = 290.0
-margin_bottom = 52.0
+margin_bottom = 274.0
 mouse_filter = 2
-custom_fonts/normal_font = SubResource( 2 )
-bbcode_enabled = true
-bbcode_text = "[center][u]Current Tile[/u][/center]"
-text = "Current Tile"
-
-[node name="TileHazardsLabel" type="RichTextLabel" parent="ExternalPanel"]
-margin_top = 260.0
-margin_right = 290.0
-margin_bottom = 312.0
-mouse_filter = 2
-custom_fonts/normal_font = SubResource( 2 )
+custom_fonts/normal_font = SubResource( 5 )
 bbcode_enabled = true
 bbcode_text = "[center]Environment[/center]"
 text = "Environment"
@@ -190,11 +181,20 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="TileResourcesLabel2" type="RichTextLabel" parent="ExternalPanel"]
+margin_right = 290.0
+margin_bottom = 50.0
+mouse_filter = 2
+custom_fonts/normal_font = SubResource( 2 )
+bbcode_enabled = true
+bbcode_text = "[center][u]Current Tile[/u][/center]"
+text = "Current Tile"
+
 [node name="GenomeStatusLabel" type="RichTextLabel" parent="."]
 margin_left = 1310.0
-margin_top = 461.5
+margin_top = 414.0
 margin_right = 1600.0
-margin_bottom = 509.5
+margin_bottom = 462.0
 mouse_filter = 2
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
@@ -207,9 +207,9 @@ __meta__ = {
 
 [node name="TransposonLabel" type="RichTextLabel" parent="."]
 margin_left = 1310.0
-margin_top = 516.167
+margin_top = 454.5
 margin_right = 1600.0
-margin_bottom = 556.167
+margin_bottom = 494.5
 mouse_filter = 2
 custom_fonts/normal_font = SubResource( 3 )
 bbcode_enabled = true
@@ -222,9 +222,9 @@ __meta__ = {
 
 [node name="GenomeStatusLabel2" type="RichTextLabel" parent="."]
 margin_left = 1310.0
-margin_top = 651.66
+margin_top = 593.16
 margin_right = 1600.0
-margin_bottom = 691.66
+margin_bottom = 633.16
 mouse_filter = 2
 custom_fonts/normal_font = SubResource( 3 )
 bbcode_enabled = true
@@ -237,9 +237,9 @@ __meta__ = {
 
 [node name="TransposonPanel" type="Panel" parent="."]
 margin_left = 1320.0
-margin_top = 555.0
+margin_top = 491.333
 margin_right = 1590.0
-margin_bottom = 656.0
+margin_bottom = 592.333
 mouse_filter = 2
 custom_styles/panel = SubResource( 4 )
 __meta__ = {
@@ -258,9 +258,9 @@ rect_scale = Vector2( 0.3, 0.3 )
 
 [node name="GenomePanel" type="Panel" parent="."]
 margin_left = 1320.0
-margin_top = 689.6
+margin_top = 631.1
 margin_right = 1590.0
-margin_bottom = 836.6
+margin_bottom = 778.1
 mouse_filter = 2
 custom_styles/panel = SubResource( 4 )
 __meta__ = {
@@ -278,10 +278,10 @@ margin_right = 128.0
 margin_bottom = 63.9
 
 [node name="RepairGenome" type="Button" parent="GenomePanel"]
-margin_left = 40.0
-margin_top = 160.0
-margin_right = 228.0
-margin_bottom = 197.0
+margin_left = 2.0
+margin_top = 161.0
+margin_right = 268.0
+margin_bottom = 230.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/normal = SubResource( 6 )

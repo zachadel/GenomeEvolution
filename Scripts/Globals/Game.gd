@@ -1,5 +1,7 @@
 extends Node
 
+var seed_value = 0
+
 var sqelm_textures = {"gene": load("res://Assets/Images/gene.png"), "break": load("res://Assets/Images/break.png")};
 var ess_textures = {};
 var default_te_texture = load("res://Assets/Images/tes/default_te.png");
@@ -19,18 +21,15 @@ enum PLAYER_VIEW {
 	
 #NOTE: It may be worthwhile to store dicts which go from biome_index -> string
 #and string -> biome_index, since both operations are needed frequently
-var biomes = {}
 var biome_index_to_string = {}
 var biome_string_to_index = {}
 
 #resources['resource']['tier/biome/etc']
-var resources = {}
 var resource_index_to_string = {}
 var resource_string_to_index = {}
 
 #resources['group'][]
 var resource_groups = {}
-var hazards = {}
 #modified_tiles[[int(x), int(y)]] = {
 #								"resources": resources_array,
 #								"biome": biome,
@@ -41,13 +40,9 @@ var hazards = {}
 var modified_tiles = {}
 var mouse_resource = "" #Determines what needs to be drawn on the screen
 
-var cells = {}
-
 const SEPARATOR = '_'
 const IMAGE_TYPE = ".png"
-const CELL_IMAGE_TYPE = ".svg"
 const WORLD_UI_PATH = "res://Assets/Images/Tiles/Resources/"
-const CELL_TEXTURES_PATH = "res://Assets/Images/Cells/"
 
 const MAX_ERROR = .0001
 
@@ -126,11 +121,6 @@ const RESOURCE_PATH = "res://Scenes/WorldMap/Collision/"
 
 const DEFAULT_RESOURCE_PATH = "res://Assets/Images/Tiles/Icons/question_mark.png"
 
-const PRIMARY_RESOURCE_MAX = 7
-const PRIMARY_RESOURCE_MIN = 4
-var SECONDARY_RESOURCE_MAX = 1
-var SECONDARY_RESOURCE_MIN = 0
-
 #allows for integers in the biome.cfg file, since there is currently a bug in Godot which prevents reading in floats from nested arrays
 const GEN_SCALING = 100 
 const TOLERANCE = .0001
@@ -153,7 +143,6 @@ const TE_JUMP_TIME_LIMIT = 5.0 # TE_jump_time_limit
 const TE_INSERT_TIME_LIMIT = 0.75 # TE_insertion_time_limit
 var SeqElm_time_limit = 3.0
 
-var ate_personalities = {};
 var resource_mult = 0.1;
 
 var code_elements = [];
@@ -168,21 +157,21 @@ func get_code_char(_num):
 #"cell_1"
 func get_default_genome(cell_idx) -> Dictionary:
 	if typeof(cell_idx) == TYPE_STRING:
-		return Game.cells[cell_idx]["genome"]
+		return Settings.settings["cells"][cell_idx]["genome"]
 	elif typeof(cell_idx) == TYPE_INT:
-		return Game.cells[Game.cells.keys()[cell_idx]]["genome"]
+		return Settings.settings["cells"][Settings.settings["cells"].keys()[cell_idx]]["genome"]
 	else:
 		print('ERROR: Invalidd cell_idx type of %d given in get_default_genome.' % [cell_idx])
 		return {}
 		
 func get_large_cell_path(cell_idx, part: String = "body") -> String:
-	var path = CELL_TEXTURES_PATH + part + '/' + part + Game.SEPARATOR
+	var path = Settings.CELL_TEXTURES_PATH + part + '/' + part + Game.SEPARATOR
 	if typeof(cell_idx) == TYPE_STRING:
 		return path + cell_idx + Game.SEPARATOR + 'large.svg'
 	elif typeof(cell_idx) == TYPE_INT:
 		return path + 'cell' + Game.SEPARATOR + cell_idx + Game.SEPARATOR + 'large.svg'
 	else:
-		print('ERROR: Invalidd cell_idx type of %d given in get_large_cell_path.' % [cell_idx])
+		print('ERROR: Invalid cell_idx type of %d given in get_large_cell_path.' % [cell_idx])
 		return ""
 		
 func _ready():
@@ -193,35 +182,19 @@ func _ready():
 	for i in range(97, 122): # a to z
 		code_elements.append(char(i));
 	
-	#Generate a new seed for all rand calls
-	randomize();
-	
 	for c in ESSENTIAL_CLASSES.values():
 		ess_textures[class_to_string(c)] = load("res://Assets/Images/genes/" + class_to_string(c) + ".png");
 	
-	# Import ATE Personalities
-	load_personalities("ate_personalities", ate_personalities);
-	
-	# Load up biome information
-	load_cfg("biomes", biomes)
 	populate_biome_conversion_dicts()
 	
-	# Load up resource information
-	load_cfg("resources", resources)
 	populate_resource_conversion_dicts()
-	
-	# Load up hazard information
-	load_cfg("hazards", hazards)
-	
-	# Load up cell information
-	load_cfg("cells", cells)
-	populate_cell_texture_paths()
 
 func restart_game():
 	turn_idx = 0
 	round_num = 1
 	current_players = 0
 	all_time_players = 0
+	Settings.reset_rng()
 	Unlocks.reset()
 
 func is_first_turn():
@@ -280,22 +253,22 @@ func load_personalities(data_name, dict):
 
 func get_random_ate_personality():
 	var pers_keys := [];
-	for k in ate_personalities.keys():
+	for k in Settings.settings["ate_personalities"].keys():
 		if Unlocks.has_te_unlock(k):
 			pers_keys.append(k);
 	
 	var rand_idx := randi() % pers_keys.size();
-	return ate_personalities[pers_keys[rand_idx]];
+	return Settings.settings["ate_personalities"][pers_keys[rand_idx]];
 
 func get_ate_personality_by_key(ate_key : String):
-	return ate_personalities.get(ate_key, null);
+	return Settings.settings["ate_personalities"].get(ate_key, null);
 
 func get_ate_personality_by_name(ate_name : String):
 	get_ate_personality_by_key(get_ate_key_by_name(ate_name));
 
 func get_ate_key_by_name(ate_name : String) -> String:
-	for k in ate_personalities:
-		if (ate_personalities[k]["title"] == ate_name):
+	for k in Settings.settings["ate_personalities"]:
+		if (Settings.settings["ate_personalities"][k]["title"] == ate_name):
 			return k;
 	return "";
 
@@ -400,30 +373,24 @@ func load_cfg(data_name: String, dict: Dictionary):
 		print("CFG error for ", data_name, " data: ", err)
 
 func populate_biome_conversion_dicts():
-	var biome_keys = biomes.keys()
+	var biome_keys = Settings.settings["biomes"].keys()
 	for i in len(biome_keys):
 		biome_index_to_string[i] = biome_keys[i]
 		biome_string_to_index[biome_index_to_string[i]] = i
 		
 func populate_resource_conversion_dicts():
-	var resource_keys = resources.keys()
+	var resource_keys = Settings.settings["resources"].keys()
 	for i in len(resource_keys):
 		resource_index_to_string[i] = resource_keys[i]
 		resource_string_to_index[resource_index_to_string[i]] = i
 		
-	resource_groups = sort_resources_by_group_then_tier(resources)
-
-func populate_cell_texture_paths():
-	for cell in cells.keys():
-		for part in cells[cell].keys():
-			if not cells[cell][part]:
-				cells[cell][part] = CELL_TEXTURES_PATH + part + '/' + part + SEPARATOR + cell + CELL_IMAGE_TYPE
+	resource_groups = sort_resources_by_group_then_tier(Settings.settings["resources"])
 
 func get_resource_from_index(resource_index):
-	return Game.resources.keys()[resource_index]
+	return Settings.settings["resources"].keys()[resource_index]
 	
 func get_index_from_resource(resource):
-	return Game.resources.keys().find(resource)
+	return Settings.settings["resources"].keys().find(resource)
 	
 func get_pretty_resources_from_indices(resources: Dictionary):
 	var new_dict = {}
@@ -437,16 +404,16 @@ func get_class_from_name(resource_name: String):
 	
 	if resource_name == "energy":
 		return "energy"
-	elif resources[resource_name]["group"] == "minerals":
-		return resources[resource_name]["tier"] #returns the charge
+	elif Settings.settings["resources"][resource_name]["group"] == "minerals":
+		return Settings.settings["resources"][resource_name]["tier"] #returns the charge
 	else:
-		return Game.resources[resource_name]["tier"] + Game.SEPARATOR + Game.resources[resource_name]["group"]
+		return Settings.settings["resources"][resource_name]["tier"] + Game.SEPARATOR + Settings.settings["resources"][resource_name]["group"]
 
 func get_cfp_resource_names() -> Array:
 	var arr = []
 	
-	for resource in Game.resources:
-		if Game.resources[resource]["group"] in CFP_RESOURCES:
+	for resource in Settings.settings["resources"]:
+		if Settings.settings["resources"][resource]["group"] in CFP_RESOURCES:
 			arr.append(resource)
 			
 	return arr
@@ -454,15 +421,15 @@ func get_cfp_resource_names() -> Array:
 func get_mineral_resource_names() -> Array:
 	var arr = []
 	
-	for resource in Game.resources:
-		if Game.resources[resource]["group"] == "minerals":
+	for resource in Settings.settings["resources"]:
+		if Settings.settings["resources"][resource]["group"] == "minerals":
 			arr.append(resource)
 			
 	return arr
 
 
 func find_resource_biome_index(resource_index, biome_index):
-	return Game.resources[Game.resources.keys()[resource_index]]["biomes"].find(Game.biomes.keys()[biome_index])
+	return Settings.settings["resources"][Settings.settings["resources"].keys()[resource_index]]["biomes"].find(Settings.settings["biomes"].keys()[biome_index])
 	
 func sort_resources_by_group_then_tier(resources_dict):
 	var resource_keys = resources_dict.keys()
@@ -520,17 +487,17 @@ func simple_to_pretty_name(resource: String):
 		
 #Returns the resource that processing the resource would yield
 func get_downgraded_resource(resource: String):
-	return resources[resource]["downgraded_form"]
+	return Settings.settings["resources"][resource]["downgraded_form"]
 	
 func get_upgraded_resource(resource: String):
-	return resources[resource]["upgraded_form"]
+	return Settings.settings["resources"][resource]["upgraded_form"]
 
 #Can also take
 func get_resource_icon(resource):
 	var icon = ""
 	
-	if resource in Game.resources:
-		icon = Game.WORLD_UI_PATH + Game.resources[resource]["tile_image"].insert(Game.resources[resource]["tile_image"].length() - IMAGE_TYPE.length(), "icon")
+	if resource in Settings.settings["resources"]:
+		icon = Game.WORLD_UI_PATH + Settings.settings["resources"][resource]["tile_image"].insert(Settings.settings["resources"][resource]["tile_image"].length() - IMAGE_TYPE.length(), "icon")
 	else:
 		icon = Game.WORLD_UI_PATH + resource + SEPARATOR + "icon" + Game.IMAGE_TYPE
 	
@@ -542,14 +509,14 @@ func is_valid_interaction(resource_from: String, resource_to: String, bhv_profil
 	var from_is_class = false
 	var to_is_class = false
 	
-	if resource_from in resources.keys(): #if resource_from is a valid non-energy resource
+	if resource_from in Settings.settings["resources"].keys(): #if resource_from is a valid non-energy resource
 		var resource_from_class = get_class_from_name(resource_from)
 		if resource_to in VALID_INTERACTIONS.keys(): #if resource_to is a vesicle or energy
 			possible = VALID_INTERACTIONS[resource_from_class][resource_to] == VALID
 			to_is_class = true
-		elif resource_to == resources[resource_from]["upgraded_form"] or resource_to == resources[resource_from]["downgraded_form"]: #quick check for up/downgrade
+		elif resource_to == Settings.settings["resources"][resource_from]["upgraded_form"] or resource_to == Settings.settings["resources"][resource_from]["downgraded_form"]: #quick check for up/downgrade
 			possible = true
-		elif resource_to in resources.keys(): #if we aren't an up/down form, then we must be trying to convert from one cfp to another
+		elif resource_to in Settings.settings["resources"].keys(): #if we aren't an up/down form, then we must be trying to convert from one cfp to another
 			possible = VALID_INTERACTIONS[resource_from_class][get_class_from_name(resource_to)] == VALID
 		else:
 			print('ERROR: Bad unexpected usage of is_valid_interaction. Arguments: ', resource_from, resource_to)
@@ -559,7 +526,7 @@ func is_valid_interaction(resource_from: String, resource_to: String, bhv_profil
 		if resource_to in VALID_INTERACTIONS.keys(): #if resource_to is a vesicle or energy
 			possible = VALID_INTERACTIONS[resource_from][resource_to] == VALID
 			to_is_class = true
-		elif resource_to in resources.keys(): #if we aren't an up/down form, then we must be trying to convert from one cfp to another
+		elif resource_to in Settings.settings["resources"].keys(): #if we aren't an up/down form, then we must be trying to convert from one cfp to another
 			possible = VALID_INTERACTIONS[resource_from][get_class_from_name(resource_to)] == VALID
 		else:
 			print('ERROR: Bad unexpected usage of is_valid_interaction. Arguments: ', resource_from, resource_to)
@@ -714,3 +681,13 @@ func get_random_element_from_dictionary(dict: Dictionary):
 	
 func get_random_element_from_array(arr: Array):
 	return arr[randi() % len(arr)]
+	
+func set_seed(value):
+	if typeof(value) == TYPE_INT:
+		seed_value = value
+		seed(seed_value)
+	else:
+		seed_value = value.hash()
+		seed(seed_value)
+		
+	print(seed_value)

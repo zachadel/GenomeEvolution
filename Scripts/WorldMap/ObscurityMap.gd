@@ -37,7 +37,7 @@ func disable_fog():
 	
 func enable_fog():
 	tile_set.tile_set_texture(1, load(CLOUD_TEXTURE_PATH))
-	
+
 #These shifts should be in terms of coordinates (so integers)
 #NOTE: Currentlly this assumes that any shift is smaller than the chunk_size
 func shift_map(shift, modified_cells: Dictionary):
@@ -54,7 +54,7 @@ func shift_map(shift, modified_cells: Dictionary):
 			for j in range(-chunk_size, chunk_size + 1):
 				var tile_image = VISION.CLOUDS
 				if modified_cells.has([int(center_indices.x + chunk_size * unit_x), int(j + center_indices.y)]):
-					tile_image = modified_cells[[int(center_indices.x + chunk_size * unit_x), int(j + center_indices.y)]]
+					tile_image = modified_cells[[int(center_indices.x + chunk_size * unit_x), int(j + center_indices.y)]]["vision"]
 				set_cell(center_indices.x + chunk_size * unit_x, j + center_indices.y, tile_image)
 				set_cell(center_indices.x - (chunk_size + 1) * unit_x, j + center_indices.y, -1)
 	
@@ -68,7 +68,7 @@ func shift_map(shift, modified_cells: Dictionary):
 			for j in range(-chunk_size, chunk_size + 1):
 				var tile_image = VISION.CLOUDS
 				if modified_cells.has([int(j + center_indices.x), int(center_indices.y + chunk_size * unit_y)]):
-					tile_image = modified_cells[[int(j + center_indices.x), int(center_indices.y + chunk_size * unit_y)]]
+					tile_image = modified_cells[[int(j + center_indices.x), int(center_indices.y + chunk_size * unit_y)]]["vision"]
 				set_cell(j + center_indices.x, center_indices.y + chunk_size * unit_y, tile_image)
 				set_cell(j + center_indices.x, center_indices.y - (chunk_size + 1) * unit_y, -1)
 
@@ -89,5 +89,5 @@ func draw_and_center_at(pos, modified_tiles: Dictionary):
 		for j in range(-chunk_size + center_indices.y, chunk_size + 1 + center_indices.y):
 			var tile_image = VISION.CLOUDS
 			if modified_tiles.has([i, j]):
-				tile_image = modified_tiles[[i, j]]
+				tile_image = modified_tiles[[i, j]]["vision"]
 			set_cell(i, j, tile_image)

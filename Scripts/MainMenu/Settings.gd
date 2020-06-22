@@ -4,16 +4,14 @@ extends MarginContainer
 # var a = 2
 # var b = "text"
 onready var scroller = get_node("ScrollContainer/VBoxContainer")
-var menu_settings = {}
 
-const NON_GODOT_VALUES = ["type", "stacked"]
+const NON_GODOT_VALUES = ["type", "stacked", "final_value"]
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	Game.load_cfg("settings", menu_settings)
-	for setting in menu_settings:
-		var node = create_node_from_dictionary(setting, menu_settings[setting]["type"], menu_settings[setting])
-		var row = create_settings_row(setting, menu_settings[setting]["stacked"])
+	for setting in Settings.settings["ingame_settings"]:
+		var node = create_node_from_dictionary(setting, Settings.settings["ingame_settings"][setting]["type"], Settings.settings["ingame_settings"][setting])
+		var row = create_settings_row(setting, Settings.settings["ingame_settings"][setting]["stacked"])
 		row.add_child(node)
 		scroller.add_child(row)
 	pass # Replace with function body.
@@ -59,6 +57,9 @@ func create_node_from_dictionary(option_name: String, godot_type: String, option
 		"CheckButton":
 			node = CheckButton.new()
 			
+		"TextEdit":
+			node = TextEdit.new()
+			
 		var _x:
 			print('ERROR: Unknown node type of %s in function create_node_from_dictionary' % [_x])
 	
@@ -101,14 +102,29 @@ func get_final_settings()->Dictionary:
 			if not child is Label:
 				#If it has a value, report the value
 				if child.get("value") != null:
-					settings[child.name] = child.get("value")
+					Settings.settings["ingame_settings"][child.name]["final_value"] = child.get("value")
 				elif child.get("selected") != null: #in the case of option boxes
 					if child.has_method("get_item_text"):
-						settings[child.name] = child.get_item_text(child.selected)
+						Settings.settings["ingame_settings"][child.name]["final_value"] = child.get_item_text(child.selected)
 				elif child.get("pressed") != null:
-					settings[child.name] = child.get("pressed")
+					Settings.settings["ingame_settings"][child.name]["final_value"] = child.get("pressed")
+				elif child.get("text") != null:
+					Settings.settings["ingame_settings"][child.name]["final_value"] = child.text
 	
 	return settings
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+
+func update_global_settings():
+	for box in scroller.get_children():
+		for child in box.get_children():
+			var prop_list = child.get_property_list()
+			if not child is Label:
+				for setting in Settings.settings["ingame_settings"][child.name]:
+					if setting in ["pressed", "selected", "value"]:
+						Settings.settings["ingame_settings"][child.name][setting] = child.get(setting)
+						
+
+func reload():
+	for child in $ScrollContainer/VBoxContainer.get_children():
+		child.queue_free()
+		
+	_ready()

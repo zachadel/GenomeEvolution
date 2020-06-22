@@ -24,8 +24,8 @@ func set_cell_type(cell_type: String):
 	$Body.set_cell_type(cell_type)
 
 func set_random_cell():
-	var num_cells = len(Game.cells.keys())
-	$Body.set_cell_type(Game.cells.keys()[randi() % num_cells])
+	var num_cells = len(Settings.settings["cells"].keys())
+	$Body.set_cell_type(Settings.settings["cells"].keys()[randi() % num_cells])
 
 func _on_VisibilityNotifier2D_screen_exited():
 	queue_free()

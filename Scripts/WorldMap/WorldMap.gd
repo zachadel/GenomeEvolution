@@ -56,7 +56,6 @@ onready var camera = get_node("MapCamera")
 onready var loc_highlight = get_node("CurrentLocation")
 
 onready var ui = get_node("WorldMap_UI")
-onready var msg = get_node("CanvasLayer/WarningMessage")
 
 onready var notifications = get_node("CanvasLayer/Notifications")
 
@@ -88,8 +87,6 @@ func _ready():
 	
 func setup(biome_seed, hazard_seeds, resource_seed, tiebreak_seed, _chunk_size, player):
 	Game.modified_tiles = {}
-	Game.SECONDARY_RESOURCE_MAX = Settings.resource_abundance()[Settings.MAX]
-	Game.SECONDARY_RESOURCE_MIN = Settings.resource_abundance()[Settings.MIN]
 	
 	chunk_size = _chunk_size
 	
@@ -124,17 +121,18 @@ func setup(biome_seed, hazard_seeds, resource_seed, tiebreak_seed, _chunk_size, 
 	
 	resource_generator.seed = resource_seed
 	resource_generator.octaves = 8
-	resource_generator.period = 5
+	resource_generator.period = 10
 	resource_generator.persistence = .1
-	resource_generator.lacunarity = .7
+	resource_generator.lacunarity = 5
+	
+	current_player = player
 	
 	tile_sprite_size = $BiomeMap.tile_texture_size
 	$BiomeMap.setup(biome_generator, tiebreak_generator, hazard_generators, chunk_size, starting_pos)
-	$ResourceMap.setup(biome_generator, resource_generator, tiebreak_generator, chunk_size, starting_pos)
+	$ResourceMap.setup(biome_generator, resource_generator, tiebreak_generator, funcref(current_player.organism, "get_vision_radius"), chunk_size, starting_pos)
 	$ObscurityMap.setup(chunk_size, starting_pos)
 	
 	#we assume that the player sprite is smaller than the tiles
-	current_player = player
 	player_sprite_offset = (tile_sprite_size - current_player.get_texture_size()) / 2
 	current_player.position = Game.map_to_world(Game.world_to_map(default_start))
 	current_player.organism.current_tile = get_tile_at_pos(Game.world_to_map(default_start))
@@ -144,7 +142,11 @@ func setup(biome_seed, hazard_seeds, resource_seed, tiebreak_seed, _chunk_size, 
 	loc_highlight.position = current_player.position
 	current_player.organism.refresh_behavior_profile()
 	
+	hide_tiles(Game.world_to_map(default_start), current_player.organism.get_vision_radius())
 	observe_tiles(Game.world_to_map(default_start), current_player.organism.get_vision_radius())
+#	if current_player.organism.get_vision_radius() == 2:
+#		print(current_player.organism.get_vision_radius())
+#		print(current_player.organism.get_locomotion_radius())
 	astar.initialize_astar(max(1, min(current_player.organism.get_vision_radius(), current_player.organism.get_locomotion_radius())), funcref(self, "costs"))
 	
 	ui.resource_ui.set_resources(current_player.organism.current_tile["resources"])
@@ -301,7 +303,7 @@ func _unhandled_input(event):
 						if old_radius_vis != new_radius_vis:
 							update_vision(old_radius_vis)
 							
-						if old_radius_loc != new_radius_loc:
+						if old_radius_loc != new_radius_loc or old_radius_vis != new_radius_vis:
 							update_movement()
 						observe_tiles(tile_position, new_radius_vis)
 						
@@ -336,8 +338,11 @@ func _unhandled_input(event):
 			$MapCamera.zoom.x = clamp($MapCamera.zoom.x - ZOOM_UPDATE, MIN_ZOOM, MAX_ZOOM)
 			$MapCamera.zoom.y = clamp($MapCamera.zoom.y - ZOOM_UPDATE, MIN_ZOOM, MAX_ZOOM)
 		if event.is_action("zoom_out") and input_elements["zoom"]:
-			$MapCamera.zoom.x = clamp($MapCamera.zoom.x + ZOOM_UPDATE, MIN_ZOOM, MAX_ZOOM)
-			$MapCamera.zoom.y = clamp($MapCamera.zoom.y + ZOOM_UPDATE, MIN_ZOOM, MAX_ZOOM)
+			if Settings.disable_zoom_cap():
+				$MapCamera.zoom += Vector2(ZOOM_UPDATE, ZOOM_UPDATE)
+			else:
+				$MapCamera.zoom.x = clamp($MapCamera.zoom.x + ZOOM_UPDATE, MIN_ZOOM, MAX_ZOOM)
+				$MapCamera.zoom.y = clamp($MapCamera.zoom.y + ZOOM_UPDATE, MIN_ZOOM, MAX_ZOOM)
 			
 		if event.is_action("center_camera") and input_elements["center"]:
 			erase_current_maps()
@@ -492,30 +497,30 @@ func move_player(pos: Vector3):
 func obtain_resource_knowledge(cfp_resources: Dictionary, mineral_resources: Dictionary):
 	for resource_class in cfp_resources:
 		for resource in cfp_resources[resource_class]:
-			if resource != "total" and cfp_resources[resource_class][resource] >= Game.resources[resource]["observation_threshold"]:
+			if resource != "total" and cfp_resources[resource_class][resource] >= Settings.settings["resources"][resource]["observation_threshold"]:
 				ui.resource_ui.observe(resource)
 				$ResourceMap.observe_resource(resource)
 	
 	for resource_class in mineral_resources:
 		for resource in mineral_resources[resource_class]:
-			if resource != "total" and mineral_resources[resource_class][resource] >= Game.resources[resource]["observation_threshold"]:
+			if resource != "total" and mineral_resources[resource_class][resource] >= Settings.settings["resources"][resource]["observation_threshold"]:
 				ui.resource_ui.observe(resource)
 				ui.mineral_levels.observe(resource)
 				$ResourceMap.observe_resource(resource)
 
 func disable_missing_resources():
-	for resource in Game.resources:
+	for resource in Settings.settings["resources"]:
 		ui.resource_ui.observe(resource)
 		$ResourceMap.observe_resource(resource)
 		
-		if Game.resources[resource]["group"] == "minerals":
+		if Settings.settings["resources"][resource]["group"] == "minerals":
 			ui.mineral_levels.observe(resource)
 		
 
 #Expects shifts in terms of the tile maps coordinates
 func shift_maps(position, observed_dict: Dictionary):
-	$BiomeMap.shift_map(position)
-	$ResourceMap.shift_map(position)
+	$BiomeMap.shift_map(position, observed_dict)
+	$ResourceMap.shift_map(position, observed_dict)
 	$ObscurityMap.shift_map(position, observed_dict)
 	pass
 	
@@ -526,8 +531,8 @@ func erase_current_maps():
 	pass
 	
 func draw_and_center_maps_to(position, observed_tiles: Dictionary):
-	$BiomeMap.draw_and_center_at(position)
-	$ResourceMap.draw_and_center_at(position)
+	$BiomeMap.draw_and_center_at(position, observed_tiles)
+	$ResourceMap.draw_and_center_at(position, observed_tiles)
 	$ObscurityMap.draw_and_center_at(position, observed_tiles)
 	
 #center_tile: Vector3
@@ -538,7 +543,14 @@ func observe_tiles(center_tile, observation_radius):
 	for a in range(-observation_radius, observation_radius + 1):
 		for b in range(int(max(-observation_radius, -a-observation_radius)), int(min(observation_radius, observation_radius-a) + 1)):
 			temp_vec = Game.cube_coords_to_offsetv(Vector3(a, b, -a-b) + center_tile)
-			current_player.observed_tiles[[int(temp_vec.x), int(temp_vec.y)]] = $ObscurityMap.VISION.CLEAR
+			
+			if not current_player.observed_tiles.has([int(temp_vec.x), int(temp_vec.y)]):
+				current_player.observed_tiles[[int(temp_vec.x), int(temp_vec.y)]] = {}
+			
+			current_player.observed_tiles[[int(temp_vec.x), int(temp_vec.y)]]["vision"] = $ObscurityMap.VISION.CLEAR
+			current_player.observed_tiles[[int(temp_vec.x), int(temp_vec.y)]]["biome_image"] = $BiomeMap.get_biome(temp_vec)
+			current_player.observed_tiles[[int(temp_vec.x), int(temp_vec.y)]]["resource_image"] = $ResourceMap.get_tile_image_index(temp_vec)
+						
 			$ObscurityMap.set_cellv(temp_vec, $ObscurityMap.VISION.CLEAR)
 	
 	pass
@@ -549,7 +561,10 @@ func hide_tiles(center_tile, observation_radius):
 	for a in range(-observation_radius, observation_radius + 1):
 		for b in range(int(max(-observation_radius, -a-observation_radius)), int(min(observation_radius, observation_radius-a) + 1)):
 			temp_vec = Game.cube_coords_to_offsetv(Vector3(a, b, -a-b) + center_tile)
-			current_player.observed_tiles[[int(temp_vec.x), int(temp_vec.y)]] = $ObscurityMap.VISION.HIDDEN
+			
+			if current_player.observed_tiles.has([int(temp_vec.x), int(temp_vec.y)]):
+				current_player.observed_tiles[[int(temp_vec.x), int(temp_vec.y)]]["vision"] = $ObscurityMap.VISION.HIDDEN
+
 			$ObscurityMap.set_cellv(temp_vec, $ObscurityMap.VISION.HIDDEN)
 	
 	pass
@@ -628,6 +643,7 @@ func _on_WorldMap_UI_acquire_resources():
 	current_player.acquire_resources()
 	update_ui_resources()
 	obtain_resource_knowledge(current_player.organism.cfp_resources, current_player.organism.mineral_resources)
+
 #	print("After acquiring cfp resources: ", current_player.organism.cfp_resources, '\n')
 #	print("After acquiring mineral resources: ", current_player.organism.mineral_resources, '\n')
 #	print("After acquiring resources energy: ", current_player.organism.energy, '\n')

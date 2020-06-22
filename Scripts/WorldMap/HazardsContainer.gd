@@ -27,8 +27,8 @@ onready var oxygen_diff = get_node("OxygenDiff")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	for hazard in Game.hazards:
-		starting_tile_hazards[hazard] = Game.hazards[hazard]["min"]
+	for hazard in Settings.settings["hazards"]:
+		starting_tile_hazards[hazard] = Settings.settings["hazards"][hazard]["min"]
 		
 	_update_labels()
 	pass # Replace with function body.
@@ -55,8 +55,8 @@ func set_hazards(hazard_values):
 	_update_labels()
 
 func _get_normalized_diff(cur_value, hazard_name: String):
-	var start_norm = (starting_tile_hazards[hazard_name] - Game.hazards[hazard_name]["min"])/Game.hazards[hazard_name]["max"]
-	var cur_norm = (cur_value - Game.hazards[hazard_name]["min"])/Game.hazards[hazard_name]["max"]
+	var start_norm = (starting_tile_hazards[hazard_name] - Settings.settings["hazards"][hazard_name]["min"])/Settings.settings["hazards"][hazard_name]["max"]
+	var cur_norm = (cur_value - Settings.settings["hazards"][hazard_name]["min"])/Settings.settings["hazards"][hazard_name]["max"]
 	
 	if hazard_name == "pH":
 		return cur_norm - start_norm
