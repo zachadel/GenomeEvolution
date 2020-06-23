@@ -494,13 +494,15 @@ func apply_break_after_move() -> String:
 		
 		var dmg_threshold = get_component_break_multiplier()
 		var final_damage_probability = clamp(base_damage_probability + (avg_diff*Settings.environment_weight() + mineral_value*Settings.mineral_weight()) / (Settings.environment_weight() + Settings.mineral_weight()) - dmg_threshold, 0.02, 0.98)
-		
+		print("FDP: ", final_damage_probability)
+		print("Roll: ", roll)
+		print("Threshold: ", dmg_threshold)
 	#	print("dmg_threshold: ", dmg_threshold)
 	#	print("dmg_weight: ", dmg_weight)
 	#	print("avg_diff: ", avg_diff)
 	#	print("roll: ", roll)
 		
-		if roll >= final_damage_probability:
+		if roll <= final_damage_probability:
 			add_dmg = true
 			
 			if randf() < .25 and accumulated_transposons < MAX_TRANSPOSONS:
