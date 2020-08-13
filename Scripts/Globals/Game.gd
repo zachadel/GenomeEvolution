@@ -290,12 +290,18 @@ func pluralize(count : int, pl_end := "s", sing_end := ""):
 	return pl_end;
 
 var fresh_round := true;
-func adv_turn():
+func adv_turn(skip: bool = false):
+	
 	fresh_round = false;
 	
 	_incr_turn_idx();
 	while !Unlocks.has_turn_unlock(get_turn_type()):
 		_incr_turn_idx();
+	
+	if skip:
+		_incr_turn_idx();
+		while !Unlocks.has_turn_unlock(get_turn_type()):
+			_incr_turn_idx();
 
 func _incr_turn_idx():
 	turn_idx += 1;
@@ -307,6 +313,12 @@ func _incr_turn_idx():
 
 func get_turn_type():
 	return turns[turn_idx];
+	
+func get_previous_turn_type():
+	return turns[wrapi(turn_idx - 1, 0, len(turns) - 1)]	
+
+func get_next_turn_type():
+	return turns[wrapi(turn_idx + 1, 0, len(turns) - 1)]
 
 func get_turn_txt(turn_type := -1) -> String:
 	if turn_type < 0:

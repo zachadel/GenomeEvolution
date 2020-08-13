@@ -307,11 +307,19 @@ func _on_btn_nxt_pressed():
 
 func adv_turn():
 	close_extra_menus();
+	var skip_turn = false
 	if (Game.get_turn_type() == Game.TURN_TYPES.Recombination):
 		for g in orgn.gene_selection:
 			g.disable(true);
+			
+	if Game.get_next_turn_type() == Game.TURN_TYPES.Recombination:
+		var recombos = orgn.get_recombos_per_turn()
+		
+		if recombos == 0:
+			skip_turn = true
+			
 	
-	Game.adv_turn();
+	Game.adv_turn(skip_turn);
 	upd_turn_display();
 	
 	_add_justnow_bbcode("\n\n%s" % Game.get_turn_txt(), {"color": Color(1, 0.75, 0)});
