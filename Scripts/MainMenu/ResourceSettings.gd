@@ -24,6 +24,20 @@ func _ready():
 		
 	_update_ui()
 
+#dict[resource][biomes/scale/bias/priority/richness]
+func update_via_dictionary(dict: Dictionary):
+	for i in range(len(Settings.settings["resources"].keys())):
+		var resource = Settings.settings["resources"].keys()[i]
+		
+		settings[i]["biomes"] = dict[resource]["biomes"]
+		settings[i]["scale"] = dict[resource]["scale"]
+		settings[i]["bias"] = dict[resource]["bias"]
+		settings[i]["richness"] = dict[resource]["richness"]
+		settings[i]["priority"] = dict[resource]["priority"]
+		settings[i]["observation_threshold"] = dict[resource]["observation_threshold"]
+	
+	_update_ui()
+
 func update_global_settings():
 	_update_settings()
 	for i in range(len(Settings.settings["resources"].keys())):
@@ -36,12 +50,12 @@ func update_global_settings():
 		Settings.settings["resources"][resource_name]["observation_threshold"] = settings[i]["observation_threshold"]
 		var r = float(settings[i]["richness"]) / 100.0
 		
-		Settings.settings["resources"][resource_name]["primary_resource_max"] = int(Settings.settings["resources"][resource_name]["primary_resource_max"] * r)
-		Settings.settings["resources"][resource_name]["primary_resource_min"] = int(Settings.settings["resources"][resource_name]["primary_resource_min"] * r)
-		Settings.settings["resources"][resource_name]["secondary_resource_max"] = int(Settings.settings["resources"][resource_name]["secondary_resource_max"] * r)
-		Settings.settings["resources"][resource_name]["secondary_resource_min"] = int(Settings.settings["resources"][resource_name]["secondary_resource_min"] * r)
-		Settings.settings["resources"][resource_name]["accessory_resource_max"] = int(Settings.settings["resources"][resource_name]["accessory_resource_max"] * r)
-		Settings.settings["resources"][resource_name]["accessory_resource_min"] = int(Settings.settings["resources"][resource_name]["accessory_resource_min"] * r)
+		Settings.settings["resources"][resource_name]["primary_resource_max"] = int(Settings.settings["resources"][resource_name]["primary_resource_max"])
+		Settings.settings["resources"][resource_name]["primary_resource_min"] = int(Settings.settings["resources"][resource_name]["primary_resource_min"])
+		Settings.settings["resources"][resource_name]["secondary_resource_max"] = int(Settings.settings["resources"][resource_name]["secondary_resource_max"])
+		Settings.settings["resources"][resource_name]["secondary_resource_min"] = int(Settings.settings["resources"][resource_name]["secondary_resource_min"])
+		Settings.settings["resources"][resource_name]["accessory_resource_max"] = int(Settings.settings["resources"][resource_name]["accessory_resource_max"])
+		Settings.settings["resources"][resource_name]["accessory_resource_min"] = int(Settings.settings["resources"][resource_name]["accessory_resource_min"])
 		
 
 

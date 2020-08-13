@@ -210,7 +210,7 @@ func get_primary_resource(pos) -> int:
 				resource = Game.get_index_from_resource(possible_resources[0])
 				
 			elif len(possible_resources) > 1:
-				resource = Game.get_index_from_resource(possible_resources[int(random_tiebreak) % len(possible_resources)])
+				resource = Game.get_index_from_resource(possible_resources[int(random_tiebreak) % int(max(len(possible_resources), 1))])
 			else:
 				print("ERROR: Empty possible resource array for some reason.  Investigate.")
 			
@@ -247,9 +247,9 @@ func get_tile_image_index(pos) -> int:
 				tiebreak = erf(tiebreak_generator.get_noise_3d(pos.x, pos.y, primary_resource))
 			
 			if tiebreak >= 0:
-				resource_amount = int(abs(resource_value)) % (Settings.settings["resources"][resource_name]["primary_resource_max"] - Settings.settings["resources"][resource_name]["primary_resource_min"]+ 1) + Settings.settings["resources"][resource_name]["primary_resource_min"]
+				resource_amount = int(abs(resource_value)) % (int(max(Settings.settings["resources"][resource_name]["primary_resource_max"] - Settings.settings["resources"][resource_name]["primary_resource_min"], 1))) + Settings.settings["resources"][resource_name]["primary_resource_min"]
 			else:
-				resource_amount = int(abs(resource_value)) % (Settings.settings["resources"][resource_name]["secondary_resource_max"] - Settings.settings["resources"][resource_name]["secondary_resource_min"]+ 1) + Settings.settings["resources"][resource_name]["secondary_resource_min"]
+				resource_amount = int(abs(resource_value)) % (int(max(Settings.settings["resources"][resource_name]["secondary_resource_max"] - Settings.settings["resources"][resource_name]["secondary_resource_min"], 1))) + Settings.settings["resources"][resource_name]["secondary_resource_min"]
 	
 			if resource_amount >= clamp(Settings.settings["resources"][resource_name]["observation_threshold"] - sensing_value_func.call_func(), 0, Settings.settings["resources"][resource_name]["observation_threshold"]):
 				image_index = primary_resource
@@ -282,6 +282,7 @@ func get_tile_resources(pos):
 	#BROKEN HERE
 	if not [int(pos.x), int(pos.y)] in Game.modified_tiles:
 		var primary_resource = get_primary_resource(pos)
+		var biome = Settings.settings["biomes"].keys()[get_biome(pos)]
 		var primary_name = Settings.settings["resources"].keys()[primary_resource]
 		var tiebreak
 	
@@ -298,13 +299,16 @@ func get_tile_resources(pos):
 			var resource_value = floor(resource_generator.get_noise_3d(pos.x, pos.y, i) * Game.GEN_SCALING)
 			if i == primary_resource:
 				if tiebreak >= 0:
-					resources[i] = int(abs(resource_value)) % (Settings.settings["resources"][resource_name]["primary_resource_max"] - Settings.settings["resources"][resource_name]["primary_resource_min"]+ 1) + Settings.settings["resources"][resource_name]["primary_resource_min"]
+					resources[i] = int(abs(resource_value)) % int(max(Settings.settings["resources"][resource_name]["primary_resource_max"] - Settings.settings["resources"][resource_name]["primary_resource_min"], 1)) + Settings.settings["resources"][resource_name]["primary_resource_min"]
 				else:
-					resources[i] = int(abs(resource_value)) % (Settings.settings["resources"][resource_name]["secondary_resource_max"] - Settings.settings["resources"][resource_name]["secondary_resource_min"]+ 1) + Settings.settings["resources"][resource_name]["secondary_resource_min"]
-			elif resource_name in resource_list:
-				resources[i] = int(abs(resource_value)) % (Settings.settings["resources"][resource_name]["accessory_resource_max"] - Settings.settings["resources"][resource_name]["accessory_resource_min"] + 1) + Settings.settings["resources"][resource_name]["accessory_resource_min"]
+					resources[i] = int(abs(resource_value)) % int(max(Settings.settings["resources"][resource_name]["secondary_resource_max"] - Settings.settings["resources"][resource_name]["secondary_resource_min"], 1)) + Settings.settings["resources"][resource_name]["secondary_resource_min"]
+			elif resource_name in resource_list and biome in Settings.settings["resources"][resource_name]["biomes"]:
+				resources[i] = int(abs(resource_value)) % int(max(Settings.settings["resources"][resource_name]["accessory_resource_max"] - Settings.settings["resources"][resource_name]["accessory_resource_min"], 1)) + Settings.settings["resources"][resource_name]["accessory_resource_min"]
 			else:
 				resources[i] = 0
+				
+			if resources[i] > 10:
+				print("STOP")
 	else:
 		resources = Game.modified_tiles[[int(pos.x), int(pos.y)]]["resources"]
 	

@@ -465,7 +465,7 @@ func evolve_skill(behave_key: String, gain := true) -> void:
 			just_evolved_skill = true;
 			latest_skill_id_evol = rand_skill_id;
 			
-			skills[behave_key].remove(rand_skill_id);
+			skills[behave_key].erase(rand_skill_id);
 			if skills[behave_key].empty():
 				skills.erase(behave_key);
 

@@ -446,6 +446,7 @@ func _on_Organism_show_reprod_opts(show):
 
 func quit_to_menu():
 	Game.restart_game()
+	Settings.reset()
 	get_tree().change_scene("res://Scenes/MainMenu/TitleScreen.tscn")
 
 const OVERVIEW_FORMAT = "Your organism %s.\n\nYou survived for %d rounds.\nYou produced %d progeny.\nYou repaired %d gaps.";

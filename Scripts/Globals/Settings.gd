@@ -42,6 +42,9 @@ func _ready():
 	reset_rng()
 	pass # Replace with function body.
 
+func reset():
+	_ready()
+
 func load_setting(setting_type: String, use_user_settings_if_possible: bool = true):
 	if setting_type in FILE_NAMES:
 		
@@ -140,13 +143,30 @@ func get_ingame_setting(setting: String):
 func apply_richness():
 	for resource in settings["resources"]:
 		var richness_scale = float(settings["resources"][resource ]["richness"]) / 100.0
+#		print("Resources: ", resource)
+#		print("Scaling: ", richness_scale)
+#		print("Before: ")
+#		print("Primary Max: ", settings["resources"][resource]["primary_resource_max"])
+#		print("Primary Min: ", settings["resources"][resource]["primary_resource_min"])
+#		print("Secondary Max: ", settings["resources"][resource]["secondary_resource_max"])
+#		print("Secondary Min: ", settings["resources"][resource]["secondary_resource_min"])
+#		print("Accessory Max: ", settings["resources"][resource]["accessory_resource_max"])
+#		print("Accessory Min: ", settings["resources"][resource]["accessory_resource_min"])
 		
 		settings["resources"][resource]["primary_resource_max"] = int(settings["resources"][resource]["primary_resource_max"] * richness_scale)
-		settings["resources"][resource]["primary_resource_min"] = int(settings["resources"][resource]["primary_resource_min"] * richness_scale)
+		settings["resources"][resource]["primary_resource_min"] = max(int(settings["resources"][resource]["primary_resource_min"] * richness_scale), 1)
 		settings["resources"][resource]["secondary_resource_max"] = int(settings["resources"][resource]["secondary_resource_max"] * richness_scale)
-		settings["resources"][resource]["secondary_resource_min"] = int(settings["resources"][resource]["secondary_resource_min"] * richness_scale)
+		settings["resources"][resource]["secondary_resource_min"] = max(int(settings["resources"][resource]["secondary_resource_min"] * richness_scale), 1)
 		settings["resources"][resource]["accessory_resource_max"] = int(settings["resources"][resource]["accessory_resource_max"] * richness_scale)
 		settings["resources"][resource]["accessory_resource_min"] = int(settings["resources"][resource]["accessory_resource_min"] * richness_scale)
+
+#		print("After: ")
+#		print("Primary Max: ", settings["resources"][resource]["primary_resource_max"])
+#		print("Primary Min: ", settings["resources"][resource]["primary_resource_min"])
+#		print("Secondary Max: ", settings["resources"][resource]["secondary_resource_max"])
+#		print("Secondary Min: ", settings["resources"][resource]["secondary_resource_min"])
+#		print("Accessory Max: ", settings["resources"][resource]["accessory_resource_max"])
+#		print("Accessory Min: ", settings["resources"][resource]["accessory_resource_min"])
 
 func populate_cell_texture_paths():
 	for cell in Settings.settings["cells"].keys():

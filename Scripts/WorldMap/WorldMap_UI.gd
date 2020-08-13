@@ -202,53 +202,74 @@ func _on_AcquireResources_pressed():
 	pass # Replace with function body.
 	
 func test_functionality():
-	print("Organism storage capacity:")
-	print("Simple Carbs: ", irc.organism.get_estimated_capacity("simple_carbs"))
-	print("Simple Fats: ", irc.organism.get_estimated_capacity("simple_fats"))
-	print("Simple Proteins: ", irc.organism.get_estimated_capacity("simple_proteins"))
-	print("Complex Carbs: ", irc.organism.get_estimated_capacity("complex_carbs"))
-	print("Complex Fats: ", irc.organism.get_estimated_capacity("complex_fats"))
-	print("Complex PRoteins: ", irc.organism.get_estimated_capacity("complex_proteins"))
-	print('Vesicle: Scales:')
-	print(irc.organism.vesicle_scales)
-	print('Organism Gene Profile (pre-pH):')
-	print(irc.organism.get_behavior_profile().print_profile())
-	print("Environmental Break Count: ", irc.organism.get_dmg())
-	print("Resources:")
-	print(irc.organism.cfp_resources)
-	print(irc.organism.mineral_resources)
-	print("Energy:")
-	print(irc.organism.energy)
-	print("Vision Radius:")
-	print(irc.organism.get_vision_radius())
-	print("Movement Radius:")
-	print(irc.organism.get_locomotion_radius())
-	print("***Energy Costs***")
-	for action in irc.organism.OXYGEN_ACTIONS:
-		var base_cost = irc.organism.get_base_energy_cost(action, 1)
-		var oxygen_cost = irc.organism.get_oxygen_energy_cost(action, 1)
-		var temp_cost = irc.organism.get_temperature_energy_cost(action, 1)
-		var mineral_cost = irc.organism.get_mineral_energy_cost(action, 1)
-		var final_cost = irc.organism.get_energy_cost(action, 1)
-		print("%s Base Cost: " % [action], base_cost)
-		print("%s Oxygen Cost: " % [action], oxygen_cost)
-		print("%s Temperature Cost: " % [action], temp_cost)
-		print("%s Mineral Cost: " % [action], mineral_cost)
-		print("%s base + oxygen + temp + mineral: " % [action], base_cost+oxygen_cost+temp_cost+mineral_cost)
-		print("%s Final Cost: " % [action], final_cost)
-		print("\n")
+	var print_deb = true
 	
-	var total_energy = 0
-	var processed_energy = 0
-	for resource in irc.organism.cfp_resources:
-		processed_energy = irc.organism.get_processed_energy_value(resource)
-		total_energy += processed_energy
-		
-		print("Processed energy amount for %s: %d" % [resource, processed_energy])
-	
-	print("Total processed energy: ", total_energy + irc.organism.energy)
-	print("Acquire resources costs: ", irc.organism.get_energy_cost("acquire_resources"))
+	if print_deb:
+		print("******************************************************************")
+		print(Settings.settings)
+		print("******************************************************************")
+		print("Current tile: ")
+		var cur_tile = get_parent().current_player.get_current_tile()
+		print(cur_tile)
+		print("Get primary resource: ", Settings.settings["resources"].keys()[get_parent().get_node("ResourceMap").get_primary_resource(Vector2(cur_tile["location"][0], cur_tile["location"][1]))])
+		print("Organism storage capacity:")
+		print("Simple Carbs: ", irc.organism.get_estimated_capacity("simple_carbs"))
+		print("Simple Fats: ", irc.organism.get_estimated_capacity("simple_fats"))
+		print("Simple Proteins: ", irc.organism.get_estimated_capacity("simple_proteins"))
+		print("Complex Carbs: ", irc.organism.get_estimated_capacity("complex_carbs"))
+		print("Complex Fats: ", irc.organism.get_estimated_capacity("complex_fats"))
+		print("Complex PRoteins: ", irc.organism.get_estimated_capacity("complex_proteins"))
+		print('Vesicle: Scales:')
+		print(irc.organism.vesicle_scales)
+		print('Organism Gene Profile (pre-pH):')
+		print(irc.organism.get_behavior_profile().print_profile())
+		print("Environmental Break Count: ", irc.organism.get_dmg())
+		print("Resources:")
+		print(irc.organism.cfp_resources)
+		print(irc.organism.mineral_resources)
+		print("Energy:")
+		print(irc.organism.energy)
+		print("Vision Radius:")
+		print(irc.organism.get_vision_radius())
+		print("Movement Radius:")
+		print(irc.organism.get_locomotion_radius())
+		print("***Energy Costs***")
+		for action in irc.organism.OXYGEN_ACTIONS:
+			var base_cost = irc.organism.get_base_energy_cost(action, 1)
+			var oxygen_cost = irc.organism.get_oxygen_energy_cost(action, 1)
+			var temp_cost = irc.organism.get_temperature_energy_cost(action, 1)
+			var mineral_cost = irc.organism.get_mineral_energy_cost(action, 1)
+			var final_cost = irc.organism.get_energy_cost(action, 1)
+			print("%s Base Cost: " % [action], base_cost)
+			print("%s Oxygen Cost: " % [action], oxygen_cost)
+			print("%s Temperature Cost: " % [action], temp_cost)
+			print("%s Mineral Cost: " % [action], mineral_cost)
+			print("%s base + oxygen + temp + mineral: " % [action], base_cost+oxygen_cost+temp_cost+mineral_cost)
+			print("%s Final Cost: " % [action], final_cost)
+			print("\n")
+			var total_energy = 0
+			var processed_energy = 0
+			for resource in irc.organism.cfp_resources:
+				processed_energy = irc.organism.get_processed_energy_value(resource)
+				total_energy += processed_energy
+				
+				print("Processed energy amount for %s: %d" % [resource, processed_energy])
+			
+			print("Total processed energy: ", total_energy + irc.organism.energy)
+			print("Acquire resources costs: ", irc.organism.get_energy_cost("acquire_resources"))
+	#Execute search for broken tiles
+	else:
+		print("Beginning search")
+		var max_range = 1000
+		for i in range(max_range):
+			for j in range(max_range):
+				var resources = get_parent().get_node("ResourceMap").get_tile_resources(Vector2(i, j))
+				for resource in resources:
+					if resources[resource] > 15:
+						print("ERROR: Invalid resource amount of %d at (%d, %d) for %s." % [resources[resource], i, j, Settings.settings["resources"].keys()[resource]])
 
+		print("Finished search")
+		
 func cheat_energy():
 	irc.organism.set_energy(irc.organism.energy + 5)
 

@@ -14,7 +14,7 @@ func _ready():
 				Bar.name = resource
 				
 				Bar.set_resource(resource)
-				Bar.update_value(randi() % Settings.settings["resources"][resource]["primary_resource_max"]) #For testing
+				Bar.update_value(randi() % (Settings.settings["resources"][resource]["primary_resource_max"] + 1)) #For testing
 				
 				
 				Bar.size_flags_horizontal = SIZE_EXPAND_FILL

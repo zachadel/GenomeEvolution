@@ -4,6 +4,8 @@ signal cmsm_changed();
 
 onready var cmsms = $scroll/chromes
 
+var PRINT_DEBUG = false
+
 func fix_bars():
 	cmsms.fix_bars();
 	Game.change_slider_width($scroll, false);
@@ -494,9 +496,7 @@ func apply_break_after_move() -> String:
 		
 		var dmg_threshold = get_component_break_multiplier()
 		var final_damage_probability = clamp(base_damage_probability + (avg_diff*Settings.environment_weight() + mineral_value*Settings.mineral_weight()) / (Settings.environment_weight() + Settings.mineral_weight()) - dmg_threshold, 0.02, 0.98)
-		print("FDP: ", final_damage_probability)
-		print("Roll: ", roll)
-		print("Threshold: ", dmg_threshold)
+		
 	#	print("dmg_threshold: ", dmg_threshold)
 	#	print("dmg_weight: ", dmg_weight)
 	#	print("avg_diff: ", avg_diff)
@@ -1586,13 +1586,17 @@ func replicate(idx):
 				var cfp_splits = split_cfp_resources(MITOSIS_SPLITS)
 				var mineral_splits = split_mineral_resources(MITOSIS_SPLITS)
 				var energy_split = split_energy(MITOSIS_SPLITS)
-				print()
+
 				cfp_resources = cfp_splits[randi() % MITOSIS_SPLITS]
 				mineral_resources = mineral_splits[randi() % MITOSIS_SPLITS]
 				set_energy(energy_split)
 				emit_signal("resources_changed", cfp_resources, mineral_resources)
 				
 				num_progeny += 1;
+				if PRINT_DEBUG:
+					print('Post mitosis chromos...')
+					print(cmsms.get_cmsms()[0].get_elms_save())
+					print(cmsms.get_cmsms()[1].get_elms_save())
 			
 			1: # Meiosis
 				use_resources("replicate_meiosis");
@@ -1624,6 +1628,7 @@ func replicate(idx):
 		perform_anims(true);
 		
 func get_missing_ess_classes():
+	refresh_bprof = true
 	var b_prof = get_behavior_profile();
 	var missing = [];
 	for k in Game.ESSENTIAL_CLASSES:
@@ -1704,6 +1709,10 @@ func adv_turn(round_num, turn_idx):
 				for cmsm in cmsms.get_cmsms():
 					evolve_cmsm(cmsm);
 			Game.TURN_TYPES.CheckViability:
+				if PRINT_DEBUG:
+					print('Checking viability of cmsms...')
+					print(cmsms.get_cmsms()[0].get_elms_save())
+					print(cmsms.get_cmsms()[1].get_elms_save())
 				var missing = get_missing_ess_classes();
 				if is_viable(missing):
 					emit_signal("justnow_update", "You're still kicking!");
@@ -1715,9 +1724,17 @@ func adv_turn(round_num, turn_idx):
 					emit_signal("justnow_update", "You're missing essential behavior: %s" % missing_list);
 					kill("lost essential behavior (%s)" % missing_list);
 			Game.TURN_TYPES.Replication:
+				if PRINT_DEBUG:
+					print("Replication cmsms before...")
+					print(cmsms.get_cmsms()[0].get_elms_save())
+					print(cmsms.get_cmsms()[1].get_elms_save())
 				emit_signal("justnow_update", "Choose replication method.");
 				emit_signal("doing_work", true);
 				emit_signal("show_reprod_opts", true);
+				if PRINT_DEBUG:
+					print("Replication cmsms after...")
+					print(cmsms.get_cmsms()[0].get_elms_save())
+					print(cmsms.get_cmsms()[1].get_elms_save())
 
 func kill(descr := "died"):
 	emit_signal("died", self, descr);

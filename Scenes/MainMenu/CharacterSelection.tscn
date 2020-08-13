@@ -154,9 +154,9 @@ margin_right = 1118.0
 margin_bottom = 835.0
 
 [node name="Save" type="Button" parent="."]
-margin_left = 800.481
+margin_left = 800.0
 margin_top = 847.0
-margin_right = 947.481
+margin_right = 947.0
 margin_bottom = 890.0
 text = "Save Current Settings"
 __meta__ = {
@@ -172,7 +172,34 @@ text = "Load Default Settings"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Load File" type="Button" parent="."]
+margin_left = 628.0
+margin_top = 847.0
+margin_right = 775.0
+margin_bottom = 890.0
+text = "Load File"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FileDialog" type="FileDialog" parent="."]
+margin_left = 420.0
+margin_top = 244.0
+margin_right = 1153.0
+margin_bottom = 593.0
+window_title = "Open a File"
+mode = 0
+access = 2
+filters = PoolStringArray( "*.txt ; Text Files" )
+current_dir = "C:/"
+current_path = "C:/"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="pressed" from="GoToGame" to="." method="_on_GoToGame_pressed"]
 [connection signal="cell_changed" from="CellSelection" to="." method="_on_CellSelection_cell_changed"]
 [connection signal="pressed" from="Save" to="." method="_on_Save_pressed"]
 [connection signal="pressed" from="Load" to="." method="_on_Load_pressed"]
+[connection signal="pressed" from="Load File" to="." method="_on_Load_File_pressed"]
+[connection signal="file_selected" from="FileDialog" to="." method="_on_FileDialog_file_selected"]

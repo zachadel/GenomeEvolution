@@ -7,6 +7,8 @@ extends Control
 const MAX_RECT_SIZE = Vector2(100, 30)
 const MAX_IMAGE_SIZE = Vector2(36, 30)
 
+const SMALLEST_AMOUNT = 10
+
 export var value = 2.0
 export var resource = "candy1"
 
@@ -18,7 +20,7 @@ func _ready():
 	$Bar.rect_size.y = MAX_RECT_SIZE.y
 	$ResourceImage.rect_size = MAX_IMAGE_SIZE
 	
-	$Outline.rect_size.x = value / Settings.settings["resources"][resource]["primary_resource_max"] * MAX_RECT_SIZE.x
+	$Outline.rect_size.x = value / max(Settings.settings["resources"][resource]["primary_resource_max"], SMALLEST_AMOUNT) * MAX_RECT_SIZE.x
 	$Bar.rect_size.x = $Outline.rect_size.x
 	
 	set_texture(Game.DEFAULT_RESOURCE_PATH)
@@ -45,8 +47,7 @@ func set_texture(texture_path):
 func update_value(amount):
 	value = float(amount)
 	_update_tooltip()
-	
-	$Outline.rect_size.x = value / Settings.settings["resources"][resource]["primary_resource_max"] * MAX_RECT_SIZE.x
+	$Outline.rect_size.x = value / max(Settings.settings["resources"][resource]["primary_resource_max"], SMALLEST_AMOUNT) * MAX_RECT_SIZE.x
 	$Bar.rect_size.x = $Outline.rect_size.x
 	
 	if value == 0:
