@@ -23,6 +23,8 @@ var accumulated_dmg := 0;
 var accumulated_gaps := 0;
 var accumulated_transposons := 0;
 
+var replicated = false
+
 var cell_str = "cell_1"
 
 var start_tile
@@ -403,6 +405,14 @@ func setup(card_table):
 		energy_allocations[type] = 0;
 	cmsms.setup(card_table);
 
+func add_gene(chrom: int, pos: int, gene_type: String, value: float):
+	var gene = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
+	
+	gene.set_ess_behavior({gene_type: value})
+	gene.setup("gene", gene_type, "essential")
+	
+	cmsms.get_cmsm(chrom).add_elm(gene, pos)
+
 func perform_anims(perform):
 	do_yields = perform;
 	cmsms.perform_anims(perform);
@@ -443,6 +453,13 @@ func gain_gaps(count = 1):
 			yield(get_tree(), "idle_frame");
 			cmsms.create_gap();
 	return cmsms.collapse_gaps();
+	
+func create_gap(pos: int):
+	if do_yields:
+		yield(cmsms.create_gap(pos), "completed")
+	else:
+		yield(get_tree(), "idle_frame")
+		cmsms.create_gap(pos)
 
 #Returns norms[hazard_string_name] in [0, 1]
 func get_start_current_tile_avg_diff() -> float:
@@ -1539,6 +1556,7 @@ func replicate(idx):
 		emit_signal("doing_work", false);
 		emit_signal("justnow_update", "Skipped reproduction.");
 	else:
+		replicated = true
 		perform_anims(false);
 		cmsms.replicate_cmsms([0, 1]);
 		
@@ -3006,6 +3024,56 @@ func downgrade_cfp_resources(resources_from: Dictionary) -> Dictionary:
 		
 	return results
 
+#resource_amounts[resource_name] = amount
+func remove_dict_minerals(resource_amounts: Dictionary) -> Dictionary:
+	var amounts = {}
+	
+	for resource_name in resource_amounts:
+		if typeof(resource_amounts[resource_name]) == TYPE_INT:
+			amounts[resource_name] = remove_flat_mineral(resource_name, resource_amounts[resource_name])
+		elif typeof(resource_amounts[resource_name]) == TYPE_REAL:
+			amounts[resource_name] = remove_percent_mineral(resource_name, resource_amounts[resource_name])
+	
+	return amounts
+
+func remove_flat_mineral(resource_name: String, flat: int) -> int:
+	var amount = 0
+	var resource_class = Game.get_class_from_name(resource_name)
+	
+	amount = int(min(mineral_resources[resource_class][resource_name], flat))
+	mineral_resources[resource_class][resource_name] -= amount
+	
+	return amount
+
+func remove_flat_minerals(flat: float) -> Dictionary:
+	var amounts = {}
+	
+	for resource_class in mineral_resources:
+		for resource_name in mineral_resources[resource_class]:
+			amounts[resource_name] = remove_flat_mineral(resource_name, flat)
+
+	return amounts
+
+#Resource_name: name of the mineral to remove
+#percent: 0 to 1 delineating how much to remove
+func remove_percent_mineral(resource_name: String, percent: float) -> int:
+	var amount = 0
+	var resource_class = Game.get_class_from_name(resource_name)
+	
+	amount = int(ceil(mineral_resources[resource_class][resource_name] * percent))
+	mineral_resources[resource_class][resource_name] -= amount
+	
+	return amount
+
+func remove_percent_minerals(percent: float) -> Dictionary:
+	var amounts = {}
+	
+	for resource_class in mineral_resources:
+		for resource_name in mineral_resources[resource_class]:
+			amounts[resource_name] = remove_percent_mineral(resource_name, percent)
+
+	return amounts
+
 #BROKEN
 func eject_mineral_resource(resource, amount = 1):
 
@@ -3164,6 +3232,10 @@ func process_cfp_resources(resources: Dictionary, container_name: String) -> Dic
 	results = merge_dictionaries(simple_results, complex_results)
 		
 	return results
+
+func add_energy(_energy: float):
+	energy = clamp(_energy + energy, 0, MAX_ENERGY)
+	emit_signal("energy_changed", energy)
 
 func set_energy(_energy: float):
 	energy = clamp(_energy, 0, MAX_ENERGY)

@@ -61,11 +61,10 @@ func erase_current_map():
 			
 #Draw a map at the tile coordinates (x, y) and center the tileMap there
 func draw_and_center_at(pos, observed_tiles: Dictionary):
-	if typeof(pos) == TYPE_VECTOR3:
-		pos = Game.cube_coords_to_offsetv(pos)
+	var conv_pos = _convert_pos(pos)
 		
-	center_indices.x = pos.x
-	center_indices.y = pos.y
+	center_indices.x = conv_pos.x
+	center_indices.y = conv_pos.y
 	
 	for i in range(-chunk_size + center_indices.x, chunk_size + 1 + center_indices.x):
 		for j in range(-chunk_size + center_indices.y, chunk_size + 1 + center_indices.y):
@@ -76,14 +75,13 @@ func draw_and_center_at(pos, observed_tiles: Dictionary):
 
 func shift_map(shift, observed_tiles: Dictionary):
 
-	if typeof(shift) == TYPE_VECTOR3:
-		shift = Game.cube_coords_to_offsetv(shift)
+	var conv_shift = _convert_pos(shift)
 		
-	if abs(shift.x) > 0:
-		var unit_x = int(shift.x / abs(shift.x))
+	if abs(conv_shift.x) > 0:
+		var unit_x = int(conv_shift.x / abs(conv_shift.x))
 		
 		#Shift the number of times necessary for the x coordinate
-		for i in range(abs(shift.x)):
+		for i in range(abs(conv_shift.x)):
 			center_indices.x += unit_x
 			
 			for j in range(-chunk_size, chunk_size + 1):
@@ -96,11 +94,11 @@ func shift_map(shift, observed_tiles: Dictionary):
 					set_cell(new_vec.x, new_vec.y, get_tile_image_index(new_vec))
 				set_cell(old_vec.x, old_vec.y, -1)
 	
-	if abs(shift.y) > 0:
-		var unit_y = int(shift.y / abs(shift.y))
+	if abs(conv_shift.y) > 0:
+		var unit_y = int(conv_shift.y / abs(conv_shift.y))
 		
 		#Shift the number of times necessary for the x coordinate
-		for i in range(abs(shift.y)):
+		for i in range(abs(conv_shift.y)):
 			center_indices.y += unit_y
 			
 			for j in range(-chunk_size, chunk_size + 1):
@@ -117,13 +115,12 @@ func shift_map(shift, observed_tiles: Dictionary):
 func get_biome(pos):
 	var biome = -1
 	
-	if typeof(pos) == TYPE_VECTOR3:
-		pos = Game.cube_coords_to_offsetv(pos)
+	var conv_pos = _convert_pos(pos)
 		
 	#Check that the index is not in the modified tiles
-	if not [int(pos.x), int(pos.y)] in Game.modified_tiles:
-		var random_biome = biome_generator.get_noise_2d(pos.x, pos.y) * Game.GEN_SCALING
-		var random_tiebreak = tiebreak_generator.get_noise_2d(pos.x, pos.y) * Game.GEN_SCALING
+	if not [int(conv_pos.x), int(conv_pos.y)] in Game.modified_tiles:
+		var random_biome = biome_generator.get_noise_2d(conv_pos.x, conv_pos.y) * Game.GEN_SCALING
+		var random_tiebreak = tiebreak_generator.get_noise_2d(conv_pos.x, conv_pos.y) * Game.GEN_SCALING
 		
 		var possible_biomes = [] 
 		var biome_names = Settings.settings["biomes"].keys()
@@ -150,11 +147,11 @@ func get_biome(pos):
 			biome = possible_biomes[0]
 		
 		else:
-			print('ERROR: Unhandled biome type at (%d, %d)', pos.x, pos.y)
+			print('ERROR: Unhandled biome type at (%d, %d)', conv_pos.x, conv_pos.y)
 			
 	#if it is in the modified tiles, then use that biome instead
 	else:
-		biome = Game.modified_tiles[[int(pos.x), int(pos.y)]]["biome"]
+		biome = Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["biome"]
 
 	return biome
 		
@@ -166,23 +163,22 @@ func get_biome(pos):
 """	
 func get_primary_resource(pos) -> int:
 	
-	if typeof(pos) == TYPE_VECTOR3:
-		pos = Game.cube_coords_to_offsetv(pos)
+	var conv_pos = _convert_pos(pos)
 		
 	var resource = -1
 	
-	if not [int(pos.x), int(pos.y)] in Game.modified_tiles:
-		var biome = get_biome(pos)
+	if not [int(conv_pos.x), int(conv_pos.y)] in Game.modified_tiles:
+		var biome = get_biome(conv_pos)
 		
 		var random_resource
 		var random_tiebreak
 		
 		if Settings.disable_resource_smoothing():
-			random_resource = (erf(resource_generator.get_noise_2d(pos.x, pos.y))) * Game.GEN_SCALING
-			random_tiebreak = (erf(tiebreak_generator.get_noise_2d(pos.x, pos.y))) * Game.GEN_SCALING
+			random_resource = (erf(resource_generator.get_noise_2d(conv_pos.x, conv_pos.y))) * Game.GEN_SCALING
+			random_tiebreak = (erf(tiebreak_generator.get_noise_2d(conv_pos.x, conv_pos.y))) * Game.GEN_SCALING
 		else:
-			random_resource = resource_generator.get_noise_2d(pos.x, pos.y) * Game.GEN_SCALING
-			random_tiebreak = tiebreak_generator.get_noise_2d(pos.x, pos.y) * Game.GEN_SCALING
+			random_resource = resource_generator.get_noise_2d(conv_pos.x, conv_pos.y) * Game.GEN_SCALING
+			random_tiebreak = tiebreak_generator.get_noise_2d(conv_pos.x, conv_pos.y) * Game.GEN_SCALING
 		
 		var resource_names = Settings.settings["resources"].keys()
 		
@@ -222,29 +218,28 @@ func get_primary_resource(pos) -> int:
 		#if the random value is in multiple biome ranges, we assume there is a
 		#tiebreaker array associated with the biome we can use
 	else:
-		resource = Game.modified_tiles[[int(pos.x), int(pos.y)]]["primary_resource"]
+		resource = Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["primary_resource"]
 		
 	return resource
 
 func get_tile_image_index(pos) -> int:
-	if typeof(pos) == TYPE_VECTOR3:
-		pos = Game.cube_coords_to_offsetv(pos)
+	var conv_pos = _convert_pos(pos)
 		
 	var image_index = -1
 	
-	if not [int(pos.x), int(pos.y)] in Game.modified_tiles:
+	if not [int(conv_pos.x), int(conv_pos.y)] in Game.modified_tiles:
 		var tiebreak 
-		var primary_resource = get_primary_resource(pos)
+		var primary_resource = get_primary_resource(conv_pos)
 		
 		if primary_resource != -1:
 			var resource_name = Settings.settings["resources"].keys()[primary_resource]
 			var resource_amount = 0
-			var resource_value = floor(resource_generator.get_noise_3d(pos.x, pos.y, primary_resource) * Game.GEN_SCALING)
+			var resource_value = floor(resource_generator.get_noise_3d(conv_pos.x, conv_pos.y, primary_resource) * Game.GEN_SCALING)
 			
 			if Settings.disable_resource_smoothing():
-				tiebreak = tiebreak_generator.get_noise_3d(pos.x, pos.y, primary_resource)
+				tiebreak = tiebreak_generator.get_noise_3d(conv_pos.x, conv_pos.y, primary_resource)
 			else:
-				tiebreak = erf(tiebreak_generator.get_noise_3d(pos.x, pos.y, primary_resource))
+				tiebreak = erf(tiebreak_generator.get_noise_3d(conv_pos.x, conv_pos.y, primary_resource))
 			
 			if tiebreak >= 0:
 				resource_amount = int(abs(resource_value)) % (int(max(Settings.settings["resources"][resource_name]["primary_resource_max"] - Settings.settings["resources"][resource_name]["primary_resource_min"], 1))) + Settings.settings["resources"][resource_name]["primary_resource_min"]
@@ -256,17 +251,17 @@ func get_tile_image_index(pos) -> int:
 	else:
 		var biggest = -1
 		
-		for index in Game.modified_tiles[[int(pos.x), int(pos.y)]]["resources"]:
-			if Game.modified_tiles[[int(pos.x), int(pos.y)]]["resources"][index] > 0:
+		for index in Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["resources"]:
+			if Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["resources"][index] > 0:
 				if biggest != -1:
-					if Game.modified_tiles[[int(pos.x), int(pos.y)]]["resources"][index] > Game.modified_tiles[[int(pos.x), int(pos.y)]]["resources"][biggest]:
+					if Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["resources"][index] > Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["resources"][biggest]:
 						biggest = index
 				else:
 					biggest = index
 			
 		if biggest != -1:
 			var biggest_name = Settings.settings["resources"].keys()[biggest]	
-			if Game.modified_tiles[[int(pos.x), int(pos.y)]]["resources"][biggest] >= clamp(Settings.settings["resources"][biggest_name]["observation_threshold"] - sensing_value_func.call_func(), 0, Settings.settings["resources"][biggest_name]["observation_threshold"]):
+			if Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["resources"][biggest] >= clamp(Settings.settings["resources"][biggest_name]["observation_threshold"] - sensing_value_func.call_func(), 0, Settings.settings["resources"][biggest_name]["observation_threshold"]):
 				image_index = biggest
 			
 	return image_index
@@ -274,29 +269,28 @@ func get_tile_image_index(pos) -> int:
 #resources[i] = value
 func get_tile_resources(pos):
 	
-	if typeof(pos) == TYPE_VECTOR3:
-		pos = Game.cube_coords_to_offsetv(pos)
+	var conv_pos = _convert_pos(pos)
 		
 	var resources = {}
 	
 	#BROKEN HERE
-	if not [int(pos.x), int(pos.y)] in Game.modified_tiles:
-		var primary_resource = get_primary_resource(pos)
-		var biome = Settings.settings["biomes"].keys()[get_biome(pos)]
+	if not [int(conv_pos.x), int(conv_pos.y)] in Game.modified_tiles:
+		var primary_resource = get_primary_resource(conv_pos)
+		var biome = Settings.settings["biomes"].keys()[get_biome(conv_pos)]
 		var primary_name = Settings.settings["resources"].keys()[primary_resource]
 		var tiebreak
 	
 		if Settings.disable_resource_smoothing():
-			tiebreak = tiebreak_generator.get_noise_3d(pos.x, pos.y, primary_resource)
+			tiebreak = tiebreak_generator.get_noise_3d(conv_pos.x, conv_pos.y, primary_resource)
 		else:
-			tiebreak = erf(tiebreak_generator.get_noise_3d(pos.x, pos.y, primary_resource))
+			tiebreak = erf(tiebreak_generator.get_noise_3d(conv_pos.x, conv_pos.y, primary_resource))
 		
 		#Generate list of resources possible on the tile
-		var resource_list = _generate_resource_list(pos.x, pos.y, Settings.max_resources_per_tile())
+		var resource_list = _generate_resource_list(conv_pos.x, conv_pos.y, Settings.max_resources_per_tile())
 		
 		for i in range(len(Settings.settings["resources"])):
 			var resource_name = Settings.settings["resources"].keys()[i]
-			var resource_value = floor(resource_generator.get_noise_3d(pos.x, pos.y, i) * Game.GEN_SCALING)
+			var resource_value = floor(resource_generator.get_noise_3d(conv_pos.x, conv_pos.y, i) * Game.GEN_SCALING)
 			if i == primary_resource:
 				if tiebreak >= 0:
 					resources[i] = int(abs(resource_value)) % int(max(Settings.settings["resources"][resource_name]["primary_resource_max"] - Settings.settings["resources"][resource_name]["primary_resource_min"], 1)) + Settings.settings["resources"][resource_name]["primary_resource_min"]
@@ -307,10 +301,10 @@ func get_tile_resources(pos):
 			else:
 				resources[i] = 0
 				
-			if resources[i] > 10:
-				print("STOP")
+#			if resources[i] > 10:
+#				print("STOP")
 	else:
-		resources = Game.modified_tiles[[int(pos.x), int(pos.y)]]["resources"]
+		resources = Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["resources"]
 	
 	return resources
 
@@ -334,10 +328,9 @@ func _generate_resource_list(x: float, y: float, max_resources: int) -> Array:
 	return resource_list
 
 func update_tile_resource(pos, primary_resource_index):
-	if typeof(pos) == TYPE_VECTOR3:
-		pos = Game.cube_coords_to_offsetv(pos)
+	var conv_pos = _convert_pos(pos)
 		
-	set_cell(int(pos.x), int(pos.y), get_tile_image_index(pos))
+	set_cell(int(conv_pos.x), int(conv_pos.y), get_tile_image_index(conv_pos))
 	
 func observe_resource(resource: String):
 	if not tile_textures[resource]["observed"]:
@@ -354,6 +347,67 @@ func observe_resources(cfp_resources: Dictionary, mineral_resources: Dictionary)
 	for resource_class in mineral_resources:
 		for resource in mineral_resources[resource_class]:
 			observe_resource(resource)
+
+#Only returns non-zero resources on a tile
+func get_non_zero_resources_on_tile(pos) -> Dictionary:
+	var resources_dict = {}
+	var temp_dict = get_tile_resources(pos)
+	
+	for resource in temp_dict:
+		if temp_dict[resource] > 0:
+			resources_dict[Game.get_resource_from_index(resource)] = temp_dict[resource]
+			
+	return resources_dict
+
+func can_add_resource_to_tile(pos, resource_name: String, amount: int) -> bool:
+	var can_add = false
+	
+	var resources_dict = get_non_zero_resources_on_tile(pos)
+	
+	if resource_name in resources_dict:
+		if resources_dict[resource_name] + amount <= Settings.settings["resources"][resource_name]["primary_resource_max"]:
+			can_add = true
+			
+	elif len(resources_dict) < Settings.max_resources_per_tile():
+		can_add = true
+		
+	return can_add
+
+func add_resource_to_tile(pos, resource_name: String, amount: int):
+	var conv_pos = _convert_pos(pos)
+	var resource_index = Game.get_index_from_resource(resource_name)
+	
+	var tile_resources = get_tile_resources(conv_pos)
+	tile_resources[resource_index] += amount
+	
+	if not [int(conv_pos.x), int(conv_pos.y)] in Game.modified_tiles:
+		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]] = {}
+		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["resources"] = tile_resources
+		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["hazards"] = {}
+		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["biome"] = get_biome(conv_pos)
+		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["primary_resource"] = get_primary_resource(conv_pos)
+		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["location"] = [int(conv_pos.x), int(conv_pos.y)]
+	else:
+		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["resources"] = tile_resources
+		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["primary_resource"] = get_primary_resource(conv_pos)
+
+func add_resources_to_tile(pos, resource_dict: Dictionary):
+	var conv_pos = _convert_pos(pos)
+	var tile_resources = get_tile_resources(conv_pos)
+	
+	for resource_name in resource_dict:
+		tile_resources[Game.get_index_from_resource(resource_name)] += resource_dict[resource_name]
+	
+	if not [int(conv_pos.x), int(conv_pos.y)] in Game.modified_tiles:
+		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]] = {}
+		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["resources"] = tile_resources
+		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["hazards"] = {}
+		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["biome"] = get_biome(conv_pos)
+		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["primary_resource"] = get_primary_resource(conv_pos)
+		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["location"] = [int(conv_pos.x), int(conv_pos.y)]
+	else:
+		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["resources"] = tile_resources
+		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["primary_resource"] = get_primary_resource(conv_pos)
 
 func _is_higher_priority(resource_1: String, resource_2: String) -> bool:
 	if Settings.settings["resources"][resource_1]["priority"] <= Settings.settings["resources"][resource_2]["priority"]:
@@ -388,3 +442,9 @@ func erf(x: float) -> float:
 		uniform = 1 - ((1-exp(-A * x)) * exp(-pow(x, 2)))/(B * sqrt(PI) * x) 
 
 	return uniform
+	
+func _convert_pos(pos) -> Vector2:
+	if typeof(pos) == TYPE_VECTOR3:
+		return Game.cube_coords_to_offsetv(pos)
+	else:
+		return pos

@@ -226,6 +226,9 @@ func get_elm_anim_duration(distance):
 			return min(distance / Game.animation_speed, (0.5 * Game.SeqElm_time_limit) / _actives.size());
 	return min(distance / Game.animation_speed, Game.SeqElm_time_limit);
 
+func get_length() -> int:
+	return len(get_children())
+
 # CHROMOSOME MODIFICATION FUNCTIONS
 
 func create_gap(pos):

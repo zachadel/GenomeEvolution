@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scripts/Main.gd" type="Script" id=1]
+[ext_resource path="res://Console.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/WorldMap/WorldMap.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/CardTable/CardTable.tscn" type="PackedScene" id=4]
 
@@ -34,6 +35,11 @@ visible = false
 layer = 2
 
 [node name="CardTable" parent="Canvas_CardTable" instance=ExtResource( 4 )]
+
+[node name="Console_Layer" type="CanvasLayer" parent="."]
+layer = 128
+
+[node name="Console" parent="Console_Layer" instance=ExtResource( 2 )]
 [connection signal="confirmed" from="MessageLayer/GameOver" to="." method="_on_GameOver_confirmed"]
 [connection signal="change_to_main_menu" from="WorldMap" to="." method="_on_WorldMap_change_to_main_menu"]
 [connection signal="end_map_turn" from="WorldMap" to="." method="_on_WorldMap_end_map_turn"]

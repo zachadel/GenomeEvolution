@@ -316,6 +316,22 @@ func create_gap(truepos = null) -> bool:
 	if do_yields:
 		yield(get_tree(), "idle_frame");
 	return false;
+	
+func create_gap_local(cmsm_idx: int, pos: int) -> bool:
+	var cmsm = get_cmsm(cmsm_idx)
+	
+	if cmsm.valid_gap_pos(pos):
+		var gap
+		if (do_yields):
+			gap = yield(cmsm.create_gap(pos), "completed")
+		else:
+			gap = cmsm.create_gap(pos)
+		return true
+	
+	if do_yields:
+		yield(get_tree(), "idle_frame")
+	return false
+	
 
 func remove_elm(elm, place_gap = true):
 	var displaced;
@@ -353,6 +369,12 @@ func collapse_gaps():
 	for g in _rem:
 		gap_list.erase(g);
 	return gap_list.size();
+
+func add_to_local_pos(sq_elm, chrom_idx: int, pos: int):
+	if do_yields:
+		yield(get_cmsm(chrom_idx).add_elm(sq_elm, pos), "completed")
+	else:
+		get_cmsm(chrom_idx).add_elm(sq_elm, pos)
 
 func add_to_truepos(sq_elm, pos):
 	var first_posns = get_cmsm(0).get_child_count();

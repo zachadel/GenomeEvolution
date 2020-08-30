@@ -59,6 +59,10 @@ onready var ui = get_node("WorldMap_UI")
 
 onready var notifications = get_node("CanvasLayer/Notifications")
 
+onready var resource_map = get_node("ResourceMap")
+onready var biome_map = get_node("BiomeMap")
+onready var obscurity_map = get_node("ObscurityMap")
+
 const FINAL_TWEEN_ZOOM = Vector2(.1, .1)
 
 const CARD_TABLE_ENERGY = 5
@@ -219,6 +223,8 @@ func _process(delta):
 		var camera_change = false
 		var input_found = false
 		var shift = Vector2(0,0)
+		
+		var console_visible = get_parent().get_node("Console_Layer/Console").visible
 	
 		if Input.is_action_pressed("highlight_tile") and input_elements["highlight_tile"]:
 			ui.resource_ui.set_resources($ResourceMap.get_tile_resources(tile_position))
@@ -228,19 +234,19 @@ func _process(delta):
 			ui.resource_ui.set_resources($ResourceMap.get_tile_resources(player_tile))
 			ui.hazards_ui.set_hazards($BiomeMap.get_hazards(player_tile))
 		
-		if Input.is_action_pressed("pan_up") and input_elements["pan"]:
+		if Input.is_action_pressed("pan_up") and input_elements["pan"] and !console_visible:
 			$MapCamera.offset.y -= CAMERA_MOVEMENT*$MapCamera.zoom.y
 			map_offset.y -= CAMERA_MOVEMENT*$MapCamera.zoom.y
 		
-		if Input.is_action_pressed("pan_right") and input_elements["pan"]:
+		if Input.is_action_pressed("pan_right") and input_elements["pan"] and !console_visible:
 			$MapCamera.offset.x += CAMERA_MOVEMENT*$MapCamera.zoom.x
 			map_offset.x += CAMERA_MOVEMENT*$MapCamera.zoom.x
 
-		if Input.is_action_pressed("pan_down") and input_elements["pan"]:
+		if Input.is_action_pressed("pan_down") and input_elements["pan"] and !console_visible:
 			$MapCamera.offset.y += CAMERA_MOVEMENT*$MapCamera.zoom.y
 			map_offset.y += CAMERA_MOVEMENT*$MapCamera.zoom.y
 
-		if Input.is_action_pressed("pan_left") and input_elements["pan"]:
+		if Input.is_action_pressed("pan_left") and input_elements["pan"] and !console_visible:
 			$MapCamera.offset.x -= CAMERA_MOVEMENT*$MapCamera.zoom.x
 			map_offset.x -= CAMERA_MOVEMENT*$MapCamera.zoom.x
 
@@ -605,6 +611,12 @@ func update_ui_mineral_resources():
 func update_ui_energy():
 	ui.irc.update_energy(current_player.organism.energy)
 	pass
+
+func add_progeny_sprite(pos: Vector3):
+	var new_progeny = current_player.sprite.duplicate()
+	add_child(new_progeny)
+	new_progeny.position = Game.map_to_world(pos)
+	#add to a group of progeny for access later
 
 func _on_WorldMap_UI_end_map_pressed():
 	if current_player.organism.energy < CARD_TABLE_ENERGY:

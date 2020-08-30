@@ -259,6 +259,9 @@ func get_ess_behavior() -> Dictionary:
 		g_behave[b] = max(0.0, g_behave.get(b, 0) + boost_val);
 	return g_behave;
 
+func has_behavior(behavior: String) -> bool:
+	return ess_behavior.has(behavior) and ess_behavior[behavior] > 0
+
 func get_ate_activity():
 	if is_ate():
 		return ate_activity * get_ph_mult();

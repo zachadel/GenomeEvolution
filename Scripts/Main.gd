@@ -20,6 +20,7 @@ const Player = preload("res://Scenes/Player/Player.tscn")
 onready var world_map = get_node("WorldMap") #access world_map ui via world_map.ui
 onready var card_table = get_node("Canvas_CardTable/CardTable")
 onready var game_over = get_node("MessageLayer/GameOver")
+onready var console = get_node("Console_Layer/Console")
 
 #NOTE: $Player should NEVER be called. Ever.  For any reason.
 #Eventually, I will put documentation in here explaining the workflow that
@@ -42,6 +43,10 @@ func _ready():
 	world_map.setup(randi(), hazard_seeds, randi(), randi(), chunk_size, first_player)
 	_show_world_map()
 	world_map.set_input(Game.PLAYER_VIEW.ON_MAP)
+	
+	console.set_world_map(world_map)
+	console.set_organism(card_table.orgn)
+	console.set_card_table(card_table)
 
 func _on_WorldMap_end_map_turn():
 	_hide_world_map()
