@@ -5,7 +5,6 @@
 [ext_resource path="res://Scenes/WorldMap/WorldMap.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/CardTable/CardTable.tscn" type="PackedScene" id=4]
 
-
 [node name="Main" type="Control"]
 mouse_filter = 2
 size_flags_horizontal = 3

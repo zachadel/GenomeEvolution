@@ -73,6 +73,7 @@ func add_gene(chrom: String, pos: int, gene_type: String, value: float) -> Strin
 					var chrom_pos = _get_chrom_idx(chrom)
 						
 					organism.add_gene(chrom_pos, pos, gene_type, value)
+					_refresh_profile()
 					
 					output_str = "Successfully added gene!"
 				else:
@@ -95,6 +96,7 @@ func remove_gene(chrom: String, pos: int, create_gap: bool) -> String:
 					
 			var gene = organism.get_cmsm_pair().get_cmsm(chrom_idx).get_children()[pos]
 			organism.get_cmsm_pair().remove_elm(gene, create_gap)
+			_refresh_profile()
 			
 			output_str = "Successfully removed gene on %s chromosome at position %d." % [chrom, pos]
 		else:
@@ -136,6 +138,7 @@ func add_ate(chrom: String, pos: int, ate_type: String, activity_value: float) -
 					seq_elm.ate_activity = activity_value
 					
 					organism.get_cmsm_pair().add_to_local_pos(seq_elm, chrom_idx, pos)
+					_refresh_profile()
 					
 					output_str = "Successfully added ate!"
 				else:
@@ -197,6 +200,7 @@ func modify_gene_value(chrom: String, pos: int, behavior: String, value: float) 
 					
 					var gene = organism.get_cmsm_pair().get_cmsm(chrom_idx).get_children()[pos]
 					gene.set_ess_behavior({behavior: value})
+					_refresh_profile()
 					
 					output_str = "Successfully modified gene value!"
 				else:
@@ -219,6 +223,7 @@ func damage_gene(chrom: String, pos: int, is_damaged: bool) -> String:
 				
 			var gene = organism.get_cmsm_pair().get_cmsm(chrom_idx).get_children()[pos]
 			gene.damage_gene(is_damaged)
+			_refresh_profile()
 			
 			output_str = "Successfully damaged gene!"
 		else:
@@ -239,6 +244,7 @@ func insert_gap(chrom: String, pos: int) -> String:
 				output_str = "Successfully inserted gap!"
 			else:
 				output_str = "Gap insertion failed!"
+			_refresh_profile()
 		else:
 			output_str = "Invalid gene position of %d.  Gene position must be smaller than %d." % [pos, _get_chrom_length(chrom)]
 	else:
@@ -266,7 +272,7 @@ func add_skill(chrom: String, pos: int, skill_name: String) -> String:
 				
 				if gene.has_behavior(Skills.all_skills[skill_name]["behavior"]):
 					gene.gain_specific_skill(Skills.all_skills[skill_name]["behavior"], skill_name)
-					
+					_refresh_profile()
 					output_str = "Successfully added skill!"
 				else:
 					output_str = "Gene lacks behavior %s needed for skill %s." % [Skills.all_skills[skill_name]["behavior"], skill_name]
@@ -466,6 +472,10 @@ func _get_chrom_idx(chrom: String) -> int:
 		chrom_idx = 1
 		
 	return chrom_idx
+
+func _refresh_profile():
+	organism.refresh_behavior_profile()
+	pass
 
 func _on_input_text_entered(new_text):
 	output_text(new_text)

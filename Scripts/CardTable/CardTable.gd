@@ -19,6 +19,8 @@ var has_gaps = false;
 var wait_on_anim = false;
 var wait_on_select = false;
 
+var disable_turn_adv = true
+
 func _ready():
 	visible = false; # Prevents an auto-turn before the game begins
 	orgn.setup(self);
@@ -291,7 +293,7 @@ func _on_ilist_choices_item_activated(idx):
 
 # Next Turn button and availability
 
-func upd_turn_display(upd_turn_unlocks := Game.fresh_round, upd_env_markers := Game.fresh_round):
+func upd_turn_display(upd_turn_unlocks: bool = Game.fresh_round, upd_env_markers: bool = Game.fresh_round):
 	$lnum_turn.set_num(Game.round_num);
 	$lnum_progeny.set_num(orgn.num_progeny);
 	
@@ -305,27 +307,37 @@ func upd_turn_display(upd_turn_unlocks := Game.fresh_round, upd_env_markers := G
 func _on_btn_nxt_pressed():
 	adv_turn();
 
+func disable_turn(is_disabled: bool = true):
+	disable_turn_adv = is_disabled
+	
+	if disable_turn_adv:
+		nxt_btn.disabled = true
+	else:
+		nxt_btn.disabled = false
+
 func adv_turn():
-	close_extra_menus();
-	var skip_turn = false
-	if (Game.get_turn_type() == Game.TURN_TYPES.Recombination):
-		for g in orgn.gene_selection:
-			g.disable(true);
+	
+	if !disable_turn_adv:
+		close_extra_menus();
+		var skip_turn = false
+		if (Game.get_turn_type() == Game.TURN_TYPES.Recombination):
+			for g in orgn.gene_selection:
+				g.disable(true);
+				
+		if Game.get_next_turn_type() == Game.TURN_TYPES.Recombination:
+			var recombos = orgn.get_recombos_per_turn()
 			
-	if Game.get_next_turn_type() == Game.TURN_TYPES.Recombination:
-		var recombos = orgn.get_recombos_per_turn()
+			if recombos == 0:
+				skip_turn = true
+				
 		
-		if recombos == 0:
-			skip_turn = true
-			
-	
-	Game.adv_turn(skip_turn);
-	upd_turn_display();
-	
-	_add_justnow_bbcode("\n\n%s" % Game.get_turn_txt(), {"color": Color(1, 0.75, 0)});
-	
-	emit_signal("next_turn", Game.round_num, Game.turn_idx);
-	$pnl_saveload.new_save(SaveExports.get_save_str(self));
+		Game.adv_turn(skip_turn);
+		upd_turn_display();
+		
+		_add_justnow_bbcode("\n\n%s" % Game.get_turn_txt(), {"color": Color(1, 0.75, 0)});
+		
+		emit_signal("next_turn", Game.round_num, Game.turn_idx);
+		$pnl_saveload.new_save(SaveExports.get_save_str(self));
 
 func _on_animating_changed(state):
 	wait_on_anim = state;
@@ -342,11 +354,15 @@ func _on_Organism_died(org, reason):
 	death_descr = reason;
 	show_death_screen();
 
-func show():
+func show(enable_other_stuff: bool = true):
 	.show();
-	check_if_ready();
 	
-	upd_turn_display(true, true);
+	if enable_other_stuff:
+		check_if_ready();
+		
+		
+		upd_turn_display(true, true);
+	
 	set_map_btn_texture("res://Assets/Images/Cells/body/body_%s_large.svg" % Game.current_cell_string);
 
 func set_map_btn_texture(texture_path: String) -> void:
@@ -359,10 +375,10 @@ func check_if_ready():
 	var end_mapturn_on_mapscreen = Game.get_turn_type() == Game.TURN_TYPES.Map && Unlocks.has_turn_unlock(Game.TURN_TYPES.Map);
 	
 	if is_visible_in_tree():
-		if end_mapturn_on_mapscreen:
+		if end_mapturn_on_mapscreen && !disable_turn_adv:
 			nxt_btn.disabled = false;
 		else:
-			nxt_btn.disabled = orgn.is_dead() || wait_on_anim || wait_on_select || has_gaps;
+			nxt_btn.disabled = orgn.is_dead() || wait_on_anim || wait_on_select || has_gaps || disable_turn_adv;
 	else:
 		nxt_btn.disabled = true;
 	
@@ -374,7 +390,7 @@ func check_if_ready():
 			auto_continue = !orgn.has_damaged_genes();
 	
 	# Continue automatically if we can and should
-	if !nxt_btn.disabled && auto_continue:
+	if !nxt_btn.disabled && auto_continue && !disable_turn_adv:
 		$AutoContinue.start();
 
 onready var central_menus := [$pnl_saveload, ph_filter_panel, $pnl_bugreport, justnow_ctl, $RepairTabs, $pnl_reproduce];

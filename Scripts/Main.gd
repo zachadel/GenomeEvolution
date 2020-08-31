@@ -51,6 +51,7 @@ func _ready():
 func _on_WorldMap_end_map_turn():
 	_hide_world_map()
 	world_map.set_input(Game.PLAYER_VIEW.ON_CARDTABLE)
+	card_table.disable_turn(false)
 	_show_card_table()
 	
 	card_table.energy_bar.MAX_ENERGY = world_map.current_player.organism.MAX_ENERGY
@@ -125,8 +126,14 @@ func _hide_world_map():
 	for player in get_tree().get_nodes_in_group("players"):
 		player.enable_sprite(false)
 
+#Works for most instances, except for switching back and forth between the card_table and map
 func _show_card_table():
 	card_table.show()
+	card_table.show_map_button()
+
+#Needed because the card_table is literally too complicated to extract turns from
+func _only_show_card_table():
+	card_table.show(false)
 	card_table.show_map_button()
 
 func _hide_card_table():
@@ -134,7 +141,6 @@ func _hide_card_table():
 
 func _on_GameOver_confirmed():
 	_hide_world_map()
-	world_map.ui.test_functionality()
 	_show_card_table()
 #	Game.restart_game()
 #	get_tree().change_scene("res://Scenes/MainMenu/TitleScreen.tscn")
@@ -142,6 +148,9 @@ func _on_GameOver_confirmed():
 func _on_WorldMap_switch_to_card_table():
 	world_map.set_input(Game.PLAYER_VIEW.SWITCHED_TO_GENOME)
 	_hide_world_map()
+	
+	if Game.turn_idx == Game.TURN_TYPES.Map:
+		card_table.disable_turn()
 	_show_card_table()
 
 func _on_CardTable_switch_to_map():

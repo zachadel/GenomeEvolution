@@ -20,7 +20,7 @@ func set_skills(skill_profs: Array) -> void:
 
 func add_skill_dict(skill_dict: Dictionary) -> void:
 	for k in skill_dict:
-		Game.add_numeric_dicts(skill_prof_data, skill_dict);
+		skill_prof_data = Game.add_numeric_dicts(skill_prof_data, skill_dict).duplicate(true);
 
 func get_behavior(behavior_key: String) -> float:
 	return bhv_prof_data.get(behavior_key, 0.0);
@@ -38,7 +38,7 @@ func get_skill_count(skill_name: String) -> int:
 	if Unlocks.unlock_override:
 		return skill.get_override_count();
 	
-	var count = skill_prof_data.get(skill, 0);
+	var count = skill_prof_data.get(skill_name, 0);
 	if skill.has_limit():
 		return int(min(count, skill.limit));
 	return count;
