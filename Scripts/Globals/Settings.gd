@@ -357,6 +357,9 @@ func disable_resource_smoothing() -> bool:
 func disable_genome_damage() -> bool:
 	return settings["ingame_settings"]["disable_genome_damage"]["final_value"]
 
+func skill_evolve_chance() -> float:
+	return settings["ingame_settings"]["skill_evolve_chance"]["final_value"]
+
 func component_curve_exponent() -> float:
 	return settings["ingame_settings"]["component_curve_exponent"]["final_value"]
 	

@@ -2749,6 +2749,27 @@ func get_cost_string(action):
 		return "Free!";
 	return cost_str.substr(COST_STR_COMMA_IDX, cost_str.length() - COST_STR_COMMA_IDX);
 
+func add_resource(resource_name: String, amount: int) -> int:
+	var amount_added = 0
+	var resource_class = Game.get_class_from_name(resource_name)
+	
+	if Settings.settings["resources"][resource_name]["group"] == "minerals":
+		mineral_resources[resource_class][resource_name] += amount
+		amount_added = amount
+		
+	else:
+		if cfp_resources[resource_class][resource_name] + amount <= get_estimated_capacity(resource_class):
+			cfp_resources[resource_class][resource_name] += amount
+			amount_added = amount
+		elif cfp_resources[resource_class][resource_name] < get_estimated_capacity(resource_class):
+			amount_added = int(get_estimated_capacity(resource_class) - cfp_resources[resource_class][resource_name])
+			cfp_resources[resource_class][resource_name] += amount_added
+	
+	if amount_added > 0:
+		emit_signal("resources_changed", cfp_resources, mineral_resources)
+	
+	return amount_added
+
 #This always assumes that there is sufficient energy to perform the required task.
 #Only call this function if you have already checked for sufficient energy
 func acquire_resources():

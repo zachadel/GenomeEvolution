@@ -432,7 +432,7 @@ func set_skill_profile_from_counts(skill_counts: Dictionary) -> void:
 			skills[b] = {};
 		skills[b][id] = skill_counts[id];
 
-const SKILL_EVOLVE_CHANCE = 0.1;
+var SKILL_EVOLVE_CHANCE = Settings.skill_evolve_chance();
 var just_evolved_skill := false;
 var latest_skill_id_evol := "";
 var latest_beh_evol := "";

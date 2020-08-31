@@ -32,6 +32,8 @@ var CMDS = {
 	"get_chrom_length": [TYPE_STRING],
 	"get_current_pos": [],
 	"add_resource_to_tile": [TYPE_STRING, TYPE_INT, TYPE_INT, TYPE_INT, TYPE_INT],
+	"add_resource_to_player": [TYPE_STRING, TYPE_INT],
+	"disable_obscurity_map": [TYPE_BOOL],
 	"print_game_info": []
 }
 
@@ -51,6 +53,8 @@ var HELP = {
 	"get_chrom_length": "    Usage: get_chrom_length [top/bottom]\n    Details: Use this function to get the length of a particular chromosome.\n        -top/bottom type top or bottom for which chromosome to select",
 	"get_current_pos": "    Usage: get_current_pos\n    Details: Get the current x y z position of the player.",
 	"add_resource_to_tile": "    Usage: add_resource_to_pos [resource_name] [amount] [x] [y] [z]\n    Details: Place a certain amount of a resource on a particular tile.\n        -resource_name: type one of bread, candy1, potato, candy2, avocado, oil, peanut_butter, butter, chicken, egg, steak, protein_shake, phosphorus, nitrogen, calcium, sodium, iron, mercury\n        -amount: integer of amount to be added to the tile\n        -x: integer of x coordinate\n        -y: integer of y coordinate\n        -z: integer of z coordinate",
+	"add_resource_to_player": "    Usage: add_resource_to_player [resource_name] [amount]\n    Details: Add a certain amount of a resource to the player.\n        -resource_name: type one of bread, candy1, potato, candy2, avocado, oil, peanut_butter, butter, chicken, egg, steak, protein_shake, phosphorus, nitrogen, calcium, sodium, iron, mercury\n        -amount: integer of amount to be added to the player",
+	"disable_obscurity_map": "    Usage: disable_obscurity_map [true/false]\n    Details: Disable/Enable the cloud map.\n        -true/false: Type true to disable and false to enable",
 	"print_game_info": "    Usage: print_game_info\n    Details: Prints the debug information to the console for copying and pasting.",
 }
 
@@ -188,6 +192,22 @@ func add_resource_to_tile(resource_name: String, amount: int, x: int, y: int, z:
 		output_str = "%s is not a valid resource name.  Type help add_resource_to_tile to get valid resource names." % [resource_name]
 
 	return output_str
+	
+func add_resource_to_player(resource_name: String, amount: int) -> String:
+	var output_str = ""
+	
+	if resource_name in Settings.settings["resources"].keys():
+		if amount > 0:
+			var added_amount = organism.add_resource(resource_name, amount)
+			world_map.update_ui_resources()
+			world_map.obtain_resource_knowledge(world_map.current_player.organism.cfp_resources, world_map.current_player.organism.mineral_resources)
+			output_str = "Successfully added %d of %s to the player!  If this number is 0, it is likely due to the vesicle being full." % [added_amount, resource_name]
+		else:
+			output_str = "Must currently add a positive amount of %s to the player.  Negative amounts to be added later." % [resource_name]
+	else:
+		output_str = "%s is not a valid resource name.  Type help add_resource_to_player to get valid resource names." % [resource_name]
+	
+	return output_str
 
 func modify_gene_value(chrom: String, pos: int, behavior: String, value: float) -> String:
 	var output_str = ""
@@ -304,6 +324,20 @@ func get_chrom_length(chrom: String) -> String:
 	
 	else:
 		output_str = "Invalid chromosome selection of %s.  Selection must be top or bottom." % [chrom]
+		
+	return output_str
+	
+func disable_obscurity_map(is_disabled: bool) -> String:
+	var output_str = ""
+	
+	if is_disabled:
+		world_map.obscurity_map.visible = false
+		
+		output_str = "Successfully disabled obscurity map!"
+	else:
+		world_map.obscurity_map.visible = true	
+		
+		output_str = "Successfully enabled obscurity map!"
 		
 	return output_str
 	
