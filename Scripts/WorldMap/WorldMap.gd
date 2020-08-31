@@ -443,6 +443,47 @@ func change_player(new_player):
 	$MapCamera.offset = Vector2(0,0)
 	
 	#update_visible_tiles(current_player.observed_tiles)
+
+func teleport_player(pos: Vector3):
+	var old_player_tile = Game.world_to_map(current_player.position)
+	
+	var old_radius_vis = current_player.organism.get_vision_radius()
+	var old_radius_loc = current_player.organism.get_locomotion_radius()
+	
+	current_player.position = Game.map_to_world(pos)
+	current_player.organism.current_tile = get_tile_at_pos(pos)
+	
+	#Hide the old stuff
+	hide_tiles(old_player_tile, old_radius_vis)
+	
+	#Observe the new stuff
+	current_player.organism.refresh_behavior_profile()
+	var new_radius_vis = current_player.organism.get_vision_radius()
+	var new_radius_loc = current_player.organism.get_locomotion_radius()
+	
+	#Handles the case where pH may be affecting sensing genes
+	if old_radius_vis != new_radius_vis:
+		update_vision(old_radius_vis) #we pass the old radius to handle hiding and observing
+		
+	if old_radius_loc != new_radius_loc or old_radius_vis != new_radius_vis:
+		update_movement()
+	observe_tiles(pos, new_radius_vis)
+	
+	ui.update_costs()
+	ui.update_valid_arrows()
+	
+	$MapCamera.position = Game.map_to_world(pos)
+	$MapCamera.offset = Vector2(0,0)
+	
+	ui.resource_ui.set_resources(current_player.organism.current_tile["resources"])
+	ui.hazards_ui.set_hazards(current_player.organism.current_tile["hazards"])
+	
+	var tile_shift = Game.cube_coords_to_offsetv(pos) - $BiomeMap.center_indices
+	shift_maps(tile_shift, current_player.observed_tiles)
+	
+	astar.set_position_offset(pos, funcref(self, "costs"))
+				
+	loc_highlight.position = current_player.position
 	
 func move_player(pos: Vector3):
 	var player_tile = Game.world_to_map(current_player.position)

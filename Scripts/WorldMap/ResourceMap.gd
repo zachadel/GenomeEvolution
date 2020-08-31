@@ -273,7 +273,7 @@ func get_tile_resources(pos):
 		
 	var resources = {}
 	
-	#BROKEN HERE
+	#BROKEN HERE (Maybe fixed?)
 	if not [int(conv_pos.x), int(conv_pos.y)] in Game.modified_tiles:
 		var primary_resource = get_primary_resource(conv_pos)
 		var biome = Settings.settings["biomes"].keys()[get_biome(conv_pos)]
@@ -389,7 +389,14 @@ func add_resource_to_tile(pos, resource_name: String, amount: int):
 		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["location"] = [int(conv_pos.x), int(conv_pos.y)]
 	else:
 		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["resources"] = tile_resources
-		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["primary_resource"] = get_primary_resource(conv_pos)
+		
+		var biggest_resource_idx = 0
+		
+		for resource in tile_resources:
+			if tile_resources[resource] > tile_resources[biggest_resource_idx]:
+				biggest_resource_idx = resource
+		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["primary_resource"] = biggest_resource_idx
+		update_tile_resource(conv_pos, biggest_resource_idx)
 
 func add_resources_to_tile(pos, resource_dict: Dictionary):
 	var conv_pos = _convert_pos(pos)

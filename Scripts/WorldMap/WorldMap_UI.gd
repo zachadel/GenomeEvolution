@@ -41,16 +41,16 @@ func _ready():
 	check_genome_button.text = DEFAULT_BUTTON_TEXT[BUTTONS.CHECK]
 	end_turn_button.text = DEFAULT_BUTTON_TEXT[BUTTONS.END]
 	
-	if OS.is_debug_build():
-		var test_button = Button.new()
-		test_button.text = "Print Debug"
-		$MenuPanel/HBoxContainer.add_child(test_button)
-		test_button.connect("pressed", self, "test_functionality")
-		
-		var cheat_button = Button.new()
-		cheat_button.text = "Cheat Energy"
-		$MenuPanel/HBoxContainer.add_child(cheat_button)
-		cheat_button.connect("pressed", self, "cheat_energy")
+#	if OS.is_debug_build():
+#		var test_button = Button.new()
+#		test_button.text = "Print Debug"
+#		$MenuPanel/HBoxContainer.add_child(test_button)
+#		test_button.connect("pressed", self, "test_functionality")
+#
+#		var cheat_button = Button.new()
+#		cheat_button.text = "Cheat Energy"
+#		$MenuPanel/HBoxContainer.add_child(cheat_button)
+#		cheat_button.connect("pressed", self, "cheat_energy")
 	
 	pass
 	
@@ -201,7 +201,7 @@ func _on_AcquireResources_pressed():
 	emit_signal("acquire_resources")
 	pass # Replace with function body.
 	
-func test_functionality():
+func print_game_info():
 	var print_deb = true
 	
 	if print_deb:
