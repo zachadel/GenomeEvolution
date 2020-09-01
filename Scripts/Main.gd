@@ -106,6 +106,8 @@ func _on_CardTable_next_turn(turn_text, round_num):
 		_hide_card_table()
 		world_map.current_player.organism.update_vesicle_sizes()
 		_on_CardTable_switch_to_map();
+		world_map.ui.genome_dmg.clear()
+		world_map.ui.transposon_ui.clear()
 		
 
 func _show_world_map():
@@ -158,8 +160,7 @@ func _on_CardTable_switch_to_map():
 	
 	if Game.turn_idx == Game.TURN_TYPES.Map:
 		world_map.set_input(Game.PLAYER_VIEW.ON_MAP)
-		world_map.ui.genome_dmg.clear()
-		world_map.ui.transposon_ui.clear()
+		
 		world_map.ui.reset_repair_button()
 	else:
 		world_map.set_input(Game.PLAYER_VIEW.SWITCHED_TO_MAP)
