@@ -39,6 +39,7 @@ Chance="*res://Scripts/Globals/Chance.gd"
 Tooltips="*res://Scenes/ToolTip.tscn"
 SaveExports="*res://Scripts/Globals/SaveExports.gd"
 Skills="*res://Scripts/Globals/Skills.gd"
+Actions="*res://Scripts/Globals/Actions.gd"
 
 [display]
 
