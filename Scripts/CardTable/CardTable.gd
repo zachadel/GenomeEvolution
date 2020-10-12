@@ -515,10 +515,16 @@ func _on_btn_bugreport_pressed():
 func _on_btn_load_pressed():
 	SaveExports.flag_bug($pnl_bugreport/tbox_bugdesc.text);
 	
-	get_node("pnl_bugreport")._make_post_request($pnl_bugreport/tbox_bugdesc.text)
+	var title = $pnl_bugreport/tbox_bugtitle.text
+	var description = $pnl_bugreport/tbox_bugdesc.text
+	
+	get_node("pnl_bugreport")._make_post_request(title, description)
 	yield($pnl_bugreport/HTTPRequest, "request_completed")
 	var response = get_node("pnl_bugreport").response
 	var success = false
+	if (response == 201):
+		success = true
+	
 	$pnl_bugreport/tbox_bugdesc.text = "";
 	close_extra_menus($pnl_bugreport);
 
