@@ -120,4 +120,5 @@ func consume_resources(action):
 		
 func kill(reason: String = "ran out of resources"):
 	organism.kill(reason)
+	STATS.set_reason_death(reason);
 	emit_signal("player_died", self)

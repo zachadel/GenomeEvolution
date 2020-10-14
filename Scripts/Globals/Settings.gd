@@ -177,6 +177,7 @@ func populate_cell_texture_paths():
 func reset_rng():
 	randomize()
 	
+# warning-ignore:return_value_discarded
 	set_seed(randi())
 	
 func set_seed(value) -> int:
@@ -208,6 +209,7 @@ func set_seed(value) -> int:
 	
 func update_seed():
 	if Settings.settings["ingame_settings"].has("random_number_seed"):
+# warning-ignore:return_value_discarded
 		set_seed(Settings.settings["ingame_settings"]["random_number_seed"]["final_value"])
 ########################GET FUNCTIONS###################################
 #Below here are all the get functions for settings.  Here, based on what
@@ -374,6 +376,7 @@ func mineral_weight() -> float:
 	
 func base_damage_probability() -> float:
 	return settings["ingame_settings"]["base_damage_probability"]["final_value"]
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass

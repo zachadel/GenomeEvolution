@@ -4,6 +4,7 @@ signal cmsm_changed();
 
 onready var cmsms = $scroll/chromes
 
+
 var PRINT_DEBUG = false
 
 func fix_bars():
@@ -12,6 +13,7 @@ func fix_bars():
 
 var selected_gap# = null;
 var break_count = 0
+
 
 var is_ai
 var do_yields
@@ -193,6 +195,7 @@ func _ready():
 	energy_allocations = {};
 	populate_cfp_resources_dict()
 	populate_mineral_dict()
+
 
 func populate_cfp_resources_dict():
 	for resource_type in Game.resource_groups:
@@ -999,6 +1002,7 @@ func make_repair_choices(gap, repair_type: String):
 
 var repair_canceled = false;
 func repair_gap(gap, repair_type, choice_info = {}):
+	
 	emit_signal("clear_gap_msg");
 	if (repair_type_possible[repair_type]):
 		reset_repair_opts();
@@ -1038,7 +1042,7 @@ func repair_gap(gap, repair_type, choice_info = {}):
 					left_rem_genes.append(cmsm.get_child(i));
 				for i in range(g_idx + 1, right_idx + choice_info["size"]):
 					right_rem_genes.append(cmsm.get_child(i));
-				
+				#creates arrays of the genes from the left and the right. 
 				var removing_right = true;
 				while (continue_collapse && (remove_genes.size() < max_collapse_count)):
 					var chosen_gene;
@@ -1049,6 +1053,7 @@ func repair_gap(gap, repair_type, choice_info = {}):
 						chosen_gene = left_rem_genes.back();
 						left_rem_genes.remove(left_rem_genes.size() - 1);
 					remove_genes.append(chosen_gene);
+					STATS.increment_removed_collapseDuplicates()
 					removing_right = left_rem_genes.size() == 0 || right_rem_genes.size() != 0 && !removing_right;
 					
 					continue_collapse = has_resource_for_action("repair_cd") && continue_collapse && Chance.roll_collapse(choice_info["size"], chosen_gene.get_index() - g_idx);
@@ -1060,6 +1065,7 @@ func repair_gap(gap, repair_type, choice_info = {}):
 				for g in remove_genes:
 					if (do_yields):
 						yield(cmsms.remove_elm(g, false), "completed");
+						
 					else:
 						cmsms.remove_elm(g, false);
 				if (do_yields):
@@ -1067,6 +1073,12 @@ func repair_gap(gap, repair_type, choice_info = {}):
 				else:
 					cmsms.close_gap(gap);
 				emit_signal("gap_close_msg", "Gap at %d, %d closed: collapsed %d genes and ended due to %s." % (gap_pos_disp + [remove_count, ended_due_to]));
+				########	here 	#### show the team at some point
+				if(ended_due_to == "completion"):
+					STATS.increment_break_repaired_collapseDuplicates()
+					STATS.increment_dmg_genes_no_error()
+				else:
+					STATS.increment_dmg_genes_error()
 				
 				for times in range(remove_count):
 					use_resources("repair_cd");
@@ -1084,20 +1096,33 @@ func repair_gap(gap, repair_type, choice_info = {}):
 					correct_str = " One of the genes at the repair site was corrected to match its template gene.";
 				match (repair_roll_storage["copy_pattern"][gap]):
 					0:
+						STATS.increment_breaks_cpyRepair_no_error()
+						STATS.increment_tiles_crctd_cpyRepair()
+						STATS.increment_dmg_genes_no_error()
 						emit_signal("gap_close_msg", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome without complications.%s" % (gap_pos_disp + [left_id, right_id, correct_str]));
 					1:
+						STATS.increment_breaks_cpyRepair_error()
+						STATS.increment_dmg_genes_error()
+						STATS.increment_tiles_crctd_cpyRepair()
 						emit_signal("gap_close_msg", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome along with intervening genes.%s" % (gap_pos_disp + [left_id, right_id, correct_str]));
 						var copied_section = range(choice_info["left"].get_index()+1, choice_info["right"].get_index());
 						if (do_yields):
 							for i in copied_section:
 								var copy_elm = Game.copy_elm(other_cmsm.get_child(i));
+								STATS.increment_tiles_copied_cpyRepair()
+								#STATS.increment_genes_copied_cpyRepair()
 								yield(cmsm.add_elm(copy_elm, gap.get_index()), "completed");
 						else:
 							for i in copied_section:
+								STATS.increment_tiles_copied_cpyRepair()
+								#STATS.increment_genes_copied_cpyRepair()
 								var copy_elm = Game.copy_elm(other_cmsm.get_child(i));
 								cmsm.add_elm(copy_elm, gap.get_index());
 						Unlocks.add_count("cp_duped_genes", copied_section.size());
 					2, 3, 4:
+						STATS.increment_dmg_genes_error()
+						STATS.increment_breaks_cpyRepair_error()
+						STATS.increment_tiles_crctd_cpyRepair()
 						gene_selection = cmsm.get_elms_around_pos(g_idx, true);
 						emit_signal("gap_close_msg", "Trying to copy the pattern from the other chromosome, but 1 gene is harmed; choose which.");
 						if (is_ai):
@@ -1161,6 +1186,7 @@ func repair_gap(gap, repair_type, choice_info = {}):
 					use_resources("repair_cp")
 					#print("repair copy pattern");
 			"join_ends":
+				
 				Unlocks.add_count("repair_je");
 				var seg_size := 0;
 				var seg_left_of_gap := true;
@@ -1220,7 +1246,11 @@ func repair_gap(gap, repair_type, choice_info = {}):
 						emit_signal("gap_close_msg", "Joined ends for the gap at %d, %d; resulted in an inversion." % gap_pos_disp);
 					0: # No complications
 						emit_signal("gap_close_msg", "Joined ends for the gap at %d, %d without complications." % gap_pos_disp);
+						STATS.increment_breaks_join()
+						STATS.increment_dmg_genes_no_error()
 					1, 2, 3:
+						STATS.increment_breaks_join_error()
+						STATS.increment_dmg_genes_error()
 						gene_selection = cmsm.get_elms_around_pos(g_idx, true);
 						emit_signal("gap_close_msg", "Joining ends as a last-ditch effort, but a gene is harmed; choose which.");
 						if (is_ai):
@@ -1268,6 +1298,8 @@ func repair_gap(gap, repair_type, choice_info = {}):
 							6: # Minor up
 								boon_str = "received a " + gene.evolve_by_name("minor_up");
 						emit_signal("gap_close_msg", "Joined ends for the gap at %d, %d; during the repair, a %s gene %s." % (gap_pos_disp + [gene.get_gene_name(), boon_str]));
+						#not exactly sure all that is going on here.
+						STATS.increment_breaks_join()
 				if !repair_canceled:
 					if (do_yields):
 						yield(cmsms.close_gap(gap), "completed");
@@ -1551,6 +1583,7 @@ func prune_cmsms(final_num, add_to_pool = true):
 		cmsms.remove_cmsm(final_num);
 
 func replicate(idx):
+	STATS.increment_reproduction_times()
 	if (idx == 2):
 		emit_signal("finished_replication");
 		emit_signal("doing_work", false);
@@ -1611,6 +1644,7 @@ func replicate(idx):
 				emit_signal("resources_changed", cfp_resources, mineral_resources)
 				
 				num_progeny += 1;
+				STATS.increment_progeny_mitosis()
 				if PRINT_DEBUG:
 					print('Post mitosis chromos...')
 					print(cmsms.get_cmsms()[0].get_elms_save())
@@ -1637,6 +1671,8 @@ func replicate(idx):
 				
 				cmsms.add_cmsm(get_random_gene_from_pool(), true);
 				num_progeny += 3;
+				STATS.increment_progeny_meiosis()
+				
 		
 		cmsms.show_all_choice_buttons(false);
 		cmsms.hide_all(false);
@@ -2701,7 +2737,9 @@ const BEHAVIOR_TO_COST_MULT = {
 
 #This always assumes that there is sufficient resuources to perform the required task.
 #Only call this function if you have already checked for sufficient resources
-#
+
+##This looks like it takes resources and appends them to energy. 
+
 func use_resources(action, num_times_performed = 1):
 	for resource_class in cfp_resources: #should yield simple_carbs,complex_carbs, etc.
 		var cost = get_cfp_cost(action, resource_class, num_times_performed)
@@ -2730,7 +2768,7 @@ func use_resources(action, num_times_performed = 1):
 					mineral_resources[charge][resource] = 0
 		
 	set_energy(max(0, energy - get_energy_cost(action, num_times_performed)))
-	
+	STATS.increment_resources_converted()
 	emit_signal("resources_changed", cfp_resources, mineral_resources)
 
 const COST_STR_FORMAT = ", %s %s";
@@ -2749,7 +2787,9 @@ func get_cost_string(action):
 		return "Free!";
 	return cost_str.substr(COST_STR_COMMA_IDX, cost_str.length() - COST_STR_COMMA_IDX);
 
+#This looks like you're eating and acquiring resources.
 func add_resource(resource_name: String, amount: int) -> int:
+	STATS.increment_resources_consumed()
 	var amount_added = 0
 	var resource_class = Game.get_class_from_name(resource_name)
 	

@@ -230,10 +230,15 @@ func load_from_save(cmsms):
 			remove_cmsm(i);
 
 func get_all_genes(include_past_two_cmsms = false):
+	
 	if (include_past_two_cmsms):
 		var genes = [];
 		for c in get_cmsms():
 			genes += c.get_children();
+		#STATS.set_finalVal_ate(ate_genes)
+		#STATS.set_finalVal_essential(essential_genes)
+		#STATS.set_finalVal_pseudo(pseudo_genes)
+		#STATS.set_finalVal_blank(blank_genes)
 		return genes;
 	else:
 		return get_cmsm(0).get_children() + get_cmsm(1).get_children();

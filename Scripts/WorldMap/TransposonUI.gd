@@ -8,6 +8,7 @@ extends Control
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	for node in get_children():
+		STATS.increment_final_transposon_tiles()
 		node.set_color(Color.red)
 		node.hide()
 	pass # Replace with function body.
@@ -19,6 +20,7 @@ func add_dmg():
 			break
 			
 func set_dmg(value: int):
+	
 	for i in range(1, value + 1):
 		if not get_node(str(i)).visible:
 			get_node(str(i)).visible = true

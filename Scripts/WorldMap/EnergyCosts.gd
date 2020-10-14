@@ -4,6 +4,7 @@ extends GridContainer
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
+signal update_costs
 
 export var colors = {
 	"base": Color.green,
@@ -51,6 +52,7 @@ func set_action(action_str: String):
 	
 #Doesn't yet do borders, just full boxes
 func update_costs():
+	emit_signal("update_costs")
 	if action != "":
 		costs["base"] = functions["base"].call_func(action)
 		var bars = {

@@ -56,10 +56,9 @@ func _on_WorldMap_end_map_turn():
 	
 	card_table.energy_bar.MAX_ENERGY = world_map.current_player.organism.MAX_ENERGY
 	card_table.energy_bar.update_energy_allocation(world_map.current_player.organism.energy)
-	
 	pass
 
-############################MULTIPLAYER HANDLING###############################
+############################MULTIPLAYER HANDLING##############################
 
 func create_player():
 	var player = Player.instance()

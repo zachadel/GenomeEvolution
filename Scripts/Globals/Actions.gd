@@ -1,14 +1,16 @@
 extends Node
 
-var env = {}
 
+# Declare member variables here. Examples:
+# var a = 2
+# var b = "text"
+
+
+# Called when the node enters the scene tree for the first time.
 func _ready():
-	var contents = load_file('res://env.json')
-	env.parse_json(contents)
+	pass # Replace with function body.
 
-func load_file(file):
-	var f = File.new()
-	f.open(file, File.READ)
-	var contents = f.get_as_text()
-	file.close()
-	return contents
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+#func _process(delta):
+#	pass

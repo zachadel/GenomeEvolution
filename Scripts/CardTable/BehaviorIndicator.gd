@@ -15,7 +15,7 @@ var skill_ttip := {};
 
 func _ready():
 	default_pos = rect_position;
-	Tooltips.setup_delayed_tooltip(self);
+	Tooltips.setup_delayed_tooltip(self)
 
 func get_tooltip_data() -> Array:
 	if ttip_data.empty():

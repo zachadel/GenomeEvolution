@@ -71,6 +71,8 @@ func obtain_ate_personality(personality_id := "") -> void:
 
 var copygene_flag := false;
 func set_copygene_flag(s := true) -> void:
+	if(s == true):
+		STATS.increment_genes_copied_cpyRepair()
 	copygene_flag = s;
 func has_copygene_flag() -> bool:
 	return copygene_flag;
@@ -332,7 +334,7 @@ func get_gene_distance(other_elm) -> int:
 func is_equal(other_elm, max_dist := 8) -> bool:
 	return can_compare_elm(other_elm) && get_gene_distance(other_elm) <= max_dist;
 
-func get_gene_name():
+func name():
 	match mode:
 		"essential":
 			return Tooltips.GENE_NAMES.get(id, id);
@@ -455,6 +457,7 @@ func gain_specific_skill(behavior: String, skill_id: String) -> void:
 
 func evolve_skill(behave_key: String, gain := true) -> void:
 	if gain:
+		STATS.increment_num_skills()
 		var new_skill_id := Skills.get_random_skill_id(behave_key, get_skill_counts().keys());
 		if !new_skill_id.empty():
 			just_evolved_skill = true;
@@ -526,6 +529,7 @@ func evolve_major(gain: bool) -> void:
 		"blank":
 			if gain:
 				mode = "essential";
+				STATS.increment_majorUpgrades_blankTiles_newGame()
 				evolve_new_behavior(true, "Helper");
 		"essential":
 			evolve_new_behavior(gain);
@@ -622,12 +626,16 @@ func evolve_by_name(ev_name: String) -> String:
 				kill_elm();
 				return "a fatal mutation";
 			"major_down":
+				STATS.increment_majorDowngrades()
 				return perform_evolution(true, false);
 			"minor_down":
+				STATS.increment_minorDowngrades()
 				return perform_evolution(false, false);
 			"major_up":
+				STATS.increment_majorUpgrades()
 				return perform_evolution(true, true);
 			"minor_up":
+				STATS.increment_minorUpgrades()
 				return perform_evolution(false, true);
 	return "";
 

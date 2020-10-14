@@ -3,7 +3,6 @@
 [ext_resource path="res://Scripts/WorldMap/TransposonUI.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/CardTable/Art/AnthroArt.tscn" type="PackedScene" id=2]
 
-
 [node name="TransposonUI" type="Control"]
 anchor_right = 0.25625
 anchor_bottom = 0.2

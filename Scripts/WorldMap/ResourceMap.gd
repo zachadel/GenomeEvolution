@@ -198,9 +198,9 @@ func get_primary_resource(pos) -> int:
 						highest_priority = Settings.settings["resources"][resource_name]["priority"]
 		
 		if len(possible_resources) > 1:
-			for resource in possible_resources:
-				if Settings.settings["resources"][resource]["priority"] != highest_priority:
-					possible_resources.erase(resource)
+			for possible in possible_resources:
+				if Settings.settings["resources"][possible]["priority"] != highest_priority:
+					possible_resources.erase(possible)
 					
 			if len(possible_resources) == 1:
 				resource = Game.get_index_from_resource(possible_resources[0])

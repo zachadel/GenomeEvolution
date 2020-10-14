@@ -97,9 +97,9 @@ func change_radius(_radius: int, costs: FuncRef):
 				for step in range(0, ring_radius):
 					add_point(map_ZxZ_to_N(tile.x, tile.y), tile, GODOT_FIX + costs.call_func(tile + offset))
 					
-					for neighbor in cube_directions:
-						if has_point(map_ZxZ_to_N(tile.x + neighbor.x, tile.y + neighbor.y)):
-							connect_points(map_ZxZ_to_N(tile.x, tile.y), map_ZxZ_to_N(tile.x + neighbor.x, tile.y + neighbor.y))
+					for direction in cube_directions:
+						if has_point(map_ZxZ_to_N(tile.x + direction.x, tile.y + direction.y)):
+							connect_points(map_ZxZ_to_N(tile.x, tile.y), map_ZxZ_to_N(tile.x + direction.x, tile.y + direction.y))
 							
 					tile = tile + cube_directions[NEIGHBORS[neighbor]]
 		radius = _radius

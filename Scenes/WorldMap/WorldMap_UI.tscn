@@ -315,31 +315,30 @@ __meta__ = {
 }
 
 [node name="AcquireResources" type="Button" parent="MenuPanel/HBoxContainer"]
-margin_right = 230.0
+margin_right = 167.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Acquire Resources"
 
 [node name="EjectResources" type="Button" parent="MenuPanel/HBoxContainer"]
-visible = false
-margin_left = 207.0
-margin_right = 394.0
+margin_left = 187.0
+margin_right = 354.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "Eject Resources (TBA)"
+text = "Stats Screen"
 
 [node name="JiggleResources" type="Button" parent="MenuPanel/HBoxContainer"]
-margin_left = 250.0
-margin_right = 480.0
+margin_left = 374.0
+margin_right = 541.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Jiggle Resources"
 
 [node name="CheckGenome" type="Button" parent="MenuPanel/HBoxContainer"]
-margin_left = 500.0
+margin_left = 561.0
 margin_right = 730.0
 margin_bottom = 32.0
 size_flags_horizontal = 3

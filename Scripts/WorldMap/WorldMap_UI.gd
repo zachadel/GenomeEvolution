@@ -163,10 +163,10 @@ func _on_WorldMap_player_energy_changed(energy):
 func _on_MineralLevels_eject_resource(resource, value):
 	emit_signal("eject_resource", resource, value)
 	pass # Replace with function body.
-
+signal show_stats
 
 func _on_EjectResources_pressed():
-	
+	emit_signal("show_stats")
 	pass # Replace with function body.
 	
 func _on_EndMapTurn_pressed():
