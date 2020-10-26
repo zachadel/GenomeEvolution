@@ -181,10 +181,15 @@ func get_other_cmsm(cmsm):
 func get_ate_list():
 	if !ate_list_is_clean:
 		ate_list.clear();
+		STATS.clear_currentTE()
 		for g in get_all_genes():
 			if (g.is_ate()):
 				ate_list.append(g);
+				#STATS.update_currentTE(g.get_ate_personality_by_key())
+				#STATS.compare_maxTE()
 		ate_list_is_clean = true;
+	#STATS.set_currentTransposon(ate_list.count())
+	#STATS.compare_maxTransposon(ate_list.count())
 	return ate_list;
 
 func get_ate_bunches() -> Array:
@@ -230,15 +235,10 @@ func load_from_save(cmsms):
 			remove_cmsm(i);
 
 func get_all_genes(include_past_two_cmsms = false):
-	
 	if (include_past_two_cmsms):
 		var genes = [];
 		for c in get_cmsms():
 			genes += c.get_children();
-		#STATS.set_finalVal_ate(ate_genes)
-		#STATS.set_finalVal_essential(essential_genes)
-		#STATS.set_finalVal_pseudo(pseudo_genes)
-		#STATS.set_finalVal_blank(blank_genes)
 		return genes;
 	else:
 		return get_cmsm(0).get_children() + get_cmsm(1).get_children();
@@ -265,6 +265,8 @@ func extract_elm(elm, place_gap = true):
 func recombine(elm0, elm1):
 	recombining = true;
 	var idxs = [];
+	if (elm0.is_ate() or elm1.is_ate()):
+		STATS.increment_transposonFuse()
 	if (elm0.get_cmsm() == $cmsm0/cmsm):
 		idxs = [elm0.get_index(), elm1.get_index()];
 	else:

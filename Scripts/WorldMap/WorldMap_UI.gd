@@ -16,14 +16,14 @@ onready var genome_dmg = get_node("GenomePanel/GenomeDamage")
 onready var transposon_ui = get_node("TransposonPanel/TransposonUI")
 
 onready var acquire_resources_button = get_node("MenuPanel/HBoxContainer/AcquireResources")
-onready var eject_resources_button = get_node("MenuPanel/HBoxContainer/EjectResources")
+onready var stats_screen_button = get_node("MenuPanel/HBoxContainer/StatsScreen")
 onready var check_genome_button = get_node("MenuPanel/HBoxContainer/CheckGenome")
 onready var end_turn_button = get_node("GenomePanel/RepairGenome")
 
-enum BUTTONS {ACQUIRE, EJECT, CHECK, END}
+enum BUTTONS {ACQUIRE, STATS, CHECK, END}
 const DEFAULT_BUTTON_TEXT = {
 	BUTTONS.ACQUIRE: "Eat", 
-	BUTTONS.EJECT: "Excrete", 
+	BUTTONS.STATS: "Show Stats", 
 	BUTTONS.CHECK: "Preview Genome", 
 	BUTTONS.END: "Repair Genome!"
 	}
@@ -35,10 +35,12 @@ var test_cases = ["simple_carbs", "simple_fats", "simple_proteins", "complex_car
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	$statsScreen.visible = false
 	acquire_resources_button.text = DEFAULT_BUTTON_TEXT[BUTTONS.ACQUIRE]
-	eject_resources_button.text = DEFAULT_BUTTON_TEXT[BUTTONS.EJECT]
+	stats_screen_button.text = DEFAULT_BUTTON_TEXT[BUTTONS.STATS]
 	check_genome_button.text = DEFAULT_BUTTON_TEXT[BUTTONS.CHECK]
 	end_turn_button.text = DEFAULT_BUTTON_TEXT[BUTTONS.END]
+	
 	
 func set_organism(org):
 	irc.set_organism(org)
@@ -58,8 +60,8 @@ func get_button(button: int):
 	match(button):
 		BUTTONS.ACQUIRE:
 			return acquire_resources_button
-		BUTTONS.EJECT:
-			return eject_resources_button
+		BUTTONS.STATS:
+			return stats_screen_button
 		BUTTONS.CHECK:
 			return check_genome_button
 		BUTTONS.END:
@@ -94,7 +96,7 @@ func set_mineral_levels_state(enabled: bool):
 func set_input_state(player_view: int):
 	var buttons = {
 		BUTTONS.ACQUIRE: false,
-		BUTTONS.EJECT: false,
+		BUTTONS.STATS: false,
 		BUTTONS.CHECK: false,
 		BUTTONS.END: false
 	}
@@ -123,7 +125,7 @@ func set_input_state(player_view: int):
 			set_button_states(buttons)
 		Game.PLAYER_VIEW.SWITCHED_TO_MAP: #In the middle of genome turn, but switched to map view
 			buttons[BUTTONS.ACQUIRE] = true
-			buttons[BUTTONS.EJECT] = true
+			buttons[BUTTONS.STATS] = true
 			buttons[BUTTONS.CHECK] = true
 			buttons[BUTTONS.END] = Game.get_turn_type() == Game.TURN_TYPES.Map;
 			set_mineral_levels_state(true)
@@ -163,11 +165,7 @@ func _on_WorldMap_player_energy_changed(energy):
 func _on_MineralLevels_eject_resource(resource, value):
 	emit_signal("eject_resource", resource, value)
 	pass # Replace with function body.
-signal show_stats
 
-func _on_EjectResources_pressed():
-	emit_signal("show_stats")
-	pass # Replace with function body.
 	
 func _on_EndMapTurn_pressed():
 	emit_signal("end_map_pressed")
@@ -213,3 +211,8 @@ func print_diff_dict(diff_dict: Dictionary):
 	else:
 		print("No changes in resource dictionaries")
 
+
+
+func _on_StatsScreen_pressed():
+	$statsScreen.visible = true
+	pass # Replace with function body.

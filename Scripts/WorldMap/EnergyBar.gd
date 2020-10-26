@@ -31,7 +31,7 @@ func update_energy_allocation(amount):
 	var energy_per_unit = MAX_ENERGY / float(MAX_ENERGY_UNITS)
 	
 	energy = amount
-	STATS.set_Energy(energy)
+	
 	for i in len(children):
 		if i * energy_per_unit < amount: 
 			children[i].self_modulate = Color(1,1,1,1)
@@ -39,8 +39,8 @@ func update_energy_allocation(amount):
 			children[i].self_modulate = Color(1,1,1,0)
 
 func add_energy(amount):
-	STATS.increment_times_energy_added()
 	if energy + amount <= MAX_ENERGY:
+		STATS.increment_resources_converted()
 		update_energy_allocation(energy + amount)
 	else:
 		update_energy_allocation(MAX_ENERGY)

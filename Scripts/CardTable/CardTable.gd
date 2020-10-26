@@ -36,6 +36,7 @@ func _ready():
 	$RepairTabs.set_tab_title(3, "Fix Damaged Genes");
 	
 	$EnergyBar.MAX_ENERGY = orgn.MAX_ENERGY
+	$statsScreen.visible = false;
 
 func reset_status_bar():
 	status_bar.clear_cmsms();
@@ -172,6 +173,7 @@ func _on_Organism_gap_selected(_gap, sel: bool):
 	show_repair_types(sel);
 
 func _on_Organism_gene_trimmed(_gene):
+	STATS.increment_trimmedTiles()
 	_refresh_repair_tab();
 
 func _on_Organism_gene_bandaged(_gene):
@@ -337,7 +339,6 @@ func adv_turn():
 		_add_justnow_bbcode("\n\n%s" % Game.get_turn_txt(), {"color": Color(1, 0.75, 0)});
 		
 		emit_signal("next_turn", Game.round_num, Game.turn_idx);
-		STATS.increment_Rounds()
 		$pnl_saveload.new_save(SaveExports.get_save_str(self));
 
 func _on_animating_changed(state):
@@ -347,8 +348,8 @@ func _on_animating_changed(state):
 func _on_Organism_doing_work(working):
 	wait_on_select = working;
 	check_if_ready();
- 
-func _on_Organism_died(org, reason): #When this is called, is when I should import my death screen
+
+func _on_Organism_died(org, reason):
 	nxt_btn.visible = false;
 	$button_grid/btn_qtmenu.visible = false;
 	$button_grid/btn_nxt.visible = false;
@@ -476,14 +477,12 @@ func quit_to_menu():
 
 const OVERVIEW_FORMAT = "Your organism %s.\n\nYou survived for %d rounds.\nYou produced %d progeny.\nYou repaired %d gaps.";
 var death_descr := "died";
-
 func show_death_screen():
 	var gaps_repaired := 0;
 	for rtype in ["repair_cp", "repair_cd", "repair_je"]:
 		gaps_repaired += Unlocks.get_count(rtype);
 	$pnl_dead_overview/HSplitContainer/Panel/LblOverview.text = OVERVIEW_FORMAT % [death_descr, Game.round_num, orgn.num_progeny, gaps_repaired]
 	$pnl_dead_overview.visible = true;
-
 
 func _on_Organism_finished_replication():
 	reset_status_bar();
@@ -517,6 +516,11 @@ func _on_btn_bugreport_pressed():
 	close_extra_menus($pnl_bugreport);
 func _on_btn_load_pressed():
 	SaveExports.flag_bug($pnl_bugreport/tbox_bugdesc.text);
+	
+	get_node("pnl_bugreport")._make_post_request($pnl_bugreport/tbox_bugdesc.text)
+	yield($pnl_bugreport/HTTPRequest, "request_completed")
+	var response = get_node("pnl_bugreport").response
+	var success = false
 	$pnl_bugreport/tbox_bugdesc.text = "";
 	close_extra_menus($pnl_bugreport);
 
@@ -538,6 +542,7 @@ func _on_Organism_transposon_activity(active):
 		hide_chaos_anim();
 
 
-signal show_stats
-func _on_btn_stats_screen_pressed():
-	emit_signal("show_stats")
+
+func _on_stats_screen_pressed():
+	#$statsScreen.visible = true
+	pass # Replace with function body.

@@ -17,14 +17,12 @@
 [ext_resource path="res://Scenes/CardTable/TurnList.tscn" type="PackedScene" id=15]
 [ext_resource path="res://Scenes/CardTable/DarkenedBG.tres" type="StyleBox" id=16]
 [ext_resource path="res://Scenes/CardTable/LabeledNumber.tscn" type="PackedScene" id=17]
-[ext_resource path="res://Assets/Images/pngs/DNA_right.png" type="Texture" id=18]
+[ext_resource path="res://Scenes/CardTable/pnl_bugreport.gd" type="Script" id=18]
 [ext_resource path="res://Assets/Images/pngs/DNA_small.png" type="Texture" id=19]
 [ext_resource path="res://Scenes/MainMenu/Credits.tscn" type="PackedScene" id=20]
-[ext_resource path="res://Scripts/CardTable/pnl_dead_overview.gd" type="Script" id=21]
+[ext_resource path="res://Assets/Fonts/OpenSans-48.tres" type="DynamicFont" id=21]
 [ext_resource path="res://Assets/Fonts/OpenSans-64.tres" type="DynamicFont" id=22]
-[ext_resource path="res://Assets/Images/pngs/DNA_left.png" type="Texture" id=24]
-[ext_resource path="res://Assets/Images/Cells/body/body_cell_1_large.svg" type="Texture" id=25]
-[ext_resource path="res://Assets/Images/Cells/nucleus/nucleus_cell_1_large.svg" type="Texture" id=26]
+[ext_resource path="res://Scenes/statsScreen/statsScreen.tscn" type="PackedScene" id=23]
 
 [sub_resource type="Theme" id=1]
 Button/colors/font_color_disabled = Color( 0, 0, 0, 1 )
@@ -133,6 +131,12 @@ font_data = SubResource( 6 )
 [sub_resource type="StyleBoxFlat" id=8]
 bg_color = Color( 0.21875, 0.21875, 0.21875, 1 )
 
+[sub_resource type="StyleBoxFlat" id=9]
+bg_color = Color( 0.145098, 0.145098, 0.164706, 1 )
+
+[sub_resource type="StyleBoxFlat" id=10]
+bg_color = Color( 0.12549, 0.141176, 0.192157, 1 )
+
 [node name="CardTable" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -208,7 +212,6 @@ margin_right = 1437.74
 margin_bottom = 763.0
 
 [node name="Organism" parent="." instance=ExtResource( 2 )]
-script = null
 
 [node name="lbl_behavior" type="Label" parent="."]
 anchor_left = 1.0
@@ -238,6 +241,7 @@ margin_bottom = 674.836
 rect_min_size = Vector2( 0, 50 )
 
 [node name="RepairTabs" type="TabContainer" parent="."]
+visible = false
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -449,6 +453,7 @@ align = 1
 autowrap = true
 
 [node name="pnl_reproduce" type="Panel" parent="."]
+visible = false
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -504,6 +509,7 @@ margin_bottom = 201.0
 text = "Reproduce"
 
 [node name="pnl_saveload" type="Panel" parent="."]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -549,6 +555,7 @@ margin_left = -279.0
 margin_top = 182.0
 margin_right = 356.0
 margin_bottom = 432.0
+script = ExtResource( 18 )
 
 [node name="btn_load" type="Button" parent="pnl_bugreport"]
 anchor_left = 1.0
@@ -564,13 +571,23 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="tbox_bugtitle" type="TextEdit" parent="pnl_bugreport"]
+margin_left = 29.0
+margin_top = 55.0
+margin_right = 604.0
+margin_bottom = 85.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="tbox_bugdesc" type="TextEdit" parent="pnl_bugreport"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 28.0
-margin_top = 53.0
+margin_top = 90.0
 margin_right = -29.0
 margin_bottom = -42.0
+rect_pivot_offset = Vector2( 247, -5.82202 )
 mouse_default_cursor_shape = 0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -585,8 +602,14 @@ text = "Please describe the bug by describing what you did, what you expected, a
 align = 1
 valign = 1
 autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HTTPRequest" type="HTTPRequest" parent="pnl_bugreport"]
 
 [node name="pnl_ph_filter" type="Panel" parent="."]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -643,6 +666,7 @@ valign = 1
 clip_text = true
 
 [node name="pnl_chaos" type="Panel" parent="."]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -748,15 +772,15 @@ __meta__ = {
 [node name="btn_qtmenu" type="Button" parent="button_grid"]
 margin_top = 85.0
 margin_right = 122.0
-margin_bottom = 130.0
-rect_min_size = Vector2( 120, 45 )
+margin_bottom = 125.0
+rect_min_size = Vector2( 120, 40 )
 text = "Quit to Menu"
 
 [node name="btn_bugreport" type="Button" parent="button_grid"]
-margin_top = 140.0
+margin_top = 135.0
 margin_right = 122.0
 margin_bottom = 180.0
-rect_min_size = Vector2( 120, 40 )
+rect_min_size = Vector2( 120, 45 )
 text = "Report Bug"
 
 [node name="btn_saveload" type="Button" parent="button_grid"]
@@ -773,19 +797,19 @@ margin_bottom = 280.0
 rect_min_size = Vector2( 120, 40 )
 text = "pH Effectiveness"
 
-[node name="btn_nxt" type="Button" parent="button_grid"]
+[node name="stats_screen" type="Button" parent="button_grid"]
 margin_top = 290.0
 margin_right = 122.0
 margin_bottom = 330.0
-rect_min_size = Vector2( 120, 40 )
-text = "Continue"
+rect_min_size = Vector2( 122, 40 )
+text = "Stats Screen"
 
-[node name="btn_stats_screen" type="Button" parent="button_grid"]
+[node name="btn_nxt" type="Button" parent="button_grid"]
 margin_top = 340.0
 margin_right = 122.0
 margin_bottom = 380.0
 rect_min_size = Vector2( 120, 40 )
-text = "Stats Screen"
+text = "Continue"
 
 [node name="ViewMap" type="TextureButton" parent="."]
 anchor_right = 1.0
@@ -822,7 +846,6 @@ visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_styles/panel = SubResource( 8 )
-script = ExtResource( 21 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -831,196 +854,89 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = 124.0
-margin_right = 210.0
-margin_bottom = 534.0
 split_offset = 150
-dragger_visibility = 1
+dragger_visibility = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="CenterContainer" type="CenterContainer" parent="pnl_dead_overview/HSplitContainer"]
-margin_right = 1810.0
-margin_bottom = 1310.0
+margin_right = 400.0
+margin_bottom = 776.0
 
 [node name="Credits" parent="pnl_dead_overview/HSplitContainer/CenterContainer" instance=ExtResource( 20 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 780.0
-margin_top = 430.0
-margin_right = 1030.0
-margin_bottom = 880.0
+margin_left = 75.0
+margin_top = 163.0
+margin_right = 325.0
+margin_bottom = 613.0
 rect_min_size = Vector2( 250, 450 )
 
-[node name="BackDrop" type="ColorRect" parent="pnl_dead_overview"]
-margin_left = 4.24268
-margin_top = 16.9706
-margin_right = 1604.24
-margin_bottom = 916.971
-color = Color( 0.0431373, 0.0588235, 0.564706, 1 )
+[node name="Panel" type="Panel" parent="pnl_dead_overview/HSplitContainer"]
+margin_left = 400.0
+margin_right = 1600.0
+margin_bottom = 776.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Gaps" type="Label" parent="pnl_dead_overview/BackDrop"]
-margin_left = 900.0
-margin_top = 500.0
-margin_right = 1386.0
-margin_bottom = 572.0
+[node name="LblOverview" type="Label" parent="pnl_dead_overview/HSplitContainer/Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/normal = SubResource( 9 )
 custom_fonts/font = ExtResource( 22 )
-text = "You filled %d gaps!"
+text = "if ur seein this its a bug lol"
 align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ProgenyBegin" type="Label" parent="pnl_dead_overview/BackDrop"]
-margin_left = 300.0
-margin_top = 400.0
-margin_right = 679.0
-margin_bottom = 472.0
-custom_fonts/font = ExtResource( 22 )
-text = "Inital Progeny:"
-align = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ProgenyEnd" type="Label" parent="pnl_dead_overview/BackDrop"]
-margin_left = 900.0
-margin_top = 400.0
-margin_right = 1268.0
-margin_bottom = 547.0
-custom_fonts/font = ExtResource( 22 )
-text = "Final Progeny:
-"
-align = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="GenomeRank" type="Label" parent="pnl_dead_overview/BackDrop"]
+[node name="btn_qtmenu" type="Button" parent="pnl_dead_overview/HSplitContainer/Panel"]
+anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = -300.0
-margin_bottom = -228.0
-custom_fonts/font = ExtResource( 22 )
-text = "Genome Rank: "
-align = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
+margin_left = -264.169
+margin_top = -115.435
+margin_right = -80.1686
+margin_bottom = -48.4352
+rect_min_size = Vector2( 120, 45 )
+custom_fonts/font = ExtResource( 13 )
+text = "Quit to Menu"
 
-[node name="restart" type="Button" parent="pnl_dead_overview/BackDrop"]
-margin_left = 721.0
-margin_top = 700.0
-margin_right = 925.0
-margin_bottom = 778.0
-custom_fonts/font = ExtResource( 22 )
-text = "Restart"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="CrossBones" type="TextureRect" parent="pnl_dead_overview/BackDrop"]
-margin_left = 300.0
-margin_top = 30.0
-margin_right = 1573.0
-margin_bottom = 1310.0
-rect_scale = Vector2( 0.2, 0.2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="RightDNA" type="TextureRect" parent="pnl_dead_overview/BackDrop"]
-anchor_left = 1.0
+[node name="LblGameOver" type="Label" parent="pnl_dead_overview"]
 anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -150.0
-margin_right = -0.00012207
-texture = ExtResource( 18 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="LeftDNA" type="TextureRect" parent="pnl_dead_overview/BackDrop"]
-margin_right = 150.0
-margin_bottom = 898.0
-texture = ExtResource( 24 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="pnl_dead_overview/BackDrop"]
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = -147.172
-margin_top = 100.0
-margin_right = 152.828
-margin_bottom = 190.0
-rect_scale = Vector2( 1.25, 1.25 )
-custom_fonts/font = ExtResource( 22 )
-text = "You Died!"
+margin_bottom = 125.0
+custom_styles/normal = SubResource( 10 )
+custom_fonts/font = ExtResource( 21 )
+text = "Game Over!"
 align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RoundsBegin" type="Label" parent="pnl_dead_overview/BackDrop"]
-margin_left = 300.0
-margin_top = 300.0
-margin_right = 675.0
-margin_bottom = 372.0
-custom_fonts/font = ExtResource( 22 )
-text = "Initial Rounds:"
-align = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="RoundsEnd" type="Label" parent="pnl_dead_overview/BackDrop"]
-margin_left = 900.0
-margin_top = 300.0
-margin_right = 1248.0
-margin_bottom = 372.0
-custom_fonts/font = ExtResource( 22 )
-text = "Final Rounds:"
-align = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="DeadCell" type="TextureRect" parent="pnl_dead_overview/BackDrop"]
-margin_left = 1095.76
-margin_top = 83.0294
-margin_right = 1597.76
-margin_bottom = 332.029
-rect_scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 25 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="nucleaus" type="TextureRect" parent="pnl_dead_overview/BackDrop/DeadCell"]
-margin_right = 502.0
-margin_bottom = 249.0
-texture = ExtResource( 26 )
-
-[node name="DeathReason" type="Label" parent="pnl_dead_overview/BackDrop"]
-margin_left = 300.0
-margin_top = 500.0
-margin_right = 787.0
-margin_bottom = 572.0
-custom_fonts/font = ExtResource( 22 )
-text = "You Died because: "
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Timer" type="Timer" parent="pnl_dead_overview"]
-wait_time = 5.0
-autostart = true
+[node name="statsScreen" parent="." instance=ExtResource( 23 )]
+visible = false
+[connection signal="bandage_msg" from="Organism" to="." method="_on_Organism_bandage_msg"]
+[connection signal="clear_gap_msg" from="Organism" to="." method="_on_Organism_clear_gap_msg"]
+[connection signal="cmsm_changed" from="Organism" to="ChromosomeStatus" method="update"]
+[connection signal="died" from="Organism" to="." method="_on_Organism_died"]
+[connection signal="doing_work" from="Organism" to="." method="_on_Organism_doing_work"]
+[connection signal="energy_changed" from="Organism" to="." method="_on_Organism_energy_changed"]
+[connection signal="finished_replication" from="Organism" to="." method="_on_Organism_finished_replication"]
+[connection signal="gap_close_msg" from="Organism" to="." method="_on_Organism_gap_close_msg"]
+[connection signal="gap_selected" from="Organism" to="." method="_on_Organism_gap_selected"]
+[connection signal="gene_bandaged" from="Organism" to="." method="_on_Organism_gene_bandaged"]
+[connection signal="gene_trimmed" from="Organism" to="." method="_on_Organism_gene_trimmed"]
+[connection signal="justnow_update" from="Organism" to="." method="_on_Organism_justnow_update"]
+[connection signal="resources_changed" from="Organism" to="." method="_on_Organism_resources_changed"]
+[connection signal="show_repair_opts" from="Organism" to="." method="_on_Organism_show_repair_opts"]
+[connection signal="show_reprod_opts" from="Organism" to="." method="_on_Organism_show_reprod_opts"]
+[connection signal="transposon_activity" from="Organism" to="." method="_on_Organism_transposon_activity"]
+[connection signal="updated_gaps" from="Organism" to="." method="_on_Organism_updated_gaps"]
 [connection signal="tab_changed" from="RepairTabs" to="." method="_on_RepairTabs_tab_changed"]
 [connection signal="item_activated" from="RepairTabs/pnl_repair_choices/hsplit/ilist_choices" to="." method="_on_ilist_choices_item_activated"]
 [connection signal="item_selected" from="RepairTabs/pnl_repair_choices/hsplit/ilist_choices" to="." method="upd_repair_desc"]
@@ -1031,6 +947,7 @@ autostart = true
 [connection signal="loaded" from="pnl_saveload" to="." method="_on_pnl_saveload_loaded"]
 [connection signal="pressed" from="pnl_saveload/btn_load" to="pnl_saveload" method="_on_btn_load_pressed"]
 [connection signal="pressed" from="pnl_bugreport/btn_load" to="." method="_on_btn_load_pressed"]
+[connection signal="request_completed" from="pnl_bugreport/HTTPRequest" to="pnl_bugreport" method="_on_request_completed"]
 [connection signal="update_seqelm_coloration" from="pnl_ph_filter" to="." method="_on_pnl_ph_filter_update_seqelm_coloration"]
 [connection signal="visibility_changed" from="pnl_ph_filter" to="pnl_ph_filter" method="_on_pnl_ph_filter_visibility_changed"]
 [connection signal="value_changed" from="pnl_ph_filter/slider_ph" to="pnl_ph_filter" method="_on_slider_ph_value_changed"]
@@ -1040,6 +957,8 @@ autostart = true
 [connection signal="pressed" from="button_grid/btn_bugreport" to="." method="_on_btn_bugreport_pressed"]
 [connection signal="pressed" from="button_grid/btn_saveload" to="." method="_on_btn_saveload_pressed"]
 [connection signal="pressed" from="button_grid/btn_filter" to="." method="_on_btn_filter_pressed"]
+[connection signal="pressed" from="button_grid/stats_screen" to="." method="_on_stats_screen_pressed"]
+[connection signal="pressed" from="button_grid/stats_screen" to="statsScreen" method="_on_stats_screen_pressed"]
 [connection signal="pressed" from="button_grid/btn_nxt" to="." method="_on_btn_nxt_pressed"]
-[connection signal="pressed" from="button_grid/btn_stats_screen" to="." method="_on_btn_stats_screen_pressed"]
 [connection signal="pressed" from="ViewMap" to="." method="_on_ViewMap_pressed"]
+[connection signal="pressed" from="pnl_dead_overview/HSplitContainer/Panel/btn_qtmenu" to="." method="quit_to_menu"]

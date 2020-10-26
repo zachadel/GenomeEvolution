@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scripts/MainMenu/MainMenu.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/MainMenu/TitleScreen.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/MainMenu/CharacterSelection.tscn" type="PackedScene" id=3]
+
+[node name="MainMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TitleScreen" parent="." instance=ExtResource( 2 )]
+
+[node name="CharacterSelection" parent="." instance=ExtResource( 3 )]
+visible = false
+[connection signal="begin_new_game" from="TitleScreen" to="." method="_on_TitleScreen_begin_new_game"]
+[connection signal="exit_game" from="TitleScreen" to="." method="_on_TitleScreen_exit_game"]
+[connection signal="go_to_settings" from="TitleScreen" to="." method="_on_TitleScreen_go_to_settings"]

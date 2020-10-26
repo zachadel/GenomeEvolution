@@ -485,13 +485,10 @@ func teleport_player(pos: Vector3):
 				
 	loc_highlight.position = current_player.position
 	
-#I assume that this function allows the movement of the player from one tile to the next. 
 func move_player(pos: Vector3):
-	
 	var player_tile = Game.world_to_map(current_player.position)
 	var tiles_moved = 0
-	if($ResourceMap.get_tile_resources(player_tile) == {}):
-		STATS.increment_final_blank_tiles()
+	
 	var loc_radius = current_player.organism.get_locomotion_radius()
 	var vis_radius = current_player.organism.get_vision_radius()
 	
@@ -524,7 +521,7 @@ func move_player(pos: Vector3):
 				#current_player.update_nucleus()
 				
 				astar.set_position_offset(pos, funcref(self, "costs"))
-				STATS.increment_tiles_traveled()
+				
 				emit_signal("player_energy_changed", current_player.organism.energy)
 				loc_highlight.position = current_player.position
 		
@@ -540,6 +537,7 @@ func move_player(pos: Vector3):
 		notifications.emit_signal("notification_needed", "Movement value too low to move there.")
 		emit_signal("invalid_action", "movement", true, "moving there")
 			
+	STATS.increment_tiles_traveled(tiles_moved)
 	return tiles_moved
 
 #Checks the mineral and cfp resource banks if they have acquired any particular

@@ -1,0 +1,63 @@
+################################################################################
+#                                                                              #
+#																			   #
+#                              NAMING CONVENTIONS                              #
+#																			   #
+#																			   #
+################################################################################
+
+EXTERNAL RESOURCES:
+	-variable name:
+		*all lowercase
+		*no special characters, only alpha numeric
+	-groups:
+		*all lowercase
+		*groups are determined entirely by internal resources i.e. if the
+			internal resources are given by ["carbs", "fats", "proteins"], then
+			if there are three different types of each resource group, then the
+			groups for carbs would be ["carbs_a", "carbs_b", "carbs_c"]
+	-tile image name:
+		*must end in .png
+		*can be the same as the variable name or not
+	-icon name:
+		*must end in .png
+		*must be the same as the tile image name but with the "_icon" inserted
+			before ".png"
+
+INTERNAL RESOURCES: (changed in favor of just using external resources internally)
+	-variable name:
+		*all lowercase and plural
+		*resource type must be all one word i.e. "carbs"
+		*the tier of the resource must come after the resource type
+		*separating the tier and the resource should be a separator like "_"
+		*this separator is by default "_", must be edited if changed
+	-pretty name:
+		*Prefix for tier 0: "Simple"
+		*Prefix for tier 1: "Complex"
+		*Prefix for tier n: To be determined as necessary
+		*Converted group name: singular
+	-icon name:
+		*resource name ("carbs_0") followed by "_icon.png"
+
+ENERGY:
+	-variable name:
+		*"energy"
+	-icon name:
+		*"energy_icon.png"
+
+CELLS:
+	-name of the cell is the name of the parts associated with it
+	-each cell has parts:
+		*vesicles - storage
+		*nucleus - DNA
+		*mitochondria - energy
+		*ribosomes - unknown function
+		*[part] - [function]
+	-the texture for each part is stored as [name]_[part].svg
+		*standard location: "res://Assets/Images/Cells/[part]/"
+		*each part has its own subfolder in Cells which is lowercase and singular
+			such as "nucleus" or "body" or "vesicle"
+		*textures can be reused by specifying them in the cells.cfg file where 
+			each cell has image locations for each body part
+		*if any of them are blank, then the system assumes the standard location
+	-the main cell body is stored as "res://Assets/Images/Cells/body/body_[cell name].svg" 

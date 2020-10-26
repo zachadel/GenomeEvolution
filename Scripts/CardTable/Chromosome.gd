@@ -304,7 +304,7 @@ func add_elm(elm, pos = null):
 func split_elm(elm):
 	var dupe_elm = Game.copy_elm(elm);
 	var base_behavior = elm.get_ess_behavior_raw();
-	
+	STATS.increment_elmSplits()
 	var half_up = {};
 	var half_down = {};
 	for k in base_behavior:

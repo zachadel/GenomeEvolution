@@ -1,0 +1,96 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Scripts/WorldMap/Vesicle.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Images/Tiles/Resources/vesicle.svg" type="Texture" id=2]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+render_mode blend_premul_alpha;
+
+// This shader only works properly with premultiplied alpha blend mode.
+uniform float aura_width = 2.0;
+uniform vec4 aura_color: hint_color;
+
+void fragment() {
+	vec4 col = texture(TEXTURE, UV);
+	vec2 ps = TEXTURE_PIXEL_SIZE;
+	float a;
+	float maxa = col.a;
+	float mina = col.a;
+
+	a = texture(TEXTURE, UV + vec2(0.0, -aura_width) * ps).a;
+	maxa = max(a, maxa);
+	mina = min(a, mina);
+
+	a = texture(TEXTURE, UV + vec2(0.0, aura_width) * ps).a;
+	maxa = max(a, maxa);
+	mina = min(a, mina);
+
+	a = texture(TEXTURE, UV + vec2(-aura_width, 0.0) * ps).a;
+	maxa = max(a, maxa);
+	mina = min(a, mina);
+
+	a = texture(TEXTURE, UV + vec2(aura_width, 0.0) * ps).a;
+	maxa = max(a, maxa);
+	mina = min(a, mina);
+	
+	a = texture(TEXTURE, UV + vec2(aura_width, -aura_width) * ps).a;
+	maxa = max(a, maxa);
+	mina = min(a, mina);
+
+	a = texture(TEXTURE, UV + vec2(aura_width, aura_width) * ps).a;
+	maxa = max(a, maxa);
+	mina = min(a, mina);
+
+	a = texture(TEXTURE, UV + vec2(-aura_width, -aura_width) * ps).a;
+	maxa = max(a, maxa);
+	mina = min(a, mina);
+
+	a = texture(TEXTURE, UV + vec2(-aura_width, aura_width) * ps).a;
+	maxa = max(a, maxa);
+	mina = min(a, mina);
+
+	col.rgb *= col.a;
+
+	COLOR = col;
+	COLOR.rgb += aura_color.rgb * (maxa - mina);
+}
+"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/aura_width = 6.0
+shader_param/aura_color = Color( 0.0352941, 0.227451, 0.411765, 1 )
+
+[node name="Container" type="StaticBody2D"]
+position = Vector2( 685.758, 445.143 )
+input_pickable = true
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="."]
+material = SubResource( 2 )
+texture = ExtResource( 2 )
+
+[node name="Collision" type="CollisionPolygon2D" parent="."]
+build_mode = 1
+polygon = PoolVector2Array( -25.0769, 35.1474, 25.8857, 35.4629, 32.3547, 31.6762, 35.668, 24.4184, 35.5103, -25.1242, 31.8813, -32.2243, 24.7813, -35.6954, -25.5502, -35.6954, -31.0725, -32.5399, -35.5833, -26.5055, -35.9637, 25.3651, -31.8615, 31.5185 )
+one_way_collision_margin = 0.0
+
+[node name="MouseDetection" type="Area2D" parent="."]
+gravity = 0.0
+linear_damp = 0.0
+angular_damp = 0.0
+monitoring = false
+monitorable = false
+collision_layer = 2
+collision_mask = 2
+
+[node name="Collision2" type="CollisionPolygon2D" parent="MouseDetection"]
+build_mode = 1
+polygon = PoolVector2Array( -25.0769, 35.1474, 25.8857, 35.4629, 32.3547, 31.6762, 35.668, 24.4184, 35.5103, -25.1242, 31.8813, -32.2243, 24.7813, -35.6954, -25.5502, -35.6954, -31.0725, -32.5399, -35.5833, -26.5055, -35.9637, 25.3651, -31.8615, 31.5185 )
+one_way_collision_margin = 0.0
+[connection signal="mouse_entered" from="MouseDetection" to="." method="_on_Area2D_mouse_entered"]
+[connection signal="mouse_exited" from="MouseDetection" to="." method="_on_Area2D_mouse_exited"]

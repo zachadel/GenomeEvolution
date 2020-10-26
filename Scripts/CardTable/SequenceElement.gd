@@ -71,8 +71,6 @@ func obtain_ate_personality(personality_id := "") -> void:
 
 var copygene_flag := false;
 func set_copygene_flag(s := true) -> void:
-	if(s == true):
-		STATS.increment_genes_copied_cpyRepair()
 	copygene_flag = s;
 func has_copygene_flag() -> bool:
 	return copygene_flag;
@@ -334,7 +332,7 @@ func get_gene_distance(other_elm) -> int:
 func is_equal(other_elm, max_dist := 8) -> bool:
 	return can_compare_elm(other_elm) && get_gene_distance(other_elm) <= max_dist;
 
-func name():
+func get_gene_name():
 	match mode:
 		"essential":
 			return Tooltips.GENE_NAMES.get(id, id);
@@ -457,7 +455,6 @@ func gain_specific_skill(behavior: String, skill_id: String) -> void:
 
 func evolve_skill(behave_key: String, gain := true) -> void:
 	if gain:
-		STATS.increment_num_skills()
 		var new_skill_id := Skills.get_random_skill_id(behave_key, get_skill_counts().keys());
 		if !new_skill_id.empty():
 			just_evolved_skill = true;
@@ -567,7 +564,7 @@ func kill_elm():
 		ess_behavior[k] = 0;
 	ate_activity = 0;
 	upd_behavior_disp();
-	
+	STATS.increment_pseudo()
 	mode = "pseudo";
 
 func damage_gene(dmg := true):
@@ -701,6 +698,7 @@ func get_dominant_essential() -> String:
 	return dominant_key;
 
 func upd_display():
+	var blankTiles = 0;
 	if !display_locked:
 		$lbl_code.text = gene_code;
 		$lbl_id.visible = false;
@@ -720,6 +718,7 @@ func upd_display():
 					"pseudo":
 						self_modulate = Color(.5, .5, 0);
 					"blank":
+						blankTiles += 1
 						set_texture(null);
 						$Helix.texture = Game.helix_textures[false];
 				upd_behavior_disp();
@@ -735,7 +734,8 @@ func upd_display():
 			modulate = forced_comparison_color;
 		else:
 			modulate = Color(1, 1, 1, 1);
-		
+		STATS.set_final_blank_tiles(blankTiles)
+		STATS.maxBlankTiles()
 		upd_boost_disp();
 
 func get_cmsm():

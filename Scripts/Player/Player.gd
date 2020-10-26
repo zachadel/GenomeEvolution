@@ -114,11 +114,11 @@ func eject_mineral_resource(resource, amount = 1):
 
 #It might be better here to emit a player signal rather than an organism signal
 func consume_resources(action):
+	STATS.increment_resources_consumed()
 	organism.use_resources(action)
 	if not is_alive_resource_check():
 		kill("ran out of resources")
 		
 func kill(reason: String = "ran out of resources"):
 	organism.kill(reason)
-	STATS.set_reason_death(reason);
 	emit_signal("player_died", self)
