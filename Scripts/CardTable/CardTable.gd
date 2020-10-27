@@ -298,7 +298,7 @@ func _on_ilist_choices_item_activated(idx):
 func upd_turn_display(upd_turn_unlocks: bool = Game.fresh_round, upd_env_markers: bool = Game.fresh_round):
 	$lnum_turn.set_num(Game.round_num);
 	$lnum_progeny.set_num(orgn.num_progeny);
-	
+	STATS.set_Rounds(Game.round_num)
 	$TurnList.highlight(Game.turn_idx);
 	
 	if upd_turn_unlocks:

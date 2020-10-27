@@ -502,7 +502,7 @@ func move_player(pos: Vector3):
 			if path_and_cost["total_cost"] + loc_tax <= current_player.organism.energy:
 				tiles_moved = len(path_and_cost) - 1
 				current_player.organism.energy -= (path_and_cost["total_cost"] + loc_tax)
-				
+				STATS.increment_tiles_traveled()
 				var new_position = Game.map_to_world(pos)
 			
 				current_player.rotate_sprite((new_position - current_player.position).angle())
@@ -537,7 +537,7 @@ func move_player(pos: Vector3):
 		notifications.emit_signal("notification_needed", "Movement value too low to move there.")
 		emit_signal("invalid_action", "movement", true, "moving there")
 			
-	STATS.increment_tiles_traveled(tiles_moved)
+	
 	return tiles_moved
 
 #Checks the mineral and cfp resource banks if they have acquired any particular

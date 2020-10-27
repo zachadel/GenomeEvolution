@@ -53,6 +53,7 @@ var trimmedTiles = 0
 var splitElm = 0
 var numInversions = 0
 var tilesInverted = 0
+var downToPseudo = 0;
 
 var current_classicTE = 0
 var current_zigzagTE = 0
@@ -92,7 +93,15 @@ var maxConstruc = 0
 var maxDeconstruc = 0
 var maxAte =0
 var transposonFuse = 0
-
+var turns_taken = 0
+func increment_downToPseudo():
+	downToPseudo += 1
+func get_downToPseudo():
+	return downToPseudo;
+func increment_turns():
+	turns_taken += 1
+func get_turns():
+	return turns_taken
 func get_currentRep():
 	return currentReplication
 func get_currentLoc():
@@ -174,7 +183,9 @@ func update_maxType():
 
 func increment_transposonFuse():
 	transposonFuse += 1
-
+func get_TEFuse():
+	return transposonFuse;
+	
 func compare_maxTE():
 	if(current_classicTE > max_classicTE):
 		max_classicTE = current_classicTE
@@ -204,21 +215,21 @@ func clear_currentTE():
 	current_zigzagTE = 0
 #card, superjump, closefar, budding, cnearjfar, commuter, zigzag, buncher\n
 func update_currentTE(TE):
-	if(TE == "zigzag"):#
+	if(TE.ate_personality.get("zigzag")):#
 		current_zigzagTE += 1
-	elif(TE =="card"): #
+	elif(TE.ate_personality.get("card")): #
 		current_classicTE += 1
-	elif(TE == "superjump"): #
+	elif(TE.ate_personality.get("superjump")): #
 		current_jumperTE += 1
-	elif(TE == "budding"): #
+	elif(TE.ate_personality.get("budding")): #
 		current_buddyTE += 1
-	elif(TE == "commmuter"): #
+	elif(TE.ate_personality.get("commuter")): #
 		current_commuterTE +=1
-	elif(TE == "buncher"):# 
+	elif(TE.ate_personality.get("buncher")):# 
 		current_buncherTE += 1
-	elif(TE == "closefar"):
+	elif(TE.ate_personality.get("closefar")):
 		current_assistTE += 1
-	elif(TE == "cnearjfar"):
+	elif(TE.ate_personality.get("cnearjfar")):
 		current_nestlerTE += 1 
 
 func increment_tilesInverted():
@@ -228,10 +239,12 @@ func increment_numInversions():
 
 func increment_elmSplits():
 	splitElm += 1
-
+func get_elmSplit():
+	return splitElm;
 func increment_trimmedTiles():
 	trimmedTiles +=1
-
+func get_trimmedTiles():
+	return trimmedTiles;
 func increment_total_pseduo():
 	pseudoGene += 1
 
@@ -348,6 +361,10 @@ func increment_maxVal_cat1():
 func get_num_skills():
 	return num_skills
 
+func get_skills_gained():
+	return skills_gained;
+func get_skills_lost():
+	return skills_lost;
 #What:Track the number of skills learned by genes
 #Where: 
 func increment_num_skills():
@@ -540,8 +557,8 @@ func get_tiles_traveled():
 
 #What: Increments the tiles traveled variable
 #Where: WorldMap, within the move_player function
-func increment_tiles_traveled(moved):
-	tiles_traveled += moved
+func increment_tiles_traveled():
+	tiles_traveled += 1
 
 #What: returns the resources consumed
 #where: 
@@ -595,8 +612,8 @@ func get_rounds():
 
 #What: Increments Rounds by 1
 #Where: adv_turn in Card Table
-func increment_Rounds():
-	rounds_run += 1
+func set_Rounds(rounds):
+	rounds_run = rounds
 
 # Called when the node enters the scene tree for the first time, not sure what to do with this guy
 func _ready():

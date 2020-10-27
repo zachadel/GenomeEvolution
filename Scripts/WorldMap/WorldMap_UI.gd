@@ -182,6 +182,7 @@ func _on_CheckGenome_pressed():
 
 
 func _on_AcquireResources_pressed():
+	STATS.increment_resources_consumed()
 	emit_signal("acquire_resources")
 	pass # Replace with function body.
 
@@ -213,6 +214,3 @@ func print_diff_dict(diff_dict: Dictionary):
 
 
 
-func _on_StatsScreen_pressed():
-	$statsScreen.visible = true
-	pass # Replace with function body.

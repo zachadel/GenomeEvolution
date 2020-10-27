@@ -1694,6 +1694,12 @@ func get_recombos_per_turn() -> int:
 	return behavior_profile.get_skill_count("recombo");
 
 func adv_turn(round_num, turn_idx):
+	#this should iterate through all of the transposons.
+	var current_ates = cmsms.get_ate_list()
+	STATS.clear_currentTE()
+	for i in current_ates:
+		STATS.update_currentTE(i)
+	STATS.compare_maxTE()
 	click_mode = "";
 	cmsms.highlight_genes(gene_selection, false);
 	gene_selection.clear();

@@ -183,12 +183,13 @@ __meta__ = {
 }
 
 [node name="Label2" type="Label" parent="mainStat2"]
+margin_left = -30.0
 margin_top = 100.0
-margin_right = 153.0
+margin_right = 215.0
 margin_bottom = 174.0
 rect_scale = Vector2( 0.7, 0.7 )
 custom_fonts/font = ExtResource( 4 )
-text = "Turns"
+text = "Resources"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -233,12 +234,13 @@ __meta__ = {
 }
 
 [node name="Label2" type="Label" parent="mainStat3"]
+margin_left = 10.0
 margin_top = 100.0
-margin_right = 153.0
+margin_right = 163.0
 margin_bottom = 174.0
 rect_scale = Vector2( 0.7, 0.7 )
 custom_fonts/font = ExtResource( 4 )
-text = "Turns"
+text = "Tiles"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -283,12 +285,13 @@ __meta__ = {
 }
 
 [node name="Label2" type="Label" parent="mainStat4"]
+margin_left = -15.0
 margin_top = 100.0
-margin_right = 153.0
+margin_right = 181.0
 margin_bottom = 174.0
 rect_scale = Vector2( 0.7, 0.7 )
 custom_fonts/font = ExtResource( 4 )
-text = "Turns"
+text = "Progeny"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -320,7 +323,7 @@ margin_left = 10.0
 margin_top = 10.0
 margin_right = 50.0
 margin_bottom = 60.0
-color = Color( 0.776471, 0.290196, 0.415686, 1 )
+color = Color( 0.290196, 0.52549, 0.776471, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -330,7 +333,7 @@ margin_left = 60.0
 margin_top = 10.0
 margin_right = 100.0
 margin_bottom = 60.0
-color = Color( 0.376471, 0.482353, 0.498039, 1 )
+color = Color( 0.494118, 0.866667, 0.921569, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -455,7 +458,7 @@ margin_left = 60.0
 margin_top = 10.0
 margin_right = 100.0
 margin_bottom = 60.0
-color = Color( 0.376471, 0.482353, 0.498039, 1 )
+color = Color( 0.494118, 0.866667, 0.921569, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -659,8 +662,10 @@ __meta__ = {
 }
 
 [node name="transporter" type="TextureRect" parent="sub1/gene3"]
-margin_right = 40.0
-margin_bottom = 40.0
+margin_left = -5.04517
+margin_top = 15.1353
+margin_right = 570.955
+margin_bottom = 591.135
 texture = ExtResource( 18 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1596,56 +1601,6 @@ margin_bottom = 1101.0
 rect_scale = Vector2( 0.05, 0.05 )
 texture = ExtResource( 11 )
 
-[node name="rep9" type="ColorRect" parent="sub2"]
-margin_left = -40.0
-margin_top = 640.0
-margin_right = 80.0
-margin_bottom = 690.0
-color = Color( 0.447059, 0.447059, 0.447059, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="rep1Score" type="ColorRect" parent="sub2/rep9"]
-margin_left = 140.0
-margin_right = 260.0
-margin_bottom = 50.0
-color = Color( 0.929412, 0.94902, 0.376471, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="score1Text" type="Label" parent="sub2/rep9/rep1Score"]
-margin_left = 30.0
-margin_right = 70.0
-margin_bottom = 55.0
-custom_fonts/font = ExtResource( 7 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "0"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="rep1Score2" type="ColorRect" parent="sub2/rep9"]
-margin_left = 210.0
-margin_right = 270.0
-margin_bottom = 50.0
-
-[node name="score2Text" type="Label" parent="sub2/rep9/rep1Score2"]
-margin_left = 20.0
-margin_right = 60.0
-margin_bottom = 55.0
-custom_fonts/font = ExtResource( 7 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "0"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="image1" type="TextureRect" parent="sub2/rep9"]
-margin_right = 40.0
-margin_bottom = 40.0
-
 [node name="sub3" type="Label" parent="."]
 margin_left = 1100.0
 margin_top = 320.0
@@ -2278,7 +2233,7 @@ text = "Back"
 visible = false
 margin_left = 350.0
 margin_top = 180.0
-margin_right = 500.0
+margin_right = 600.0
 margin_bottom = 300.0
 color = Color( 0.407843, 0.52549, 1, 1 )
 __meta__ = {
@@ -2286,18 +2241,21 @@ __meta__ = {
 }
 
 [node name="surviveInfo" type="Label" parent="dataDisplay"]
-margin_left = 50.0
-margin_top = 50.0
-margin_right = 90.0
-margin_bottom = 64.0
-text = "disp 1
+margin_left = 5.0
+margin_top = 6.0
+margin_right = 259.0
+margin_bottom = 183.0
+rect_scale = Vector2( 0.8, 0.8 )
+custom_fonts/font = ExtResource( 7 )
+text = "Shows the number of rounds survived
 "
+autowrap = true
 
 [node name="dataDisplay2" type="ColorRect" parent="."]
 visible = false
 margin_left = 700.0
 margin_top = 180.0
-margin_right = 850.0
+margin_right = 950.0
 margin_bottom = 300.0
 color = Color( 0.407843, 0.52549, 1, 1 )
 __meta__ = {
@@ -2305,18 +2263,19 @@ __meta__ = {
 }
 
 [node name="consumeInfo" type="Label" parent="dataDisplay2"]
-margin_left = 50.0
-margin_top = 50.0
-margin_right = 90.0
-margin_bottom = 64.0
-text = "disp 2
-"
+margin_left = 1.0
+margin_right = 295.0
+margin_bottom = 132.0
+rect_scale = Vector2( 0.8, 0.8 )
+custom_fonts/font = ExtResource( 7 )
+text = "Shows the number of resources consumed"
+autowrap = true
 
 [node name="dataDisplay3" type="ColorRect" parent="."]
 visible = false
 margin_left = 1100.0
 margin_top = 180.0
-margin_right = 1250.0
+margin_right = 1350.0
 margin_bottom = 300.0
 color = Color( 0.407843, 0.52549, 1, 1 )
 __meta__ = {
@@ -2324,16 +2283,19 @@ __meta__ = {
 }
 
 [node name="ExploreInfo" type="Label" parent="dataDisplay3"]
-margin_left = 50.0
-margin_top = 50.0
-margin_right = 90.0
-margin_bottom = 64.0
-text = "disp 3
+margin_left = 6.0
+margin_top = 4.0
+margin_right = 295.0
+margin_bottom = 181.0
+rect_scale = Vector2( 0.8, 0.8 )
+custom_fonts/font = ExtResource( 7 )
+text = "Show the number of tiles you've explored
 "
+autowrap = true
 
 [node name="dataDisplay4" type="ColorRect" parent="."]
 visible = false
-margin_left = 1100.0
+margin_left = 1000.0
 margin_top = 180.0
 margin_right = 1250.0
 margin_bottom = 300.0
@@ -2343,11 +2305,14 @@ __meta__ = {
 }
 
 [node name="ProduceInfo" type="Label" parent="dataDisplay4"]
-margin_left = 50.0
-margin_top = 50.0
-margin_right = 90.0
-margin_bottom = 64.0
-text = "disp 4"
+margin_left = 11.0
+margin_top = 8.0
+margin_right = 317.0
+margin_bottom = 162.0
+rect_scale = Vector2( 0.8, 0.8 )
+custom_fonts/font = ExtResource( 7 )
+text = "Shows the number of progeny you've produced"
+autowrap = true
 
 [node name="dataDisplay5" type="ColorRect" parent="."]
 visible = false
@@ -2361,12 +2326,15 @@ __meta__ = {
 }
 
 [node name="ProduceInfo" type="Label" parent="dataDisplay5"]
-margin_left = 50.0
-margin_top = 50.0
-margin_right = 90.0
-margin_bottom = 64.0
-text = "Max Bar info
-"
+margin_left = 5.0
+margin_top = 14.0
+margin_right = 410.0
+margin_bottom = 191.0
+rect_scale = Vector2( 0.5, 0.5 )
+custom_fonts/font = ExtResource( 7 )
+text = "Max Bar Info:
+This shows the maximum you've received of a type of gene at any point."
+autowrap = true
 
 [node name="dataDisplay6" type="ColorRect" parent="."]
 visible = false
@@ -2380,18 +2348,22 @@ __meta__ = {
 }
 
 [node name="ProduceInfo" type="Label" parent="dataDisplay6"]
-margin_left = 50.0
-margin_top = 50.0
-margin_right = 90.0
-margin_bottom = 64.0
-text = "Current Bar info
+margin_left = 20.1349
+margin_top = 9.08093
+margin_right = 299.135
+margin_bottom = 231.081
+rect_scale = Vector2( 0.5, 0.5 )
+custom_fonts/font = ExtResource( 7 )
+text = "Current Bar info:
+This show the genes you currently have
 "
+autowrap = true
 
 [node name="geneDisplay1" type="ColorRect" parent="."]
 visible = false
 margin_left = 10.0
 margin_top = 400.0
-margin_right = 210.0
+margin_right = 220.0
 margin_bottom = 520.0
 color = Color( 0.407843, 0.52549, 1, 1 )
 __meta__ = {
@@ -2399,17 +2371,19 @@ __meta__ = {
 }
 
 [node name="ProduceInfo" type="Label" parent="geneDisplay1"]
-margin_left = 50.0
-margin_top = 50.0
-margin_right = 90.0
-margin_bottom = 64.0
-text = "gene 1 info"
+margin_left = 4.05948
+margin_top = -4.82706
+margin_right = 185.059
+margin_bottom = 127.173
+custom_fonts/font = ExtResource( 7 )
+text = "Current Replication Genes"
+autowrap = true
 
 [node name="geneDisplay2" type="ColorRect" parent="."]
 visible = false
 margin_left = 10.0
 margin_top = 500.0
-margin_right = 210.0
+margin_right = 220.0
 margin_bottom = 620.0
 color = Color( 0.407843, 0.52549, 1, 1 )
 __meta__ = {
@@ -2417,17 +2391,19 @@ __meta__ = {
 }
 
 [node name="ProduceInfo" type="Label" parent="geneDisplay2"]
-margin_left = 50.0
-margin_top = 50.0
-margin_right = 90.0
-margin_bottom = 64.0
-text = "gene 2 info"
+margin_left = 7.09174
+margin_top = -4.56232
+margin_right = 169.092
+margin_bottom = 127.438
+custom_fonts/font = ExtResource( 7 )
+text = "Current Sensing Genes"
+autowrap = true
 
 [node name="geneDisplay3" type="ColorRect" parent="."]
 visible = false
 margin_left = 10.0
 margin_top = 550.0
-margin_right = 210.0
+margin_right = 220.0
 margin_bottom = 670.0
 color = Color( 0.407843, 0.52549, 1, 1 )
 __meta__ = {
@@ -2435,11 +2411,16 @@ __meta__ = {
 }
 
 [node name="ProduceInfo" type="Label" parent="geneDisplay3"]
-margin_left = 50.0
-margin_top = 50.0
-margin_right = 90.0
-margin_bottom = 64.0
-text = "gene 3 info"
+margin_left = 2.35132
+margin_top = -7.0
+margin_right = 212.351
+margin_bottom = 125.0
+custom_fonts/font = ExtResource( 7 )
+text = "Current Manipulation Genes"
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="geneDisplay4" type="ColorRect" parent="."]
 visible = false
@@ -2453,11 +2434,13 @@ __meta__ = {
 }
 
 [node name="ProduceInfo" type="Label" parent="geneDisplay4"]
-margin_left = 50.0
-margin_top = 50.0
-margin_right = 90.0
-margin_bottom = 64.0
-text = "gene 4 info"
+margin_left = 5.0
+margin_top = -7.0
+margin_right = 207.0
+margin_bottom = 125.0
+custom_fonts/font = ExtResource( 7 )
+text = "Current Component Genes"
+autowrap = true
 
 [node name="geneDisplay5" type="ColorRect" parent="."]
 visible = false
@@ -2471,29 +2454,37 @@ __meta__ = {
 }
 
 [node name="ProduceInfo" type="Label" parent="geneDisplay5"]
-margin_left = 50.0
-margin_top = 50.0
-margin_right = 90.0
-margin_bottom = 64.0
-text = "gene 5  info"
+margin_left = -1.0
+margin_top = -4.0
+margin_right = 198.0
+margin_bottom = 128.0
+custom_fonts/font = ExtResource( 7 )
+text = "Current Construction Genes"
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="geneDisplay6" type="ColorRect" parent="."]
 visible = false
-margin_left = 10.0
-margin_top = 750.0
-margin_right = 210.0
-margin_bottom = 870.0
+margin_left = 13.3036
+margin_top = 769.35
+margin_right = 213.304
+margin_bottom = 889.35
 color = Color( 0.407843, 0.52549, 1, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ProduceInfo" type="Label" parent="geneDisplay6"]
-margin_left = 50.0
-margin_top = 50.0
-margin_right = 90.0
-margin_bottom = 64.0
-text = "gene 6 info"
+margin_left = -2.0
+margin_top = 1.0
+margin_right = 240.0
+margin_bottom = 137.0
+rect_scale = Vector2( 0.8, 0.8 )
+custom_fonts/font = ExtResource( 7 )
+text = "Current Deconstruction Genes"
+autowrap = true
 
 [node name="geneDisplay7" type="ColorRect" parent="."]
 visible = false
@@ -2507,11 +2498,13 @@ __meta__ = {
 }
 
 [node name="ProduceInfo" type="Label" parent="geneDisplay7"]
-margin_left = 50.0
-margin_top = 50.0
-margin_right = 90.0
-margin_bottom = 64.0
-text = "gene 7 info"
+margin_left = 4.28287
+margin_top = -8.73297
+margin_right = 161.283
+margin_bottom = 123.267
+custom_fonts/font = ExtResource( 7 )
+text = "Current Helper Gene"
+autowrap = true
 
 [node name="geneDisplay8" type="ColorRect" parent="."]
 visible = false
@@ -2881,6 +2874,15 @@ margin_bottom = 14.0
 custom_fonts/font = ExtResource( 7 )
 text = "Evolution
  information"
+
+[node name="Label" type="Label" parent="."]
+margin_left = 1200.0
+margin_right = 1240.0
+margin_bottom = 42.0
+custom_fonts/font = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="mouse_entered" from="mainStat1" to="." method="_on_mainStat1_mouse_entered"]
 [connection signal="mouse_exited" from="mainStat1" to="." method="_on_mainStat1_mouse_exited"]
 [connection signal="mouse_entered" from="mainStat2" to="." method="_on_mainStat2_mouse_entered"]
@@ -2935,8 +2937,6 @@ text = "Evolution
 [connection signal="mouse_exited" from="sub2/rep7" to="." method="_on_rep7_mouse_exited"]
 [connection signal="mouse_entered" from="sub2/rep8" to="." method="_on_rep8_mouse_entered"]
 [connection signal="mouse_exited" from="sub2/rep8" to="." method="_on_rep8_mouse_exited"]
-[connection signal="mouse_entered" from="sub2/rep9" to="." method="_on_rep9_mouse_entered"]
-[connection signal="mouse_exited" from="sub2/rep9" to="." method="_on_rep9_mouse_exited"]
 [connection signal="mouse_entered" from="sub3/ev1" to="." method="_on_ev1_mouse_entered"]
 [connection signal="mouse_exited" from="sub3/ev1" to="." method="_on_ev1_mouse_exited"]
 [connection signal="mouse_entered" from="sub3/ev2" to="." method="_on_ev2_mouse_entered"]
