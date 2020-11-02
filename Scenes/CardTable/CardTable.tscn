@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://Scripts/CardTable/CardTable.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player/Organism.tscn" type="PackedScene" id=2]
@@ -20,8 +20,11 @@
 [ext_resource path="res://Scenes/CardTable/pnl_bugreport.gd" type="Script" id=18]
 [ext_resource path="res://Assets/Images/pngs/DNA_small.png" type="Texture" id=19]
 [ext_resource path="res://Scenes/MainMenu/Credits.tscn" type="PackedScene" id=20]
-[ext_resource path="res://Assets/Fonts/OpenSans-48.tres" type="DynamicFont" id=21]
-[ext_resource path="res://Assets/Fonts/OpenSans-64.tres" type="DynamicFont" id=22]
+[ext_resource path="res://Assets/Images/pngs/DNA_left.png" type="Texture" id=21]
+[ext_resource path="res://Assets/Images/pngs/DNA_right.png" type="Texture" id=22]
+[ext_resource path="res://Scenes/statsScreen/statsScreen.tscn" type="PackedScene" id=23]
+[ext_resource path="res://Assets/Fonts/OpenSans-48.tres" type="DynamicFont" id=24]
+[ext_resource path="res://Scenes/CardTable/pnl_dead_overview.gd" type="Script" id=25]
 
 [sub_resource type="Theme" id=1]
 Button/colors/font_color_disabled = Color( 0, 0, 0, 1 )
@@ -129,12 +132,6 @@ font_data = SubResource( 6 )
 
 [sub_resource type="StyleBoxFlat" id=8]
 bg_color = Color( 0.21875, 0.21875, 0.21875, 1 )
-
-[sub_resource type="StyleBoxFlat" id=9]
-bg_color = Color( 0.145098, 0.145098, 0.164706, 1 )
-
-[sub_resource type="StyleBoxFlat" id=10]
-bg_color = Color( 0.12549, 0.141176, 0.192157, 1 )
 
 [node name="CardTable" type="Control"]
 anchor_right = 1.0
@@ -841,6 +838,7 @@ visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_styles/panel = SubResource( 8 )
+script = ExtResource( 25 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -856,59 +854,139 @@ __meta__ = {
 }
 
 [node name="CenterContainer" type="CenterContainer" parent="pnl_dead_overview/HSplitContainer"]
-margin_right = 400.0
+margin_right = 1600.0
 margin_bottom = 776.0
 
 [node name="Credits" parent="pnl_dead_overview/HSplitContainer/CenterContainer" instance=ExtResource( 20 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 75.0
+margin_left = 675.0
 margin_top = 163.0
-margin_right = 325.0
+margin_right = 925.0
 margin_bottom = 613.0
 rect_min_size = Vector2( 250, 450 )
 
-[node name="Panel" type="Panel" parent="pnl_dead_overview/HSplitContainer"]
-margin_left = 400.0
-margin_right = 1600.0
-margin_bottom = 776.0
+[node name="background" type="ColorRect" parent="pnl_dead_overview"]
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 1601.0
+margin_bottom = 901.0
+color = Color( 0.0431373, 0.0588235, 0.564706, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="LblOverview" type="Label" parent="pnl_dead_overview/HSplitContainer/Panel"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-custom_styles/normal = SubResource( 9 )
-custom_fonts/font = ExtResource( 22 )
-text = "if ur seein this its a bug lol"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="btn_qtmenu" type="Button" parent="pnl_dead_overview/HSplitContainer/Panel"]
+[node name="btn_qtmenu" type="Button" parent="pnl_dead_overview/background"]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -264.169
+margin_left = -400.0
 margin_top = -115.435
-margin_right = -80.1686
+margin_right = -188.0
 margin_bottom = -48.4352
 rect_min_size = Vector2( 120, 45 )
 custom_fonts/font = ExtResource( 13 )
 text = "Quit to Menu"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="LblGameOver" type="Label" parent="pnl_dead_overview"]
+[node name="statsScreen" parent="pnl_dead_overview/background" instance=ExtResource( 23 )]
+visible = false
+
+[node name="leftDNA" type="TextureRect" parent="pnl_dead_overview/background"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 21 )
+
+[node name="rightDNA" type="TextureRect" parent="pnl_dead_overview/background"]
+anchor_left = 1.0
 anchor_right = 1.0
-margin_bottom = 125.0
-custom_styles/normal = SubResource( 10 )
-custom_fonts/font = ExtResource( 21 )
-text = "Game Over!"
-align = 1
-valign = 1
+margin_left = -150.0
+margin_bottom = 900.0
+texture = ExtResource( 22 )
+
+[node name="Title" type="Label" parent="pnl_dead_overview/background"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -106.5
+margin_top = 50.0
+margin_right = 106.5
+margin_bottom = 117.0
+rect_scale = Vector2( 1.25, 1.25 )
+custom_fonts/font = ExtResource( 24 )
+text = "You Died"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="progeny1" type="Label" parent="pnl_dead_overview/background"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -300.0
+margin_top = 150.0
+margin_right = 193.0
+margin_bottom = 217.0
+custom_fonts/font = ExtResource( 24 )
+text = "Number of Progeny: "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="progeny2" type="Label" parent="pnl_dead_overview/background"]
+margin_left = 1000.0
+margin_top = 150.0
+margin_right = 1073.0
+margin_bottom = 217.0
+custom_fonts/font = ExtResource( 24 )
+text = "%d"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="rounds1" type="Label" parent="pnl_dead_overview/background"]
+margin_left = 500.0
+margin_top = 250.0
+margin_right = 965.0
+margin_bottom = 317.0
+custom_fonts/font = ExtResource( 24 )
+text = "Number of Rounds:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="rounds2" type="Label" parent="pnl_dead_overview/background"]
+margin_left = 1000.0
+margin_top = 250.0
+margin_right = 1073.0
+margin_bottom = 317.0
+custom_fonts/font = ExtResource( 24 )
+text = "%d"
+
+[node name="Rank1" type="Label" parent="pnl_dead_overview/background"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -271.5
+margin_top = -33.5
+margin_right = 271.5
+margin_bottom = 33.5
+custom_fonts/font = ExtResource( 24 )
+text = "You made the rank of: "
+
+[node name="Rank2" type="Label" parent="pnl_dead_overview/background"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -36.5
+margin_top = 50.0
+margin_right = 36.5
+margin_bottom = 117.0
+custom_fonts/font = ExtResource( 24 )
+text = "%d"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -952,4 +1030,4 @@ __meta__ = {
 [connection signal="pressed" from="button_grid/stats_screen" to="." method="_on_stats_screen_pressed"]
 [connection signal="pressed" from="button_grid/btn_nxt" to="." method="_on_btn_nxt_pressed"]
 [connection signal="pressed" from="ViewMap" to="." method="_on_ViewMap_pressed"]
-[connection signal="pressed" from="pnl_dead_overview/HSplitContainer/Panel/btn_qtmenu" to="." method="quit_to_menu"]
+[connection signal="pressed" from="pnl_dead_overview/background/btn_qtmenu" to="." method="quit_to_menu"]

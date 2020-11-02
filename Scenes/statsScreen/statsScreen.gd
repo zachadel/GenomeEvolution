@@ -110,7 +110,7 @@ var geneSplit= 0
 
 
 func _set_current_bar():
-	current_replication_value = 0;
+	#current_replication_value = 0;
 	var currentBarSize = 1+current_replication_value + current_locomotion_value + current_helper_value + current_manipulation_value + current_sensing_value + current_component_value + current_construction_value + current_deconstruction_value + current_ate_value;
 	var thisSize = 550 - 100;
 	#S$Label.text = str(currentBarSize)
@@ -219,7 +219,7 @@ func _update_values():
 	current_blank_value = STATS.get_currentBlank()
 	#setting values for the max bar's values. 
 	max_replication_value = STATS.get_maxRep();
-	#max_locomotion_value = STATS.get_maxLocomo()
+	max_locomotion_value = STATS.get_maxLocomo()
 	max_helper_value = STATS.get_maxHelp();
 	max_manipulation_value = STATS.get_maxManip();
 	max_sensing_value = STATS.get_maxSens();

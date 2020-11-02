@@ -484,6 +484,7 @@ func show_death_screen():
 		gaps_repaired += Unlocks.get_count(rtype);
 	$pnl_dead_overview/HSplitContainer/Panel/LblOverview.text = OVERVIEW_FORMAT % [death_descr, Game.round_num, orgn.num_progeny, gaps_repaired]
 	$pnl_dead_overview.visible = true;
+	$pnl_dead_overview.update_values();
 
 func _on_Organism_finished_replication():
 	reset_status_bar();
