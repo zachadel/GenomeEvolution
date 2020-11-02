@@ -4,6 +4,7 @@ signal gene_clicked;
 signal player_done;
 signal switch_to_map
 signal next_turn(turn_text, round_num);
+signal card_stats_screen;
 
 onready var justnow_label : RichTextLabel = $ctl_justnow/lbl_justnow;
 onready var orgn = $Organism;
@@ -36,7 +37,7 @@ func _ready():
 	$RepairTabs.set_tab_title(3, "Fix Damaged Genes");
 	
 	$EnergyBar.MAX_ENERGY = orgn.MAX_ENERGY
-	$statsScreen.visible = false;
+	#$statsScreen.visible = false;
 
 func reset_status_bar():
 	status_bar.clear_cmsms();
@@ -544,5 +545,5 @@ func _on_Organism_transposon_activity(active):
 
 
 func _on_stats_screen_pressed():
-	#$statsScreen.visible = true
+	emit_signal("card_stats_screen")
 	pass # Replace with function body.

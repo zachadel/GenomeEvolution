@@ -234,21 +234,21 @@ func clear_currentTE():
 	current_zigzagTE = 0
 #card, superjump, closefar, budding, cnearjfar, commuter, zigzag, buncher\n
 func update_currentTE(TE):
-	if(TE.ate_personality.get("zigzag")):#
+	if(TE.ate_personality["key"] == "zigzag"):#
 		current_zigzagTE += 1
-	elif(TE.ate_personality.get("card")): #
+	elif(TE.ate_personality["key"] == "classic"): #
 		current_classicTE += 1
-	elif(TE.ate_personality.get("superjump")): #
+	elif(TE.ate_personality["key"] == "superjump"): #
 		current_jumperTE += 1
-	elif(TE.ate_personality.get("budding")): #
+	elif(TE.ate_personality["key"] == "budding"): #
 		current_buddyTE += 1
-	elif(TE.ate_personality.get("commuter")): #
+	elif(TE.ate_personality["key"] == "commuter"): #
 		current_commuterTE +=1
-	elif(TE.ate_personality.get("buncher")):# 
+	elif(TE.ate_personality["key"] == "buncher"):# 
 		current_buncherTE += 1
-	elif(TE.ate_personality.get("closefar")):
+	elif(TE.ate_personality["key"] == "cnearjfar"):
 		current_assistTE += 1
-	elif(TE.ate_personality.get("cnearjfar")):
+	elif(TE.ate_personality["key"] == "closefar"):
 		current_nestlerTE += 1 
 
 func increment_tilesInverted():

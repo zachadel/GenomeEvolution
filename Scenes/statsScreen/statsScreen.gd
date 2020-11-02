@@ -1,5 +1,5 @@
 extends Panel
-
+signal show_cardTable
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -244,7 +244,9 @@ func _update_values():
 	TeFuse = STATS.get_TEFuse();
 	geneSplit = STATS.get_elmSplit();
 	
-
+func _set_transposons():
+	$sub1/AnthroArt.set_color(Color.red)
+	$sub1/AnthroArt._set_texture("res:///Assets/Images/tes/hexagon_body.png")
 func _set_values():
 	#main values
 	$mainStat1/score.text = str(turns_taken);
@@ -252,12 +254,14 @@ func _set_values():
 	$mainStat3/score.text = str(tiles_explored)
 	$mainStat4/score.text = str(num_progeny)
 	
+	
 	#Composition values
 	var genesNumber = max_replication_value + max_locomotion_value + max_helper_value + max_manipulation_value + max_sensing_value + max_component_value + max_construction_value + max_deconstruction_value + max_ate_value;
-	$sub1/maxBar/score/score_txt.text = str(genesNumber)
 	var currentNumber = current_replication_value + current_locomotion_value + current_helper_value + current_manipulation_value + current_sensing_value + current_component_value + current_construction_value + current_deconstruction_value + current_ate_value;
+	if(genesNumber <= currentNumber):
+		genesNumber = currentNumber;
 	$sub1/currentBar/score/score_txt.text = str(currentNumber)
-	
+	$sub1/maxBar/score/score_txt.text = str(genesNumber)
 	#gene composition
 	$sub1/gene1/score/Label.text = str(current_replication_value)
 	$sub1/gene2/score/Label.text = str(current_sensing_value)
@@ -267,7 +271,7 @@ func _set_values():
 	$sub1/gene6/score/Label.text = str(current_deconstruction_value)
 	$sub1/gene7/score/Label.text = str(current_helper_value)
 	$sub1/transposon2/score/Label.text = str(current_blank_value)
-	$sub1/transposon3/score/Label.text = str(current_ate_value)
+	#$sub1/transposon3/score/Label.text = str(0)
 	# Repairs
 	$sub2/rep1/rep1Score/score1Text.text = str(dmgGeneRepairPerfect)
 	$sub2/rep1/rep1Score2/score2Text.text = str(dmgGeneRepairError)
@@ -294,8 +298,9 @@ func _set_values():
 	$sub3/ev6/rep1Score/score1Text.text = str(geneSplit)
 
 func _ready():
-	hide()
+	#hide()
 	_update_values()
+	#_set_transposons()
 	_set_max_bar()
 	_set_current_bar()
 	_set_values()
@@ -340,6 +345,7 @@ func _on_stats_screen_pressed():
 
 func _on_back_pressed():
 	visible = false
+	emit_signal("show_cardTable")
 	pass # Replace with function body.
 
 
@@ -690,4 +696,14 @@ func _on_ev7_mouse_entered():
 
 func _on_ev7_mouse_exited():
 	$evDisplay7.hide()
+	pass # Replace with function body.
+
+
+func _on_AnthroArt_mouse_entered():
+	$geneDisplay9.show()
+	pass # Replace with function body.
+
+
+func _on_AnthroArt_mouse_exited():
+	$geneDisplay9.hide()
 	pass # Replace with function body.

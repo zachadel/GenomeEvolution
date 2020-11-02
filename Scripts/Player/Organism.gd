@@ -1696,6 +1696,7 @@ func get_recombos_per_turn() -> int:
 func iterate_genes():
 	var iterator = 0
 	STATS.clear_currentGenes()
+	STATS.clear_currentTE()
 	var current_genes = cmsms.get_all_genes()
 	for i in current_genes:
 		iterator += 1;
@@ -1718,9 +1719,10 @@ func iterate_genes():
 		elif(i.is_blank()):
 			STATS.increment_currentBlank()
 		elif(i.is_ate()):
+			STATS.update_currentTE(i)
 			STATS.increment_currentAte()
-			
 	STATS.update_maxType()
+	STATS.compare_maxTE()
 
 func adv_turn(round_num, turn_idx):
 	click_mode = "";

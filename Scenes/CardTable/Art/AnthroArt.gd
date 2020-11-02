@@ -27,3 +27,6 @@ func _upd_size() -> void:
 	var Art2D = $Art2D;
 	Art2D.position = rect_size * 0.5;
 	Art2D.scale = Vector2(rect_size.x / default_size.x, rect_size.y / default_size.y);
+
+func _set_texture( path: String):
+	self.Texture = load(path)

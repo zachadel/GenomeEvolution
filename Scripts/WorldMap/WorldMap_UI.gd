@@ -212,7 +212,10 @@ func print_diff_dict(diff_dict: Dictionary):
 		print("No changes in resource dictionaries")
 
 
-
+# make signal 
 func _on_StatsScreen_pressed():
-	$statsControl.visible = true;
+	#emit signal 
+	emit_signal("stats_screen")
+	#statscreen.connect(signal name, self, functionExecute)
+#	$statsControl.visible = true;
 	pass # Replace with function body.

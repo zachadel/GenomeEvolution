@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=2]
+[gd_scene load_steps=33 format=2]
 
 [ext_resource path="res://Scripts/CardTable/CardTable.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player/Organism.tscn" type="PackedScene" id=2]
@@ -22,7 +22,6 @@
 [ext_resource path="res://Scenes/MainMenu/Credits.tscn" type="PackedScene" id=20]
 [ext_resource path="res://Assets/Fonts/OpenSans-48.tres" type="DynamicFont" id=21]
 [ext_resource path="res://Assets/Fonts/OpenSans-64.tres" type="DynamicFont" id=22]
-[ext_resource path="res://Scenes/statsScreen/statsScreen.tscn" type="PackedScene" id=23]
 
 [sub_resource type="Theme" id=1]
 Button/colors/font_color_disabled = Color( 0, 0, 0, 1 )
@@ -913,9 +912,6 @@ valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="statsScreen" parent="." instance=ExtResource( 23 )]
-visible = false
 [connection signal="bandage_msg" from="Organism" to="." method="_on_Organism_bandage_msg"]
 [connection signal="clear_gap_msg" from="Organism" to="." method="_on_Organism_clear_gap_msg"]
 [connection signal="cmsm_changed" from="Organism" to="ChromosomeStatus" method="update"]
@@ -953,7 +949,6 @@ visible = false
 [connection signal="pressed" from="button_grid/btn_bugreport" to="." method="_on_btn_bugreport_pressed"]
 [connection signal="pressed" from="button_grid/btn_saveload" to="." method="_on_btn_saveload_pressed"]
 [connection signal="pressed" from="button_grid/btn_filter" to="." method="_on_btn_filter_pressed"]
-[connection signal="pressed" from="button_grid/stats_screen" to="statsScreen" method="_on_stats_screen_pressed"]
 [connection signal="pressed" from="button_grid/stats_screen" to="." method="_on_stats_screen_pressed"]
 [connection signal="pressed" from="button_grid/btn_nxt" to="." method="_on_btn_nxt_pressed"]
 [connection signal="pressed" from="ViewMap" to="." method="_on_ViewMap_pressed"]

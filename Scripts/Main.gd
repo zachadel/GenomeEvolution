@@ -1,5 +1,5 @@
 extends Node
-
+#signal stats_screen;
 enum GSTATE {
 	TITLE,
 	TABLE,
@@ -21,12 +21,14 @@ onready var world_map = get_node("WorldMap") #access world_map ui via world_map.
 onready var card_table = get_node("Canvas_CardTable/CardTable")
 onready var game_over = get_node("MessageLayer/GameOver")
 onready var console = get_node("Console_Layer/Console")
-
+onready var statsScreen = get_node("stats_Layer/statsScreen")
 #NOTE: $Player should NEVER be called. Ever.  For any reason.
 #Eventually, I will put documentation in here explaining the workflow that
 #allows for multiplayer
-
+var cardTable = false;
+var worldMapUI = false;
 func _ready(): 
+	
 	_hide_card_table()
 
 	#Add looping after first_player if there are multiple players, but only give the first
@@ -47,6 +49,34 @@ func _ready():
 	console.set_world_map(world_map)
 	console.set_organism(card_table.orgn)
 	console.set_card_table(card_table)
+	$stats_Layer/statsScreen.connect('show_cardTable', self, "_show_cardTable")
+	$WorldMap/WorldMap_UI.connect('stats_screen', self, "_show_control")
+	$Canvas_CardTable/CardTable.connect('card_stats_screen', self, "_card_show_control")
+	
+func _show_control():
+	worldMapUI = true
+	statsScreen._update_values()
+	statsScreen._set_values()
+	statsScreen._set_current_bar()
+	statsScreen._set_max_bar()
+	card_table.hide()
+	$stats_Layer/statsScreen.visible = true
+	
+func _card_show_control():
+	cardTable = true
+	statsScreen._update_values()
+	statsScreen._set_values()
+	statsScreen._set_current_bar()
+	statsScreen._set_max_bar()
+	card_table.hide()
+	$stats_Layer/statsScreen.visible = true
+	
+func _show_cardTable():
+	if(cardTable == true):
+		card_table.show()
+		cardTable = false;
+	else:
+		worldMapUI = false;
 
 func _on_WorldMap_end_map_turn():
 	_hide_world_map()
@@ -138,6 +168,10 @@ func _only_show_card_table():
 	card_table.show(false)
 	card_table.show_map_button()
 
+
+func _statsScreen_show():
+	$Canvas_CardTable/statsScreen.visible = true
+	
 func _hide_card_table():
 	card_table.hide()
 
