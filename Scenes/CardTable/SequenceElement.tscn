@@ -1,0 +1,232 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://Scripts/CardTable/SequenceElement.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Images/genes/Helix_Circle.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Images/border.png" type="Texture" id=3]
+[ext_resource path="res://Scenes/CardTable/BehaviorIndicator.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/R.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/M.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/H.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/T.png" type="Texture" id=8]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/S.png" type="Texture" id=9]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/C.png" type="Texture" id=10]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/A.png" type="Texture" id=11]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/D.png" type="Texture" id=12]
+[ext_resource path="res://Scripts/CardTable/AnthroArtHolder.gd" type="Script" id=13]
+[ext_resource path="res://Assets/Images/gene_direction_arrow.png" type="Texture" id=14]
+[ext_resource path="res://Assets/Images/icons/damaged.png" type="Texture" id=15]
+
+[node name="SeqElm" type="TextureButton"]
+margin_right = 200.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 200, 200 )
+size_flags_vertical = 4
+expand = true
+stretch_mode = 5
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnthroArtHolder" type="Control" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 13 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Helix" type="TextureRect" parent="."]
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 2 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Damage" type="TextureRect" parent="."]
+visible = false
+self_modulate = Color( 0.670588, 0, 0, 1 )
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 15 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BorderRect" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 200, 200 )
+mouse_filter = 2
+texture = ExtResource( 3 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GrayFilter" type="ColorRect" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 200, 200 )
+mouse_filter = 2
+color = Color( 0, 0, 0, 0.33 )
+
+[node name="lbl_id" type="Label" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -25.0
+margin_bottom = -1.0
+text = "ERROR_name"
+align = 1
+valign = 1
+
+[node name="lbl_code" type="Label" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -59.0
+margin_bottom = -38.0
+text = "ERROR_code"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="lbl_affected" type="Label" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -77.0
+margin_bottom = -63.0
+text = "Affected: %+.2f"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="direct_arrow" type="TextureRect" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -34.0
+margin_top = -47.0
+margin_right = 36.0
+margin_bottom = -17.0
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="IndicATE" parent="." instance=ExtResource( 4 )]
+visible = false
+modulate = Color( 0.75, 0.4, 0, 1 )
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.0
+margin_left = -30.0
+margin_top = -35.0
+margin_right = 30.0
+margin_bottom = 25.0
+
+[node name="IndicReplication" parent="." instance=ExtResource( 4 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = -19.0
+margin_right = 60.0
+margin_bottom = 41.0
+image_texture = ExtResource( 5 )
+
+[node name="IndicLocomotion" parent="." instance=ExtResource( 4 )]
+visible = false
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.0
+margin_left = -54.0
+margin_top = -19.0
+margin_right = 6.0
+margin_bottom = 41.0
+image_texture = ExtResource( 6 )
+
+[node name="IndicHelper" parent="." instance=ExtResource( 4 )]
+visible = false
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.0
+margin_left = -7.0
+margin_top = -19.0
+margin_right = 53.0
+margin_bottom = 41.0
+image_texture = ExtResource( 7 )
+
+[node name="IndicManipulation" parent="." instance=ExtResource( 4 )]
+visible = false
+anchor_left = 1.0
+anchor_bottom = 0.0
+margin_left = -60.0
+margin_top = -19.0
+margin_right = 0.0
+margin_bottom = 41.0
+image_texture = ExtResource( 8 )
+
+[node name="IndicSensing" parent="." instance=ExtResource( 4 )]
+visible = false
+anchor_top = 1.0
+anchor_right = 0.0
+margin_top = -23.0
+margin_right = 60.0
+margin_bottom = 37.0
+image_texture = ExtResource( 9 )
+
+[node name="IndicComponent" parent="." instance=ExtResource( 4 )]
+visible = false
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+margin_left = -54.0
+margin_top = -23.0
+margin_right = 6.0
+margin_bottom = 37.0
+image_texture = ExtResource( 10 )
+
+[node name="IndicConstruction" parent="." instance=ExtResource( 4 )]
+visible = false
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+margin_left = -7.0
+margin_top = -23.0
+margin_right = 53.0
+margin_bottom = 37.0
+image_texture = ExtResource( 11 )
+
+[node name="IndicDeconstruction" parent="." instance=ExtResource( 4 )]
+visible = false
+anchor_left = 1.0
+anchor_top = 1.0
+margin_left = -60.0
+margin_top = -23.0
+margin_right = 0.0
+margin_bottom = 37.0
+image_texture = ExtResource( 12 )
+
+[node name="Tween" type="Tween" parent="."]
+[connection signal="mouse_entered" from="." to="." method="_on_SeqElm_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_SeqElm_mouse_exited"]
+[connection signal="pressed" from="." to="." method="_on_SeqElm_pressed"]
+[connection signal="toggled" from="." to="." method="_on_SeqElm_toggled"]

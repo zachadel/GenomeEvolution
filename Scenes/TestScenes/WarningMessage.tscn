@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scenes/TestScenes/WarningMessage.gd" type="Script" id=1]
+
+[node name="WarningMessage" type="AcceptDialog"]
+margin_top = 20.0
+margin_right = 400.0
+margin_bottom = 78.0
+dialog_text = "Warning!  Your current locomotion value is too low for that action."
+script = ExtResource( 1 )

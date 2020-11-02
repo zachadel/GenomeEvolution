@@ -1,0 +1,960 @@
+[gd_scene load_steps=34 format=2]
+
+[ext_resource path="res://Scripts/CardTable/CardTable.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/Player/Organism.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/CardTable/ChromosomeStatus.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/Images/icons/collapse_dupes.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Images/icons/copy_pattern.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Images/icons/join_ends.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Images/icons/mitosis.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Images/icons/meiosis.png" type="Texture" id=8]
+[ext_resource path="res://Assets/Images/icons/skip_rep.png" type="Texture" id=9]
+[ext_resource path="res://Scripts/CardTable/pnl_saveload.gd" type="Script" id=10]
+[ext_resource path="res://Scripts/CardTable/pnl_ph_filter.gd" type="Script" id=11]
+[ext_resource path="res://Assets/Images/pngs/CHAOS.png" type="Texture" id=12]
+[ext_resource path="res://Assets/Fonts/OpenSans-22.tres" type="DynamicFont" id=13]
+[ext_resource path="res://Scenes/WorldMap/EnergyBar.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Scenes/CardTable/TurnList.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Scenes/CardTable/DarkenedBG.tres" type="StyleBox" id=16]
+[ext_resource path="res://Scenes/CardTable/LabeledNumber.tscn" type="PackedScene" id=17]
+[ext_resource path="res://Scenes/CardTable/pnl_bugreport.gd" type="Script" id=18]
+[ext_resource path="res://Assets/Images/pngs/DNA_small.png" type="Texture" id=19]
+[ext_resource path="res://Scenes/MainMenu/Credits.tscn" type="PackedScene" id=20]
+[ext_resource path="res://Assets/Fonts/OpenSans-48.tres" type="DynamicFont" id=21]
+[ext_resource path="res://Assets/Fonts/OpenSans-64.tres" type="DynamicFont" id=22]
+[ext_resource path="res://Scenes/statsScreen/statsScreen.tscn" type="PackedScene" id=23]
+
+[sub_resource type="Theme" id=1]
+Button/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.0431373, 0.0588235, 0.564706, 1 )
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color( 0, 0.0313726, 0.223529, 1 )
+border_blend = true
+
+[sub_resource type="Animation" id=3]
+resource_name = "hide"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("part_lone:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "show"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("part_lone:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
+[sub_resource type="Curve" id=5]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.0294118, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.849673, 0.509091 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="DynamicFontData" id=6]
+font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
+
+[sub_resource type="DynamicFont" id=7]
+size = 20
+use_mipmaps = true
+use_filter = true
+font_data = SubResource( 6 )
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0.21875, 0.21875, 0.21875, 1 )
+
+[sub_resource type="StyleBoxFlat" id=9]
+bg_color = Color( 0.145098, 0.145098, 0.164706, 1 )
+
+[sub_resource type="StyleBoxFlat" id=10]
+bg_color = Color( 0.12549, 0.141176, 0.192157, 1 )
+
+[node name="CardTable" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 1
+theme = SubResource( 1 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="lbl_turnorder" type="Label" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -412.26
+margin_top = -321.0
+margin_right = -160.26
+margin_bottom = -277.0
+custom_fonts/font = ExtResource( 13 )
+text = "Turn Order"
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ctl_justnow" type="Control" parent="."]
+margin_left = 506.0
+margin_top = 595.0
+margin_right = 1115.0
+margin_bottom = 875.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="lbl_log" type="Label" parent="ctl_justnow"]
+anchor_right = 1.0
+margin_left = 24.0476
+margin_top = -16.0
+margin_right = 15.0476
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 13 )
+text = "Event Log"
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="lbl_justnow" type="RichTextLabel" parent="ctl_justnow"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 24.0476
+margin_top = 32.0
+margin_right = 15.0476
+margin_bottom = -5.0
+focus_mode = 2
+custom_styles/normal = ExtResource( 16 )
+bbcode_enabled = true
+scroll_following = true
+selection_enabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TurnList" parent="." instance=ExtResource( 15 )]
+margin_left = 1187.74
+margin_top = 618.0
+margin_right = 1437.74
+margin_bottom = 763.0
+
+[node name="Organism" parent="." instance=ExtResource( 2 )]
+
+[node name="lbl_behavior" type="Label" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -1596.52
+margin_top = -321.0
+margin_right = -1129.52
+margin_bottom = -277.0
+custom_fonts/font = ExtResource( 13 )
+text = "Gene Content"
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ChromosomeStatus" parent="." instance=ExtResource( 3 )]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -796.519
+margin_top = 612.836
+margin_right = 303.481
+margin_bottom = 674.836
+rect_min_size = Vector2( 0, 50 )
+
+[node name="RepairTabs" type="TabContainer" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -312.0
+margin_top = -298.0
+margin_right = 382.0
+margin_bottom = -30.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="pnl_repair_choices" type="Panel" parent="RepairTabs"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="hsplit" type="HSplitContainer" parent="RepairTabs/pnl_repair_choices"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 3.0
+margin_right = -6.0
+margin_bottom = -2.0
+split_offset = 230
+dragger_visibility = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ilist_choices" type="ItemList" parent="RepairTabs/pnl_repair_choices/hsplit"]
+margin_right = 230.0
+margin_bottom = 227.0
+items = [ "Collapse Duplicates", ExtResource( 4 ), false, "Copy Pattern", ExtResource( 5 ), false, "Join Ends", ExtResource( 6 ), false ]
+same_column_width = true
+fixed_icon_size = Vector2( 50, 50 )
+
+[node name="vsplit" type="VSplitContainer" parent="RepairTabs/pnl_repair_choices/hsplit"]
+margin_left = 242.0
+margin_right = 599.0
+margin_bottom = 227.0
+split_offset = 160
+dragger_visibility = 1
+
+[node name="scroll" type="ScrollContainer" parent="RepairTabs/pnl_repair_choices/hsplit/vsplit"]
+margin_right = 357.0
+margin_bottom = 160.0
+scroll_horizontal_enabled = false
+
+[node name="lbl_choice_desc" type="Label" parent="RepairTabs/pnl_repair_choices/hsplit/vsplit/scroll"]
+margin_right = 295.0
+margin_bottom = 235.0
+rect_min_size = Vector2( 295, 0 )
+text = "This is a big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long text."
+autowrap = true
+
+[node name="btn_apply_repair" type="Button" parent="RepairTabs/pnl_repair_choices/hsplit/vsplit"]
+margin_top = 172.0
+margin_right = 357.0
+margin_bottom = 227.0
+text = "Repair"
+
+[node name="vbox" type="VBoxContainer" parent="RepairTabs/pnl_repair_choices"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 8
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LblInstr" type="Label" parent="RepairTabs/pnl_repair_choices/vbox"]
+visible = false
+margin_right = 605.0
+margin_bottom = 31.0
+text = "
+Select a break to repair."
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSeparator" type="HSeparator" parent="RepairTabs/pnl_repair_choices/vbox"]
+margin_right = 686.0
+margin_bottom = 4.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="scroll" type="ScrollContainer" parent="RepairTabs/pnl_repair_choices/vbox"]
+margin_top = 12.0
+margin_right = 686.0
+margin_bottom = 232.0
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+
+[node name="RTLRepairResult" type="Label" parent="RepairTabs/pnl_repair_choices/vbox/scroll"]
+margin_right = 686.0
+margin_bottom = 220.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+align = 1
+autowrap = true
+
+[node name="pnl_rem_dmg" type="Panel" parent="RepairTabs"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="LblInstr" type="Label" parent="RepairTabs/pnl_rem_dmg"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "
+
+Click a damaged gene to remove it.
+
+The number of genes you can remove is based on your Disassembly skill.
+You have %d removals remaining this turn."
+align = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="pnl_rem_sides" type="Panel" parent="RepairTabs"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="LblInstr" type="Label" parent="RepairTabs/pnl_rem_sides"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "
+
+Click a gene on either end of a break to remove the gene.
+
+The amount you remove is based on your Disassembly skill.
+You have %d removals remaining."
+align = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="pnl_bandage_dmg" type="Panel" parent="RepairTabs"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="vbox" type="VBoxContainer" parent="RepairTabs/pnl_bandage_dmg"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 8
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LblInstr" type="Label" parent="RepairTabs/pnl_bandage_dmg/vbox"]
+margin_right = 656.0
+margin_bottom = 65.0
+text = "
+Click a damaged gene to attempt to repair it.
+
+Damaged genes are more likely to obtain harmful mutations during replication."
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSeparator" type="HSeparator" parent="RepairTabs/pnl_bandage_dmg/vbox"]
+margin_top = 73.0
+margin_right = 656.0
+margin_bottom = 77.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="scroll" type="ScrollContainer" parent="RepairTabs/pnl_bandage_dmg/vbox"]
+margin_top = 85.0
+margin_right = 656.0
+margin_bottom = 232.0
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+
+[node name="RTLRepairResult" type="Label" parent="RepairTabs/pnl_bandage_dmg/vbox/scroll"]
+margin_right = 656.0
+margin_bottom = 147.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+align = 1
+autowrap = true
+
+[node name="pnl_reproduce" type="Panel" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -256.0
+margin_top = -266.0
+margin_right = 304.0
+margin_bottom = -36.0
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="hsplit" type="HSplitContainer" parent="pnl_reproduce"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 15.0
+margin_right = -6.0
+margin_bottom = -14.0
+split_offset = 230
+dragger_visibility = 1
+
+[node name="ilist_choices" type="ItemList" parent="pnl_reproduce/hsplit"]
+margin_right = 230.0
+margin_bottom = 201.0
+items = [ "Mitosis", ExtResource( 7 ), false, "Meiosis", ExtResource( 8 ), false, "Skip", ExtResource( 9 ), false ]
+same_column_width = true
+fixed_icon_size = Vector2( 50, 50 )
+
+[node name="vsplit" type="VSplitContainer" parent="pnl_reproduce/hsplit"]
+margin_left = 242.0
+margin_right = 554.0
+margin_bottom = 201.0
+split_offset = 127
+dragger_visibility = 1
+
+[node name="scroll" type="ScrollContainer" parent="pnl_reproduce/hsplit/vsplit"]
+margin_right = 312.0
+margin_bottom = 127.0
+scroll_horizontal_enabled = false
+
+[node name="lbl_choice_desc" type="Label" parent="pnl_reproduce/hsplit/vsplit/scroll"]
+margin_right = 295.0
+margin_bottom = 235.0
+rect_min_size = Vector2( 295, 0 )
+text = "This is a big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long text."
+autowrap = true
+
+[node name="btn_apply_replic" type="Button" parent="pnl_reproduce/hsplit/vsplit"]
+margin_top = 139.0
+margin_right = 312.0
+margin_bottom = 201.0
+text = "Reproduce"
+
+[node name="pnl_saveload" type="Panel" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -226.0
+margin_top = 142.0
+margin_right = 288.0
+margin_bottom = 440.0
+script = ExtResource( 10 )
+
+[node name="btn_load" type="Button" parent="pnl_saveload"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -123.0
+margin_top = -36.0
+margin_right = -3.0
+margin_bottom = -6.0
+text = "Load"
+
+[node name="tbox_load" type="LineEdit" parent="pnl_saveload"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -66.0
+margin_bottom = -42.0
+
+[node name="tbox_save" type="TextEdit" parent="pnl_saveload"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -90.0
+mouse_default_cursor_shape = 0
+readonly = true
+show_line_numbers = true
+
+[node name="pnl_bugreport" type="Panel" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -279.0
+margin_top = 182.0
+margin_right = 356.0
+margin_bottom = 432.0
+script = ExtResource( 18 )
+
+[node name="btn_load" type="Button" parent="pnl_bugreport"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -123.0
+margin_top = -36.0
+margin_right = -3.0
+margin_bottom = -6.0
+text = "Submit"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="tbox_bugtitle" type="TextEdit" parent="pnl_bugreport"]
+margin_left = 29.0
+margin_top = 55.0
+margin_right = 604.0
+margin_bottom = 85.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="tbox_bugdesc" type="TextEdit" parent="pnl_bugreport"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 28.0
+margin_top = 90.0
+margin_right = -29.0
+margin_bottom = -42.0
+rect_pivot_offset = Vector2( 247, -5.82202 )
+mouse_default_cursor_shape = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="lbl_bug" type="Label" parent="pnl_bugreport"]
+anchor_right = 1.0
+margin_left = 97.0
+margin_right = -97.0
+margin_bottom = 51.0
+text = "Please describe the bug by describing what you did, what you expected, and what actually happened."
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HTTPRequest" type="HTTPRequest" parent="pnl_bugreport"]
+
+[node name="pnl_ph_filter" type="Panel" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -226.0
+margin_top = 245.0
+margin_right = 288.0
+margin_bottom = 381.0
+script = ExtResource( 11 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="slider_ph" type="HSlider" parent="pnl_ph_filter"]
+anchor_right = 1.0
+margin_left = 42.0
+margin_top = 70.0
+margin_right = -42.0
+margin_bottom = 86.0
+max_value = 14.0
+step = 0.05
+value = 7.0
+tick_count = 15
+ticks_on_borders = true
+
+[node name="current_ph" type="ColorRect" parent="pnl_ph_filter/slider_ph"]
+show_behind_parent = true
+margin_left = 212.0
+margin_top = -20.0
+margin_right = 217.0
+margin_bottom = 25.0
+color = Color( 0.3, 0.3, 0.3, 1 )
+
+[node name="lbl" type="Label" parent="pnl_ph_filter/slider_ph/current_ph"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -34.5
+margin_top = -31.0
+margin_right = 34.5
+text = "Current pH
+7.00"
+align = 1
+
+[node name="lbl_slider_value" type="Label" parent="pnl_ph_filter"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -24.0
+margin_top = 97.0
+margin_right = 25.0
+margin_bottom = 116.0
+text = "7.00"
+align = 1
+valign = 1
+clip_text = true
+
+[node name="pnl_chaos" type="Panel" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -279.0
+margin_top = 182.0
+margin_right = 356.0
+margin_bottom = 432.0
+rect_clip_content = true
+custom_styles/panel = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Anim" type="AnimationPlayer" parent="pnl_chaos"]
+anims/hide = SubResource( 3 )
+anims/show = SubResource( 4 )
+
+[node name="part_lone" type="CPUParticles2D" parent="pnl_chaos"]
+light_mask = 16
+position = Vector2( 312, 125 )
+emitting = false
+amount = 240
+lifetime = 10.0
+preprocess = 5.0
+texture = ExtResource( 19 )
+emission_shape = 2
+emission_rect_extents = Vector2( 158, 62 )
+direction = Vector2( 0, 0 )
+spread = 180.0
+gravity = Vector2( 0, 0 )
+initial_velocity = 300.0
+initial_velocity_random = 0.75
+angular_velocity = 300.0
+angular_velocity_random = 0.75
+radial_accel = -30.0
+radial_accel_random = 0.25
+angle = 720.0
+angle_random = 1.0
+scale_amount_random = 0.5
+scale_amount_curve = SubResource( 5 )
+
+[node name="texrect_chaos" type="TextureRect" parent="pnl_chaos"]
+light_mask = 16
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 65.0
+margin_top = 26.0
+margin_right = -66.0
+margin_bottom = -26.0
+texture = ExtResource( 12 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="lnum_turn" parent="." instance=ExtResource( 17 )]
+margin_left = 1193.14
+margin_top = 772.178
+margin_right = 1293.14
+margin_bottom = 872.178
+lbl = "Round"
+
+[node name="lnum_progeny" parent="." instance=ExtResource( 17 )]
+margin_left = 1337.14
+margin_top = 772.178
+margin_right = 1437.14
+margin_bottom = 872.178
+lbl = "Progeny"
+
+[node name="EnergyBar" parent="." instance=ExtResource( 14 )]
+margin_left = 3.48102
+margin_top = 672.836
+margin_right = 3.48102
+margin_bottom = 672.836
+rect_scale = Vector2( 0.75, 0.75 )
+
+[node name="AutoContinue" type="Timer" parent="."]
+wait_time = 0.01
+one_shot = true
+
+[node name="button_grid" type="VBoxContainer" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -132.0
+margin_top = 511.0
+margin_right = -10.0
+margin_bottom = -9.0
+grow_horizontal = 0
+grow_vertical = 0
+custom_constants/separation = 10
+alignment = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="btn_qtmenu" type="Button" parent="button_grid"]
+margin_top = 85.0
+margin_right = 122.0
+margin_bottom = 125.0
+rect_min_size = Vector2( 120, 40 )
+text = "Quit to Menu"
+
+[node name="btn_bugreport" type="Button" parent="button_grid"]
+margin_top = 135.0
+margin_right = 122.0
+margin_bottom = 180.0
+rect_min_size = Vector2( 120, 45 )
+text = "Report Bug"
+
+[node name="btn_saveload" type="Button" parent="button_grid"]
+margin_top = 190.0
+margin_right = 122.0
+margin_bottom = 230.0
+rect_min_size = Vector2( 120, 40 )
+text = "Save/Load"
+
+[node name="btn_filter" type="Button" parent="button_grid"]
+margin_top = 240.0
+margin_right = 122.0
+margin_bottom = 280.0
+rect_min_size = Vector2( 120, 40 )
+text = "pH Effectiveness"
+
+[node name="stats_screen" type="Button" parent="button_grid"]
+margin_top = 290.0
+margin_right = 122.0
+margin_bottom = 330.0
+rect_min_size = Vector2( 122, 40 )
+text = "Stats Screen"
+
+[node name="btn_nxt" type="Button" parent="button_grid"]
+margin_top = 340.0
+margin_right = 122.0
+margin_bottom = 380.0
+rect_min_size = Vector2( 120, 40 )
+text = "Continue"
+
+[node name="ViewMap" type="TextureButton" parent="."]
+anchor_right = 1.0
+anchor_bottom = 0.995
+margin_left = 98.0
+margin_top = 737.0
+margin_right = -1199.0
+margin_bottom = -10.5001
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="ViewMap"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -113.206
+margin_top = -27.9999
+margin_right = 114.794
+margin_bottom = 7.00006
+custom_fonts/font = SubResource( 7 )
+text = "View Environment"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="pnl_dead_overview" type="Panel" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSplitContainer" type="HSplitContainer" parent="pnl_dead_overview"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 124.0
+split_offset = 150
+dragger_visibility = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="pnl_dead_overview/HSplitContainer"]
+margin_right = 400.0
+margin_bottom = 776.0
+
+[node name="Credits" parent="pnl_dead_overview/HSplitContainer/CenterContainer" instance=ExtResource( 20 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 75.0
+margin_top = 163.0
+margin_right = 325.0
+margin_bottom = 613.0
+rect_min_size = Vector2( 250, 450 )
+
+[node name="Panel" type="Panel" parent="pnl_dead_overview/HSplitContainer"]
+margin_left = 400.0
+margin_right = 1600.0
+margin_bottom = 776.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LblOverview" type="Label" parent="pnl_dead_overview/HSplitContainer/Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/normal = SubResource( 9 )
+custom_fonts/font = ExtResource( 22 )
+text = "if ur seein this its a bug lol"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="btn_qtmenu" type="Button" parent="pnl_dead_overview/HSplitContainer/Panel"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -264.169
+margin_top = -115.435
+margin_right = -80.1686
+margin_bottom = -48.4352
+rect_min_size = Vector2( 120, 45 )
+custom_fonts/font = ExtResource( 13 )
+text = "Quit to Menu"
+
+[node name="LblGameOver" type="Label" parent="pnl_dead_overview"]
+anchor_right = 1.0
+margin_bottom = 125.0
+custom_styles/normal = SubResource( 10 )
+custom_fonts/font = ExtResource( 21 )
+text = "Game Over!"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="statsScreen" parent="." instance=ExtResource( 23 )]
+visible = false
+[connection signal="bandage_msg" from="Organism" to="." method="_on_Organism_bandage_msg"]
+[connection signal="clear_gap_msg" from="Organism" to="." method="_on_Organism_clear_gap_msg"]
+[connection signal="cmsm_changed" from="Organism" to="ChromosomeStatus" method="update"]
+[connection signal="died" from="Organism" to="." method="_on_Organism_died"]
+[connection signal="doing_work" from="Organism" to="." method="_on_Organism_doing_work"]
+[connection signal="energy_changed" from="Organism" to="." method="_on_Organism_energy_changed"]
+[connection signal="finished_replication" from="Organism" to="." method="_on_Organism_finished_replication"]
+[connection signal="gap_close_msg" from="Organism" to="." method="_on_Organism_gap_close_msg"]
+[connection signal="gap_selected" from="Organism" to="." method="_on_Organism_gap_selected"]
+[connection signal="gene_bandaged" from="Organism" to="." method="_on_Organism_gene_bandaged"]
+[connection signal="gene_trimmed" from="Organism" to="." method="_on_Organism_gene_trimmed"]
+[connection signal="justnow_update" from="Organism" to="." method="_on_Organism_justnow_update"]
+[connection signal="resources_changed" from="Organism" to="." method="_on_Organism_resources_changed"]
+[connection signal="show_repair_opts" from="Organism" to="." method="_on_Organism_show_repair_opts"]
+[connection signal="show_reprod_opts" from="Organism" to="." method="_on_Organism_show_reprod_opts"]
+[connection signal="transposon_activity" from="Organism" to="." method="_on_Organism_transposon_activity"]
+[connection signal="updated_gaps" from="Organism" to="." method="_on_Organism_updated_gaps"]
+[connection signal="tab_changed" from="RepairTabs" to="." method="_on_RepairTabs_tab_changed"]
+[connection signal="item_activated" from="RepairTabs/pnl_repair_choices/hsplit/ilist_choices" to="." method="_on_ilist_choices_item_activated"]
+[connection signal="item_selected" from="RepairTabs/pnl_repair_choices/hsplit/ilist_choices" to="." method="upd_repair_desc"]
+[connection signal="pressed" from="RepairTabs/pnl_repair_choices/hsplit/vsplit/btn_apply_repair" to="." method="_on_btn_apply_repair_pressed"]
+[connection signal="item_activated" from="pnl_reproduce/hsplit/ilist_choices" to="." method="_on_replic_choices_item_activated"]
+[connection signal="item_selected" from="pnl_reproduce/hsplit/ilist_choices" to="." method="upd_replicate_desc"]
+[connection signal="pressed" from="pnl_reproduce/hsplit/vsplit/btn_apply_replic" to="." method="_on_btn_apply_replic_pressed"]
+[connection signal="loaded" from="pnl_saveload" to="." method="_on_pnl_saveload_loaded"]
+[connection signal="pressed" from="pnl_saveload/btn_load" to="pnl_saveload" method="_on_btn_load_pressed"]
+[connection signal="pressed" from="pnl_bugreport/btn_load" to="." method="_on_btn_load_pressed"]
+[connection signal="request_completed" from="pnl_bugreport/HTTPRequest" to="pnl_bugreport" method="_on_request_completed"]
+[connection signal="update_seqelm_coloration" from="pnl_ph_filter" to="." method="_on_pnl_ph_filter_update_seqelm_coloration"]
+[connection signal="visibility_changed" from="pnl_ph_filter" to="pnl_ph_filter" method="_on_pnl_ph_filter_visibility_changed"]
+[connection signal="value_changed" from="pnl_ph_filter/slider_ph" to="pnl_ph_filter" method="_on_slider_ph_value_changed"]
+[connection signal="animation_finished" from="pnl_chaos/Anim" to="." method="_on_chaos_anim_finished"]
+[connection signal="timeout" from="AutoContinue" to="." method="_on_AutoContinue_timeout"]
+[connection signal="pressed" from="button_grid/btn_qtmenu" to="." method="quit_to_menu"]
+[connection signal="pressed" from="button_grid/btn_bugreport" to="." method="_on_btn_bugreport_pressed"]
+[connection signal="pressed" from="button_grid/btn_saveload" to="." method="_on_btn_saveload_pressed"]
+[connection signal="pressed" from="button_grid/btn_filter" to="." method="_on_btn_filter_pressed"]
+[connection signal="pressed" from="button_grid/stats_screen" to="statsScreen" method="_on_stats_screen_pressed"]
+[connection signal="pressed" from="button_grid/stats_screen" to="." method="_on_stats_screen_pressed"]
+[connection signal="pressed" from="button_grid/btn_nxt" to="." method="_on_btn_nxt_pressed"]
+[connection signal="pressed" from="ViewMap" to="." method="_on_ViewMap_pressed"]
+[connection signal="pressed" from="pnl_dead_overview/HSplitContainer/Panel/btn_qtmenu" to="." method="quit_to_menu"]

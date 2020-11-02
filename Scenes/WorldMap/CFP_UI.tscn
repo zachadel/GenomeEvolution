@@ -1,0 +1,64 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Scripts/WorldMap/CFP_UI.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/WorldMap/EnergyBar.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/WorldMap/SingleInternalResource.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/WorldMap/ComplexCFPBank.tscn" type="PackedScene" id=4]
+
+[node name="CFP_UI" type="Control"]
+margin_left = 320.0
+margin_top = 125.0
+margin_right = 320.0
+margin_bottom = 125.0
+rect_scale = Vector2( 0.75, 0.75 )
+script = ExtResource( 1 )
+
+[node name="EnergyBar" parent="." instance=ExtResource( 2 )]
+margin_left = 440.0
+margin_top = 280.0
+margin_right = 235.0
+margin_bottom = 180.0
+rect_rotation = 90.0
+rect_scale = Vector2( -0.467, -1 )
+
+[node name="carbs_0" parent="." instance=ExtResource( 3 )]
+margin_right = 130.0
+rect_scale = Vector2( 2, 4 )
+resource = "carbs_0"
+
+[node name="fats_0" parent="." instance=ExtResource( 3 )]
+margin_top = 65.0
+margin_right = 0.0
+margin_bottom = 65.0
+rect_scale = Vector2( 2, 4 )
+color = Color( 1, 1, 0, 1 )
+resource = "fats_0"
+
+[node name="proteins_0" parent="." instance=ExtResource( 3 )]
+margin_top = 130.0
+margin_right = 0.0
+margin_bottom = 130.0
+rect_scale = Vector2( 2, 4 )
+color = Color( 1, 0, 0, 1 )
+resource = "proteins_0"
+
+[node name="ComplexCFPBank" parent="." instance=ExtResource( 4 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 220.0
+margin_right = 0.0
+margin_bottom = 220.0
+rect_scale = Vector2( 0.683, 1 )
+
+[node name="MouseResource" type="TextureRect" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="InvalidInteractionPopup" type="AcceptDialog" parent="."]
+margin_right = 83.0
+margin_bottom = 58.0
+[connection signal="resource_clicked" from="EnergyBar" to="." method="_on_resource_clicked"]
+[connection signal="resource_clicked" from="carbs_0" to="." method="_on_resource_clicked"]
+[connection signal="resource_clicked" from="fats_0" to="." method="_on_resource_clicked"]
+[connection signal="resource_clicked" from="proteins_0" to="." method="_on_resource_clicked"]
+[connection signal="resource_clicked" from="ComplexCFPBank" to="." method="_on_resource_clicked"]

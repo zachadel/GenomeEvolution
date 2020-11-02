@@ -1,0 +1,502 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Scripts/WorldMap/InternalResourceController.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/WorldMap/EnergyBar.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/WorldMap/Vesicle.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/WorldMap/EnergyCosts.tscn" type="PackedScene" id=4]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.392157, 0.392157, 0.392157, 1 )
+
+[sub_resource type="Theme" id=2]
+
+[sub_resource type="DynamicFontData" id=3]
+font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
+
+[sub_resource type="DynamicFont" id=4]
+size = 14
+font_data = SubResource( 3 )
+
+[node name="InternalResourceController" type="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 5.0
+margin_right = -1205.0
+margin_bottom = -50.0
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EnergyLabel" type="RichTextLabel" parent="."]
+margin_top = 10.0
+margin_right = 395.0
+margin_bottom = 35.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource( 2 )
+custom_fonts/normal_font = SubResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[center]Available Energy[/center]"
+text = "Available Energy"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EnergyBar" parent="." instance=ExtResource( 2 )]
+margin_left = 39.697
+margin_top = 25.0
+margin_right = 681.697
+margin_bottom = 115.0
+rect_scale = Vector2( 0.55, 0.5 )
+
+[node name="AminoAcids" type="RichTextLabel" parent="."]
+margin_left = 50.0
+margin_top = 70.0
+margin_right = 185.0
+margin_bottom = 94.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource( 2 )
+custom_fonts/normal_font = SubResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[center]Amino Acids[/center]"
+text = "Amino Acids"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Proteins" type="RichTextLabel" parent="."]
+margin_left = 255.0
+margin_top = 70.0
+margin_right = 388.0
+margin_bottom = 94.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource( 2 )
+custom_fonts/normal_font = SubResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[center]Proteins[/center]"
+text = "Proteins"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sugars" type="RichTextLabel" parent="."]
+margin_left = 45.0
+margin_top = 285.0
+margin_right = 175.0
+margin_bottom = 305.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource( 2 )
+custom_fonts/normal_font = SubResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[center]Sugars[/center]"
+text = "Sugars"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Carbs" type="RichTextLabel" parent="."]
+margin_left = 255.0
+margin_top = 285.0
+margin_right = 385.0
+margin_bottom = 305.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource( 2 )
+custom_fonts/normal_font = SubResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[center]Carbs[/center]"
+text = "Carbs"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FattyAcids" type="RichTextLabel" parent="."]
+margin_left = 50.0
+margin_top = 505.0
+margin_right = 183.0
+margin_bottom = 527.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource( 2 )
+custom_fonts/normal_font = SubResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[center]Fatty Acids[/center]"
+text = "Fatty Acids"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Fats" type="RichTextLabel" parent="."]
+margin_left = 255.0
+margin_top = 505.0
+margin_right = 385.0
+margin_bottom = 527.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource( 2 )
+custom_fonts/normal_font = SubResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[center]Fats[/center]"
+text = "Fats"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Ejection" type="RichTextLabel" parent="."]
+visible = false
+margin_left = 150.0
+margin_top = 720.0
+margin_right = 280.0
+margin_bottom = 742.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource( 2 )
+custom_fonts/normal_font = SubResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[center]Ejection[/center]"
+text = "Ejection"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="simple_proteins" parent="." instance=ExtResource( 3 )]
+position = Vector2( 115, 165.01 )
+resource_class = "simple_proteins"
+
+[node name="complex_proteins" parent="." instance=ExtResource( 3 )]
+position = Vector2( 320, 165.01 )
+resource_class = "complex_proteins"
+
+[node name="simple_carbs" parent="." instance=ExtResource( 3 )]
+position = Vector2( 115, 380 )
+resource_class = "simple_carbs"
+
+[node name="complex_carbs" parent="." instance=ExtResource( 3 )]
+position = Vector2( 320, 380 )
+resource_class = "complex_carbs"
+
+[node name="simple_fats" parent="." instance=ExtResource( 3 )]
+position = Vector2( 115, 600 )
+resource_class = "simple_fats"
+
+[node name="complex_fats" parent="." instance=ExtResource( 3 )]
+position = Vector2( 320, 600 )
+resource_class = "complex_fats"
+
+[node name="ejection" parent="." instance=ExtResource( 3 )]
+visible = false
+position = Vector2( 215, 785 )
+resource_class = "ejection"
+
+[node name="SelectionArea" type="ColorRect" parent="."]
+mouse_filter = 2
+color = Color( 1, 1, 1, 0.490196 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Fatty_Sugars_Costs_From" parent="." instance=ExtResource( 4 )]
+margin_left = 140.0
+margin_top = 465.767
+margin_right = -207.0
+margin_bottom = -348.233
+
+[node name="Fatty_Fats_Costs_From" parent="." instance=ExtResource( 4 )]
+margin_left = 193.185
+margin_top = 545.0
+margin_right = -153.815
+margin_bottom = -269.0
+
+[node name="Fatty_Fats_Costs_To" parent="." instance=ExtResource( 4 )]
+margin_left = 193.37
+margin_top = 628.0
+margin_right = -153.63
+margin_bottom = -186.0
+
+[node name="Amino_Sugars_Costs_To" parent="." instance=ExtResource( 4 )]
+margin_left = 39.1852
+margin_top = 253.0
+margin_right = -307.815
+margin_bottom = -561.0
+
+[node name="Amino_Sugars_Costs_From" parent="." instance=ExtResource( 4 )]
+margin_left = 138.444
+margin_top = 253.0
+margin_right = -208.556
+margin_bottom = -561.0
+
+[node name="Amino_Proteins_Costs_To" parent="." instance=ExtResource( 4 )]
+margin_left = 193.741
+margin_top = 190.0
+margin_right = -153.259
+margin_bottom = -624.0
+
+[node name="Amino_Proteins_Costs_From" parent="." instance=ExtResource( 4 )]
+margin_left = 193.556
+margin_top = 100.0
+margin_right = -153.444
+margin_bottom = -714.0
+
+[node name="Sugars_Carbs_Costs_From" parent="." instance=ExtResource( 4 )]
+margin_left = 193.0
+margin_top = 323.0
+margin_right = -154.0
+margin_bottom = -491.0
+colors = {
+"base": Color( 0, 1, 0, 1 ),
+"mineral": Color( 0.65, 0.16, 0.16, 1 ),
+"oxygen": Color( 0, 0, 1, 1 ),
+"temperature": Color( 1, 0, 0, 1 )
+}
+
+[node name="Sugars_Carbs_Costs_To" parent="." instance=ExtResource( 4 )]
+margin_left = 193.0
+margin_top = 411.5
+margin_right = -154.0
+margin_bottom = -402.5
+colors = {
+"base": Color( 0, 1, 0, 1 ),
+"mineral": Color( 0.65, 0.16, 0.16, 1 ),
+"oxygen": Color( 0, 0, 1, 1 ),
+"temperature": Color( 1, 0, 0, 1 )
+}
+
+[node name="Fatty_Energy" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="From" type="Line2D" parent="Fatty_Energy"]
+position = Vector2( 45, 660 )
+points = PoolVector2Array( -9.99998, -60, -35, -60, -35, -615, -14.7759, -615 )
+width = 6.0
+default_color = Color( 1, 1, 1, 1 )
+joint_mode = 2
+
+[node name="Polygon2D" type="Polygon2D" parent="Fatty_Energy/From"]
+position = Vector2( -19.0517, -612 )
+scale = Vector2( 0.5, 0.901586 )
+polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
+
+[node name="Sugars_Energy" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="From" type="Line2D" parent="Sugars_Energy"]
+position = Vector2( 45, 660 )
+points = PoolVector2Array( -5, -270, -35, -270, -35, -615, -18.5718, -614.804 )
+width = 6.0
+default_color = Color( 1, 1, 1, 1 )
+joint_mode = 2
+
+[node name="Polygon2D" type="Polygon2D" parent="Sugars_Energy/From"]
+position = Vector2( -19.0517, -612 )
+scale = Vector2( 0.5, 0.900716 )
+polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
+
+[node name="To" type="Line2D" parent="Sugars_Energy"]
+position = Vector2( 60, 75 )
+scale = Vector2( 1, -1 )
+points = PoolVector2Array( -19.2643, 20, -40, 20, -40, -305, -30, -305 )
+width = 6.0
+default_color = Color( 1, 1, 1, 1 )
+joint_mode = 2
+
+[node name="Polygon2D" type="Polygon2D" parent="Sugars_Energy/To"]
+position = Vector2( -30, -308 )
+scale = Vector2( 0.333333, -0.85 )
+polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
+
+[node name="Amino_Sugars" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="From" type="Line2D" parent="Amino_Sugars"]
+position = Vector2( 120, 250 )
+rotation = 1.5708
+scale = Vector2( 0.5, 0.666 )
+points = PoolVector2Array( 0, 0, 45, -7.62939e-06 )
+default_color = Color( 1, 1, 1, 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Polygon2D" type="Polygon2D" parent="Amino_Sugars/From"]
+position = Vector2( 45, 5 )
+scale = Vector2( 1, 0.999999 )
+polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
+
+[node name="To" type="Line2D" parent="Amino_Sugars"]
+position = Vector2( 107.8, 297 )
+rotation = -1.5708
+scale = Vector2( 0.5, 0.666 )
+points = PoolVector2Array( 20, 0, 65, 0 )
+default_color = Color( 1, 1, 1, 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Polygon2D" type="Polygon2D" parent="Amino_Sugars/To"]
+position = Vector2( 65, 5 )
+scale = Vector2( 1, 0.999999 )
+polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
+
+[node name="Amino_Proteins" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="From" type="Line2D" parent="Amino_Proteins"]
+position = Vector2( 198, 155 )
+scale = Vector2( 0.5, 0.666 )
+points = PoolVector2Array( 10, 0, 45, -7.62939e-06 )
+default_color = Color( 1, 1, 1, 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Polygon2D" type="Polygon2D" parent="Amino_Proteins/From"]
+position = Vector2( 45, 5 )
+scale = Vector2( 1, 0.999999 )
+polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
+
+[node name="To" type="Line2D" parent="Amino_Proteins"]
+position = Vector2( 249.25, 170 )
+rotation = -3.14159
+scale = Vector2( 0.5, 0.666 )
+points = PoolVector2Array( 30, 1.52588e-05, 65, 0 )
+default_color = Color( 1, 1, 1, 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Polygon2D" type="Polygon2D" parent="Amino_Proteins/To"]
+position = Vector2( 65, 5 )
+scale = Vector2( 1, 0.999999 )
+polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
+
+[node name="Sugars_Carbs" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="From" type="Line2D" parent="Sugars_Carbs"]
+position = Vector2( 195, 375 )
+scale = Vector2( 0.5, 0.666 )
+points = PoolVector2Array( 10, 0, 45, -7.62939e-06 )
+default_color = Color( 1, 1, 1, 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Polygon2D" type="Polygon2D" parent="Sugars_Carbs/From"]
+position = Vector2( 45, 5 )
+scale = Vector2( 1, 0.999999 )
+polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
+
+[node name="To" type="Line2D" parent="Sugars_Carbs"]
+position = Vector2( 247, 390 )
+rotation = -3.14159
+scale = Vector2( 0.5, 0.666 )
+points = PoolVector2Array( 30, 1.52588e-05, 65, 0 )
+default_color = Color( 1, 1, 1, 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Polygon2D" type="Polygon2D" parent="Sugars_Carbs/To"]
+position = Vector2( 65, 5 )
+scale = Vector2( 1, 0.999999 )
+polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
+
+[node name="Fatty_Sugars" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="From" type="Line2D" parent="Fatty_Sugars"]
+position = Vector2( 115, 465 )
+rotation = 1.5708
+scale = Vector2( 0.5, 0.666 )
+points = PoolVector2Array( 0, 0, 45, 0 )
+width = 20.0
+default_color = Color( 1, 1, 1, 1 )
+
+[node name="Polygon2D" type="Polygon2D" parent="Fatty_Sugars/From"]
+position = Vector2( 44.1507, -0.25016 )
+scale = Vector2( 1, 0.999999 )
+polygon = PoolVector2Array( 0, 21.4318, 30, 0, 0, -20 )
+
+[node name="Fatty_Fats" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="From" type="Line2D" parent="Fatty_Fats"]
+position = Vector2( 197.185, 595 )
+scale = Vector2( 0.5, 0.666 )
+points = PoolVector2Array( 10, 0, 45, -7.62939e-06 )
+default_color = Color( 1, 1, 1, 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Polygon2D" type="Polygon2D" parent="Fatty_Fats/From"]
+position = Vector2( 45, 5 )
+scale = Vector2( 1, 0.999999 )
+polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
+
+[node name="To" type="Line2D" parent="Fatty_Fats"]
+position = Vector2( 249, 610 )
+rotation = -3.14159
+scale = Vector2( 0.5, 0.666 )
+points = PoolVector2Array( 30, 1.52588e-05, 65, 0 )
+default_color = Color( 1, 1, 1, 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Polygon2D" type="Polygon2D" parent="Fatty_Fats/To"]
+position = Vector2( 65, 5 )
+scale = Vector2( 1, 0.999999 )
+polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
+[connection signal="resource_clicked" from="EnergyBar" to="." method="_on_EnergyBar_resource_clicked"]

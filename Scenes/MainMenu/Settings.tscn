@@ -1,0 +1,28 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scripts/MainMenu/Settings.gd" type="Script" id=1]
+
+[node name="Settings" type="MarginContainer"]
+margin_left = 535.302
+margin_top = 159.727
+margin_right = 961.302
+margin_bottom = 795.727
+custom_constants/margin_right = 20
+custom_constants/margin_top = 20
+custom_constants/margin_left = 20
+custom_constants/margin_bottom = 20
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 406.0
+margin_bottom = 616.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+custom_constants/separation = 20

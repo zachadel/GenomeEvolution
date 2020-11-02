@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scenes/WorldMap/Collision/ResourceCollision.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Assets/Images/Tiles/Resources/steak.png" type="Texture" id=2]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 5.1781
+height = 2.01993
+
+[node name="Resource" instance=ExtResource( 1 )]
+resource = "steak"
+
+[node name="Icon" parent="." index="0"]
+position = Vector2( -2.2113, -1.01355 )
+texture = ExtResource( 2 )
+
+[node name="Boundary" parent="." index="1"]
+position = Vector2( -2.26224, -0.741974 )
+rotation = 0.523599
+shape = SubResource( 1 )
