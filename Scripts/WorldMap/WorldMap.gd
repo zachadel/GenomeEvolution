@@ -86,6 +86,7 @@ func enable_fog():
 	$ObscurityMap.enable_fog()
 
 func _ready():
+	ui.stats_screen_button.emit_signal("pressed");
 	#connect("invalid_action", msg, "show_high_low_warning")
 	pass
 	
@@ -502,7 +503,7 @@ func move_player(pos: Vector3):
 			if path_and_cost["total_cost"] + loc_tax <= current_player.organism.energy:
 				tiles_moved = len(path_and_cost) - 1
 				current_player.organism.energy -= (path_and_cost["total_cost"] + loc_tax)
-				
+				STATS.increment_tiles_traveled()
 				var new_position = Game.map_to_world(pos)
 			
 				current_player.rotate_sprite((new_position - current_player.position).angle())
@@ -537,6 +538,7 @@ func move_player(pos: Vector3):
 		notifications.emit_signal("notification_needed", "Movement value too low to move there.")
 		emit_signal("invalid_action", "movement", true, "moving there")
 			
+	
 	return tiles_moved
 
 #Checks the mineral and cfp resource banks if they have acquired any particular

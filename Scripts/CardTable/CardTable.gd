@@ -4,6 +4,7 @@ signal gene_clicked;
 signal player_done;
 signal switch_to_map
 signal next_turn(turn_text, round_num);
+signal card_stats_screen;
 
 onready var justnow_label : RichTextLabel = $ctl_justnow/lbl_justnow;
 onready var orgn = $Organism;
@@ -36,6 +37,7 @@ func _ready():
 	$RepairTabs.set_tab_title(3, "Fix Damaged Genes");
 	
 	$EnergyBar.MAX_ENERGY = orgn.MAX_ENERGY
+	#$statsScreen.visible = false;
 
 func reset_status_bar():
 	status_bar.clear_cmsms();
@@ -172,6 +174,7 @@ func _on_Organism_gap_selected(_gap, sel: bool):
 	show_repair_types(sel);
 
 func _on_Organism_gene_trimmed(_gene):
+	STATS.increment_trimmedTiles()
 	_refresh_repair_tab();
 
 func _on_Organism_gene_bandaged(_gene):
@@ -296,7 +299,7 @@ func _on_ilist_choices_item_activated(idx):
 func upd_turn_display(upd_turn_unlocks: bool = Game.fresh_round, upd_env_markers: bool = Game.fresh_round):
 	$lnum_turn.set_num(Game.round_num);
 	$lnum_progeny.set_num(orgn.num_progeny);
-	
+	STATS.set_Rounds(Game.round_num)
 	$TurnList.highlight(Game.turn_idx);
 	
 	if upd_turn_unlocks:
@@ -316,7 +319,7 @@ func disable_turn(is_disabled: bool = true):
 		nxt_btn.disabled = false
 
 func adv_turn():
-	
+	orgn.iterate_genes()
 	if !disable_turn_adv:
 		close_extra_menus();
 		var skip_turn = false
@@ -481,6 +484,7 @@ func show_death_screen():
 		gaps_repaired += Unlocks.get_count(rtype);
 	$pnl_dead_overview/HSplitContainer/Panel/LblOverview.text = OVERVIEW_FORMAT % [death_descr, Game.round_num, orgn.num_progeny, gaps_repaired]
 	$pnl_dead_overview.visible = true;
+	$pnl_dead_overview.update_values();
 
 func _on_Organism_finished_replication():
 	reset_status_bar();
@@ -539,3 +543,8 @@ func _on_Organism_transposon_activity(active):
 	else:
 		hide_chaos_anim();
 
+
+
+func _on_stats_screen_pressed():
+	emit_signal("card_stats_screen")
+	pass # Replace with function body.

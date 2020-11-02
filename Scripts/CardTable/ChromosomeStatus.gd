@@ -67,6 +67,7 @@ func get_behavior() -> Dictionary:
 	var behavior := {};
 	for c in chromes:
 		behavior = Game.add_numeric_dicts(behavior, c.get_behavior_profile());
+		
 	return behavior;
 
 func get_skills() -> Dictionary:

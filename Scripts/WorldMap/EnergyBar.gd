@@ -40,6 +40,7 @@ func update_energy_allocation(amount):
 
 func add_energy(amount):
 	if energy + amount <= MAX_ENERGY:
+		STATS.increment_resources_converted()
 		update_energy_allocation(energy + amount)
 	else:
 		update_energy_allocation(MAX_ENERGY)

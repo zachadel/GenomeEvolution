@@ -75,7 +75,8 @@ func add_gene(chrom: String, pos: int, gene_type: String, value: float) -> Strin
 			if gene_type in Game.ESSENTIAL_CLASSES.keys():
 				if value >= 0:
 					var chrom_pos = _get_chrom_idx(chrom)
-						
+					STATS.update_currentType(gene_type)
+					STATS.update_maxType()
 					organism.add_gene(chrom_pos, pos, gene_type, value)
 					_refresh_profile()
 					
@@ -282,7 +283,7 @@ func refresh_profile() -> String:
 
 func add_skill(chrom: String, pos: int, skill_name: String) -> String:
 	var output_str = ""
-	
+	STATS.increment_num_skills()
 	if chrom == "top" or chrom == "bottom":
 		if pos <= _get_chrom_length(chrom):
 			var chrom_idx = _get_chrom_idx(chrom)

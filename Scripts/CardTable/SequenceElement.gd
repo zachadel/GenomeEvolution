@@ -526,6 +526,7 @@ func evolve_major(gain: bool) -> void:
 		"blank":
 			if gain:
 				mode = "essential";
+				STATS.increment_majorUpgrades_blankTiles_newGame()
 				evolve_new_behavior(true, "Helper");
 		"essential":
 			evolve_new_behavior(gain);
@@ -563,7 +564,7 @@ func kill_elm():
 		ess_behavior[k] = 0;
 	ate_activity = 0;
 	upd_behavior_disp();
-	
+	STATS.increment_total_pseduo()
 	mode = "pseudo";
 
 func damage_gene(dmg := true):
@@ -622,12 +623,16 @@ func evolve_by_name(ev_name: String) -> String:
 				kill_elm();
 				return "a fatal mutation";
 			"major_down":
+				STATS.increment_majorDowngrades()
 				return perform_evolution(true, false);
 			"minor_down":
+				STATS.increment_minorDowngrades()
 				return perform_evolution(false, false);
 			"major_up":
+				STATS.increment_majorUpgrades()
 				return perform_evolution(true, true);
 			"minor_up":
+				STATS.increment_minorUpgrades()
 				return perform_evolution(false, true);
 	return "";
 
@@ -693,6 +698,7 @@ func get_dominant_essential() -> String:
 	return dominant_key;
 
 func upd_display():
+	var blankTiles = 0;
 	if !display_locked:
 		$lbl_code.text = gene_code;
 		$lbl_id.visible = false;
@@ -712,6 +718,7 @@ func upd_display():
 					"pseudo":
 						self_modulate = Color(.5, .5, 0);
 					"blank":
+						blankTiles += 1
 						set_texture(null);
 						$Helix.texture = Game.helix_textures[false];
 				upd_behavior_disp();
@@ -727,7 +734,8 @@ func upd_display():
 			modulate = forced_comparison_color;
 		else:
 			modulate = Color(1, 1, 1, 1);
-		
+		STATS.set_final_blank_tiles(blankTiles)
+		STATS.maxBlankTiles()
 		upd_boost_disp();
 
 func get_cmsm():

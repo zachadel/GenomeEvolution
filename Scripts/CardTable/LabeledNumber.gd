@@ -18,6 +18,7 @@ func get_num() -> int:
 
 func set_lbl(l : String):
 	lbl = l;
+	STATS.increment_turns()
 	$lblText.text = l;
 
 func get_lbl() -> String:

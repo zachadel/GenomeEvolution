@@ -188,12 +188,13 @@ margin_left = 420.0
 margin_top = 244.0
 margin_right = 1153.0
 margin_bottom = 593.0
+rect_min_size = Vector2( 400, 140 )
 window_title = "Open a File"
 mode = 0
 access = 2
 filters = PoolStringArray( "*.txt ; Text Files" )
-current_dir = "C:/"
-current_path = "C:/"
+current_dir = "/"
+current_path = "/"
 __meta__ = {
 "_edit_use_anchors_": false
 }

@@ -181,6 +181,7 @@ func get_other_cmsm(cmsm):
 func get_ate_list():
 	if !ate_list_is_clean:
 		ate_list.clear();
+		STATS.clear_currentTE()
 		for g in get_all_genes():
 			if (g.is_ate()):
 				ate_list.append(g);
@@ -260,6 +261,8 @@ func extract_elm(elm, place_gap = true):
 func recombine(elm0, elm1):
 	recombining = true;
 	var idxs = [];
+	if (elm0.is_ate() or elm1.is_ate()):
+		STATS.increment_transposonFuse()
 	if (elm0.get_cmsm() == $cmsm0/cmsm):
 		idxs = [elm0.get_index(), elm1.get_index()];
 	else:
