@@ -4,7 +4,7 @@ signal end_map_pressed
 signal quit_to_title
 signal acquire_resources
 signal check_genome
-
+signal stats_screen
 signal eject_resources(resources_dict)
 
 #internal resources controller
@@ -35,7 +35,7 @@ var test_cases = ["simple_carbs", "simple_fats", "simple_proteins", "complex_car
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$statsScreen.visible = false
+	#$statsScreen.visible = false
 	acquire_resources_button.text = DEFAULT_BUTTON_TEXT[BUTTONS.ACQUIRE]
 	stats_screen_button.text = DEFAULT_BUTTON_TEXT[BUTTONS.STATS]
 	check_genome_button.text = DEFAULT_BUTTON_TEXT[BUTTONS.CHECK]
@@ -214,3 +214,6 @@ func print_diff_dict(diff_dict: Dictionary):
 
 
 
+func _on_StatsScreen_pressed():
+	$Control.visible = true;
+	pass # Replace with function body.

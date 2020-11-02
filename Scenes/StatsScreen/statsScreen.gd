@@ -291,7 +291,7 @@ func _set_values():
 	$sub3/ev6/rep1Score/score1Text.text = str(geneSplit)
 
 func _ready():
-	self.visible = false
+	hide()
 	_update_values()
 	_set_max_bar()
 	_set_current_bar()
@@ -324,6 +324,7 @@ func _on_StatsScreen_pressed():
 
 func _on_stats_screen_pressed():
 	#set values
+	
 	_update_values()
 	_set_current_bar()
 	_set_max_bar()

@@ -86,6 +86,7 @@ func enable_fog():
 	$ObscurityMap.enable_fog()
 
 func _ready():
+	ui.stats_screen_button.emit_signal("pressed");
 	#connect("invalid_action", msg, "show_high_low_warning")
 	pass
 	

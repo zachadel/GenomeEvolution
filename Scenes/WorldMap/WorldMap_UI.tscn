@@ -299,6 +299,9 @@ margin_top = 830.0
 margin_right = 1310.0
 margin_bottom = 900.0
 mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MenuPanel"]
 anchor_left = 0.5
@@ -349,10 +352,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="statsScreen" parent="." instance=ExtResource( 10 )]
+[node name="Control" type="Control" parent="."]
 visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="statsScreen" parent="Control" instance=ExtResource( 10 )]
 [connection signal="pressed" from="GenomePanel/RepairGenome" to="." method="_on_EndMapTurn_pressed"]
 [connection signal="pressed" from="MenuPanel/HBoxContainer/AcquireResources" to="." method="_on_AcquireResources_pressed"]
-[connection signal="pressed" from="MenuPanel/HBoxContainer/StatsScreen" to="statsScreen" method="_on_StatsScreen_pressed"]
+[connection signal="pressed" from="MenuPanel/HBoxContainer/StatsScreen" to="Control/statsScreen" method="_on_StatsScreen_pressed"]
+[connection signal="pressed" from="MenuPanel/HBoxContainer/StatsScreen" to="." method="_on_StatsScreen_pressed"]
 [connection signal="pressed" from="MenuPanel/HBoxContainer/JiggleResources" to="." method="center_resources"]
 [connection signal="pressed" from="MenuPanel/HBoxContainer/CheckGenome" to="." method="_on_CheckGenome_pressed"]
