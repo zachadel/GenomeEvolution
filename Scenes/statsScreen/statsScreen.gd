@@ -71,6 +71,16 @@ var currentBarGene7Pos= 0
 var currentBarGene8Pos= 0
 var currentBarGene9Pos= 0
 
+#transposons
+var current_classicTE = 0
+var current_zigzagTE = 0
+var current_assistTE = 0
+var current_buddyTE = 0
+var current_nestlerTE = 0
+var current_commuterTE = 0
+var current_buncherTE = 0
+var current_jumperTE = 0
+
 #Repairs
 var dmgGeneRepairPerfect= 0
 var dmgGeneRepairError= 0
@@ -218,6 +228,15 @@ func _update_values():
 	max_deconstruction_value = STATS.get_maxDecon();
 	max_ate_value = STATS.get_maxAte();
 	
+	# transposons
+	current_classicTE = STATS.get_current_classicTE()
+	current_zigzagTE = STATS.get_current_zigzagTE()
+	current_assistTE = STATS.get_current_assistTE()
+	current_buddyTE = STATS.get_current_buddyTE()
+	current_nestlerTE = STATS.get_current_nestlerTE()
+	current_commuterTE = STATS.get_current_commuterTE()
+	current_buncherTE = STATS.get_current_buncherTE()
+	current_jumperTE = STATS.get_current_jumperTE()
 	#Repairs
 	dmgGeneRepairPerfect = STATS.get_dmg_genes_no_error();
 	dmgGeneRepairError = STATS.get_dmg_genes_error();
@@ -246,7 +265,22 @@ func _update_values():
 	
 func _set_transposons():
 	$sub1/AnthroArt.set_color(Color.red)
-	$sub1/AnthroArt._set_texture("res:///Assets/Images/tes/hexagon_body.png")
+	$sub1/AnthroArt2.set_color(Color.red)
+	$sub1/AnthroArt3.set_color(Color.red)
+	$sub1/AnthroArt4.set_color(Color.red)
+	$sub1/AnthroArt5.set_color(Color.red)
+	$sub1/AnthroArt6.set_color(Color.red)
+	$sub1/AnthroArt7.set_color(Color.red)
+	$sub1/AnthroArt8.set_color(Color.red)
+	#setting the values
+	$sub1/AnthroArt/score/Label.text = str(current_classicTE)
+	$sub1/AnthroArt2/score/Label.text = str(current_zigzagTE)
+	$sub1/AnthroArt3/score/Label.text = str(current_assistTE)
+	$sub1/AnthroArt4/score/Label.text = str(current_buddyTE)
+	$sub1/AnthroArt5/score/Label.text = str(current_nestlerTE)
+	$sub1/AnthroArt6/score/Label.text = str(current_commuterTE)
+	$sub1/AnthroArt7/score/Label.text = str(current_buncherTE)
+	$sub1/AnthroArt8/score/Label.text = str(current_jumperTE)
 func _set_values():
 	#main values
 	$mainStat1/score.text = str(turns_taken);
@@ -300,7 +334,7 @@ func _set_values():
 func _ready():
 	#hide()
 	_update_values()
-	#_set_transposons()
+	_set_transposons()
 	_set_max_bar()
 	_set_current_bar()
 	_set_values()
@@ -706,4 +740,74 @@ func _on_AnthroArt_mouse_entered():
 
 func _on_AnthroArt_mouse_exited():
 	$geneDisplay9.hide()
+	pass # Replace with function body.
+
+
+func _on_AnthroArt2_mouse_entered():
+	$geneDisplay10.show()
+	pass # Replace with function body.
+
+
+func _on_AnthroArt2_mouse_exited():
+	$geneDisplay10.hide()
+	pass # Replace with function body.
+
+
+func _on_AnthroArt3_mouse_entered():
+	$geneDisplay11.show()
+	pass # Replace with function body.
+
+
+func _on_AnthroArt3_mouse_exited():
+	$geneDisplay11.hide()
+	pass # Replace with function body.
+
+
+func _on_AnthroArt4_mouse_entered():
+	$geneDisplay12.show()
+	pass # Replace with function body.
+
+
+func _on_AnthroArt4_mouse_exited():
+	$geneDisplay12.hide()
+	pass # Replace with function body.
+
+
+func _on_AnthroArt5_mouse_entered():
+	$geneDisplay13.show()
+	pass # Replace with function body.
+
+
+func _on_AnthroArt5_mouse_exited():
+	$geneDisplay13.hide()
+	pass # Replace with function body.
+
+
+func _on_AnthroArt6_mouse_entered():
+	$geneDisplay14.show()
+	pass # Replace with function body.
+
+
+func _on_AnthroArt6_mouse_exited():
+	$geneDisplay14.hide()
+	pass # Replace with function body.
+
+
+func _on_AnthroArt7_mouse_entered():
+	$geneDisplay15.show()
+	pass # Replace with function body.
+
+
+func _on_AnthroArt7_mouse_exited():
+	$geneDisplay15.hide()
+	pass # Replace with function body.
+
+
+func _on_AnthroArt8_mouse_entered():
+	$geneDisplay16.show()
+	pass # Replace with function body.
+
+
+func _on_AnthroArt8_mouse_exited():
+	$geneDisplay16.hide()
 	pass # Replace with function body.

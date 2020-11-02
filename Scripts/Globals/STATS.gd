@@ -96,6 +96,23 @@ var maxAte =0
 var transposonFuse = 0
 var turns_taken = 0
 
+func get_current_classicTE():
+	return current_classicTE
+func get_current_zigzagTE():
+	return current_zigzagTE;
+func get_current_assistTE():
+	return current_assistTE
+func get_current_buddyTE():
+	return current_buddyTE
+func get_current_nestlerTE():
+	return current_nestlerTE
+func get_current_commuterTE():
+	return current_commuterTE
+func get_current_buncherTE():
+	return current_buncherTE
+func get_current_jumperTE():
+	return current_jumperTE
+
 func increment_downToPseudo():
 	downToPseudo += 1
 func get_downToPseudo():

@@ -56,6 +56,7 @@ func _ready():
 func _show_control():
 	worldMapUI = true
 	statsScreen._update_values()
+	statsScreen._set_transposons()
 	statsScreen._set_values()
 	statsScreen._set_current_bar()
 	statsScreen._set_max_bar()
@@ -65,6 +66,7 @@ func _show_control():
 func _card_show_control():
 	cardTable = true
 	statsScreen._update_values()
+	statsScreen._set_transposons()
 	statsScreen._set_values()
 	statsScreen._set_current_bar()
 	statsScreen._set_max_bar()
