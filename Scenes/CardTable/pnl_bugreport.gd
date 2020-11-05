@@ -16,7 +16,7 @@ func _ready():
 
 
 func _make_post_request(title, description):
-	var url = 'https://api.github.com/repos/GenomeEvolutionTAMU/GenomeEvolution/issues'
+	var url = 'https://api.github.com/repos/zachadel/GenomeEvolution/issues'
 	
 	var headers = [
 		'Content-Type: application/json',
