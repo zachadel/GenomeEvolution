@@ -216,7 +216,6 @@ func update_maxType():
 	if(currentAte > maxAte):
 		maxAte = currentAte
 
-
 func increment_transposonFuse():
 	transposonFuse += 1
 func get_TEFuse():
@@ -239,6 +238,23 @@ func compare_maxTE():
 		max_buncherTE = current_buncherTE
 	if(max_jumperTE > current_jumperTE):
 		max_jumperTE = current_jumperTE
+
+func get_max_classicTE():
+	return max_classicTE;
+func get_max_zigzagTE():
+	return max_zigzagTE;
+func get_max_assisteTE():
+	return max_assistTE;
+func get_max_buddyTE():
+	return max_buddyTE;
+func get_max_nestlerTE():
+	return max_nestlerTE;
+func get_max_commuter():
+	return max_commuterTE;
+func get_max_buncherTE():
+	return max_buncherTE;
+func get_max_jumper():
+	return max_jumperTE;
 
 func clear_currentTE():
 	current_assistTE = 0

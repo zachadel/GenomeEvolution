@@ -71,7 +71,7 @@ var currentBarGene7Pos= 0
 var currentBarGene8Pos= 0
 var currentBarGene9Pos= 0
 
-#transposons
+#current transposons
 var current_classicTE = 0
 var current_zigzagTE = 0
 var current_assistTE = 0
@@ -80,6 +80,16 @@ var current_nestlerTE = 0
 var current_commuterTE = 0
 var current_buncherTE = 0
 var current_jumperTE = 0
+
+#max transposons
+var max_classicTE = 0
+var max_zigzagTE = 0
+var max_assistTE = 0
+var max_buddyTE = 0
+var max_nestlerTE = 0
+var max_commuterTE = 0
+var max_buncherTE = 0
+var max_jumperTE = 0
 
 #Repairs
 var dmgGeneRepairPerfect= 0
@@ -217,6 +227,7 @@ func _update_values():
 	current_deconstruction_value = STATS.get_currentDeCon();
 	current_ate_value = STATS.get_currentAte();
 	current_blank_value = STATS.get_currentBlank()
+	
 	#setting values for the max bar's values. 
 	max_replication_value = STATS.get_maxRep();
 	max_locomotion_value = STATS.get_maxLocomo()
@@ -228,7 +239,7 @@ func _update_values():
 	max_deconstruction_value = STATS.get_maxDecon();
 	max_ate_value = STATS.get_maxAte();
 	
-	# transposons
+	# current transposons
 	current_classicTE = STATS.get_current_classicTE()
 	current_zigzagTE = STATS.get_current_zigzagTE()
 	current_assistTE = STATS.get_current_assistTE()
@@ -237,6 +248,16 @@ func _update_values():
 	current_commuterTE = STATS.get_current_commuterTE()
 	current_buncherTE = STATS.get_current_buncherTE()
 	current_jumperTE = STATS.get_current_jumperTE()
+	
+	# max transposons
+	max_classicTE = STATS.get_max_classicTE()
+	max_zigzagTE = STATS.get_max_zigzagTE()
+	max_assistTE = STATS.get_max_assistTE()
+	max_buddyTE = STATS.get_max_buddyTE()
+	max_nestlerTE = STATS.get_max_nestlerTE()
+	max_commuterTE = STATS.get_max_commuterTE()
+	max_buncherTE = STATS.get_max_buncherTE()
+	max_jumperTE = STATS.get_max_jumperTE()
 	#Repairs
 	dmgGeneRepairPerfect = STATS.get_dmg_genes_no_error();
 	dmgGeneRepairError = STATS.get_dmg_genes_error();
@@ -264,23 +285,32 @@ func _update_values():
 	geneSplit = STATS.get_elmSplit();
 	
 func _set_transposons():
-	$sub1/AnthroArt.set_color(Color.red)
-	$sub1/AnthroArt2.set_color(Color.red)
-	$sub1/AnthroArt3.set_color(Color.red)
-	$sub1/AnthroArt4.set_color(Color.red)
-	$sub1/AnthroArt5.set_color(Color.red)
-	$sub1/AnthroArt6.set_color(Color.red)
-	$sub1/AnthroArt7.set_color(Color.red)
-	$sub1/AnthroArt8.set_color(Color.red)
+	$sub1/TE1/AnthroArt.set_color(Color.red)
+	$sub1/TE2/AnthroArt2.set_color(Color.red)
+	$sub1/TE3/AnthroArt3.set_color(Color.red)
+	$sub1/TE4/AnthroArt4.set_color(Color.red)
+	$sub1/TE5/AnthroArt5.set_color(Color.red)
+	$sub1/TE6/AnthroArt6.set_color(Color.red)
+	$sub1/TE7/AnthroArt7.set_color(Color.red)
+	$sub1/TE8/AnthroArt8.set_color(Color.red)
 	#setting the values
-	$sub1/AnthroArt/score/Label.text = str(current_classicTE)
-	$sub1/AnthroArt2/score/Label.text = str(current_zigzagTE)
-	$sub1/AnthroArt3/score/Label.text = str(current_assistTE)
-	$sub1/AnthroArt4/score/Label.text = str(current_buddyTE)
-	$sub1/AnthroArt5/score/Label.text = str(current_nestlerTE)
-	$sub1/AnthroArt6/score/Label.text = str(current_commuterTE)
-	$sub1/AnthroArt7/score/Label.text = str(current_buncherTE)
-	$sub1/AnthroArt8/score/Label.text = str(current_jumperTE)
+	$sub1/TE1/currScore/Label.text = str(current_classicTE)
+	$sub1/TE2/currScore/Label.text = str(current_zigzagTE)
+	$sub1/TE3/currScore/Label.text = str(current_assistTE)
+	$sub1/TE4/currScore/Label.text = str(current_buddyTE)
+	$sub1/TE5/currScore/Label.text = str(current_nestlerTE)
+	$sub1/TE6/currScore/Label.text = str(current_commuterTE)
+	$sub1/TE7/currScore/Label.text = str(current_buncherTE)
+	$sub1/TE8/currScore/Label.text = str(current_jumperTE)
+	
+	$sub1/TE1/maxScore/Label.text = str(max_classicTE)
+	$sub1/TE2/maxScore/Label.text = str(max_zigzagTE)
+	$sub1/TE3/maxScore/Label.text = str(max_assistTE)
+	$sub1/TE4/maxScore/Label.text = str(max_buddyTE)
+	$sub1/TE5/maxScore/Label.text = str(max_nestlerTE)
+	$sub1/TE6/maxScore/Label.text = str(max_commuterTE)
+	$sub1/TE7/maxScore/Label.text = str(max_buncherTE)
+	$sub1/TE8/maxScore/Label.text = str(max_jumperTE)
 func _set_values():
 	#main values
 	$mainStat1/score.text = str(turns_taken);
@@ -296,16 +326,24 @@ func _set_values():
 		genesNumber = currentNumber;
 	$sub1/currentBar/score/score_txt.text = str(currentNumber)
 	$sub1/maxBar/score/score_txt.text = str(genesNumber)
-	#gene composition
-	$sub1/gene1/score/Label.text = str(current_replication_value)
-	$sub1/gene2/score/Label.text = str(current_sensing_value)
-	$sub1/gene3/score/Label.text = str(current_manipulation_value)
-	$sub1/gene4/score/Label.text = str(current_component_value)
-	$sub1/gene5/score/Label.text = str(current_construction_value)
-	$sub1/gene6/score/Label.text = str(current_deconstruction_value)
-	$sub1/gene7/score/Label.text = str(current_helper_value)
-	$sub1/transposon2/score/Label.text = str(current_blank_value)
-	#$sub1/transposon3/score/Label.text = str(0)
+	#current gene composition
+	$sub1/gene1/gene1/currScore/currScoret.text = str(current_replication_value)
+	$sub1/gene2/gene2/currScore/currScoret.text = str(current_sensing_value)
+	$sub1/gene3/gene3/currScore/currScoret.text = str(current_manipulation_value)
+	$sub1/gene4/gene4/currScore/currScoret.text = str(current_component_value)
+	$sub1/gene5/gene5/currScore/currScoret.text = str(current_construction_value)
+	$sub1/gene6/gene6/currScore/currScoret.text = str(current_deconstruction_value)
+	$sub1/gene7/gene7/currScore/currScoret.text = str(current_helper_value)
+	$sub1/gene8/gene8/currScore/currScoret.text = str(current_blank_value)
+	# max gene composition
+	$sub1/gene1/gene1/maxScore/maxScoret.text = str(current_replication_value)
+	$sub1/gene2/gene2/maxScore/maxScoret.text = str(current_sensing_value)
+	$sub1/gene3/gene3/maxScore/maxScoret.text = str(current_manipulation_value)
+	$sub1/gene4/gene4/maxScore/maxScoret.text = str(current_component_value)
+	$sub1/gene5/gene5/maxScore/maxScoret.text = str(current_construction_value)
+	$sub1/gene6/gene6/maxScore/maxScoret.text = str(current_deconstruction_value)
+	$sub1/gene7/gene7/maxScore/maxScoret.text = str(current_helper_value)
+	$sub1/gene8/gene8/maxScore/maxScoret.text = str(current_blank_value)
 	# Repairs
 	$sub2/rep1/rep1Score/score1Text.text = str(dmgGeneRepairPerfect)
 	$sub2/rep1/rep1Score2/score2Text.text = str(dmgGeneRepairError)
