@@ -472,6 +472,8 @@ func _on_Organism_show_reprod_opts(show):
 	show_replicate_opts(show);
 
 func quit_to_menu():
+	STATS._reset_game()
+	$pnl_dead_overview/background/statsScreen._reset_values()
 	Game.restart_game()
 	Settings.reset()
 	get_tree().change_scene("res://Scenes/MainMenu/TitleScreen.tscn")
@@ -482,7 +484,7 @@ func show_death_screen():
 	var gaps_repaired := 0;
 	for rtype in ["repair_cp", "repair_cd", "repair_je"]:
 		gaps_repaired += Unlocks.get_count(rtype);
-	$pnl_dead_overview/HSplitContainer/Panel/LblOverview.text = OVERVIEW_FORMAT % [death_descr, Game.round_num, orgn.num_progeny, gaps_repaired]
+	#$pnl_dead_overview/HSplitContainer/Panel/LblOverview.text = OVERVIEW_FORMAT % [death_descr, Game.round_num, orgn.num_progeny, gaps_repaired]
 	$pnl_dead_overview.visible = true;
 	$pnl_dead_overview.update_values();
 
