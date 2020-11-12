@@ -1068,7 +1068,6 @@ func repair_gap(gap, repair_type, choice_info = {}):
 				else:
 					cmsms.close_gap(gap);
 				STATS.increment_break_repaired_collapseDuplicates()
-				STATS.increment_dmg_genes_no_error()
 				emit_signal("gap_close_msg", "Gap at %d, %d closed: collapsed %d genes and ended due to %s." % (gap_pos_disp + [remove_count, ended_due_to]));
 				
 				for times in range(remove_count):
@@ -1088,12 +1087,10 @@ func repair_gap(gap, repair_type, choice_info = {}):
 				match (repair_roll_storage["copy_pattern"][gap]):
 					0:
 						STATS.increment_breaks_cpyRepair_no_error()
-						STATS.increment_dmg_genes_no_error()
 						
 						emit_signal("gap_close_msg", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome without complications.%s" % (gap_pos_disp + [left_id, right_id, correct_str]));
 					1:
 						STATS.increment_breaks_cpyRepair_no_error()
-						STATS.increment_dmg_genes_no_error()
 						emit_signal("gap_close_msg", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome along with intervening genes.%s" % (gap_pos_disp + [left_id, right_id, correct_str]));
 						var copied_section = range(choice_info["left"].get_index()+1, choice_info["right"].get_index());
 						if (do_yields):
@@ -1109,7 +1106,6 @@ func repair_gap(gap, repair_type, choice_info = {}):
 						Unlocks.add_count("cp_duped_genes", copied_section.size());
 					2, 3, 4:
 						STATS.increment_breaks_cpyRepair_error()
-						STATS.increment_dmg_genes_error()
 						gene_selection = cmsm.get_elms_around_pos(g_idx, true);
 						emit_signal("gap_close_msg", "Trying to copy the pattern from the other chromosome, but 1 gene is harmed; choose which.");
 						if (is_ai):
@@ -1140,6 +1136,7 @@ func repair_gap(gap, repair_type, choice_info = {}):
 									damage_str = "received a " + gene.evolve_by_name("minor_down");
 							emit_signal("gap_close_msg", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome. During the repair, a %s gene %s.%s" % (gap_pos_disp + [left_id, right_id, g_id, damage_str, correct_str]));
 					5, 6, 7:
+						STATS.increment_breaks_cpyRepair_no_error()
 						var gene = right_break_gene;
 						if (randi() % 2):
 							gene = left_break_gene;
@@ -1156,8 +1153,7 @@ func repair_gap(gap, repair_type, choice_info = {}):
 								boon_str = "received a " + gene.evolve_by_name("major_up");
 							7: # Minor up
 								boon_str = "received a " + gene.evolve_by_name("minor_up");
-						STATS.increment_breaks_cpyRepair_no_error()
-						STATS.increment_dmg_genes_no_error()
+						
 						emit_signal("gap_close_msg", "Gap at %d, %d closed: copied the pattern (%s, %s) from the other chromosome. During the repair, a %s gene %s.%s" % (gap_pos_disp + [left_id, right_id, gene.get_gene_name(), boon_str, correct_str]));
 				if !repair_canceled:
 					if (do_correction):
@@ -1218,6 +1214,7 @@ func repair_gap(gap, repair_type, choice_info = {}):
 						repair_roll_storage["join_ends"][gap] = 0;
 				match (repair_roll_storage["join_ends"][gap]):
 					-1: # Inversion
+						print("INVERSION")
 						var seg_idxs : Array;
 						var seg_elms : Array;
 						if seg_left_of_gap:
@@ -1231,17 +1228,15 @@ func repair_gap(gap, repair_type, choice_info = {}):
 							var elm = cmsm.get_child(i);
 							cmsm.move_elm(elm, leftmost_idx);
 							elm.reverse_code();
-						STATS.increment_dmg_genes_no_error()
+						#print("BREAKS JOINED IN INVERSION	")
 						STATS.increment_breaks_join()
 						STATS.increment_numInversions()
 						emit_signal("gap_close_msg", "Joined ends for the gap at %d, %d; resulted in an inversion." % gap_pos_disp);
 					0: # No complications
 						STATS.increment_breaks_join()
-						STATS.increment_dmg_genes_no_error()
 						emit_signal("gap_close_msg", "Joined ends for the gap at %d, %d without complications." % gap_pos_disp);
 					1, 2, 3:
 						STATS.increment_breaks_join_error()
-						STATS.increment_dmg_genes_error()
 						gene_selection = cmsm.get_elms_around_pos(g_idx, true);
 						emit_signal("gap_close_msg", "Joining ends as a last-ditch effort, but a gene is harmed; choose which.");
 						if (is_ai):
@@ -1270,9 +1265,10 @@ func repair_gap(gap, repair_type, choice_info = {}):
 									damage_str = "received a " + gene.evolve_by_name("major_down");
 								3: # Minor down
 									damage_str = "received a " + gene.evolve_by_name("minor_down");
-							STATS.increment_breaks_join()
+							#STATS.increment_breaks_join()
 							emit_signal("gap_close_msg", "Joined ends for the gap at %d, %d; during the repair, a %s gene %s." % (gap_pos_disp + [g_id, damage_str]));
 					4, 5, 6:
+						STATS.increment_breaks_join()
 						var gene = right_break_gene;
 						if randi() % 2:
 							gene = left_break_gene;
@@ -1289,7 +1285,6 @@ func repair_gap(gap, repair_type, choice_info = {}):
 								boon_str = "received a " + gene.evolve_by_name("major_up");
 							6: # Minor up
 								boon_str = "received a " + gene.evolve_by_name("minor_up");
-						STATS.increment_dmg_genes_no_error()
 						emit_signal("gap_close_msg", "Joined ends for the gap at %d, %d; during the repair, a %s gene %s." % (gap_pos_disp + [gene.get_gene_name(), boon_str]));
 				if !repair_canceled:
 					if (do_yields):
@@ -1532,8 +1527,10 @@ func bandage_elm(rep_elm) -> void:
 		var roll = roll_chance("repair_dmg_gene");
 		match roll:
 			0: # No complications
+				STATS.increment_dmg_genes_no_error()
 				emit_signal("bandage_msg", "Repaired the %s gene at %d, %d without complications." % ([g_id] + g_pos_disp));
 			1, 2, 3:
+				STATS.increment_dmg_genes_error()
 				var damage_str = "";
 				match roll:
 					1: # Lose gene
@@ -1549,6 +1546,7 @@ func bandage_elm(rep_elm) -> void:
 						damage_str = "received a " + rep_elm.evolve_by_name("minor_down");
 				emit_signal("bandage_msg", "Attempted to repair the %s gene at %d, %d; it %s." % ([g_id] + g_pos_disp + [damage_str]));
 			4, 5, 6:
+				STATS.increment_dmg_genes_no_error()
 				var boon_str = "";
 				match roll:
 					4: # Copy gene
@@ -1721,6 +1719,9 @@ func iterate_genes():
 		elif(i.is_ate()):
 			STATS.update_currentTE(i)
 			STATS.increment_currentAte()
+		elif(i.is_pseudo()):
+			STATS.increment_currentPseudo()
+			
 	STATS.update_maxType()
 	STATS.compare_maxTE()
 

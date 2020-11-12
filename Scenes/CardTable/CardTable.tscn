@@ -284,13 +284,13 @@ fixed_icon_size = Vector2( 50, 50 )
 
 [node name="vsplit" type="VSplitContainer" parent="RepairTabs/pnl_repair_choices/hsplit"]
 margin_left = 242.0
-margin_right = 599.0
+margin_right = 680.0
 margin_bottom = 227.0
 split_offset = 160
 dragger_visibility = 1
 
 [node name="scroll" type="ScrollContainer" parent="RepairTabs/pnl_repair_choices/hsplit/vsplit"]
-margin_right = 357.0
+margin_right = 438.0
 margin_bottom = 160.0
 scroll_horizontal_enabled = false
 
@@ -303,7 +303,7 @@ autowrap = true
 
 [node name="btn_apply_repair" type="Button" parent="RepairTabs/pnl_repair_choices/hsplit/vsplit"]
 margin_top = 172.0
-margin_right = 357.0
+margin_right = 438.0
 margin_bottom = 227.0
 text = "Repair"
 

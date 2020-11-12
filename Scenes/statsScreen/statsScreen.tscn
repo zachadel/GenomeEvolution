@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://Assets/Images/pngs/DNA_left.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Images/pngs/DNA_right.png" type="Texture" id=2]
@@ -28,6 +28,7 @@
 [ext_resource path="res://Assets/Images/DeathScreen/transposon.png" type="Texture" id=26]
 [ext_resource path="res://Assets/Images/DeathScreen/arrow-39652_1280.png" type="Texture" id=27]
 [ext_resource path="res://Scenes/CardTable/Art/AnthroArt.tscn" type="PackedScene" id=28]
+[ext_resource path="res://Assets/Images/genes/Locomotion.png" type="Texture" id=29]
 
 [node name="statsScreen" type="Panel"]
 margin_right = 1600.0
@@ -328,7 +329,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="maxgene1" type="ColorRect" parent="sub1/maxBar"]
+[node name="maxComposition" type="ColorRect" parent="sub1/maxBar"]
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 50.0
@@ -338,7 +339,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="maxgene2" type="ColorRect" parent="sub1/maxBar"]
+[node name="maxPseudo" type="ColorRect" parent="sub1/maxBar"]
 margin_left = 60.0
 margin_top = 10.0
 margin_right = 100.0
@@ -348,7 +349,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="maxgene3" type="ColorRect" parent="sub1/maxBar"]
+[node name="maxBlank" type="ColorRect" parent="sub1/maxBar"]
 margin_left = 110.0
 margin_top = 10.0
 margin_right = 150.0
@@ -358,7 +359,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="maxgene4" type="ColorRect" parent="sub1/maxBar"]
+[node name="maxTransposons" type="ColorRect" parent="sub1/maxBar"]
 margin_left = 160.0
 margin_top = 10.0
 margin_right = 200.0
@@ -369,6 +370,7 @@ __meta__ = {
 }
 
 [node name="maxgene5" type="ColorRect" parent="sub1/maxBar"]
+visible = false
 margin_left = 210.0
 margin_top = 10.0
 margin_right = 250.0
@@ -379,6 +381,7 @@ __meta__ = {
 }
 
 [node name="maxgene6" type="ColorRect" parent="sub1/maxBar"]
+visible = false
 margin_left = 210.0
 margin_top = 10.0
 margin_right = 250.0
@@ -389,6 +392,7 @@ __meta__ = {
 }
 
 [node name="maxgene7" type="ColorRect" parent="sub1/maxBar"]
+visible = false
 margin_left = 210.0
 margin_top = 10.0
 margin_right = 250.0
@@ -399,6 +403,7 @@ __meta__ = {
 }
 
 [node name="maxgene8" type="ColorRect" parent="sub1/maxBar"]
+visible = false
 margin_left = 210.0
 margin_top = 10.0
 margin_right = 250.0
@@ -409,6 +414,7 @@ __meta__ = {
 }
 
 [node name="maxgene9" type="ColorRect" parent="sub1/maxBar"]
+visible = false
 margin_left = 210.0
 margin_top = 10.0
 margin_right = 250.0
@@ -454,7 +460,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="currgene1" type="ColorRect" parent="sub1/currentBar"]
+[node name="currComposition" type="ColorRect" parent="sub1/currentBar"]
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 50.0
@@ -464,7 +470,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="currgene2" type="ColorRect" parent="sub1/currentBar"]
+[node name="currPseudo" type="ColorRect" parent="sub1/currentBar"]
 margin_left = 60.0
 margin_top = 10.0
 margin_right = 100.0
@@ -474,7 +480,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="currgene3" type="ColorRect" parent="sub1/currentBar"]
+[node name="currBlank" type="ColorRect" parent="sub1/currentBar"]
 margin_left = 110.0
 margin_top = 10.0
 margin_right = 150.0
@@ -484,7 +490,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="currgene4" type="ColorRect" parent="sub1/currentBar"]
+[node name="currTransposon" type="ColorRect" parent="sub1/currentBar"]
 margin_left = 160.0
 margin_top = 10.0
 margin_right = 200.0
@@ -495,6 +501,7 @@ __meta__ = {
 }
 
 [node name="currgene5" type="ColorRect" parent="sub1/currentBar"]
+visible = false
 margin_left = 210.0
 margin_top = 10.0
 margin_right = 250.0
@@ -505,6 +512,7 @@ __meta__ = {
 }
 
 [node name="currgene6" type="ColorRect" parent="sub1/currentBar"]
+visible = false
 margin_left = 210.0
 margin_top = 10.0
 margin_right = 250.0
@@ -515,6 +523,7 @@ __meta__ = {
 }
 
 [node name="currgene7" type="ColorRect" parent="sub1/currentBar"]
+visible = false
 margin_left = 210.0
 margin_top = 10.0
 margin_right = 250.0
@@ -525,6 +534,7 @@ __meta__ = {
 }
 
 [node name="currgene8" type="ColorRect" parent="sub1/currentBar"]
+visible = false
 margin_left = 210.0
 margin_top = 10.0
 margin_right = 250.0
@@ -535,6 +545,7 @@ __meta__ = {
 }
 
 [node name="currgene9" type="ColorRect" parent="sub1/currentBar"]
+visible = false
 margin_left = 210.0
 margin_top = 10.0
 margin_right = 250.0
@@ -1169,6 +1180,11 @@ texture = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="TextureRect" type="TextureRect" parent="sub1/gene8/gene1"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 29 )
 
 [node name="currScore" type="ColorRect" parent="sub1/gene8"]
 margin_left = 97.0
@@ -3107,11 +3123,11 @@ __meta__ = {
 [node name="ProduceInfo" type="Label" parent="geneDisplay1"]
 margin_left = 4.0
 margin_top = 10.0
-margin_right = 408.0
+margin_right = 578.0
 margin_bottom = 208.0
 rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 7 )
-text = "Replication Gene
+text = "Replication Genes
 Current | Max"
 autowrap = true
 
@@ -3487,15 +3503,16 @@ margin_bottom = 420.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
 
 [node name="Label" type="Label" parent="repairDisplay1"]
-margin_left = 7.24451
-margin_top = 4.09476
-margin_right = 414.245
-margin_bottom = 46.0948
+margin_left = 7.0
+margin_top = 4.0
+margin_right = 430.0
+margin_bottom = 202.0
 rect_scale = Vector2( 0.45, 0.45 )
 custom_fonts/font = ExtResource( 7 )
 text = "Number of Genes Repaired
 Perfect | Error"
 align = 1
+autowrap = true
 
 [node name="repairDisplay2" type="ColorRect" parent="."]
 visible = false
@@ -3544,10 +3561,9 @@ margin_bottom = 560.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
 
 [node name="Label" type="Label" parent="repairDisplay4"]
-margin_left = 5.0
-margin_top = 5.0
-margin_right = 405.0
-margin_bottom = 227.0
+margin_left = 10.0
+margin_right = 410.0
+margin_bottom = 332.0
 rect_scale = Vector2( 0.44106, 0.446199 )
 custom_fonts/font = ExtResource( 7 )
 text = "Breaks Repaired Using Copy Repair
@@ -3565,10 +3581,9 @@ margin_bottom = 600.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
 
 [node name="Label" type="Label" parent="repairDisplay5"]
-margin_left = 50.0
 margin_top = 10.0
-margin_right = 252.0
-margin_bottom = 97.0
+margin_right = 438.0
+margin_bottom = 204.0
 rect_scale = Vector2( 0.45, 0.45 )
 custom_fonts/font = ExtResource( 7 )
 text = "Tiles Copied
@@ -3634,37 +3649,21 @@ text = "Tiles Removed During Collapse Duplicates"
 align = 1
 autowrap = true
 
-[node name="repairDisplay9" type="ColorRect" parent="."]
-visible = false
-margin_left = 500.0
-margin_top = 680.0
-margin_right = 700.0
-margin_bottom = 800.0
-color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
-
-[node name="Label" type="Label" parent="repairDisplay9"]
-margin_right = 40.0
-margin_bottom = 14.0
-custom_fonts/font = ExtResource( 7 )
-text = "Repair 1 info"
-align = 1
-
 [node name="evDisplay1" type="ColorRect" parent="."]
 visible = false
 margin_left = 1300.0
 margin_top = 290.0
-margin_right = 1500.0
-margin_bottom = 410.0
+margin_right = 1600.0
+margin_bottom = 440.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="evDisplay1"]
-margin_left = 1.8877
-margin_top = 7.07904
-margin_right = 538.888
-margin_bottom = 94.079
+margin_top = 10.0
+margin_right = 799.0
+margin_bottom = 141.0
 rect_scale = Vector2( 0.37, 0.37 )
 custom_fonts/font = ExtResource( 7 )
 text = "Major Upgrade | Major Downgrade"
@@ -3674,7 +3673,7 @@ autowrap = true
 visible = false
 margin_left = 1300.0
 margin_top = 340.0
-margin_right = 1500.0
+margin_right = 1600.0
 margin_bottom = 460.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
 __meta__ = {
@@ -3682,9 +3681,9 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="evDisplay2"]
-margin_top = 2.83484
-margin_right = 540.0
-margin_bottom = 44.8348
+margin_top = 10.0
+margin_right = 810.0
+margin_bottom = 74.0
 rect_scale = Vector2( 0.37, 0.37 )
 custom_fonts/font = ExtResource( 7 )
 text = "Minor Upgrade | Minor Downgrade"
@@ -3694,8 +3693,8 @@ autowrap = true
 visible = false
 margin_left = 1300.0
 margin_top = 390.0
-margin_right = 1500.0
-margin_bottom = 510.0
+margin_right = 1600.0
+margin_bottom = 540.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -3704,8 +3703,8 @@ __meta__ = {
 [node name="Label" type="Label" parent="evDisplay3"]
 margin_left = 2.0
 margin_top = 2.0
-margin_right = 497.0
-margin_bottom = 197.0
+margin_right = 743.0
+margin_bottom = 267.0
 rect_scale = Vector2( 0.4, 0.4 )
 custom_fonts/font = ExtResource( 7 )
 text = "Upgrade Resulting in new Gene
@@ -3717,18 +3716,18 @@ autowrap = true
 visible = false
 margin_left = 1300.0
 margin_top = 430.0
-margin_right = 1500.0
-margin_bottom = 550.0
+margin_right = 1600.0
+margin_bottom = 580.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="evDisplay4"]
-margin_left = 1.7677
-margin_top = 10.6066
-margin_right = 395.768
-margin_bottom = 97.6066
+margin_left = 2.0
+margin_top = 11.0
+margin_right = 582.0
+margin_bottom = 98.0
 rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 7 )
 text = "Skills Gained | Skills Lost"
@@ -3741,16 +3740,17 @@ __meta__ = {
 visible = false
 margin_left = 1300.0
 margin_top = 490.0
-margin_right = 1500.0
-margin_bottom = 610.0
+margin_right = 1600.0
+margin_bottom = 640.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="evDisplay5"]
-margin_right = 435.0
-margin_bottom = 132.0
+margin_top = 10.0
+margin_right = 651.0
+margin_bottom = 142.0
 rect_scale = Vector2( 0.45, 0.45 )
 custom_fonts/font = ExtResource( 7 )
 text = "Transposable Element Fuse with Gene"
@@ -3778,95 +3778,77 @@ text = "Genes Spit By TE
 (Transposable Element)"
 autowrap = true
 
-[node name="evDisplay7" type="ColorRect" parent="."]
-visible = false
-margin_left = 1300.0
-margin_top = 590.0
-margin_right = 1500.0
-margin_bottom = 710.0
-color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="evDisplay7"]
-margin_right = 40.0
-margin_bottom = 14.0
-custom_fonts/font = ExtResource( 7 )
-text = "Evolution
- information"
-
 [node name="maxBarDisplay" type="ColorRect" parent="."]
 visible = false
 margin_left = 200.0
-margin_top = 250.0
-margin_right = 400.0
-margin_bottom = 350.0
+margin_top = 220.0
+margin_right = 500.0
+margin_bottom = 370.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.784314 )
 
 [node name="Label" type="Label" parent="maxBarDisplay"]
 margin_top = 10.0
-margin_right = 399.0
-margin_bottom = 74.0
+margin_right = 595.0
+margin_bottom = 275.0
 rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 7 )
-text = "Max Replication Value"
+text = "This is the maximum collective value of the genes that have been in the chromosome"
 align = 1
 autowrap = true
 
 [node name="maxBarDisplay2" type="ColorRect" parent="."]
 visible = false
 margin_left = 200.0
-margin_top = 250.0
-margin_right = 400.0
-margin_bottom = 350.0
+margin_top = 220.0
+margin_right = 450.0
+margin_bottom = 370.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.784314 )
 
 [node name="Label" type="Label" parent="maxBarDisplay2"]
 margin_top = 10.0
-margin_right = 399.0
-margin_bottom = 74.0
+margin_right = 502.0
+margin_bottom = 275.0
 rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 7 )
-text = "Max Locomotion Value"
+text = "This is the maximum value of the pseudo genes that have been in the chromosome"
 align = 1
 autowrap = true
 
 [node name="maxBarDisplay3" type="ColorRect" parent="."]
 visible = false
 margin_left = 200.0
-margin_top = 250.0
-margin_right = 400.0
-margin_bottom = 350.0
+margin_top = 220.0
+margin_right = 500.0
+margin_bottom = 370.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.784314 )
 
 [node name="Label" type="Label" parent="maxBarDisplay3"]
 margin_top = 10.0
-margin_right = 399.0
-margin_bottom = 74.0
+margin_right = 583.0
+margin_bottom = 275.0
 rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 7 )
-text = "Max Helper Value"
+text = "This is the maximum number of blank genes that have been in the chromosome"
 align = 1
 autowrap = true
 
 [node name="maxBarDisplay4" type="ColorRect" parent="."]
 visible = false
 margin_left = 200.0
-margin_top = 250.0
-margin_right = 400.0
-margin_bottom = 350.0
+margin_top = 220.0
+margin_right = 500.0
+margin_bottom = 370.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.784314 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="maxBarDisplay4"]
-margin_right = 399.0
-margin_bottom = 198.0
+margin_right = 606.0
+margin_bottom = 265.0
 rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 7 )
-text = "Max Manipulation Value"
+text = "This is the maximum number of transposons that have been in the chromosome"
 align = 1
 autowrap = true
 
@@ -3961,9 +3943,9 @@ autowrap = true
 [node name="currBarDisplay" type="ColorRect" parent="."]
 visible = false
 margin_left = 200.0
-margin_top = 250.0
-margin_right = 400.0
-margin_bottom = 350.0
+margin_top = 220.0
+margin_right = 500.0
+margin_bottom = 370.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.784314 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -3971,41 +3953,43 @@ __meta__ = {
 
 [node name="Label" type="Label" parent="currBarDisplay"]
 margin_left = 5.0
-margin_right = 383.0
-margin_bottom = 195.0
+margin_top = 10.0
+margin_right = 585.0
+margin_bottom = 271.0
 rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 4 )
-text = "Current Replication Value"
+text = "This is the current collective value of the genes that are  in the chromosome"
 align = 1
 autowrap = true
 
 [node name="currBarDisplay2" type="ColorRect" parent="."]
 visible = false
 margin_left = 200.0
-margin_top = 250.0
-margin_right = 400.0
-margin_bottom = 350.0
+margin_top = 220.0
+margin_right = 500.0
+margin_bottom = 370.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.784314 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="currBarDisplay2"]
-margin_left = 5.0
-margin_right = 383.0
-margin_bottom = 195.0
+margin_left = 6.682
+margin_top = 10.0
+margin_right = 584.682
+margin_bottom = 205.0
 rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 4 )
-text = "Current Locomotion Value"
+text = "This is the current value of the pseudo genes that are in the chromosome"
 align = 1
 autowrap = true
 
 [node name="currBarDisplay3" type="ColorRect" parent="."]
 visible = false
 margin_left = 200.0
-margin_top = 250.0
-margin_right = 400.0
-margin_bottom = 350.0
+margin_top = 220.0
+margin_right = 500.0
+margin_bottom = 370.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.784314 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -4013,11 +3997,12 @@ __meta__ = {
 
 [node name="Label" type="Label" parent="currBarDisplay3"]
 margin_left = 5.0
-margin_right = 383.0
-margin_bottom = 195.0
+margin_top = 10.0
+margin_right = 586.0
+margin_bottom = 271.0
 rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 4 )
-text = "Current Helper Value"
+text = "This is the current number of blank genes that are in the chromosome"
 align = 1
 autowrap = true
 __meta__ = {
@@ -4027,9 +4012,9 @@ __meta__ = {
 [node name="currBarDisplay4" type="ColorRect" parent="."]
 visible = false
 margin_left = 200.0
-margin_top = 250.0
-margin_right = 400.0
-margin_bottom = 350.0
+margin_top = 220.0
+margin_right = 500.0
+margin_bottom = 370.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.784314 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -4037,11 +4022,12 @@ __meta__ = {
 
 [node name="Label" type="Label" parent="currBarDisplay4"]
 margin_left = 5.0
-margin_right = 383.0
-margin_bottom = 195.0
+margin_top = 10.0
+margin_right = 595.0
+margin_bottom = 271.0
 rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 4 )
-text = "Current Manipulation Value"
+text = "This is the current number of transposons that are in the chromosome"
 align = 1
 autowrap = true
 
@@ -4157,14 +4143,14 @@ autowrap = true
 [connection signal="mouse_exited" from="mainStat3" to="." method="_on_mainStat3_mouse_exited"]
 [connection signal="mouse_entered" from="mainStat4" to="." method="_on_mainStat4_mouse_entered"]
 [connection signal="mouse_exited" from="mainStat4" to="." method="_on_mainStat4_mouse_exited"]
-[connection signal="mouse_entered" from="sub1/maxBar/maxgene1" to="." method="_on_maxgene1_mouse_entered"]
-[connection signal="mouse_exited" from="sub1/maxBar/maxgene1" to="." method="_on_maxgene1_mouse_exited"]
-[connection signal="mouse_entered" from="sub1/maxBar/maxgene2" to="." method="_on_maxgene2_mouse_entered"]
-[connection signal="mouse_exited" from="sub1/maxBar/maxgene2" to="." method="_on_maxgene2_mouse_exited"]
-[connection signal="mouse_entered" from="sub1/maxBar/maxgene3" to="." method="_on_maxgene3_mouse_entered"]
-[connection signal="mouse_exited" from="sub1/maxBar/maxgene3" to="." method="_on_maxgene3_mouse_exited"]
-[connection signal="mouse_entered" from="sub1/maxBar/maxgene4" to="." method="_on_maxgene4_mouse_entered"]
-[connection signal="mouse_exited" from="sub1/maxBar/maxgene4" to="." method="_on_maxgene4_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/maxBar/maxComposition" to="." method="_on_maxgene1_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/maxBar/maxComposition" to="." method="_on_maxgene1_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/maxBar/maxPseudo" to="." method="_on_maxgene2_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/maxBar/maxPseudo" to="." method="_on_maxgene2_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/maxBar/maxBlank" to="." method="_on_maxgene3_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/maxBar/maxBlank" to="." method="_on_maxgene3_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/maxBar/maxTransposons" to="." method="_on_maxgene4_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/maxBar/maxTransposons" to="." method="_on_maxgene4_mouse_exited"]
 [connection signal="mouse_entered" from="sub1/maxBar/maxgene5" to="." method="_on_maxgene5_mouse_entered"]
 [connection signal="mouse_exited" from="sub1/maxBar/maxgene5" to="." method="_on_maxgene5_mouse_exited"]
 [connection signal="mouse_entered" from="sub1/maxBar/maxgene6" to="." method="_on_maxgene6_mouse_entered"]
@@ -4177,14 +4163,14 @@ autowrap = true
 [connection signal="mouse_exited" from="sub1/maxBar/maxgene9" to="." method="_on_maxgene9_mouse_exited"]
 [connection signal="mouse_entered" from="sub1/maxBar/score" to="." method="_on_score_mouse_entered"]
 [connection signal="mouse_exited" from="sub1/maxBar/score" to="." method="_on_score_mouse_exited"]
-[connection signal="mouse_entered" from="sub1/currentBar/currgene1" to="." method="_on_currgene1_mouse_entered"]
-[connection signal="mouse_exited" from="sub1/currentBar/currgene1" to="." method="_on_currgene1_mouse_exited"]
-[connection signal="mouse_entered" from="sub1/currentBar/currgene2" to="." method="_on_currgene2_mouse_entered"]
-[connection signal="mouse_exited" from="sub1/currentBar/currgene2" to="." method="_on_currgene2_mouse_exited"]
-[connection signal="mouse_entered" from="sub1/currentBar/currgene3" to="." method="_on_currgene3_mouse_entered"]
-[connection signal="mouse_exited" from="sub1/currentBar/currgene3" to="." method="_on_currgene3_mouse_exited"]
-[connection signal="mouse_entered" from="sub1/currentBar/currgene4" to="." method="_on_currgene4_mouse_entered"]
-[connection signal="mouse_exited" from="sub1/currentBar/currgene4" to="." method="_on_currgene4_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/currentBar/currComposition" to="." method="_on_currgene1_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/currentBar/currComposition" to="." method="_on_currgene1_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/currentBar/currPseudo" to="." method="_on_currgene2_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/currentBar/currPseudo" to="." method="_on_currgene2_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/currentBar/currBlank" to="." method="_on_currgene3_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/currentBar/currBlank" to="." method="_on_currgene3_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/currentBar/currTransposon" to="." method="_on_currgene4_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/currentBar/currTransposon" to="." method="_on_currgene4_mouse_exited"]
 [connection signal="mouse_entered" from="sub1/currentBar/currgene5" to="." method="_on_currgene5_mouse_entered"]
 [connection signal="mouse_exited" from="sub1/currentBar/currgene5" to="." method="_on_currgene5_mouse_exited"]
 [connection signal="mouse_entered" from="sub1/currentBar/currgene6" to="." method="_on_currgene6_mouse_entered"]

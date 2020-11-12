@@ -564,7 +564,7 @@ func kill_elm():
 		ess_behavior[k] = 0;
 	ate_activity = 0;
 	upd_behavior_disp();
-	STATS.increment_total_pseduo()
+	STATS.increment_currentPseudo()
 	mode = "pseudo";
 
 func damage_gene(dmg := true):

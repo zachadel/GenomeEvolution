@@ -19,6 +19,7 @@ var current_construction_value= 0
 var current_deconstruction_value= 0
 var current_ate_value= 0
 var current_blank_value =0
+var current_pseudo_value =0
 
 var max_replication_value =0
 var max_locomotion_value=0
@@ -30,6 +31,7 @@ var max_construction_value =0
 var max_deconstruction_value =0
 var max_ate_value = 0
 var max_blank_value = 0
+var max_pseudo_value =0
 
 var maxBarGene1Size= 1
 var maxBarGene2Size= 0
@@ -121,47 +123,33 @@ var geneSplit= 0
 
 func _set_current_bar():
 	#current_replication_value = 0;
-	var currentBarSize = 1+current_replication_value + current_locomotion_value + current_helper_value + current_manipulation_value + current_sensing_value + current_component_value + current_construction_value + current_deconstruction_value + current_ate_value;
-	var thisSize = 550 - 100;
+	var currentBarSize = 1 + current_pseudo_value + current_blank_value + current_replication_value + current_locomotion_value + current_helper_value + current_manipulation_value + current_sensing_value + current_component_value + current_construction_value + current_deconstruction_value + current_ate_value;
+	var current_CompositionBar = current_replication_value + current_locomotion_value + current_helper_value + current_manipulation_value + current_sensing_value + current_component_value + current_construction_value + current_deconstruction_value
+	var thisSize = 550 - 50;
 	#S$Label.text = str(currentBarSize)
-	currentBarGene1Size = thisSize * current_replication_value / currentBarSize;
-	currentBarGene2Size = thisSize * current_locomotion_value / currentBarSize;
-	currentBarGene3Size = thisSize * current_helper_value / currentBarSize;
-	currentBarGene4Size = thisSize * current_manipulation_value / currentBarSize;
-	currentBarGene5Size = thisSize * current_sensing_value / currentBarSize;
-	currentBarGene6Size = thisSize * current_component_value / currentBarSize;
-	currentBarGene7Size = thisSize * current_construction_value / currentBarSize;
-	currentBarGene8Size = thisSize * current_deconstruction_value / currentBarSize;
-	currentBarGene9Size = thisSize * current_ate_value / currentBarSize;
+	currentBarGene1Size = thisSize * current_CompositionBar/ currentBarSize;
+	currentBarGene2Size = thisSize * current_pseudo_value / currentBarSize;
+	currentBarGene3Size = thisSize * current_blank_value / currentBarSize;
+	currentBarGene4Size = thisSize * current_ate_value / currentBarSize;
+
 	
 	currentBarGene1Pos = 10;
 	currentBarGene2Pos = 10 + currentBarGene1Size + currentBarGene1Pos;
 	currentBarGene3Pos = 10 + currentBarGene2Size + currentBarGene2Pos;
 	currentBarGene4Pos = 10 + currentBarGene3Size + currentBarGene3Pos;
-	currentBarGene5Pos = 10 + currentBarGene4Size + currentBarGene4Pos;
-	currentBarGene6Pos = 10 + currentBarGene5Size + currentBarGene5Pos;
-	currentBarGene7Pos = 10 + currentBarGene6Size + currentBarGene6Pos;
-	currentBarGene8Pos = 10 + currentBarGene7Size + currentBarGene7Pos;
-	currentBarGene9Pos = 10 + currentBarGene8Size + currentBarGene8Pos;
+
 	
-	$sub1/currentBar/currgene1.rect_position.x = currentBarGene1Pos
-	$sub1/currentBar/currgene1.rect_size.x = currentBarGene1Size
-	$sub1/currentBar/currgene2.rect_position.x = currentBarGene2Pos
-	$sub1/currentBar/currgene2.rect_size.x = currentBarGene2Size
-	$sub1/currentBar/currgene3.rect_position.x = currentBarGene3Pos
-	$sub1/currentBar/currgene3.rect_size.x = currentBarGene3Size
-	$sub1/currentBar/currgene4.rect_position.x = currentBarGene4Pos
-	$sub1/currentBar/currgene4.rect_size.x = currentBarGene4Size
-	$sub1/currentBar/currgene5.rect_position.x = currentBarGene5Pos
-	$sub1/currentBar/currgene5.rect_size.x = currentBarGene5Size
-	$sub1/currentBar/currgene6.rect_position.x = currentBarGene6Pos
-	$sub1/currentBar/currgene6.rect_size.x = currentBarGene6Size
-	$sub1/currentBar/currgene7.rect_position.x = currentBarGene7Pos
-	$sub1/currentBar/currgene7.rect_size.x = currentBarGene7Size
-	$sub1/currentBar/currgene8.rect_position.x = currentBarGene8Pos
-	$sub1/currentBar/currgene8.rect_size.x = currentBarGene8Size
-	$sub1/currentBar/currgene9.rect_position.x = currentBarGene9Pos
-	$sub1/currentBar/currgene9.rect_size.x = currentBarGene9Size
+	$sub1/currentBar/currComposition.rect_position.x = currentBarGene1Pos
+	$sub1/currentBar/currComposition.rect_size.x = currentBarGene1Size
+	
+	$sub1/currentBar/currPseudo.rect_position.x = currentBarGene2Pos
+	$sub1/currentBar/currPseudo.rect_size.x = currentBarGene2Size
+	
+	$sub1/currentBar/currBlank.rect_position.x = currentBarGene3Pos
+	$sub1/currentBar/currBlank.rect_size.x = currentBarGene3Size
+	
+	$sub1/currentBar/currTransposon.rect_position.x = currentBarGene4Pos
+	$sub1/currentBar/currTransposon.rect_size.x = currentBarGene4Size
 	pass
 
 func _set_max_bar():
@@ -169,46 +157,33 @@ func _set_max_bar():
 	# The total length is of 490.
 	# Here, we are setting up the bars porportionally.
 	
-	var maxBarSize = 1+max_replication_value + max_locomotion_value + max_helper_value + max_manipulation_value + max_sensing_value + max_component_value + max_construction_value + max_deconstruction_value + max_ate_value;
-	var thisSize = 550 - 100
-	maxBarGene1Size = thisSize * max_replication_value / maxBarSize;
-	maxBarGene2Size = thisSize * max_locomotion_value / maxBarSize;
-	maxBarGene3Size = thisSize * max_helper_value / maxBarSize;
-	maxBarGene4Size = thisSize * max_manipulation_value / maxBarSize;
-	maxBarGene5Size = thisSize * max_sensing_value / maxBarSize;
-	maxBarGene6Size = thisSize * max_component_value / maxBarSize;
-	maxBarGene7Size = thisSize * max_construction_value / maxBarSize;
-	maxBarGene8Size = thisSize * max_deconstruction_value / maxBarSize;
-	maxBarGene9Size = thisSize * max_ate_value / maxBarSize;
+	var maxBarSize = 1 + max_pseudo_value + max_blank_value + max_replication_value + max_locomotion_value + max_helper_value + max_manipulation_value + max_sensing_value + max_component_value + max_construction_value + max_deconstruction_value + max_ate_value;
+	var max_compositionBar = max_replication_value + max_locomotion_value + max_helper_value + max_manipulation_value + max_sensing_value + max_component_value + max_construction_value + max_deconstruction_value;
+	
+	var thisSize = 550 - 50
+	
+	maxBarGene1Size = thisSize * max_compositionBar / maxBarSize;
+	maxBarGene2Size = thisSize * max_pseudo_value / maxBarSize;
+	maxBarGene3Size = thisSize * max_blank_value / maxBarSize;
+	maxBarGene4Size = thisSize * max_ate_value / maxBarSize;
 	
 	maxBarGene1Pos = 10;
 	maxBarGene2Pos = 10 + maxBarGene1Size + maxBarGene1Pos;
 	maxBarGene3Pos = 10 + maxBarGene2Size + maxBarGene2Pos;
 	maxBarGene4Pos = 10 + maxBarGene3Size + maxBarGene3Pos;
 	maxBarGene5Pos = 10 + maxBarGene4Size + maxBarGene4Pos;
-	maxBarGene6Pos = 10 + maxBarGene5Size + maxBarGene5Pos;
-	maxBarGene7Pos = 10 + maxBarGene6Size + maxBarGene6Pos;
-	maxBarGene8Pos = 10 + maxBarGene7Size + maxBarGene7Pos;
-	maxBarGene9Pos = 10 + maxBarGene8Size + maxBarGene8Pos;
 	
-	$sub1/maxBar/maxgene1.rect_position.x = maxBarGene1Pos
-	$sub1/maxBar/maxgene1.rect_size.x = maxBarGene1Size
-	$sub1/maxBar/maxgene2.rect_position.x = maxBarGene2Pos
-	$sub1/maxBar/maxgene2.rect_size.x = maxBarGene2Size
-	$sub1/maxBar/maxgene3.rect_position.x = maxBarGene3Pos
-	$sub1/maxBar/maxgene3.rect_size.x = maxBarGene3Size
-	$sub1/maxBar/maxgene4.rect_position.x = maxBarGene4Pos
-	$sub1/maxBar/maxgene4.rect_size.x = maxBarGene4Size
-	$sub1/maxBar/maxgene5.rect_position.x = maxBarGene5Pos
-	$sub1/maxBar/maxgene5.rect_size.x = maxBarGene5Size
-	$sub1/maxBar/maxgene6.rect_position.x = maxBarGene6Pos
-	$sub1/maxBar/maxgene6.rect_size.x = maxBarGene6Size
-	$sub1/maxBar/maxgene7.rect_position.x = maxBarGene7Pos
-	$sub1/maxBar/maxgene7.rect_size.x = maxBarGene7Size
-	$sub1/maxBar/maxgene8.rect_position.x = maxBarGene8Pos
-	$sub1/maxBar/maxgene8.rect_size.x = maxBarGene8Size
-	$sub1/maxBar/maxgene9.rect_position.x = maxBarGene9Pos
-	$sub1/maxBar/maxgene9.rect_size.x = maxBarGene9Size
+	$sub1/maxBar/maxComposition.rect_position.x = maxBarGene1Pos
+	$sub1/maxBar/maxComposition.rect_size.x = maxBarGene1Size
+	
+	$sub1/maxBar/maxPseudo.rect_position.x = maxBarGene2Pos
+	$sub1/maxBar/maxPseudo.rect_size.x = maxBarGene2Size
+	
+	$sub1/maxBar/maxBlank.rect_position.x = maxBarGene3Pos
+	$sub1/maxBar/maxBlank.rect_size.x = maxBarGene3Size
+	
+	$sub1/maxBar/maxTransposons.rect_position.x = maxBarGene4Pos
+	$sub1/maxBar/maxTransposons.rect_size.x = maxBarGene4Size
 
 func _update_values():
 	num_progeny = STATS.get_progeny();
@@ -227,6 +202,7 @@ func _update_values():
 	current_deconstruction_value = STATS.get_currentDeCon();
 	current_ate_value = STATS.get_currentAte();
 	current_blank_value = STATS.get_currentBlank()
+	current_pseudo_value = STATS.get_current_pseudo()
 	
 	#setting values for the max bar's values. 
 	max_replication_value = STATS.get_maxRep();
@@ -237,7 +213,9 @@ func _update_values():
 	max_component_value = STATS.get_maxComp();
 	max_construction_value = STATS.get_maxCon();
 	max_deconstruction_value = STATS.get_maxDecon();
+	max_blank_value = STATS.get_max_blank_tiles()
 	max_ate_value = STATS.get_maxAte();
+	max_pseudo_value = STATS.get_maxVal_pseudo()
 	
 	# current transposons
 	current_classicTE = STATS.get_current_classicTE()
@@ -287,14 +265,14 @@ func _update_values():
 	geneSplit = STATS.get_elmSplit();
 	
 func _set_transposons():
-#	$sub1/TE1/AnthroArt.set_color(Color.red)
-#	$sub1/TE2/AnthroArt2.set_color(Color.red)
-#	$sub1/TE3/AnthroArt3.set_color(Color.red)
-#	$sub1/TE4/AnthroArt4.set_color(Color.red)
-#	$sub1/TE5/AnthroArt5.set_color(Color.red)
-#	$sub1/TE6/AnthroArt6.set_color(Color.red)
-#	$sub1/TE7/AnthroArt7.set_color(Color.red)
-#	$sub1/TE8/AnthroArt8.set_color(Color.red)
+	$sub1/TE1/AnthroArt.set_color(Color.red)
+	$sub1/TE2/AnthroArt2.set_color(Color.red)
+	$sub1/TE3/AnthroArt3.set_color(Color.red)
+	$sub1/TE4/AnthroArt4.set_color(Color.red)
+	$sub1/TE5/AnthroArt5.set_color(Color.red)
+	$sub1/TE6/AnthroArt6.set_color(Color.red)
+	$sub1/TE7/AnthroArt7.set_color(Color.red)
+	$sub1/TE8/AnthroArt8.set_color(Color.red)
 	#setting the values
 	$sub1/TE1/currScore/Label.text = str(current_classicTE)
 	$sub1/TE2/currScore/Label.text = str(current_zigzagTE)
@@ -322,12 +300,12 @@ func _set_values():
 	
 	
 	#Composition values
-	var genesNumber = max_replication_value + max_locomotion_value + max_helper_value + max_manipulation_value + max_sensing_value + max_component_value + max_construction_value + max_deconstruction_value + max_ate_value;
-	var currentNumber = current_replication_value + current_locomotion_value + current_helper_value + current_manipulation_value + current_sensing_value + current_component_value + current_construction_value + current_deconstruction_value + current_ate_value;
+	var genesNumber = max_pseudo_value+ max_blank_value + max_replication_value + max_locomotion_value + max_helper_value + max_manipulation_value + max_sensing_value + max_component_value + max_construction_value + max_deconstruction_value + max_ate_value;
+	var currentNumber = current_pseudo_value + current_blank_value + current_replication_value + current_locomotion_value + current_helper_value + current_manipulation_value + current_sensing_value + current_component_value + current_construction_value + current_deconstruction_value + current_ate_value;
 	if(genesNumber <= currentNumber):
 		genesNumber = currentNumber;
-	$sub1/currentBar/currscore/score_txt.text = str(currentNumber)
-	$sub1/maxBar/score/score_txt.text = str(genesNumber)
+	$sub1/currentBar/currscore/score_txt.text = str(currentNumber) #should display the total number genes in the bar
+	$sub1/maxBar/score/score_txt.text = str(genesNumber) #should displya the max number of genes in the bar
 	#current gene composition
 	$sub1/gene1/currScore/currScoret.text = str(current_replication_value)
 	$sub1/gene2/currScore/currScoret.text = str(current_sensing_value)
@@ -336,7 +314,7 @@ func _set_values():
 	$sub1/gene5/currScore/currScoret.text = str(current_construction_value)
 	$sub1/gene6/currScore/currScoret.text = str(current_deconstruction_value)
 	$sub1/gene7/currScore/currScoret.text = str(current_helper_value)
-	$sub1/gene8/currScore/currScoret.text = str(current_blank_value)
+	$sub1/gene8/currScore/currScoret.text = str(current_locomotion_value)
 	# max gene composition
 	$sub1/gene1/maxScore/maxScoret.text = str(max_replication_value)
 	$sub1/gene2/maxScore/maxScoret.text = str(max_sensing_value)
@@ -345,15 +323,15 @@ func _set_values():
 	$sub1/gene5/maxScore/maxScoret.text = str(max_construction_value)
 	$sub1/gene6/maxScore/maxScoret.text = str(max_deconstruction_value)
 	$sub1/gene7/maxScore/maxScoret.text = str(max_helper_value)
-	$sub1/gene8/maxScore/maxScoret.text = str(max_blank_value)
+	$sub1/gene8/maxScore/maxScoret.text = str(max_locomotion_value)
 	# Repairs
 	$sub2/rep1/rep1Score/score1Text.text = str(dmgGeneRepairPerfect)
 	$sub2/rep1/rep1Score2/score2Text.text = str(dmgGeneRepairError)
 	$sub2/rep2/rep1Score/score1Text.text = str(trimmedBreakEnds)
-	$sub2/rep3/rep1Score/score1Text.text = str(breaksRepairedCopyRepairPerfect)
-	$sub2/rep3/rep1Score2/score2Text.text = str(breaksRepairedCopyRepairError)
-	$sub2/rep4/rep1Score/score1Text.text = str(breaksRepairedJoinEndsPerfect)
-	$sub2/rep4/rep1Score2/score2Text.text = str(breaksRepairedJoinEndsError)
+	$sub2/rep4/rep1Score/score1Text.text = str(breaksRepairedCopyRepairPerfect)
+	$sub2/rep4/rep1Score2/score2Text.text = str(breaksRepairedCopyRepairError)
+	$sub2/rep3/rep1Score/score1Text.text = str(breaksRepairedJoinEndsPerfect)
+	$sub2/rep3/rep1Score2/score2Text.text = str(breaksRepairedJoinEndsError)
 	$sub2/rep5/rep1Score/score1Text.text = str(tilesCopiedGenes)
 	$sub2/rep5/rep1Score/score1Text.text = str(tilesCopiedTotal)
 	$sub2/rep6/rep1Score/score1Text.text = str(tilesCorrectedCopyRepair)

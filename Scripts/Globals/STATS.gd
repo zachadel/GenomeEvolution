@@ -36,7 +36,7 @@ var skills_lost = 0
 var maxVal_cat1 = 0
 var maxVal_essential = 0
 var maxVal_ate = 0
-var maxVal_pseudo
+var maxVal_pseudo = 0
 #might have to have more, try and figure out how many gene categories there are. 
 var finalVal_essential = 0
 var finalVal_ate = 0
@@ -48,7 +48,7 @@ var max_blank_tiles = 0
 var final_blank_tiles = 0
 var finalVal_blank = 0
 var death_reason
-var pseudoGene = 0
+var current_pseudo = 0
 var trimmedTiles = 0
 var splitElm = 0
 var numInversions = 0
@@ -95,6 +95,13 @@ var maxDeconstruc = 0
 var maxAte =0
 var transposonFuse = 0
 var turns_taken = 0
+
+
+func get_current_pseudo():
+	return current_pseudo;
+func get_maxVal_pseudo():
+	return maxVal_pseudo;
+
 
 func get_current_classicTE():
 	return current_classicTE
@@ -159,7 +166,7 @@ func get_maxDecon():
 	return maxDeconstruc
 func get_maxAte():
 	return maxAte
-func get_maxBlank():
+func get_d():
 	return max_blank_tiles;
 
 func _reset_game():
@@ -194,7 +201,7 @@ func _reset_game():
 	maxVal_cat1 = 0
 	maxVal_essential = 0
 	maxVal_ate = 0
-	maxVal_pseudo
+	maxVal_pseudo=0
 	#might have to have more, try and figure out how many gene categories there are. 
 	finalVal_essential = 0
 	finalVal_ate = 0
@@ -206,7 +213,7 @@ func _reset_game():
 	final_blank_tiles = 0
 	finalVal_blank = 0
 	death_reason
-	pseudoGene = 0
+	current_pseudo = 0
 	trimmedTiles = 0
 	splitElm = 0
 	numInversions = 0
@@ -283,6 +290,7 @@ func clear_currentGenes():
 	currentDeconstruction = 0;
 	currentAte = 0;
 	currentBlank = 0;
+	current_pseudo = 0;
 
 func update_maxType():
 	if(currentReplication > maxReplic):
@@ -303,6 +311,10 @@ func update_maxType():
 		maxDeconstruc = currentDeconstruction
 	if(currentAte > maxAte):
 		maxAte = currentAte
+	if(currentBlank > max_blank_tiles):
+		max_blank_tiles = currentBlank
+	if(current_pseudo > maxVal_pseudo):
+		maxVal_pseudo = current_pseudo
 
 func increment_transposonFuse():
 	transposonFuse += 1
@@ -387,8 +399,8 @@ func increment_trimmedTiles():
 	trimmedTiles +=1
 func get_trimmedTiles():
 	return trimmedTiles;
-func increment_total_pseduo():
-	pseudoGene += 1
+func increment_currentPseudo():
+	current_pseudo += 1
 
 func maxBlankTiles():
 	if(max_blank_tiles < final_blank_tiles):
