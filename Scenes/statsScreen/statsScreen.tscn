@@ -8,14 +8,14 @@
 [ext_resource path="res://Assets/Images/genes/Helix_Circle.png" type="Texture" id=6]
 [ext_resource path="res://Assets/Fonts/OpenSans-22.tres" type="DynamicFont" id=7]
 [ext_resource path="res://Scenes/statsScreen/statsScreen.gd" type="Script" id=8]
-[ext_resource path="res://Assets/Images/deathScreen/band-24298_1280.png" type="Texture" id=9]
-[ext_resource path="res://Assets/Images/deathScreen/wrench-35745_1280.png" type="Texture" id=10]
-[ext_resource path="res://Assets/Images/deathScreen/checkbox-152188_1280.png" type="Texture" id=11]
-[ext_resource path="res://Assets/Images/deathScreen/clipboard-27405_1280.png" type="Texture" id=12]
-[ext_resource path="res://Assets/Images/deathScreen/chain-309566_1280.png" type="Texture" id=13]
-[ext_resource path="res://Assets/Images/deathScreen/document-35941_1280.png" type="Texture" id=14]
-[ext_resource path="res://Assets/Images/deathScreen/scissors-1300330_1280.png" type="Texture" id=15]
-[ext_resource path="res://Assets/Images/deathScreen/checkbox-152187_1280.png" type="Texture" id=16]
+[ext_resource path="res://Assets/Images/statsScreen/checkbox-152188_1280.png" type="Texture" id=9]
+[ext_resource path="res://Assets/Images/statsScreen/clipboard-27405_1280.png" type="Texture" id=10]
+[ext_resource path="res://Assets/Images/statsScreen/checkbox-152187_1280.png" type="Texture" id=11]
+[ext_resource path="res://Assets/Images/statsScreen/band-24298_1280.png" type="Texture" id=12]
+[ext_resource path="res://Assets/Images/statsScreen/chain-309566_1280.png" type="Texture" id=13]
+[ext_resource path="res://Assets/Images/statsScreen/wrench-35745_1280.png" type="Texture" id=14]
+[ext_resource path="res://Assets/Images/statsScreen/scissors-1300330_1280.png" type="Texture" id=15]
+[ext_resource path="res://Assets/Images/statsScreen/document-35941_1280.png" type="Texture" id=16]
 [ext_resource path="res://Assets/Images/genes/Sensing.png" type="Texture" id=17]
 [ext_resource path="res://Assets/Images/genes/Deconstruction.png" type="Texture" id=18]
 [ext_resource path="res://Assets/Images/genes/Helper.png" type="Texture" id=19]
@@ -1903,7 +1903,7 @@ margin_right = 1330.0
 margin_bottom = 1130.0
 rect_rotation = 40.0
 rect_scale = Vector2( 0.07, 0.07 )
-texture = ExtResource( 9 )
+texture = ExtResource( 12 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -2077,10 +2077,11 @@ __meta__ = {
 
 [node name="image1" type="TextureRect" parent="sub2/rep4"]
 margin_left = 40.0
+margin_top = 5.0
 margin_right = 1258.0
-margin_bottom = 1280.0
+margin_bottom = 1285.0
 rect_scale = Vector2( 0.04, 0.04 )
-texture = ExtResource( 12 )
+texture = ExtResource( 10 )
 
 [node name="rep5" type="ColorRect" parent="sub2"]
 margin_left = -20.0
@@ -2134,10 +2135,11 @@ __meta__ = {
 
 [node name="image1" type="TextureRect" parent="sub2/rep5"]
 margin_left = 40.0
+margin_top = 5.0
 margin_right = 1074.0
-margin_bottom = 1280.0
+margin_bottom = 1285.0
 rect_scale = Vector2( 0.04, 0.04 )
-texture = ExtResource( 14 )
+texture = ExtResource( 16 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -2193,10 +2195,11 @@ __meta__ = {
 
 [node name="image1" type="TextureRect" parent="sub2/rep6"]
 margin_left = 40.0
+margin_top = 5.0
 margin_right = 1320.0
-margin_bottom = 1113.0
+margin_bottom = 1118.0
 rect_scale = Vector2( 0.05, 0.05 )
-texture = ExtResource( 16 )
+texture = ExtResource( 11 )
 
 [node name="rep7" type="ColorRect" parent="sub2"]
 margin_left = -20.0
@@ -2253,7 +2256,7 @@ margin_top = 10.0
 margin_right = 1310.0
 margin_bottom = 650.0
 rect_scale = Vector2( 0.05, 0.05 )
-texture = ExtResource( 10 )
+texture = ExtResource( 14 )
 
 [node name="rep8" type="ColorRect" parent="sub2"]
 margin_left = -20.0
@@ -2306,10 +2309,11 @@ __meta__ = {
 
 [node name="image1" type="TextureRect" parent="sub2/rep8"]
 margin_left = 40.0
+margin_top = 5.0
 margin_right = 1320.0
-margin_bottom = 1101.0
+margin_bottom = 1106.0
 rect_scale = Vector2( 0.05, 0.05 )
-texture = ExtResource( 11 )
+texture = ExtResource( 9 )
 
 [node name="sub3" type="Label" parent="."]
 margin_left = 1100.0
