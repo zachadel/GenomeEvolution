@@ -19,6 +19,7 @@ var current_construction_value= 0
 var current_deconstruction_value= 0
 var current_ate_value= 0
 var current_blank_value =0
+var current_pseudo_value =0
 
 var max_replication_value =0
 var max_locomotion_value=0
@@ -30,6 +31,7 @@ var max_construction_value =0
 var max_deconstruction_value =0
 var max_ate_value = 0
 var max_blank_value = 0
+var max_pseudo_value =0
 
 var maxBarGene1Size= 1
 var maxBarGene2Size= 0
@@ -71,7 +73,7 @@ var currentBarGene7Pos= 0
 var currentBarGene8Pos= 0
 var currentBarGene9Pos= 0
 
-#transposons
+#current transposons
 var current_classicTE = 0
 var current_zigzagTE = 0
 var current_assistTE = 0
@@ -80,6 +82,16 @@ var current_nestlerTE = 0
 var current_commuterTE = 0
 var current_buncherTE = 0
 var current_jumperTE = 0
+
+#max transposons
+var max_classicTE = 0
+var max_zigzagTE = 0
+var max_assistTE = 0
+var max_buddyTE = 0
+var max_nestlerTE = 0
+var max_commuterTE = 0
+var max_buncherTE = 0
+var max_jumperTE = 0
 
 #Repairs
 var dmgGeneRepairPerfect= 0
@@ -111,47 +123,33 @@ var geneSplit= 0
 
 func _set_current_bar():
 	#current_replication_value = 0;
-	var currentBarSize = 1+current_replication_value + current_locomotion_value + current_helper_value + current_manipulation_value + current_sensing_value + current_component_value + current_construction_value + current_deconstruction_value + current_ate_value;
-	var thisSize = 550 - 100;
+	var currentBarSize = 1 + current_pseudo_value + current_blank_value + current_replication_value + current_locomotion_value + current_helper_value + current_manipulation_value + current_sensing_value + current_component_value + current_construction_value + current_deconstruction_value + current_ate_value;
+	var current_CompositionBar = current_replication_value + current_locomotion_value + current_helper_value + current_manipulation_value + current_sensing_value + current_component_value + current_construction_value + current_deconstruction_value
+	var thisSize = 550 - 50;
 	#S$Label.text = str(currentBarSize)
-	currentBarGene1Size = thisSize * current_replication_value / currentBarSize;
-	currentBarGene2Size = thisSize * current_locomotion_value / currentBarSize;
-	currentBarGene3Size = thisSize * current_helper_value / currentBarSize;
-	currentBarGene4Size = thisSize * current_manipulation_value / currentBarSize;
-	currentBarGene5Size = thisSize * current_sensing_value / currentBarSize;
-	currentBarGene6Size = thisSize * current_component_value / currentBarSize;
-	currentBarGene7Size = thisSize * current_construction_value / currentBarSize;
-	currentBarGene8Size = thisSize * current_deconstruction_value / currentBarSize;
-	currentBarGene9Size = thisSize * current_ate_value / currentBarSize;
+	currentBarGene1Size = thisSize * current_CompositionBar/ currentBarSize;
+	currentBarGene2Size = thisSize * current_pseudo_value / currentBarSize;
+	currentBarGene3Size = thisSize * current_blank_value / currentBarSize;
+	currentBarGene4Size = thisSize * current_ate_value / currentBarSize;
+
 	
 	currentBarGene1Pos = 10;
 	currentBarGene2Pos = 10 + currentBarGene1Size + currentBarGene1Pos;
 	currentBarGene3Pos = 10 + currentBarGene2Size + currentBarGene2Pos;
 	currentBarGene4Pos = 10 + currentBarGene3Size + currentBarGene3Pos;
-	currentBarGene5Pos = 10 + currentBarGene4Size + currentBarGene4Pos;
-	currentBarGene6Pos = 10 + currentBarGene5Size + currentBarGene5Pos;
-	currentBarGene7Pos = 10 + currentBarGene6Size + currentBarGene6Pos;
-	currentBarGene8Pos = 10 + currentBarGene7Size + currentBarGene7Pos;
-	currentBarGene9Pos = 10 + currentBarGene8Size + currentBarGene8Pos;
+
 	
-	$sub1/currentBar/gene1.rect_position.x = currentBarGene1Pos
-	$sub1/currentBar/gene1.rect_size.x = currentBarGene1Size
-	$sub1/currentBar/gene2.rect_position.x = currentBarGene2Pos
-	$sub1/currentBar/gene2.rect_size.x = currentBarGene2Size
-	$sub1/currentBar/gene3.rect_position.x = currentBarGene3Pos
-	$sub1/currentBar/gene3.rect_size.x = currentBarGene3Size
-	$sub1/currentBar/gene4.rect_position.x = currentBarGene4Pos
-	$sub1/currentBar/gene4.rect_size.x = currentBarGene4Size
-	$sub1/currentBar/gene5.rect_position.x = currentBarGene5Pos
-	$sub1/currentBar/gene5.rect_size.x = currentBarGene5Size
-	$sub1/currentBar/gene6.rect_position.x = currentBarGene6Pos
-	$sub1/currentBar/gene6.rect_size.x = currentBarGene6Size
-	$sub1/currentBar/gene7.rect_position.x = currentBarGene7Pos
-	$sub1/currentBar/gene7.rect_size.x = currentBarGene7Size
-	$sub1/currentBar/gene8.rect_position.x = currentBarGene8Pos
-	$sub1/currentBar/gene8.rect_size.x = currentBarGene8Size
-	$sub1/currentBar/gene9.rect_position.x = currentBarGene9Pos
-	$sub1/currentBar/gene9.rect_size.x = currentBarGene9Size
+	$sub1/currentBar/currComposition.rect_position.x = currentBarGene1Pos
+	$sub1/currentBar/currComposition.rect_size.x = currentBarGene1Size
+	
+	$sub1/currentBar/currPseudo.rect_position.x = currentBarGene2Pos
+	$sub1/currentBar/currPseudo.rect_size.x = currentBarGene2Size
+	
+	$sub1/currentBar/currBlank.rect_position.x = currentBarGene3Pos
+	$sub1/currentBar/currBlank.rect_size.x = currentBarGene3Size
+	
+	$sub1/currentBar/currTransposon.rect_position.x = currentBarGene4Pos
+	$sub1/currentBar/currTransposon.rect_size.x = currentBarGene4Size
 	pass
 
 func _set_max_bar():
@@ -159,46 +157,33 @@ func _set_max_bar():
 	# The total length is of 490.
 	# Here, we are setting up the bars porportionally.
 	
-	var maxBarSize = 1+max_replication_value + max_locomotion_value + max_helper_value + max_manipulation_value + max_sensing_value + max_component_value + max_construction_value + max_deconstruction_value + max_ate_value;
-	var thisSize = 550 - 100
-	maxBarGene1Size = thisSize * max_replication_value / maxBarSize;
-	maxBarGene2Size = thisSize * max_locomotion_value / maxBarSize;
-	maxBarGene3Size = thisSize * max_helper_value / maxBarSize;
-	maxBarGene4Size = thisSize * max_manipulation_value / maxBarSize;
-	maxBarGene5Size = thisSize * max_sensing_value / maxBarSize;
-	maxBarGene6Size = thisSize * max_component_value / maxBarSize;
-	maxBarGene7Size = thisSize * max_construction_value / maxBarSize;
-	maxBarGene8Size = thisSize * max_deconstruction_value / maxBarSize;
-	maxBarGene9Size = thisSize * max_ate_value / maxBarSize;
+	var maxBarSize = 1 + max_pseudo_value + max_blank_value + max_replication_value + max_locomotion_value + max_helper_value + max_manipulation_value + max_sensing_value + max_component_value + max_construction_value + max_deconstruction_value + max_ate_value;
+	var max_compositionBar = max_replication_value + max_locomotion_value + max_helper_value + max_manipulation_value + max_sensing_value + max_component_value + max_construction_value + max_deconstruction_value;
+	
+	var thisSize = 550 - 50
+	
+	maxBarGene1Size = thisSize * max_compositionBar / maxBarSize;
+	maxBarGene2Size = thisSize * max_pseudo_value / maxBarSize;
+	maxBarGene3Size = thisSize * max_blank_value / maxBarSize;
+	maxBarGene4Size = thisSize * max_ate_value / maxBarSize;
 	
 	maxBarGene1Pos = 10;
 	maxBarGene2Pos = 10 + maxBarGene1Size + maxBarGene1Pos;
 	maxBarGene3Pos = 10 + maxBarGene2Size + maxBarGene2Pos;
 	maxBarGene4Pos = 10 + maxBarGene3Size + maxBarGene3Pos;
 	maxBarGene5Pos = 10 + maxBarGene4Size + maxBarGene4Pos;
-	maxBarGene6Pos = 10 + maxBarGene5Size + maxBarGene5Pos;
-	maxBarGene7Pos = 10 + maxBarGene6Size + maxBarGene6Pos;
-	maxBarGene8Pos = 10 + maxBarGene7Size + maxBarGene7Pos;
-	maxBarGene9Pos = 10 + maxBarGene8Size + maxBarGene8Pos;
 	
-	$sub1/maxBar/gene1.rect_position.x = maxBarGene1Pos
-	$sub1/maxBar/gene1.rect_size.x = maxBarGene1Size
-	$sub1/maxBar/gene2.rect_position.x = maxBarGene2Pos
-	$sub1/maxBar/gene2.rect_size.x = maxBarGene2Size
-	$sub1/maxBar/gene3.rect_position.x = maxBarGene3Pos
-	$sub1/maxBar/gene3.rect_size.x = maxBarGene3Size
-	$sub1/maxBar/gene4.rect_position.x = maxBarGene4Pos
-	$sub1/maxBar/gene4.rect_size.x = maxBarGene4Size
-	$sub1/maxBar/gene5.rect_position.x = maxBarGene5Pos
-	$sub1/maxBar/gene5.rect_size.x = maxBarGene5Size
-	$sub1/maxBar/gene6.rect_position.x = maxBarGene6Pos
-	$sub1/maxBar/gene6.rect_size.x = maxBarGene6Size
-	$sub1/maxBar/gene7.rect_position.x = maxBarGene7Pos
-	$sub1/maxBar/gene7.rect_size.x = maxBarGene7Size
-	$sub1/maxBar/gene8.rect_position.x = maxBarGene8Pos
-	$sub1/maxBar/gene8.rect_size.x = maxBarGene8Size
-	$sub1/maxBar/gene9.rect_position.x = maxBarGene9Pos
-	$sub1/maxBar/gene9.rect_size.x = maxBarGene9Size
+	$sub1/maxBar/maxComposition.rect_position.x = maxBarGene1Pos
+	$sub1/maxBar/maxComposition.rect_size.x = maxBarGene1Size
+	
+	$sub1/maxBar/maxPseudo.rect_position.x = maxBarGene2Pos
+	$sub1/maxBar/maxPseudo.rect_size.x = maxBarGene2Size
+	
+	$sub1/maxBar/maxBlank.rect_position.x = maxBarGene3Pos
+	$sub1/maxBar/maxBlank.rect_size.x = maxBarGene3Size
+	
+	$sub1/maxBar/maxTransposons.rect_position.x = maxBarGene4Pos
+	$sub1/maxBar/maxTransposons.rect_size.x = maxBarGene4Size
 
 func _update_values():
 	num_progeny = STATS.get_progeny();
@@ -217,6 +202,8 @@ func _update_values():
 	current_deconstruction_value = STATS.get_currentDeCon();
 	current_ate_value = STATS.get_currentAte();
 	current_blank_value = STATS.get_currentBlank()
+	current_pseudo_value = STATS.get_current_pseudo()
+	
 	#setting values for the max bar's values. 
 	max_replication_value = STATS.get_maxRep();
 	max_locomotion_value = STATS.get_maxLocomo()
@@ -226,9 +213,11 @@ func _update_values():
 	max_component_value = STATS.get_maxComp();
 	max_construction_value = STATS.get_maxCon();
 	max_deconstruction_value = STATS.get_maxDecon();
+	max_blank_value = STATS.get_max_blank_tiles()
 	max_ate_value = STATS.get_maxAte();
+	max_pseudo_value = STATS.get_maxVal_pseudo()
 	
-	# transposons
+	# current transposons
 	current_classicTE = STATS.get_current_classicTE()
 	current_zigzagTE = STATS.get_current_zigzagTE()
 	current_assistTE = STATS.get_current_assistTE()
@@ -237,6 +226,18 @@ func _update_values():
 	current_commuterTE = STATS.get_current_commuterTE()
 	current_buncherTE = STATS.get_current_buncherTE()
 	current_jumperTE = STATS.get_current_jumperTE()
+	
+	# max transposons
+	max_classicTE = STATS.get_max_classicTE()
+	max_zigzagTE = STATS.get_max_zigzagTE()
+	max_assistTE = STATS.get_max_assistTE()
+	max_buddyTE = STATS.get_max_buddyTE()
+	max_nestlerTE = STATS.get_max_nestlerTE()
+	max_commuterTE = STATS.get_max_commuterTE()
+	max_buncherTE = STATS.get_max_buncherTE()
+	max_jumperTE = STATS.get_max_jumperTE()
+	if(max_jumperTE < current_jumperTE):
+		max_jumperTE = current_jumperTE
 	#Repairs
 	dmgGeneRepairPerfect = STATS.get_dmg_genes_no_error();
 	dmgGeneRepairError = STATS.get_dmg_genes_error();
@@ -264,23 +265,32 @@ func _update_values():
 	geneSplit = STATS.get_elmSplit();
 	
 func _set_transposons():
-	$sub1/AnthroArt.set_color(Color.red)
-	$sub1/AnthroArt2.set_color(Color.red)
-	$sub1/AnthroArt3.set_color(Color.red)
-	$sub1/AnthroArt4.set_color(Color.red)
-	$sub1/AnthroArt5.set_color(Color.red)
-	$sub1/AnthroArt6.set_color(Color.red)
-	$sub1/AnthroArt7.set_color(Color.red)
-	$sub1/AnthroArt8.set_color(Color.red)
+	$sub1/TE1/AnthroArt.set_color(Color.red)
+	$sub1/TE2/AnthroArt2.set_color(Color.red)
+	$sub1/TE3/AnthroArt3.set_color(Color.red)
+	$sub1/TE4/AnthroArt4.set_color(Color.red)
+	$sub1/TE5/AnthroArt5.set_color(Color.red)
+	$sub1/TE6/AnthroArt6.set_color(Color.red)
+	$sub1/TE7/AnthroArt7.set_color(Color.red)
+	$sub1/TE8/AnthroArt8.set_color(Color.red)
 	#setting the values
-	$sub1/AnthroArt/score/Label.text = str(current_classicTE)
-	$sub1/AnthroArt2/score/Label.text = str(current_zigzagTE)
-	$sub1/AnthroArt3/score/Label.text = str(current_assistTE)
-	$sub1/AnthroArt4/score/Label.text = str(current_buddyTE)
-	$sub1/AnthroArt5/score/Label.text = str(current_nestlerTE)
-	$sub1/AnthroArt6/score/Label.text = str(current_commuterTE)
-	$sub1/AnthroArt7/score/Label.text = str(current_buncherTE)
-	$sub1/AnthroArt8/score/Label.text = str(current_jumperTE)
+	$sub1/TE1/currScore/Label.text = str(current_classicTE)
+	$sub1/TE2/currScore/Label.text = str(current_zigzagTE)
+	$sub1/TE3/currScore/Label.text = str(current_assistTE)
+	$sub1/TE4/currScore/Label.text = str(current_buddyTE)
+	$sub1/TE5/currScore/Label.text = str(current_nestlerTE)
+	$sub1/TE6/currScore/Label.text = str(current_commuterTE)
+	$sub1/TE7/currScore/Label.text = str(current_buncherTE)
+	$sub1/TE8/currScore/Label.text = str(current_jumperTE)
+	
+	$sub1/TE1/maxScore/Label.text = str(max_classicTE)
+	$sub1/TE2/maxScore/Label.text = str(max_zigzagTE)
+	$sub1/TE3/maxScore/Label.text = str(max_assistTE)
+	$sub1/TE4/maxScore/Label.text = str(max_buddyTE)
+	$sub1/TE5/maxScore/Label.text = str(max_nestlerTE)
+	$sub1/TE6/maxScore/Label.text = str(max_commuterTE)
+	$sub1/TE7/maxScore/Label.text = str(max_buncherTE)
+	$sub1/TE8/maxScore/Label.text = str(max_jumperTE)
 func _set_values():
 	#main values
 	$mainStat1/score.text = str(turns_taken);
@@ -290,30 +300,38 @@ func _set_values():
 	
 	
 	#Composition values
-	var genesNumber = max_replication_value + max_locomotion_value + max_helper_value + max_manipulation_value + max_sensing_value + max_component_value + max_construction_value + max_deconstruction_value + max_ate_value;
-	var currentNumber = current_replication_value + current_locomotion_value + current_helper_value + current_manipulation_value + current_sensing_value + current_component_value + current_construction_value + current_deconstruction_value + current_ate_value;
+	var genesNumber = max_pseudo_value+ max_blank_value + max_replication_value + max_locomotion_value + max_helper_value + max_manipulation_value + max_sensing_value + max_component_value + max_construction_value + max_deconstruction_value + max_ate_value;
+	var currentNumber = current_pseudo_value + current_blank_value + current_replication_value + current_locomotion_value + current_helper_value + current_manipulation_value + current_sensing_value + current_component_value + current_construction_value + current_deconstruction_value + current_ate_value;
 	if(genesNumber <= currentNumber):
 		genesNumber = currentNumber;
-	$sub1/currentBar/score/score_txt.text = str(currentNumber)
-	$sub1/maxBar/score/score_txt.text = str(genesNumber)
-	#gene composition
-	$sub1/gene1/score/Label.text = str(current_replication_value)
-	$sub1/gene2/score/Label.text = str(current_sensing_value)
-	$sub1/gene3/score/Label.text = str(current_manipulation_value)
-	$sub1/gene4/score/Label.text = str(current_component_value)
-	$sub1/gene5/score/Label.text = str(current_construction_value)
-	$sub1/gene6/score/Label.text = str(current_deconstruction_value)
-	$sub1/gene7/score/Label.text = str(current_helper_value)
-	$sub1/transposon2/score/Label.text = str(current_blank_value)
-	#$sub1/transposon3/score/Label.text = str(0)
+	$sub1/currentBar/currscore/score_txt.text = str(currentNumber) #should display the total number genes in the bar
+	$sub1/maxBar/score/score_txt.text = str(genesNumber) #should displya the max number of genes in the bar
+	#current gene composition
+	$sub1/gene1/currScore/currScoret.text = str(current_replication_value)
+	$sub1/gene2/currScore/currScoret.text = str(current_sensing_value)
+	$sub1/gene3/currScore/currScoret.text = str(current_manipulation_value)
+	$sub1/gene4/currScore/currScoret.text = str(current_component_value)
+	$sub1/gene5/currScore/currScoret.text = str(current_construction_value)
+	$sub1/gene6/currScore/currScoret.text = str(current_deconstruction_value)
+	$sub1/gene7/currScore/currScoret.text = str(current_helper_value)
+	$sub1/gene8/currScore/currScoret.text = str(current_locomotion_value)
+	# max gene composition
+	$sub1/gene1/maxScore/maxScoret.text = str(max_replication_value)
+	$sub1/gene2/maxScore/maxScoret.text = str(max_sensing_value)
+	$sub1/gene3/maxScore/maxScoret.text = str(max_manipulation_value)
+	$sub1/gene4/maxScore/maxScoret.text = str(max_component_value)
+	$sub1/gene5/maxScore/maxScoret.text = str(max_construction_value)
+	$sub1/gene6/maxScore/maxScoret.text = str(max_deconstruction_value)
+	$sub1/gene7/maxScore/maxScoret.text = str(max_helper_value)
+	$sub1/gene8/maxScore/maxScoret.text = str(max_locomotion_value)
 	# Repairs
 	$sub2/rep1/rep1Score/score1Text.text = str(dmgGeneRepairPerfect)
 	$sub2/rep1/rep1Score2/score2Text.text = str(dmgGeneRepairError)
 	$sub2/rep2/rep1Score/score1Text.text = str(trimmedBreakEnds)
-	$sub2/rep3/rep1Score/score1Text.text = str(breaksRepairedCopyRepairPerfect)
-	$sub2/rep3/rep1Score2/score2Text.text = str(breaksRepairedCopyRepairError)
-	$sub2/rep4/rep1Score/score1Text.text = str(breaksRepairedJoinEndsPerfect)
-	$sub2/rep4/rep1Score2/score2Text.text = str(breaksRepairedJoinEndsError)
+	$sub2/rep4/rep1Score/score1Text.text = str(breaksRepairedCopyRepairPerfect)
+	$sub2/rep4/rep1Score2/score2Text.text = str(breaksRepairedCopyRepairError)
+	$sub2/rep3/rep1Score/score1Text.text = str(breaksRepairedJoinEndsPerfect)
+	$sub2/rep3/rep1Score2/score2Text.text = str(breaksRepairedJoinEndsError)
 	$sub2/rep5/rep1Score/score1Text.text = str(tilesCopiedGenes)
 	$sub2/rep5/rep1Score/score1Text.text = str(tilesCopiedTotal)
 	$sub2/rep6/rep1Score/score1Text.text = str(tilesCorrectedCopyRepair)
@@ -340,6 +358,112 @@ func _ready():
 	_set_values()
 	pass # Replace with function body.
 
+func _reset_values():
+	#reset variables
+	turns_taken = 0;
+	resources_consumed= 0;
+	num_progeny= 0;
+	tiles_explored= 0;
+	current_replication_value = 0
+	current_locomotion_value= 0
+	current_helper_value= 0
+	current_manipulation_value= 0
+	current_sensing_value= 0
+	current_component_value= 0
+	current_construction_value= 0
+	current_deconstruction_value= 0
+	current_ate_value= 0
+	current_blank_value =0
+	max_replication_value =0
+	max_locomotion_value=0
+	max_helper_value=0
+	max_manipulation_value=0
+	max_sensing_value=0
+	max_component_value =0
+	max_construction_value =0
+	max_deconstruction_value =0
+	max_ate_value = 0
+	max_blank_value = 0
+	maxBarGene1Size= 1
+	maxBarGene2Size= 0
+	maxBarGene3Size= 0
+	maxBarGene4Size= 0
+	maxBarGene5Size= 0
+	maxBarGene6Size= 0
+	maxBarGene7Size= 0
+	maxBarGene8Size= 0
+	maxBarGene9Size= 0
+	currentBarGene1Size= 1
+	currentBarGene2Size= 0
+	currentBarGene3Size= 0
+	currentBarGene4Size= 0
+	currentBarGene5Size= 0
+	currentBarGene6Size= 0
+	currentBarGene7Size= 0
+	currentBarGene8Size= 0
+	currentBarGene9Size= 0
+	maxBarGene1Pos= 0
+	maxBarGene2Pos= 0
+	maxBarGene3Pos= 0
+	maxBarGene4Pos= 0
+	maxBarGene5Pos= 0
+	maxBarGene6Pos= 0
+	maxBarGene7Pos= 0
+	maxBarGene8Pos= 0
+	maxBarGene9Pos= 0
+	currentBarGene1Pos= 0
+	currentBarGene2Pos= 0
+	currentBarGene3Pos= 0
+	currentBarGene4Pos= 0
+	currentBarGene5Pos= 0
+	currentBarGene6Pos= 0
+	currentBarGene7Pos= 0
+	currentBarGene8Pos= 0
+	currentBarGene9Pos= 0
+	current_classicTE = 0
+	current_zigzagTE = 0
+	current_assistTE = 0
+	current_buddyTE = 0
+	current_nestlerTE = 0
+	current_commuterTE = 0
+	current_buncherTE = 0
+	current_jumperTE = 0
+	max_classicTE = 0
+	max_zigzagTE = 0
+	max_assistTE = 0
+	max_buddyTE = 0
+	max_nestlerTE = 0
+	max_commuterTE = 0
+	max_buncherTE = 0
+	max_jumperTE = 0
+	dmgGeneRepairPerfect= 0
+	dmgGeneRepairError= 0
+	trimmedBreakEnds= 0
+	breaksRepairedJoinEndsPerfect= 0
+	breaksRepairedJoinEndsError= 0
+	breaksRepairedCopyRepairPerfect= 0
+	breaksRepairedCopyRepairError= 0
+	tilesCopiedGenes= 0
+	tilesCopiedTotal= 0
+	tilesCorrectedCopyRepair= 0
+	breaksRepairedCollapseDupes= 0
+	tilesRemovedCollapseDupes= 0
+	majorUp= 0
+	majorDown= 0
+	minorUp= 0
+	minorDown= 0
+	upInNewGene= 0
+	downInPseudo= 0
+	skillsGained= 0
+	skillLost= 0
+	TeFuse= 0
+	geneSplit= 0
+	_set_values()
+	_set_max_bar()
+	_set_current_bar()
+	#reset display values
+	#reset bars
+	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -810,4 +934,294 @@ func _on_AnthroArt8_mouse_entered():
 
 func _on_AnthroArt8_mouse_exited():
 	$geneDisplay16.hide()
+	pass # Replace with function body.
+
+
+func _on_gene8_mouse_entered():
+	$geneDisplay8.show()
+	pass # Replace with function body.
+
+
+func _on_gene8_mouse_exited():
+	$geneDisplay8.hide()
+	pass # Replace with function body.
+
+
+func _on_TE1_mouse_entered():
+	$geneDisplay9.show()
+	pass # Replace with function body.
+
+
+func _on_TE1_mouse_exited():
+	$geneDisplay9.hide()
+	pass # Replace with function body.
+
+
+func _on_TE2_mouse_entered():
+	$geneDisplay10.show()
+	pass # Replace with function body.
+
+
+func _on_TE2_mouse_exited():
+	$geneDisplay10.hide()
+	pass # Replace with function body.
+
+
+func _on_TE3_mouse_entered():
+	$geneDisplay11.show()
+	pass # Replace with function body.
+
+
+func _on_TE3_mouse_exited():
+	$geneDisplay11.hide()
+	pass # Replace with function body.
+
+
+func _on_TE4_mouse_entered():
+	$geneDisplay12.show()
+	pass # Replace with function body.
+
+
+func _on_TE4_mouse_exited():
+	$geneDisplay12.hide()
+	pass # Replace with function body.
+
+
+func _on_TE5_mouse_entered():
+	$geneDisplay13.show()
+	pass # Replace with function body.
+
+
+func _on_TE5_mouse_exited():
+	$geneDisplay13.hide()
+	pass # Replace with function body.
+
+
+func _on_TE6_mouse_exited():
+	$geneDisplay14.hide()
+	pass # Replace with function body.
+
+
+func _on_TE6_mouse_entered():
+	$geneDisplay14.show()
+	pass # Replace with function body.
+
+
+func _on_TE7_mouse_entered():
+	$geneDisplay15.show()
+	pass # Replace with function body.
+
+
+func _on_TE7_mouse_exited():
+	$geneDisplay15.hide()
+	pass # Replace with function body.
+
+
+func _on_TE8_mouse_entered():
+	$geneDisplay16.show()
+	pass # Replace with function body.
+
+
+func _on_TE8_mouse_exited():
+	$geneDisplay16.hide()
+	pass # Replace with function body.
+
+
+func _on_maxgene1_mouse_entered():
+	$maxBarDisplay.show()
+	pass # Replace with function body.
+
+
+func _on_maxgene1_mouse_exited():
+	$maxBarDisplay.hide()
+	pass # Replace with function body.
+
+
+func _on_maxgene2_mouse_entered():
+	$maxBarDisplay2.show()
+	pass # Replace with function body.
+
+
+func _on_maxgene2_mouse_exited():
+	$maxBarDisplay2.hide()
+	pass # Replace with function body.
+
+
+func _on_maxgene3_mouse_entered():
+	$maxBarDisplay3.show()
+	pass # Replace with function body.
+
+
+func _on_maxgene3_mouse_exited():
+	$maxBarDisplay3.hide()
+	pass # Replace with function body.
+
+
+func _on_maxgene4_mouse_entered():
+	$maxBarDisplay4.show()
+	pass # Replace with function body.
+
+
+func _on_maxgene4_mouse_exited():
+	$maxBarDisplay4.hide()
+	pass # Replace with function body.
+
+
+func _on_maxgene5_mouse_entered():
+	$maxBarDisplay5.show()
+	pass # Replace with function body.
+
+
+func _on_maxgene5_mouse_exited():
+	$maxBarDisplay5.hide()
+	pass # Replace with function body.
+
+
+func _on_maxgene6_mouse_entered():
+	$maxBarDisplay6.show()
+	pass # Replace with function body.
+
+
+func _on_maxgene6_mouse_exited():
+	$maxBarDisplay6.hide()
+	pass # Replace with function body.
+
+
+func _on_maxgene7_mouse_entered():
+	$maxBarDisplay7.show()
+	pass # Replace with function body.
+
+
+func _on_maxgene7_mouse_exited():
+	$maxBarDisplay7.hide()
+	pass # Replace with function body.
+
+
+func _on_maxgene8_mouse_entered():
+	$maxBarDisplay8.show()
+	pass # Replace with function body.
+
+
+func _on_maxgene8_mouse_exited():
+	$maxBarDisplay8.hide()
+	pass # Replace with function body.
+
+
+func _on_maxgene9_mouse_entered():
+	$maxBarDisplay9.show()
+	pass # Replace with function body.
+
+
+func _on_maxgene9_mouse_exited():
+	$maxBarDisplay9.hide()
+	pass # Replace with function body.
+
+
+func _on_score_mouse_entered():
+	$dataDisplay5.show()
+	pass # Replace with function body.
+
+
+func _on_score_mouse_exited():
+	$dataDisplay5.hide()
+	pass # Replace with function body.
+
+
+func _on_currscore_mouse_entered():
+	$dataDisplay6.show()
+	pass # Replace with function body.
+
+
+func _on_currscore_mouse_exited():
+	$dataDisplay6.hide()
+	pass # Replace with function body.
+
+
+func _on_currgene1_mouse_entered():
+	$currBarDisplay.show()
+	pass # Replace with function body.
+
+
+func _on_currgene1_mouse_exited():
+	$currBarDisplay.hide()
+	pass # Replace with function body.
+
+
+func _on_currgene2_mouse_entered():
+	$currBarDisplay2.show()
+	pass # Replace with function body.
+
+
+func _on_currgene2_mouse_exited():
+	$currBarDisplay2.hide()
+	pass # Replace with function body.
+
+
+func _on_currgene3_mouse_entered():
+	$currBarDisplay3.show()
+	pass # Replace with function body.
+
+
+func _on_currgene3_mouse_exited():
+	$currBarDisplay3.hide()
+	pass # Replace with function body.
+
+
+func _on_currgene4_mouse_entered():
+	$currBarDisplay4.show()
+	pass # Replace with function body.
+
+
+func _on_currgene4_mouse_exited():
+	$currBarDisplay4.hide()
+	pass # Replace with function body.
+
+
+func _on_currgene5_mouse_entered():
+	$currBarDisplay5.show()
+	pass # Replace with function body.
+
+
+func _on_currgene5_mouse_exited():
+	$currBarDisplay5.hide()
+	pass # Replace with function body.
+
+
+func _on_currgene6_mouse_entered():
+	$currBarDisplay6.show()
+	pass # Replace with function body.
+
+
+func _on_currgene6_mouse_exited():
+	$currBarDisplay6.hide()
+	pass # Replace with function body.
+
+
+func _on_currgene7_mouse_entered():
+	$currBarDisplay7.show()
+	pass # Replace with function body.
+
+
+func _on_currgene7_mouse_exited():
+	$currBarDisplay7.hide()
+	pass # Replace with function body.
+
+
+func _on_currgene8_mouse_entered():
+	$currBarDisplay8.show()
+	pass # Replace with function body.
+
+
+func _on_currgene8_mouse_exited():
+	$currBarDisplay8.hide()
+	pass # Replace with function body.
+
+
+func _on_currgene9_mouse_entered():
+	$currBarDisplay9.show()
+	pass # Replace with function body.
+
+
+func _on_currgene9_mouse_exited():
+	$currBarDisplay9.hide()
 	pass # Replace with function body.

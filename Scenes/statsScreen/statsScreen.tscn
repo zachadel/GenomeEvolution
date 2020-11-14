@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://Assets/Images/pngs/DNA_left.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Images/pngs/DNA_right.png" type="Texture" id=2]
@@ -8,26 +8,27 @@
 [ext_resource path="res://Assets/Images/genes/Helix_Circle.png" type="Texture" id=6]
 [ext_resource path="res://Assets/Fonts/OpenSans-22.tres" type="DynamicFont" id=7]
 [ext_resource path="res://Scenes/statsScreen/statsScreen.gd" type="Script" id=8]
-[ext_resource path="res://Assets/Images/deathScreen/band-24298_1280.png" type="Texture" id=9]
-[ext_resource path="res://Assets/Images/deathScreen/wrench-35745_1280.png" type="Texture" id=10]
-[ext_resource path="res://Assets/Images/deathScreen/checkbox-152188_1280.png" type="Texture" id=11]
-[ext_resource path="res://Assets/Images/deathScreen/clipboard-27405_1280.png" type="Texture" id=12]
-[ext_resource path="res://Assets/Images/deathScreen/chain-309566_1280.png" type="Texture" id=13]
-[ext_resource path="res://Assets/Images/deathScreen/document-35941_1280.png" type="Texture" id=14]
-[ext_resource path="res://Assets/Images/deathScreen/scissors-1300330_1280.png" type="Texture" id=15]
-[ext_resource path="res://Assets/Images/deathScreen/checkbox-152187_1280.png" type="Texture" id=16]
+[ext_resource path="res://Assets/Images/statsScreen/checkbox-152188_1280.png" type="Texture" id=9]
+[ext_resource path="res://Assets/Images/statsScreen/clipboard-27405_1280.png" type="Texture" id=10]
+[ext_resource path="res://Assets/Images/statsScreen/checkbox-152187_1280.png" type="Texture" id=11]
+[ext_resource path="res://Assets/Images/statsScreen/band-24298_1280.png" type="Texture" id=12]
+[ext_resource path="res://Assets/Images/statsScreen/chain-309566_1280.png" type="Texture" id=13]
+[ext_resource path="res://Assets/Images/statsScreen/wrench-35745_1280.png" type="Texture" id=14]
+[ext_resource path="res://Assets/Images/statsScreen/scissors-1300330_1280.png" type="Texture" id=15]
+[ext_resource path="res://Assets/Images/statsScreen/document-35941_1280.png" type="Texture" id=16]
 [ext_resource path="res://Assets/Images/genes/Sensing.png" type="Texture" id=17]
-[ext_resource path="res://Assets/Images/genes/Manipulation.png" type="Texture" id=18]
-[ext_resource path="res://Assets/Images/genes/Construction.png" type="Texture" id=19]
-[ext_resource path="res://Assets/Images/genes/Deconstruction.png" type="Texture" id=20]
+[ext_resource path="res://Assets/Images/genes/Deconstruction.png" type="Texture" id=18]
+[ext_resource path="res://Assets/Images/genes/Helper.png" type="Texture" id=19]
+[ext_resource path="res://Assets/Images/genes/Construction.png" type="Texture" id=20]
 [ext_resource path="res://Assets/Images/genes/Component.png" type="Texture" id=21]
-[ext_resource path="res://Assets/Images/genes/Helper.png" type="Texture" id=22]
+[ext_resource path="res://Assets/Images/genes/Manipulation.png" type="Texture" id=22]
 [ext_resource path="res://Assets/Images/Tiles/Resources/sulfur.svg" type="Texture" id=23]
 [ext_resource path="res://Assets/Images/Menus/right_arrow_normal.svg" type="Texture" id=24]
 [ext_resource path="res://Assets/Images/Menus/left_arrow_hover.svg" type="Texture" id=25]
 [ext_resource path="res://Assets/Images/DeathScreen/transposon.png" type="Texture" id=26]
 [ext_resource path="res://Assets/Images/DeathScreen/arrow-39652_1280.png" type="Texture" id=27]
 [ext_resource path="res://Scenes/CardTable/Art/AnthroArt.tscn" type="PackedScene" id=28]
+[ext_resource path="res://Assets/Images/genes/Locomotion.png" type="Texture" id=29]
 
 [node name="statsScreen" type="Panel"]
 margin_right = 1600.0
@@ -66,13 +67,10 @@ __meta__ = {
 }
 
 [node name="Title" type="Label" parent="."]
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = -498.0
-margin_top = 12.27
-margin_right = 297.0
-margin_bottom = 95.27
-rect_scale = Vector2( 1.25, 1.25 )
+anchor_right = 1.0
+margin_right = -960.0
+margin_bottom = 35.0
+rect_scale = Vector2( 2.5, 2.5 )
 custom_fonts/font = ExtResource( 3 )
 text = "Genome Accomplishments"
 align = 1
@@ -82,9 +80,9 @@ __meta__ = {
 
 [node name="mainStat1" type="ColorRect" parent="."]
 margin_left = 220.0
-margin_top = 170.0
+margin_top = 150.0
 margin_right = 320.0
-margin_bottom = 270.0
+margin_bottom = 250.0
 color = Color( 0.0784314, 0.392157, 0.72549, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -95,23 +93,25 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -20.0
-margin_top = -43.5
-margin_right = 20.0
-margin_bottom = 43.5
+margin_left = -50.0
+margin_top = -50.0
+margin_right = 50.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 100, 100 )
 custom_fonts/font = ExtResource( 4 )
 text = "0"
 align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="mainStat1"]
 margin_left = -60.0
-margin_top = -70.0
-margin_right = 348.0
-margin_bottom = 17.0
-rect_scale = Vector2( 0.7, 0.7 )
+margin_top = -60.0
+margin_right = 240.0
+margin_bottom = 5.0
+rect_scale = Vector2( 0.85, 0.85 )
 custom_fonts/font = ExtResource( 4 )
 text = "You Survived"
 __meta__ = {
@@ -119,12 +119,14 @@ __meta__ = {
 }
 
 [node name="Label2" type="Label" parent="mainStat1"]
+margin_left = -10.0
 margin_top = 100.0
-margin_right = 153.0
+margin_right = 142.0
 margin_bottom = 174.0
-rect_scale = Vector2( 0.7, 0.7 )
+rect_scale = Vector2( 0.85, 0.85 )
 custom_fonts/font = ExtResource( 4 )
 text = "Turns"
+align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -146,9 +148,9 @@ text = "This shows the amount of turns
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -250.0
-margin_top = 170.0
+margin_top = 150.0
 margin_right = -150.0
-margin_bottom = 270.0
+margin_bottom = 250.0
 color = Color( 0.0784314, 0.392157, 0.72549, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -159,23 +161,25 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -15.0
-margin_top = -43.5
-margin_right = 25.0
-margin_bottom = 43.5
+margin_left = -50.0
+margin_top = -50.0
+margin_right = 50.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 100, 100 )
 custom_fonts/font = ExtResource( 4 )
 text = "0"
 align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="mainStat2"]
-margin_left = -80.0
-margin_top = -70.0
-margin_right = 328.0
-margin_bottom = 17.0
-rect_scale = Vector2( 0.7, 0.7 )
+margin_left = -110.0
+margin_top = -60.0
+margin_right = 298.0
+margin_bottom = 27.0
+rect_scale = Vector2( 0.85, 0.85 )
 custom_fonts/font = ExtResource( 4 )
 text = "You Consumed"
 align = 1
@@ -184,22 +188,23 @@ __meta__ = {
 }
 
 [node name="Label2" type="Label" parent="mainStat2"]
-margin_left = -30.0
+margin_left = -50.0
 margin_top = 100.0
-margin_right = 215.0
+margin_right = 197.0
 margin_bottom = 174.0
-rect_scale = Vector2( 0.7, 0.7 )
+rect_scale = Vector2( 0.85, 0.85 )
 custom_fonts/font = ExtResource( 4 )
 text = "Resources"
+align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="mainStat3" type="ColorRect" parent="."]
 margin_left = 950.0
-margin_top = 170.0
+margin_top = 150.0
 margin_right = 1050.0
-margin_bottom = 270.0
+margin_bottom = 250.0
 color = Color( 0.0784314, 0.392157, 0.72549, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -210,23 +215,25 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -15.0
-margin_top = -43.5
-margin_right = 25.0
-margin_bottom = 43.5
+margin_left = -50.0
+margin_top = -50.0
+margin_right = 50.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 100, 100 )
 custom_fonts/font = ExtResource( 4 )
 text = "0"
 align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="mainStat3"]
-margin_left = -80.0
-margin_top = -70.0
-margin_right = 328.0
-margin_bottom = 17.0
-rect_scale = Vector2( 0.7, 0.7 )
+margin_left = -110.0
+margin_top = -60.0
+margin_right = 298.0
+margin_bottom = 27.0
+rect_scale = Vector2( 0.85, 0.85 )
 custom_fonts/font = ExtResource( 4 )
 text = "You Explored"
 align = 1
@@ -235,22 +242,23 @@ __meta__ = {
 }
 
 [node name="Label2" type="Label" parent="mainStat3"]
-margin_left = 10.0
+margin_left = -10.0
 margin_top = 100.0
-margin_right = 163.0
+margin_right = 143.0
 margin_bottom = 174.0
-rect_scale = Vector2( 0.7, 0.7 )
+rect_scale = Vector2( 0.85, 0.85 )
 custom_fonts/font = ExtResource( 4 )
 text = "Tiles"
+align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="mainStat4" type="ColorRect" parent="."]
-margin_left = 1280.0
-margin_top = 170.0
-margin_right = 1380.0
-margin_bottom = 270.0
+margin_left = 1270.0
+margin_top = 150.0
+margin_right = 1370.0
+margin_bottom = 250.0
 color = Color( 0.0784314, 0.392157, 0.72549, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -261,23 +269,25 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -15.0
-margin_top = -43.5
-margin_right = 25.0
-margin_bottom = 43.5
+margin_left = -50.0
+margin_top = -50.0
+margin_right = 50.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 100, 100 )
 custom_fonts/font = ExtResource( 4 )
 text = "0"
 align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="mainStat4"]
-margin_left = -80.0
+margin_left = -85.0
 margin_top = -70.0
-margin_right = 328.0
+margin_right = 238.0
 margin_bottom = 17.0
-rect_scale = Vector2( 0.7, 0.7 )
+rect_scale = Vector2( 0.85, 0.85 )
 custom_fonts/font = ExtResource( 4 )
 text = "You Produced"
 valign = 1
@@ -286,11 +296,11 @@ __meta__ = {
 }
 
 [node name="Label2" type="Label" parent="mainStat4"]
-margin_left = -15.0
+margin_left = -30.0
 margin_top = 100.0
-margin_right = 181.0
+margin_right = 170.0
 margin_bottom = 174.0
-rect_scale = Vector2( 0.7, 0.7 )
+rect_scale = Vector2( 0.85, 0.85 )
 custom_fonts/font = ExtResource( 4 )
 text = "Progeny"
 __meta__ = {
@@ -319,7 +329,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gene1" type="ColorRect" parent="sub1/maxBar"]
+[node name="maxComposition" type="ColorRect" parent="sub1/maxBar"]
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 50.0
@@ -329,7 +339,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gene2" type="ColorRect" parent="sub1/maxBar"]
+[node name="maxPseudo" type="ColorRect" parent="sub1/maxBar"]
 margin_left = 60.0
 margin_top = 10.0
 margin_right = 100.0
@@ -339,7 +349,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gene3" type="ColorRect" parent="sub1/maxBar"]
+[node name="maxBlank" type="ColorRect" parent="sub1/maxBar"]
 margin_left = 110.0
 margin_top = 10.0
 margin_right = 150.0
@@ -349,7 +359,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gene4" type="ColorRect" parent="sub1/maxBar"]
+[node name="maxTransposons" type="ColorRect" parent="sub1/maxBar"]
 margin_left = 160.0
 margin_top = 10.0
 margin_right = 200.0
@@ -359,7 +369,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gene5" type="ColorRect" parent="sub1/maxBar"]
+[node name="maxgene5" type="ColorRect" parent="sub1/maxBar"]
+visible = false
 margin_left = 210.0
 margin_top = 10.0
 margin_right = 250.0
@@ -369,7 +380,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gene6" type="ColorRect" parent="sub1/maxBar"]
+[node name="maxgene6" type="ColorRect" parent="sub1/maxBar"]
+visible = false
 margin_left = 210.0
 margin_top = 10.0
 margin_right = 250.0
@@ -379,7 +391,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gene7" type="ColorRect" parent="sub1/maxBar"]
+[node name="maxgene7" type="ColorRect" parent="sub1/maxBar"]
+visible = false
 margin_left = 210.0
 margin_top = 10.0
 margin_right = 250.0
@@ -389,7 +402,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gene8" type="ColorRect" parent="sub1/maxBar"]
+[node name="maxgene8" type="ColorRect" parent="sub1/maxBar"]
+visible = false
 margin_left = 210.0
 margin_top = 10.0
 margin_right = 250.0
@@ -399,7 +413,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gene9" type="ColorRect" parent="sub1/maxBar"]
+[node name="maxgene9" type="ColorRect" parent="sub1/maxBar"]
+visible = false
 margin_left = 210.0
 margin_top = 10.0
 margin_right = 250.0
@@ -423,13 +438,14 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -10.0
-margin_top = -27.5
-margin_right = 30.0
-margin_bottom = 27.5
-rect_scale = Vector2( 1.25, 1.25 )
+margin_left = -50.0
+margin_top = -35.0
+margin_right = 50.0
+margin_bottom = 35.0
 custom_fonts/font = ExtResource( 7 )
 text = "0"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -444,7 +460,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gene1" type="ColorRect" parent="sub1/currentBar"]
+[node name="currComposition" type="ColorRect" parent="sub1/currentBar"]
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 50.0
@@ -454,7 +470,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gene2" type="ColorRect" parent="sub1/currentBar"]
+[node name="currPseudo" type="ColorRect" parent="sub1/currentBar"]
 margin_left = 60.0
 margin_top = 10.0
 margin_right = 100.0
@@ -464,7 +480,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gene3" type="ColorRect" parent="sub1/currentBar"]
+[node name="currBlank" type="ColorRect" parent="sub1/currentBar"]
 margin_left = 110.0
 margin_top = 10.0
 margin_right = 150.0
@@ -474,7 +490,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gene4" type="ColorRect" parent="sub1/currentBar"]
+[node name="currTransposon" type="ColorRect" parent="sub1/currentBar"]
 margin_left = 160.0
 margin_top = 10.0
 margin_right = 200.0
@@ -484,7 +500,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gene5" type="ColorRect" parent="sub1/currentBar"]
+[node name="currgene5" type="ColorRect" parent="sub1/currentBar"]
+visible = false
 margin_left = 210.0
 margin_top = 10.0
 margin_right = 250.0
@@ -494,7 +511,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gene6" type="ColorRect" parent="sub1/currentBar"]
+[node name="currgene6" type="ColorRect" parent="sub1/currentBar"]
+visible = false
 margin_left = 210.0
 margin_top = 10.0
 margin_right = 250.0
@@ -504,7 +522,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gene7" type="ColorRect" parent="sub1/currentBar"]
+[node name="currgene7" type="ColorRect" parent="sub1/currentBar"]
+visible = false
 margin_left = 210.0
 margin_top = 10.0
 margin_right = 250.0
@@ -514,7 +533,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gene8" type="ColorRect" parent="sub1/currentBar"]
+[node name="currgene8" type="ColorRect" parent="sub1/currentBar"]
+visible = false
 margin_left = 210.0
 margin_top = 10.0
 margin_right = 250.0
@@ -524,7 +544,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gene9" type="ColorRect" parent="sub1/currentBar"]
+[node name="currgene9" type="ColorRect" parent="sub1/currentBar"]
+visible = false
 margin_left = 210.0
 margin_top = 10.0
 margin_right = 250.0
@@ -534,7 +555,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="score" type="ColorRect" parent="sub1/currentBar"]
+[node name="currscore" type="ColorRect" parent="sub1/currentBar"]
 margin_left = 570.0
 margin_right = 670.0
 margin_bottom = 70.0
@@ -543,34 +564,43 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="score_txt" type="Label" parent="sub1/currentBar/score"]
+[node name="score_txt" type="Label" parent="sub1/currentBar/currscore"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -10.0
-margin_top = -27.5
-margin_right = 30.0
-margin_bottom = 27.5
-rect_scale = Vector2( 1.25, 1.25 )
+margin_left = -50.0
+margin_top = -35.0
+margin_right = 50.0
+margin_bottom = 35.0
 custom_fonts/font = ExtResource( 7 )
 text = "0"
+align = 1
+valign = 1
+autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gene1" type="TextureRect" parent="sub1"]
+[node name="gene1" type="Control" parent="sub1"]
 margin_left = -100.0
 margin_top = 250.0
-margin_right = 476.0
-margin_bottom = 826.0
+margin_right = 100.0
+margin_bottom = 320.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gene1" type="TextureRect" parent="sub1/gene1"]
+margin_right = 576.0
+margin_bottom = 576.0
 rect_scale = Vector2( 0.15, 0.15 )
 texture = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="transporter" type="TextureRect" parent="sub1/gene1"]
+[node name="transporter" type="TextureRect" parent="sub1/gene1/gene1"]
 margin_right = 40.0
 margin_bottom = 40.0
 texture = ExtResource( 5 )
@@ -578,277 +608,165 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="score" type="ColorRect" parent="sub1/gene1"]
-margin_left = 650.0
-margin_top = 70.0
-margin_right = 700.0
-margin_bottom = 110.0
-rect_scale = Vector2( 10, 10 )
-color = Color( 0.0784314, 0.392157, 0.72549, 1 )
+[node name="currScore" type="ColorRect" parent="sub1/gene1"]
+margin_left = 97.0
+margin_top = 12.5
+margin_right = 147.0
+margin_bottom = 72.5
+color = Color( 0.929412, 0.94902, 0.376471, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="sub1/gene1/score"]
+[node name="currScoret" type="Label" parent="sub1/gene1/currScore"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -20.0
-margin_top = -20.0
-margin_right = 20.0
-margin_bottom = 35.0
+margin_left = -25.0
+margin_top = -34.0
+margin_right = 25.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 50, 60 )
 custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
 align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gene2" type="TextureRect" parent="sub1"]
+[node name="maxScore" type="ColorRect" parent="sub1/gene1"]
+margin_left = 150.0
+margin_top = 12.5
+margin_right = 200.0
+margin_bottom = 72.5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="maxScoret" type="Label" parent="sub1/gene1/maxScore"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -25.0
+margin_top = -34.0
+margin_right = 25.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 50, 60 )
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "0"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gene2" type="Control" parent="sub1"]
 margin_left = -100.0
-margin_top = 350.0
-margin_right = 476.0
-margin_bottom = 926.0
+margin_top = 330.0
+margin_right = 100.0
+margin_bottom = 400.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gene1" type="TextureRect" parent="sub1/gene2"]
+margin_top = -10.0
+margin_right = 576.0
+margin_bottom = 566.0
 rect_scale = Vector2( 0.15, 0.15 )
 texture = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="transporter" type="TextureRect" parent="sub1/gene2"]
-margin_right = 40.0
-margin_bottom = 40.0
+[node name="transporter" type="TextureRect" parent="sub1/gene2/gene1"]
+margin_top = 4.76221
+margin_right = 576.0
+margin_bottom = 580.762
 texture = ExtResource( 17 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="score" type="ColorRect" parent="sub1/gene2"]
-margin_left = 650.0
-margin_top = 70.0
-margin_right = 700.0
-margin_bottom = 110.0
-rect_scale = Vector2( 10, 10 )
-color = Color( 0.0784314, 0.392157, 0.72549, 1 )
+[node name="currScore" type="ColorRect" parent="sub1/gene2"]
+margin_left = 97.0
+margin_right = 147.0
+margin_bottom = 60.0
+color = Color( 0.929412, 0.94902, 0.376471, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="sub1/gene2/score"]
+[node name="currScoret" type="Label" parent="sub1/gene2/currScore"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -20.0
-margin_top = -20.0
-margin_right = 20.0
-margin_bottom = 35.0
+margin_left = -25.0
+margin_top = -34.0
+margin_right = 25.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 50, 60 )
 custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
 align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gene3" type="TextureRect" parent="sub1"]
-margin_left = -100.0
-margin_top = 450.0
-margin_right = 476.0
-margin_bottom = 1026.0
-rect_scale = Vector2( 0.15, 0.15 )
-texture = ExtResource( 6 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="transporter" type="TextureRect" parent="sub1/gene3"]
-margin_left = -5.04517
-margin_top = 15.1353
-margin_right = 570.955
-margin_bottom = 591.135
-texture = ExtResource( 18 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="score" type="ColorRect" parent="sub1/gene3"]
-margin_left = 650.0
-margin_top = 70.0
-margin_right = 700.0
-margin_bottom = 110.0
-rect_scale = Vector2( 10, 10 )
-color = Color( 0.0784314, 0.392157, 0.72549, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="sub1/gene3/score"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -20.0
-margin_top = -20.0
-margin_right = 20.0
-margin_bottom = 35.0
-custom_fonts/font = ExtResource( 7 )
-text = "0"
-align = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="gene4" type="TextureRect" parent="sub1"]
-margin_left = -100.0
-margin_top = 550.0
-margin_right = 476.0
-margin_bottom = 1126.0
-rect_scale = Vector2( 0.15, 0.15 )
-texture = ExtResource( 6 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="transporter" type="TextureRect" parent="sub1/gene4"]
-margin_right = 40.0
-margin_bottom = 40.0
-texture = ExtResource( 21 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="score" type="ColorRect" parent="sub1/gene4"]
-margin_left = 650.0
-margin_top = 70.0
-margin_right = 700.0
-margin_bottom = 110.0
-rect_scale = Vector2( 10, 10 )
-color = Color( 0.0784314, 0.392157, 0.72549, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="sub1/gene4/score"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -20.0
-margin_top = -20.0
-margin_right = 20.0
-margin_bottom = 35.0
-custom_fonts/font = ExtResource( 7 )
-text = "0"
-align = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="gene5" type="TextureRect" parent="sub1"]
-margin_left = -100.0
-margin_top = 650.0
-margin_right = 476.0
-margin_bottom = 1226.0
-rect_scale = Vector2( 0.15, 0.15 )
-texture = ExtResource( 6 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="transporter" type="TextureRect" parent="sub1/gene5"]
-margin_right = 40.0
-margin_bottom = 40.0
-texture = ExtResource( 19 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="score" type="ColorRect" parent="sub1/gene5"]
-margin_left = 650.0
-margin_top = 70.0
-margin_right = 700.0
-margin_bottom = 110.0
-rect_scale = Vector2( 10, 10 )
-color = Color( 0.0784314, 0.392157, 0.72549, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="sub1/gene5/score"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -20.0
-margin_top = -20.0
-margin_right = 20.0
-margin_bottom = 35.0
-custom_fonts/font = ExtResource( 7 )
-text = "0"
-align = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="gene6" type="TextureRect" parent="sub1"]
-margin_left = -100.0
-margin_top = 750.0
-margin_right = 476.0
-margin_bottom = 1326.0
-rect_scale = Vector2( 0.15, 0.15 )
-texture = ExtResource( 6 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="transporter" type="TextureRect" parent="sub1/gene6"]
-margin_right = 40.0
-margin_bottom = 40.0
-texture = ExtResource( 20 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="score" type="ColorRect" parent="sub1/gene6"]
-margin_left = 650.0
-margin_top = 70.0
-margin_right = 700.0
-margin_bottom = 110.0
-rect_scale = Vector2( 10, 10 )
-color = Color( 0.0784314, 0.392157, 0.72549, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="sub1/gene6/score"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -20.0
-margin_top = -20.0
-margin_right = 20.0
-margin_bottom = 35.0
-custom_fonts/font = ExtResource( 7 )
-text = "0"
-align = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="gene7" type="TextureRect" parent="sub1"]
+[node name="maxScore" type="ColorRect" parent="sub1/gene2"]
 margin_left = 150.0
-margin_top = 250.0
-margin_right = 726.0
-margin_bottom = 826.0
+margin_right = 200.0
+margin_bottom = 60.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="maxScoret" type="Label" parent="sub1/gene2/maxScore"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -25.0
+margin_top = -34.0
+margin_right = 25.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 50, 60 )
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "0"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gene3" type="Control" parent="sub1"]
+margin_left = -100.0
+margin_top = 390.0
+margin_right = 100.0
+margin_bottom = 460.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gene1" type="TextureRect" parent="sub1/gene3"]
+margin_right = 576.0
+margin_bottom = 576.0
 rect_scale = Vector2( 0.15, 0.15 )
 texture = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="transporter" type="TextureRect" parent="sub1/gene7"]
+[node name="transporter" type="TextureRect" parent="sub1/gene3/gene1"]
 margin_right = 40.0
 margin_bottom = 40.0
 texture = ExtResource( 22 )
@@ -856,356 +774,1068 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="score" type="ColorRect" parent="sub1/gene7"]
-margin_left = 650.0
-margin_top = 70.0
-margin_right = 700.0
-margin_bottom = 110.0
-rect_scale = Vector2( 10, 10 )
-color = Color( 0.0784314, 0.392157, 0.72549, 1 )
+[node name="currScore" type="ColorRect" parent="sub1/gene3"]
+margin_left = 97.0
+margin_top = 8.0
+margin_right = 147.0
+margin_bottom = 68.0
+color = Color( 0.929412, 0.94902, 0.376471, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="sub1/gene7/score"]
+[node name="currScoret" type="Label" parent="sub1/gene3/currScore"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -20.0
-margin_top = -27.5
-margin_right = 20.0
-margin_bottom = 27.5
+margin_left = -25.0
+margin_top = -34.0
+margin_right = 25.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 50, 60 )
 custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
 align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="transposon2" type="TextureRect" parent="sub1"]
+[node name="maxScore" type="ColorRect" parent="sub1/gene3"]
 margin_left = 150.0
-margin_top = 350.0
-margin_right = 726.0
-margin_bottom = 926.0
+margin_top = 8.0
+margin_right = 200.0
+margin_bottom = 68.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="maxScoret" type="Label" parent="sub1/gene3/maxScore"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -25.0
+margin_top = -34.0
+margin_right = 25.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 50, 60 )
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "0"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gene4" type="Control" parent="sub1"]
+margin_left = -100.0
+margin_top = 460.0
+margin_right = 100.0
+margin_bottom = 530.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gene1" type="TextureRect" parent="sub1/gene4"]
+margin_right = 576.0
+margin_bottom = 576.0
 rect_scale = Vector2( 0.15, 0.15 )
 texture = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="transporter" type="TextureRect" parent="sub1/transposon2"]
+[node name="transporter" type="TextureRect" parent="sub1/gene4/gene1"]
 margin_right = 40.0
 margin_bottom = 40.0
+texture = ExtResource( 21 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="score" type="ColorRect" parent="sub1/transposon2"]
-margin_left = 650.0
-margin_top = 70.0
-margin_right = 700.0
-margin_bottom = 110.0
-rect_scale = Vector2( 10, 10 )
-color = Color( 0.0784314, 0.392157, 0.72549, 1 )
+[node name="currScore" type="ColorRect" parent="sub1/gene4"]
+margin_left = 97.0
+margin_top = 8.0
+margin_right = 147.0
+margin_bottom = 68.0
+color = Color( 0.929412, 0.94902, 0.376471, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="sub1/transposon2/score"]
+[node name="currScoret" type="Label" parent="sub1/gene4/currScore"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -20.0
-margin_top = -20.0
-margin_right = 20.0
-margin_bottom = 35.0
+margin_left = -25.0
+margin_top = -34.0
+margin_right = 25.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 50, 60 )
 custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
 align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AnthroArt" parent="sub1" instance=ExtResource( 28 )]
+[node name="maxScore" type="ColorRect" parent="sub1/gene4"]
 margin_left = 150.0
-margin_top = 450.0
-margin_right = 100.0
-margin_bottom = 573.0
-rect_scale = Vector2( 0.5, 0.5 )
-
-[node name="score" type="ColorRect" parent="sub1/AnthroArt"]
-margin_left = 200.0
-margin_top = 30.0
-margin_right = 275.0
-margin_bottom = 90.0
-rect_scale = Vector2( 2, 2 )
-color = Color( 0.0784314, 0.392157, 0.72549, 1 )
+margin_top = 8.0
+margin_right = 200.0
+margin_bottom = 68.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="sub1/AnthroArt/score"]
+[node name="maxScoret" type="Label" parent="sub1/gene4/maxScore"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -37.5
-margin_top = -30.0
-margin_right = 22.5
-margin_bottom = 20.0
-rect_scale = Vector2( 1.25, 1.25 )
+margin_left = -25.0
+margin_top = -34.0
+margin_right = 25.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 50, 60 )
 custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
 align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AnthroArt2" parent="sub1" instance=ExtResource( 28 )]
+[node name="gene5" type="Control" parent="sub1"]
+margin_left = -100.0
+margin_top = 530.0
+margin_right = 100.0
+margin_bottom = 600.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gene1" type="TextureRect" parent="sub1/gene5"]
+margin_right = 576.0
+margin_bottom = 576.0
+rect_scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="transporter" type="TextureRect" parent="sub1/gene5/gene1"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 20 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="currScore" type="ColorRect" parent="sub1/gene5"]
+margin_left = 97.0
+margin_top = 8.0
+margin_right = 147.0
+margin_bottom = 68.0
+color = Color( 0.929412, 0.94902, 0.376471, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="currScoret" type="Label" parent="sub1/gene5/currScore"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -25.0
+margin_top = -34.0
+margin_right = 25.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 50, 60 )
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "0"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="maxScore" type="ColorRect" parent="sub1/gene5"]
 margin_left = 150.0
-margin_top = 550.0
-margin_right = 100.0
-margin_bottom = 656.0
-rect_scale = Vector2( 0.5, 0.5 )
-
-[node name="score" type="ColorRect" parent="sub1/AnthroArt2"]
-margin_left = 200.0
-margin_top = 30.0
-margin_right = 275.0
-margin_bottom = 90.0
-rect_scale = Vector2( 2, 2 )
-color = Color( 0.0784314, 0.392157, 0.72549, 1 )
+margin_top = 8.0
+margin_right = 200.0
+margin_bottom = 68.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="sub1/AnthroArt2/score"]
+[node name="maxScoret" type="Label" parent="sub1/gene5/maxScore"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -20.0
-margin_top = -20.0
-margin_right = 20.0
-margin_bottom = 35.0
+margin_left = -25.0
+margin_top = -34.0
+margin_right = 25.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 50, 60 )
 custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
 align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AnthroArt3" parent="sub1" instance=ExtResource( 28 )]
+[node name="gene6" type="Control" parent="sub1"]
+margin_left = -100.0
+margin_top = 600.0
+margin_right = 100.0
+margin_bottom = 670.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gene1" type="TextureRect" parent="sub1/gene6"]
+margin_right = 576.0
+margin_bottom = 576.0
+rect_scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="transporter" type="TextureRect" parent="sub1/gene6/gene1"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 18 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="currScore" type="ColorRect" parent="sub1/gene6"]
+margin_left = 97.0
+margin_top = 12.0
+margin_right = 147.0
+margin_bottom = 72.0
+color = Color( 0.929412, 0.94902, 0.376471, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="currScoret" type="Label" parent="sub1/gene6/currScore"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -25.0
+margin_top = -34.0
+margin_right = 25.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 50, 60 )
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "0"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="maxScore" type="ColorRect" parent="sub1/gene6"]
 margin_left = 150.0
-margin_top = 650.0
+margin_top = 12.0
+margin_right = 200.0
+margin_bottom = 72.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="maxScoret" type="Label" parent="sub1/gene6/maxScore"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -25.0
+margin_top = -34.0
+margin_right = 25.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 50, 60 )
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "0"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gene7" type="Control" parent="sub1"]
+margin_left = -100.0
+margin_top = 675.0
 margin_right = 100.0
-margin_bottom = 763.0
-rect_scale = Vector2( 0.5, 0.5 )
-
-[node name="score" type="ColorRect" parent="sub1/AnthroArt3"]
-margin_left = 200.0
-margin_top = 30.0
-margin_right = 275.0
-margin_bottom = 90.0
-rect_scale = Vector2( 2, 2 )
-color = Color( 0.0784314, 0.392157, 0.72549, 1 )
+margin_bottom = 745.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="sub1/AnthroArt3/score"]
+[node name="gene1" type="TextureRect" parent="sub1/gene7"]
+margin_right = 576.0
+margin_bottom = 576.0
+rect_scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="transporter" type="TextureRect" parent="sub1/gene7/gene1"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 19 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="currScore" type="ColorRect" parent="sub1/gene7"]
+margin_left = 97.0
+margin_top = 8.0
+margin_right = 147.0
+margin_bottom = 68.0
+color = Color( 0.929412, 0.94902, 0.376471, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="currScoret" type="Label" parent="sub1/gene7/currScore"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -20.0
-margin_top = -20.0
-margin_right = 20.0
-margin_bottom = 35.0
+margin_left = -25.0
+margin_top = -34.0
+margin_right = 25.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 50, 60 )
 custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
 align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AnthroArt4" parent="sub1" instance=ExtResource( 28 )]
-margin_left = 350.0
-margin_top = 651.0
-margin_right = 300.0
-margin_bottom = 763.0
-rect_scale = Vector2( 0.5, 0.5 )
-
-[node name="score" type="ColorRect" parent="sub1/AnthroArt4"]
-margin_left = 200.0
-margin_top = 30.0
-margin_right = 275.0
-margin_bottom = 90.0
-rect_scale = Vector2( 2, 2 )
-color = Color( 0.0784314, 0.392157, 0.72549, 1 )
+[node name="maxScore" type="ColorRect" parent="sub1/gene7"]
+margin_left = 150.0
+margin_top = 8.0
+margin_right = 200.0
+margin_bottom = 68.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="sub1/AnthroArt4/score"]
+[node name="maxScoret" type="Label" parent="sub1/gene7/maxScore"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -20.0
-margin_top = -20.0
-margin_right = 20.0
-margin_bottom = 35.0
+margin_left = -25.0
+margin_top = -34.0
+margin_right = 25.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 50, 60 )
 custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
 align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AnthroArt5" parent="sub1" instance=ExtResource( 28 )]
-margin_left = 350.0
+[node name="gene8" type="Control" parent="sub1"]
+margin_left = -100.0
+margin_top = 750.0
+margin_right = 100.0
+margin_bottom = 820.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gene1" type="TextureRect" parent="sub1/gene8"]
+margin_right = 576.0
+margin_bottom = 576.0
+rect_scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="sub1/gene8/gene1"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 29 )
+
+[node name="currScore" type="ColorRect" parent="sub1/gene8"]
+margin_left = 97.0
+margin_top = 8.0
+margin_right = 147.0
+margin_bottom = 68.0
+color = Color( 0.929412, 0.94902, 0.376471, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="currScoret" type="Label" parent="sub1/gene8/currScore"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -25.0
+margin_top = -34.0
+margin_right = 25.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 50, 60 )
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "0"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="maxScore" type="ColorRect" parent="sub1/gene8"]
+margin_left = 150.0
+margin_top = 8.0
+margin_right = 200.0
+margin_bottom = 68.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="maxScoret" type="Label" parent="sub1/gene8/maxScore"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -25.0
+margin_top = -34.0
+margin_right = 25.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 50, 60 )
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "0"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TE1" type="Control" parent="sub1"]
+margin_left = 150.0
 margin_top = 250.0
-margin_right = 300.0
-margin_bottom = 367.0
-rect_scale = Vector2( 0.5, 0.5 )
-
-[node name="score" type="ColorRect" parent="sub1/AnthroArt5"]
-margin_left = 200.0
-margin_top = 30.0
-margin_right = 275.0
-margin_bottom = 90.0
-rect_scale = Vector2( 2, 2 )
-color = Color( 0.0784314, 0.392157, 0.72549, 1 )
+margin_right = 350.0
+margin_bottom = 320.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="sub1/AnthroArt5/score"]
+[node name="AnthroArt" parent="sub1/TE1" instance=ExtResource( 28 )]
+margin_right = -40.0
+margin_bottom = 123.0
+rect_scale = Vector2( 0.35, 0.35 )
+
+[node name="currScore" type="ColorRect" parent="sub1/TE1"]
+margin_left = 80.0
+margin_top = 8.0
+margin_right = 130.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 50, 60 )
+color = Color( 0.929412, 0.94902, 0.376471, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="sub1/TE1/currScore"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -20.0
-margin_top = -20.0
-margin_right = 20.0
-margin_bottom = 35.0
+margin_left = -25.0
+margin_top = -35.0
+margin_right = 25.0
+margin_bottom = 29.0
+rect_min_size = Vector2( 50, 60 )
 custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
 align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AnthroArt6" parent="sub1" instance=ExtResource( 28 )]
-margin_left = 350.0
-margin_top = 350.0
-margin_right = 300.0
-margin_bottom = 449.0
-rect_scale = Vector2( 0.5, 0.5 )
-
-[node name="score" type="ColorRect" parent="sub1/AnthroArt6"]
-margin_left = 200.0
-margin_top = 30.0
-margin_right = 275.0
-margin_bottom = 90.0
-rect_scale = Vector2( 2, 2 )
-color = Color( 0.0784314, 0.392157, 0.72549, 1 )
+[node name="maxScore" type="ColorRect" parent="sub1/TE1"]
+margin_left = 133.0
+margin_top = 8.0
+margin_right = 183.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 50, 60 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="sub1/AnthroArt6/score"]
+[node name="Label" type="Label" parent="sub1/TE1/maxScore"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -20.0
-margin_top = -20.0
-margin_right = 20.0
-margin_bottom = 35.0
+margin_left = -25.0
+margin_top = -35.0
+margin_right = 25.0
+margin_bottom = 29.0
+rect_min_size = Vector2( 50, 60 )
 custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
 align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AnthroArt7" parent="sub1" instance=ExtResource( 28 )]
-margin_left = 350.0
-margin_top = 450.0
-margin_right = 300.0
-margin_bottom = 549.0
-rect_scale = Vector2( 0.5, 0.5 )
-
-[node name="score" type="ColorRect" parent="sub1/AnthroArt7"]
-margin_left = 200.0
-margin_top = 30.0
-margin_right = 275.0
-margin_bottom = 90.0
-rect_scale = Vector2( 2, 2 )
-color = Color( 0.0784314, 0.392157, 0.72549, 1 )
+[node name="TE2" type="Control" parent="sub1"]
+margin_left = 150.0
+margin_top = 320.0
+margin_right = 350.0
+margin_bottom = 390.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="sub1/AnthroArt7/score"]
+[node name="AnthroArt2" parent="sub1/TE2" instance=ExtResource( 28 )]
+margin_right = -40.0
+margin_bottom = 123.0
+rect_scale = Vector2( 0.35, 0.35 )
+
+[node name="currScore" type="ColorRect" parent="sub1/TE2"]
+margin_left = 80.0
+margin_top = 8.0
+margin_right = 130.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 50, 60 )
+color = Color( 0.929412, 0.94902, 0.376471, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="sub1/TE2/currScore"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -20.0
-margin_top = -20.0
-margin_right = 20.0
-margin_bottom = 35.0
+margin_left = -25.0
+margin_top = -35.0
+margin_right = 25.0
+margin_bottom = 29.0
+rect_min_size = Vector2( 50, 60 )
 custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
 align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AnthroArt8" parent="sub1" instance=ExtResource( 28 )]
-margin_left = 350.0
-margin_top = 550.0
-margin_right = 300.0
-margin_bottom = 653.0
-rect_scale = Vector2( 0.5, 0.5 )
-
-[node name="score" type="ColorRect" parent="sub1/AnthroArt8"]
-margin_left = 200.0
-margin_top = 30.0
-margin_right = 275.0
-margin_bottom = 90.0
-rect_scale = Vector2( 2, 2 )
-color = Color( 0.0784314, 0.392157, 0.72549, 1 )
+[node name="maxScore" type="ColorRect" parent="sub1/TE2"]
+margin_left = 133.0
+margin_top = 8.0
+margin_right = 183.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 50, 60 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="sub1/AnthroArt8/score"]
+[node name="Label" type="Label" parent="sub1/TE2/maxScore"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -20.0
-margin_top = -20.0
-margin_right = 20.0
-margin_bottom = 35.0
+margin_left = -25.0
+margin_top = -35.0
+margin_right = 25.0
+margin_bottom = 29.0
+rect_min_size = Vector2( 50, 60 )
 custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
 align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TE3" type="Control" parent="sub1"]
+margin_left = 150.0
+margin_top = 390.0
+margin_right = 350.0
+margin_bottom = 460.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnthroArt3" parent="sub1/TE3" instance=ExtResource( 28 )]
+margin_right = -40.0
+margin_bottom = 123.0
+rect_scale = Vector2( 0.35, 0.35 )
+
+[node name="currScore" type="ColorRect" parent="sub1/TE3"]
+margin_left = 80.0
+margin_top = 8.0
+margin_right = 130.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 50, 60 )
+color = Color( 0.929412, 0.94902, 0.376471, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="sub1/TE3/currScore"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -25.0
+margin_top = -35.0
+margin_right = 25.0
+margin_bottom = 29.0
+rect_min_size = Vector2( 50, 60 )
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "0"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="maxScore" type="ColorRect" parent="sub1/TE3"]
+margin_left = 133.0
+margin_top = 8.0
+margin_right = 183.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 50, 60 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="sub1/TE3/maxScore"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -25.0
+margin_top = -35.0
+margin_right = 25.0
+margin_bottom = 29.0
+rect_min_size = Vector2( 50, 60 )
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "0"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TE4" type="Control" parent="sub1"]
+margin_left = 150.0
+margin_top = 460.0
+margin_right = 350.0
+margin_bottom = 530.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnthroArt4" parent="sub1/TE4" instance=ExtResource( 28 )]
+margin_right = -40.0
+margin_bottom = 123.0
+rect_scale = Vector2( 0.35, 0.35 )
+
+[node name="currScore" type="ColorRect" parent="sub1/TE4"]
+margin_left = 80.0
+margin_top = 8.0
+margin_right = 130.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 50, 60 )
+color = Color( 0.929412, 0.94902, 0.376471, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="sub1/TE4/currScore"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -25.0
+margin_top = -35.0
+margin_right = 25.0
+margin_bottom = 29.0
+rect_min_size = Vector2( 50, 60 )
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "0"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="maxScore" type="ColorRect" parent="sub1/TE4"]
+margin_left = 133.0
+margin_top = 8.0
+margin_right = 183.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 50, 60 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="sub1/TE4/maxScore"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -25.0
+margin_top = -35.0
+margin_right = 25.0
+margin_bottom = 29.0
+rect_min_size = Vector2( 50, 60 )
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "0"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TE5" type="Control" parent="sub1"]
+margin_left = 150.0
+margin_top = 530.0
+margin_right = 350.0
+margin_bottom = 600.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnthroArt5" parent="sub1/TE5" instance=ExtResource( 28 )]
+margin_right = -40.0
+margin_bottom = 123.0
+rect_scale = Vector2( 0.35, 0.35 )
+
+[node name="currScore" type="ColorRect" parent="sub1/TE5"]
+margin_left = 80.0
+margin_top = 8.0
+margin_right = 130.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 50, 60 )
+color = Color( 0.929412, 0.94902, 0.376471, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="sub1/TE5/currScore"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -25.0
+margin_top = -35.0
+margin_right = 25.0
+margin_bottom = 29.0
+rect_min_size = Vector2( 50, 60 )
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "0"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="maxScore" type="ColorRect" parent="sub1/TE5"]
+margin_left = 133.0
+margin_top = 8.0
+margin_right = 183.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 50, 60 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="sub1/TE5/maxScore"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -25.0
+margin_top = -35.0
+margin_right = 25.0
+margin_bottom = 29.0
+rect_min_size = Vector2( 50, 60 )
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "0"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TE6" type="Control" parent="sub1"]
+margin_left = 150.0
+margin_top = 600.0
+margin_right = 350.0
+margin_bottom = 670.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnthroArt6" parent="sub1/TE6" instance=ExtResource( 28 )]
+margin_right = -40.0
+margin_bottom = 123.0
+rect_scale = Vector2( 0.35, 0.35 )
+
+[node name="currScore" type="ColorRect" parent="sub1/TE6"]
+margin_left = 80.0
+margin_top = 8.0
+margin_right = 130.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 50, 60 )
+color = Color( 0.929412, 0.94902, 0.376471, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="sub1/TE6/currScore"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -25.0
+margin_top = -35.0
+margin_right = 25.0
+margin_bottom = 29.0
+rect_min_size = Vector2( 50, 60 )
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "0"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="maxScore" type="ColorRect" parent="sub1/TE6"]
+margin_left = 133.0
+margin_top = 8.0
+margin_right = 183.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 50, 60 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="sub1/TE6/maxScore"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -25.0
+margin_top = -35.0
+margin_right = 25.0
+margin_bottom = 29.0
+rect_min_size = Vector2( 50, 60 )
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "0"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TE7" type="Control" parent="sub1"]
+margin_left = 150.0
+margin_top = 670.0
+margin_right = 350.0
+margin_bottom = 740.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnthroArt7" parent="sub1/TE7" instance=ExtResource( 28 )]
+margin_right = -40.0
+margin_bottom = 123.0
+rect_scale = Vector2( 0.35, 0.35 )
+
+[node name="currScore" type="ColorRect" parent="sub1/TE7"]
+margin_left = 80.0
+margin_top = 8.0
+margin_right = 130.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 50, 60 )
+color = Color( 0.929412, 0.94902, 0.376471, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="sub1/TE7/currScore"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -25.0
+margin_top = -35.0
+margin_right = 25.0
+margin_bottom = 29.0
+rect_min_size = Vector2( 50, 60 )
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "0"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="maxScore" type="ColorRect" parent="sub1/TE7"]
+margin_left = 133.0
+margin_top = 8.0
+margin_right = 183.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 50, 60 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="sub1/TE7/maxScore"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -25.0
+margin_top = -35.0
+margin_right = 25.0
+margin_bottom = 29.0
+rect_min_size = Vector2( 50, 60 )
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "0"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TE8" type="Control" parent="sub1"]
+margin_left = 150.0
+margin_top = 740.0
+margin_right = 350.0
+margin_bottom = 810.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnthroArt8" parent="sub1/TE8" instance=ExtResource( 28 )]
+margin_right = -40.0
+margin_bottom = 123.0
+rect_scale = Vector2( 0.35, 0.35 )
+
+[node name="maxScore" type="ColorRect" parent="sub1/TE8"]
+margin_left = 80.0
+margin_top = 8.0
+margin_right = 130.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 50, 60 )
+color = Color( 0.929412, 0.94902, 0.376471, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="sub1/TE8/maxScore"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -25.0
+margin_top = -35.0
+margin_right = 25.0
+margin_bottom = 29.0
+rect_min_size = Vector2( 50, 60 )
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "0"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="currScore" type="ColorRect" parent="sub1/TE8"]
+margin_left = 133.0
+margin_top = 8.0
+margin_right = 183.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 50, 60 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="sub1/TE8/currScore"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -25.0
+margin_top = -35.0
+margin_right = 25.0
+margin_bottom = 29.0
+rect_min_size = Vector2( 50, 60 )
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "0"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="sub2" type="Label" parent="."]
-margin_left = 750.0
-margin_top = 320.0
-margin_right = 1087.0
-margin_bottom = 394.0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -29.9999
+margin_top = -130.0
+margin_right = 152.0
+margin_bottom = -56.0
 rect_scale = Vector2( 0.7, 0.7 )
 custom_fonts/font = ExtResource( 4 )
 text = "Repairs"
@@ -1214,47 +1844,54 @@ __meta__ = {
 }
 
 [node name="rep1" type="ColorRect" parent="sub2"]
-margin_left = -40.0
+margin_left = -20.0
 margin_top = 80.0
-margin_right = 80.0
-margin_bottom = 130.0
+margin_right = 100.0
+margin_bottom = 140.0
 color = Color( 0.447059, 0.447059, 0.447059, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="rep1Score" type="ColorRect" parent="sub2/rep1"]
-margin_left = 140.0
-margin_right = 260.0
-margin_bottom = 50.0
+margin_left = 139.495
+margin_right = 189.495
+margin_bottom = 60.0
 color = Color( 0.929412, 0.94902, 0.376471, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="score1Text" type="Label" parent="sub2/rep1/rep1Score"]
-margin_left = 30.0
-margin_right = 70.0
-margin_bottom = 55.0
+margin_top = -5.0
+margin_right = 50.0
+margin_bottom = 59.0
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="rep1Score2" type="ColorRect" parent="sub2/rep1"]
-margin_left = 210.0
-margin_right = 270.0
-margin_bottom = 50.0
+margin_left = 195.0
+margin_right = 245.0
+margin_bottom = 60.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="score2Text" type="Label" parent="sub2/rep1/rep1Score2"]
-margin_left = 20.0
-margin_right = 60.0
-margin_bottom = 55.0
+margin_top = -5.0
+margin_right = 50.0
+margin_bottom = 59.0
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -1266,13 +1903,16 @@ margin_right = 1330.0
 margin_bottom = 1130.0
 rect_rotation = 40.0
 rect_scale = Vector2( 0.07, 0.07 )
-texture = ExtResource( 9 )
+texture = ExtResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="rep2" type="ColorRect" parent="sub2"]
-margin_left = -40.0
+margin_left = -20.0
 margin_top = 150.0
-margin_right = 80.0
-margin_bottom = 200.0
+margin_right = 100.0
+margin_bottom = 210.0
 color = Color( 0.447059, 0.447059, 0.447059, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1280,52 +1920,57 @@ __meta__ = {
 
 [node name="rep1Score" type="ColorRect" parent="sub2/rep2"]
 margin_left = 140.0
-margin_right = 260.0
-margin_bottom = 50.0
+margin_right = 190.0
+margin_bottom = 60.0
 color = Color( 0.929412, 0.94902, 0.376471, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="score1Text" type="Label" parent="sub2/rep2/rep1Score"]
-margin_left = 30.0
-margin_right = 70.0
-margin_bottom = 55.0
+margin_top = -5.0
+margin_right = 50.0
+margin_bottom = 59.0
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="rep1Score2" type="ColorRect" parent="sub2/rep2"]
-margin_left = 210.0
-margin_right = 270.0
-margin_bottom = 50.0
+margin_left = 195.0
+margin_right = 245.0
+margin_bottom = 60.0
 
 [node name="score2Text" type="Label" parent="sub2/rep2/rep1Score2"]
-margin_left = 20.0
-margin_right = 60.0
-margin_bottom = 55.0
+margin_top = -5.0
+margin_right = 50.0
+margin_bottom = 59.0
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="image1" type="TextureRect" parent="sub2/rep2"]
 margin_left = 30.0
+margin_top = 5.0
 margin_right = 1310.0
-margin_bottom = 931.0
+margin_bottom = 936.0
 rect_scale = Vector2( 0.05, 0.05 )
 texture = ExtResource( 15 )
 
 [node name="rep3" type="ColorRect" parent="sub2"]
-margin_left = -40.0
+margin_left = -20.0
 margin_top = 220.0
-margin_right = 80.0
-margin_bottom = 270.0
+margin_right = 100.0
+margin_bottom = 280.0
 color = Color( 0.447059, 0.447059, 0.447059, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1333,36 +1978,40 @@ __meta__ = {
 
 [node name="rep1Score" type="ColorRect" parent="sub2/rep3"]
 margin_left = 140.0
-margin_right = 260.0
-margin_bottom = 50.0
+margin_right = 190.0
+margin_bottom = 60.0
 color = Color( 0.929412, 0.94902, 0.376471, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="score1Text" type="Label" parent="sub2/rep3/rep1Score"]
-margin_left = 30.0
-margin_right = 70.0
-margin_bottom = 55.0
+margin_top = -5.0
+margin_right = 50.0
+margin_bottom = 59.0
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="rep1Score2" type="ColorRect" parent="sub2/rep3"]
-margin_left = 210.0
-margin_right = 270.0
-margin_bottom = 50.0
+margin_left = 195.0
+margin_right = 245.0
+margin_bottom = 60.0
 
 [node name="score2Text" type="Label" parent="sub2/rep3/rep1Score2"]
-margin_left = 20.0
-margin_right = 60.0
-margin_bottom = 55.0
+margin_top = -5.0
+margin_right = 50.0
+margin_bottom = 59.0
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -1377,10 +2026,10 @@ rect_scale = Vector2( 0.05, 0.05 )
 texture = ExtResource( 13 )
 
 [node name="rep4" type="ColorRect" parent="sub2"]
-margin_left = -40.0
+margin_left = -20.0
 margin_top = 290.0
-margin_right = 80.0
-margin_bottom = 340.0
+margin_right = 100.0
+margin_bottom = 350.0
 color = Color( 0.447059, 0.447059, 0.447059, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1388,52 +2037,57 @@ __meta__ = {
 
 [node name="rep1Score" type="ColorRect" parent="sub2/rep4"]
 margin_left = 140.0
-margin_right = 260.0
-margin_bottom = 50.0
+margin_right = 190.0
+margin_bottom = 60.0
 color = Color( 0.929412, 0.94902, 0.376471, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="score1Text" type="Label" parent="sub2/rep4/rep1Score"]
-margin_left = 30.0
-margin_right = 70.0
-margin_bottom = 55.0
+margin_top = -5.0
+margin_right = 50.0
+margin_bottom = 59.0
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="rep1Score2" type="ColorRect" parent="sub2/rep4"]
-margin_left = 210.0
-margin_right = 270.0
-margin_bottom = 50.0
+margin_left = 195.0
+margin_right = 245.0
+margin_bottom = 60.0
 
 [node name="score2Text" type="Label" parent="sub2/rep4/rep1Score2"]
-margin_left = 20.0
-margin_right = 60.0
-margin_bottom = 55.0
+margin_top = -5.0
+margin_right = 50.0
+margin_bottom = 59.0
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="image1" type="TextureRect" parent="sub2/rep4"]
 margin_left = 40.0
+margin_top = 5.0
 margin_right = 1258.0
-margin_bottom = 1280.0
+margin_bottom = 1285.0
 rect_scale = Vector2( 0.04, 0.04 )
-texture = ExtResource( 12 )
+texture = ExtResource( 10 )
 
 [node name="rep5" type="ColorRect" parent="sub2"]
-margin_left = -40.0
+margin_left = -20.0
 margin_top = 360.0
-margin_right = 80.0
-margin_bottom = 410.0
+margin_right = 100.0
+margin_bottom = 420.0
 color = Color( 0.447059, 0.447059, 0.447059, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1441,55 +2095,60 @@ __meta__ = {
 
 [node name="rep1Score" type="ColorRect" parent="sub2/rep5"]
 margin_left = 140.0
-margin_right = 260.0
-margin_bottom = 50.0
+margin_right = 190.0
+margin_bottom = 60.0
 color = Color( 0.929412, 0.94902, 0.376471, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="score1Text" type="Label" parent="sub2/rep5/rep1Score"]
-margin_left = 30.0
-margin_right = 70.0
-margin_bottom = 55.0
+margin_top = -5.0
+margin_right = 50.0
+margin_bottom = 59.0
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="rep1Score2" type="ColorRect" parent="sub2/rep5"]
-margin_left = 210.0
-margin_right = 270.0
-margin_bottom = 50.0
+margin_left = 195.0
+margin_right = 245.0
+margin_bottom = 60.0
 
 [node name="score2Text" type="Label" parent="sub2/rep5/rep1Score2"]
-margin_left = 20.0
-margin_right = 60.0
-margin_bottom = 55.0
+margin_top = -5.0
+margin_right = 50.0
+margin_bottom = 59.0
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="image1" type="TextureRect" parent="sub2/rep5"]
 margin_left = 40.0
+margin_top = 5.0
 margin_right = 1074.0
-margin_bottom = 1280.0
+margin_bottom = 1285.0
 rect_scale = Vector2( 0.04, 0.04 )
-texture = ExtResource( 14 )
+texture = ExtResource( 16 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="rep6" type="ColorRect" parent="sub2"]
-margin_left = -40.0
+margin_left = -20.0
 margin_top = 430.0
-margin_right = 80.0
-margin_bottom = 480.0
+margin_right = 100.0
+margin_bottom = 490.0
 color = Color( 0.447059, 0.447059, 0.447059, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1497,20 +2156,22 @@ __meta__ = {
 
 [node name="rep1Score" type="ColorRect" parent="sub2/rep6"]
 margin_left = 140.0
-margin_right = 210.0
-margin_bottom = 50.0
+margin_right = 190.0
+margin_bottom = 60.0
 color = Color( 0.929412, 0.94902, 0.376471, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="score1Text" type="Label" parent="sub2/rep6/rep1Score"]
-margin_left = 30.0
-margin_right = 70.0
-margin_bottom = 55.0
+margin_top = -5.0
+margin_right = 50.0
+margin_bottom = 59.0
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -1534,16 +2195,17 @@ __meta__ = {
 
 [node name="image1" type="TextureRect" parent="sub2/rep6"]
 margin_left = 40.0
+margin_top = 5.0
 margin_right = 1320.0
-margin_bottom = 1113.0
+margin_bottom = 1118.0
 rect_scale = Vector2( 0.05, 0.05 )
-texture = ExtResource( 16 )
+texture = ExtResource( 11 )
 
 [node name="rep7" type="ColorRect" parent="sub2"]
-margin_left = -40.0
+margin_left = -20.0
 margin_top = 500.0
-margin_right = 80.0
-margin_bottom = 550.0
+margin_right = 100.0
+margin_bottom = 560.0
 color = Color( 0.447059, 0.447059, 0.447059, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1551,20 +2213,22 @@ __meta__ = {
 
 [node name="rep1Score" type="ColorRect" parent="sub2/rep7"]
 margin_left = 140.0
-margin_right = 210.0
-margin_bottom = 50.0
+margin_right = 190.0
+margin_bottom = 60.0
 color = Color( 0.929412, 0.94902, 0.376471, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="score1Text" type="Label" parent="sub2/rep7/rep1Score"]
-margin_left = 30.0
-margin_right = 70.0
-margin_bottom = 55.0
+margin_top = -5.0
+margin_right = 50.0
+margin_bottom = 59.0
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -1592,13 +2256,13 @@ margin_top = 10.0
 margin_right = 1310.0
 margin_bottom = 650.0
 rect_scale = Vector2( 0.05, 0.05 )
-texture = ExtResource( 10 )
+texture = ExtResource( 14 )
 
 [node name="rep8" type="ColorRect" parent="sub2"]
-margin_left = -40.0
+margin_left = -20.0
 margin_top = 570.0
-margin_right = 80.0
-margin_bottom = 620.0
+margin_right = 100.0
+margin_bottom = 630.0
 color = Color( 0.447059, 0.447059, 0.447059, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1606,20 +2270,22 @@ __meta__ = {
 
 [node name="rep1Score" type="ColorRect" parent="sub2/rep8"]
 margin_left = 140.0
-margin_right = 210.0
-margin_bottom = 50.0
+margin_right = 190.0
+margin_bottom = 60.0
 color = Color( 0.929412, 0.94902, 0.376471, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="score1Text" type="Label" parent="sub2/rep8/rep1Score"]
-margin_left = 30.0
-margin_right = 70.0
-margin_bottom = 55.0
+margin_top = -5.0
+margin_right = 50.0
+margin_bottom = 59.0
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -1643,10 +2309,11 @@ __meta__ = {
 
 [node name="image1" type="TextureRect" parent="sub2/rep8"]
 margin_left = 40.0
+margin_top = 5.0
 margin_right = 1320.0
-margin_bottom = 1101.0
+margin_bottom = 1106.0
 rect_scale = Vector2( 0.05, 0.05 )
-texture = ExtResource( 11 )
+texture = ExtResource( 9 )
 
 [node name="sub3" type="Label" parent="."]
 margin_left = 1100.0
@@ -1656,6 +2323,9 @@ margin_bottom = 471.0
 rect_scale = Vector2( 0.7, 0.7 )
 custom_fonts/font = ExtResource( 4 )
 text = "Evolutions"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ev1" type="ColorRect" parent="sub3"]
 margin_top = 80.0
@@ -1668,7 +2338,7 @@ __meta__ = {
 
 [node name="rep1Score" type="ColorRect" parent="sub3/ev1"]
 margin_left = 140.0
-margin_right = 260.0
+margin_right = 200.0
 margin_bottom = 50.0
 color = Color( 0.929412, 0.94902, 0.376471, 1 )
 __meta__ = {
@@ -1676,28 +2346,32 @@ __meta__ = {
 }
 
 [node name="score1Text" type="Label" parent="sub3/ev1/rep1Score"]
-margin_left = 30.0
-margin_right = 70.0
-margin_bottom = 55.0
+margin_top = -10.0
+margin_right = 60.0
+margin_bottom = 54.0
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="rep1Score2" type="ColorRect" parent="sub3/ev1"]
-margin_left = 210.0
-margin_right = 270.0
+margin_left = 205.0
+margin_right = 265.0
 margin_bottom = 50.0
 
 [node name="score2Text" type="Label" parent="sub3/ev1/rep1Score2"]
-margin_left = 20.0
+margin_top = -10.0
 margin_right = 60.0
-margin_bottom = 55.0
+margin_bottom = 54.0
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -1751,9 +2425,9 @@ margin_bottom = 40.0
 texture = ExtResource( 21 )
 
 [node name="ev2" type="ColorRect" parent="sub3"]
-margin_top = 150.0
+margin_top = 140.0
 margin_right = 120.0
-margin_bottom = 200.0
+margin_bottom = 190.0
 color = Color( 0.447059, 0.447059, 0.447059, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1761,7 +2435,7 @@ __meta__ = {
 
 [node name="rep1Score" type="ColorRect" parent="sub3/ev2"]
 margin_left = 140.0
-margin_right = 260.0
+margin_right = 200.0
 margin_bottom = 50.0
 color = Color( 0.929412, 0.94902, 0.376471, 1 )
 __meta__ = {
@@ -1769,28 +2443,35 @@ __meta__ = {
 }
 
 [node name="score1Text" type="Label" parent="sub3/ev2/rep1Score"]
-margin_left = 30.0
-margin_right = 70.0
-margin_bottom = 55.0
+margin_top = -10.0
+margin_right = 60.0
+margin_bottom = 54.0
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="rep1Score2" type="ColorRect" parent="sub3/ev2"]
-margin_left = 210.0
-margin_right = 270.0
+margin_left = 205.0
+margin_right = 265.0
 margin_bottom = 50.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="score2Text" type="Label" parent="sub3/ev2/rep1Score2"]
-margin_left = 20.0
+margin_top = -10.0
 margin_right = 60.0
-margin_bottom = 55.0
+margin_bottom = 54.0
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -1850,9 +2531,9 @@ __meta__ = {
 }
 
 [node name="ev3" type="ColorRect" parent="sub3"]
-margin_top = 220.0
+margin_top = 200.0
 margin_right = 120.0
-margin_bottom = 270.0
+margin_bottom = 250.0
 color = Color( 0.447059, 0.447059, 0.447059, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1860,7 +2541,7 @@ __meta__ = {
 
 [node name="rep1Score" type="ColorRect" parent="sub3/ev3"]
 margin_left = 140.0
-margin_right = 260.0
+margin_right = 200.0
 margin_bottom = 50.0
 color = Color( 0.929412, 0.94902, 0.376471, 1 )
 __meta__ = {
@@ -1868,28 +2549,32 @@ __meta__ = {
 }
 
 [node name="score1Text" type="Label" parent="sub3/ev3/rep1Score"]
-margin_left = 30.0
-margin_right = 70.0
-margin_bottom = 55.0
+margin_top = -10.0
+margin_right = 60.0
+margin_bottom = 54.0
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="rep1Score2" type="ColorRect" parent="sub3/ev3"]
-margin_left = 210.0
-margin_right = 270.0
+margin_left = 205.0
+margin_right = 265.0
 margin_bottom = 50.0
 
 [node name="score2Text" type="Label" parent="sub3/ev3/rep1Score2"]
-margin_left = 20.0
+margin_top = -10.0
 margin_right = 60.0
-margin_bottom = 55.0
+margin_bottom = 54.0
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -1942,9 +2627,9 @@ __meta__ = {
 }
 
 [node name="ev4" type="ColorRect" parent="sub3"]
-margin_top = 290.0
+margin_top = 260.0
 margin_right = 120.0
-margin_bottom = 340.0
+margin_bottom = 310.0
 color = Color( 0.447059, 0.447059, 0.447059, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1952,7 +2637,7 @@ __meta__ = {
 
 [node name="rep1Score" type="ColorRect" parent="sub3/ev4"]
 margin_left = 140.0
-margin_right = 260.0
+margin_right = 200.0
 margin_bottom = 50.0
 color = Color( 0.929412, 0.94902, 0.376471, 1 )
 __meta__ = {
@@ -1960,28 +2645,32 @@ __meta__ = {
 }
 
 [node name="score1Text" type="Label" parent="sub3/ev4/rep1Score"]
-margin_left = 30.0
-margin_right = 70.0
-margin_bottom = 55.0
+margin_top = -10.0
+margin_right = 60.0
+margin_bottom = 54.0
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="rep1Score2" type="ColorRect" parent="sub3/ev4"]
-margin_left = 210.0
-margin_right = 270.0
+margin_left = 205.0
+margin_right = 265.0
 margin_bottom = 50.0
 
 [node name="score2Text" type="Label" parent="sub3/ev4/rep1Score2"]
-margin_left = 20.0
+margin_top = -10.0
 margin_right = 60.0
-margin_bottom = 55.0
+margin_bottom = 54.0
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -2045,9 +2734,9 @@ text = "*"
 align = 1
 
 [node name="ev5" type="ColorRect" parent="sub3"]
-margin_top = 360.0
+margin_top = 320.0
 margin_right = 120.0
-margin_bottom = 410.0
+margin_bottom = 370.0
 color = Color( 0.447059, 0.447059, 0.447059, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -2055,7 +2744,7 @@ __meta__ = {
 
 [node name="rep1Score" type="ColorRect" parent="sub3/ev5"]
 margin_left = 140.0
-margin_right = 210.0
+margin_right = 200.0
 margin_bottom = 50.0
 color = Color( 0.929412, 0.94902, 0.376471, 1 )
 __meta__ = {
@@ -2063,12 +2752,14 @@ __meta__ = {
 }
 
 [node name="score1Text" type="Label" parent="sub3/ev5/rep1Score"]
-margin_left = 30.0
-margin_right = 70.0
-margin_bottom = 55.0
+margin_top = -10.0
+margin_right = 60.0
+margin_bottom = 54.0
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -2122,9 +2813,9 @@ rect_scale = Vector2( 0.05, 0.05 )
 texture = ExtResource( 27 )
 
 [node name="ev6" type="ColorRect" parent="sub3"]
-margin_top = 430.0
+margin_top = 380.0
 margin_right = 120.0
-margin_bottom = 480.0
+margin_bottom = 430.0
 color = Color( 0.447059, 0.447059, 0.447059, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -2132,7 +2823,7 @@ __meta__ = {
 
 [node name="rep1Score" type="ColorRect" parent="sub3/ev6"]
 margin_left = 140.0
-margin_right = 210.0
+margin_right = 200.0
 margin_bottom = 50.0
 color = Color( 0.929412, 0.94902, 0.376471, 1 )
 __meta__ = {
@@ -2140,12 +2831,14 @@ __meta__ = {
 }
 
 [node name="score1Text" type="Label" parent="sub3/ev6/rep1Score"]
-margin_left = 30.0
-margin_right = 70.0
-margin_bottom = 55.0
+margin_top = -10.0
+margin_right = 60.0
+margin_bottom = 54.0
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -2292,17 +2985,17 @@ margin_left = 350.0
 margin_top = 180.0
 margin_right = 600.0
 margin_bottom = 300.0
-color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
+color = Color( 0.156863, 0.156863, 0.196078, 0.784314 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="surviveInfo" type="Label" parent="dataDisplay"]
 margin_left = 5.0
-margin_top = 6.0
-margin_right = 259.0
-margin_bottom = 183.0
-rect_scale = Vector2( 0.8, 0.8 )
+margin_top = 10.0
+margin_right = 486.0
+margin_bottom = 208.0
+rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 7 )
 text = "Shows the number of rounds survived
 "
@@ -2314,16 +3007,17 @@ margin_left = 700.0
 margin_top = 180.0
 margin_right = 950.0
 margin_bottom = 300.0
-color = Color( 0.14902, 0.156863, 0.196078, 0.647059 )
+color = Color( 0.14902, 0.156863, 0.196078, 0.784314 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="consumeInfo" type="Label" parent="dataDisplay2"]
-margin_left = 1.0
-margin_right = 295.0
-margin_bottom = 132.0
-rect_scale = Vector2( 0.8, 0.8 )
+margin_left = 2.26
+margin_top = 10.0
+margin_right = 508.26
+margin_bottom = 142.0
+rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 7 )
 text = "Shows the number of resources consumed"
 autowrap = true
@@ -2337,17 +3031,17 @@ margin_left = 1100.0
 margin_top = 180.0
 margin_right = 1350.0
 margin_bottom = 300.0
-color = Color( 0.14902, 0.156863, 0.196078, 0.647059 )
+color = Color( 0.14902, 0.156863, 0.196078, 0.784314 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ExploreInfo" type="Label" parent="dataDisplay3"]
 margin_left = 6.0
-margin_top = 4.0
-margin_right = 295.0
-margin_bottom = 181.0
-rect_scale = Vector2( 0.8, 0.8 )
+margin_top = 10.0
+margin_right = 484.0
+margin_bottom = 208.0
+rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 7 )
 text = "Show the number of tiles you've explored
 "
@@ -2359,17 +3053,17 @@ margin_left = 1000.0
 margin_top = 180.0
 margin_right = 1250.0
 margin_bottom = 300.0
-color = Color( 0.14902, 0.156863, 0.196078, 0.647059 )
+color = Color( 0.14902, 0.156863, 0.196078, 0.784314 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ProduceInfo" type="Label" parent="dataDisplay4"]
-margin_left = 11.0
-margin_top = 8.0
-margin_right = 317.0
-margin_bottom = 162.0
-rect_scale = Vector2( 0.8, 0.8 )
+margin_left = 6.0
+margin_top = 10.0
+margin_right = 497.0
+margin_bottom = 217.0
+rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 7 )
 text = "Shows the number of progeny you've produced"
 autowrap = true
@@ -2378,9 +3072,9 @@ autowrap = true
 visible = false
 margin_left = 700.0
 margin_top = 300.0
-margin_right = 900.0
-margin_bottom = 420.0
-color = Color( 0.14902, 0.156863, 0.196078, 0.647059 )
+margin_right = 1000.0
+margin_bottom = 500.0
+color = Color( 0.14902, 0.156863, 0.196078, 0.784314 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -2388,8 +3082,8 @@ __meta__ = {
 [node name="ProduceInfo" type="Label" parent="dataDisplay5"]
 margin_left = 5.0
 margin_top = 14.0
-margin_right = 410.0
-margin_bottom = 191.0
+margin_right = 532.0
+margin_bottom = 346.0
 rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 7 )
 text = "Max Bar Info:
@@ -2400,18 +3094,18 @@ autowrap = true
 visible = false
 margin_left = 700.0
 margin_top = 350.0
-margin_right = 900.0
-margin_bottom = 470.0
-color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
+margin_right = 1000.0
+margin_bottom = 550.0
+color = Color( 0.156863, 0.156863, 0.196078, 0.784314 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ProduceInfo" type="Label" parent="dataDisplay6"]
-margin_left = 20.1349
-margin_top = 9.08093
-margin_right = 299.135
-margin_bottom = 231.081
+margin_left = 20.0
+margin_top = 9.0
+margin_right = 564.0
+margin_bottom = 274.0
 rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 7 )
 text = "Current Bar info:
@@ -2422,61 +3116,69 @@ autowrap = true
 [node name="geneDisplay1" type="ColorRect" parent="."]
 visible = false
 margin_left = 10.0
-margin_top = 400.0
+margin_top = 420.0
 margin_right = 220.0
-margin_bottom = 520.0
+margin_bottom = 540.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ProduceInfo" type="Label" parent="geneDisplay1"]
-margin_left = 4.05948
-margin_top = -4.82706
-margin_right = 185.059
-margin_bottom = 127.173
+margin_left = 4.0
+margin_top = 10.0
+margin_right = 578.0
+margin_bottom = 208.0
+rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 7 )
-text = "Current Replication Genes"
+text = "Replication Genes
+Current | Max"
 autowrap = true
 
 [node name="geneDisplay2" type="ColorRect" parent="."]
 visible = false
 margin_left = 10.0
-margin_top = 500.0
+margin_top = 480.0
 margin_right = 220.0
-margin_bottom = 620.0
+margin_bottom = 600.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ProduceInfo" type="Label" parent="geneDisplay2"]
-margin_left = 7.09174
-margin_top = -4.56232
-margin_right = 169.092
-margin_bottom = 127.438
+margin_left = 12.5675
+margin_top = 10.0
+margin_right = 382.567
+margin_bottom = 142.0
+rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 7 )
-text = "Current Sensing Genes"
+text = "Sensing Genes
+Current | Max"
+align = 1
 autowrap = true
 
 [node name="geneDisplay3" type="ColorRect" parent="."]
 visible = false
 margin_left = 10.0
-margin_top = 550.0
+margin_top = 520.0
 margin_right = 220.0
-margin_bottom = 670.0
+margin_bottom = 640.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ProduceInfo" type="Label" parent="geneDisplay3"]
-margin_left = 2.35132
-margin_top = -7.0
-margin_right = 212.351
-margin_bottom = 125.0
+margin_left = 2.0
+margin_top = 10.0
+margin_right = 415.0
+margin_bottom = 208.0
+rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 7 )
-text = "Current Manipulation Genes"
+text = "Manipulation Genes
+Current | Max"
+align = 1
 autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -2485,9 +3187,9 @@ __meta__ = {
 [node name="geneDisplay4" type="ColorRect" parent="."]
 visible = false
 margin_left = 10.0
-margin_top = 620.0
+margin_top = 560.0
 margin_right = 210.0
-margin_bottom = 740.0
+margin_bottom = 680.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -2495,19 +3197,22 @@ __meta__ = {
 
 [node name="ProduceInfo" type="Label" parent="geneDisplay4"]
 margin_left = 5.0
-margin_top = -7.0
-margin_right = 207.0
-margin_bottom = 125.0
+margin_top = 10.0
+margin_right = 384.0
+margin_bottom = 208.0
+rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 7 )
-text = "Current Component Genes"
+text = " Component Genes
+Current | Max"
+align = 1
 autowrap = true
 
 [node name="geneDisplay5" type="ColorRect" parent="."]
 visible = false
 margin_left = 10.0
-margin_top = 700.0
+margin_top = 610.0
 margin_right = 210.0
-margin_bottom = 820.0
+margin_bottom = 730.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -2515,11 +3220,14 @@ __meta__ = {
 
 [node name="ProduceInfo" type="Label" parent="geneDisplay5"]
 margin_left = -1.0
-margin_top = -4.0
-margin_right = 198.0
-margin_bottom = 128.0
+margin_top = 10.0
+margin_right = 407.0
+margin_bottom = 224.0
+rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 7 )
-text = "Current Construction Genes"
+text = "Construction Genes
+Current | Max"
+align = 1
 autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -2527,10 +3235,10 @@ __meta__ = {
 
 [node name="geneDisplay6" type="ColorRect" parent="."]
 visible = false
-margin_left = 13.3036
-margin_top = 769.35
+margin_left = 13.304
+margin_top = 660.0
 margin_right = 213.304
-margin_bottom = 889.35
+margin_bottom = 780.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -2538,52 +3246,60 @@ __meta__ = {
 
 [node name="ProduceInfo" type="Label" parent="geneDisplay6"]
 margin_left = -2.0
-margin_top = 1.0
-margin_right = 240.0
-margin_bottom = 137.0
-rect_scale = Vector2( 0.8, 0.8 )
+margin_top = 10.0
+margin_right = 395.0
+margin_bottom = 226.0
+rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 7 )
-text = "Current Deconstruction Genes"
+text = "Deconstruction Genes
+Current | Max"
+align = 1
 autowrap = true
 
 [node name="geneDisplay7" type="ColorRect" parent="."]
 visible = false
-margin_left = 200.0
-margin_top = 420.0
-margin_right = 400.0
-margin_bottom = 540.0
+margin_left = 13.0
+margin_top = 720.0
+margin_right = 213.0
+margin_bottom = 840.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ProduceInfo" type="Label" parent="geneDisplay7"]
-margin_left = 4.28287
-margin_top = -8.73297
-margin_right = 161.283
-margin_bottom = 123.267
+margin_left = 4.0
+margin_top = 10.0
+margin_right = 389.0
+margin_bottom = 164.0
+rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 7 )
-text = "Current Helper Gene"
+text = "Helper Gene
+Current | Max"
+align = 1
 autowrap = true
 
 [node name="geneDisplay8" type="ColorRect" parent="."]
 visible = false
-margin_left = 200.0
-margin_top = 500.0
-margin_right = 400.0
-margin_bottom = 620.0
+margin_left = 13.0
+margin_top = 770.0
+margin_right = 213.0
+margin_bottom = 890.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ProduceInfo" type="Label" parent="geneDisplay8"]
-margin_left = 3.3811
-margin_top = 9.28662
-margin_right = 204.381
-margin_bottom = 141.287
+margin_left = 3.0
+margin_top = 10.0
+margin_right = 382.0
+margin_bottom = 164.0
+rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 7 )
-text = "Current Blank Genes"
+text = "Blank Genes
+Current | Max"
+align = 1
 autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -2592,21 +3308,24 @@ __meta__ = {
 [node name="geneDisplay9" type="ColorRect" parent="."]
 visible = false
 margin_left = 200.0
-margin_top = 570.0
+margin_top = 410.0
 margin_right = 400.0
-margin_bottom = 690.0
+margin_bottom = 530.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ProduceInfo" type="Label" parent="geneDisplay9"]
-margin_left = 3.91426
-margin_top = -6.6662
-margin_right = 217.914
-margin_bottom = 125.334
+margin_left = 4.0
+margin_top = 10.0
+margin_right = 399.0
+margin_bottom = 211.0
+rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 7 )
-text = "Current Classic Transposon"
+text = "Classic Transposon
+Current | Max"
+align = 1
 autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -2615,21 +3334,24 @@ __meta__ = {
 [node name="geneDisplay10" type="ColorRect" parent="."]
 visible = false
 margin_left = 200.0
-margin_top = 630.0
+margin_top = 470.0
 margin_right = 400.0
-margin_bottom = 750.0
+margin_bottom = 590.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ProduceInfo" type="Label" parent="geneDisplay10"]
-margin_left = 3.36359
-margin_top = -9.04535
-margin_right = 222.364
-margin_bottom = 128.955
+margin_left = 3.0
+margin_top = 10.0
+margin_right = 392.0
+margin_bottom = 216.0
+rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 7 )
-text = "Current Zigzag Transposons"
+text = "Zigzag Transposons
+Current | Max"
+align = 1
 autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -2638,121 +3360,142 @@ __meta__ = {
 [node name="geneDisplay11" type="ColorRect" parent="."]
 visible = false
 margin_left = 200.0
-margin_top = 700.0
+margin_top = 525.0
 margin_right = 400.0
-margin_bottom = 820.0
+margin_bottom = 645.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ProduceInfo" type="Label" parent="geneDisplay11"]
-margin_left = 4.26486
-margin_top = -4.21082
-margin_right = 198.265
-margin_bottom = 127.789
+margin_left = 4.0
+margin_top = 10.0
+margin_right = 397.0
+margin_bottom = 221.0
+rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 7 )
-text = "Current Assisting Transposon"
+text = "Assisting Transposon
+Current | Max"
+align = 1
 autowrap = true
 
 [node name="geneDisplay12" type="ColorRect" parent="."]
 visible = false
-margin_left = 350.0
-margin_top = 720.0
-margin_right = 550.0
-margin_bottom = 840.0
-color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ProduceInfo" type="Label" parent="geneDisplay12"]
-margin_left = 1.93935
-margin_top = -8.09186
-margin_right = 199.939
-margin_bottom = 123.908
-custom_fonts/font = ExtResource( 7 )
-text = "Current Buddy Transposons"
-autowrap = true
-
-[node name="geneDisplay13" type="ColorRect" parent="."]
-visible = false
-margin_left = 330.0
-margin_top = 500.0
-margin_right = 530.0
-margin_bottom = 620.0
-color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ProduceInfo" type="Label" parent="geneDisplay13"]
-margin_left = 1.55457
-margin_top = -6.56812
-margin_right = 193.555
-margin_bottom = 125.432
-custom_fonts/font = ExtResource( 7 )
-text = "Current Nestler Transposons"
-autowrap = true
-
-[node name="geneDisplay14" type="ColorRect" parent="."]
-visible = false
-margin_left = 330.0
+margin_left = 200.0
 margin_top = 570.0
-margin_right = 530.0
+margin_right = 400.0
 margin_bottom = 690.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ProduceInfo" type="Label" parent="geneDisplay14"]
-margin_left = 1.55457
-margin_top = -6.56812
-margin_right = 193.555
-margin_bottom = 125.432
+[node name="ProduceInfo" type="Label" parent="geneDisplay12"]
+margin_left = 2.0
+margin_top = 10.0
+margin_right = 399.0
+margin_bottom = 218.0
+rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 7 )
-text = "Current Commuter Transposons"
+text = "Buddy Transposons
+Current | Max"
+align = 1
+autowrap = true
+
+[node name="geneDisplay13" type="ColorRect" parent="."]
+visible = false
+margin_left = 200.0
+margin_top = 620.0
+margin_right = 400.0
+margin_bottom = 740.0
+color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ProduceInfo" type="Label" parent="geneDisplay13"]
+margin_left = 2.0
+margin_top = 10.0
+margin_right = 395.0
+margin_bottom = 212.0
+rect_scale = Vector2( 0.5, 0.5 )
+custom_fonts/font = ExtResource( 7 )
+text = "Nestler Transposons
+Current | Max"
+align = 1
+autowrap = true
+
+[node name="geneDisplay14" type="ColorRect" parent="."]
+visible = false
+margin_left = 200.0
+margin_top = 660.0
+margin_right = 400.0
+margin_bottom = 780.0
+color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ProduceInfo" type="Label" parent="geneDisplay14"]
+margin_left = 2.0
+margin_top = 10.0
+margin_right = 391.0
+margin_bottom = 208.0
+rect_scale = Vector2( 0.5, 0.5 )
+custom_fonts/font = ExtResource( 7 )
+text = "Commuter Transposons
+Current | Max"
+align = 1
 autowrap = true
 
 [node name="geneDisplay15" type="ColorRect" parent="."]
 visible = false
-margin_left = 330.0
-margin_top = 650.0
-margin_right = 530.0
-margin_bottom = 770.0
+margin_left = 200.0
+margin_top = 720.0
+margin_right = 400.0
+margin_bottom = 840.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ProduceInfo" type="Label" parent="geneDisplay15"]
-margin_left = 1.55457
-margin_top = -6.56812
-margin_right = 193.555
-margin_bottom = 125.432
+margin_left = 2.0
+margin_top = 10.0
+margin_right = 389.0
+margin_bottom = 218.0
+rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 7 )
-text = "Current Buncher Transposons"
+text = "Buncher Transposons
+Current | Max"
+align = 1
 autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="geneDisplay16" type="ColorRect" parent="."]
 visible = false
-margin_left = 330.0
-margin_top = 700.0
-margin_right = 530.0
-margin_bottom = 820.0
+margin_left = 200.0
+margin_top = 770.0
+margin_right = 400.0
+margin_bottom = 890.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ProduceInfo" type="Label" parent="geneDisplay16"]
-margin_left = 1.55457
-margin_top = -6.56812
-margin_right = 193.555
-margin_bottom = 125.432
+margin_left = 2.0
+margin_top = 10.0
+margin_right = 391.0
+margin_bottom = 208.0
+rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 7 )
-text = "Current Jumper Transposons"
+text = " Jumper Transposons
+Current | Max"
+align = 1
 autowrap = true
 
 [node name="repairDisplay1" type="ColorRect" parent="."]
@@ -2764,15 +3507,16 @@ margin_bottom = 420.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
 
 [node name="Label" type="Label" parent="repairDisplay1"]
-margin_left = 7.24451
-margin_top = 4.09476
-margin_right = 414.245
-margin_bottom = 46.0948
+margin_left = 7.0
+margin_top = 4.0
+margin_right = 430.0
+margin_bottom = 202.0
 rect_scale = Vector2( 0.45, 0.45 )
 custom_fonts/font = ExtResource( 7 )
 text = "Number of Genes Repaired
 Perfect | Error"
 align = 1
+autowrap = true
 
 [node name="repairDisplay2" type="ColorRect" parent="."]
 visible = false
@@ -2821,10 +3565,9 @@ margin_bottom = 560.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
 
 [node name="Label" type="Label" parent="repairDisplay4"]
-margin_left = 5.0
-margin_top = 5.0
-margin_right = 405.0
-margin_bottom = 227.0
+margin_left = 10.0
+margin_right = 410.0
+margin_bottom = 332.0
 rect_scale = Vector2( 0.44106, 0.446199 )
 custom_fonts/font = ExtResource( 7 )
 text = "Breaks Repaired Using Copy Repair
@@ -2842,10 +3585,9 @@ margin_bottom = 600.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
 
 [node name="Label" type="Label" parent="repairDisplay5"]
-margin_left = 50.0
 margin_top = 10.0
-margin_right = 252.0
-margin_bottom = 97.0
+margin_right = 438.0
+margin_bottom = 204.0
 rect_scale = Vector2( 0.45, 0.45 )
 custom_fonts/font = ExtResource( 7 )
 text = "Tiles Copied
@@ -2911,37 +3653,21 @@ text = "Tiles Removed During Collapse Duplicates"
 align = 1
 autowrap = true
 
-[node name="repairDisplay9" type="ColorRect" parent="."]
-visible = false
-margin_left = 500.0
-margin_top = 680.0
-margin_right = 700.0
-margin_bottom = 800.0
-color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
-
-[node name="Label" type="Label" parent="repairDisplay9"]
-margin_right = 40.0
-margin_bottom = 14.0
-custom_fonts/font = ExtResource( 7 )
-text = "Repair 1 info"
-align = 1
-
 [node name="evDisplay1" type="ColorRect" parent="."]
 visible = false
 margin_left = 1300.0
 margin_top = 290.0
-margin_right = 1500.0
-margin_bottom = 410.0
+margin_right = 1600.0
+margin_bottom = 440.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="evDisplay1"]
-margin_left = 1.8877
-margin_top = 7.07904
-margin_right = 538.888
-margin_bottom = 94.079
+margin_top = 10.0
+margin_right = 799.0
+margin_bottom = 141.0
 rect_scale = Vector2( 0.37, 0.37 )
 custom_fonts/font = ExtResource( 7 )
 text = "Major Upgrade | Major Downgrade"
@@ -2951,7 +3677,7 @@ autowrap = true
 visible = false
 margin_left = 1300.0
 margin_top = 340.0
-margin_right = 1500.0
+margin_right = 1600.0
 margin_bottom = 460.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
 __meta__ = {
@@ -2959,9 +3685,9 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="evDisplay2"]
-margin_top = 2.83484
-margin_right = 540.0
-margin_bottom = 44.8348
+margin_top = 10.0
+margin_right = 810.0
+margin_bottom = 74.0
 rect_scale = Vector2( 0.37, 0.37 )
 custom_fonts/font = ExtResource( 7 )
 text = "Minor Upgrade | Minor Downgrade"
@@ -2971,8 +3697,8 @@ autowrap = true
 visible = false
 margin_left = 1300.0
 margin_top = 390.0
-margin_right = 1500.0
-margin_bottom = 510.0
+margin_right = 1600.0
+margin_bottom = 540.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -2981,8 +3707,8 @@ __meta__ = {
 [node name="Label" type="Label" parent="evDisplay3"]
 margin_left = 2.0
 margin_top = 2.0
-margin_right = 497.0
-margin_bottom = 197.0
+margin_right = 743.0
+margin_bottom = 267.0
 rect_scale = Vector2( 0.4, 0.4 )
 custom_fonts/font = ExtResource( 7 )
 text = "Upgrade Resulting in new Gene
@@ -2994,18 +3720,18 @@ autowrap = true
 visible = false
 margin_left = 1300.0
 margin_top = 430.0
-margin_right = 1500.0
-margin_bottom = 550.0
+margin_right = 1600.0
+margin_bottom = 580.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="evDisplay4"]
-margin_left = 1.7677
-margin_top = 10.6066
-margin_right = 395.768
-margin_bottom = 97.6066
+margin_left = 2.0
+margin_top = 11.0
+margin_right = 582.0
+margin_bottom = 98.0
 rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 7 )
 text = "Skills Gained | Skills Lost"
@@ -3018,16 +3744,17 @@ __meta__ = {
 visible = false
 margin_left = 1300.0
 margin_top = 490.0
-margin_right = 1500.0
-margin_bottom = 610.0
+margin_right = 1600.0
+margin_bottom = 640.0
 color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="evDisplay5"]
-margin_right = 435.0
-margin_bottom = 132.0
+margin_top = 10.0
+margin_right = 651.0
+margin_bottom = 142.0
 rect_scale = Vector2( 0.45, 0.45 )
 custom_fonts/font = ExtResource( 7 )
 text = "Transposable Element Fuse with Gene"
@@ -3055,33 +3782,363 @@ text = "Genes Spit By TE
 (Transposable Element)"
 autowrap = true
 
-[node name="evDisplay7" type="ColorRect" parent="."]
+[node name="maxBarDisplay" type="ColorRect" parent="."]
 visible = false
-margin_left = 1300.0
-margin_top = 590.0
-margin_right = 1500.0
-margin_bottom = 710.0
-color = Color( 0.156863, 0.156863, 0.196078, 0.647059 )
+margin_left = 200.0
+margin_top = 220.0
+margin_right = 500.0
+margin_bottom = 370.0
+color = Color( 0.156863, 0.156863, 0.196078, 0.784314 )
+
+[node name="Label" type="Label" parent="maxBarDisplay"]
+margin_top = 10.0
+margin_right = 595.0
+margin_bottom = 275.0
+rect_scale = Vector2( 0.5, 0.5 )
+custom_fonts/font = ExtResource( 7 )
+text = "This is the maximum collective value of the genes that have been in the chromosome"
+align = 1
+autowrap = true
+
+[node name="maxBarDisplay2" type="ColorRect" parent="."]
+visible = false
+margin_left = 200.0
+margin_top = 220.0
+margin_right = 450.0
+margin_bottom = 370.0
+color = Color( 0.156863, 0.156863, 0.196078, 0.784314 )
+
+[node name="Label" type="Label" parent="maxBarDisplay2"]
+margin_top = 10.0
+margin_right = 502.0
+margin_bottom = 275.0
+rect_scale = Vector2( 0.5, 0.5 )
+custom_fonts/font = ExtResource( 7 )
+text = "This is the maximum value of the pseudo genes that have been in the chromosome"
+align = 1
+autowrap = true
+
+[node name="maxBarDisplay3" type="ColorRect" parent="."]
+visible = false
+margin_left = 200.0
+margin_top = 220.0
+margin_right = 500.0
+margin_bottom = 370.0
+color = Color( 0.156863, 0.156863, 0.196078, 0.784314 )
+
+[node name="Label" type="Label" parent="maxBarDisplay3"]
+margin_top = 10.0
+margin_right = 583.0
+margin_bottom = 275.0
+rect_scale = Vector2( 0.5, 0.5 )
+custom_fonts/font = ExtResource( 7 )
+text = "This is the maximum number of blank genes that have been in the chromosome"
+align = 1
+autowrap = true
+
+[node name="maxBarDisplay4" type="ColorRect" parent="."]
+visible = false
+margin_left = 200.0
+margin_top = 220.0
+margin_right = 500.0
+margin_bottom = 370.0
+color = Color( 0.156863, 0.156863, 0.196078, 0.784314 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="evDisplay7"]
-margin_right = 40.0
-margin_bottom = 14.0
+[node name="Label" type="Label" parent="maxBarDisplay4"]
+margin_right = 606.0
+margin_bottom = 265.0
+rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 7 )
-text = "Evolution
- information"
+text = "This is the maximum number of transposons that have been in the chromosome"
+align = 1
+autowrap = true
 
-[node name="Label" type="Label" parent="."]
+[node name="maxBarDisplay5" type="ColorRect" parent="."]
 visible = false
-margin_left = 1200.0
-margin_right = 1240.0
-margin_bottom = 42.0
+margin_left = 200.0
+margin_top = 250.0
+margin_right = 400.0
+margin_bottom = 350.0
+color = Color( 0.156863, 0.156863, 0.196078, 0.784314 )
+
+[node name="Label" type="Label" parent="maxBarDisplay5"]
+margin_top = 10.0
+margin_right = 399.0
+margin_bottom = 74.0
+rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = ExtResource( 7 )
+text = "Max Sensing Value"
+align = 1
+autowrap = true
+
+[node name="maxBarDisplay6" type="ColorRect" parent="."]
+visible = false
+margin_left = 200.0
+margin_top = 250.0
+margin_right = 400.0
+margin_bottom = 350.0
+color = Color( 0.156863, 0.156863, 0.196078, 0.784314 )
+
+[node name="Label" type="Label" parent="maxBarDisplay6"]
+margin_top = 10.0
+margin_right = 399.0
+margin_bottom = 74.0
+rect_scale = Vector2( 0.5, 0.5 )
+custom_fonts/font = ExtResource( 7 )
+text = "Max Component Value"
+align = 1
+autowrap = true
+
+[node name="maxBarDisplay7" type="ColorRect" parent="."]
+visible = false
+margin_left = 200.0
+margin_top = 250.0
+margin_right = 400.0
+margin_bottom = 350.0
+color = Color( 0.156863, 0.156863, 0.196078, 0.784314 )
+
+[node name="Label" type="Label" parent="maxBarDisplay7"]
+margin_right = 399.0
+margin_bottom = 198.0
+rect_scale = Vector2( 0.5, 0.5 )
+custom_fonts/font = ExtResource( 7 )
+text = "Max Construction Value"
+align = 1
+autowrap = true
+
+[node name="maxBarDisplay8" type="ColorRect" parent="."]
+visible = false
+margin_left = 200.0
+margin_top = 250.0
+margin_right = 400.0
+margin_bottom = 350.0
+color = Color( 0.156863, 0.156863, 0.196078, 0.784314 )
+
+[node name="Label" type="Label" parent="maxBarDisplay8"]
+margin_right = 399.0
+margin_bottom = 198.0
+rect_scale = Vector2( 0.5, 0.5 )
+custom_fonts/font = ExtResource( 7 )
+text = "Max Deconstruction Value"
+align = 1
+autowrap = true
+
+[node name="maxBarDisplay9" type="ColorRect" parent="."]
+visible = false
+margin_left = 200.0
+margin_top = 250.0
+margin_right = 400.0
+margin_bottom = 350.0
+color = Color( 0.156863, 0.156863, 0.196078, 0.784314 )
+
+[node name="Label" type="Label" parent="maxBarDisplay9"]
+margin_top = 10.0
+margin_right = 399.0
+margin_bottom = 74.0
+rect_scale = Vector2( 0.5, 0.5 )
+custom_fonts/font = ExtResource( 7 )
+text = "Max Transposon Value"
+align = 1
+autowrap = true
+
+[node name="currBarDisplay" type="ColorRect" parent="."]
+visible = false
+margin_left = 200.0
+margin_top = 220.0
+margin_right = 500.0
+margin_bottom = 370.0
+color = Color( 0.156863, 0.156863, 0.196078, 0.784314 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Label" type="Label" parent="currBarDisplay"]
+margin_left = 5.0
+margin_top = 10.0
+margin_right = 585.0
+margin_bottom = 271.0
+rect_scale = Vector2( 0.5, 0.5 )
+custom_fonts/font = ExtResource( 4 )
+text = "This is the current collective value of the genes that are  in the chromosome"
+align = 1
+autowrap = true
+
+[node name="currBarDisplay2" type="ColorRect" parent="."]
+visible = false
+margin_left = 200.0
+margin_top = 220.0
+margin_right = 500.0
+margin_bottom = 370.0
+color = Color( 0.156863, 0.156863, 0.196078, 0.784314 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="currBarDisplay2"]
+margin_left = 6.682
+margin_top = 10.0
+margin_right = 584.682
+margin_bottom = 205.0
+rect_scale = Vector2( 0.5, 0.5 )
+custom_fonts/font = ExtResource( 4 )
+text = "This is the current value of the pseudo genes that are in the chromosome"
+align = 1
+autowrap = true
+
+[node name="currBarDisplay3" type="ColorRect" parent="."]
+visible = false
+margin_left = 200.0
+margin_top = 220.0
+margin_right = 500.0
+margin_bottom = 370.0
+color = Color( 0.156863, 0.156863, 0.196078, 0.784314 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="currBarDisplay3"]
+margin_left = 5.0
+margin_top = 10.0
+margin_right = 586.0
+margin_bottom = 271.0
+rect_scale = Vector2( 0.5, 0.5 )
+custom_fonts/font = ExtResource( 4 )
+text = "This is the current number of blank genes that are in the chromosome"
+align = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="currBarDisplay4" type="ColorRect" parent="."]
+visible = false
+margin_left = 200.0
+margin_top = 220.0
+margin_right = 500.0
+margin_bottom = 370.0
+color = Color( 0.156863, 0.156863, 0.196078, 0.784314 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="currBarDisplay4"]
+margin_left = 5.0
+margin_top = 10.0
+margin_right = 595.0
+margin_bottom = 271.0
+rect_scale = Vector2( 0.5, 0.5 )
+custom_fonts/font = ExtResource( 4 )
+text = "This is the current number of transposons that are in the chromosome"
+align = 1
+autowrap = true
+
+[node name="currBarDisplay5" type="ColorRect" parent="."]
+visible = false
+margin_left = 200.0
+margin_top = 250.0
+margin_right = 400.0
+margin_bottom = 350.0
+color = Color( 0.156863, 0.156863, 0.196078, 0.784314 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="currBarDisplay5"]
+margin_left = 5.0
+margin_right = 383.0
+margin_bottom = 195.0
+rect_scale = Vector2( 0.5, 0.5 )
+custom_fonts/font = ExtResource( 4 )
+text = "Current Sensing Value"
+align = 1
+autowrap = true
+
+[node name="currBarDisplay6" type="ColorRect" parent="."]
+visible = false
+margin_left = 200.0
+margin_top = 250.0
+margin_right = 400.0
+margin_bottom = 350.0
+color = Color( 0.156863, 0.156863, 0.196078, 0.784314 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="currBarDisplay6"]
+margin_left = 5.0
+margin_right = 383.0
+margin_bottom = 195.0
+rect_scale = Vector2( 0.5, 0.5 )
+custom_fonts/font = ExtResource( 4 )
+text = "Current Component Value"
+align = 1
+autowrap = true
+
+[node name="currBarDisplay7" type="ColorRect" parent="."]
+visible = false
+margin_left = 200.0
+margin_top = 250.0
+margin_right = 400.0
+margin_bottom = 350.0
+color = Color( 0.156863, 0.156863, 0.196078, 0.784314 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="currBarDisplay7"]
+margin_left = 5.0
+margin_right = 383.0
+margin_bottom = 195.0
+rect_scale = Vector2( 0.5, 0.5 )
+custom_fonts/font = ExtResource( 4 )
+text = "Current Construction Value"
+align = 1
+autowrap = true
+
+[node name="currBarDisplay8" type="ColorRect" parent="."]
+visible = false
+margin_left = 200.0
+margin_top = 250.0
+margin_right = 400.0
+margin_bottom = 350.0
+color = Color( 0.156863, 0.156863, 0.196078, 0.784314 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="currBarDisplay8"]
+margin_left = 5.0
+margin_right = 383.0
+margin_bottom = 195.0
+rect_scale = Vector2( 0.5, 0.5 )
+custom_fonts/font = ExtResource( 4 )
+text = "Current Deconstruction Value"
+align = 1
+autowrap = true
+
+[node name="currBarDisplay9" type="ColorRect" parent="."]
+visible = false
+margin_left = 200.0
+margin_top = 250.0
+margin_right = 400.0
+margin_bottom = 350.0
+color = Color( 0.156863, 0.156863, 0.196078, 0.784314 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="currBarDisplay9"]
+margin_left = 5.0
+margin_right = 383.0
+margin_bottom = 195.0
+rect_scale = Vector2( 0.5, 0.5 )
+custom_fonts/font = ExtResource( 4 )
+text = "Current Transposon Value"
+align = 1
+autowrap = true
 [connection signal="mouse_entered" from="mainStat1" to="." method="_on_mainStat1_mouse_entered"]
 [connection signal="mouse_exited" from="mainStat1" to="." method="_on_mainStat1_mouse_exited"]
 [connection signal="mouse_entered" from="mainStat2" to="." method="_on_mainStat2_mouse_entered"]
@@ -3090,12 +4147,49 @@ __meta__ = {
 [connection signal="mouse_exited" from="mainStat3" to="." method="_on_mainStat3_mouse_exited"]
 [connection signal="mouse_entered" from="mainStat4" to="." method="_on_mainStat4_mouse_entered"]
 [connection signal="mouse_exited" from="mainStat4" to="." method="_on_mainStat4_mouse_exited"]
-[connection signal="mouse_entered" from="sub1/maxBar" to="." method="_on_maxBar_mouse_entered"]
-[connection signal="mouse_exited" from="sub1/maxBar" to="." method="_on_maxBar_mouse_exited"]
-[connection signal="mouse_entered" from="sub1/currentBar" to="." method="_on_currentBar_mouse_entered"]
-[connection signal="mouse_exited" from="sub1/currentBar" to="." method="_on_currentBar_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/maxBar/maxComposition" to="." method="_on_maxgene1_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/maxBar/maxComposition" to="." method="_on_maxgene1_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/maxBar/maxPseudo" to="." method="_on_maxgene2_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/maxBar/maxPseudo" to="." method="_on_maxgene2_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/maxBar/maxBlank" to="." method="_on_maxgene3_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/maxBar/maxBlank" to="." method="_on_maxgene3_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/maxBar/maxTransposons" to="." method="_on_maxgene4_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/maxBar/maxTransposons" to="." method="_on_maxgene4_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/maxBar/maxgene5" to="." method="_on_maxgene5_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/maxBar/maxgene5" to="." method="_on_maxgene5_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/maxBar/maxgene6" to="." method="_on_maxgene6_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/maxBar/maxgene6" to="." method="_on_maxgene6_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/maxBar/maxgene7" to="." method="_on_maxgene7_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/maxBar/maxgene7" to="." method="_on_maxgene7_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/maxBar/maxgene8" to="." method="_on_maxgene8_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/maxBar/maxgene8" to="." method="_on_maxgene8_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/maxBar/maxgene9" to="." method="_on_maxgene9_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/maxBar/maxgene9" to="." method="_on_maxgene9_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/maxBar/score" to="." method="_on_score_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/maxBar/score" to="." method="_on_score_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/currentBar/currComposition" to="." method="_on_currgene1_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/currentBar/currComposition" to="." method="_on_currgene1_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/currentBar/currPseudo" to="." method="_on_currgene2_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/currentBar/currPseudo" to="." method="_on_currgene2_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/currentBar/currBlank" to="." method="_on_currgene3_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/currentBar/currBlank" to="." method="_on_currgene3_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/currentBar/currTransposon" to="." method="_on_currgene4_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/currentBar/currTransposon" to="." method="_on_currgene4_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/currentBar/currgene5" to="." method="_on_currgene5_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/currentBar/currgene5" to="." method="_on_currgene5_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/currentBar/currgene6" to="." method="_on_currgene6_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/currentBar/currgene6" to="." method="_on_currgene6_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/currentBar/currgene7" to="." method="_on_currgene7_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/currentBar/currgene7" to="." method="_on_currgene7_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/currentBar/currgene8" to="." method="_on_currgene8_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/currentBar/currgene8" to="." method="_on_currgene8_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/currentBar/currgene9" to="." method="_on_currgene9_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/currentBar/currgene9" to="." method="_on_currgene9_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/currentBar/currscore" to="." method="_on_currscore_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/currentBar/currscore" to="." method="_on_currscore_mouse_exited"]
 [connection signal="mouse_entered" from="sub1/gene1" to="." method="_on_gene1_mouse_entered"]
 [connection signal="mouse_exited" from="sub1/gene1" to="." method="_on_gene1_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/gene1/gene1" to="." method="_on_gene1_mouse_entered"]
 [connection signal="mouse_entered" from="sub1/gene2" to="." method="_on_gene2_mouse_entered"]
 [connection signal="mouse_exited" from="sub1/gene2" to="." method="_on_gene2_mouse_exited"]
 [connection signal="mouse_entered" from="sub1/gene3" to="." method="_on_gene3_mouse_entered"]
@@ -3108,24 +4202,40 @@ __meta__ = {
 [connection signal="mouse_exited" from="sub1/gene6" to="." method="_on_gene6_mouse_exited"]
 [connection signal="mouse_entered" from="sub1/gene7" to="." method="_on_gene7_mouse_entered"]
 [connection signal="mouse_exited" from="sub1/gene7" to="." method="_on_gene7_mouse_exited"]
-[connection signal="mouse_entered" from="sub1/transposon2" to="." method="_on_transposon2_mouse_entered"]
-[connection signal="mouse_exited" from="sub1/transposon2" to="." method="_on_transposon2_mouse_exited"]
-[connection signal="mouse_entered" from="sub1/AnthroArt" to="." method="_on_AnthroArt_mouse_entered"]
-[connection signal="mouse_exited" from="sub1/AnthroArt" to="." method="_on_AnthroArt_mouse_exited"]
-[connection signal="mouse_entered" from="sub1/AnthroArt2" to="." method="_on_AnthroArt2_mouse_entered"]
-[connection signal="mouse_exited" from="sub1/AnthroArt2" to="." method="_on_AnthroArt2_mouse_exited"]
-[connection signal="mouse_entered" from="sub1/AnthroArt3" to="." method="_on_AnthroArt3_mouse_entered"]
-[connection signal="mouse_exited" from="sub1/AnthroArt3" to="." method="_on_AnthroArt3_mouse_exited"]
-[connection signal="mouse_entered" from="sub1/AnthroArt4" to="." method="_on_AnthroArt4_mouse_entered"]
-[connection signal="mouse_exited" from="sub1/AnthroArt4" to="." method="_on_AnthroArt4_mouse_exited"]
-[connection signal="mouse_entered" from="sub1/AnthroArt5" to="." method="_on_AnthroArt5_mouse_entered"]
-[connection signal="mouse_exited" from="sub1/AnthroArt5" to="." method="_on_AnthroArt5_mouse_exited"]
-[connection signal="mouse_entered" from="sub1/AnthroArt6" to="." method="_on_AnthroArt6_mouse_entered"]
-[connection signal="mouse_exited" from="sub1/AnthroArt6" to="." method="_on_AnthroArt6_mouse_exited"]
-[connection signal="mouse_entered" from="sub1/AnthroArt7" to="." method="_on_AnthroArt7_mouse_entered"]
-[connection signal="mouse_exited" from="sub1/AnthroArt7" to="." method="_on_AnthroArt7_mouse_exited"]
-[connection signal="mouse_entered" from="sub1/AnthroArt8" to="." method="_on_AnthroArt8_mouse_entered"]
-[connection signal="mouse_exited" from="sub1/AnthroArt8" to="." method="_on_AnthroArt8_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/gene8" to="." method="_on_gene8_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/gene8" to="." method="_on_gene8_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/TE1" to="." method="_on_TE1_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/TE1" to="." method="_on_TE1_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/TE1/AnthroArt" to="." method="_on_AnthroArt_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/TE1/AnthroArt" to="." method="_on_AnthroArt_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/TE2" to="." method="_on_TE2_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/TE2" to="." method="_on_TE2_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/TE2/AnthroArt2" to="." method="_on_AnthroArt2_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/TE2/AnthroArt2" to="." method="_on_AnthroArt2_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/TE3" to="." method="_on_TE3_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/TE3" to="." method="_on_TE3_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/TE3/AnthroArt3" to="." method="_on_AnthroArt3_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/TE3/AnthroArt3" to="." method="_on_AnthroArt3_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/TE4" to="." method="_on_TE4_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/TE4" to="." method="_on_TE4_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/TE4/AnthroArt4" to="." method="_on_AnthroArt4_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/TE4/AnthroArt4" to="." method="_on_AnthroArt4_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/TE5" to="." method="_on_TE5_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/TE5" to="." method="_on_TE5_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/TE5/AnthroArt5" to="." method="_on_AnthroArt5_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/TE5/AnthroArt5" to="." method="_on_AnthroArt5_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/TE6" to="." method="_on_TE6_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/TE6" to="." method="_on_TE6_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/TE6/AnthroArt6" to="." method="_on_AnthroArt6_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/TE6/AnthroArt6" to="." method="_on_AnthroArt6_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/TE7" to="." method="_on_TE7_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/TE7" to="." method="_on_TE7_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/TE7/AnthroArt7" to="." method="_on_AnthroArt7_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/TE7/AnthroArt7" to="." method="_on_AnthroArt7_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/TE8" to="." method="_on_TE8_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/TE8" to="." method="_on_TE8_mouse_exited"]
+[connection signal="mouse_entered" from="sub1/TE8/AnthroArt8" to="." method="_on_AnthroArt8_mouse_entered"]
+[connection signal="mouse_exited" from="sub1/TE8/AnthroArt8" to="." method="_on_AnthroArt8_mouse_exited"]
 [connection signal="mouse_entered" from="sub2/rep1" to="." method="_on_rep1_mouse_entered"]
 [connection signal="mouse_exited" from="sub2/rep1" to="." method="_on_rep1_mouse_exited"]
 [connection signal="mouse_entered" from="sub2/rep2" to="." method="_on_rep2_mouse_entered"]

@@ -36,7 +36,7 @@ var skills_lost = 0
 var maxVal_cat1 = 0
 var maxVal_essential = 0
 var maxVal_ate = 0
-var maxVal_pseudo
+var maxVal_pseudo = 0
 #might have to have more, try and figure out how many gene categories there are. 
 var finalVal_essential = 0
 var finalVal_ate = 0
@@ -48,7 +48,7 @@ var max_blank_tiles = 0
 var final_blank_tiles = 0
 var finalVal_blank = 0
 var death_reason
-var pseudoGene = 0
+var current_pseudo = 0
 var trimmedTiles = 0
 var splitElm = 0
 var numInversions = 0
@@ -95,6 +95,13 @@ var maxDeconstruc = 0
 var maxAte =0
 var transposonFuse = 0
 var turns_taken = 0
+
+
+func get_current_pseudo():
+	return current_pseudo;
+func get_maxVal_pseudo():
+	return maxVal_pseudo;
+
 
 func get_current_classicTE():
 	return current_classicTE
@@ -159,9 +166,97 @@ func get_maxDecon():
 	return maxDeconstruc
 func get_maxAte():
 	return maxAte
-func get_maxBlank():
+func get_d():
 	return max_blank_tiles;
 
+func _reset_game():
+	#Declaring/initializing variables to keep track of: 
+	tiles_traveled = 0
+	resources_consumed = 0
+	resources_converted = 0
+	rounds_run = 0
+	progeny_made = 0
+	energy_value = 0
+	times_energy_added = 0
+	reproduction_times = 0
+	dmg_genes_no_error = 0
+	dmg_genes_error = 0
+	breaks_join_no_error = 0
+	breaks_join_error = 0
+	breaks_cpyRepair_no_error = 0
+	breaks_cpyRepair_error = 0
+	tiles_copied_cpyRepair = 0
+	genes_copied_cpyRepair = 0
+	tiles_crctd_cpyRepair = 0
+	breaks_repaired_collapseDuplicates = 0
+	removed_collapseDuplicates = 0
+	majorUpgrades = 0
+	minorUpgrades = 0
+	majorDowngrades = 0
+	minorDowngrades = 0
+	majorUpgrades_blankTiles_newGene = 0
+	num_skills = 0
+	skills_gained = 0
+	skills_lost = 0
+	maxVal_cat1 = 0
+	maxVal_essential = 0
+	maxVal_ate = 0
+	maxVal_pseudo=0
+	#might have to have more, try and figure out how many gene categories there are. 
+	finalVal_essential = 0
+	finalVal_ate = 0
+	finalVal_pseudo = 0
+	#same thing as the comment above. 
+	max_transposon_tiles = 0
+	current_transposon_tiles = 0
+	max_blank_tiles = 0
+	final_blank_tiles = 0
+	finalVal_blank = 0
+	death_reason
+	current_pseudo = 0
+	trimmedTiles = 0
+	splitElm = 0
+	numInversions = 0
+	tilesInverted = 0
+	downToPseudo = 0;
+	current_classicTE = 0
+	current_zigzagTE = 0
+	current_assistTE = 0
+	current_buddyTE = 0
+	current_nestlerTE = 0
+	current_commuterTE = 0
+	current_buncherTE = 0
+	current_jumperTE = 0
+	max_classicTE = 0
+	max_zigzagTE = 0
+	max_assistTE = 0
+	max_buddyTE = 0
+	max_nestlerTE = 0
+	max_commuterTE = 0
+	max_buncherTE = 0
+	max_jumperTE = 0
+	# replication, locomotion, helper, manipulation, sensing, component, construction, deconstruction, ate
+	currentReplication = 0
+	currentLocomotion = 0
+	currentHelper = 0
+	currentManipulation = 0
+	currentSensing = 0
+	currentComponent = 0
+	currentConstruction = 0
+	currentDeconstruction = 0
+	currentBlank = 0
+	currentAte = 0
+	maxReplic = 0
+	maxLocomo = 0
+	maxHelp = 0
+	maxManipul = 0
+	maxSens = 0
+	maxComponent = 0
+	maxConstruc = 0
+	maxDeconstruc = 0
+	maxAte =0
+	transposonFuse = 0
+	turns_taken = 0
 
 func increment_currentReplication():
 	currentReplication += 1;
@@ -195,6 +290,7 @@ func clear_currentGenes():
 	currentDeconstruction = 0;
 	currentAte = 0;
 	currentBlank = 0;
+	current_pseudo = 0;
 
 func update_maxType():
 	if(currentReplication > maxReplic):
@@ -215,7 +311,10 @@ func update_maxType():
 		maxDeconstruc = currentDeconstruction
 	if(currentAte > maxAte):
 		maxAte = currentAte
-
+	if(currentBlank > max_blank_tiles):
+		max_blank_tiles = currentBlank
+	if(current_pseudo > maxVal_pseudo):
+		maxVal_pseudo = current_pseudo
 
 func increment_transposonFuse():
 	transposonFuse += 1
@@ -237,8 +336,27 @@ func compare_maxTE():
 		max_commuterTE = current_commuterTE
 	if(current_buncherTE > max_buncherTE):
 		max_buncherTE = current_buncherTE
-	if(max_jumperTE > current_jumperTE):
+	if(current_jumperTE > max_jumperTE):
 		max_jumperTE = current_jumperTE
+
+
+#get_max_assistTE()
+func get_max_classicTE():
+	return max_classicTE;
+func get_max_zigzagTE():
+	return max_zigzagTE;
+func get_max_assistTE():
+	return max_assistTE;
+func get_max_buddyTE():
+	return max_buddyTE;
+func get_max_nestlerTE():
+	return max_nestlerTE;
+func get_max_commuterTE():
+	return max_commuterTE;
+func get_max_buncherTE():
+	return max_buncherTE;
+func get_max_jumperTE():
+	return max_jumperTE;
 
 func clear_currentTE():
 	current_assistTE = 0
@@ -253,7 +371,7 @@ func clear_currentTE():
 func update_currentTE(TE):
 	if(TE.ate_personality["key"] == "zigzag"):#
 		current_zigzagTE += 1
-	elif(TE.ate_personality["key"] == "classic"): #
+	elif(TE.ate_personality["key"] == "card"): #
 		current_classicTE += 1
 	elif(TE.ate_personality["key"] == "superjump"): #
 		current_jumperTE += 1
@@ -264,9 +382,9 @@ func update_currentTE(TE):
 	elif(TE.ate_personality["key"] == "buncher"):# 
 		current_buncherTE += 1
 	elif(TE.ate_personality["key"] == "cnearjfar"):
-		current_assistTE += 1
+		current_nestlerTE += 1
 	elif(TE.ate_personality["key"] == "closefar"):
-		current_nestlerTE += 1 
+		current_assistTE += 1 
 
 func increment_tilesInverted():
 	tilesInverted += 1
@@ -281,8 +399,8 @@ func increment_trimmedTiles():
 	trimmedTiles +=1
 func get_trimmedTiles():
 	return trimmedTiles;
-func increment_total_pseduo():
-	pseudoGene += 1
+func increment_currentPseudo():
+	current_pseudo += 1
 
 func maxBlankTiles():
 	if(max_blank_tiles < final_blank_tiles):
