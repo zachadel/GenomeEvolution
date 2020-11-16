@@ -34,7 +34,9 @@ var CMDS = {
 	"add_resource_to_tile": [TYPE_STRING, TYPE_INT, TYPE_INT, TYPE_INT, TYPE_INT],
 	"add_resource_to_player": [TYPE_STRING, TYPE_INT],
 	"disable_obscurity_map": [TYPE_BOOL],
-	"print_game_info": []
+	"print_game_info": [],
+	"print_action_cost": []
+	
 }
 
 var HELP = {
@@ -56,6 +58,7 @@ var HELP = {
 	"add_resource_to_player": "    Usage: add_resource_to_player [resource_name] [amount]\n    Details: Add a certain amount of a resource to the player.\n        -resource_name: type one of bread, candy1, potato, candy2, avocado, oil, peanut_butter, butter, chicken, egg, steak, protein_shake, phosphorus, nitrogen, calcium, sodium, iron, mercury\n        -amount: integer of amount to be added to the player",
 	"disable_obscurity_map": "    Usage: disable_obscurity_map [true/false]\n    Details: Disable/Enable the cloud map.\n        -true/false: Type true to disable and false to enable",
 	"print_game_info": "    Usage: print_game_info\n    Details: Prints the debug information to the console for copying and pasting.",
+	"print_action_cost": "    Usage: print_action_cost\n    Details: Prints the total cost for the last action taken."
 }
 
 func set_world_map(map: Node):
@@ -400,6 +403,9 @@ func print_game_info() -> String:
 	
 	return output_str
 	
+func print_action_cost() -> String:
+	var output_str = String(Actions.energy_cost)
+	return output_str
 	
 func _get_chrom_length(chrom: String) -> int:
 	var chrom_pos = _get_chrom_idx(chrom)

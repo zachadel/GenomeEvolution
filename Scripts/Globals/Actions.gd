@@ -1,6 +1,8 @@
 extends Node
 
 var env = {}
+var energy_cost = 0
+
 
 func _ready():
 	var contents = load_file('res://env.json')
