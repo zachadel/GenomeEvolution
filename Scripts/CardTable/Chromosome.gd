@@ -304,7 +304,6 @@ func add_elm(elm, pos = null):
 func split_elm(elm):
 	var dupe_elm = Game.copy_elm(elm);
 	var base_behavior = elm.get_ess_behavior_raw();
-	STATS.increment_elmSplits()
 	var half_up = {};
 	var half_down = {};
 	for k in base_behavior:
@@ -313,13 +312,12 @@ func split_elm(elm):
 	
 	elm.set_ess_behavior(half_up);
 	dupe_elm.set_ess_behavior(half_down);
-	
 	add_elm(dupe_elm, elm.get_index());
-	
 	elm.randomize_code();
 	dupe_elm.randomize_code();
 	elm.upd_display();
 	dupe_elm.upd_display();
+	STATS.increment_geneSplits()
 
 func remove_elm(elm):
 	emit_signal("animating", true);

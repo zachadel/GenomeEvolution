@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=2]
+[gd_scene load_steps=44 format=2]
 
 [ext_resource path="res://Scripts/CardTable/CardTable.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player/Organism.tscn" type="PackedScene" id=2]
@@ -22,9 +22,18 @@
 [ext_resource path="res://Scenes/MainMenu/Credits.tscn" type="PackedScene" id=20]
 [ext_resource path="res://Assets/Images/pngs/DNA_left.png" type="Texture" id=21]
 [ext_resource path="res://Assets/Images/pngs/DNA_right.png" type="Texture" id=22]
-[ext_resource path="res://Scenes/statsScreen/statsScreen.tscn" type="PackedScene" id=23]
+[ext_resource path="res://Assets/Images/genes/Replication.png" type="Texture" id=23]
 [ext_resource path="res://Assets/Fonts/OpenSans-48.tres" type="DynamicFont" id=24]
 [ext_resource path="res://Scenes/CardTable/pnl_dead_overview.gd" type="Script" id=25]
+[ext_resource path="res://Assets/Images/genes/Helix_Circle.png" type="Texture" id=26]
+[ext_resource path="res://Assets/Images/genes/Sensing.png" type="Texture" id=27]
+[ext_resource path="res://Assets/Images/genes/Deconstruction.png" type="Texture" id=28]
+[ext_resource path="res://Assets/Images/genes/Helper.png" type="Texture" id=29]
+[ext_resource path="res://Assets/Images/genes/Construction.png" type="Texture" id=30]
+[ext_resource path="res://Assets/Images/genes/Locomotion.png" type="Texture" id=31]
+[ext_resource path="res://Assets/Images/genes/Component.png" type="Texture" id=32]
+[ext_resource path="res://Assets/Images/genes/Manipulation.png" type="Texture" id=33]
+[ext_resource path="res://Assets/Fonts/OpenSans-Bold.ttf" type="DynamicFontData" id=34]
 
 [sub_resource type="Theme" id=1]
 Button/colors/font_color_disabled = Color( 0, 0, 0, 1 )
@@ -133,6 +142,13 @@ font_data = SubResource( 6 )
 [sub_resource type="StyleBoxFlat" id=8]
 bg_color = Color( 0.21875, 0.21875, 0.21875, 1 )
 
+[sub_resource type="DynamicFont" id=9]
+resource_local_to_scene = true
+size = 45
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 34 )
+
 [node name="CardTable" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -237,7 +253,6 @@ margin_bottom = 674.836
 rect_min_size = Vector2( 0, 50 )
 
 [node name="RepairTabs" type="TabContainer" parent="."]
-visible = false
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -725,18 +740,14 @@ margin_left = 1193.14
 margin_top = 772.178
 margin_right = 1293.14
 margin_bottom = 872.178
-num = 0
 lbl = "Round"
-show_change = true
 
 [node name="lnum_progeny" parent="." instance=ExtResource( 17 )]
 margin_left = 1337.14
 margin_top = 772.178
 margin_right = 1437.14
 margin_bottom = 872.178
-num = 0
 lbl = "Progeny"
-show_change = true
 
 [node name="EnergyBar" parent="." instance=ExtResource( 14 )]
 margin_left = 3.48102
@@ -896,9 +907,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="statsScreen" parent="pnl_dead_overview/background" instance=ExtResource( 23 )]
-visible = false
-
 [node name="leftDNA" type="TextureRect" parent="pnl_dead_overview/background"]
 margin_right = 40.0
 margin_bottom = 40.0
@@ -968,29 +976,305 @@ margin_bottom = 317.0
 custom_fonts/font = ExtResource( 24 )
 text = "%d"
 
-[node name="Rank1" type="Label" parent="pnl_dead_overview/background"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -271.5
-margin_top = -33.5
-margin_right = 271.5
-margin_bottom = 33.5
-custom_fonts/font = ExtResource( 24 )
-text = "You made the rank of: "
+[node name="gene1" type="TextureRect" parent="pnl_dead_overview/background"]
+margin_left = 225.0
+margin_top = 350.0
+margin_right = 801.0
+margin_bottom = 926.0
+rect_scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 26 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Rank2" type="Label" parent="pnl_dead_overview/background"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -36.5
-margin_top = 50.0
-margin_right = 36.5
-margin_bottom = 117.0
+[node name="TextureRect" type="TextureRect" parent="pnl_dead_overview/background/gene1"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 23 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="scoreBox" type="ColorRect" parent="pnl_dead_overview/background/gene1"]
+margin_left = 40.0
+margin_top = 600.0
+margin_right = 540.0
+margin_bottom = 1100.0
+
+[node name="Label" type="Label" parent="pnl_dead_overview/background/gene1/scoreBox"]
+margin_right = 101.0
+margin_bottom = 101.0
+rect_scale = Vector2( 5, 5 )
 custom_fonts/font = ExtResource( 24 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "%d"
+align = 1
+valign = 1
+
+[node name="gene2" type="TextureRect" parent="pnl_dead_overview/background"]
+margin_left = 375.0
+margin_top = 350.0
+margin_right = 951.0
+margin_bottom = 926.0
+rect_scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 26 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="pnl_dead_overview/background/gene2"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 27 )
+
+[node name="scoreBox" type="ColorRect" parent="pnl_dead_overview/background/gene2"]
+margin_left = 40.0
+margin_top = 600.0
+margin_right = 540.0
+margin_bottom = 1100.0
+
+[node name="Label" type="Label" parent="pnl_dead_overview/background/gene2/scoreBox"]
+margin_right = 101.0
+margin_bottom = 101.0
+rect_scale = Vector2( 5, 5 )
+custom_fonts/font = ExtResource( 24 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "%d"
+align = 1
+valign = 1
+
+[node name="gene3" type="TextureRect" parent="pnl_dead_overview/background"]
+margin_left = 525.0
+margin_top = 350.0
+margin_right = 1101.0
+margin_bottom = 926.0
+rect_scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 26 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="pnl_dead_overview/background/gene3"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 33 )
+
+[node name="scoreBox" type="ColorRect" parent="pnl_dead_overview/background/gene3"]
+margin_left = 40.0
+margin_top = 600.0
+margin_right = 540.0
+margin_bottom = 1100.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="pnl_dead_overview/background/gene3/scoreBox"]
+margin_right = 101.0
+margin_bottom = 101.0
+rect_scale = Vector2( 5, 5 )
+custom_fonts/font = ExtResource( 24 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "%d"
+align = 1
+valign = 1
+
+[node name="gene4" type="TextureRect" parent="pnl_dead_overview/background"]
+margin_left = 675.0
+margin_top = 350.0
+margin_right = 1251.0
+margin_bottom = 926.0
+rect_scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 26 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="pnl_dead_overview/background/gene4"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 32 )
+
+[node name="scoreBox" type="ColorRect" parent="pnl_dead_overview/background/gene4"]
+margin_left = 40.0
+margin_top = 600.0
+margin_right = 540.0
+margin_bottom = 1100.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="pnl_dead_overview/background/gene4/scoreBox"]
+margin_right = 101.0
+margin_bottom = 101.0
+rect_scale = Vector2( 5, 5 )
+custom_fonts/font = ExtResource( 24 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "%d"
+align = 1
+valign = 1
+
+[node name="gene5" type="TextureRect" parent="pnl_dead_overview/background"]
+margin_left = 825.0
+margin_top = 350.0
+margin_right = 1401.0
+margin_bottom = 926.0
+rect_scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 26 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="pnl_dead_overview/background/gene5"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 30 )
+
+[node name="scoreBox" type="ColorRect" parent="pnl_dead_overview/background/gene5"]
+margin_left = 40.0
+margin_top = 600.0
+margin_right = 540.0
+margin_bottom = 1100.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="pnl_dead_overview/background/gene5/scoreBox"]
+margin_right = 101.0
+margin_bottom = 101.0
+rect_scale = Vector2( 5, 5 )
+custom_fonts/font = ExtResource( 24 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "%d"
+align = 1
+valign = 1
+
+[node name="gene6" type="TextureRect" parent="pnl_dead_overview/background"]
+margin_left = 975.0
+margin_top = 350.0
+margin_right = 1551.0
+margin_bottom = 926.0
+rect_scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 26 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="pnl_dead_overview/background/gene6"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 28 )
+
+[node name="scoreBox" type="ColorRect" parent="pnl_dead_overview/background/gene6"]
+margin_left = 40.0
+margin_top = 600.0
+margin_right = 540.0
+margin_bottom = 1100.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="pnl_dead_overview/background/gene6/scoreBox"]
+margin_right = 101.0
+margin_bottom = 101.0
+rect_scale = Vector2( 5, 5 )
+custom_fonts/font = ExtResource( 24 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "%d"
+align = 1
+valign = 1
+
+[node name="gene7" type="TextureRect" parent="pnl_dead_overview/background"]
+margin_left = 1125.0
+margin_top = 350.0
+margin_right = 1701.0
+margin_bottom = 926.0
+rect_scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 26 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="pnl_dead_overview/background/gene7"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 29 )
+
+[node name="scoreBox" type="ColorRect" parent="pnl_dead_overview/background/gene7"]
+margin_left = 40.0
+margin_top = 600.0
+margin_right = 540.0
+margin_bottom = 1100.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="pnl_dead_overview/background/gene7/scoreBox"]
+margin_right = 101.0
+margin_bottom = 101.0
+rect_scale = Vector2( 5, 5 )
+custom_fonts/font = ExtResource( 24 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "%d"
+align = 1
+valign = 1
+
+[node name="gene8" type="TextureRect" parent="pnl_dead_overview/background"]
+margin_left = 1275.0
+margin_top = 350.0
+margin_right = 1851.0
+margin_bottom = 926.0
+rect_scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 26 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="pnl_dead_overview/background/gene8"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 31 )
+
+[node name="scoreBox" type="ColorRect" parent="pnl_dead_overview/background/gene8"]
+margin_left = 40.0
+margin_top = 600.0
+margin_right = 540.0
+margin_bottom = 1100.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="pnl_dead_overview/background/gene8/scoreBox"]
+margin_right = 101.0
+margin_bottom = 101.0
+rect_scale = Vector2( 5, 5 )
+custom_fonts/font = ExtResource( 24 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "%d"
+align = 1
+valign = 1
+
+[node name="death_Reason" type="Label" parent="pnl_dead_overview/background"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -209.0
+margin_top = -320.0
+margin_right = 209.0
+margin_bottom = -212.0
+custom_fonts/font = SubResource( 9 )
+text = "You died because: "
+align = 1
+valign = 1
+autowrap = true
+
+[node name="Button" type="Button" parent="pnl_dead_overview"]
+margin_left = 200.0
+margin_top = 784.0
+margin_right = 460.0
+margin_bottom = 853.0
+custom_fonts/font = ExtResource( 24 )
+text = "Show Stats"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -1035,3 +1319,4 @@ __meta__ = {
 [connection signal="pressed" from="button_grid/btn_nxt" to="." method="_on_btn_nxt_pressed"]
 [connection signal="pressed" from="ViewMap" to="." method="_on_ViewMap_pressed"]
 [connection signal="pressed" from="pnl_dead_overview/background/btn_qtmenu" to="." method="quit_to_menu"]
+[connection signal="pressed" from="pnl_dead_overview/Button" to="." method="_on_Button_pressed"]

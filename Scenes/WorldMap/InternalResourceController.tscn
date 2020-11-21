@@ -1,9 +1,12 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Scripts/WorldMap/InternalResourceController.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/WorldMap/EnergyBar.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/WorldMap/Vesicle.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/WorldMap/EnergyCosts.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Assets/Fonts/OpenSans-48.tres" type="DynamicFont" id=5]
+[ext_resource path="res://Assets/Images/icons/padlock.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Fonts/OpenSans-Bold.ttf" type="DynamicFontData" id=7]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.392157, 0.392157, 0.392157, 1 )
@@ -17,12 +20,41 @@ font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
 size = 14
 font_data = SubResource( 3 )
 
+[sub_resource type="DynamicFont" id=5]
+resource_local_to_scene = true
+size = 44
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=6]
+resource_local_to_scene = true
+size = 44
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=7]
+resource_local_to_scene = true
+size = 44
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=8]
+resource_local_to_scene = true
+size = 44
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 7 )
+
 [node name="InternalResourceController" type="Panel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = 5.0
-margin_right = -1205.0
-margin_bottom = -50.0
+margin_left = 14.0308
+margin_top = 25.2043
+margin_right = -1190.97
+margin_bottom = -29.7957
 custom_styles/panel = SubResource( 1 )
 script = ExtResource( 1 )
 __meta__ = {
@@ -499,4 +531,381 @@ __meta__ = {
 position = Vector2( 65, 5 )
 scale = Vector2( 1, 0.999999 )
 polygon = PoolVector2Array( 0, 0, 30, 0, 0, -20 )
+
+[node name="fattyAcidDetails" type="ColorRect" parent="."]
+visible = false
+margin_left = 150.0
+margin_top = 440.0
+margin_right = 390.0
+margin_bottom = 550.0
+color = Color( 0.156863, 0.156863, 0.196078, 0.882353 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="fattyAcidDetails"]
+margin_top = 6.64532
+margin_right = 604.0
+margin_bottom = 242.645
+rect_scale = Vector2( 0.4, 0.4 )
+custom_fonts/font = ExtResource( 5 )
+text = "Fatty Acids to Energy Locked. requires:
+ fat_acid -> energy skill"
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SugarAminoDetails" type="ColorRect" parent="."]
+visible = false
+margin_left = 150.0
+margin_top = 215.0
+margin_right = 390.0
+margin_bottom = 325.0
+color = Color( 0.156863, 0.156863, 0.196078, 0.882353 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="SugarAminoDetails"]
+margin_left = -1.0
+margin_top = 1.0
+margin_right = 598.0
+margin_bottom = 254.0
+rect_scale = Vector2( 0.4, 0.4 )
+custom_fonts/font = SubResource( 5 )
+text = "Sugar and Amino Conversion locked. requires  sugar->am_acid,
+skill."
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AminoSugarDetails" type="ColorRect" parent="."]
+visible = false
+margin_left = 150.0
+margin_top = 215.0
+margin_right = 390.0
+margin_bottom = 325.0
+color = Color( 0.156863, 0.156863, 0.196078, 0.882353 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="AminoSugarDetails"]
+margin_left = -1.0
+margin_top = 1.0
+margin_right = 598.0
+margin_bottom = 273.0
+rect_scale = Vector2( 0.4, 0.4 )
+custom_fonts/font = SubResource( 6 )
+text = "Sugar and Amino Conversion locked. requires:  am_acid->sugar
+skill."
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="aminoProteinDetails" type="ColorRect" parent="."]
+visible = false
+margin_left = 153.0
+margin_top = 215.0
+margin_right = 396.0
+margin_bottom = 325.0
+color = Color( 0.156863, 0.156863, 0.196078, 0.882353 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="aminoProteinDetails"]
+margin_top = 1.0
+margin_right = 609.0
+margin_bottom = 278.0
+rect_scale = Vector2( 0.4, 0.4 )
+custom_fonts/font = SubResource( 7 )
+text = "Amino and Protein Conversion locked.
+requires: am_acid->protein
+skills"
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="proteinAminoDetails" type="ColorRect" parent="."]
+visible = false
+margin_left = 153.0
+margin_top = 215.0
+margin_right = 396.0
+margin_bottom = 325.0
+color = Color( 0.156863, 0.156863, 0.196078, 0.882353 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="proteinAminoDetails"]
+margin_top = 1.0
+margin_right = 609.0
+margin_bottom = 275.0
+rect_scale = Vector2( 0.4, 0.4 )
+custom_fonts/font = SubResource( 8 )
+text = "Amino and Protein Conversion locked.
+requires: protein->am_acid
+skill."
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="sugarCarbsDetails" type="ColorRect" parent="."]
+visible = false
+margin_left = 150.0
+margin_top = 440.0
+margin_right = 390.0
+margin_bottom = 550.0
+color = Color( 0.156863, 0.156863, 0.196078, 0.882353 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="sugarCarbsDetails"]
+margin_right = 601.0
+margin_bottom = 272.0
+rect_scale = Vector2( 0.4, 0.4 )
+custom_fonts/font = ExtResource( 5 )
+text = "Sugar and Carb conversion locked.Requires:
+sugar->carb skill."
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="carbSugarDetails" type="ColorRect" parent="."]
+visible = false
+margin_left = 150.0
+margin_top = 440.0
+margin_right = 390.0
+margin_bottom = 550.0
+color = Color( 0.156863, 0.156863, 0.196078, 0.882353 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="carbSugarDetails"]
+margin_right = 601.0
+margin_bottom = 272.0
+rect_scale = Vector2( 0.4, 0.4 )
+custom_fonts/font = ExtResource( 5 )
+text = "Sugar and Carb conversion locked. Requires:
+carb->sugar skill."
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="sugarFattyAcidDetails" type="ColorRect" parent="."]
+visible = false
+margin_left = 150.0
+margin_top = 440.0
+margin_right = 390.0
+margin_bottom = 550.0
+color = Color( 0.156863, 0.156863, 0.196078, 0.882353 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="sugarFattyAcidDetails"]
+margin_right = 602.0
+margin_bottom = 276.0
+rect_scale = Vector2( 0.4, 0.4 )
+custom_fonts/font = ExtResource( 5 )
+text = "Sugar to fatty acid converison locked.
+requires: sugar->fat_acid
+skill"
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="fattyAcidFatDetails" type="ColorRect" parent="."]
+visible = false
+margin_left = 150.0
+margin_top = 440.0
+margin_right = 390.0
+margin_bottom = 550.0
+color = Color( 0.156863, 0.156863, 0.196078, 0.882353 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="fattyAcidFatDetails"]
+margin_right = 600.0
+margin_bottom = 270.0
+rect_scale = Vector2( 0.4, 0.4 )
+custom_fonts/font = ExtResource( 5 )
+text = "Fatty Acid and Fat conversion locked.
+Requires: fat_acid->fat skills."
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="fatFattyAcidDetails" type="ColorRect" parent="."]
+visible = false
+margin_left = 150.0
+margin_top = 440.0
+margin_right = 390.0
+margin_bottom = 550.0
+color = Color( 0.156863, 0.156863, 0.196078, 0.882353 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="fatFattyAcidDetails"]
+margin_right = 600.0
+margin_bottom = 270.0
+rect_scale = Vector2( 0.4, 0.4 )
+custom_fonts/font = ExtResource( 5 )
+text = "Fatty Acid and Fat conversion locked.
+Requires: fat->fat_acid  skills."
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FAlock" type="TextureRect" parent="."]
+margin_left = 20.0
+margin_top = 580.0
+margin_right = 42.0
+margin_bottom = 620.0
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ASlock" type="TextureRect" parent="."]
+margin_left = 75.0
+margin_top = 250.0
+margin_right = 115.0
+margin_bottom = 290.0
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="APlock" type="TextureRect" parent="."]
+margin_left = 205.0
+margin_top = 110.0
+margin_right = 245.0
+margin_bottom = 150.0
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SClock" type="TextureRect" parent="."]
+margin_left = 205.0
+margin_top = 330.0
+margin_right = 245.0
+margin_bottom = 370.0
+texture = ExtResource( 6 )
+
+[node name="SFlock" type="TextureRect" parent="."]
+margin_left = 105.0
+margin_top = 460.0
+margin_right = 145.0
+margin_bottom = 500.0
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FAFlock" type="TextureRect" parent="."]
+margin_left = 205.0
+margin_top = 550.0
+margin_right = 245.0
+margin_bottom = 590.0
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SALock" type="TextureRect" parent="."]
+margin_left = 130.0
+margin_top = 250.0
+margin_right = 170.0
+margin_bottom = 290.0
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PALock" type="TextureRect" parent="."]
+margin_left = 205.0
+margin_top = 185.0
+margin_right = 245.0
+margin_bottom = 225.0
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CSLock" type="TextureRect" parent="."]
+margin_left = 205.0
+margin_top = 405.0
+margin_right = 245.0
+margin_bottom = 445.0
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AFLock" type="TextureRect" parent="."]
+margin_left = 205.0
+margin_top = 625.0
+margin_right = 245.0
+margin_bottom = 665.0
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="resource_clicked" from="EnergyBar" to="." method="_on_EnergyBar_resource_clicked"]
+[connection signal="mouse_entered" from="FAlock" to="." method="_on_lock_mouse_entered"]
+[connection signal="mouse_exited" from="FAlock" to="." method="_on_lock_mouse_exited"]
+[connection signal="mouse_entered" from="ASlock" to="." method="_on_ASlock_mouse_entered"]
+[connection signal="mouse_exited" from="ASlock" to="." method="_on_ASlock_mouse_exited"]
+[connection signal="mouse_entered" from="APlock" to="." method="_on_APlock_mouse_entered"]
+[connection signal="mouse_exited" from="APlock" to="." method="_on_APlock_mouse_exited"]
+[connection signal="mouse_entered" from="SClock" to="." method="_on_SClock_mouse_entered"]
+[connection signal="mouse_exited" from="SClock" to="." method="_on_SClock_mouse_exited"]
+[connection signal="mouse_entered" from="SFlock" to="." method="_on_SFlock_mouse_entered"]
+[connection signal="mouse_exited" from="SFlock" to="." method="_on_SFlock_mouse_exited"]
+[connection signal="mouse_entered" from="FAFlock" to="." method="_on_FAFlock_mouse_entered"]
+[connection signal="mouse_exited" from="FAFlock" to="." method="_on_FAFlock_mouse_exited"]
+[connection signal="mouse_entered" from="SALock" to="." method="_on_SALock_mouse_entered"]
+[connection signal="mouse_exited" from="SALock" to="." method="_on_SALock_mouse_exited"]
+[connection signal="mouse_entered" from="PALock" to="." method="_on_PALock_mouse_entered"]
+[connection signal="mouse_exited" from="PALock" to="." method="_on_PALock_mouse_exited"]
+[connection signal="mouse_entered" from="CSLock" to="." method="_on_CSLock_mouse_entered"]
+[connection signal="mouse_exited" from="CSLock" to="." method="_on_CSLock_mouse_exited"]
+[connection signal="mouse_entered" from="AFLock" to="." method="_on_AFLock_mouse_entered"]
+[connection signal="mouse_exited" from="AFLock" to="." method="_on_AFLock_mouse_exited"]

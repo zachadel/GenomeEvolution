@@ -459,3 +459,103 @@ func _on_EnergyBar_resource_clicked(resource, value):
 			Input.set_custom_mouse_cursor(energy_icon)
 	
 	pass # Replace with function body.
+
+
+func _on_lock_mouse_entered():
+	$fattyAcidDetails.show()
+	pass # Replace with function body.
+
+
+func _on_lock_mouse_exited():
+	$fattyAcidDetails.hide()
+	pass # Replace with function body.
+
+
+func _on_ASlock_mouse_entered():
+	$SugarAminoDetails.show()
+	pass # Replace with function body.
+
+
+func _on_ASlock_mouse_exited():
+	$SugarAminoDetails.hide()
+	pass # Replace with function body.
+
+
+func _on_APlock_mouse_entered():
+	$aminoProteinDetails.show()
+	pass # Replace with function body.
+
+
+func _on_APlock_mouse_exited():
+	$aminoProteinDetails.hide()
+	pass # Replace with function body.
+
+
+func _on_SClock_mouse_entered():
+	$sugarCarbsDetails.show()
+	pass # Replace with function body.
+
+
+func _on_SClock_mouse_exited():
+	$sugarCarbsDetails.hide()
+	pass # Replace with function body.
+
+
+func _on_SFlock_mouse_entered():
+	$sugarFattyAcidDetails.show()
+	pass # Replace with function body.
+
+
+func _on_SFlock_mouse_exited():
+	$sugarFattyAcidDetails.hide()
+	pass # Replace with function body.
+
+
+func _on_FAFlock_mouse_entered():
+	$fattyAcidFatDetails.show()
+	pass # Replace with function body.
+
+
+func _on_FAFlock_mouse_exited():
+	$fattyAcidFatDetails.hide()
+	pass # Replace with function body.
+
+
+func _on_SALock_mouse_entered():
+	$AminoSugarDetails.show()
+	pass # Replace with function body.
+
+
+func _on_SALock_mouse_exited():
+	$AminoSugarDetails.hide()
+	pass # Replace with function body.
+
+
+func _on_PALock_mouse_entered():
+	$proteinAminoDetails.show()
+	pass # Replace with function body.
+
+
+func _on_PALock_mouse_exited():
+	$proteinAminoDetails.hide()
+	pass # Replace with function body.
+
+
+func _on_CSLock_mouse_entered():
+	$carbSugarDetails.show()
+	pass # Replace with function body.
+
+
+func _on_CSLock_mouse_exited():
+	$carbSugarDetails.hide()
+	pass # Replace with function body.
+
+
+func _on_AFLock_mouse_entered():
+	$fatFattyAcidDetails.show()
+	pass # Replace with function body.
+
+
+func _on_AFLock_mouse_exited():
+	$fatFattyAcidDetails.hide()
+	pass # Replace with function body.

@@ -1723,6 +1723,7 @@ func iterate_genes():
 			STATS.increment_currentPseudo()
 			
 	STATS.update_maxType()
+	STATS.set_firsts()
 	STATS.compare_maxTE()
 
 func adv_turn(round_num, turn_idx):
