@@ -473,7 +473,6 @@ func _on_Organism_show_reprod_opts(show):
 
 func quit_to_menu():
 	STATS._reset_game()
-	$pnl_dead_overview/background/statsScreen._reset_values()
 	Game.restart_game()
 	Settings.reset()
 	get_tree().change_scene("res://Scenes/MainMenu/TitleScreen.tscn")
@@ -554,5 +553,10 @@ func _on_Organism_transposon_activity(active):
 
 
 func _on_stats_screen_pressed():
+	emit_signal("card_stats_screen")
+	pass # Replace with function body.
+
+
+func _on_Button_pressed():
 	emit_signal("card_stats_screen")
 	pass # Replace with function body.

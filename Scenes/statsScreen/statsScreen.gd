@@ -4,6 +4,7 @@ signal show_cardTable
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
+var has_updated_values = false
 var turns_taken = 0;
 var resources_consumed= 0;
 var num_progeny= 0;
@@ -32,6 +33,19 @@ var max_deconstruction_value =0
 var max_ate_value = 0
 var max_blank_value = 0
 var max_pseudo_value =0
+
+var first_replication_value =0
+var first_locomotion_value = 0
+var first_helper_value = 0
+var first_manipulation_value = 0
+var first_sensing_value=0
+var first_component_value =0
+var first_construction_value = 0
+var first_deconstruction_value =0
+var first_ate_value=0
+var first_blank_value =0
+var first_pseudo_value =0
+
 
 var maxBarGene1Size= 1
 var maxBarGene2Size= 0
@@ -150,22 +164,39 @@ func _set_current_bar():
 	
 	$sub1/currentBar/currTransposon.rect_position.x = currentBarGene4Pos
 	$sub1/currentBar/currTransposon.rect_size.x = currentBarGene4Size
+	
+	$currBarDisplay/Label.text = "This is the current value of genes you had in your chromosome: "+str(current_CompositionBar)
+	$currBarDisplay2/Label.text = "This is the current value of pseudogenes you had in your chromosome: "+str(current_pseudo_value)
+	$currBarDisplay3/Label.text = "This is the current value of blank genes you had in your chromosome: " + str(current_blank_value)
+	$currBarDisplay4/Label.text = "This is the current value of transposons you had in your chromosome: " + str(current_ate_value)
+	
 	pass
 
 func _set_max_bar():
 	#Setting values
 	# The total length is of 490.
 	# Here, we are setting up the bars porportionally.
+	first_replication_value = STATS.get_first_replication();
+	first_locomotion_value = STATS.get_first_locomotion();
+	first_helper_value = STATS.get_first_helper();
+	first_manipulation_value = STATS.get_first_manipulation();
+	first_construction_value = STATS.get_first_construction();
+	first_deconstruction_value = STATS.get_first_deconstruction();
+	first_component_value = STATS.get_first_component();
+	first_sensing_value = STATS.get_first_sensing();
+	first_pseudo_value = STATS.get_first_pseudo();
+	first_ate_value = STATS.get_first_ate();
+	first_blank_value = STATS.get_first_blank();
 	
-	var maxBarSize = 1 + max_pseudo_value + max_blank_value + max_replication_value + max_locomotion_value + max_helper_value + max_manipulation_value + max_sensing_value + max_component_value + max_construction_value + max_deconstruction_value + max_ate_value;
-	var max_compositionBar = max_replication_value + max_locomotion_value + max_helper_value + max_manipulation_value + max_sensing_value + max_component_value + max_construction_value + max_deconstruction_value;
+	var maxBarSize = 1 + first_pseudo_value + first_blank_value + first_replication_value + first_locomotion_value + first_helper_value + first_manipulation_value + first_sensing_value + first_component_value + first_construction_value + first_deconstruction_value + first_ate_value;
+	var first_compositionBar = STATS.get_first_sum()
 	
 	var thisSize = 550 - 50
 	
-	maxBarGene1Size = thisSize * max_compositionBar / maxBarSize;
-	maxBarGene2Size = thisSize * max_pseudo_value / maxBarSize;
-	maxBarGene3Size = thisSize * max_blank_value / maxBarSize;
-	maxBarGene4Size = thisSize * max_ate_value / maxBarSize;
+	maxBarGene1Size = thisSize * first_compositionBar / maxBarSize;
+	maxBarGene2Size = thisSize * first_pseudo_value / maxBarSize;
+	maxBarGene3Size = thisSize * first_blank_value / maxBarSize;
+	maxBarGene4Size = thisSize * first_ate_value / maxBarSize;
 	
 	maxBarGene1Pos = 10;
 	maxBarGene2Pos = 10 + maxBarGene1Size + maxBarGene1Pos;
@@ -184,12 +215,23 @@ func _set_max_bar():
 	
 	$sub1/maxBar/maxTransposons.rect_position.x = maxBarGene4Pos
 	$sub1/maxBar/maxTransposons.rect_size.x = maxBarGene4Size
+	
+	$sub1/maxBar/score/score_txt.text= str(maxBarSize-1);
+	$maxBarDisplay/Label.text = "This is the value of genes you had in your first chromosome: "+str(first_compositionBar)
+	$maxBarDisplay2/Label.text= "This is the value of pseudogenes you had in your first chromosome: "+str(first_pseudo_value)
+	$maxBarDisplay3/Label.text = "This is the value of blank genes you had in your first chromosome: "+str(first_blank_value)
+	$maxBarDisplay4/Label.text="This is the value of transposons you had in your first chromosome: "+str(first_ate_value)
 
 func _update_values():
 	num_progeny = STATS.get_progeny();
 	tiles_explored = STATS.get_tiles_traveled();
 	resources_consumed = STATS.get_resources_consumed();
 	turns_taken = STATS.get_rounds();
+	print("turns taken: "+ str(turns_taken))
+	if(turns_taken > 0):
+		has_updated_values = true;
+	else:
+		has_updated_values = false;
 	
 	#setting values for the current bar's value.
 	current_replication_value = STATS.get_currentRep();
@@ -203,6 +245,19 @@ func _update_values():
 	current_ate_value = STATS.get_currentAte();
 	current_blank_value = STATS.get_currentBlank()
 	current_pseudo_value = STATS.get_current_pseudo()
+	
+	if(turns_taken < 1):
+		first_replication_value = current_replication_value;
+		first_locomotion_value = current_locomotion_value;
+		first_helper_value = current_helper_value;
+		first_manipulation_value = current_manipulation_value;
+		first_sensing_value = current_sensing_value;
+		first_component_value = current_component_value;
+		first_construction_value = current_construction_value;
+		first_deconstruction_value = current_deconstruction_value;
+		first_ate_value = current_ate_value;
+		first_blank_value = current_blank_value;
+		first_pseudo_value = current_pseudo_value;
 	
 	#setting values for the max bar's values. 
 	max_replication_value = STATS.get_maxRep();
@@ -228,6 +283,7 @@ func _update_values():
 	current_jumperTE = STATS.get_current_jumperTE()
 	
 	# max transposons
+
 	max_classicTE = STATS.get_max_classicTE()
 	max_zigzagTE = STATS.get_max_zigzagTE()
 	max_assistTE = STATS.get_max_assistTE()
@@ -238,6 +294,7 @@ func _update_values():
 	max_jumperTE = STATS.get_max_jumperTE()
 	if(max_jumperTE < current_jumperTE):
 		max_jumperTE = current_jumperTE
+	
 	#Repairs
 	dmgGeneRepairPerfect = STATS.get_dmg_genes_no_error();
 	dmgGeneRepairError = STATS.get_dmg_genes_error();
@@ -262,9 +319,10 @@ func _update_values():
 	skillsGained= STATS.get_skills_gained();
 	skillLost= STATS.get_skills_lost();
 	TeFuse = STATS.get_TEFuse();
-	geneSplit = STATS.get_elmSplit();
+	geneSplit = STATS.get_geneSplit();
 	
 func _set_transposons():
+	#setting the colors
 	$sub1/TE1/AnthroArt.set_color(Color.red)
 	$sub1/TE2/AnthroArt2.set_color(Color.red)
 	$sub1/TE3/AnthroArt3.set_color(Color.red)
@@ -273,6 +331,17 @@ func _set_transposons():
 	$sub1/TE6/AnthroArt6.set_color(Color.red)
 	$sub1/TE7/AnthroArt7.set_color(Color.red)
 	$sub1/TE8/AnthroArt8.set_color(Color.red)
+	#setting the body types
+	$sub1/TE1/AnthroArt/Art2D/Body/BodySprite.texture = load("res://Assets/Images/tes/circle_body.png")
+	$sub1/TE2/AnthroArt2/Art2D/Body/BodySprite.texture = load("res://Assets/Images/tes/kite_body.png")
+	$sub1/TE3/AnthroArt3/Art2D/Body/BodySprite.texture = load("res://Assets/Images/tes/hexagon_body.png")
+	$sub1/TE4/AnthroArt4/Art2D/Body/BodySprite.texture = load("res://Assets/Images/tes/pentagon_body.png")
+	$sub1/TE5/AnthroArt5/Art2D/Body/BodySprite.texture = load("res://Assets/Images/tes/star_body.png")
+	$sub1/TE6/AnthroArt6/Art2D/Body/BodySprite.texture = load("res://Assets/Images/tes/semicircle_body.png")
+	$sub1/TE6/AnthroArt6/Art2D/Body/BodySprite.flip_v = true
+	$sub1/TE7/AnthroArt7/Art2D/Body/BodySprite.texture = load("res://Assets/Images/tes/square_body.png")
+	$sub1/TE8/AnthroArt8/Art2D/Body/BodySprite.texture = load("res://Assets/Images/tes/triangle_body.png")
+	
 	#setting the values
 	$sub1/TE1/currScore/Label.text = str(current_classicTE)
 	$sub1/TE2/currScore/Label.text = str(current_zigzagTE)
@@ -290,6 +359,8 @@ func _set_transposons():
 	$sub1/TE5/maxScore/Label.text = str(max_nestlerTE)
 	$sub1/TE6/maxScore/Label.text = str(max_commuterTE)
 	$sub1/TE7/maxScore/Label.text = str(max_buncherTE)
+	if(max_jumperTE < current_jumperTE):
+		max_jumperTE = current_jumperTE;
 	$sub1/TE8/maxScore/Label.text = str(max_jumperTE)
 func _set_values():
 	#main values
@@ -300,12 +371,12 @@ func _set_values():
 	
 	
 	#Composition values
-	var genesNumber = max_pseudo_value+ max_blank_value + max_replication_value + max_locomotion_value + max_helper_value + max_manipulation_value + max_sensing_value + max_component_value + max_construction_value + max_deconstruction_value + max_ate_value;
+	var genesNumber = first_pseudo_value+ first_blank_value + first_replication_value + first_locomotion_value + first_helper_value + first_manipulation_value + first_sensing_value + first_component_value + first_construction_value + first_deconstruction_value + first_ate_value;
 	var currentNumber = current_pseudo_value + current_blank_value + current_replication_value + current_locomotion_value + current_helper_value + current_manipulation_value + current_sensing_value + current_component_value + current_construction_value + current_deconstruction_value + current_ate_value;
 	if(genesNumber <= currentNumber):
 		genesNumber = currentNumber;
 	$sub1/currentBar/currscore/score_txt.text = str(currentNumber) #should display the total number genes in the bar
-	$sub1/maxBar/score/score_txt.text = str(genesNumber) #should displya the max number of genes in the bar
+	
 	#current gene composition
 	$sub1/gene1/currScore/currScoret.text = str(current_replication_value)
 	$sub1/gene2/currScore/currScoret.text = str(current_sensing_value)
@@ -315,6 +386,39 @@ func _set_values():
 	$sub1/gene6/currScore/currScoret.text = str(current_deconstruction_value)
 	$sub1/gene7/currScore/currScoret.text = str(current_helper_value)
 	$sub1/gene8/currScore/currScoret.text = str(current_locomotion_value)
+	
+	if(current_replication_value == 0 and has_updated_values):
+		$sub1/gene1/currScore.color = Color.red
+	else:
+		$sub1/gene1/currScore.color = Color.yellow
+	if(current_sensing_value == 0 and has_updated_values):
+		$sub1/gene2/currScore.color = Color.red
+	else:
+		$sub1/gene2/currScore.color = Color.yellow
+	if(current_manipulation_value == 0 and has_updated_values):
+		$sub1/gene3/currScore.color = Color.red
+	else:
+		$sub1/gene3/currScore.color = Color.yellow
+	if(current_component_value== 0 and has_updated_values):
+		$sub1/gene4/currScore.color = Color.red
+	else:
+		$sub1/gene4/currScore.color = Color.yellow
+	if(current_construction_value== 0 and has_updated_values):
+		$sub1/gene5/currScore.color = Color.red
+	else:
+		$sub1/gene5/currScore.color = Color.yellow
+	if(current_deconstruction_value== 0 and has_updated_values):
+		$sub1/gene6/currScore.color = Color.red
+	else:
+		$sub1/gene6/currScore.color = Color.yellow
+	if(current_helper_value== 0 and has_updated_values):
+		$sub1/gene7/currScore.color = Color.red
+	else:
+		$sub1/gene7/currScore.color = Color.yellow
+	if(current_locomotion_value== 0 and has_updated_values):
+		$sub1/gene8/currScore.color = Color.red
+	else:
+		$sub1/gene8/currScore.color = Color.yellow
 	# max gene composition
 	$sub1/gene1/maxScore/maxScoret.text = str(max_replication_value)
 	$sub1/gene2/maxScore/maxScoret.text = str(max_sensing_value)
@@ -359,6 +463,7 @@ func _ready():
 	pass # Replace with function body.
 
 func _reset_values():
+	has_updated_values = false;
 	#reset variables
 	turns_taken = 0;
 	resources_consumed= 0;

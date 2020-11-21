@@ -557,47 +557,47 @@ func is_valid_interaction(resource_from: String, resource_to: String, bhv_profil
 			resource_to_class = get_class_from_name(resource_to)
 		
 		if resource_from_class == "energy":
-			if resource_to_class == "simple_carbs" and con_value >= 6 and bhv_profile.has_skill("energy->sugar"):
+			if resource_to_class == "simple_carbs" and bhv_profile.has_skill("energy->sugar"):
 				return true
 			else:
 				return false
 		elif resource_from_class == "simple_carbs":
 			if resource_to_class == "energy" and decon_value >= 0:
 				return true
-			elif resource_to_class == "complex_carbs" and con_value >= 4 and bhv_profile.has_skill("sugar->carb"):
+			elif resource_to_class == "complex_carbs" and bhv_profile.has_skill("sugar->carb"):
 				return true
-			elif resource_to_class == "simple_fats" and con_value >= 6 and bhv_profile.has_skill("sugar->fat_acid"):
+			elif resource_to_class == "simple_fats" and bhv_profile.has_skill("sugar->fat_acid"):
 				return true
-			elif resource_to_class == "simple_proteins" and con_value >= 3 and bhv_profile.has_skill("sugar->am_acid"):
+			elif resource_to_class == "simple_proteins" and bhv_profile.has_skill("sugar->am_acid"):
 				return true
 			else:
 				return false
 		elif resource_from_class == "simple_fats":
-			if resource_to_class == "complex_fats" and con_value >= 8 and bhv_profile.has_skill("fat_acid->fat"):
+			if resource_to_class == "complex_fats" and bhv_profile.has_skill("fat_acid->fat"):
 				return true
-			elif resource_to_class == "energy" and decon_value >= 2 and bhv_profile.has_skill("fat_acid->energy"):
+			elif resource_to_class == "energy" and bhv_profile.has_skill("fat_acid->energy"):
 				return true
 			else:
 				return false
 		elif resource_from_class == "simple_proteins":
-			if resource_to_class == "complex_proteins" and con_value >= 6 and bhv_profile.has_skill("am_acid->protein"):
+			if resource_to_class == "complex_proteins" and bhv_profile.has_skill("am_acid->protein"):
 				return true
-			elif resource_to_class == "simple_carbs" and decon_value >= 2 and bhv_profile.has_skill("am_acid->sugar"):
+			elif resource_to_class == "simple_carbs" and bhv_profile.has_skill("am_acid->sugar"):
 				return true
 			else:
 				return false
 		elif resource_from_class == "complex_carbs":
-			if resource_to_class == "simple_carbs" and decon_value >= 2 and bhv_profile.has_skill("carb->sugar"):
+			if resource_to_class == "simple_carbs" and bhv_profile.has_skill("carb->sugar"):
 				return true
 			else:
 				return false
 		elif resource_from_class == "complex_fats":
-			if resource_to_class == "simple_fats" and decon_value >= 6 and bhv_profile.has_skill("fat->fat_acid"):
+			if resource_to_class == "simple_fats" and bhv_profile.has_skill("fat->fat_acid"):
 				return true
 			else:
 				return false
 		elif resource_from_class == "complex_proteins":
-			if resource_to_class == "simple_proteins" and decon_value >= 4 and bhv_profile.has_skill("protein->am_acid"):
+			if resource_to_class == "simple_proteins" and bhv_profile.has_skill("protein->am_acid"):
 				return true
 			else:
 				return false

@@ -50,7 +50,7 @@ var finalVal_blank = 0
 var death_reason
 var current_pseudo = 0
 var trimmedTiles = 0
-var splitElm = 0
+var splitGene = 0
 var numInversions = 0
 var tilesInverted = 0
 var downToPseudo = 0;
@@ -96,6 +96,73 @@ var maxAte =0
 var transposonFuse = 0
 var turns_taken = 0
 
+var energy_to_sugar = false
+var sugar_to_carb = false
+var sugar_to_fatAcid = false
+var sugar_to_amAcid = false
+var fatAcid_to_fat = false
+var fatAcid_to_energy = false
+var amAcid_to_protein = false
+var amAcid_to_sugar = false
+var carb_to_sugar = false
+var fat_to_fatAcid = false
+var protein_to_amAcid = false
+
+#setting up the first iteration of the chromosome
+var first_replication=0
+var first_sensing=0
+var first_manipulaiton=0
+var first_component=0
+var first_construction=0
+var first_deconstruction=0
+var first_helper=0
+var first_locomotion=0
+var first_pseudo =0
+var first_blank=0
+var first_ate=0
+var first_sum =0
+var counter = 0
+
+func set_firsts():
+	if(counter == 0):
+		first_replication = currentReplication;
+		first_sensing = currentSensing;
+		first_manipulaiton = currentManipulation;
+		first_component = currentComponent;
+		first_construction = currentConstruction;
+		first_deconstruction = currentDeconstruction;
+		first_helper = currentHelper;
+		first_locomotion = currentLocomotion;
+		first_blank = currentBlank;
+		first_pseudo = current_pseudo
+		first_ate= currentAte
+	first_sum = first_replication + first_sensing + first_manipulaiton + first_component + first_construction + first_deconstruction + first_helper + first_locomotion
+	counter +=1;
+
+func get_first_sum():
+	return first_sum;
+func get_first_replication():
+	return first_replication
+func get_first_sensing():
+	return first_sensing;
+func get_first_manipulation():
+	return first_manipulaiton;
+func get_first_component():
+	return first_component;
+func get_first_construction():
+	return first_construction;
+func get_first_deconstruction():
+	return first_deconstruction;
+func get_first_helper():
+	return first_helper;
+func get_first_locomotion():
+	return first_locomotion;
+func get_first_pseudo():
+	return first_pseudo;
+func get_first_blank():
+	return first_blank;
+func get_first_ate():
+	return first_ate;
 
 func get_current_pseudo():
 	return current_pseudo;
@@ -171,6 +238,19 @@ func get_d():
 
 func _reset_game():
 	#Declaring/initializing variables to keep track of: 
+	first_replication=0
+	first_sensing=0
+	first_manipulaiton=0
+	first_component=0
+	first_construction=0
+	first_deconstruction=0
+	first_helper=0
+	first_locomotion=0
+	first_pseudo =0
+	first_blank=0
+	first_ate=0
+	first_sum =0
+	counter = 0
 	tiles_traveled = 0
 	resources_consumed = 0
 	resources_converted = 0
@@ -215,7 +295,7 @@ func _reset_game():
 	death_reason
 	current_pseudo = 0
 	trimmedTiles = 0
-	splitElm = 0
+	splitGene = 0
 	numInversions = 0
 	tilesInverted = 0
 	downToPseudo = 0;
@@ -316,6 +396,7 @@ func update_maxType():
 	if(current_pseudo > maxVal_pseudo):
 		maxVal_pseudo = current_pseudo
 
+
 func increment_transposonFuse():
 	transposonFuse += 1
 func get_TEFuse():
@@ -391,10 +472,10 @@ func increment_tilesInverted():
 func increment_numInversions():
 	numInversions += 1
 
-func increment_elmSplits():
-	splitElm += 1
-func get_elmSplit():
-	return splitElm;
+func increment_geneSplits():
+	splitGene += 1
+func get_geneSplit():
+	return splitGene;
 func increment_trimmedTiles():
 	trimmedTiles +=1
 func get_trimmedTiles():

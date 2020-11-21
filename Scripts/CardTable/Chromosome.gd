@@ -304,7 +304,6 @@ func add_elm(elm, pos = null):
 func split_elm(elm):
 	var dupe_elm = Game.copy_elm(elm);
 	var base_behavior = elm.get_ess_behavior_raw();
-	STATS.increment_elmSplits()
 	var half_up = {};
 	var half_down = {};
 	for k in base_behavior:
@@ -320,6 +319,7 @@ func split_elm(elm):
 	dupe_elm.randomize_code();
 	elm.upd_display();
 	dupe_elm.upd_display();
+	print("I was called in split elm")
 
 func remove_elm(elm):
 	emit_signal("animating", true);

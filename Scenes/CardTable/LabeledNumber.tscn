@@ -79,8 +79,11 @@ __meta__ = {
 }
 
 [node name="lblText" type="Label" parent="."]
-anchor_right = 1.0
-margin_bottom = 32.0
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -98.5
+margin_right = 98.5
+margin_bottom = 40.0
 custom_fonts/font = ExtResource( 2 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Number"
@@ -95,8 +98,8 @@ __meta__ = {
 modulate = Color( 1, 1, 1, 0 )
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = -56.0
-margin_bottom = -89.0
+margin_top = 16.0
+margin_bottom = -17.0
 custom_fonts/font = ExtResource( 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_as_outline = 1

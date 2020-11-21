@@ -261,8 +261,6 @@ func extract_elm(elm, place_gap = true):
 func recombine(elm0, elm1):
 	recombining = true;
 	var idxs = [];
-	if (elm0.is_ate() or elm1.is_ate()):
-		STATS.increment_transposonFuse()
 	if (elm0.get_cmsm() == $cmsm0/cmsm):
 		idxs = [elm0.get_index(), elm1.get_index()];
 	else:
@@ -441,7 +439,9 @@ func insert_from_behavior(sq_elm, this_cmsm, ref_pos, behave_dict = Game.DEFAULT
 	if final_idx < final_cmsm.get_child_count() && randf() <= behave_dict["split_chance"]:
 		var gene_at = final_cmsm.get_child(final_idx);
 		if !gene_at.is_gap():
+			print("splitting the element in the greater function")
 			final_cmsm.split_elm(gene_at);
+			STATS.increment_geneSplits()
 			final_idx += 1;
 	
 	# If applicable, damage a gene at that spot
