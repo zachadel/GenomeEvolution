@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Scripts/WorldMap/InternalResourceController.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/WorldMap/EnergyBar.tscn" type="PackedScene" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://Scenes/WorldMap/EnergyCosts.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Assets/Fonts/OpenSans-48.tres" type="DynamicFont" id=5]
 [ext_resource path="res://Assets/Images/icons/padlock.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Fonts/OpenSans-Bold.ttf" type="DynamicFontData" id=7]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.392157, 0.392157, 0.392157, 1 )
@@ -19,12 +20,41 @@ font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
 size = 14
 font_data = SubResource( 3 )
 
+[sub_resource type="DynamicFont" id=5]
+resource_local_to_scene = true
+size = 44
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=6]
+resource_local_to_scene = true
+size = 44
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=7]
+resource_local_to_scene = true
+size = 44
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=8]
+resource_local_to_scene = true
+size = 44
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 7 )
+
 [node name="InternalResourceController" type="Panel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = 5.0
-margin_right = -1205.0
-margin_bottom = -50.0
+margin_left = 14.0308
+margin_top = 25.2043
+margin_right = -1190.97
+margin_bottom = -29.7957
 custom_styles/panel = SubResource( 1 )
 script = ExtResource( 1 )
 __meta__ = {
@@ -543,9 +573,9 @@ __meta__ = {
 margin_left = -1.0
 margin_top = 1.0
 margin_right = 598.0
-margin_bottom = 271.0
+margin_bottom = 254.0
 rect_scale = Vector2( 0.4, 0.4 )
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = SubResource( 5 )
 text = "Sugar and Amino Conversion locked. requires  sugar->am_acid,
 skill."
 align = 1
@@ -570,9 +600,9 @@ __meta__ = {
 margin_left = -1.0
 margin_top = 1.0
 margin_right = 598.0
-margin_bottom = 271.0
+margin_bottom = 273.0
 rect_scale = Vector2( 0.4, 0.4 )
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = SubResource( 6 )
 text = "Sugar and Amino Conversion locked. requires:  am_acid->sugar
 skill."
 align = 1
@@ -594,12 +624,11 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="aminoProteinDetails"]
-margin_left = 0.25
-margin_top = 1.44543
-margin_right = 609.25
-margin_bottom = 277.445
+margin_top = 1.0
+margin_right = 609.0
+margin_bottom = 278.0
 rect_scale = Vector2( 0.4, 0.4 )
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = SubResource( 7 )
 text = "Amino and Protein Conversion locked.
 requires: am_acid->protein
 skills"
@@ -622,12 +651,11 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="proteinAminoDetails"]
-margin_left = 0.25
-margin_top = 1.44543
-margin_right = 609.25
-margin_bottom = 277.445
+margin_top = 1.0
+margin_right = 609.0
+margin_bottom = 275.0
 rect_scale = Vector2( 0.4, 0.4 )
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = SubResource( 8 )
 text = "Amino and Protein Conversion locked.
 requires: protein->am_acid
 skill."

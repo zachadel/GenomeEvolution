@@ -441,7 +441,6 @@ func insert_from_behavior(sq_elm, this_cmsm, ref_pos, behave_dict = Game.DEFAULT
 		if !gene_at.is_gap():
 			print("splitting the element in the greater function")
 			final_cmsm.split_elm(gene_at);
-			STATS.increment_geneSplits()
 			final_idx += 1;
 	
 	# If applicable, damage a gene at that spot

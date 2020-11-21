@@ -312,14 +312,12 @@ func split_elm(elm):
 	
 	elm.set_ess_behavior(half_up);
 	dupe_elm.set_ess_behavior(half_down);
-	
 	add_elm(dupe_elm, elm.get_index());
-	
 	elm.randomize_code();
 	dupe_elm.randomize_code();
 	elm.upd_display();
 	dupe_elm.upd_display();
-	print("I was called in split elm")
+	STATS.increment_geneSplits()
 
 func remove_elm(elm):
 	emit_signal("animating", true);

@@ -227,7 +227,7 @@ func _update_values():
 	tiles_explored = STATS.get_tiles_traveled();
 	resources_consumed = STATS.get_resources_consumed();
 	turns_taken = STATS.get_rounds();
-	print("turns taken: "+ str(turns_taken))
+	#print("turns taken: "+ str(turns_taken))
 	if(turns_taken > 0):
 		has_updated_values = true;
 	else:

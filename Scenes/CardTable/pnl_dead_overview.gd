@@ -74,7 +74,6 @@ func _ready():
 	$background/gene8/scoreBox/Label.text = str(curr_locom)
 	num_progeny= STATS.get_progeny()
 	num_rounds = STATS.get_rounds()
-	determine_death_reason()
 	$background/progeny2.text = str(num_progeny)
 	$background/rounds2.text = str(num_rounds)
 	pass # Replace with function body.

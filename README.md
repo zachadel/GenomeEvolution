@@ -6,7 +6,7 @@
 - Replace the `token` key with the correct OAuth token
 - Never commit `env.json` with key
 
-###How to Export for HTML
+### How to Export for HTML
 1. Download latest build from dev branch.
 1. Open in Godot.
 1. At the top, open the Project tab and select Export...
