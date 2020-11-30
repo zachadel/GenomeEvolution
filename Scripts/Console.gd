@@ -34,6 +34,7 @@ var CMDS = {
 	"add_resource_to_tile": [TYPE_STRING, TYPE_INT, TYPE_INT, TYPE_INT, TYPE_INT],
 	"add_resource_to_player": [TYPE_STRING, TYPE_INT],
 	"disable_obscurity_map": [TYPE_BOOL],
+	"debug": [TYPE_STRING],
 	"print_game_info": [],
 	"print_action_cost": []
 	
@@ -57,6 +58,21 @@ var HELP = {
 	"add_resource_to_tile": "    Usage: add_resource_to_pos [resource_name] [amount] [x] [y] [z]\n    Details: Place a certain amount of a resource on a particular tile.\n        -resource_name: type one of bread, candy1, potato, candy2, avocado, oil, peanut_butter, butter, chicken, egg, steak, protein_shake, phosphorus, nitrogen, calcium, sodium, iron, mercury\n        -amount: integer of amount to be added to the tile\n        -x: integer of x coordinate\n        -y: integer of y coordinate\n        -z: integer of z coordinate",
 	"add_resource_to_player": "    Usage: add_resource_to_player [resource_name] [amount]\n    Details: Add a certain amount of a resource to the player.\n        -resource_name: type one of bread, candy1, potato, candy2, avocado, oil, peanut_butter, butter, chicken, egg, steak, protein_shake, phosphorus, nitrogen, calcium, sodium, iron, mercury\n        -amount: integer of amount to be added to the player",
 	"disable_obscurity_map": "    Usage: disable_obscurity_map [true/false]\n    Details: Disable/Enable the cloud map.\n        -true/false: Type true to disable and false to enable",
+	"debug": """
+		Usage: print [stat]\n
+		Inputs:\n
+			action_cost: total cost for the last action taken
+			all: full debug information to console for copying and pasting
+			break_count: break count of the envirnment
+			current_tile: current tile player ocupies
+			energy: organisim's current energy
+			energy_costs: detailed info of cost
+			movement: organism's current movement radius
+			profile: Organism Gene Profile (pre-pH)
+			resources: list of all resources in visible area
+			storgae_capacity: list of organism's capacity
+			vesicle: pass
+			vision: organism current vision radius""",
 	"print_game_info": "    Usage: print_game_info\n    Details: Prints the debug information to the console for copying and pasting.",
 	"print_action_cost": "    Usage: print_action_cost\n    Details: Prints the total cost for the last action taken."
 }
@@ -345,6 +361,69 @@ func disable_obscurity_map(is_disabled: bool) -> String:
 		
 	return output_str
 	
+
+func debug(info: String) -> String:
+	var output_str = ""
+	match info:
+		"action_cost":
+			output_str = str(Actions.energy_cost)
+		"all":
+			var list_of_all_inputs = ["action_cost", "break_count", "current_tile", "energy", "energy_costs", "movement", "profile", "resources", "storage_capacity", "vesicle", "vision"]
+			for inpt in list_of_all_inputs:
+				output_str += debug(inpt)
+		"break_count":
+			output_str = str(world_map.ui.irc.organism.get_dmg())
+		"current_tile":
+			output_str = str(world_map.current_player.get_current_tile())
+		"energy":
+			output_str = str(world_map.ui.irc.organism.energy)
+		"energy_costs":
+			for action in world_map.ui.irc.organism.OXYGEN_ACTIONS:
+				var base_cost = world_map.ui.irc.organism.get_base_energy_cost(action, 1)
+				var oxygen_cost = world_map.ui.irc.organism.get_oxygen_energy_cost(action, 1)
+				var temp_cost = world_map.ui.irc.organism.get_temperature_energy_cost(action, 1)
+				var mineral_cost = world_map.ui.irc.organism.get_mineral_energy_cost(action, 1)
+				var final_cost = world_map.ui.irc.organism.get_energy_cost(action, 1)
+				output_str += ("%s Base Cost: " % [action] + str(base_cost) + '\n')
+				output_str += ("%s Oxygen Cost: " % [action] + str(oxygen_cost) + '\n')
+				output_str += ("%s Temperature Cost: " % [action] + str(temp_cost) + '\n')
+				output_str += ("%s Mineral Cost: " % [action] + str(mineral_cost) + '\n')
+				output_str += ("%s base + oxygen + temp + mineral: " % [action] + str(base_cost+oxygen_cost+temp_cost+mineral_cost) + '\n')
+				output_str += ("%s Final Cost: " % [action] + str(final_cost) + '\n')
+				var total_energy = 0
+				var processed_energy = 0
+				for resource in world_map.ui.irc.organism.cfp_resources:
+					processed_energy = world_map.ui.irc.organism.get_processed_energy_value(resource)
+					total_energy += processed_energy
+					
+					output_str += ("Processed energy amount for %s: %d\n" % [resource, processed_energy])
+				
+				output_str += ("Total processed energy: " + str(total_energy + world_map.ui.irc.organism.energy) + '\n')
+				output_str += ("Acquire resources costs: " + str(world_map.ui.irc.organism.get_energy_cost("acquire_resources")) + '\n')
+		"movement":
+			output_str = str(world_map.ui.irc.organism.get_locomotion_radius())
+		"profile":
+			output_str = str(world_map.ui.irc.organism.get_behavior_profile().print_profile())
+		"resources":
+			output_str += (str(world_map.ui.irc.organism.cfp_resources) + '\n')
+			output_str += (str(world_map.ui.irc.organism.mineral_resources) + '\n')
+		"storage_capacity":
+			output_str += ("Simple Carbs: " + str(world_map.ui.irc.organism.get_estimated_capacity("simple_carbs")) + '\n')
+			output_str += ("Simple Fats: " + str(world_map.ui.irc.organism.get_estimated_capacity("simple_fats")) + '\n')
+			output_str += ("Simple Proteins: " +  str(world_map.ui.irc.organism.get_estimated_capacity("simple_proteins")) + '\n')
+			output_str += ("Complex Carbs: " + str(world_map.ui.irc.organism.get_estimated_capacity("complex_carbs")) + '\n')
+			output_str += ("Complex Fats: " + str(world_map.ui.irc.organism.get_estimated_capacity("complex_fats")) + '\n')
+			output_str += ("Complex Proteins: " + str(world_map.ui.irc.organism.get_estimated_capacity("complex_proteins")) + '\n')
+		"vesicle":
+			output_str = str(world_map.ui.irc.organism.vesicle_scales)
+		"vision":
+			output_str = str(world_map.ui.irc.organism.get_vision_radius())
+		_:
+			return "Invalid input"
+
+	return output_str + '\n'
+
+
 func print_game_info() -> String:
 	var output_str = ""
 	
@@ -352,7 +431,7 @@ func print_game_info() -> String:
 	output_str += str(Settings.settings) + '\n'
 	output_str += "******************************************************************\n"
 	output_str += ("Current tile: \n")
-	var cur_tile = world_map.current_player.get_current_tile()
+	var cur_tile = '\n'
 	output_str += str(cur_tile) + '\n'
 	output_str += "Get primary resource: " + str(Settings.settings["resources"].keys()[world_map.get_node("ResourceMap").get_primary_resource(Vector2(cur_tile["location"][0], cur_tile["location"][1]))]) + '\n'
 	output_str += ("Organism storage capacity:\n")
