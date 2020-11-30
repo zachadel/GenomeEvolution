@@ -34,9 +34,7 @@ var CMDS = {
 	"add_resource_to_tile": [TYPE_STRING, TYPE_INT, TYPE_INT, TYPE_INT, TYPE_INT],
 	"add_resource_to_player": [TYPE_STRING, TYPE_INT],
 	"disable_obscurity_map": [TYPE_BOOL],
-	"debug": [TYPE_STRING],
-	"print_game_info": [],
-	"print_action_cost": []
+	"debug": [TYPE_STRING]
 	
 }
 
@@ -72,9 +70,7 @@ var HELP = {
 			resources: list of all resources in visible area
 			storgae_capacity: list of organism's capacity
 			vesicle: pass
-			vision: organism current vision radius""",
-	"print_game_info": "    Usage: print_game_info\n    Details: Prints the debug information to the console for copying and pasting.",
-	"print_action_cost": "    Usage: print_action_cost\n    Details: Prints the total cost for the last action taken."
+			vision: organism current vision radius"""
 }
 
 func set_world_map(map: Node):
@@ -422,69 +418,6 @@ func debug(info: String) -> String:
 			return "Invalid input"
 
 	return output_str + '\n'
-
-
-func print_game_info() -> String:
-	var output_str = ""
-	
-	output_str += "******************************************************************\n"
-	output_str += str(Settings.settings) + '\n'
-	output_str += "******************************************************************\n"
-	output_str += ("Current tile: \n")
-	var cur_tile = '\n'
-	output_str += str(cur_tile) + '\n'
-	output_str += "Get primary resource: " + str(Settings.settings["resources"].keys()[world_map.get_node("ResourceMap").get_primary_resource(Vector2(cur_tile["location"][0], cur_tile["location"][1]))]) + '\n'
-	output_str += ("Organism storage capacity:\n")
-	output_str += ("Simple Carbs: " + str(world_map.ui.irc.organism.get_estimated_capacity("simple_carbs")) + '\n')
-	output_str += ("Simple Fats: " + str(world_map.ui.irc.organism.get_estimated_capacity("simple_fats")) + '\n')
-	output_str += ("Simple Proteins: " +  str(world_map.ui.irc.organism.get_estimated_capacity("simple_proteins")) + '\n')
-	output_str += ("Complex Carbs: " + str(world_map.ui.irc.organism.get_estimated_capacity("complex_carbs")) + '\n')
-	output_str += ("Complex Fats: " + str(world_map.ui.irc.organism.get_estimated_capacity("complex_fats")) + '\n')
-	output_str += ("Complex Proteins: " + str(world_map.ui.irc.organism.get_estimated_capacity("complex_proteins")) + '\n')
-	output_str += ('Vesicle: Scales:\n')
-	output_str += str(world_map.ui.irc.organism.vesicle_scales) + '\n'
-	output_str += ('Organism Gene Profile (pre-pH):') + '\n'
-	output_str += str(world_map.ui.irc.organism.get_behavior_profile().print_profile()) + '\n'
-	output_str += ("Environmental Break Count: " + str(world_map.ui.irc.organism.get_dmg()) + '\n')
-	output_str += ("Resources:"  + '\n')
-	output_str += (str(world_map.ui.irc.organism.cfp_resources) + '\n')
-	output_str += (str(world_map.ui.irc.organism.mineral_resources) + '\n')
-	output_str += ("Energy:")
-	output_str += str(world_map.ui.irc.organism.energy) + '\n'
-	output_str += ("Vision Radius:")
-	output_str += str(world_map.ui.irc.organism.get_vision_radius()) + '\n'
-	output_str += ("Movement Radius:")
-	output_str += str(world_map.ui.irc.organism.get_locomotion_radius()) + '\n'
-	output_str += ("***Energy Costs***")
-	for action in world_map.ui.irc.organism.OXYGEN_ACTIONS:
-		var base_cost = world_map.ui.irc.organism.get_base_energy_cost(action, 1)
-		var oxygen_cost = world_map.ui.irc.organism.get_oxygen_energy_cost(action, 1)
-		var temp_cost = world_map.ui.irc.organism.get_temperature_energy_cost(action, 1)
-		var mineral_cost = world_map.ui.irc.organism.get_mineral_energy_cost(action, 1)
-		var final_cost = world_map.ui.irc.organism.get_energy_cost(action, 1)
-		output_str += ("%s Base Cost: " % [action] + str(base_cost))
-		output_str += ("%s Oxygen Cost: " % [action] + str(oxygen_cost))
-		output_str += ("%s Temperature Cost: " % [action] + str(temp_cost))
-		output_str += ("%s Mineral Cost: " % [action] + str(mineral_cost))
-		output_str += ("%s base + oxygen + temp + mineral: " % [action] + str(base_cost+oxygen_cost+temp_cost+mineral_cost))
-		output_str += ("%s Final Cost: " % [action] + str(final_cost))
-		output_str += ("\n")
-		var total_energy = 0
-		var processed_energy = 0
-		for resource in world_map.ui.irc.organism.cfp_resources:
-			processed_energy = world_map.ui.irc.organism.get_processed_energy_value(resource)
-			total_energy += processed_energy
-			
-			output_str += ("Processed energy amount for %s: %d\n" % [resource, processed_energy])
-		
-		output_str += ("Total processed energy: " + str(total_energy + world_map.ui.irc.organism.energy))
-		output_str += ("Acquire resources costs: " + str(world_map.ui.irc.organism.get_energy_cost("acquire_resources")) + '\n')
-	
-	return output_str
-	
-func print_action_cost() -> String:
-	var output_str = String(Actions.energy_cost)
-	return output_str
 	
 func _get_chrom_length(chrom: String) -> int:
 	var chrom_pos = _get_chrom_idx(chrom)
