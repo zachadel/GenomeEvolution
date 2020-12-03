@@ -182,7 +182,7 @@ func get_gc_man():
 
 func get_gc_sens():
 	if(gc_sens > 0.1):
-		print("gc_sens: "+str(gc_sens))
+		#print("gc_sens: "+str(gc_sens))
 		return stepify(gc_sens, 0.1);
 	else:
 		return gc_sens;
@@ -304,23 +304,56 @@ func get_currentAte():
 func get_currentBlank():
 	return currentBlank;
 func get_maxRep():
-	return maxReplic
+	if(maxReplic > 0.1):
+		return stepify(maxReplic, 0.1);
+	else:
+		return maxReplic
+
 func get_maxLocomo():
-	return maxLocomo
+	if(maxLocomo > 0.1):
+		return stepify(maxLocomo,0.1)
+	else:
+		return maxLocomo
+
 func get_maxHelp():
-	return maxHelp
+	if(maxHelp > 0.1):
+		return stepify(maxHelp, 0.1)
+	else:
+		return maxHelp
+
 func get_maxManip():
-	return maxManipul
+	if(maxManipul > 0.1):
+		return stepify(maxManipul, 0.1)
+	else:
+		return maxManipul
+
 func get_maxSens():
-	return maxSens
+	if(maxSens > 0.1):
+		return stepify(maxSens, 0.1)
+	else:
+		return maxSens
+
 func get_maxComp():
-	return maxComponent
+	if(maxComponent > 0.1):
+		return stepify(maxComponent, 0.1)
+	else:
+		return maxComponent
+
 func get_maxCon():
-	return maxConstruc
+	if(maxConstruc > 0.1):
+		return stepify(maxConstruc, 0.1)
+	else:
+		return maxConstruc
+
 func get_maxDecon():
-	return maxDeconstruc
+	if(maxDeconstruc > 0.1):
+		return stepify(maxDeconstruc, 0.1)
+	else: 
+		return maxDeconstruc
+
 func get_maxAte():
 	return maxAte
+
 func get_d():
 	return max_blank_tiles;
 
@@ -470,24 +503,24 @@ func clear_currentGenes():
 	current_pseudo = 0;
 
 func update_maxType():
-	if(currentReplication > maxReplic):
-		maxReplic = currentReplication
-	if(currentLocomotion > maxLocomo):
-		maxLocomo = currentLocomotion 
-	if(currentHelper > maxHelp):
-		maxHelp = currentHelper
-	if(currentManipulation > maxManipul):
-		maxManipul = currentManipulation
-	if(currentSensing > maxSens):
-		maxSens = currentSensing
-	if(currentComponent > maxComponent):
-		maxComponent = currentComponent
-	if(currentConstruction > maxConstruc):
-		maxConstruc = currentConstruction
-	if(currentDeconstruction > maxDeconstruc):
-		maxDeconstruc = currentDeconstruction
-	if(currentAte > maxAte):
-		maxAte = currentAte
+	if(gc_rep > maxReplic):
+		maxReplic = gc_rep
+	if(gc_loc > maxLocomo):
+		maxLocomo = gc_loc 
+	if(gc_help > maxHelp):
+		maxHelp = gc_help
+	if(gc_man > maxManipul):
+		maxManipul = gc_man
+	if(gc_sens > maxSens):
+		maxSens = gc_sens
+	if(gc_comp > maxComponent):
+		maxComponent = gc_comp
+	if(gc_con > maxConstruc):
+		maxConstruc = gc_con
+	if(gc_decon > maxDeconstruc):
+		maxDeconstruc = gc_decon
+	if(gc_ate > maxAte):
+		maxAte = gc_ate
 	if(currentBlank > max_blank_tiles):
 		max_blank_tiles = currentBlank
 	if(current_pseudo > maxVal_pseudo):
