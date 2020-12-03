@@ -3,7 +3,9 @@ signal show_cardTable
 
 # Declare member variables here. Examples:
 # var a = 2
+onready var orgn = $Organism;
 # var b = "text"
+var genes_loaded = false
 var has_updated_values = false
 var turns_taken = 0;
 var resources_consumed= 0;
@@ -133,11 +135,23 @@ var skillLost= 0
 var TeFuse= 0
 var geneSplit= 0
 
+#percentages
+var first_gene_percent : float; 
+var first_pseudo_percent : float;
+var first_blank_percent : float;
+var first_transposon_percent : float;
 
+var curr_gene_percent : float;
+var curr_pseudo_percent: float;
+var curr_blank_percent: float;
+var curr_transposon_percent : float;
+
+func _on_genes_loaded():
+	genes_loaded = true;
 
 func _set_current_bar():
 	#current_replication_value = 0;
-	var currentBarSize = 1 + current_pseudo_value + current_blank_value + current_replication_value + current_locomotion_value + current_helper_value + current_manipulation_value + current_sensing_value + current_component_value + current_construction_value + current_deconstruction_value + current_ate_value;
+	var currentBarSize = 0.001 + current_pseudo_value + current_blank_value + current_replication_value + current_locomotion_value + current_helper_value + current_manipulation_value + current_sensing_value + current_component_value + current_construction_value + current_deconstruction_value + current_ate_value;
 	var current_CompositionBar = current_replication_value + current_locomotion_value + current_helper_value + current_manipulation_value + current_sensing_value + current_component_value + current_construction_value + current_deconstruction_value
 	var thisSize = 550 - 50;
 	#S$Label.text = str(currentBarSize)
@@ -165,10 +179,17 @@ func _set_current_bar():
 	$sub1/currentBar/currTransposon.rect_position.x = currentBarGene4Pos
 	$sub1/currentBar/currTransposon.rect_size.x = currentBarGene4Size
 	
-	$currBarDisplay/Label.text = "This is the current value of genes you had in your chromosome: "+str(current_CompositionBar)
-	$currBarDisplay2/Label.text = "This is the current value of pseudogenes you had in your chromosome: "+str(current_pseudo_value)
-	$currBarDisplay3/Label.text = "This is the current value of blank genes you had in your chromosome: " + str(current_blank_value)
-	$currBarDisplay4/Label.text = "This is the current value of transposons you had in your chromosome: " + str(current_ate_value)
+	if(currentBarSize > 0.001):
+		currentBarSize -= 0.001;
+	curr_gene_percent = float(current_CompositionBar) / float(currentBarSize);
+	curr_pseudo_percent = float(current_pseudo_value) / float(currentBarSize);
+	curr_blank_percent = float(current_blank_value) / float(currentBarSize);
+	curr_transposon_percent = float(current_ate_value) / float(currentBarSize);
+	
+	$currBarDisplay/Label.text = "Currently you have "+str(current_CompositionBar)+" genes, these make up "+str(curr_gene_percent*100)+"% of your genome.";
+	$currBarDisplay2/Label.text = "Currently you have "+str(current_pseudo_value)+" pseudogenes, these make up "+str(curr_pseudo_percent*100)+"% of your genome.";
+	$currBarDisplay3/Label.text = "Currently you have " + str(current_blank_value)+" blank genes, these make up "+str(curr_blank_percent*100)+"% of your genome.";
+	$currBarDisplay4/Label.text = "Currently you have " + str(current_ate_value)+" transposons, these make up "+str(curr_transposon_percent*100)+"% of your genome.";
 	
 	pass
 
@@ -188,7 +209,7 @@ func _set_max_bar():
 	first_ate_value = STATS.get_first_ate();
 	first_blank_value = STATS.get_first_blank();
 	
-	var maxBarSize = 1 + first_pseudo_value + first_blank_value + first_replication_value + first_locomotion_value + first_helper_value + first_manipulation_value + first_sensing_value + first_component_value + first_construction_value + first_deconstruction_value + first_ate_value;
+	var maxBarSize = 0.00001 + first_pseudo_value + first_blank_value + first_replication_value + first_locomotion_value + first_helper_value + first_manipulation_value + first_sensing_value + first_component_value + first_construction_value + first_deconstruction_value + first_ate_value;
 	var first_compositionBar = STATS.get_first_sum()
 	
 	var thisSize = 550 - 50
@@ -215,12 +236,18 @@ func _set_max_bar():
 	
 	$sub1/maxBar/maxTransposons.rect_position.x = maxBarGene4Pos
 	$sub1/maxBar/maxTransposons.rect_size.x = maxBarGene4Size
-	
-	$sub1/maxBar/score/score_txt.text= str(maxBarSize-1);
-	$maxBarDisplay/Label.text = "This is the value of genes you had in your first chromosome: "+str(first_compositionBar)
-	$maxBarDisplay2/Label.text= "This is the value of pseudogenes you had in your first chromosome: "+str(first_pseudo_value)
-	$maxBarDisplay3/Label.text = "This is the value of blank genes you had in your first chromosome: "+str(first_blank_value)
-	$maxBarDisplay4/Label.text="This is the value of transposons you had in your first chromosome: "+str(first_ate_value)
+	#maxBarSize -= 1;
+	$sub1/maxBar/score/score_txt.text= str(maxBarSize-0.00001);
+	if(maxBarSize > 0.00001):
+		maxBarSize-= 0.00001;
+	first_gene_percent = float(first_compositionBar)/ float(maxBarSize);
+	first_pseudo_percent = float(first_pseudo_value) / float(maxBarSize);
+	first_blank_percent = float(first_blank_value) / float(maxBarSize);
+	first_transposon_percent = float(first_ate_value) / float(maxBarSize);
+	$maxBarDisplay/Label.text = "You started with "+str(first_compositionBar)+" genes, these made up " + str(first_gene_percent*100) + "% of your genome.";
+	$maxBarDisplay2/Label.text = "You started with "+str(first_pseudo_value)+" pseudogenes, these made up "+str(first_pseudo_percent * 100)+"% of your genome.";
+	$maxBarDisplay3/Label.text = "You started with "+str(first_blank_value) + "blanks, these made up "+ str(first_blank_percent *100)+"% of your genome.";
+	$maxBarDisplay4/Label.text = "You started with "+str(first_ate_value)+" transposons, these made up " + str(first_transposon_percent*100)+"% of your genome.";
 
 func _update_values():
 	num_progeny = STATS.get_progeny();
@@ -230,19 +257,23 @@ func _update_values():
 	#print("turns taken: "+ str(turns_taken))
 	if(turns_taken > 0):
 		has_updated_values = true;
+		
 	else:
 		has_updated_values = false;
-	
-	#setting values for the current bar's value.
-	current_replication_value = STATS.get_currentRep();
-	current_locomotion_value = STATS.get_currentLoc();
-	current_helper_value = STATS.get_currentHelp();
-	current_manipulation_value = STATS.get_currentManip();
-	current_sensing_value = STATS.get_currentSens();
-	current_component_value = STATS.get_currentComp();
-	current_construction_value = STATS.get_currentCon();
-	current_deconstruction_value = STATS.get_currentDeCon();
-	current_ate_value = STATS.get_currentAte();
+	var bhv_profile 
+	#if(genes_loaded):
+		#bhv_profile = orgn.get_behavior_profile();
+		#current_replication_value = bhv_profile.get_behavior("Replication")
+		#print("current Replication value: "+str(current_replication_value))
+	current_replication_value = STATS.get_gc_rep();
+	current_locomotion_value = STATS.get_gc_loc();
+	current_helper_value = STATS.get_gc_help();
+	current_manipulation_value = STATS.get_gc_man();
+	current_sensing_value = STATS.get_gc_sens();
+	current_component_value = STATS.get_gc_comp();
+	current_construction_value = STATS.get_gc_con();
+	current_deconstruction_value = STATS.get_gc_decon();
+	current_ate_value = STATS.get_gc_ate();
 	current_blank_value = STATS.get_currentBlank()
 	current_pseudo_value = STATS.get_current_pseudo()
 	
@@ -455,7 +486,8 @@ func _set_values():
 
 func _ready():
 	#hide()
-	_update_values()
+	#_update_values()
+	
 	_set_transposons()
 	_set_max_bar()
 	_set_current_bar()

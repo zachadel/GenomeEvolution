@@ -792,6 +792,30 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="energySugarDetails" type="ColorRect" parent="."]
+visible = false
+margin_left = 150.0
+margin_top = 220.0
+margin_right = 390.0
+margin_bottom = 330.0
+color = Color( 0.156863, 0.156863, 0.196078, 0.882353 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="energySugarDetails"]
+margin_right = 600.0
+margin_bottom = 270.0
+rect_scale = Vector2( 0.4, 0.4 )
+custom_fonts/font = ExtResource( 5 )
+text = "Energy to Sugar Converision locked. Requires: energy->sugar skill."
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="FAlock" type="TextureRect" parent="."]
 margin_left = 20.0
 margin_top = 580.0
@@ -828,6 +852,9 @@ margin_top = 330.0
 margin_right = 245.0
 margin_bottom = 370.0
 texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="SFlock" type="TextureRect" parent="."]
 margin_left = 105.0
@@ -850,10 +877,10 @@ __meta__ = {
 }
 
 [node name="SALock" type="TextureRect" parent="."]
-margin_left = 130.0
-margin_top = 250.0
-margin_right = 170.0
-margin_bottom = 290.0
+margin_left = 130.53
+margin_top = 249.47
+margin_right = 170.53
+margin_bottom = 289.47
 texture = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -888,6 +915,13 @@ texture = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="ESLock" type="TextureRect" parent="."]
+margin_left = 25.0
+margin_top = 220.0
+margin_right = 47.0
+margin_bottom = 259.0
+texture = ExtResource( 6 )
 [connection signal="resource_clicked" from="EnergyBar" to="." method="_on_EnergyBar_resource_clicked"]
 [connection signal="mouse_entered" from="FAlock" to="." method="_on_lock_mouse_entered"]
 [connection signal="mouse_exited" from="FAlock" to="." method="_on_lock_mouse_exited"]
@@ -909,3 +943,5 @@ __meta__ = {
 [connection signal="mouse_exited" from="CSLock" to="." method="_on_CSLock_mouse_exited"]
 [connection signal="mouse_entered" from="AFLock" to="." method="_on_AFLock_mouse_entered"]
 [connection signal="mouse_exited" from="AFLock" to="." method="_on_AFLock_mouse_exited"]
+[connection signal="mouse_entered" from="ESLock" to="." method="_on_ESLock_mouse_entered"]
+[connection signal="mouse_exited" from="ESLock" to="." method="_on_ESLock_mouse_exited"]

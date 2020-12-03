@@ -123,6 +123,94 @@ var first_ate=0
 var first_sum =0
 var counter = 0
 
+var gc_rep = 0
+var gc_loc = 0
+var gc_help = 0
+var gc_man = 0
+var gc_sens = 0
+var gc_comp = 0
+var gc_con = 0
+var gc_decon = 0
+var gc_ate = 0
+
+func print_me(me):
+	print("This is it: ")
+	print(str(me))
+
+func set_gc_rep(rep):
+	gc_rep = rep;
+func set_gc_loc(loc):
+	gc_loc = loc;
+func set_gc_help(help):
+	gc_help = help;
+func set_gc_man(man):
+	gc_man = man;
+func set_gc_sens(sens):
+	gc_sens = sens;
+func set_gc_comp(comp):
+	gc_comp = comp;
+func set_gc_con(con):
+	gc_con = con;
+func set_gc_decon(decon):
+	gc_decon = decon;
+func set_gc_ate(ate):
+	gc_ate = ate;
+
+func get_gc_rep():
+	if(gc_rep > 0.1):
+		return stepify(gc_rep, 0.1);
+	else:
+		return gc_rep;
+
+func get_gc_loc():
+	if(gc_loc > 0.1):
+		return stepify(gc_loc, 0.1);
+	else:
+		return gc_loc;
+
+func get_gc_help():
+	if(gc_help > 0.1):
+		return stepify(gc_help, 0.1);
+	else:
+		return gc_help;
+
+func get_gc_man():
+	if(gc_man > 0.1):
+		return stepify(gc_man, 0.1);
+	else:
+		return gc_man;
+
+func get_gc_sens():
+	if(gc_sens > 0.1):
+		print("gc_sens: "+str(gc_sens))
+		return stepify(gc_sens, 0.1);
+	else:
+		return gc_sens;
+
+func get_gc_comp():
+	if(gc_comp > 0.1):
+		return stepify(gc_comp, 0.1);
+	else:
+		return gc_comp;
+
+func get_gc_con():
+	if(gc_con > 0.1):
+		return stepify(gc_con, 0.1);
+	else:
+		return gc_con;
+
+func get_gc_decon():
+	if(gc_decon > 0.1):
+		return stepify(gc_decon, 0.1);
+	else:
+		return gc_decon;
+
+func get_gc_ate():
+	if(gc_ate > 0.1):
+		return stepify(gc_ate, 0.1);
+	else:
+		return gc_ate;
+
 func set_firsts():
 	if(counter == 0):
 		first_replication = currentReplication;
@@ -238,6 +326,15 @@ func get_d():
 
 func _reset_game():
 	#Declaring/initializing variables to keep track of: 
+	gc_ate = 0
+	gc_comp=0
+	gc_con=0
+	gc_decon =0
+	gc_help=0
+	gc_loc=0
+	gc_man = 0
+	gc_rep = 0
+	gc_sens=0
 	first_replication=0
 	first_sensing=0
 	first_manipulaiton=0

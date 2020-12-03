@@ -1209,6 +1209,7 @@ func repair_gap(gap, repair_type, choice_info = {}):
 					if keep_gene.is_essential() && rem_gene.get_merge_priority() >= 0:
 						keep_gene.merge_with(rem_gene);
 						cmsms.remove_elm(rem_gene, false);
+						STATS.increment_transposonFuse()
 						emit_signal("gap_close_msg", "Joined ends for the gap at %d, %d; the %s and %s genes merged." % (gap_pos_disp+ [left_id, right_id]));
 					else:
 						repair_roll_storage["join_ends"][gap] = 0;

@@ -90,10 +90,10 @@ func get_skills() -> Dictionary:
 func update():
 	var behavior = get_behavior();
 	var skills = get_skills();
-	
+	var count = 0
 	for n in container.get_children():
+		count+=1;
 		var key = n.name;
-		
 		var n_skills = skills.get(key, {});
 		var has_skill = !n_skills.empty();
 		n.set_skilled(has_skill);
@@ -102,5 +102,50 @@ func update():
 		
 		if (key in behavior):
 			n.set_value(behavior[key]);
+#			if(n.name == "Replication" ):
+#				#STATS.set_gc_rep(behavior["Replication"]);
+#				#updateArray.push_back(behavior["Replication"]);
+#				#print("update array at 0: "+str(updateArray[0]))
+#				##print("update array at 01: "+str(updateArray[1]))
+#				#print("Replication value: "+str(behavior["Replication"]))
+#			elif(n.name == "Locomotion"):
+#				#STATS.set_gc_loc(behavior["Locomotion"]);
+#			elif(n.name == "Helper"):
+#				#STATS.set_gc_help(behavior["Helper"]);
+#			elif(n.name == "Manipulation"):
+#				#STATS.set_gc_man(behavior["Manipulation"]);
+#			elif(n.name == "Sensing"):
+#				#STATS.set_gc_sens(behavior["Sensing"]);
+#			elif(n.name == "Component"):
+#				#STATS.set_gc_comp(behavior["Component"]);
+#			elif(n.name == "Construction"):
+#				#STATS.set_gc_con(behavior["Construction"]);
+#			elif(n.name == "Deconstruction"):
+#				#STATS.set_gc_decon(behavior["Deconstruction"]);
+#			elif(n.name == "ate"):
+#				#STATS.set_gc_ate(behavior["ate"]);
+#			else:
+#				#print("we found a weird one, "+str(n.name));
 		else:
+#			if(n.name == "Replication"):
+#			#	STATS.set_gc_rep(0);
+#			elif(n.name == "Locomotion"):
+#			#	STATS.set_gc_loc(0);
+#			elif(n.name == "Helper"):
+#			#	STATS.set_gc_help(0);
+#			elif(n.name == "Manipulation"):
+#			#	STATS.set_gc_man(0);
+#			elif(n.name == "Sensing"):
+#			#	STATS.set_gc_sens(0);
+#			elif(n.name == "Component"):
+#			#	STATS.set_gc_comp(0);
+#			elif(n.name == "Construction"):
+#			#	STATS.set_gc_con(0);
+#			elif(n.name == "Deconstruction"):
+#			#	STATS.set_gc_decon(0);
+#			elif(n.name == "ate"):
+#			#	STATS.set_gc_ate(0);
 			n.set_value(0);
+#	for i in updateArray:
+#		print("i="+str(i)+" "+str(updateArray[i]))
+

@@ -48,6 +48,17 @@ var selected_resources = {
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	Game.connect("sugar_to_carbs", self,"_on_sugar_to_carbs");
+	Game.connect("energy_to_sugar",self, "_on_energy_to_sugar");
+	Game.connect("sugar_to_fat_acid",self, "_on_sugar_to_fat_acid");
+	Game.connect("sugar_to_am_acid", self, "_on_sugar_to_am_acid");
+	Game.connect("fat_acid_to_fat", self, "_on_fat_acid_to_fat");
+	Game.connect("fat_acid_to_energy", self, "_on_fat_acid_to_energy");
+	Game.connect("am_acid_to_protein", self, "_on_am_acid_to_protein");
+	Game.connect("am_acid_to_sugar", self, "_on_am_acid_to_sugar");
+	Game.connect("carb_to_sugar", self, "_on_carb_to_sugar");
+	Game.connect("fat_to_fat_acid", self, "_on_fat_to_fat_acid");
+	Game.connect("protein_to_am_acid", self, "_on_protein_to_am_acid");
 	for resource in Settings.settings["resources"]:
 		var resource_class = Game.get_class_from_name(resource)
 		
@@ -445,6 +456,41 @@ func disable_vesicle(resource_class: String):
 func _on_Organism_resources_changed(cfp_resources, mineral_resources):
 	pass
 
+func _on_sugar_to_carbs():
+	$SClock.visible = false;
+	pass
+func _on_energy_to_sugar():
+	$ESLock.visible = false;
+	pass
+func _on_sugar_to_fat_acid():
+	$SFlock.visible = false;
+	pass
+func _on_sugar_to_am_acid():
+	$ASlock.visible = false;
+	pass
+func _on_fat_acid_to_fat():
+	$FAFlock.visible = false;
+	pass
+func _on_fat_acid_to_energy():
+	$FAlock.visible = false;
+	pass
+func _on_am_acid_to_protein():
+	$APlock.visible = false;
+	pass
+func _on_am_acid_to_sugar():
+	$SALock.visible = false;
+	pass
+func _on_carb_to_sugar():
+	$CSLock.visible = false;
+	pass
+func _on_fat_to_fat_acid():
+	$AFLock.visible = false;
+	pass
+func _on_protein_to_am_acid():
+	$PALock.visible = false;
+	pass
+
+
 func _on_EnergyBar_resource_clicked(resource, value):
 	if enable_input:
 		if selected:
@@ -558,4 +604,14 @@ func _on_AFLock_mouse_entered():
 
 func _on_AFLock_mouse_exited():
 	$fatFattyAcidDetails.hide()
+	pass # Replace with function body.
+
+
+func _on_ESLock_mouse_entered():
+	$energySugarDetails.show()
+	pass # Replace with function body.
+
+
+func _on_ESLock_mouse_exited():
+	$energySugarDetails.hide();
 	pass # Replace with function body.

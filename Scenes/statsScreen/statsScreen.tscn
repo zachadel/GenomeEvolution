@@ -1067,61 +1067,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="maxgene5" type="ColorRect" parent="sub1/maxBar"]
-visible = false
-margin_left = 210.0
-margin_top = 10.0
-margin_right = 250.0
-margin_bottom = 60.0
-color = Color( 0.0862745, 0.690196, 0.239216, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="maxgene6" type="ColorRect" parent="sub1/maxBar"]
-visible = false
-margin_left = 210.0
-margin_top = 10.0
-margin_right = 250.0
-margin_bottom = 60.0
-color = Color( 0.815686, 0.737255, 0.0862745, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="maxgene7" type="ColorRect" parent="sub1/maxBar"]
-visible = false
-margin_left = 210.0
-margin_top = 10.0
-margin_right = 250.0
-margin_bottom = 60.0
-color = Color( 0.0862745, 0.564706, 0.690196, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="maxgene8" type="ColorRect" parent="sub1/maxBar"]
-visible = false
-margin_left = 210.0
-margin_top = 10.0
-margin_right = 250.0
-margin_bottom = 60.0
-color = Color( 0.6, 0.0862745, 0.690196, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="maxgene9" type="ColorRect" parent="sub1/maxBar"]
-visible = false
-margin_left = 210.0
-margin_top = 10.0
-margin_right = 250.0
-margin_bottom = 60.0
-color = Color( 0.894118, 0.894118, 0.894118, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="score" type="ColorRect" parent="sub1/maxBar"]
 margin_left = 570.0
 margin_right = 670.0
@@ -1198,61 +1143,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="currgene5" type="ColorRect" parent="sub1/currentBar"]
-visible = false
-margin_left = 210.0
-margin_top = 10.0
-margin_right = 250.0
-margin_bottom = 60.0
-color = Color( 0.0862745, 0.690196, 0.239216, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="currgene6" type="ColorRect" parent="sub1/currentBar"]
-visible = false
-margin_left = 210.0
-margin_top = 10.0
-margin_right = 250.0
-margin_bottom = 60.0
-color = Color( 0.815686, 0.737255, 0.0862745, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="currgene7" type="ColorRect" parent="sub1/currentBar"]
-visible = false
-margin_left = 210.0
-margin_top = 10.0
-margin_right = 250.0
-margin_bottom = 60.0
-color = Color( 0.0862745, 0.564706, 0.690196, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="currgene8" type="ColorRect" parent="sub1/currentBar"]
-visible = false
-margin_left = 210.0
-margin_top = 10.0
-margin_right = 250.0
-margin_bottom = 60.0
-color = Color( 0.6, 0.0862745, 0.690196, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="currgene9" type="ColorRect" parent="sub1/currentBar"]
-visible = false
-margin_left = 210.0
-margin_top = 10.0
-margin_right = 250.0
-margin_bottom = 60.0
-color = Color( 0.894118, 0.894118, 0.894118, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="currscore" type="ColorRect" parent="sub1/currentBar"]
 margin_left = 570.0
 margin_right = 670.0
@@ -1309,7 +1199,7 @@ __meta__ = {
 [node name="currScore" type="ColorRect" parent="sub1/gene1"]
 margin_left = 97.0
 margin_top = 12.5
-margin_right = 147.0
+margin_right = 157.0
 margin_bottom = 72.5
 color = Color( 0.929412, 0.94902, 0.376471, 1 )
 __meta__ = {
@@ -1336,9 +1226,9 @@ __meta__ = {
 }
 
 [node name="maxScore" type="ColorRect" parent="sub1/gene1"]
-margin_left = 150.0
+margin_left = 160.0
 margin_top = 12.5
-margin_right = 200.0
+margin_right = 220.0
 margin_bottom = 72.5
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1349,9 +1239,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -25.0
+margin_left = -31.0
 margin_top = -34.0
-margin_right = 25.0
+margin_right = 30.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 50, 60 )
 custom_fonts/font = SubResource( 15 )
@@ -1393,7 +1283,7 @@ __meta__ = {
 
 [node name="currScore" type="ColorRect" parent="sub1/gene2"]
 margin_left = 97.0
-margin_right = 147.0
+margin_right = 157.0
 margin_bottom = 60.0
 color = Color( 0.929412, 0.94902, 0.376471, 1 )
 __meta__ = {
@@ -1405,9 +1295,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -25.0
+margin_left = -30.0
 margin_top = -34.0
-margin_right = 25.0
+margin_right = 30.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 50, 60 )
 custom_fonts/font = SubResource( 16 )
@@ -1420,8 +1310,8 @@ __meta__ = {
 }
 
 [node name="maxScore" type="ColorRect" parent="sub1/gene2"]
-margin_left = 150.0
-margin_right = 200.0
+margin_left = 160.0
+margin_right = 220.0
 margin_bottom = 60.0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1432,9 +1322,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -25.0
+margin_left = -30.0
 margin_top = -34.0
-margin_right = 25.0
+margin_right = 29.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 50, 60 )
 custom_fonts/font = SubResource( 17 )
@@ -1475,7 +1365,7 @@ __meta__ = {
 [node name="currScore" type="ColorRect" parent="sub1/gene3"]
 margin_left = 97.0
 margin_top = 8.0
-margin_right = 147.0
+margin_right = 157.0
 margin_bottom = 68.0
 color = Color( 0.929412, 0.94902, 0.376471, 1 )
 __meta__ = {
@@ -1487,9 +1377,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -25.0
+margin_left = -30.0
 margin_top = -34.0
-margin_right = 25.0
+margin_right = 30.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 50, 60 )
 custom_fonts/font = SubResource( 18 )
@@ -1502,9 +1392,9 @@ __meta__ = {
 }
 
 [node name="maxScore" type="ColorRect" parent="sub1/gene3"]
-margin_left = 150.0
+margin_left = 160.0
 margin_top = 8.0
-margin_right = 200.0
+margin_right = 220.0
 margin_bottom = 68.0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1515,9 +1405,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -25.0
+margin_left = -30.0
 margin_top = -34.0
-margin_right = 25.0
+margin_right = 30.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 50, 60 )
 custom_fonts/font = SubResource( 19 )
@@ -1558,7 +1448,7 @@ __meta__ = {
 [node name="currScore" type="ColorRect" parent="sub1/gene4"]
 margin_left = 97.0
 margin_top = 8.0
-margin_right = 147.0
+margin_right = 157.0
 margin_bottom = 68.0
 color = Color( 0.929412, 0.94902, 0.376471, 1 )
 __meta__ = {
@@ -1570,9 +1460,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -25.0
+margin_left = -30.0
 margin_top = -34.0
-margin_right = 25.0
+margin_right = 30.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 50, 60 )
 custom_fonts/font = SubResource( 20 )
@@ -1585,9 +1475,9 @@ __meta__ = {
 }
 
 [node name="maxScore" type="ColorRect" parent="sub1/gene4"]
-margin_left = 150.0
+margin_left = 160.0
 margin_top = 8.0
-margin_right = 200.0
+margin_right = 220.0
 margin_bottom = 68.0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1598,9 +1488,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -25.0
+margin_left = -30.0
 margin_top = -34.0
-margin_right = 25.0
+margin_right = 30.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 50, 60 )
 custom_fonts/font = SubResource( 21 )
@@ -1641,7 +1531,7 @@ __meta__ = {
 [node name="currScore" type="ColorRect" parent="sub1/gene5"]
 margin_left = 97.0
 margin_top = 8.0
-margin_right = 147.0
+margin_right = 157.0
 margin_bottom = 68.0
 color = Color( 0.929412, 0.94902, 0.376471, 1 )
 __meta__ = {
@@ -1653,9 +1543,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -25.0
+margin_left = -30.0
 margin_top = -34.0
-margin_right = 25.0
+margin_right = 30.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 50, 60 )
 custom_fonts/font = SubResource( 22 )
@@ -1668,9 +1558,9 @@ __meta__ = {
 }
 
 [node name="maxScore" type="ColorRect" parent="sub1/gene5"]
-margin_left = 150.0
+margin_left = 160.0
 margin_top = 8.0
-margin_right = 200.0
+margin_right = 220.0
 margin_bottom = 68.0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1681,9 +1571,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -25.0
+margin_left = -30.0
 margin_top = -34.0
-margin_right = 25.0
+margin_right = 30.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 50, 60 )
 custom_fonts/font = SubResource( 23 )
@@ -1724,7 +1614,7 @@ __meta__ = {
 [node name="currScore" type="ColorRect" parent="sub1/gene6"]
 margin_left = 97.0
 margin_top = 12.0
-margin_right = 147.0
+margin_right = 157.0
 margin_bottom = 72.0
 color = Color( 0.929412, 0.94902, 0.376471, 1 )
 __meta__ = {
@@ -1736,9 +1626,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -25.0
+margin_left = -30.0
 margin_top = -34.0
-margin_right = 25.0
+margin_right = 30.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 50, 60 )
 custom_fonts/font = SubResource( 24 )
@@ -1751,9 +1641,9 @@ __meta__ = {
 }
 
 [node name="maxScore" type="ColorRect" parent="sub1/gene6"]
-margin_left = 150.0
+margin_left = 160.0
 margin_top = 12.0
-margin_right = 200.0
+margin_right = 220.0
 margin_bottom = 72.0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1764,9 +1654,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -25.0
+margin_left = -30.0
 margin_top = -34.0
-margin_right = 25.0
+margin_right = 30.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 50, 60 )
 custom_fonts/font = SubResource( 25 )
@@ -1807,7 +1697,7 @@ __meta__ = {
 [node name="currScore" type="ColorRect" parent="sub1/gene7"]
 margin_left = 97.0
 margin_top = 8.0
-margin_right = 147.0
+margin_right = 157.0
 margin_bottom = 68.0
 color = Color( 0.929412, 0.94902, 0.376471, 1 )
 __meta__ = {
@@ -1819,9 +1709,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -25.0
+margin_left = -30.0
 margin_top = -34.0
-margin_right = 25.0
+margin_right = 30.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 50, 60 )
 custom_fonts/font = SubResource( 26 )
@@ -1834,9 +1724,9 @@ __meta__ = {
 }
 
 [node name="maxScore" type="ColorRect" parent="sub1/gene7"]
-margin_left = 150.0
+margin_left = 160.0
 margin_top = 8.0
-margin_right = 200.0
+margin_right = 220.0
 margin_bottom = 68.0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1847,9 +1737,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -25.0
+margin_left = -30.0
 margin_top = -34.0
-margin_right = 25.0
+margin_right = 30.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 50, 60 )
 custom_fonts/font = SubResource( 27 )
@@ -1887,7 +1777,7 @@ texture = ExtResource( 29 )
 [node name="currScore" type="ColorRect" parent="sub1/gene8"]
 margin_left = 97.0
 margin_top = 8.0
-margin_right = 147.0
+margin_right = 157.0
 margin_bottom = 68.0
 color = Color( 0.929412, 0.94902, 0.376471, 1 )
 __meta__ = {
@@ -1899,10 +1789,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -25.0
+margin_left = -30.0
 margin_top = -34.0
-margin_right = 25.0
-margin_bottom = 30.0
+margin_right = 30.0
+margin_bottom = 26.0
 rect_min_size = Vector2( 50, 60 )
 custom_fonts/font = SubResource( 28 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -1914,9 +1804,9 @@ __meta__ = {
 }
 
 [node name="maxScore" type="ColorRect" parent="sub1/gene8"]
-margin_left = 150.0
+margin_left = 160.0
 margin_top = 8.0
-margin_right = 200.0
+margin_right = 220.0
 margin_bottom = 68.0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1927,9 +1817,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -25.0
+margin_left = -30.0
 margin_top = -34.0
-margin_right = 25.0
+margin_right = 30.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 50, 60 )
 custom_fonts/font = SubResource( 29 )
@@ -3874,7 +3764,7 @@ margin_right = 415.0
 margin_bottom = 208.0
 rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = SubResource( 79 )
-text = "Manipulation Genes
+text = "Transporter Genes
 Current | Max"
 align = 1
 autowrap = true
@@ -3923,7 +3813,7 @@ margin_right = 407.0
 margin_bottom = 224.0
 rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = SubResource( 81 )
-text = "Construction Genes
+text = "Assembly Genes
 Current | Max"
 align = 1
 autowrap = true
@@ -3949,7 +3839,7 @@ margin_right = 395.0
 margin_bottom = 226.0
 rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = SubResource( 82 )
-text = "Deconstruction Genes
+text = "Disassembly Genes
 Current | Max"
 align = 1
 autowrap = true
@@ -3995,7 +3885,7 @@ margin_right = 382.0
 margin_bottom = 164.0
 rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = SubResource( 84 )
-text = "Blank Genes
+text = "Movement Genes
 Current | Max"
 align = 1
 autowrap = true
@@ -4664,16 +4554,6 @@ autowrap = true
 [connection signal="mouse_exited" from="sub1/maxBar/maxBlank" to="." method="_on_maxgene3_mouse_exited"]
 [connection signal="mouse_entered" from="sub1/maxBar/maxTransposons" to="." method="_on_maxgene4_mouse_entered"]
 [connection signal="mouse_exited" from="sub1/maxBar/maxTransposons" to="." method="_on_maxgene4_mouse_exited"]
-[connection signal="mouse_entered" from="sub1/maxBar/maxgene5" to="." method="_on_maxgene5_mouse_entered"]
-[connection signal="mouse_exited" from="sub1/maxBar/maxgene5" to="." method="_on_maxgene5_mouse_exited"]
-[connection signal="mouse_entered" from="sub1/maxBar/maxgene6" to="." method="_on_maxgene6_mouse_entered"]
-[connection signal="mouse_exited" from="sub1/maxBar/maxgene6" to="." method="_on_maxgene6_mouse_exited"]
-[connection signal="mouse_entered" from="sub1/maxBar/maxgene7" to="." method="_on_maxgene7_mouse_entered"]
-[connection signal="mouse_exited" from="sub1/maxBar/maxgene7" to="." method="_on_maxgene7_mouse_exited"]
-[connection signal="mouse_entered" from="sub1/maxBar/maxgene8" to="." method="_on_maxgene8_mouse_entered"]
-[connection signal="mouse_exited" from="sub1/maxBar/maxgene8" to="." method="_on_maxgene8_mouse_exited"]
-[connection signal="mouse_entered" from="sub1/maxBar/maxgene9" to="." method="_on_maxgene9_mouse_entered"]
-[connection signal="mouse_exited" from="sub1/maxBar/maxgene9" to="." method="_on_maxgene9_mouse_exited"]
 [connection signal="mouse_entered" from="sub1/maxBar/score" to="." method="_on_score_mouse_entered"]
 [connection signal="mouse_exited" from="sub1/maxBar/score" to="." method="_on_score_mouse_exited"]
 [connection signal="mouse_entered" from="sub1/currentBar/currComposition" to="." method="_on_currgene1_mouse_entered"]
@@ -4684,16 +4564,6 @@ autowrap = true
 [connection signal="mouse_exited" from="sub1/currentBar/currBlank" to="." method="_on_currgene3_mouse_exited"]
 [connection signal="mouse_entered" from="sub1/currentBar/currTransposon" to="." method="_on_currgene4_mouse_entered"]
 [connection signal="mouse_exited" from="sub1/currentBar/currTransposon" to="." method="_on_currgene4_mouse_exited"]
-[connection signal="mouse_entered" from="sub1/currentBar/currgene5" to="." method="_on_currgene5_mouse_entered"]
-[connection signal="mouse_exited" from="sub1/currentBar/currgene5" to="." method="_on_currgene5_mouse_exited"]
-[connection signal="mouse_entered" from="sub1/currentBar/currgene6" to="." method="_on_currgene6_mouse_entered"]
-[connection signal="mouse_exited" from="sub1/currentBar/currgene6" to="." method="_on_currgene6_mouse_exited"]
-[connection signal="mouse_entered" from="sub1/currentBar/currgene7" to="." method="_on_currgene7_mouse_entered"]
-[connection signal="mouse_exited" from="sub1/currentBar/currgene7" to="." method="_on_currgene7_mouse_exited"]
-[connection signal="mouse_entered" from="sub1/currentBar/currgene8" to="." method="_on_currgene8_mouse_entered"]
-[connection signal="mouse_exited" from="sub1/currentBar/currgene8" to="." method="_on_currgene8_mouse_exited"]
-[connection signal="mouse_entered" from="sub1/currentBar/currgene9" to="." method="_on_currgene9_mouse_entered"]
-[connection signal="mouse_exited" from="sub1/currentBar/currgene9" to="." method="_on_currgene9_mouse_exited"]
 [connection signal="mouse_entered" from="sub1/currentBar/currscore" to="." method="_on_currscore_mouse_entered"]
 [connection signal="mouse_exited" from="sub1/currentBar/currscore" to="." method="_on_currscore_mouse_exited"]
 [connection signal="mouse_entered" from="sub1/gene1" to="." method="_on_gene1_mouse_entered"]
