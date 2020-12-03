@@ -1,5 +1,17 @@
 extends Node
 
+signal sugar_to_carbs
+signal energy_to_sugar
+signal sugar_to_fat_acid
+signal sugar_to_am_acid
+signal fat_acid_to_fat
+signal fat_acid_to_energy
+signal am_acid_to_protein
+signal am_acid_to_sugar
+signal carb_to_sugar
+signal fat_to_fat_acid
+signal protein_to_am_acid
+
 var seed_value = 0
 
 var sqelm_textures = {"gene": load("res://Assets/Images/gene.png"), "break": load("res://Assets/Images/break.png")};
@@ -514,7 +526,7 @@ func get_resource_icon(resource):
 		icon = Game.WORLD_UI_PATH + resource + SEPARATOR + "icon" + Game.IMAGE_TYPE
 	
 	return icon
-	
+
 #Can accept energy, resource_class (simple_carbs/complex_fats, etc.), or resource_names
 func is_valid_interaction(resource_from: String, resource_to: String, bhv_profile: BehaviorProfile = null):
 	var possible = false
@@ -558,46 +570,67 @@ func is_valid_interaction(resource_from: String, resource_to: String, bhv_profil
 		
 		if resource_from_class == "energy":
 			if resource_to_class == "simple_carbs" and bhv_profile.has_skill("energy->sugar"):
+				emit_signal("energy_to_sugar")
 				return true
 			else:
 				return false
 		elif resource_from_class == "simple_carbs":
-			if resource_to_class == "energy" and decon_value >= 0:
+			if resource_to_class == "energy":
 				return true
 			elif resource_to_class == "complex_carbs" and bhv_profile.has_skill("sugar->carb"):
+				#converts the sugar to complex carbs
+				emit_signal("sugar_to_carbs") #this will be used to get the locks to go away
 				return true
 			elif resource_to_class == "simple_fats" and bhv_profile.has_skill("sugar->fat_acid"):
+				#converts sugar to fatty acids
+				emit_signal("sugar_to_fat_acid")
 				return true
 			elif resource_to_class == "simple_proteins" and bhv_profile.has_skill("sugar->am_acid"):
+				#converts sugar to amino acids
+				emit_signal("sugar_to_am_acid")
 				return true
 			else:
 				return false
 		elif resource_from_class == "simple_fats":
 			if resource_to_class == "complex_fats" and bhv_profile.has_skill("fat_acid->fat"):
+				#converts fat acids to fats
+				emit_signal("fat_acid_to_fat")
 				return true
 			elif resource_to_class == "energy" and bhv_profile.has_skill("fat_acid->energy"):
+				#converts fat acids to energy
+				emit_signal("fat_acid_to_energy")
 				return true
 			else:
 				return false
 		elif resource_from_class == "simple_proteins":
 			if resource_to_class == "complex_proteins" and bhv_profile.has_skill("am_acid->protein"):
+				#converts amino acids to protein
+				emit_signal("am_acid_to_protein")
 				return true
 			elif resource_to_class == "simple_carbs" and bhv_profile.has_skill("am_acid->sugar"):
+				#converts amino acids back to sugars
+				emit_signal("am_acid_to_sugar")
 				return true
 			else:
 				return false
 		elif resource_from_class == "complex_carbs":
 			if resource_to_class == "simple_carbs" and bhv_profile.has_skill("carb->sugar"):
+				#converts carbs to sugars
+				emit_signal("carb_to_sugar")
 				return true
 			else:
 				return false
 		elif resource_from_class == "complex_fats":
 			if resource_to_class == "simple_fats" and bhv_profile.has_skill("fat->fat_acid"):
+				#converts complex fats to simple fats
+				emit_signal("fat_to_fat_acid")
 				return true
 			else:
 				return false
 		elif resource_from_class == "complex_proteins":
 			if resource_to_class == "simple_proteins" and bhv_profile.has_skill("protein->am_acid"):
+				#converts complex proteins to simple proteins. 
+				emit_signal("protein_to_am_acid")
 				return true
 			else:
 				return false

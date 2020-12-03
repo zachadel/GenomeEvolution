@@ -65,11 +65,13 @@ func _show_control():
 	
 func _card_show_control():
 	cardTable = true
+	statsScreen._on_genes_loaded()
 	statsScreen._update_values()
 	statsScreen._set_transposons()
 	statsScreen._set_values()
 	statsScreen._set_current_bar()
 	statsScreen._set_max_bar()
+	
 	card_table.hide()
 	$stats_Layer/statsScreen.visible = true
 	
@@ -85,10 +87,18 @@ func _on_WorldMap_end_map_turn():
 	world_map.set_input(Game.PLAYER_VIEW.ON_CARDTABLE)
 	card_table.disable_turn(false)
 	_show_card_table()
-	
 	card_table.energy_bar.MAX_ENERGY = world_map.current_player.organism.MAX_ENERGY
 	card_table.energy_bar.update_energy_allocation(world_map.current_player.organism.energy)
-	
+	var thisProfile = card_table.get_Organism().get_behavior_profile()
+	STATS.set_gc_ate(thisProfile.get_behavior("ate"))
+	STATS.set_gc_rep(thisProfile.get_behavior("Replication"))
+	STATS.set_gc_sens(thisProfile.get_behavior("Sensing"))
+	STATS.set_gc_comp(thisProfile.get_behavior("Component"))
+	STATS.set_gc_con(thisProfile.get_behavior("Construction"))
+	STATS.set_gc_decon(thisProfile.get_behavior("Deconstruction"))
+	STATS.set_gc_help(thisProfile.get_behavior("Helper"))
+	STATS.set_gc_loc(thisProfile.get_behavior("Locomotion"))
+	STATS.set_gc_man(thisProfile.get_behavior("Manipulation"))
 	pass
 
 ############################MULTIPLAYER HANDLING###############################

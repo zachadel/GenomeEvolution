@@ -48,6 +48,8 @@ func reset_status_bar():
 func get_cmsm_status():
 	return status_bar;
 
+func get_Organism():
+	return orgn
 # Replication
 
 func show_replicate_opts(show):
@@ -308,6 +310,16 @@ func upd_turn_display(upd_turn_unlocks: bool = Game.fresh_round, upd_env_markers
 		ph_filter_panel.upd_current_ph_marker(orgn.current_tile.hazards["pH"]);
 
 func _on_btn_nxt_pressed():
+	STATS.set_gc_rep(orgn.get_behavior_profile().get_behavior("Replication"))
+	STATS.set_gc_sens(orgn.get_behavior_profile().get_behavior("Sensing"))
+	STATS.set_gc_loc(orgn.get_behavior_profile().get_behavior("Locomotion"))
+	STATS.set_gc_help(orgn.get_behavior_profile().get_behavior("Helper"))
+	STATS.set_gc_man(orgn.get_behavior_profile().get_behavior("Manipulation"))
+	STATS.set_gc_comp(orgn.get_behavior_profile().get_behavior("Component"))
+	STATS.set_gc_con(orgn.get_behavior_profile().get_behavior("Construction"))
+	STATS.set_gc_decon(orgn.get_behavior_profile().get_behavior("Deconstruction"))
+	STATS.set_gc_ate(orgn.get_behavior_profile().get_behavior("ate"))
+	
 	adv_turn();
 
 func disable_turn(is_disabled: bool = true):
@@ -551,12 +563,41 @@ func _on_Organism_transposon_activity(active):
 		hide_chaos_anim();
 
 
-
 func _on_stats_screen_pressed():
+	STATS.set_gc_rep(orgn.get_behavior_profile().get_behavior("Replication"))
+	STATS.set_gc_loc(orgn.get_behavior_profile().get_behavior("Locomotion"))
+	STATS.set_gc_help(orgn.get_behavior_profile().get_behavior("Helper"))
+	STATS.set_gc_man(orgn.get_behavior_profile().get_behavior("Manipulation"))
+	STATS.set_gc_sens(orgn.get_behavior_profile().get_behavior("Sensing"))
+	STATS.set_gc_comp(orgn.get_behavior_profile().get_behavior("Component"))
+	STATS.set_gc_con(orgn.get_behavior_profile().get_behavior("Construction"))
+	STATS.set_gc_decon(orgn.get_behavior_profile().get_behavior("Deconstruction"))
+	STATS.set_gc_ate(orgn.get_behavior_profile().get_behavior("ate"))
+	
+
 	emit_signal("card_stats_screen")
 	pass # Replace with function body.
 
 
 func _on_Button_pressed():
 	emit_signal("card_stats_screen")
+	pass # Replace with function body.
+
+func _on_btn_filter_mouse_entered():
+	$btn_filter/ph_details.show()
+	pass # Replace with function body.
+
+
+func _on_btn_filter_mouse_exited():
+	$btn_filter/ph_details.hide()
+	pass # Replace with function body.
+
+
+func _on_btn_temp_mouse_entered():
+	$btn_temp/temp_details.show()
+	pass # Replace with function body.
+
+
+func _on_btn_temp_mouse_exited():
+	$btn_temp/temp_details.hide()
 	pass # Replace with function body.
