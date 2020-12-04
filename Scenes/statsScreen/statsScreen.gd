@@ -3,7 +3,6 @@ signal show_cardTable
 
 # Declare member variables here. Examples:
 # var a = 2
-onready var orgn = $Organism;
 # var b = "text"
 var genes_loaded = false
 var has_updated_values = false
