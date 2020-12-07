@@ -463,6 +463,40 @@ size_flags_vertical = 3
 align = 1
 autowrap = true
 
+[node name="pnl_quit_check" type="Panel" parent="."]
+visible = false
+margin_left = 530.439
+margin_top = 431.893
+margin_right = 1140.44
+margin_bottom = 545.893
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="yes" type="Button" parent="pnl_quit_check"]
+margin_left = 91.8113
+margin_top = 71.0
+margin_right = 191.811
+margin_bottom = 102.0
+text = "Yes"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="no" type="Button" parent="pnl_quit_check"]
+margin_left = 391.265
+margin_top = 72.0
+margin_right = 491.265
+margin_bottom = 100.0
+text = "No"
+
+[node name="Label" type="Label" parent="pnl_quit_check"]
+margin_left = 58.5204
+margin_top = 15.1021
+margin_right = 530.52
+margin_bottom = 54.1021
+text = "Are you sure you want to quit? Any progress not save can not be restored."
+
 [node name="pnl_reproduce" type="Panel" parent="."]
 visible = false
 anchor_left = 0.5
@@ -1352,6 +1386,8 @@ __meta__ = {
 [connection signal="item_activated" from="RepairTabs/pnl_repair_choices/hsplit/ilist_choices" to="." method="_on_ilist_choices_item_activated"]
 [connection signal="item_selected" from="RepairTabs/pnl_repair_choices/hsplit/ilist_choices" to="." method="upd_repair_desc"]
 [connection signal="pressed" from="RepairTabs/pnl_repair_choices/hsplit/vsplit/btn_apply_repair" to="." method="_on_btn_apply_repair_pressed"]
+[connection signal="pressed" from="pnl_quit_check/yes" to="." method="_on_quit_to_menu_check_yes"]
+[connection signal="pressed" from="pnl_quit_check/no" to="." method="_on_quit_to_menu_check_no"]
 [connection signal="item_activated" from="pnl_reproduce/hsplit/ilist_choices" to="." method="_on_replic_choices_item_activated"]
 [connection signal="item_selected" from="pnl_reproduce/hsplit/ilist_choices" to="." method="upd_replicate_desc"]
 [connection signal="pressed" from="pnl_reproduce/hsplit/vsplit/btn_apply_replic" to="." method="_on_btn_apply_replic_pressed"]
