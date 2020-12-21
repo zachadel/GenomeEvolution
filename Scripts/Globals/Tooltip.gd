@@ -236,7 +236,7 @@ func set_gene_ttip(type, ph_pref, temp_pref:=1, skills := {}):
 	var tt_text = get_gene_ttip(type, skills);
 	if !(type in NO_BEHAVIOR_GENES):
 		tt_text += "\n\nThis gene operates optimally at a pH of %.2f." % ph_pref;
-		tt_text += "\n\nThis gene operates optimally at a temperature of %.2f." % temp_pref;
+		tt_text += "\n\nThis gene operates optimally at a temperature of %.2f\u00B0 C." % temp_pref; #that weird \u piece is the string for a degrees symbol
 	set_tooltip_text(tt_text, gene_title % GENE_NAMES[type]);
 
 func set_status_ttip(type, compare, skills := {}):
