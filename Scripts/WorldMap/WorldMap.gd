@@ -100,63 +100,63 @@ func biome_temp_and_ph_setup():
 	if(starting_biome == 3): #grass, this is the first one because it almost always starts in this one
 		for g in current_player.organism.get_all_genes():
 			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_between(10,15));
-				g.set_pH(Chance.rand_normal_between(6,7));
+				g.set_temp(Chance.rand_normal_temp(12.5, 1));
+				g.set_pH(Chance.rand_normal_temp(6.5,1));
 	elif(starting_biome == 0): # dirt
 		for g in current_player.organism.get_all_genes():
 			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_between(18,24));
-				g.set_pH(Chance.rand_normal_between(5,9));
+				g.set_temp(Chance.rand_normal_temp(21,1));
+				g.set_pH(Chance.rand_normal_temp(7,1));
 	elif(starting_biome == 1): #fire
 		for g in current_player.organism.get_all_genes():
 			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_between(80,100));
-				g.set_pH(Chance.rand_normal_between(0,1));
+				g.set_temp(Chance.rand_normal_temp(90,1));
+				g.set_pH(Chance.rand_normal_temp(0.5,1));
 	elif(starting_biome == 2): #forest
 		for g in current_player.organism.get_all_genes():
 			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_between(5,40));
-				g.set_pH(Chance.rand_normal_between(6,7));
+				g.set_temp(Chance.rand_normal_temp(22.5,1));
+				g.set_pH(Chance.rand_normal_temp(6.5,1));
 	elif(starting_biome == 4): #Basalt
 		for g in current_player.organism.get_all_genes():
 			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_between(20,80));
-				g.set_pH(Chance.rand_normal_between(1,7));
+				g.set_temp(Chance.rand_normal_temp(50,1));
+				g.set_pH(Chance.rand_normal_temp(4,1));
 	elif(starting_biome == 5): #mountain
 		for g in current_player.organism.get_all_genes():
 			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_between(-15,10));
-				g.set_pH(Chance.rand_normal_between(4,10));
+				g.set_temp(Chance.rand_normal_temp(-2.5,1));
+				g.set_pH(Chance.rand_normal_temp(7,1));
 	elif(starting_biome == 6): #Ocean
 		for g in current_player.organism.get_all_genes():
 			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_between(18, 23));
-				g.set_pH(Chance.rand_normal_between(6,8));
+				g.set_temp(Chance.rand_normal_temp(20.5,1));
+				g.set_pH(Chance.rand_normal_temp(7,1));
 	elif(starting_biome == 7): #purple
 		for g in current_player.organism.get_all_genes():
 			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_between(16.99,17));
-				g.set_pH(Chance.rand_normal_between(7.5,8.5));
+				g.set_temp(Chance.rand_normal_temp(16.995,1));
+				g.set_pH(Chance.rand_normal_temp(8,1));
 	elif(starting_biome == 8): #sand
 		for g in current_player.organism.get_all_genes():
 			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_between(17, 30));
-				g.set_pH(Chance.rand_normal_between(6.99,7));
+				g.set_temp(Chance.rand_normal_temp(23.5,1));
+				g.set_pH(Chance.rand_normal_temp(6.995,1));
 	elif(starting_biome == 9): #Shallow
 		for g in current_player.organism.get_all_genes():
 			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_between(15, 26));
-				g.set_pH(Chance.rand_normal_between(6,8));
+				g.set_temp(Chance.rand_normal_temp(20.5,1));
+				g.set_pH(Chance.rand_normal_temp(7,1));
 	elif(starting_biome == 10): #Shallow salt
 		for g in current_player.organism.get_all_genes():
 			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_between(16,17.5));
-				g.set_pH(Chance.rand_normal_between(16,17.5));
+				g.set_temp(Chance.rand_normal_temp(16.75,1));
+				g.set_pH(Chance.rand_normal_temp(8,1));
 	elif(starting_biome == 11): #snow
 		for g in current_player.organism.get_all_genes():
 			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_between(-40,0));
-				g.set_pH(Chance.rand_normal_between(4,5));
+				g.set_temp(Chance.rand_normal_temp(-20,1));
+				g.set_pH(Chance.rand_normal_temp(4.5,1));
 
 func setup(biome_seed, hazard_seeds, resource_seed, tiebreak_seed, _chunk_size, player):
 	Game.modified_tiles = {}

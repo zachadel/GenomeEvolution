@@ -478,13 +478,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="pnl_quit_check"]
-margin_left = 58.5204
-margin_top = 15.1021
-margin_right = 530.52
-margin_bottom = 54.1021
-text = "Are you sure you want to quit? Any progress not save can not be restored."
-
 [node name="yes" type="Button" parent="pnl_quit_check"]
 margin_left = 91.8113
 margin_top = 71.0
@@ -507,7 +500,8 @@ margin_left = 58.5204
 margin_top = 15.1021
 margin_right = 530.52
 margin_bottom = 54.1021
-text = "Are you sure you want to quit? Any progress not save can not be restored."
+text = "Are you sure you want to quit? All Progress will be lost"
+align = 1
 
 [node name="pnl_reproduce" type="Panel" parent="."]
 visible = false
@@ -868,10 +862,10 @@ text = "Continue"
 [node name="ViewMap" type="TextureButton" parent="."]
 anchor_right = 1.0
 anchor_bottom = 0.995
-margin_left = 98.0
-margin_top = 737.0
-margin_right = -1201.0
-margin_bottom = -49.5
+margin_left = 66.0
+margin_top = 766.0
+margin_right = -1321.0
+margin_bottom = -20.5
 expand = true
 stretch_mode = 5
 __meta__ = {
@@ -1327,20 +1321,23 @@ __meta__ = {
 }
 
 [node name="pnl_temp_filter" type="Panel" parent="."]
-visible = false
 margin_left = 574.0
 margin_top = 695.0
 margin_right = 1088.0
 margin_bottom = 831.0
 script = ExtResource( 35 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="slider_temp" type="HSlider" parent="pnl_temp_filter"]
 margin_left = 42.0
 margin_top = 70.0
 margin_right = 472.0
 margin_bottom = 86.0
-max_value = 50.0
-value = 25.0
+min_value = -40.0
+max_value = 100.0
+value = 30.0
 tick_count = 15
 ticks_on_borders = true
 __meta__ = {
@@ -1364,7 +1361,7 @@ margin_top = -40.0
 margin_right = 72.0
 margin_bottom = -9.0
 text = "Current Temperature:
-25"
+30"
 align = 1
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1375,17 +1372,17 @@ margin_left = 240.0
 margin_top = 100.0
 margin_right = 280.0
 margin_bottom = 131.0
-text = "25"
+text = "30"
 align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Temp_Button" type="TextureButton" parent="."]
-margin_left = 400.0
-margin_top = 775.0
-margin_right = 450.0
-margin_bottom = 871.0
+margin_left = 271.0
+margin_top = 776.0
+margin_right = 321.0
+margin_bottom = 872.0
 texture_normal = ExtResource( 37 )
 texture_hover = ExtResource( 36 )
 __meta__ = {
@@ -1394,9 +1391,9 @@ __meta__ = {
 
 [node name="temp_details" type="ColorRect" parent="Temp_Button"]
 visible = false
-margin_left = 120.0
+margin_left = 59.0
 margin_top = -25.0
-margin_right = 270.0
+margin_right = 209.0
 margin_bottom = 75.0
 color = Color( 0.113725, 0.0980392, 0.0980392, 0.745098 )
 __meta__ = {
@@ -1404,17 +1401,21 @@ __meta__ = {
 }
 
 [node name="details_lbl" type="Label" parent="Temp_Button/temp_details"]
-margin_right = 150.0
+margin_left = 2.0
+margin_right = 152.0
 margin_bottom = 100.0
 text = "Shows how the different temperature values change the effictiveness of each gene."
 align = 1
 valign = 1
 autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ph_button" type="TextureButton" parent="."]
-margin_left = 50.0
+margin_left = 30.0
 margin_top = 775.0
-margin_right = 100.0
+margin_right = 80.0
 margin_bottom = 871.0
 texture_normal = ExtResource( 38 )
 texture_hover = ExtResource( 39 )
@@ -1424,15 +1425,17 @@ __meta__ = {
 
 [node name="ph_details" type="ColorRect" parent="ph_button"]
 visible = false
-margin_left = 470.0
-margin_top = -25.0001
-margin_right = 620.0
-margin_bottom = 74.9999
+margin_left = 299.0
+margin_top = -21.0001
+margin_right = 449.0
+margin_bottom = 78.9999
 color = Color( 0.113725, 0.0980392, 0.0980392, 0.745098 )
 
 [node name="Label" type="Label" parent="ph_button/ph_details"]
-margin_right = 146.0
-margin_bottom = 98.0
+margin_left = 2.0
+margin_top = 1.0
+margin_right = 148.0
+margin_bottom = 99.0
 text = "Shows how the different pH values change the effictiveness of each gene."
 align = 1
 valign = 1
