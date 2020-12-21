@@ -14,7 +14,7 @@ func _ready():
 	pass # Replace with function body.
 
 func set_icon(biome) -> bool:
-	print("Biome_icon: ", biome)
+	#print("Biome_icon: ", biome)
 	var valid_biome = true
 	
 	if typeof(biome) == TYPE_INT and biome in Game.biome_index_to_string.keys():
