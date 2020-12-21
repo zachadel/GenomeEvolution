@@ -185,10 +185,10 @@ func _set_current_bar():
 	curr_blank_percent = float(current_blank_value) / float(currentBarSize);
 	curr_transposon_percent = float(current_ate_value) / float(currentBarSize);
 	
-	$currBarDisplay/Label.text = "Currently you have "+str(current_CompositionBar)+" genes, these make up "+str(curr_gene_percent*100)+"% of your genome.";
-	$currBarDisplay2/Label.text = "Currently you have "+str(current_pseudo_value)+" pseudogenes, these make up "+str(curr_pseudo_percent*100)+"% of your genome.";
-	$currBarDisplay3/Label.text = "Currently you have " + str(current_blank_value)+" blank genes, these make up "+str(curr_blank_percent*100)+"% of your genome.";
-	$currBarDisplay4/Label.text = "Currently you have " + str(current_ate_value)+" transposons, these make up "+str(curr_transposon_percent*100)+"% of your genome.";
+	$currBarDisplay/Label.text = "Currently you have "+str(current_CompositionBar)+" genes, these make up "+str(stepify(curr_gene_percent*100,0.1))+"% of your genome.";
+	$currBarDisplay2/Label.text = "Currently you have "+str(current_pseudo_value)+" pseudogenes, these make up "+str(stepify(curr_pseudo_percent*100,0.1))+"% of your genome.";
+	$currBarDisplay3/Label.text = "Currently you have " + str(current_blank_value)+" blank genes, these make up "+str(stepify(curr_blank_percent*100,0.1))+"% of your genome.";
+	$currBarDisplay4/Label.text = "Currently you have " + str(current_ate_value)+" transposons, these make up "+str(stepify(curr_transposon_percent*100,0.1))+"% of your genome.";
 	
 	pass
 
@@ -243,10 +243,10 @@ func _set_max_bar():
 	first_pseudo_percent = float(first_pseudo_value) / float(maxBarSize);
 	first_blank_percent = float(first_blank_value) / float(maxBarSize);
 	first_transposon_percent = float(first_ate_value) / float(maxBarSize);
-	$maxBarDisplay/Label.text = "You started with "+str(first_compositionBar)+" genes, these made up " + str(first_gene_percent*100) + "% of your genome.";
-	$maxBarDisplay2/Label.text = "You started with "+str(first_pseudo_value)+" pseudogenes, these made up "+str(first_pseudo_percent * 100)+"% of your genome.";
-	$maxBarDisplay3/Label.text = "You started with "+str(first_blank_value) + "blanks, these made up "+ str(first_blank_percent *100)+"% of your genome.";
-	$maxBarDisplay4/Label.text = "You started with "+str(first_ate_value)+" transposons, these made up " + str(first_transposon_percent*100)+"% of your genome.";
+	$maxBarDisplay/Label.text = "You started with "+str(first_compositionBar)+" genes, these made up " + str(stepify(first_gene_percent*100,.1)) + "% of your genome.";
+	$maxBarDisplay2/Label.text = "You started with "+str(first_pseudo_value)+" pseudogenes, these made up "+str(stepify(first_pseudo_percent * 100,0.1))+"% of your genome.";
+	$maxBarDisplay3/Label.text = "You started with "+str(first_blank_value) + "blanks, these made up "+ str(stepify(first_blank_percent *100,0.1))+"% of your genome.";
+	$maxBarDisplay4/Label.text = "You started with "+str(first_ate_value)+" transposons, these made up " + str(stepify(first_transposon_percent*100,0.1))+"% of your genome.";
 
 func _update_values():
 	num_progeny = STATS.get_progeny();
