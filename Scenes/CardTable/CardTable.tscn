@@ -478,6 +478,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Label" type="Label" parent="pnl_quit_check"]
+margin_left = 58.5204
+margin_top = 15.1021
+margin_right = 530.52
+margin_bottom = 54.1021
+text = "Are you sure you want to quit? Any progress not save can not be restored."
+
 [node name="yes" type="Button" parent="pnl_quit_check"]
 margin_left = 91.8113
 margin_top = 71.0
@@ -1433,40 +1440,6 @@ autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="pnl_quit_check" type="Panel" parent="."]
-visible = false
-margin_left = 529.104
-margin_top = 433.895
-margin_right = 1139.11
-margin_bottom = 547.895
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="yes" type="Button" parent="pnl_quit_check"]
-margin_left = 91.8113
-margin_top = 71.0
-margin_right = 191.811
-margin_bottom = 102.0
-text = "Yes"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="no" type="Button" parent="pnl_quit_check"]
-margin_left = 391.265
-margin_top = 72.0
-margin_right = 491.265
-margin_bottom = 100.0
-text = "No"
-
-[node name="Label" type="Label" parent="pnl_quit_check"]
-margin_left = 58.5204
-margin_top = 15.1021
-margin_right = 530.52
-margin_bottom = 54.1021
-text = "Are you sure you want to quit? Any progress not save can not be restored."
 [connection signal="bandage_msg" from="Organism" to="." method="_on_Organism_bandage_msg"]
 [connection signal="clear_gap_msg" from="Organism" to="." method="_on_Organism_clear_gap_msg"]
 [connection signal="cmsm_changed" from="Organism" to="ChromosomeStatus" method="update"]
@@ -1519,5 +1492,3 @@ text = "Are you sure you want to quit? Any progress not save can not be restored
 [connection signal="mouse_entered" from="ph_button" to="." method="_on_ph_button_mouse_entered"]
 [connection signal="mouse_exited" from="ph_button" to="." method="_on_ph_button_mouse_exited"]
 [connection signal="pressed" from="ph_button" to="." method="_on_ph_button_pressed"]
-[connection signal="pressed" from="pnl_quit_check/yes" to="." method="_on_quit_to_menu_check_yes"]
-[connection signal="pressed" from="pnl_quit_check/no" to="." method="_on_quit_to_menu_check_no"]
