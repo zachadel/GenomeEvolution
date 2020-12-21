@@ -338,8 +338,18 @@ func set_test_ttip(image):
 	TooltipBody.add_image(load(image))
 	TooltipBody.add_text("  X  10")
 	
+func set_biome_icon_ttip(biome_name: String):
+	TooltipBody.clear()
+	
+	TooltipTitle.text = Game.simple_to_pretty_name(biome_name)
+	var description = "\n[center]This is a [u]%s[/u] biome tile.  Below are its various properties:[/center]\n\n\n" % [biome_name]#Currently, this is a default description which can be replaced later
 
-
+	var uv_desc = "[b][color=yellow]UV Index[/color]:[/b] Ranges from [u]%.1f[/u] to [u]%.1f[/u] (Higher numbers cause more genome damage)\n\n" % [Settings.settings["hazards"]["uv_index"][biome_name][0], Settings.settings["hazards"]["uv_index"][biome_name][1]]
+	var temp_desc = "[b][color=red]Temperature[/color]:[/b] Ranges from [u]%.1f[/u] to [u]%.1f[/u] (Higher numbers cause more genome damage, while lower numbers affect resource processing costs.  All temperatures affect gene performance)\n\n" % [Settings.settings["hazards"]["temperature"][biome_name][0], Settings.settings["hazards"]["temperature"][biome_name][1]]
+	var pH_desc = "[b][color=green]pH Levels[/color]:[/b] Ranges from [u]%.1f[/u] to [u]%.1f[/u] (All pH's affect gene performance)\n\n"% [Settings.settings["hazards"]["pH"][biome_name][0], Settings.settings["hazards"]["pH"][biome_name][1]]
+	var oxygen = "[b][color=blue]Oxygen Percentage[/color]:[/b] Ranges from [u]%.1f[/u] to [u]%.1f[/u] (Higher levels cause more genome damage, but increase resource energy yield)" % [Settings.settings["hazards"]["oxygen"][biome_name][0], Settings.settings["hazards"]["oxygen"][biome_name][1]]
+	
+	TooltipBody.bbcode_text = description + uv_desc + temp_desc + pH_desc + oxygen
 
 # Rather than setting up mouse_entered and mouse_exited signals on every single node, just
 # call setup_delay_handler(self) and include either a
