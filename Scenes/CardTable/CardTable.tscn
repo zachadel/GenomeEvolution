@@ -1282,6 +1282,7 @@ __meta__ = {
 }
 
 [node name="pnl_temp_filter" type="Panel" parent="."]
+visible = false
 margin_left = 574.0
 margin_top = 695.0
 margin_right = 1088.0

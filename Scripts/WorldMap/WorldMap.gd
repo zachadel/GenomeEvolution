@@ -93,6 +93,58 @@ func _ready():
 func tile_hazard_grabs(hazard):
 	print("Tile info: "+str(hazard))
 
+func biome_temp_setup():
+	starting_biome = current_player.organism.current_tile["biome"];
+	#print("biome indexes: "+str(Settings.settings["biomes"]))
+	if(starting_biome == 3): #grass
+		for g in current_player.organism.get_all_genes():
+			if !g.is_blank():
+				g.set_temp(Chance.rand_normal_between(10,15));
+	elif(starting_biome == 0): # dirt
+		for g in current_player.organism.get_all_genes():
+			if !g.is_blank():
+				g.set_temp(Chance.rand_normal_between(18,24));
+	elif(starting_biome == 1): #fire
+		for g in current_player.organism.get_all_genes():
+			if !g.is_blank():
+				g.set_temp(Chance.rand_normal_between(80,100));
+	elif(starting_biome == 2): #forest
+		for g in current_player.organism.get_all_genes():
+			if !g.is_blank():
+				g.set_temp(Chance.rand_normal_between(5,40));
+	elif(starting_biome == 4): #Basalt
+		for g in current_player.organism.get_all_genes():
+			if !g.is_blank():
+				g.set_temp(Chance.rand_normal_between(20,80));
+	elif(starting_biome == 5): #mountain
+		for g in current_player.organism.get_all_genes():
+			if !g.is_blank():
+				g.set_temp(Chance.rand_normal_between(-15,10));
+	elif(starting_biome == 6): #Ocean
+		for g in current_player.organism.get_all_genes():
+			if !g.is_blank():
+				g.set_temp(Chance.rand_normal_between(18, 23));
+	elif(starting_biome == 7): #purple
+		for g in current_player.organism.get_all_genes():
+			if !g.is_blank():
+				g.set_temp(Chance.rand_normal_between(16.99,17));
+	elif(starting_biome == 8): #sand
+		for g in current_player.organism.get_all_genes():
+			if !g.is_blank():
+				g.set_temp(Chance.rand_normal_between(17, 30));
+	elif(starting_biome == 9): #Shallow
+		for g in current_player.organism.get_all_genes():
+			if !g.is_blank():
+				g.set_temp(Chance.rand_normal_between(15, 26));
+	elif(starting_biome == 10): #Shallow salt
+		for g in current_player.organism.get_all_genes():
+			if !g.is_blank():
+				g.set_temp(Chance.rand_normal_between(16,17.5));
+	elif(starting_biome == 11): #snow
+		for g in current_player.organism.get_all_genes():
+			if !g.is_blank():
+				g.set_temp(Chance.rand_normal_between(-40,0));
+
 func setup(biome_seed, hazard_seeds, resource_seed, tiebreak_seed, _chunk_size, player):
 	Game.modified_tiles = {}
 	#this is where the game starts.
@@ -145,65 +197,7 @@ func setup(biome_seed, hazard_seeds, resource_seed, tiebreak_seed, _chunk_size, 
 	current_player.position = Game.map_to_world(Game.world_to_map(default_start))
 	current_player.organism.current_tile = get_tile_at_pos(Game.world_to_map(default_start))
 	current_player.organism.set_start_tile(get_tile_at_pos(Game.world_to_map((default_start))))
-	starting_biome = current_player.organism.current_tile["biome"];
-	print("biome indexes: "+str(Settings.settings["biomes"]))
-	if(starting_biome == 3): #grass
-		for g in current_player.organism.get_all_genes():
-			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_between(10,15));
-	elif(starting_biome == 0): # dirt
-		for g in current_player.organism.get_all_genes():
-			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_between(18,24));
-	elif(starting_biome == 1): #fire
-		for g in current_player.organism.get_all_genes():
-			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_between(80,100));
-	elif(starting_biome == 2): #forest
-		for g in current_player.organism.get_all_genes():
-			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_between(5,40));
-	elif(starting_biome == 4): #Basalt
-		for g in current_player.organism.get_all_genes():
-			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_between(20,80));
-	elif(starting_biome == 5): #mountain
-		for g in current_player.organism.get_all_genes():
-			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_between(-15,10));
-	elif(starting_biome == 6): #Ocean
-		for g in current_player.organism.get_all_genes():
-			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_between(18, 23));
-	elif(starting_biome == 7): #purple
-		for g in current_player.organism.get_all_genes():
-			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_between(16.99,17));
-	elif(starting_biome == 8): #sand
-		for g in current_player.organism.get_all_genes():
-			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_between(17, 30));
-	elif(starting_biome == 9): #Shallow
-		for g in current_player.organism.get_all_genes():
-			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_between(15, 26));
-	elif(starting_biome == 10): #Shallow salt
-		for g in current_player.organism.get_all_genes():
-			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_between(16,17.5));
-	elif(starting_biome == 11): #snow
-		for g in current_player.organism.get_all_genes():
-			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_between(-40,0));
-				
-				#print("dirt "+str(g.get_temp()))
-	#this should grab ahold of the first bit of information we are looking for. 
-	#prints it out for us to see
-	#tile_hazard_grabs(current_player.organism.current_tile["hazards"])
-	#sets the value for us to use later. 
-	#STATS.set_first_temp(current_player.organism.current_tile["hazards"]["temperature"]) # sets the value to be used globally, just in case.
-	#set_hazard(1, 2)
-	#tile_hazard_grabs(current_player.organism.current_tile["hazards"])
+	biome_temp_setup()
 	loc_highlight.self_modulate = Color.blue 
 	loc_highlight.position = current_player.position
 	current_player.organism.refresh_behavior_profile()
@@ -581,7 +575,7 @@ func move_player(pos: Vector3):
 				#tile_hazard_grabs(current_player.get_current_tile()["hazards"])
 				#set_hazard(1,2)
 				#print("after")
-				tile_hazard_grabs(current_player.get_current_tile()["biome"])
+				#tile_hazard_grabs(current_player.get_current_tile()["biome"])
 				STATS.increment_tiles_traveled()
 				var new_position = Game.map_to_world(pos)
 			
