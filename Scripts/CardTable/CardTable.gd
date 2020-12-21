@@ -481,11 +481,17 @@ func _on_pnl_saveload_loaded():
 func _on_Organism_show_reprod_opts(show):
 	show_replicate_opts(show);
 
-func quit_to_menu():
+func _on_quit_to_menu_check_yes():
 	STATS._reset_game()
 	Game.restart_game()
 	Settings.reset()
 	get_tree().change_scene("res://Scenes/MainMenu/TitleScreen.tscn")
+
+func _on_quit_to_menu_check_no():
+	$pnl_quit_check.visible = false
+
+func quit_to_menu():
+	$pnl_quit_check.visible = true
 
 const OVERVIEW_FORMAT = "Your organism %s.\n\nYou survived for %d rounds.\nYou produced %d progeny.\nYou repaired %d gaps.";
 var death_descr := "died";
@@ -637,4 +643,14 @@ func _on_ph_button_mouse_exited():
 
 func _on_ph_button_pressed():
 	close_extra_menus(ph_filter_panel);
+	pass # Replace with function body.
+
+
+func _on_btn_qtmenu_pressed():
+	STATS._reset_game()
+	Game.restart_game()
+	Settings.reset()
+	get_tree().change_scene("res://Scenes/MainMenu/TitleScreen.tscn")
+	$pnl_quit_check.hide()
+	$pnl_dead_overview.hide()
 	pass # Replace with function body.
