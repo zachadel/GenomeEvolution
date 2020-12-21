@@ -4,7 +4,7 @@ extends Node
 
 #TO DIE FAST: 
 #delete genes using command console
-
+var temperature_array = [];
 #Declaring/initializing variables to keep track of: 
 var tiles_traveled = 0
 var resources_consumed = 0
@@ -132,6 +132,26 @@ var gc_comp = 0
 var gc_con = 0
 var gc_decon = 0
 var gc_ate = 0
+
+var first_temp =0
+
+
+func get_temp_array():
+	return temperature_array[0];
+
+func append_temp_array(val):
+	temperature_array.append(val);
+
+func print_temp_array():
+	print("Printing temperature array: ")
+	for i in temperature_array:
+		print(str(i)+", ")
+
+
+func set_first_temp(temp):
+	first_temp = temp;
+func get_first_temp():
+	return first_temp;
 
 func print_me(me):
 	print("This is it: ")

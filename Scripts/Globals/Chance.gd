@@ -63,6 +63,8 @@ var BEHAVIOR_TO_MOD = {
 
 var RNG = RandomNumberGenerator.new();
 
+func rand_normal_temp(mean, std_dev):
+	return RNG.randfn(mean, std_dev);
 # 1 stdev puts 68% of the random nums in the bounds, 2 gives 95%, 3 gives 99.7%
 # i.e. more stdevs = tighter concentration in the middle
 func rand_normal_between(left_bound : float, right_bound : float, num_stdev : float = 2.0):

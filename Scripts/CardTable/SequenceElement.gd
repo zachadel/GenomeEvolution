@@ -4,6 +4,8 @@ extends TextureButton
 var type; #holds break or gene
 var mode; #holds essential, ate, or pseudogene
 var id;   #holds unique identifier
+var temp;
+var temperature_array := []
 
 var SEQ_ELM_COMPARE_GRADIENT = load("res://Scenes/CardTable/SeqElmColorCompare.tres");
 
@@ -21,6 +23,7 @@ var skills := {};
 var aura_boost := 0.0 setget set_boost, get_boost;
 
 var ph_preference := 7.0;
+var temp_preference = 25.0;
 var internal_damaged := false;
 
 var ate_activity := 0.0;
@@ -49,7 +52,7 @@ signal elm_mouse_exited(elm);
 
 onready var AnthroArt : Control = $AnthroArtHolder;
 onready var CodeArrow : TextureRect = $direct_arrow;
-
+var rng = RandomNumberGenerator.new()
 func _ready():
 	current_size = DEFAULT_SIZE;
 	Tooltips.setup_delayed_tooltip(self);
@@ -58,6 +61,7 @@ func _ready():
 	if setup_ate_display_onready || mode == "ate" && !AnthroArt.has_art():
 		setup_ate_art();
 		upd_display();
+
 
 func obtain_ate_personality(personality_id := "") -> void:
 	if (personality_id == ""):
@@ -130,11 +134,21 @@ func _perf_ate_art_setup():
 	if is_pseudo():
 		AnthroArt.safe_callv("set_eye_droop", [1.0]);
 
-func setup(_type : String, _id := "", _mode := "", _code := "", _par_code := "", _ph := -1.0, _code_dir := false, _dmg := false):
+
+func setup(_type : String, _id := "", _mode := "", _code := "", _par_code := "", _ph := -1.0, _code_dir := false, _dmg := false,_count =0, _temp := -1.0):
 	id = _id;
+	#print("\n current organism"+str(Settings.settings["hazards"])+"\n\n"  )
 	type = _type;
 	mode = _mode;
 	damage_gene(_dmg);
+	var t_p = Chance.rand_normal_between(0,50);
+	if(t_p != null):
+		STATS.append_temp_array(t_p)
+		temp_preference = Chance.rand_normal_temp(STATS.get_temp_array(), 50);
+		if(temp_preference<0):
+			temp_preference=0;
+		if(temp_preference>50):
+			temp_preference=50
 	if (_ph < 0 || _ph > 14):
 		ph_preference = Chance.rand_normal_between(0, 14);
 	else:
@@ -184,14 +198,21 @@ func set_texture(tex : Texture):
 func setup_copy(ref_elm):
 	load_from_save(ref_elm.get_save_data());
 
+func get_temp():
+	return temp_preference;
+func set_temp(val):
+	temp_preference = val;
+	
+func set_pH(val):
+	ph_preference = val;
+
 func get_save_data():
-	var setup_data = ["type", "id", "mode", "gene_code", "parent_code", "ph_preference", "code_direction", "internal_damaged"];
+	var setup_data = ["type", "id", "mode", "gene_code", "parent_code", "ph_preference", "code_direction", "internal_damaged","temp_preference"];
 	for i in range(setup_data.size()):
 		setup_data[i] = get(setup_data[i]);
 	var ate_id_key = Game.get_ate_key_by_name(setup_data[1]);
 	if !ate_id_key.empty():
 		setup_data[1] = ate_id_key;
-	
 	return [setup_data, get_ess_behavior_raw(), get_skill_counts()];
 
 func load_from_save(save_data):
@@ -212,6 +233,17 @@ func get_ph_mult(compared_to = null, raw_interp = false) -> float:
 	
 	var mult = inverse_lerp(14, 0, abs(ph_preference - compared_to));
 	if raw_interp:
+		return mult;
+	return mult * MAX_PH_MULT;
+
+func get_temp_mult(compared_to = null, raw_interp = false) -> float:
+	if compared_to == null:
+		#this may or may not be an actual function time to check. 
+		compared_to = get_organism().get_current_temp();
+		if compared_to == null:
+			compared_to = temp_preference;
+	var mult = inverse_lerp(50,0, abs(temp_preference - compared_to));
+	if(raw_interp):
 		return mult;
 	return mult * MAX_PH_MULT;
 
@@ -515,6 +547,9 @@ func evolve_new_behavior(gain: bool, behavior_key := "") -> void:
 	latest_beh_evol = behavior_key;
 
 const BLANK_EVOLVE_DIFF = 4;
+
+
+
 func evolve_major(gain: bool) -> void:
 	# oustide of match so we can change the mode and use the match behaviors
 	if mode == "blank" && get_code_dist_to_parent() >= BLANK_EVOLVE_DIFF && !gain:
@@ -650,7 +685,7 @@ func get_tooltip_data() -> Array:
 					key = "Pseudogene";
 				"blank":
 					key = "Blank";
-			return ["set_gene_ttip", [key, ph_preference, skills]];
+			return ["set_gene_ttip", [key, ph_preference, temp_preference, skills]];
 		"break":
 			return ["Click on open breaks to repair them. All breaks need to be repaired before more actions can be taken.", "Break"];
 	return ["I don't know what this is!", "Truly a Mystery"];
@@ -682,6 +717,9 @@ func color_comparison(compare_type : String, compare_val : float):
 			
 			if (compare_type == "ph"):
 				comparison = get_ph_mult(compare_val, true);
+			elif(compare_type == "temp"):
+				comparison = get_temp_mult(compare_val, true);
+				
 			
 			forced_comparison_color = SEQ_ELM_COMPARE_GRADIENT.interpolate(comparison);
 		

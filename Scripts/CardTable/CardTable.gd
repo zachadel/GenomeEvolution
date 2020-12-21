@@ -15,6 +15,7 @@ onready var energy_bar = get_node("EnergyBar")
 
 onready var ph_filter_panel := $pnl_ph_filter;
 onready var justnow_ctl := $ctl_justnow;
+onready var temp_filter_panel := $pnl_temp_filter;
 
 var has_gaps = false;
 var wait_on_anim = false;
@@ -408,7 +409,7 @@ func check_if_ready():
 	if !nxt_btn.disabled && auto_continue && !disable_turn_adv:
 		$AutoContinue.start();
 
-onready var central_menus := [$pnl_saveload, ph_filter_panel, $pnl_bugreport, justnow_ctl, $RepairTabs, $pnl_reproduce];
+onready var central_menus := [$pnl_saveload, ph_filter_panel, $pnl_bugreport, temp_filter_panel, justnow_ctl, $RepairTabs, $pnl_reproduce];
 onready var default_menu : Control = justnow_ctl;
 func close_extra_menus(toggle_menu: Control = null, make_default := false) -> void:
 	var restore_default = toggle_menu == null;
@@ -466,9 +467,6 @@ func play_meiosis_slides():
 	slides.queue_free()
 	pass
 
-func _on_btn_filter_pressed():
-	close_extra_menus(ph_filter_panel);
-
 func _on_WorldMap_player_done():
 	emit_signal("player_done");
 
@@ -501,9 +499,12 @@ func show_death_screen():
 	var gaps_repaired := 0;
 	for rtype in ["repair_cp", "repair_cd", "repair_je"]:
 		gaps_repaired += Unlocks.get_count(rtype);
+	$ph_button.hide()
+	$Temp_Button.hide()
 	#$pnl_dead_overview/HSplitContainer/Panel/LblOverview.text = OVERVIEW_FORMAT % [death_descr, Game.round_num, orgn.num_progeny, gaps_repaired]
 	$pnl_dead_overview.visible = true;
 	$pnl_dead_overview.update_values();
+	
 
 func _on_Organism_finished_replication():
 	reset_status_bar();
@@ -526,6 +527,10 @@ func _on_Organism_resources_changed(cfp_resources, mineral_resources):
 func _on_pnl_ph_filter_update_seqelm_coloration(compare_type):
 	for g in orgn.get_all_genes(true):
 		g.color_comparison(compare_type, ph_filter_panel.get_slider_value());
+
+func _on_pnl_temp_filter_update_seqelm_coloration(compare_type):
+	for g in orgn.get_all_genes(true):
+		g.color_comparison(compare_type, temp_filter_panel.get_temp_slider_value());
 
 func _on_AutoContinue_timeout():
 	adv_turn();
@@ -606,4 +611,50 @@ func _on_btn_temp_mouse_entered():
 
 func _on_btn_temp_mouse_exited():
 	$btn_temp/temp_details.hide()
+	pass # Replace with function body.
+
+
+func _on_btn_temp_pressed():
+	close_extra_menus(temp_filter_panel)
+
+
+func _on_Temp_Button_mouse_entered():
+	$Temp_Button/temp_details.show()
+	pass # Replace with function body.
+
+func _on_Temp_Button_mouse_exited():
+	$Temp_Button/temp_details.hide()
+	pass
+
+func _on_Temp_Button_pressed():
+	close_extra_menus(temp_filter_panel)
+	pass
+
+
+func _on_ph_button_mouse_entered():
+	$ph_button/ph_details.show()
+	pass # Replace with function body.
+
+
+func _on_ph_button_mouse_exited():
+	$ph_button/ph_details.hide()
+	pass # Replace with function body.
+
+
+func _on_ph_button_pressed():
+	close_extra_menus(ph_filter_panel);
+	pass # Replace with function body.
+
+
+func _on_btn_qtmenu_pressed():
+	STATS._reset_game()
+	Game.restart_game()
+	Settings.reset()
+	get_tree().change_scene("res://Scenes/MainMenu/TitleScreen.tscn")
+	$pnl_quit_check.hide()
+	$pnl_dead_overview.hide()
+	pass # Replace with function body.
+
+
+func _on_yes_pressed():
 	pass # Replace with function body.

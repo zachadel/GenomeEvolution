@@ -148,6 +148,7 @@ var has_done_meiosis = false
 
 const RESOURCE_TYPES = ["simple_carbs", "complex_carbs", "simple_fats", "complex_fats", "simple_proteins", "complex_proteins"]
 
+signal invalid_action;
 signal gene_clicked();
 signal gap_selected(gap, is_selected);
 signal gene_trimmed(gene);
@@ -390,6 +391,7 @@ func setup(card_table):
 			
 			nxt_gelm.setup("gene", g, "essential");
 		else:
+			print("genes: "+str(g))
 			nxt_gelm.setup("gene", g, g);
 		
 		cmsms.get_cmsm(0).add_elm(nxt_gelm);
@@ -1386,6 +1388,12 @@ func get_current_ph(apply_buffer := false):
 		return ph;
 	return null;
 
+func get_current_temp():
+	if current_tile.has("hazards"):
+		var temp: float = current_tile.hazards["temp"];
+		return temp;
+	return null;
+	
 func roll_chance(type : String, extra_mods := []) -> int:
 	return Chance.roll_chance_type(type, get_behavior_profile(), extra_mods);
 func roll_chance_named(type : String, extra_mods := {}) -> String:

@@ -224,3 +224,4 @@ __meta__ = {
 [connection signal="value_changed" from="HazardsContainer/pHBar" to="HazardsContainer/pHBar/pHLabel" method="_on_pHBar_value_changed"]
 [connection signal="value_changed" from="HazardsContainer/UVBar" to="HazardsContainer/UVBar/UVLabel" method="_on_UVBar_value_changed"]
 [connection signal="value_changed" from="HazardsContainer/OxygenBar" to="HazardsContainer/OxygenBar/OxygenLabel" method="_on_OxygenBar_value_changed"]
+
