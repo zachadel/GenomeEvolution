@@ -202,6 +202,9 @@ func get_temp():
 	return temp_preference;
 func set_temp(val):
 	temp_preference = val;
+	
+func set_pH(val):
+	ph_preference = val;
 
 func get_save_data():
 	var setup_data = ["type", "id", "mode", "gene_code", "parent_code", "ph_preference", "code_direction", "internal_damaged","temp_preference"];

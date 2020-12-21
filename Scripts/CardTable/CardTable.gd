@@ -644,3 +644,13 @@ func _on_ph_button_mouse_exited():
 func _on_ph_button_pressed():
 	close_extra_menus(ph_filter_panel);
 	pass # Replace with function body.
+
+
+func _on_btn_qtmenu_pressed():
+	STATS._reset_game()
+	Game.restart_game()
+	Settings.reset()
+	get_tree().change_scene("res://Scenes/MainMenu/TitleScreen.tscn")
+	$pnl_quit_check.hide()
+	$pnl_dead_overview.hide()
+	pass # Replace with function body.
