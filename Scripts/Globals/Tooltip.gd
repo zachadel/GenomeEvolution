@@ -38,7 +38,7 @@ const GENE_NAMES = {
 	"Component": "Component",
 	
 	"Transposon": "Transposable Element",
-	"Pseudogene": "Psuedogene",
+	"Pseudogene": "Pseudogene",
 	"Blank": "Blank"
 };
 const BASE_TTIPS = {
@@ -228,7 +228,7 @@ func disp_ttip_text(for_node : CanvasItem, body : String, title : String = ""):
 #	                       88                                  
 #	                       dP                                  
 
-func set_gene_ttip(type, ph_pref, skills := {}):
+func set_gene_ttip(type, ph_pref, temp_pref:=1, skills := {}):
 	var gene_title = "%s Gene";
 	if (type in UNNAMED_GENES):
 		gene_title = "%s";
@@ -236,6 +236,7 @@ func set_gene_ttip(type, ph_pref, skills := {}):
 	var tt_text = get_gene_ttip(type, skills);
 	if !(type in NO_BEHAVIOR_GENES):
 		tt_text += "\n\nThis gene operates optimally at a pH of %.2f." % ph_pref;
+		tt_text += "\n\nThis gene operates optimally at a temperature of %.2f." % temp_pref;
 	set_tooltip_text(tt_text, gene_title % GENE_NAMES[type]);
 
 func set_status_ttip(type, compare, skills := {}):
