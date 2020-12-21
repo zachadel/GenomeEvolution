@@ -654,3 +654,7 @@ func _on_btn_qtmenu_pressed():
 	$pnl_quit_check.hide()
 	$pnl_dead_overview.hide()
 	pass # Replace with function body.
+
+
+func _on_yes_pressed():
+	pass # Replace with function body.
