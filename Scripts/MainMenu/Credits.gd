@@ -20,10 +20,19 @@ func _ready():
 			RTL.newline();
 			RTL.newline();
 		
-		RTL.push_bold();
-		RTL.append_bbcode(cfg.get_value(cat, "title"));
-		RTL.pop();
-		for p in cfg.get_value(cat, "ppl"):
-			RTL.newline();
-			RTL.append_bbcode(p);
+		if "license" in cat:
+			RTL.push_bold()
+			RTL.append_bbcode(cat.capitalize())
+			RTL.pop()
+			RTL.newline()
+			RTL.newline()
+			RTL.append_bbcode(cfg.get_value(cat, "text"))
+
+		else:
+			RTL.push_bold();
+			RTL.append_bbcode(cfg.get_value(cat, "title"));
+			RTL.pop();
+			for p in cfg.get_value(cat, "ppl"):
+				RTL.newline();
+				RTL.append_bbcode(p);
 	RTL.pop();
