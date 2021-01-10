@@ -659,3 +659,22 @@ func _on_btn_qtmenu_pressed():
 
 func _on_yes_pressed():
 	pass # Replace with function body.
+
+#attempting to heal the damage imputed on a single gene all at once. 
+func _on_fix_one_pressed():
+	var one_fixed = false;
+	for i in orgn.get_damaged_genes():
+		if(one_fixed == false):
+			orgn.bandage_elm(i);
+			one_fixed = true;
+		#print("damaged gene: "+str(i))
+	#print("Fix one function called.")
+	
+	pass # Replace with function body.
+
+
+func _on_fix_all_pressed():
+	#print("Fix all genes function called")
+	for i in orgn.get_damaged_genes():
+		orgn.bandage_elm(i);
+	pass # Replace with function body.

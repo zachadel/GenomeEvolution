@@ -229,6 +229,10 @@ margin_right = 1437.74
 margin_bottom = 763.0
 
 [node name="Organism" parent="." instance=ExtResource( 2 )]
+margin_left = 0.94397
+margin_top = 0.471924
+margin_right = 0.94397
+margin_bottom = 600.472
 
 [node name="lbl_behavior" type="Label" parent="."]
 anchor_left = 1.0
@@ -434,7 +438,7 @@ __meta__ = {
 }
 
 [node name="LblInstr" type="Label" parent="RepairTabs/pnl_bandage_dmg/vbox"]
-margin_right = 656.0
+margin_right = 686.0
 margin_bottom = 65.0
 text = "
 Click a damaged gene to attempt to repair it.
@@ -447,7 +451,7 @@ __meta__ = {
 
 [node name="HSeparator" type="HSeparator" parent="RepairTabs/pnl_bandage_dmg/vbox"]
 margin_top = 73.0
-margin_right = 656.0
+margin_right = 686.0
 margin_bottom = 77.0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -455,18 +459,36 @@ __meta__ = {
 
 [node name="scroll" type="ScrollContainer" parent="RepairTabs/pnl_bandage_dmg/vbox"]
 margin_top = 85.0
-margin_right = 656.0
-margin_bottom = 232.0
+margin_right = 686.0
+margin_bottom = 204.0
 size_flags_vertical = 3
 scroll_horizontal_enabled = false
 
 [node name="RTLRepairResult" type="Label" parent="RepairTabs/pnl_bandage_dmg/vbox/scroll"]
-margin_right = 656.0
-margin_bottom = 147.0
+margin_right = 686.0
+margin_bottom = 119.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 align = 1
 autowrap = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="RepairTabs/pnl_bandage_dmg/vbox"]
+margin_top = 80.0
+margin_right = 686.0
+margin_bottom = 100.0
+alignment = 1
+
+[node name="fix_one" type="Button" parent="RepairTabs/pnl_bandage_dmg/vbox/HBoxContainer"]
+margin_left = 179.0
+margin_right = 342.0
+margin_bottom = 20.0
+text = "Fix One Damaged Gene"
+
+[node name="fix_all" type="Button" parent="RepairTabs/pnl_bandage_dmg/vbox/HBoxContainer"]
+margin_left = 346.0
+margin_right = 506.0
+margin_bottom = 20.0
+text = "Fix All Damaged Genes"
 
 [node name="pnl_quit_check" type="Panel" parent="."]
 visible = false
@@ -1464,6 +1486,8 @@ __meta__ = {
 [connection signal="item_activated" from="RepairTabs/pnl_repair_choices/hsplit/ilist_choices" to="." method="_on_ilist_choices_item_activated"]
 [connection signal="item_selected" from="RepairTabs/pnl_repair_choices/hsplit/ilist_choices" to="." method="upd_repair_desc"]
 [connection signal="pressed" from="RepairTabs/pnl_repair_choices/hsplit/vsplit/btn_apply_repair" to="." method="_on_btn_apply_repair_pressed"]
+[connection signal="pressed" from="RepairTabs/pnl_bandage_dmg/vbox/HBoxContainer/fix_one" to="." method="_on_fix_one_pressed"]
+[connection signal="pressed" from="RepairTabs/pnl_bandage_dmg/vbox/HBoxContainer/fix_all" to="." method="_on_fix_all_pressed"]
 [connection signal="pressed" from="pnl_quit_check/yes" to="." method="_on_quit_to_menu_check_yes"]
 [connection signal="pressed" from="pnl_quit_check/no" to="." method="_on_quit_to_menu_check_no"]
 [connection signal="item_activated" from="pnl_reproduce/hsplit/ilist_choices" to="." method="_on_replic_choices_item_activated"]
