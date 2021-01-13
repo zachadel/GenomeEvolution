@@ -1,25 +1,24 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Scripts/MainMenu/title_screen.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Images/pngs/CHAOS.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Images/pngs/DNA_left.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Images/pngs/DNA_right.png" type="Texture" id=4]
 [ext_resource path="res://Scenes/MainMenu/TitleCell.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Scenes/MainMenu/Credits.tscn" type="PackedScene" id=6]
 
 [sub_resource type="Curve2D" id=1]
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, -1.07379, 81.8436, 0, 0, 0, 0, -1.43216, 0.0722504, 0, 0, 0, 0, 1578.13, 84.5643, 0, 0, 0, 0, 1599.68, 901.029, 0, 0, 0, 0, -0.189148, 900.495, 0, 0, 0, 0, -1.18261, 81.7348 )
 }
 
-[sub_resource type="DynamicFontData" id=2]
+[sub_resource type="DynamicFontData" id=9]
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="DynamicFont" id=10]
 size = 45
 use_mipmaps = true
 use_filter = true
-font_data = SubResource( 2 )
+font_data = SubResource( 9 )
 
 [sub_resource type="StyleBoxFlat" id=4]
 bg_color = Color( 0.94902, 0.952941, 0.956863, 1 )
@@ -70,7 +69,7 @@ Button/colors/font_color_disabled = Color( 0, 0, 0, 1 )
 Button/colors/font_color_hover = Color( 0.341176, 0.545098, 0.788235, 1 )
 Button/colors/font_color_pressed = Color( 0, 0, 0, 1 )
 Button/constants/hseparation = 2
-Button/fonts/font = SubResource( 3 )
+Button/fonts/font = SubResource( 10 )
 Button/styles/disabled = null
 Button/styles/focus = null
 Button/styles/hover = SubResource( 4 )
@@ -487,7 +486,7 @@ WindowDialog/styles/panel = null
 size = 64
 use_mipmaps = true
 use_filter = true
-font_data = SubResource( 2 )
+font_data = SubResource( 9 )
 
 [node name="TitleScreen" type="Control"]
 margin_right = 1600.0
@@ -582,8 +581,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="Continue" type="Button" parent="ButtonContainer"]
-visible = false
+[node name="Credits" type="Button" parent="ButtonContainer"]
 margin_top = 138.0
 margin_right = 494.0
 margin_bottom = 246.0
@@ -594,10 +592,9 @@ custom_fonts/font = SubResource( 8 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 0.341176, 0.545098, 0.788235, 1 )
 enabled_focus_mode = 0
-text = "Continue"
+text = "Credits"
 
 [node name="Exit" type="Button" parent="ButtonContainer"]
-visible = false
 margin_top = 276.0
 margin_right = 494.0
 margin_bottom = 384.0
@@ -613,14 +610,6 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="Credits" parent="ButtonContainer" instance=ExtResource( 6 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 138.0
-margin_right = 494.0
-margin_bottom = 588.0
-rect_min_size = Vector2( 250, 450 )
-
 [node name="CellTimer" type="Timer" parent="."]
 wait_time = 0.5
 autostart = true
@@ -630,5 +619,6 @@ __meta__ = {
 [connection signal="begin_new_game" from="." to="." method="_on_TitleScreen_begin_new_game"]
 [connection signal="exit_game" from="." to="." method="_on_TitleScreen_exit_game"]
 [connection signal="pressed" from="ButtonContainer/NewGame" to="." method="_on_NewGame_pressed"]
+[connection signal="pressed" from="ButtonContainer/Credits" to="." method="_on_Credits_pressed"]
 [connection signal="pressed" from="ButtonContainer/Exit" to="." method="_on_Exit_pressed"]
 [connection signal="timeout" from="CellTimer" to="." method="_on_CellTimer_timeout"]

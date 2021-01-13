@@ -1,38 +1,20 @@
-tool
-# makes the code run in the editor, so you can see the credits
-
 extends Control
 
-# Build the credits from the /Data/credits.cfg file
-# Helps keep formatting consistent, avoids those weird newline errors
-func _ready():
-	var cfg := ConfigFile.new();
-	cfg.load("res://Data/credits.cfg");
-	
-	var RTL : RichTextLabel = $RichTextLabel;
-	var just_started := true;
-	RTL.clear();
-	RTL.push_align(RichTextLabel.ALIGN_CENTER);
-	for cat in cfg.get_sections():
-		if just_started:
-			just_started = false;
-		else:
-			RTL.newline();
-			RTL.newline();
-		
-		if "license" in cat:
-			RTL.push_bold()
-			RTL.append_bbcode(cat.capitalize())
-			RTL.pop()
-			RTL.newline()
-			RTL.newline()
-			RTL.append_bbcode(cfg.get_value(cat, "text"))
 
-		else:
-			RTL.push_bold();
-			RTL.append_bbcode(cfg.get_value(cat, "title"));
-			RTL.pop();
-			for p in cfg.get_value(cat, "ppl"):
-				RTL.newline();
-				RTL.append_bbcode(p);
-	RTL.pop();
+# Declare member variables here. Examples:
+# var a = 2
+# var b = "text"
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+#func _process(delta):
+#	pass
+
+
+func _on_Return_pressed():
+	get_tree().change_scene("res://Scenes/MainMenu/TitleScreen.tscn")
