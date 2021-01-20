@@ -678,3 +678,110 @@ func _on_fix_all_pressed():
 	for i in orgn.get_damaged_genes():
 		orgn.bandage_elm(i);
 	pass # Replace with function body.
+
+
+func _on_fixAllBreaks_pressed(): #(This was created before the other buttons, therefore by default it is join ends.)
+	print("fix all breaks pressed")
+	auto_repair_all_breaks_join_end(orgn.get_cmsm_pair());
+	pass # Replace with function body.
+
+#this function takes in an array object and a number of choices and returns a new array of the size of the choices given and of a random content of the array passed in.
+func auto_choose(objects: Array, num_choices: int = 1 ) -> Array:
+	var outputArray =[];
+	for i in range(num_choices):
+		outputArray.append(objects[randi() % objects.size()])
+	return outputArray;
+
+
+#this is to automatically repair one break within the chromosome. 
+#this also returns whether or not there were any gaps found in the chromosomes. If it is false, there were no gaps.
+#if it returns true there were gaps. 
+func auto_repair_all_breaks_join_end(cmsm_pair) -> bool:
+	var num_gaps_found = 0;
+	for i in cmsm_pair.get_all_genes():# gets a list of all the genes and iterates through them. 
+		if(i.is_gap() ): #checks if the point is a gap in the chromosome
+			num_gaps_found += 1;
+			#These are needed to set the conditions for the organism to attempt a repair
+			orgn.sel_repair_gap = i; 
+			orgn.sel_repair_type = "join_ends";
+			orgn.is_ai = true; #the ai option will automate choosing one of the genes to the left and the right of the selected gene.
+			# This is needed for the organism to recognize what is an option to it
+			orgn.upd_repair_opts(i)
+			orgn.sel_repair_type = "join_ends"; #forces it to take the thing I want it to
+			#attempts to repair the chromosome
+			orgn.auto_repair()
+			#updates UI
+			show_repair_types(false);
+			orgn.is_ai = false;
+	if(num_gaps_found == 0):
+		return false;
+	else:
+		return true;
+
+
+func _on_fixAllBreaksWCollapseDuplicates_pressed():
+	auto_repair_all_breaks_collapse_dupes(orgn.get_cmsm_pair())
+	pass # Replace with function body.
+
+func auto_repair_all_breaks_collapse_dupes(cmsm_pair) -> bool:
+	var repair_priority = [];
+	var num_gaps_found = 0;
+	if(Unlocks.has_repair_unlock("join_ends")):
+		repair_priority.append("join_ends"); #sets the priority of the lowest value in the array to join ends.
+	if(Unlocks.has_repair_unlock("collapse_dupes")):
+		repair_priority.append("collapse_dupes"); #sets the priority of the lowest value in the array to join ends.
+	
+	for i in cmsm_pair.get_all_genes():# gets a list of all the genes and iterates through them. 
+		if(i.is_gap() ): #checks if the point is a gap in the chromosome
+			num_gaps_found += 1;
+			#These are needed to set the conditions for the organism to attempt a repair
+			orgn.sel_repair_gap = i; 
+			orgn.is_ai = true; #the ai option will automate choosing one of the genes to the left and the right of the selected gene.
+			# This is needed for the organism to recognize what is an option to it
+			orgn.default_collapse_dupes(i);
+			#attempts to repair the chromosome
+			orgn.auto_repair()
+			show_repair_types(false);
+			orgn.is_ai = false;
+	if(num_gaps_found == 0):
+		return false;
+	else:
+		return true;
+
+func _on_fixAllBreaksWCopyPattern_pressed():
+	auto_repair_all_breaks_copyPattern(orgn.get_cmsm_pair())
+	pass # Replace with function body.
+func auto_repair_all_breaks_copyPattern(cmsm_pair) -> bool:
+	var repair_priority = [];
+	var num_gaps_found = 0;
+	if(Unlocks.has_repair_unlock("join_ends")):
+		repair_priority.append("join_ends"); #sets the priority of the lowest value in the array to join ends.
+	if(Unlocks.has_repair_unlock("copy_pattern")):
+		repair_priority.append("copy_pattern"); #sets the priority of the lowest value in the array to join ends.
+	
+	for i in cmsm_pair.get_all_genes():# gets a list of all the genes and iterates through them. 
+		if(i.is_gap() ): #checks if the point is a gap in the chromosome
+			num_gaps_found += 1;
+			#These are needed to set the conditions for the organism to attempt a repair
+			orgn.sel_repair_gap = i; 
+			orgn.is_ai = true; #the ai option will automate choosing one of the genes to the left and the right of the selected gene.
+			# This is needed for the organism to recognize what is an option to it
+			orgn.default_copy_pattern(i);
+			#attempts to repair the chromosome
+			orgn.auto_repair()
+			show_repair_types(false);
+			orgn.is_ai = false;
+	if(num_gaps_found == 0):
+		return false;
+	else:
+		return true;
+
+
+func _on_fix_all_mouse_entered():
+	$RepairTabs/pnl_bandage_dmg/vbox/HBoxContainer/fix_all/fix_all_details.visible = true;
+	pass # Replace with function body.
+
+
+func _on_fix_all_mouse_exited():
+	$RepairTabs/pnl_bandage_dmg/vbox/HBoxContainer/fix_all/fix_all_details.visible = false;
+	pass # Replace with function body.
