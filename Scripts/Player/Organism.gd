@@ -807,6 +807,63 @@ func has_resource_for_action(action, amt = 1):
 		return check_resources(action, amt).empty();
 	else:
 		return check_resources(action, amt).empty();
+		
+func default_collapse_dupes(gap):
+	sel_repair_gap = gap;
+	var cmsm = gap.get_parent();
+	var g_idx = gap.get_index();
+	repair_type_possible["collapse_dupes"] = true;
+	if !Unlocks.has_repair_unlock("collapse_dupes"):
+		repair_type_possible["collapse_dupes"] = false;
+		var cps_remain : int = Unlocks.get_count_remaining(Unlocks.get_repair_key("collapse_dupes"), "cp_duped_genes");
+		repair_btn_text["collapse_dupes"] = "Copy %d more gene%s with Copy Repair" % [cps_remain, Game.pluralize(cps_remain)];
+	elif !has_resource_for_action("repair_cd"):
+		repair_type_possible["collapse_dupes"] = false;
+		repair_btn_text["collapse_dupes"] = "Not enough resources";
+	elif !cmsm.dupe_block_exists(g_idx):
+		repair_type_possible["collapse_dupes"] = false;
+		repair_btn_text["collapse_dupes"] = "No duplicates to collapse";
+	if(repair_type_possible["collapse_dupes"] == false):
+		return false;
+	else:
+		repair_type_possible["collapse_dupes"] = true;
+		sel_repair_type = "collapse_dupes"
+		return true;
+
+func default_copy_pattern(gap):
+	sel_repair_gap = gap;
+	
+	var cmsm = gap.get_parent();
+	var g_idx = gap.get_index();
+	
+	if (g_idx == 0 || g_idx == cmsm.get_child_count()-1):
+		if (do_yields):
+			yield(cmsms.close_gap(gap), "completed");
+		else:
+			cmsms.close_gap(gap);
+	else:
+		var left_elm = cmsm.get_child(g_idx-1);
+		var right_elm = cmsm.get_child(g_idx+1);
+		repair_type_possible["copy_pattern"] = true;
+		
+		if !Unlocks.has_repair_unlock("copy_pattern"):
+			repair_type_possible["copy_pattern"] = false;
+			var jes_remain : int = Unlocks.get_count_remaining(Unlocks.get_repair_key("copy_pattern"), "repair_je");
+			repair_btn_text["copy_pattern"] = "Perform %d more Join Ends repair%s" % [jes_remain, Game.pluralize(jes_remain)];
+		elif !has_resource_for_action("repair_cp"):
+			repair_type_possible["copy_pattern"] = false;
+			repair_btn_text["copy_pattern"] = "Not enough resources";
+		elif !cmsms.get_other_cmsm(cmsm).pair_exists(left_elm, right_elm):
+			repair_type_possible["copy_pattern"] = false;
+			repair_btn_text["copy_pattern"] = "No pattern to copy";
+	
+	if(repair_type_possible["copy_pattern"] == false):
+		return false;
+	else:
+		repair_type_possible["copy_pattern"] = true;
+		sel_repair_type="copy_pattern";
+		return true;
+	pass
 
 func upd_repair_opts(gap):
 	sel_repair_gap = gap;
@@ -868,6 +925,7 @@ func reset_repair_opts():
 func change_selected_repair(rep_type: String):
 	sel_repair_type = rep_type;
 
+
 func auto_repair():
 	make_repair_choices(sel_repair_gap, sel_repair_type);
 
@@ -884,7 +942,7 @@ func make_repair_choices(gap, repair_type: String):
 			var g_idx = gap.get_index();
 			
 			var blocks_dict = gap_cmsm.find_dupe_blocks(g_idx);
-			
+			print("for collapse dupes: the blocks dict size is: "+str(blocks_dict.size()))
 			emit_signal("gap_close_msg", "Select the leftmost element of the pattern you will collapse.");
 			gene_selection.clear();
 			if (is_ai || blocks_dict.size() == 1):
@@ -1002,30 +1060,32 @@ func make_repair_choices(gap, repair_type: String):
 var repair_canceled = false;
 func repair_gap(gap, repair_type, choice_info = {}):
 	emit_signal("clear_gap_msg");
+	print("repair type: "+repair_type)
+	print("is it possible?: "+str(repair_type_possible[repair_type]))
 	if (repair_type_possible[repair_type]):
-		reset_repair_opts();
-		var cmsm = gap.get_parent();
-		var g_idx : int = gap.get_index();
-		var gap_pos_disp = gap.get_position_display();
+		reset_repair_opts(); #resets the boolean logic of the reparations
+		var cmsm = gap.get_parent(); # grabs the chromosome from the gap
+		var g_idx : int = gap.get_index(); #get sthe index of the gap in the chromosome.
+		var gap_pos_disp = gap.get_position_display();# gets the postion on the display?
 		
-		var other_cmsm = cmsms.get_other_cmsm(cmsm);
+		var other_cmsm = cmsms.get_other_cmsm(cmsm); #gets ahold of the other chromosome
 		
-		var left_break_gene = cmsm.get_child(g_idx - 1);
-		var right_break_gene = cmsm.get_child(g_idx + 1);
-		var left_id = left_break_gene.get_gene_name();
-		var right_id = right_break_gene.get_gene_name();
+		var left_break_gene = cmsm.get_child(g_idx - 1); #gets the space of the chromosome left of the break
+		var right_break_gene = cmsm.get_child(g_idx + 1); #gets the space of the chromosome right of the break
+		var left_id = left_break_gene.get_gene_name(); #gets the id of the gene left of the break.
+		var right_id = right_break_gene.get_gene_name(); #gets the id of the gene right of the break
 		
-		var original_select = gene_selection;
+		var original_select = gene_selection; #original select is set to the array of genes selected.
 		
 		repair_canceled = false;
-		match (repair_type):
-			"collapse_dupes":
-				Unlocks.add_count("repair_cd");
+		match (repair_type): #now it attempts to match the repair types. (collpase duplicates, join ends, etc.)
+			"collapse_dupes": # if the repair type is equal to collapse duplicates:
+				Unlocks.add_count("repair_cd"); #updates the count for repair via collapse dupes. 
 				
 				var left_idx = choice_info["left"].get_index();
 				var right_idx = choice_info["right"].get_index();
 				choice_info["left"].highlight_border(false);
-				choice_info["right"].highlight_border(false);
+				choice_info["right"].highlight_border(false); #Highlights the borders of the left and right of the specified items.
 				
 				# Find all the genes to remove before removing them
 				var remove_genes = [];
@@ -1173,6 +1233,7 @@ func repair_gap(gap, repair_type, choice_info = {}):
 					use_resources("repair_cp")
 					#print("repair copy pattern");
 			"join_ends":
+				
 				Unlocks.add_count("repair_je");
 				var seg_size := 0;
 				var seg_left_of_gap := true;
