@@ -175,6 +175,14 @@ func show_repair_opts(show):
 		close_extra_menus($RepairTabs, true);
 
 func _on_Organism_gap_selected(_gap, sel: bool):
+	if(STATS.get_all_JE_unlocked()):
+		$RepairTabs/pnl_repair_choices/vbox/HBoxContainer/fixAllBreaksWJoinEnds.disabled = false;
+	if(STATS.get_all_CD_unlocked()):
+		$RepairTabs/pnl_repair_choices/vbox/HBoxContainer/fixAllBreaksWCollapseDuplicates.disabled = false;
+	if(STATS.get_all_CPR_unlocked()):
+		$RepairTabs/pnl_repair_choices/vbox/HBoxContainer/fixAllBreaksWCopyPattern.disabled = false;
+	if(STATS.get_all_fix_damage_genes()):
+		$RepairTabs/pnl_bandage_dmg/vbox/HBoxContainer/fix_all.disabled = false;
 	show_repair_types(sel);
 
 func _on_Organism_gene_trimmed(_gene):
@@ -681,6 +689,8 @@ func _on_fix_all_pressed():
 
 
 func _on_fixAllBreaks_pressed(): #(This was created before the other buttons, therefore by default it is join ends.)
+	#the name of this function may be misleading.
+	#IT ONLY FIXES BREAKS THAT IT CAN IN FACT FIX WITH THAT TYPE OF CORRECTION
 	print("fix all breaks pressed")
 	auto_repair_all_breaks_join_end(orgn.get_cmsm_pair());
 	pass # Replace with function body.
@@ -720,6 +730,8 @@ func auto_repair_all_breaks_join_end(cmsm_pair) -> bool:
 
 
 func _on_fixAllBreaksWCollapseDuplicates_pressed():
+	#the name of this function may be misleading.
+	#IT ONLY FIXES BREAKS THAT IT CAN IN FACT FIX WITH THAT TYPE OF CORRECTION
 	auto_repair_all_breaks_collapse_dupes(orgn.get_cmsm_pair())
 	pass # Replace with function body.
 
@@ -738,10 +750,12 @@ func auto_repair_all_breaks_collapse_dupes(cmsm_pair) -> bool:
 			orgn.sel_repair_gap = i; 
 			orgn.is_ai = true; #the ai option will automate choosing one of the genes to the left and the right of the selected gene.
 			# This is needed for the organism to recognize what is an option to it
-			orgn.default_collapse_dupes(i);
-			#attempts to repair the chromosome
-			orgn.auto_repair()
-			show_repair_types(false);
+			var possible_outcome = orgn.default_collapse_dupes(i);
+			print("collapse dupes was: "+ str(possible_outcome))
+			if(possible_outcome == true):
+				#attempts to repair the chromosome
+				orgn.auto_repair()
+				show_repair_types(false);
 			orgn.is_ai = false;
 	if(num_gaps_found == 0):
 		return false;
@@ -749,6 +763,8 @@ func auto_repair_all_breaks_collapse_dupes(cmsm_pair) -> bool:
 		return true;
 
 func _on_fixAllBreaksWCopyPattern_pressed():
+	#the name of this function may be misleading.
+	#IT ONLY FIXES BREAKS THAT IT CAN IN FACT FIX WITH THAT TYPE OF CORRECTION
 	auto_repair_all_breaks_copyPattern(orgn.get_cmsm_pair())
 	pass # Replace with function body.
 func auto_repair_all_breaks_copyPattern(cmsm_pair) -> bool:
@@ -766,10 +782,12 @@ func auto_repair_all_breaks_copyPattern(cmsm_pair) -> bool:
 			orgn.sel_repair_gap = i; 
 			orgn.is_ai = true; #the ai option will automate choosing one of the genes to the left and the right of the selected gene.
 			# This is needed for the organism to recognize what is an option to it
-			orgn.default_copy_pattern(i);
+			var possible_option = orgn.default_copy_pattern(i);
 			#attempts to repair the chromosome
-			orgn.auto_repair()
-			show_repair_types(false);
+			if(possible_option == true):
+				orgn.auto_repair()
+				show_repair_types(false);
+			
 			orgn.is_ai = false;
 	if(num_gaps_found == 0):
 		return false;

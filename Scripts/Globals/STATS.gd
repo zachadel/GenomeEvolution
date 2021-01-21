@@ -136,6 +136,30 @@ var gc_ate = 0
 var first_temp =0
 
 
+func get_all_JE_unlocked():
+	if(breaks_join_error + breaks_join_no_error >= 19):
+		return true;
+	else:
+		return false;
+
+func get_all_CD_unlocked():
+	if(breaks_repaired_collapseDuplicates >= 19):
+		return true;
+	else:
+		return false;
+
+func get_all_CPR_unlocked():
+	if(breaks_cpyRepair_error + breaks_cpyRepair_no_error >= 19):
+		return true;
+	else:
+		return false;
+
+func get_all_fix_damage_genes():
+	if(dmg_genes_error + dmg_genes_no_error >= 19):
+		return true;
+	else:
+		false
+
 func get_temp_array():
 	return temperature_array[0];
 

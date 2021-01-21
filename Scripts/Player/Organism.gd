@@ -824,8 +824,6 @@ func default_collapse_dupes(gap):
 		repair_type_possible["collapse_dupes"] = false;
 		repair_btn_text["collapse_dupes"] = "No duplicates to collapse";
 	if(repair_type_possible["collapse_dupes"] == false):
-		repair_type_possible["join_ends"] = true;
-		sel_repair_type ="join_ends"
 		return false;
 	else:
 		repair_type_possible["collapse_dupes"] = true;
@@ -860,8 +858,6 @@ func default_copy_pattern(gap):
 			repair_btn_text["copy_pattern"] = "No pattern to copy";
 	
 	if(repair_type_possible["copy_pattern"] == false):
-		repair_type_possible["join_ends"] = true;
-		sel_repair_type = "join_ends"
 		return false;
 	else:
 		repair_type_possible["copy_pattern"] = true;
