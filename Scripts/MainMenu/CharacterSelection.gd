@@ -28,7 +28,7 @@ func _on_GoToGame_pressed():
 	Settings.populate_cell_texture_paths()
 	Settings.update_seed()
 #	Settings.save_all_settings()
-	print(Settings.settings["resources"])
+	#print(Settings.settings["resources"])
 	get_tree().change_scene("res://Scenes/MainMenu/Goal.tscn")
 	pass # Replace with function body.
 
@@ -39,11 +39,11 @@ func _on_CellSelection_cell_changed(cell_string):
 
 
 func _on_Save_pressed():
-	print(Settings.settings["resources"]["nitrogen"])
+	#print(Settings.settings["resources"]["nitrogen"])
 	resources.update_global_settings()
 	settings_menu.get_final_settings()
 	settings_menu.update_global_settings()
-	print(Settings.settings["resources"]["nitrogen"])
+	#print(Settings.settings["resources"]["nitrogen"])
 	Settings.save_all_settings()
 	pass # Replace with function body.
 

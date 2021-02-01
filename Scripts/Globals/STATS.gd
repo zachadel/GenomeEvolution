@@ -135,6 +135,12 @@ var gc_ate = 0
 
 var first_temp =0
 
+func get_total_JE():
+	return breaks_join_error + breaks_join_no_error;
+
+func get_total_CPR():
+	return breaks_cpyRepair_error + breaks_cpyRepair_no_error;
+
 
 func get_all_JE_unlocked():
 	if(breaks_join_error + breaks_join_no_error >= 19):

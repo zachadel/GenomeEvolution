@@ -391,7 +391,7 @@ func setup(card_table):
 			
 			nxt_gelm.setup("gene", g, "essential");
 		else:
-			print("genes: "+str(g))
+			#print("genes: "+str(g))
 			nxt_gelm.setup("gene", g, g);
 		
 		cmsms.get_cmsm(0).add_elm(nxt_gelm);
@@ -531,6 +531,7 @@ func apply_break_after_move() -> String:
 				if randf() < .57:
 					accumulated_dmg += 1
 					add_dmg = "dmg"
+					print("accumulated_dmg: "+str(accumulated_dmg))
 				else:
 					accumulated_gaps += 1
 					add_dmg = "gap"
@@ -1060,8 +1061,8 @@ func make_repair_choices(gap, repair_type: String):
 var repair_canceled = false;
 func repair_gap(gap, repair_type, choice_info = {}):
 	emit_signal("clear_gap_msg");
-	print("repair type: "+repair_type)
-	print("is it possible?: "+str(repair_type_possible[repair_type]))
+	#print("repair type: "+repair_type)
+	#print("is it possible?: "+str(repair_type_possible[repair_type]))
 	if (repair_type_possible[repair_type]):
 		reset_repair_opts(); #resets the boolean logic of the reparations
 		var cmsm = gap.get_parent(); # grabs the chromosome from the gap

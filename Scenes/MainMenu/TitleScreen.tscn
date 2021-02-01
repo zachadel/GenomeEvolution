@@ -1,11 +1,10 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Scripts/MainMenu/title_screen.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Images/pngs/CHAOS.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Images/pngs/DNA_left.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Images/pngs/DNA_right.png" type="Texture" id=4]
 [ext_resource path="res://Scenes/MainMenu/TitleCell.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Scenes/MainMenu/Credits.tscn" type="PackedScene" id=6]
 
 [sub_resource type="Curve2D" id=1]
 _data = {
@@ -582,8 +581,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="Continue" type="Button" parent="ButtonContainer"]
-visible = false
+[node name="Credits" type="Button" parent="ButtonContainer"]
 margin_top = 138.0
 margin_right = 494.0
 margin_bottom = 246.0
@@ -594,10 +592,9 @@ custom_fonts/font = SubResource( 8 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 0.341176, 0.545098, 0.788235, 1 )
 enabled_focus_mode = 0
-text = "Continue"
+text = "Credits"
 
 [node name="Exit" type="Button" parent="ButtonContainer"]
-visible = false
 margin_top = 276.0
 margin_right = 494.0
 margin_bottom = 384.0
@@ -613,14 +610,6 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="Credits" parent="ButtonContainer" instance=ExtResource( 6 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 138.0
-margin_right = 494.0
-margin_bottom = 588.0
-rect_min_size = Vector2( 250, 450 )
-
 [node name="CellTimer" type="Timer" parent="."]
 wait_time = 0.5
 autostart = true
@@ -630,5 +619,6 @@ __meta__ = {
 [connection signal="begin_new_game" from="." to="." method="_on_TitleScreen_begin_new_game"]
 [connection signal="exit_game" from="." to="." method="_on_TitleScreen_exit_game"]
 [connection signal="pressed" from="ButtonContainer/NewGame" to="." method="_on_NewGame_pressed"]
+[connection signal="pressed" from="ButtonContainer/Credits" to="." method="_on_Credits_pressed"]
 [connection signal="pressed" from="ButtonContainer/Exit" to="." method="_on_Exit_pressed"]
 [connection signal="timeout" from="CellTimer" to="." method="_on_CellTimer_timeout"]

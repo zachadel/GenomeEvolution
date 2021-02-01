@@ -19,7 +19,7 @@
 [ext_resource path="res://Scenes/CardTable/LabeledNumber.tscn" type="PackedScene" id=17]
 [ext_resource path="res://Scenes/CardTable/pnl_bugreport.gd" type="Script" id=18]
 [ext_resource path="res://Assets/Images/pngs/DNA_small.png" type="Texture" id=19]
-[ext_resource path="res://Scenes/MainMenu/Credits.tscn" type="PackedScene" id=20]
+[ext_resource path="res://Scenes/MainMenu/CreditsDisplay.tscn" type="PackedScene" id=20]
 [ext_resource path="res://Assets/Images/pngs/DNA_left.png" type="Texture" id=21]
 [ext_resource path="res://Assets/Images/pngs/DNA_right.png" type="Texture" id=22]
 [ext_resource path="res://Assets/Images/genes/Replication.png" type="Texture" id=23]
@@ -396,6 +396,63 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="joinEndsHidden" type="ColorRect" parent="RepairTabs/pnl_repair_choices/vbox"]
+visible = false
+margin_top = 62.0
+margin_right = 686.0
+margin_bottom = 62.0
+color = Color( 0.0901961, 0.0980392, 0.0980392, 0.529412 )
+
+[node name="Label" type="Label" parent="RepairTabs/pnl_repair_choices/vbox/joinEndsHidden"]
+margin_top = 20.0
+margin_right = 148.0
+margin_bottom = 68.0
+text = "This will unlock after 20 join ends have been committed."
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="copyPatternHidden" type="ColorRect" parent="RepairTabs/pnl_repair_choices/vbox"]
+visible = false
+margin_top = 62.0
+margin_right = 686.0
+margin_bottom = 62.0
+color = Color( 0.0901961, 0.0980392, 0.0980392, 0.529412 )
+
+[node name="Label" type="Label" parent="RepairTabs/pnl_repair_choices/vbox/copyPatternHidden"]
+margin_top = 20.0
+margin_right = 148.0
+margin_bottom = 68.0
+text = "This will unlock after 20 join ends have been committed."
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="collapseDupesHidden" type="ColorRect" parent="RepairTabs/pnl_repair_choices/vbox"]
+visible = false
+margin_top = 62.0
+margin_right = 686.0
+margin_bottom = 62.0
+color = Color( 0.0901961, 0.0980392, 0.0980392, 0.529412 )
+
+[node name="Label" type="Label" parent="RepairTabs/pnl_repair_choices/vbox/collapseDupesHidden"]
+margin_top = 20.0
+margin_right = 148.0
+margin_bottom = 68.0
+text = "This will unlock after 20 join ends have been committed."
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="scroll" type="ScrollContainer" parent="RepairTabs/pnl_repair_choices/vbox"]
 margin_top = 62.0
 margin_right = 686.0
@@ -517,7 +574,7 @@ __meta__ = {
 margin_top = 20.0
 margin_right = 150.0
 margin_bottom = 85.0
-text = "This is a skill that can be unlocked after x amount of healed genes manually."
+text = "This is a skill that can be unlocked after 20 genes healed manually."
 align = 1
 valign = 1
 autowrap = true
@@ -865,18 +922,14 @@ margin_left = 1193.14
 margin_top = 772.178
 margin_right = 1293.14
 margin_bottom = 872.178
-num = 0
 lbl = "Round"
-show_change = true
 
 [node name="lnum_progeny" parent="." instance=ExtResource( 17 )]
 margin_left = 1337.14
 margin_top = 772.178
 margin_right = 1437.14
 margin_bottom = 872.178
-num = 0
 lbl = "Progeny"
-show_change = true
 
 [node name="EnergyBar" parent="." instance=ExtResource( 14 )]
 margin_left = 3.48102
@@ -906,25 +959,32 @@ __meta__ = {
 }
 
 [node name="btn_qtmenu" type="Button" parent="button_grid"]
-margin_top = 135.0
+margin_top = 85.0
 margin_right = 122.0
-margin_bottom = 175.0
+margin_bottom = 125.0
 rect_min_size = Vector2( 120, 40 )
 text = "Quit to Menu"
 
 [node name="btn_bugreport" type="Button" parent="button_grid"]
-margin_top = 185.0
+margin_top = 135.0
 margin_right = 122.0
-margin_bottom = 230.0
+margin_bottom = 180.0
 rect_min_size = Vector2( 120, 45 )
 text = "Report Bug"
 
 [node name="btn_saveload" type="Button" parent="button_grid"]
+margin_top = 190.0
+margin_right = 122.0
+margin_bottom = 230.0
+rect_min_size = Vector2( 120, 40 )
+text = "Save/Load"
+
+[node name="btn_event_log" type="Button" parent="button_grid"]
 margin_top = 240.0
 margin_right = 122.0
 margin_bottom = 280.0
-rect_min_size = Vector2( 120, 40 )
-text = "Save/Load"
+rect_min_size = Vector2( 122, 40 )
+text = "Show Event Log"
 
 [node name="stats_screen" type="Button" parent="button_grid"]
 margin_top = 290.0
@@ -995,13 +1055,13 @@ margin_right = 1600.0
 margin_bottom = 776.0
 
 [node name="Credits" parent="pnl_dead_overview/HSplitContainer/CenterContainer" instance=ExtResource( 20 )]
+visible = false
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 675.0
-margin_top = 163.0
+margin_top = 338.0
 margin_right = 925.0
-margin_bottom = 613.0
-rect_min_size = Vector2( 250, 450 )
+margin_bottom = 438.0
 
 [node name="background" type="ColorRect" parent="pnl_dead_overview"]
 margin_left = 1.0
@@ -1546,8 +1606,14 @@ __meta__ = {
 [connection signal="item_activated" from="RepairTabs/pnl_repair_choices/hsplit/ilist_choices" to="." method="_on_ilist_choices_item_activated"]
 [connection signal="item_selected" from="RepairTabs/pnl_repair_choices/hsplit/ilist_choices" to="." method="upd_repair_desc"]
 [connection signal="pressed" from="RepairTabs/pnl_repair_choices/hsplit/vsplit/btn_apply_repair" to="." method="_on_btn_apply_repair_pressed"]
+[connection signal="mouse_entered" from="RepairTabs/pnl_repair_choices/vbox/HBoxContainer/fixAllBreaksWJoinEnds" to="." method="_on_fixAllBreaksWJoinEnds_mouse_entered"]
+[connection signal="mouse_exited" from="RepairTabs/pnl_repair_choices/vbox/HBoxContainer/fixAllBreaksWJoinEnds" to="." method="_on_fixAllBreaksWJoinEnds_mouse_exited"]
 [connection signal="pressed" from="RepairTabs/pnl_repair_choices/vbox/HBoxContainer/fixAllBreaksWJoinEnds" to="." method="_on_fixAllBreaks_pressed"]
+[connection signal="mouse_entered" from="RepairTabs/pnl_repair_choices/vbox/HBoxContainer/fixAllBreaksWCopyPattern" to="." method="_on_fixAllBreaksWCopyPattern_mouse_entered"]
+[connection signal="mouse_exited" from="RepairTabs/pnl_repair_choices/vbox/HBoxContainer/fixAllBreaksWCopyPattern" to="." method="_on_fixAllBreaksWCopyPattern_mouse_exited"]
 [connection signal="pressed" from="RepairTabs/pnl_repair_choices/vbox/HBoxContainer/fixAllBreaksWCopyPattern" to="." method="_on_fixAllBreaksWCopyPattern_pressed"]
+[connection signal="mouse_entered" from="RepairTabs/pnl_repair_choices/vbox/HBoxContainer/fixAllBreaksWCollapseDuplicates" to="." method="_on_fixAllBreaksWCollapseDuplicates_mouse_entered"]
+[connection signal="mouse_exited" from="RepairTabs/pnl_repair_choices/vbox/HBoxContainer/fixAllBreaksWCollapseDuplicates" to="." method="_on_fixAllBreaksWCollapseDuplicates_mouse_exited"]
 [connection signal="pressed" from="RepairTabs/pnl_repair_choices/vbox/HBoxContainer/fixAllBreaksWCollapseDuplicates" to="." method="_on_fixAllBreaksWCollapseDuplicates_pressed"]
 [connection signal="mouse_entered" from="RepairTabs/pnl_bandage_dmg/vbox/HBoxContainer/fix_all" to="." method="_on_fix_all_mouse_entered"]
 [connection signal="mouse_exited" from="RepairTabs/pnl_bandage_dmg/vbox/HBoxContainer/fix_all" to="." method="_on_fix_all_mouse_exited"]
@@ -1569,6 +1635,7 @@ __meta__ = {
 [connection signal="pressed" from="button_grid/btn_qtmenu" to="." method="quit_to_menu"]
 [connection signal="pressed" from="button_grid/btn_bugreport" to="." method="_on_btn_bugreport_pressed"]
 [connection signal="pressed" from="button_grid/btn_saveload" to="." method="_on_btn_saveload_pressed"]
+[connection signal="pressed" from="button_grid/btn_event_log" to="." method="_on_btn_event_log_pressed"]
 [connection signal="pressed" from="button_grid/stats_screen" to="." method="_on_stats_screen_pressed"]
 [connection signal="pressed" from="button_grid/btn_nxt" to="." method="_on_btn_nxt_pressed"]
 [connection signal="pressed" from="ViewMap" to="." method="_on_ViewMap_pressed"]

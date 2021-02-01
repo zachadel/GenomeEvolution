@@ -1,0 +1,70 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Fonts/OpenSans-22.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Scenes/EventLog/eventLog.gd" type="Script" id=2]
+
+[node name="pnl_event_log" type="Panel"]
+margin_right = 612.0
+margin_bottom = 400.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VSplitContainer" type="VSplitContainer" parent="."]
+margin_right = 612.0
+margin_bottom = 400.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PanelContainer" type="PanelContainer" parent="VSplitContainer"]
+margin_right = 612.0
+margin_bottom = 45.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="VSplitContainer/PanelContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 605.0
+margin_bottom = 38.0
+custom_fonts/font = ExtResource( 1 )
+text = "Event Log"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VSplitContainer"]
+margin_top = 57.0
+margin_right = 612.0
+margin_bottom = 400.0
+rect_min_size = Vector2( 600, 0 )
+scroll_horizontal_enabled = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VSplitContainer/ScrollContainer"]
+margin_right = 600.0
+margin_bottom = 847.0
+
+[node name="content" type="Label" parent="VSplitContainer/ScrollContainer/VBoxContainer"]
+margin_right = 600.0
+margin_bottom = 847.0
+rect_min_size = Vector2( 600, 0 )
+text = "hhowdy this is is a testhowdy this is is a testhowdy this is is ahhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is  testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testowdy this is is a thowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testest"
+align = 1
+autowrap = true
+
+[node name="ButtonContainer" type="PanelContainer" parent="VSplitContainer"]
+margin_left = 562.0
+margin_right = 612.0
+margin_bottom = 45.0
+
+[node name="close" type="Button" parent="VSplitContainer/ButtonContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 43.0
+margin_bottom = 38.0
+text = "x"
+[connection signal="pressed" from="VSplitContainer/ButtonContainer/close" to="." method="_on_close_pressed"]

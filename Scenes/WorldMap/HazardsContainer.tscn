@@ -41,8 +41,8 @@ __meta__ = {
 
 [node name="TemperatureBar" type="TextureProgress" parent="HazardsContainer"]
 margin_right = 48.0
-margin_bottom = 68.0
-hint_tooltip = "Temperature of the current tile."
+margin_bottom = 67.0
+hint_tooltip = "This measures the temperature in Celsius of a given tile."
 size_flags_horizontal = 3
 size_flags_vertical = 3
 min_value = -40.0
@@ -69,8 +69,8 @@ __meta__ = {
 [node name="pHBar" type="TextureProgress" parent="HazardsContainer"]
 margin_left = 68.0
 margin_right = 116.0
-margin_bottom = 68.0
-hint_tooltip = "pH of the current tile"
+margin_bottom = 67.0
+hint_tooltip = "This measures the pH of a given tile."
 size_flags_horizontal = 3
 size_flags_vertical = 3
 max_value = 14.0
@@ -99,8 +99,8 @@ script = ExtResource( 9 )
 [node name="UVBar" type="TextureProgress" parent="HazardsContainer"]
 margin_left = 136.0
 margin_right = 184.0
-margin_bottom = 68.0
-hint_tooltip = "UV Index of current tile"
+margin_bottom = 67.0
+hint_tooltip = "This measures the Ultraviolet Radiation Index for a given tile."
 size_flags_horizontal = 3
 size_flags_vertical = 3
 step = 0.1
@@ -126,7 +126,7 @@ __meta__ = {
 [node name="OxygenBar" type="TextureProgress" parent="HazardsContainer"]
 margin_left = 204.0
 margin_right = 252.0
-margin_bottom = 68.0
+margin_bottom = 67.0
 hint_tooltip = "This measures the oxygen levels of a given tile."
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -224,3 +224,4 @@ __meta__ = {
 [connection signal="value_changed" from="HazardsContainer/pHBar" to="HazardsContainer/pHBar/pHLabel" method="_on_pHBar_value_changed"]
 [connection signal="value_changed" from="HazardsContainer/UVBar" to="HazardsContainer/UVBar/UVLabel" method="_on_UVBar_value_changed"]
 [connection signal="value_changed" from="HazardsContainer/OxygenBar" to="HazardsContainer/OxygenBar/OxygenLabel" method="_on_OxygenBar_value_changed"]
+

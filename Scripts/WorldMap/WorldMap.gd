@@ -397,8 +397,10 @@ func _unhandled_input(event):
 						$MapCamera.position = Game.map_to_world(tile_position)
 						$MapCamera.offset = Vector2(0,0)
 						
+						#This needs to become a signal.  This is just so bad.
 						ui.resource_ui.set_resources(current_player.organism.current_tile["resources"])
 						ui.hazards_ui.set_hazards(current_player.organism.current_tile["hazards"])
+						ui.biome_icon.set_icon(current_player.organism.current_tile["biome"])
 						
 						var tile_shift = Game.cube_coords_to_offsetv(tile_position) - $BiomeMap.center_indices
 						shift_maps(tile_shift, current_player.observed_tiles)

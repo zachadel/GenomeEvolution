@@ -5,11 +5,15 @@ signal quit_to_title
 signal acquire_resources
 signal check_genome
 signal stats_screen
+signal show_event_log
 signal eject_resources(resources_dict)
 
 #internal resources controller
 onready var irc = get_node("InternalPanel/InternalResourceController")
 onready var mineral_levels = get_node("InternalPanel/MineralLevels")
+
+#external resources controllers
+onready var biome_icon = get_node("ExternalPanel/BiomeIcon")
 onready var resource_ui = get_node("ExternalPanel/ResourcePanel/ResourceUI")
 onready var hazards_ui = get_node("ExternalPanel/HazardPanel/HazardsContainer")
 onready var genome_dmg = get_node("GenomePanel/GenomeDamage")
@@ -153,8 +157,11 @@ func _on_WorldMap_player_resources_changed(cfp_resources, mineral_resources):
 	
 
 func _on_WorldMap_tile_changed(tile_dict):
+	print(tile_dict)
 	hazards_ui.set_hazards(tile_dict["hazards"])
 	resource_ui.set_resources(tile_dict["resources"])
+	biome_icon.set_icon(tile_dict["biome"])
+	
 	pass # Replace with function body.
 	
 func _on_WorldMap_player_energy_changed(energy):
@@ -219,4 +226,10 @@ func _on_StatsScreen_pressed():
 	emit_signal("stats_screen")
 	#statscreen.connect(signal name, self, functionExecute)
 #	$statsControl.visible = true;
+	pass # Replace with function body.
+
+
+func _on_EventLog_pressed():
+	#emtis a signal that will go to the log for opening. 
+	emit_signal("show_event_log")
 	pass # Replace with function body.

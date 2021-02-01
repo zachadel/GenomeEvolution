@@ -53,3 +53,8 @@ func _on_TitleScreen_begin_new_game():
 func _on_TitleScreen_exit_game():
 	get_tree().quit()
 	pass # Replace with function body.
+
+
+func _on_Credits_pressed():
+	get_tree().change_scene("res://Scenes/MainMenu/Credits.tscn")
+	pass # Replace with function body.

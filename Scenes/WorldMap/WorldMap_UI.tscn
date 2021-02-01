@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Scripts/WorldMap/WorldMap_UI.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/WorldMap/InternalResourceController.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Assets/Fonts/OpenSans-22.tres" type="DynamicFont" id=7]
 [ext_resource path="res://Assets/Images/Tiles/Resources/trash.png" type="Texture" id=8]
 [ext_resource path="res://Scenes/WorldMap/TransposonUI.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Scenes/WorldMap/BiomeIcon.tscn" type="PackedScene" id=10]
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
@@ -109,6 +110,8 @@ margin_left = 1310.0
 margin_right = 1600.0
 margin_bottom = 900.0
 mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -182,13 +185,26 @@ __meta__ = {
 }
 
 [node name="TileResourcesLabel2" type="RichTextLabel" parent="ExternalPanel"]
-margin_right = 290.0
+margin_right = 235.0
 margin_bottom = 50.0
 mouse_filter = 2
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[center][u]Current Tile[/u][/center]"
 text = "Current Tile"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BiomeIcon" parent="ExternalPanel" instance=ExtResource( 10 )]
+anchor_left = 0.82513
+anchor_top = 0.0127557
+anchor_right = 0.932027
+anchor_bottom = 0.0427557
+margin_right = 0.0
+margin_bottom = 0.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="GenomeStatusLabel" type="RichTextLabel" parent="."]
 margin_left = 1310.0
@@ -318,31 +334,31 @@ __meta__ = {
 }
 
 [node name="AcquireResources" type="Button" parent="MenuPanel/HBoxContainer"]
-margin_right = 167.0
+margin_right = 131.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Acquire Resources"
 
 [node name="StatsScreen" type="Button" parent="MenuPanel/HBoxContainer"]
-margin_left = 187.0
-margin_right = 354.0
+margin_left = 151.0
+margin_right = 279.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Show Stats"
 
 [node name="JiggleResources" type="Button" parent="MenuPanel/HBoxContainer"]
-margin_left = 374.0
-margin_right = 541.0
+margin_left = 299.0
+margin_right = 427.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Jiggle Resources"
 
 [node name="CheckGenome" type="Button" parent="MenuPanel/HBoxContainer"]
-margin_left = 561.0
-margin_right = 730.0
+margin_left = 447.0
+margin_right = 575.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -350,8 +366,16 @@ text = "Check Genome"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="EventLog" type="Button" parent="MenuPanel/HBoxContainer"]
+margin_left = 595.0
+margin_right = 730.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 135, 32 )
+text = "Show Event Log"
 [connection signal="pressed" from="GenomePanel/RepairGenome" to="." method="_on_EndMapTurn_pressed"]
 [connection signal="pressed" from="MenuPanel/HBoxContainer/AcquireResources" to="." method="_on_AcquireResources_pressed"]
 [connection signal="pressed" from="MenuPanel/HBoxContainer/StatsScreen" to="." method="_on_StatsScreen_pressed"]
 [connection signal="pressed" from="MenuPanel/HBoxContainer/JiggleResources" to="." method="center_resources"]
 [connection signal="pressed" from="MenuPanel/HBoxContainer/CheckGenome" to="." method="_on_CheckGenome_pressed"]
+[connection signal="pressed" from="MenuPanel/HBoxContainer/EventLog" to="." method="_on_EventLog_pressed"]
