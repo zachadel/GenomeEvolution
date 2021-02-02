@@ -11,6 +11,7 @@ signal update_seqelm_coloration(compare_type);
 var compare_type = "temp";
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	$slider_temp.set_editable(true);
 	pass # Replace with function body.
 
 func get_temp_slider_value():

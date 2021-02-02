@@ -7,6 +7,9 @@ onready var ph_slider := $slider_ph;
 onready var ph_slider_lbl := $lbl_slider_value;
 onready var ph_current_indicator := $slider_ph/current_ph;
 
+func _ready():
+	$slider_ph.set_editable(true);
+
 func get_slider_value():
 	return ph_slider.value;
 
