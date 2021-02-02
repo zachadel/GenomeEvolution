@@ -2,15 +2,15 @@
 
 [ext_resource path="res://Scripts/CardTable/ChromosomeStatus.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/CardTable/BehaviorIndicator.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Assets/Images/icons/ess_behaviors/R.png" type="Texture" id=3]
-[ext_resource path="res://Assets/Images/icons/ess_behaviors/M.png" type="Texture" id=4]
-[ext_resource path="res://Assets/Images/icons/ess_behaviors/H.png" type="Texture" id=5]
-[ext_resource path="res://Assets/Images/icons/ess_behaviors/T.png" type="Texture" id=6]
-[ext_resource path="res://Assets/Images/icons/ess_behaviors/S.png" type="Texture" id=7]
-[ext_resource path="res://Assets/Images/icons/ess_behaviors/C.png" type="Texture" id=8]
-[ext_resource path="res://Assets/Images/icons/ess_behaviors/A.png" type="Texture" id=9]
-[ext_resource path="res://Assets/Images/icons/ess_behaviors/D.png" type="Texture" id=10]
-[ext_resource path="res://Assets/Images/icons/ess_behaviors/TE.png" type="Texture" id=11]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/Component_Icon.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/Locomotion_Icon.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/Deconstruction_Icon.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/Construction_Icon.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/Helper_Icon.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/Replication_Icon.png" type="Texture" id=8]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/Sensing_Icon.png" type="Texture" id=9]
+[ext_resource path="res://Assets/Images/tes/ATE_Full_Template.png" type="Texture" id=10]
+[ext_resource path="res://Assets/Images/icons/ess_behaviors/Manipulation_Icon.png" type="Texture" id=11]
 
 [node name="ChromosomeStatus" type="ScrollContainer"]
 margin_right = 800.0
@@ -35,7 +35,7 @@ anchor_bottom = 0.0
 margin_right = 50.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 50, 60 )
-image_texture = ExtResource( 3 )
+image_texture = ExtResource( 8 )
 always_show = true
 
 [node name="Locomotion" parent="HBoxContainer" instance=ExtResource( 2 )]
@@ -57,7 +57,7 @@ margin_left = 108.0
 margin_right = 158.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 50, 60 )
-image_texture = ExtResource( 5 )
+image_texture = ExtResource( 7 )
 always_show = true
 
 [node name="Manipulation" parent="HBoxContainer" instance=ExtResource( 2 )]
@@ -68,7 +68,7 @@ margin_left = 162.0
 margin_right = 212.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 50, 60 )
-image_texture = ExtResource( 6 )
+image_texture = ExtResource( 11 )
 always_show = true
 
 [node name="Sensing" parent="HBoxContainer" instance=ExtResource( 2 )]
@@ -79,7 +79,7 @@ margin_left = 216.0
 margin_right = 266.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 50, 60 )
-image_texture = ExtResource( 7 )
+image_texture = ExtResource( 9 )
 always_show = true
 
 [node name="Component" parent="HBoxContainer" instance=ExtResource( 2 )]
@@ -90,7 +90,7 @@ margin_left = 270.0
 margin_right = 320.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 50, 60 )
-image_texture = ExtResource( 8 )
+image_texture = ExtResource( 3 )
 always_show = true
 
 [node name="Construction" parent="HBoxContainer" instance=ExtResource( 2 )]
@@ -101,7 +101,7 @@ margin_left = 324.0
 margin_right = 374.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 50, 60 )
-image_texture = ExtResource( 9 )
+image_texture = ExtResource( 6 )
 always_show = true
 
 [node name="Deconstruction" parent="HBoxContainer" instance=ExtResource( 2 )]
@@ -112,7 +112,7 @@ margin_left = 378.0
 margin_right = 428.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 50, 60 )
-image_texture = ExtResource( 10 )
+image_texture = ExtResource( 5 )
 always_show = true
 
 [node name="ate" parent="HBoxContainer" instance=ExtResource( 2 )]
@@ -123,5 +123,5 @@ margin_left = 432.0
 margin_right = 482.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 50, 60 )
-image_texture = ExtResource( 11 )
+image_texture = ExtResource( 10 )
 always_show = true

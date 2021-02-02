@@ -230,18 +230,16 @@ margin_bottom = 763.0
 
 [node name="Organism" parent="." instance=ExtResource( 2 )]
 margin_left = -1.43445
-margin_top = 1.06653
 margin_right = -1.43445
-margin_bottom = 601.067
 
 [node name="lbl_behavior" type="Label" parent="."]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -1596.52
+margin_left = -1600.0
 margin_top = -321.0
-margin_right = -1129.52
+margin_right = -1112.0
 margin_bottom = -277.0
 custom_fonts/font = ExtResource( 13 )
 text = "Gene Content"
@@ -252,13 +250,31 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="lbl_behavior2" type="Label" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -1601.0
+margin_top = -195.0
+margin_right = -1116.0
+margin_bottom = -151.0
+custom_fonts/font = ExtResource( 13 )
+text = "Current Gene Effectiveness Views"
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="ChromosomeStatus" parent="." instance=ExtResource( 3 )]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -796.519
-margin_top = 612.836
-margin_right = 303.481
-margin_bottom = 674.836
+margin_left = -798.189
+margin_top = 629.0
+margin_right = -312.189
+margin_bottom = 691.0
 rect_min_size = Vector2( 0, 50 )
 
 [node name="RepairTabs" type="TabContainer" parent="."]
@@ -875,6 +891,7 @@ margin_bottom = 872.178
 lbl = "Progeny"
 
 [node name="EnergyBar" parent="." instance=ExtResource( 14 )]
+visible = false
 margin_left = 3.48102
 margin_top = 672.836
 margin_right = 3.48102
@@ -890,7 +907,7 @@ anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -132.0
-margin_top = 511.0
+margin_top = 592.0
 margin_right = -10.0
 margin_bottom = -9.0
 grow_horizontal = 0
@@ -902,41 +919,59 @@ __meta__ = {
 }
 
 [node name="btn_qtmenu" type="Button" parent="button_grid"]
-margin_top = 135.0
 margin_right = 122.0
-margin_bottom = 175.0
+margin_bottom = 40.0
 rect_min_size = Vector2( 120, 40 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
 text = "Quit to Menu"
 
 [node name="btn_bugreport" type="Button" parent="button_grid"]
-margin_top = 185.0
+margin_top = 50.0
 margin_right = 122.0
-margin_bottom = 230.0
+margin_bottom = 95.0
 rect_min_size = Vector2( 120, 45 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
 text = "Report Bug"
 
 [node name="btn_saveload" type="Button" parent="button_grid"]
-margin_top = 240.0
+margin_top = 105.0
 margin_right = 122.0
-margin_bottom = 280.0
+margin_bottom = 146.0
 rect_min_size = Vector2( 120, 40 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
 text = "Save/Load"
 
 [node name="stats_screen" type="Button" parent="button_grid"]
-margin_top = 290.0
+margin_top = 156.0
 margin_right = 122.0
-margin_bottom = 330.0
+margin_bottom = 197.0
 rect_min_size = Vector2( 122, 40 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
 text = "Stats Screen"
 
-[node name="btn_nxt" type="Button" parent="button_grid"]
-margin_top = 340.0
+[node name="btn_viewmap" type="Button" parent="button_grid"]
+margin_top = 207.0
 margin_right = 122.0
-margin_bottom = 380.0
+margin_bottom = 248.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Check Map"
+
+[node name="btn_nxt" type="Button" parent="button_grid"]
+margin_top = 258.0
+margin_right = 122.0
+margin_bottom = 299.0
 rect_min_size = Vector2( 120, 40 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
 text = "Continue"
 
-[node name="ViewMap" type="TextureButton" parent="."]
+[node name="ViewMap_Old" type="TextureButton" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 0.995
 margin_left = 66.0
@@ -949,7 +984,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="ViewMap"]
+[node name="Label" type="Label" parent="ViewMap_Old"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -967,6 +1002,7 @@ __meta__ = {
 }
 
 [node name="pnl_dead_overview" type="Panel" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_styles/panel = SubResource( 8 )
@@ -1455,10 +1491,10 @@ __meta__ = {
 }
 
 [node name="Temp_Button" type="TextureButton" parent="."]
-margin_left = 271.0
-margin_top = 776.0
-margin_right = 321.0
-margin_bottom = 872.0
+margin_left = 307.0
+margin_top = 772.178
+margin_right = 357.0
+margin_bottom = 868.178
 texture_normal = ExtResource( 37 )
 texture_hover = ExtResource( 36 )
 __meta__ = {
@@ -1489,10 +1525,10 @@ __meta__ = {
 }
 
 [node name="ph_button" type="TextureButton" parent="."]
-margin_left = 30.0
-margin_top = 775.0
-margin_right = 80.0
-margin_bottom = 871.0
+margin_left = 151.0
+margin_top = 772.178
+margin_right = 201.0
+margin_bottom = 868.178
 texture_normal = ExtResource( 38 )
 texture_hover = ExtResource( 39 )
 __meta__ = {
@@ -1564,8 +1600,8 @@ __meta__ = {
 [connection signal="pressed" from="button_grid/btn_bugreport" to="." method="_on_btn_bugreport_pressed"]
 [connection signal="pressed" from="button_grid/btn_saveload" to="." method="_on_btn_saveload_pressed"]
 [connection signal="pressed" from="button_grid/stats_screen" to="." method="_on_stats_screen_pressed"]
+[connection signal="pressed" from="button_grid/btn_viewmap" to="." method="_on_btn_viewmap_pressed"]
 [connection signal="pressed" from="button_grid/btn_nxt" to="." method="_on_btn_nxt_pressed"]
-[connection signal="pressed" from="ViewMap" to="." method="_on_ViewMap_pressed"]
 [connection signal="pressed" from="pnl_dead_overview/background/btn_qtmenu" to="." method="_on_btn_qtmenu_pressed"]
 [connection signal="pressed" from="pnl_dead_overview/Button" to="." method="_on_Button_pressed"]
 [connection signal="update_seqelm_coloration" from="pnl_temp_filter" to="." method="_on_pnl_temp_filter_update_seqelm_coloration"]

@@ -11,6 +11,8 @@ onready var orgn = $Organism;
 onready var nxt_btn = $button_grid/btn_nxt;
 onready var status_bar = $ChromosomeStatus;
 
+onready var map_button = $button_grid/btn_viewmap
+
 onready var energy_bar = get_node("EnergyBar")
 
 onready var ph_filter_panel := $pnl_ph_filter;
@@ -27,7 +29,7 @@ func _ready():
 	visible = false; # Prevents an auto-turn before the game begins
 	orgn.setup(self);
 	reset_status_bar();
-	$ViewMap.texture_normal = load(Game.get_large_cell_path(Game.current_cell_string))
+	#$ViewMap.texture_normal = load(Game.get_large_cell_path(Game.current_cell_string))
 	
 	
 	connect("next_turn", orgn, "adv_turn");
@@ -390,11 +392,13 @@ func show(enable_other_stuff: bool = true):
 	
 	set_map_btn_texture("res://Assets/Images/Cells/body/body_%s_large.svg" % Game.current_cell_string);
 
+#Replaced with normal button functionality for now
 func set_map_btn_texture(texture_path: String) -> void:
-	var tex: Texture = load(texture_path);
-	$ViewMap.texture_normal = tex;
-	$ViewMap.texture_disabled = tex;
-	$ViewMap.texture_pressed = tex;
+#	var tex: Texture = load(texture_path);
+#	$ViewMap.texture_normal = tex;
+#	$ViewMap.texture_disabled = tex;
+#	$ViewMap.texture_pressed = tex;
+	pass
 
 func check_if_ready():
 	var end_mapturn_on_mapscreen = Game.get_turn_type() == Game.TURN_TYPES.Map && Unlocks.has_turn_unlock(Game.TURN_TYPES.Map);
@@ -566,15 +570,15 @@ func _on_btn_load_pressed():
 	close_extra_menus($pnl_bugreport);
 
 func show_map_button():
-	$ViewMap.disabled = false;
-	$ViewMap.show()
+	map_button.disabled = false;
+	map_button.show()
 
 func hide_map_button():
-	$ViewMap.disabled = true;
+	map_button.disabled = true;
 	
 	# The cell should always be visible?
 	#$ViewMap.hide()
-	$ViewMap/Label.hide()
+	#$ViewMap/Label.hide()
 
 func _on_Organism_transposon_activity(active):
 	if active:
@@ -802,4 +806,9 @@ func _on_fix_all_mouse_entered():
 
 func _on_fix_all_mouse_exited():
 	$RepairTabs/pnl_bandage_dmg/vbox/HBoxContainer/fix_all/fix_all_details.visible = false;
+	pass # Replace with function body.
+
+
+func _on_btn_viewmap_pressed():
+	emit_signal("switch_to_map")
 	pass # Replace with function body.
