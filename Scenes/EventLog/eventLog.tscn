@@ -1,0 +1,127 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Fonts/OpenSans-22.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Scenes/EventLog/eventLog.gd" type="Script" id=2]
+
+[node name="pnl_event_log" type="Panel"]
+margin_right = 612.0
+margin_bottom = 400.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VSplitContainer" type="VSplitContainer" parent="."]
+margin_right = 612.0
+margin_bottom = 400.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PanelContainer" type="PanelContainer" parent="VSplitContainer"]
+margin_right = 612.0
+margin_bottom = 45.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="title" type="Label" parent="VSplitContainer/PanelContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 605.0
+margin_bottom = 38.0
+custom_fonts/font = ExtResource( 1 )
+text = "Event Log"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VSplitContainer"]
+margin_top = 57.0
+margin_right = 612.0
+margin_bottom = 400.0
+rect_min_size = Vector2( 600, 0 )
+scroll_horizontal_enabled = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VSplitContainer/ScrollContainer"]
+margin_right = 600.0
+margin_bottom = 188.0
+
+[node name="WorldMap_title" type="Label" parent="VSplitContainer/ScrollContainer/VBoxContainer"]
+margin_right = 600.0
+margin_bottom = 31.0
+rect_min_size = Vector2( 600, 0 )
+custom_fonts/font = ExtResource( 1 )
+text = "World Map"
+align = 1
+autowrap = true
+
+[node name="WorldMap_content" type="Label" parent="VSplitContainer/ScrollContainer/VBoxContainer"]
+margin_top = 35.0
+margin_right = 600.0
+margin_bottom = 66.0
+text = "You have gone 0 tiles
+You have ate 0 resources"
+align = 1
+valign = 1
+autowrap = true
+
+[node name="div1" type="HSeparator" parent="VSplitContainer/ScrollContainer/VBoxContainer"]
+margin_top = 70.0
+margin_right = 600.0
+margin_bottom = 74.0
+
+[node name="Breaks_title" type="Label" parent="VSplitContainer/ScrollContainer/VBoxContainer"]
+margin_top = 78.0
+margin_right = 600.0
+margin_bottom = 109.0
+custom_fonts/font = ExtResource( 1 )
+text = " Repair Breaks"
+align = 1
+valign = 1
+autowrap = true
+
+[node name="Breaks_content" type="Label" parent="VSplitContainer/ScrollContainer/VBoxContainer"]
+margin_top = 113.0
+margin_right = 600.0
+margin_bottom = 127.0
+text = " "
+align = 1
+valign = 1
+autowrap = true
+
+[node name="div2" type="HSeparator" parent="VSplitContainer/ScrollContainer/VBoxContainer"]
+margin_top = 131.0
+margin_right = 600.0
+margin_bottom = 135.0
+
+[node name="Bandage_title" type="Label" parent="VSplitContainer/ScrollContainer/VBoxContainer"]
+margin_top = 139.0
+margin_right = 600.0
+margin_bottom = 170.0
+custom_fonts/font = ExtResource( 1 )
+text = "Genes Bandaged"
+align = 1
+valign = 1
+
+[node name="Bandage_content" type="Label" parent="VSplitContainer/ScrollContainer/VBoxContainer"]
+margin_top = 174.0
+margin_right = 600.0
+margin_bottom = 188.0
+align = 1
+valign = 1
+autowrap = true
+
+[node name="ButtonContainer" type="PanelContainer" parent="VSplitContainer"]
+margin_left = 562.0
+margin_right = 612.0
+margin_bottom = 45.0
+
+[node name="close" type="Button" parent="VSplitContainer/ButtonContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 43.0
+margin_bottom = 38.0
+text = "x"
+[connection signal="pressed" from="VSplitContainer/ButtonContainer/close" to="." method="_on_close_pressed"]

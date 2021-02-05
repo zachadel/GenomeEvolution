@@ -3,6 +3,7 @@ extends Node2D
 signal tile_clicked
 signal change_to_main_menu
 signal end_map_turn
+signal add_card_event_log(title, content)
 signal switch_to_card_table
 
 signal player_resources_changed(cfp_resources, mineral_resources)
@@ -591,6 +592,7 @@ func move_player(pos: Vector3):
 				#set_hazard(1,2)
 				#print("after")
 				#tile_hazard_grabs(current_player.get_current_tile()["biome"])
+				emit_signal("add_card_event_log", "player move", "Playered moved")
 				STATS.increment_tiles_traveled()
 				var new_position = Game.map_to_world(pos)
 			
@@ -749,7 +751,21 @@ func add_progeny_sprite(pos: Vector3):
 	new_progeny.position = Game.map_to_world(pos)
 	#add to a group of progeny for access later
 
+func check_on_skills():
+	var current_bhv_profile = current_player.organism.get_behavior_profile();
+	#set up the current behavior profile.
+	print("bhv profile: "+str(current_bhv_profile["resources"]))
+	if(current_bhv_profile.has_skill("fat_acid->energy")):
+		print("I have fat_acid->energy unlocked")
+	pass
+
+func check_on_resources():
+	pass
+
 func _on_WorldMap_UI_end_map_pressed():
+	if(current_player.organism.energy < 5): #this checks to see if the player has less than 5 energy
+		print("this energy is less than 5.")
+		check_on_skills()
 	if current_player.organism.energy < CARD_TABLE_ENERGY:
 		notifications.emit_signal("notification_needed", "You need %d energy to repair your genome.  Keep exploring for resources and energy!" % [CARD_TABLE_ENERGY], true, true, -1)
 	#elif max_dmg_reached and current_player.organism.energy < CARD_TABLE_ENERGY :

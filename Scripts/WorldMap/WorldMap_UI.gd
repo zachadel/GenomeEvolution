@@ -5,8 +5,9 @@ signal quit_to_title
 signal acquire_resources
 signal check_genome
 signal stats_screen
+signal show_event_log
 signal eject_resources(resources_dict)
-
+signal add_card_event_log
 #internal resources controller
 onready var irc = get_node("InternalPanel/InternalResourceController")
 onready var mineral_levels = get_node("InternalPanel/MineralLevels")
@@ -225,4 +226,11 @@ func _on_StatsScreen_pressed():
 	emit_signal("stats_screen")
 	#statscreen.connect(signal name, self, functionExecute)
 #	$statsControl.visible = true;
+	pass # Replace with function body.
+
+
+func _on_EventLog_pressed():
+	#emtis a signal that will go to the log for opening. 
+	emit_signal("add_card_event_log","world_map_update"," ")
+	emit_signal("show_event_log")
 	pass # Replace with function body.

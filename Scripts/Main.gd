@@ -52,6 +52,21 @@ func _ready():
 	$stats_Layer/statsScreen.connect('show_cardTable', self, "_show_cardTable")
 	$WorldMap/WorldMap_UI.connect('stats_screen', self, "_show_control")
 	$Canvas_CardTable/CardTable.connect('card_stats_screen', self, "_card_show_control")
+	$WorldMap/WorldMap_UI.connect("show_event_log", self, "_show_event_log")
+	$Canvas_CardTable/CardTable.connect("card_event_log", self, "_card_event_log")
+	$Canvas_CardTable/CardTable.connect("add_card_event_log", self, "_add_event_content")
+	$WorldMap.connect("add_card_event_log", self, "_add_event_content")
+func _add_event_content(title, content):
+	$Event_Log_Layer/pnl_event_log.addContent(title, content)
+	#print("what is being passed through: "+ title +" "+content)
+	pass
+	
+func _card_event_log():
+	$Event_Log_Layer/pnl_event_log.show()
+	pass
+func _show_event_log():
+	$Event_Log_Layer/pnl_event_log.show()
+	pass
 	
 func _show_control():
 	worldMapUI = true

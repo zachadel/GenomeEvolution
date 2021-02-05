@@ -5,6 +5,8 @@ signal player_done;
 signal switch_to_map
 signal next_turn(turn_text, round_num);
 signal card_stats_screen;
+signal card_event_log;
+signal add_card_event_log(title, content);
 
 onready var justnow_label : RichTextLabel = $ctl_justnow/lbl_justnow;
 onready var orgn = $Organism;
@@ -170,7 +172,8 @@ func upd_repair_lock_display():
 func show_repair_opts(show):
 	if show:
 		upd_repair_lock_display();
-		$RepairTabs/pnl_bandage_dmg/vbox/scroll/RTLRepairResult.text = "";
+		#$RepairTabs/pnl_bandage_dmg/vbox/scroll/RTLRepairResult.text = "";
+		#$pnl_log_module/VSplitContainer/ScrollContainer/outputLog.text = "";
 		yield(get_tree(), "idle_frame");
 		show_repair_tab(0);
 	if $RepairTabs.visible != show:
@@ -179,12 +182,16 @@ func show_repair_opts(show):
 func _on_Organism_gap_selected(_gap, sel: bool):
 	if(STATS.get_all_JE_unlocked()):
 		$RepairTabs/pnl_repair_choices/vbox/HBoxContainer/fixAllBreaksWJoinEnds.disabled = false;
+		$RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer2/lock1.visible = false;
 	if(STATS.get_all_CD_unlocked()):
 		$RepairTabs/pnl_repair_choices/vbox/HBoxContainer/fixAllBreaksWCollapseDuplicates.disabled = false;
+		$RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer2/lock3.visible = false;
 	if(STATS.get_all_CPR_unlocked()):
 		$RepairTabs/pnl_repair_choices/vbox/HBoxContainer/fixAllBreaksWCopyPattern.disabled = false;
+		$RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer2/lock2.visible = false;
 	if(STATS.get_all_fix_damage_genes()):
 		$RepairTabs/pnl_bandage_dmg/vbox/HBoxContainer/fix_all.disabled = false;
+		$RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer2/lock4.visible = false;
 	show_repair_types(sel);
 
 func _on_Organism_gene_trimmed(_gene):
@@ -289,13 +296,21 @@ func _on_Organism_justnow_update(text):
 func _on_Organism_gap_close_msg(text):
 	var t = "\n%s\n" % text;
 	_add_justnow_bbcode(t);
-	$RepairTabs/pnl_repair_choices/vbox/scroll/RTLRepairResult.text += t;
+	#$RepairTabs/pnl_repair_choices/vbox/scroll/RTLRepairResult.text += t;
+	emit_signal("add_card_event_log", "card_break_update", t)
+	
+
 
 func _on_Organism_clear_gap_msg():
-	$RepairTabs/pnl_repair_choices/vbox/scroll/RTLRepairResult.text = "";
+	#$RepairTabs/pnl_repair_choices/vbox/scroll/RTLRepairResult.text = "";
+	#emit_signal("add_card_event_log", "clear board", "")
+	pass
+
 
 func _on_Organism_bandage_msg(text):
-	$RepairTabs/pnl_bandage_dmg/vbox/scroll/RTLRepairResult.text += "\n%s\n" % text;
+	#$RepairTabs/pnl_bandage_dmg/vbox/scroll/RTLRepairResult.text += "\n%s\n" % text;
+	emit_signal("add_card_event_log", "card_bandage_update", text)
+
 
 func _on_Organism_updated_gaps(gaps_exist, gap_text):
 	has_gaps = gaps_exist;
@@ -800,12 +815,67 @@ func auto_repair_all_breaks_copyPattern(cmsm_pair) -> bool:
 
 
 func _on_fix_all_mouse_entered():
-	$RepairTabs/pnl_bandage_dmg/vbox/HBoxContainer/fix_all/fix_all_details.visible = true;
+	if (STATS.get_dmg_genes_error() + STATS.get_dmg_genes_no_error() < 20):
+		$RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer/fix_all/fix_all_details/Label.text = "You have "+ str(20 - STATS.get_dmg_genes_error() - STATS.get_dmg_genes_no_error())+ " many more gene repairs to perform until this can be unlocked"
+	$RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer/fix_all/fix_all_details.visible = true;
 	pass # Replace with function body.
 
 
 func _on_fix_all_mouse_exited():
-	$RepairTabs/pnl_bandage_dmg/vbox/HBoxContainer/fix_all/fix_all_details.visible = false;
+	$RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer/fix_all/fix_all_details.visible = false;
+	pass # Replace with function body.
+
+
+func _on_fixAllBreaksWJoinEnds_mouse_entered():
+	if(STATS.get_total_JE() < 20):
+		$RepairTabs/pnl_repair_choices/vbox/joinEndsHidden/Label.text = "You have "+str(20-STATS.get_total_JE()) + " many more join ends to perform until this can be unlocked.";
+	
+	$RepairTabs/pnl_repair_choices/vbox/joinEndsHidden.visible = true;
+	
+	pass # Replace with function body.
+
+
+func _on_fixAllBreaksWJoinEnds_mouse_exited():
+	$RepairTabs/pnl_repair_choices/vbox/joinEndsHidden.visible = false;
+	pass # Replace with function body.
+
+
+func _on_fixAllBreaksWCopyPattern_mouse_entered():
+	if(STATS.get_total_CPR() < 20):
+		$RepairTabs/pnl_repair_choices/vbox/copyPatternHidden/Label.text = "You have "+str(20-STATS.get_total_CPR()) + " many more copy repairs to perform until this can be unlocked.";
+	$RepairTabs/pnl_repair_choices/vbox/copyPatternHidden.visible = true;
+	pass # Replace with function body.
+
+
+func _on_fixAllBreaksWCopyPattern_mouse_exited():
+	$RepairTabs/pnl_repair_choices/vbox/copyPatternHidden.visible = false;
+	pass # Replace with function body.
+
+
+func _on_fixAllBreaksWCollapseDuplicates_mouse_entered():
+	if(STATS.get_break_repaired_collapseDuplicates() < 20):
+		$RepairTabs/pnl_repair_choices/vbox/collapseDupesHidden/Label.text = "You have "+ str(20-STATS.get_break_repaired_collapseDuplicates()) + " many more collapse duplicates to perform until this can be unlocked."
+	$RepairTabs/pnl_repair_choices/vbox/collapseDupesHidden.visible = true;
+	pass # Replace with function body.
+
+
+func _on_fixAllBreaksWCollapseDuplicates_mouse_exited():
+	$RepairTabs/pnl_repair_choices/vbox/collapseDupesHidden.visible = false;
+	pass # Replace with function body.
+
+
+func _on_showLog_pressed():
+	$pnl_log_module.show()
+	pass # Replace with function body.
+
+
+func _on_close_pressed():
+	$pnl_log_module.hide()
+	pass # Replace with function body.
+
+
+func _on_btn_event_log_pressed():
+	emit_signal("card_event_log")
 	pass # Replace with function body.
 
 
