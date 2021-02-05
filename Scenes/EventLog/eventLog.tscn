@@ -25,7 +25,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="VSplitContainer/PanelContainer"]
+[node name="title" type="Label" parent="VSplitContainer/PanelContainer"]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 605.0
@@ -46,14 +46,71 @@ scroll_horizontal_enabled = false
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VSplitContainer/ScrollContainer"]
 margin_right = 600.0
-margin_bottom = 847.0
+margin_bottom = 188.0
 
-[node name="content" type="Label" parent="VSplitContainer/ScrollContainer/VBoxContainer"]
+[node name="WorldMap_title" type="Label" parent="VSplitContainer/ScrollContainer/VBoxContainer"]
 margin_right = 600.0
-margin_bottom = 847.0
+margin_bottom = 31.0
 rect_min_size = Vector2( 600, 0 )
-text = "hhowdy this is is a testhowdy this is is a testhowdy this is is ahhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is hhowdy this is is a testhowdy this is is a testhowdy this is is  testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testowdy this is is a thowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testhowdy this is is a testest"
+custom_fonts/font = ExtResource( 1 )
+text = "World Map"
 align = 1
+autowrap = true
+
+[node name="WorldMap_content" type="Label" parent="VSplitContainer/ScrollContainer/VBoxContainer"]
+margin_top = 35.0
+margin_right = 600.0
+margin_bottom = 66.0
+text = "You have gone 0 tiles
+You have ate 0 resources"
+align = 1
+valign = 1
+autowrap = true
+
+[node name="div1" type="HSeparator" parent="VSplitContainer/ScrollContainer/VBoxContainer"]
+margin_top = 70.0
+margin_right = 600.0
+margin_bottom = 74.0
+
+[node name="Breaks_title" type="Label" parent="VSplitContainer/ScrollContainer/VBoxContainer"]
+margin_top = 78.0
+margin_right = 600.0
+margin_bottom = 109.0
+custom_fonts/font = ExtResource( 1 )
+text = " Repair Breaks"
+align = 1
+valign = 1
+autowrap = true
+
+[node name="Breaks_content" type="Label" parent="VSplitContainer/ScrollContainer/VBoxContainer"]
+margin_top = 113.0
+margin_right = 600.0
+margin_bottom = 127.0
+text = " "
+align = 1
+valign = 1
+autowrap = true
+
+[node name="div2" type="HSeparator" parent="VSplitContainer/ScrollContainer/VBoxContainer"]
+margin_top = 131.0
+margin_right = 600.0
+margin_bottom = 135.0
+
+[node name="Bandage_title" type="Label" parent="VSplitContainer/ScrollContainer/VBoxContainer"]
+margin_top = 139.0
+margin_right = 600.0
+margin_bottom = 170.0
+custom_fonts/font = ExtResource( 1 )
+text = "Genes Bandaged"
+align = 1
+valign = 1
+
+[node name="Bandage_content" type="Label" parent="VSplitContainer/ScrollContainer/VBoxContainer"]
+margin_top = 174.0
+margin_right = 600.0
+margin_bottom = 188.0
+align = 1
+valign = 1
 autowrap = true
 
 [node name="ButtonContainer" type="PanelContainer" parent="VSplitContainer"]

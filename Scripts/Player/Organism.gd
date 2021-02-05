@@ -531,7 +531,7 @@ func apply_break_after_move() -> String:
 				if randf() < .57:
 					accumulated_dmg += 1
 					add_dmg = "dmg"
-					print("accumulated_dmg: "+str(accumulated_dmg))
+					#print("accumulated_dmg: "+str(accumulated_dmg))
 				else:
 					accumulated_gaps += 1
 					add_dmg = "gap"
