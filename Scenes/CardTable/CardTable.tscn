@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=2]
+[gd_scene load_steps=53 format=2]
 
 [ext_resource path="res://Scripts/CardTable/CardTable.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player/Organism.tscn" type="PackedScene" id=2]
@@ -40,6 +40,9 @@
 [ext_resource path="res://Assets/Images/Hazards/ph_empty.png" type="Texture" id=38]
 [ext_resource path="res://Assets/Images/Hazards/ph_full.png" type="Texture" id=39]
 [ext_resource path="res://Assets/Images/icons/padlock.png" type="Texture" id=40]
+[ext_resource path="res://Assets/Images/icons/stats_button_image.png" type="Texture" id=41]
+[ext_resource path="res://Assets/Images/icons/journal_image.png" type="Texture" id=42]
+[ext_resource path="res://Assets/Images/icons/treasure-map_image.png" type="Texture" id=43]
 
 [sub_resource type="Theme" id=1]
 Button/colors/font_color_disabled = Color( 0, 0, 0, 1 )
@@ -235,18 +238,16 @@ anchor_top = -0.000623576
 anchor_right = 0.998948
 anchor_bottom = -0.000623576
 margin_left = -1.43445
-margin_top = 1.06653
 margin_right = -1.43445
-margin_bottom = 601.067
 
 [node name="lbl_behavior" type="Label" parent="."]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -1596.52
+margin_left = -1600.0
 margin_top = -321.0
-margin_right = -1129.52
+margin_right = -1112.0
 margin_bottom = -277.0
 custom_fonts/font = ExtResource( 13 )
 text = "Gene Content"
@@ -257,13 +258,31 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="lbl_behavior2" type="Label" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -1603.25
+margin_top = -195.0
+margin_right = -1118.25
+margin_bottom = -151.0
+custom_fonts/font = ExtResource( 13 )
+text = "Influence of Environment on Genes"
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="ChromosomeStatus" parent="." instance=ExtResource( 3 )]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -796.519
-margin_top = 612.836
-margin_right = 303.481
-margin_bottom = 674.836
+margin_left = -798.189
+margin_top = 629.0
+margin_right = -312.189
+margin_bottom = 691.0
 rect_min_size = Vector2( 0, 50 )
 
 [node name="RepairTabs" type="TabContainer" parent="."]
@@ -965,16 +984,21 @@ margin_left = 1193.14
 margin_top = 772.178
 margin_right = 1293.14
 margin_bottom = 872.178
+num = 0
 lbl = "Round"
+show_change = true
 
 [node name="lnum_progeny" parent="." instance=ExtResource( 17 )]
 margin_left = 1337.14
 margin_top = 772.178
 margin_right = 1437.14
 margin_bottom = 872.178
+num = 0
 lbl = "Progeny"
+show_change = true
 
 [node name="EnergyBar" parent="." instance=ExtResource( 14 )]
+visible = false
 margin_left = 3.48102
 margin_top = 672.836
 margin_right = 3.48102
@@ -990,7 +1014,7 @@ anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -132.0
-margin_top = 511.0
+margin_top = 592.0
 margin_right = -10.0
 margin_bottom = -9.0
 grow_horizontal = 0
@@ -1002,48 +1026,45 @@ __meta__ = {
 }
 
 [node name="btn_qtmenu" type="Button" parent="button_grid"]
-margin_top = 85.0
+margin_top = 94.0
 margin_right = 122.0
-margin_bottom = 125.0
+margin_bottom = 134.0
 rect_min_size = Vector2( 120, 40 )
+size_flags_horizontal = 3
 text = "Quit to Menu"
 
 [node name="btn_bugreport" type="Button" parent="button_grid"]
-margin_top = 135.0
+margin_top = 144.0
 margin_right = 122.0
-margin_bottom = 180.0
+margin_bottom = 189.0
 rect_min_size = Vector2( 120, 45 )
+size_flags_horizontal = 3
 text = "Report Bug"
 
 [node name="btn_saveload" type="Button" parent="button_grid"]
-margin_top = 190.0
+margin_top = 199.0
 margin_right = 122.0
-margin_bottom = 230.0
+margin_bottom = 239.0
 rect_min_size = Vector2( 120, 40 )
+size_flags_horizontal = 3
 text = "Save/Load"
 
-[node name="btn_event_log" type="Button" parent="button_grid"]
-margin_top = 240.0
+[node name="spacer" type="ColorRect" parent="button_grid"]
+margin_top = 249.0
 margin_right = 122.0
-margin_bottom = 280.0
-rect_min_size = Vector2( 122, 40 )
-text = "Show Event Log"
-
-[node name="stats_screen" type="Button" parent="button_grid"]
-margin_top = 290.0
-margin_right = 122.0
-margin_bottom = 330.0
-rect_min_size = Vector2( 122, 40 )
-text = "Stats Screen"
+margin_bottom = 249.0
+color = Color( 1, 1, 1, 0 )
 
 [node name="btn_nxt" type="Button" parent="button_grid"]
-margin_top = 340.0
+margin_top = 259.0
 margin_right = 122.0
-margin_bottom = 380.0
+margin_bottom = 299.0
 rect_min_size = Vector2( 120, 40 )
+size_flags_horizontal = 3
 text = "Continue"
 
-[node name="ViewMap" type="TextureButton" parent="."]
+[node name="ViewMap_Old" type="TextureButton" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 0.995
 margin_left = 66.0
@@ -1056,7 +1077,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="ViewMap"]
+[node name="Label" type="Label" parent="ViewMap_Old"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -1564,10 +1585,10 @@ __meta__ = {
 }
 
 [node name="Temp_Button" type="TextureButton" parent="."]
-margin_left = 271.0
-margin_top = 776.0
-margin_right = 321.0
-margin_bottom = 872.0
+margin_left = 307.0
+margin_top = 772.178
+margin_right = 357.0
+margin_bottom = 868.178
 texture_normal = ExtResource( 37 )
 texture_hover = ExtResource( 36 )
 __meta__ = {
@@ -1576,10 +1597,10 @@ __meta__ = {
 
 [node name="temp_details" type="ColorRect" parent="Temp_Button"]
 visible = false
-margin_left = 59.0
-margin_top = -25.0
-margin_right = 209.0
-margin_bottom = 75.0
+margin_left = 35.0
+margin_top = -30.0
+margin_right = 175.0
+margin_bottom = 70.0
 color = Color( 0.113725, 0.0980392, 0.0980392, 0.745098 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1587,7 +1608,7 @@ __meta__ = {
 
 [node name="details_lbl" type="Label" parent="Temp_Button/temp_details"]
 margin_left = 2.0
-margin_right = 152.0
+margin_right = 142.0
 margin_bottom = 100.0
 text = "Shows how the different temperature values change the effictiveness of each gene."
 align = 1
@@ -1598,10 +1619,10 @@ __meta__ = {
 }
 
 [node name="ph_button" type="TextureButton" parent="."]
-margin_left = 30.0
-margin_top = 775.0
-margin_right = 80.0
-margin_bottom = 871.0
+margin_left = 275.0
+margin_top = 772.178
+margin_right = 325.0
+margin_bottom = 868.178
 texture_normal = ExtResource( 38 )
 texture_hover = ExtResource( 39 )
 __meta__ = {
@@ -1610,21 +1631,50 @@ __meta__ = {
 
 [node name="ph_details" type="ColorRect" parent="ph_button"]
 visible = false
-margin_left = 299.0
-margin_top = -21.0001
-margin_right = 449.0
-margin_bottom = 78.9999
+margin_left = 70.0
+margin_top = -30.0
+margin_right = 210.0
+margin_bottom = 70.0
 color = Color( 0.113725, 0.0980392, 0.0980392, 0.745098 )
 
 [node name="Label" type="Label" parent="ph_button/ph_details"]
 margin_left = 2.0
 margin_top = 1.0
-margin_right = 148.0
-margin_bottom = 99.0
+margin_right = 142.0
+margin_bottom = 101.0
 text = "Shows how the different pH values change the effictiveness of each gene."
 align = 1
 valign = 1
 autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="stats_image_button" type="TextureButton" parent="."]
+margin_top = 780.0
+margin_right = 1280.0
+margin_bottom = 1889.0
+rect_scale = Vector2( 0.08, 0.08 )
+texture_normal = ExtResource( 41 )
+
+[node name="event_image_button" type="TextureButton" parent="."]
+margin_left = 105.0
+margin_top = 775.0
+margin_right = 1134.0
+margin_bottom = 2055.0
+rect_scale = Vector2( 0.08, 0.08 )
+texture_normal = ExtResource( 42 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="map_image_button" type="TextureButton" parent="."]
+margin_left = 190.0
+margin_top = 800.0
+margin_right = 1470.0
+margin_bottom = 1798.0
+rect_scale = Vector2( 0.06, 0.07 )
+texture_normal = ExtResource( 43 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -1678,10 +1728,7 @@ __meta__ = {
 [connection signal="pressed" from="button_grid/btn_qtmenu" to="." method="quit_to_menu"]
 [connection signal="pressed" from="button_grid/btn_bugreport" to="." method="_on_btn_bugreport_pressed"]
 [connection signal="pressed" from="button_grid/btn_saveload" to="." method="_on_btn_saveload_pressed"]
-[connection signal="pressed" from="button_grid/btn_event_log" to="." method="_on_btn_event_log_pressed"]
-[connection signal="pressed" from="button_grid/stats_screen" to="." method="_on_stats_screen_pressed"]
 [connection signal="pressed" from="button_grid/btn_nxt" to="." method="_on_btn_nxt_pressed"]
-[connection signal="pressed" from="ViewMap" to="." method="_on_ViewMap_pressed"]
 [connection signal="pressed" from="pnl_dead_overview/background/btn_qtmenu" to="." method="_on_btn_qtmenu_pressed"]
 [connection signal="pressed" from="pnl_dead_overview/Button" to="." method="_on_Button_pressed"]
 [connection signal="update_seqelm_coloration" from="pnl_temp_filter" to="." method="_on_pnl_temp_filter_update_seqelm_coloration"]
@@ -1693,3 +1740,6 @@ __meta__ = {
 [connection signal="mouse_entered" from="ph_button" to="." method="_on_ph_button_mouse_entered"]
 [connection signal="mouse_exited" from="ph_button" to="." method="_on_ph_button_mouse_exited"]
 [connection signal="pressed" from="ph_button" to="." method="_on_ph_button_pressed"]
+[connection signal="pressed" from="stats_image_button" to="." method="_on_stats_image_button_pressed"]
+[connection signal="pressed" from="event_image_button" to="." method="_on_event_image_button_pressed"]
+[connection signal="pressed" from="map_image_button" to="." method="_on_map_image_button_pressed"]

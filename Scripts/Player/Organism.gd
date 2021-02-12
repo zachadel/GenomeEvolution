@@ -2833,7 +2833,8 @@ const BEHAVIOR_TO_COST_MULT = {
 func use_resources(action, num_times_performed = 1):
 	for resource_class in cfp_resources: #should yield simple_carbs,complex_carbs, etc.
 		var cost = get_cfp_cost(action, resource_class, num_times_performed)
-		if cost > 0:
+		print("cfp cost: "+str(cost))
+		if cost >= 0:
 			for resource in cfp_resources[resource_class]:
 				if cost <= cfp_resources[resource_class][resource]:
 					cfp_resources[resource_class][resource] -= cost

@@ -6,12 +6,14 @@ signal switch_to_map
 signal next_turn(turn_text, round_num);
 signal card_stats_screen;
 signal card_event_log;
-signal add_card_event_log(title, content);
+signal add_card_event_log(content, tags);
 
 onready var justnow_label : RichTextLabel = $ctl_justnow/lbl_justnow;
 onready var orgn = $Organism;
 onready var nxt_btn = $button_grid/btn_nxt;
 onready var status_bar = $ChromosomeStatus;
+
+onready var map_button = $map_image_button
 
 onready var energy_bar = get_node("EnergyBar")
 
@@ -29,7 +31,7 @@ func _ready():
 	visible = false; # Prevents an auto-turn before the game begins
 	orgn.setup(self);
 	reset_status_bar();
-	$ViewMap.texture_normal = load(Game.get_large_cell_path(Game.current_cell_string))
+	#$ViewMap.texture_normal = load(Game.get_large_cell_path(Game.current_cell_string))
 	
 	
 	connect("next_turn", orgn, "adv_turn");
@@ -290,12 +292,13 @@ func _add_justnow_bbcode(bbcode : String, tags := {}):
 
 func _on_Organism_justnow_update(text):
 	_add_justnow_bbcode("\n%s\n" % text);
+	emit_signal("add_card_event_log", "\n%s\n" % text, {})
 
 func _on_Organism_gap_close_msg(text):
 	var t = "\n%s\n" % text;
 	_add_justnow_bbcode(t);
 	#$RepairTabs/pnl_repair_choices/vbox/scroll/RTLRepairResult.text += t;
-	emit_signal("add_card_event_log", "card_break_update", t)
+	emit_signal("add_card_event_log", t,{})
 	
 
 
@@ -307,7 +310,7 @@ func _on_Organism_clear_gap_msg():
 
 func _on_Organism_bandage_msg(text):
 	#$RepairTabs/pnl_bandage_dmg/vbox/scroll/RTLRepairResult.text += "\n%s\n" % text;
-	emit_signal("add_card_event_log", "card_bandage_update", text)
+	emit_signal("add_card_event_log", text,{})
 
 
 func _on_Organism_updated_gaps(gaps_exist, gap_text):
@@ -375,6 +378,7 @@ func adv_turn():
 		upd_turn_display();
 		
 		_add_justnow_bbcode("\n\n%s" % Game.get_turn_txt(), {"color": Color(1, 0.75, 0)});
+		emit_signal("add_card_event_log","\n\n%s" % Game.get_turn_txt(), {"color": Color(1, 0.75, 0)})
 		
 		emit_signal("next_turn", Game.round_num, Game.turn_idx);
 		$pnl_saveload.new_save(SaveExports.get_save_str(self));
@@ -405,11 +409,13 @@ func show(enable_other_stuff: bool = true):
 	
 	set_map_btn_texture("res://Assets/Images/Cells/body/body_%s_large.svg" % Game.current_cell_string);
 
+#Replaced with normal button functionality for now
 func set_map_btn_texture(texture_path: String) -> void:
-	var tex: Texture = load(texture_path);
-	$ViewMap.texture_normal = tex;
-	$ViewMap.texture_disabled = tex;
-	$ViewMap.texture_pressed = tex;
+#	var tex: Texture = load(texture_path);
+#	$ViewMap.texture_normal = tex;
+#	$ViewMap.texture_disabled = tex;
+#	$ViewMap.texture_pressed = tex;
+	pass
 
 func check_if_ready():
 	var end_mapturn_on_mapscreen = Game.get_turn_type() == Game.TURN_TYPES.Map && Unlocks.has_turn_unlock(Game.TURN_TYPES.Map);
@@ -581,38 +587,21 @@ func _on_btn_load_pressed():
 	close_extra_menus($pnl_bugreport);
 
 func show_map_button():
-	$ViewMap.disabled = false;
-	$ViewMap.show()
+	map_button.disabled = false;
+	map_button.show()
 
 func hide_map_button():
-	$ViewMap.disabled = true;
+	map_button.disabled = true;
 	
 	# The cell should always be visible?
 	#$ViewMap.hide()
-	$ViewMap/Label.hide()
+	#$ViewMap/Label.hide()
 
 func _on_Organism_transposon_activity(active):
 	if active:
 		show_chaos_anim();
 	else:
 		hide_chaos_anim();
-
-
-func _on_stats_screen_pressed():
-	STATS.set_gc_rep(orgn.get_behavior_profile().get_behavior("Replication"))
-	STATS.set_gc_loc(orgn.get_behavior_profile().get_behavior("Locomotion"))
-	STATS.set_gc_help(orgn.get_behavior_profile().get_behavior("Helper"))
-	STATS.set_gc_man(orgn.get_behavior_profile().get_behavior("Manipulation"))
-	STATS.set_gc_sens(orgn.get_behavior_profile().get_behavior("Sensing"))
-	STATS.set_gc_comp(orgn.get_behavior_profile().get_behavior("Component"))
-	STATS.set_gc_con(orgn.get_behavior_profile().get_behavior("Construction"))
-	STATS.set_gc_decon(orgn.get_behavior_profile().get_behavior("Deconstruction"))
-	STATS.set_gc_ate(orgn.get_behavior_profile().get_behavior("ate"))
-	
-
-	emit_signal("card_stats_screen")
-	pass # Replace with function body.
-
 
 func _on_Button_pressed():
 	emit_signal("card_stats_screen")
@@ -870,6 +859,30 @@ func _on_close_pressed():
 	pass # Replace with function body.
 
 
-func _on_btn_event_log_pressed():
+func _on_btn_viewmap_pressed():
+	
+	pass # Replace with function body.
+
+
+func _on_stats_image_button_pressed():
+	STATS.set_gc_rep(orgn.get_behavior_profile().get_behavior("Replication"))
+	STATS.set_gc_loc(orgn.get_behavior_profile().get_behavior("Locomotion"))
+	STATS.set_gc_help(orgn.get_behavior_profile().get_behavior("Helper"))
+	STATS.set_gc_man(orgn.get_behavior_profile().get_behavior("Manipulation"))
+	STATS.set_gc_sens(orgn.get_behavior_profile().get_behavior("Sensing"))
+	STATS.set_gc_comp(orgn.get_behavior_profile().get_behavior("Component"))
+	STATS.set_gc_con(orgn.get_behavior_profile().get_behavior("Construction"))
+	STATS.set_gc_decon(orgn.get_behavior_profile().get_behavior("Deconstruction"))
+	STATS.set_gc_ate(orgn.get_behavior_profile().get_behavior("ate"))
+	emit_signal("card_stats_screen")
+	pass # Replace with function body.
+
+
+func _on_event_image_button_pressed():
 	emit_signal("card_event_log")
+	pass # Replace with function body.
+
+
+func _on_map_image_button_pressed():
+	emit_signal("switch_to_map")
 	pass # Replace with function body.

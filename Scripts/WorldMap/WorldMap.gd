@@ -592,7 +592,6 @@ func move_player(pos: Vector3):
 				#set_hazard(1,2)
 				#print("after")
 				#tile_hazard_grabs(current_player.get_current_tile()["biome"])
-				emit_signal("add_card_event_log", "player move", "Playered moved")
 				STATS.increment_tiles_traveled()
 				var new_position = Game.map_to_world(pos)
 			
@@ -754,18 +753,112 @@ func add_progeny_sprite(pos: Vector3):
 func check_on_skills():
 	var current_bhv_profile = current_player.organism.get_behavior_profile();
 	#set up the current behavior profile.
-	print("bhv profile: "+str(current_bhv_profile["resources"]))
 	if(current_bhv_profile.has_skill("fat_acid->energy")):
-		print("I have fat_acid->energy unlocked")
+		return true;
+	else:
+		return false;
 	pass
 
 func check_on_resources():
+	print("simple carb resources: " + str(current_player.organism.cfp_resources["simple_carbs"]))
+	print("cost of the conversion from simple_carbs to energy: "+str(current_player.organism.get_energy_cost("simple_carbs_to_energy",2)))
+	pass
+
+func energy_before_worldmap_end():
+	print("simple fat stuff: "+str(current_player.organism.cfp_resources["simple_fats"]))
+	#check to see if the player's energy is less than 5. if it's not ignore this function.
+	if(current_player.organism.energy<5):#if the player's energy is less than 5
+		#let's check to see how much sugar resource they have. 
+		#check to make sure you have enough candy
+		var bridge_energy = 5 - current_player.organism.energy; #takes the differences and determines how much energy is needed to go into the card table.
+		if(check_on_skills()):
+			if bridge_energy > 3:
+				bridge_energy = 6;
+				#takes away 2 candies from the player.
+				if(current_player.organism.cfp_resources["simple_carbs"]["candy1"] >= 2):
+					ui.irc.energy_bar.add_energy(bridge_energy); #adds energy to the bar (UI)
+					current_player.organism.add_energy(bridge_energy) #adds energy to the organism(stops notification), both are needed
+					current_player.organism.cfp_resources["simple_carbs"]["candy1"] -= 2;
+					
+				elif(current_player.organism.cfp_resources["simple_carbs"]["candy2"] >= 2):
+					ui.irc.energy_bar.add_energy(bridge_energy); #adds energy to the bar (UI)
+					current_player.organism.add_energy(bridge_energy) #adds energy to the organism(stops notification), both are needed
+					current_player.organism.cfp_resources["simple_carbs"]["candy2"] -= 2;
+					
+				elif(current_player.organism.cfp_resources["simple_fats"]["butter"] >= 2):
+					ui.irc.energy_bar.add_energy(bridge_energy); #adds energy to the bar (UI)
+					current_player.organism.add_energy(bridge_energy) #adds energy to the organism(stops notification), both are needed
+					current_player.organism.cfp_resources["simple_fats"]["butter"] -= 2;
+					
+				elif(current_player.organism.cfp_resources["simple_fats"]["oil"] >= 2):
+					ui.irc.energy_bar.add_energy(bridge_energy); #adds energy to the bar (UI)
+					current_player.organism.add_energy(bridge_energy) #adds energy to the organism(stops notification), both are needed
+					current_player.organism.cfp_resources["simple_fats"]["oil"] -= 2;
+				else:
+					return;
+			else:
+				bridge_energy = 3;
+				
+				if(current_player.organism.cfp_resources["simple_carbs"]["candy1"] >= 1):
+					ui.irc.energy_bar.add_energy(bridge_energy); #adds energy to the bar (UI)
+					current_player.organism.add_energy(bridge_energy) #adds energy to the organism(stops notification), both are needed
+					current_player.organism.cfp_resources["simple_carbs"]["candy1"] -= 1;
+					
+				elif(current_player.organism.cfp_resources["simple_carbs"]["candy2"] >= 1):
+					ui.irc.energy_bar.add_energy(bridge_energy); #adds energy to the bar (UI)
+					current_player.organism.add_energy(bridge_energy) #adds energy to the organism(stops notification), both are needed
+					current_player.organism.cfp_resources["simple_carbs"]["candy2"] -= 1;
+					
+				elif(current_player.organism.cfp_resources["simple_fats"]["butter"] >= 1):
+					ui.irc.energy_bar.add_energy(bridge_energy); #adds energy to the bar (UI)
+					current_player.organism.add_energy(bridge_energy) #adds energy to the organism(stops notification), both are needed
+					current_player.organism.cfp_resources["simple_fats"]["butter"] -= 1;
+					
+				elif(current_player.organism.cfp_resources["simple_fats"]["oil"] >= 1):
+					ui.irc.energy_bar.add_energy(bridge_energy); #adds energy to the bar (UI)
+					current_player.organism.add_energy(bridge_energy) #adds energy to the organism(stops notification), both are needed
+					current_player.organism.cfp_resources["simple_fats"]["oil"] -= 1;
+					
+				else:
+					return;
+		
+		else:#if there isnt the ability to turn fat acid to energy
+			if bridge_energy > 3:
+				bridge_energy = 6;
+				
+				#takes away 2 candies from the player.
+				if(current_player.organism.cfp_resources["simple_carbs"]["candy1"] >= 2):
+					ui.irc.energy_bar.add_energy(bridge_energy);#adds 6 energy to the bar and then the organism
+					current_player.organism.add_energy(bridge_energy);
+					current_player.organism.cfp_resources["simple_carbs"]["candy1"] -= 2;
+					
+				elif(current_player.organism.cfp_resources["simple_carbs"]["candy2"] >= 2):
+					ui.irc.energy_bar.add_energy(bridge_energy);#adds 6 energy to the bar and then the organism
+					current_player.organism.add_energy(bridge_energy);
+					current_player.organism.cfp_resources["simple_carbs"]["candy2"] -= 2;
+					
+				else:
+					return;
+					#we will use 2 candies
+			else:
+				bridge_energy = 3;
+				ui.irc.energy_bar.add_energy(bridge_energy); #adds energy to the bar (UI)
+				current_player.organism.add_energy(bridge_energy) #adds energy to the organism(stops notification), both are needed
+				
+				if(current_player.organism.cfp_resources["simple_carbs"]["candy1"] >= 1):
+					current_player.organism.cfp_resources["simple_carbs"]["candy1"] -= 1;
+				
+				elif(current_player.organism.cfp_resources["simple_carbs"]["candy2"] >= 1):
+					current_player.organism.cfp_resources["simple_carbs"]["candy2"] -= 1;
+				
+				else:
+					return;
+				#we will use 1 candy
 	pass
 
 func _on_WorldMap_UI_end_map_pressed():
-	if(current_player.organism.energy < 5): #this checks to see if the player has less than 5 energy
-		print("this energy is less than 5.")
-		check_on_skills()
+	energy_before_worldmap_end()
+	#put energy_before_worldmap_end in here
 	if current_player.organism.energy < CARD_TABLE_ENERGY:
 		notifications.emit_signal("notification_needed", "You need %d energy to repair your genome.  Keep exploring for resources and energy!" % [CARD_TABLE_ENERGY], true, true, -1)
 	#elif max_dmg_reached and current_player.organism.energy < CARD_TABLE_ENERGY :

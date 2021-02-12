@@ -16,7 +16,7 @@ modulate = Color( 0, 0.678431, 0.0117647, 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = -1540.0
-margin_bottom = -840.0
+margin_bottom = -830.0
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -25,7 +25,7 @@ __meta__ = {
 [node name="TexRect" type="TextureRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_bottom = -10.0
+margin_bottom = -15.0
 expand = true
 stretch_mode = 6
 __meta__ = {
