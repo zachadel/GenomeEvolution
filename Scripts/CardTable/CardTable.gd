@@ -13,7 +13,7 @@ onready var orgn = $Organism;
 onready var nxt_btn = $button_grid/btn_nxt;
 onready var status_bar = $ChromosomeStatus;
 
-onready var map_button = $map_image_button
+onready var map_button = $button_control/map_image_button
 
 onready var energy_bar = get_node("EnergyBar")
 
@@ -531,6 +531,7 @@ func show_death_screen():
 		gaps_repaired += Unlocks.get_count(rtype);
 	$ph_button.hide()
 	$Temp_Button.hide()
+	$button_control.hide()
 	#$pnl_dead_overview/HSplitContainer/Panel/LblOverview.text = OVERVIEW_FORMAT % [death_descr, Game.round_num, orgn.num_progeny, gaps_repaired]
 	$pnl_dead_overview.visible = true;
 	$pnl_dead_overview.update_values();

@@ -1650,14 +1650,21 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="stats_image_button" type="TextureButton" parent="."]
+[node name="button_control" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="stats_image_button" type="TextureButton" parent="button_control"]
 margin_top = 780.0
 margin_right = 1280.0
 margin_bottom = 1889.0
 rect_scale = Vector2( 0.08, 0.08 )
 texture_normal = ExtResource( 41 )
 
-[node name="event_image_button" type="TextureButton" parent="."]
+[node name="event_image_button" type="TextureButton" parent="button_control"]
 margin_left = 105.0
 margin_top = 775.0
 margin_right = 1134.0
@@ -1668,7 +1675,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="map_image_button" type="TextureButton" parent="."]
+[node name="map_image_button" type="TextureButton" parent="button_control"]
 margin_left = 190.0
 margin_top = 800.0
 margin_right = 1470.0
@@ -1740,6 +1747,6 @@ __meta__ = {
 [connection signal="mouse_entered" from="ph_button" to="." method="_on_ph_button_mouse_entered"]
 [connection signal="mouse_exited" from="ph_button" to="." method="_on_ph_button_mouse_exited"]
 [connection signal="pressed" from="ph_button" to="." method="_on_ph_button_pressed"]
-[connection signal="pressed" from="stats_image_button" to="." method="_on_stats_image_button_pressed"]
-[connection signal="pressed" from="event_image_button" to="." method="_on_event_image_button_pressed"]
-[connection signal="pressed" from="map_image_button" to="." method="_on_map_image_button_pressed"]
+[connection signal="pressed" from="button_control/stats_image_button" to="." method="_on_stats_image_button_pressed"]
+[connection signal="pressed" from="button_control/event_image_button" to="." method="_on_event_image_button_pressed"]
+[connection signal="pressed" from="button_control/map_image_button" to="." method="_on_map_image_button_pressed"]
