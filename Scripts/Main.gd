@@ -56,8 +56,8 @@ func _ready():
 	$Canvas_CardTable/CardTable.connect("card_event_log", self, "_card_event_log")
 	$Canvas_CardTable/CardTable.connect("add_card_event_log", self, "_add_event_content")
 	$WorldMap.connect("add_card_event_log", self, "_add_event_content")
-func _add_event_content(title, content):
-	$Event_Log_Layer/pnl_event_log.addContent(title, content)
+func _add_event_content(content, tags):
+	$Event_Log_Layer/pnl_event_log.addContent(content, tags)
 	#print("what is being passed through: "+ title +" "+content)
 	pass
 	
