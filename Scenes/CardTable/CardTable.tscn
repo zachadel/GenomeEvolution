@@ -1055,14 +1055,6 @@ margin_right = 122.0
 margin_bottom = 249.0
 color = Color( 1, 1, 1, 0 )
 
-[node name="btn_viewmap" type="Button" parent="button_grid"]
-margin_top = 207.0
-margin_right = 122.0
-margin_bottom = 248.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-text = "Check Map"
-
 [node name="btn_nxt" type="Button" parent="button_grid"]
 margin_top = 259.0
 margin_right = 122.0
