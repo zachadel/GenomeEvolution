@@ -157,7 +157,7 @@ func _on_WorldMap_player_resources_changed(cfp_resources, mineral_resources):
 	
 
 func _on_WorldMap_tile_changed(tile_dict):
-	print(tile_dict)
+	#(tile_dict)
 	hazards_ui.set_hazards(tile_dict["hazards"])
 	resource_ui.set_resources(tile_dict["resources"])
 	biome_icon.set_icon(tile_dict["biome"])
@@ -231,6 +231,7 @@ func _on_StatsScreen_pressed():
 
 func _on_EventLog_pressed():
 	#emtis a signal that will go to the log for opening. 
+	get_tree().paused = true
 	emit_signal("add_card_event_log","world_map_update"," ")
 	emit_signal("show_event_log")
 	pass # Replace with function body.

@@ -2,7 +2,7 @@ extends Panel
 
 signal resources_selected(resources)
 signal invalid_action(gene_type, low_or_high, action)
-
+signal add_card_event_log(content, tags);
 #NOTE: Do NOT for any reason scale this node.  Everything will break.
 #We assume at all times that resources are where they should be.
 #If that assumption needs to break, then work will need to be done to add
@@ -148,6 +148,8 @@ func highlight_vesicles_if_necessary(cfp_resources: Dictionary = {}, mineral_res
 
 func update_energy(energy):
 	energy_bar.update_energy_allocation(energy)
+	emit_signal("add_card_event_log","howdy baby",{})
+	
 
 func set_organism(org):
 	organism = org
@@ -353,7 +355,8 @@ func handle_click_with_selection():
 						if results[resource]["new_resource_amount"] > 0:
 							add_resource(results[resource]["new_resource_name"], results[resource]["new_resource_amount"])
 							did_anything = true
-					energy_bar.update_energy_allocation(organism.energy)	
+					energy_bar.update_energy_allocation(organism.energy)
+					
 				else:
 					emit_warning(container_name)
 					

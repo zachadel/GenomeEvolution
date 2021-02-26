@@ -7,12 +7,14 @@ var current_round_bandage = 0;
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-
+func _ready():
+	pause_mode = Node.PAUSE_MODE_PROCESS
 
 # Called when the node enters the scene tree for the first time.
 	 # Replace with function body.
 # What is outputted where is all dependent on the title of the signal that is coming in
 func addContent( text, tags:={}): 
+	#print("here")
 	#print("current_round break: "+str(current_round_break))
 	#print("current_round_bandage: "+str(current_round_bandage))
 	var new_round = STATS.get_rounds()
@@ -40,5 +42,6 @@ func clearContent(): #you're not really going to need this funciton, this is jus
 
 
 func _on_close_pressed():
+	get_tree().paused = false;
 	visible = false;
 	 # Replace with function body.

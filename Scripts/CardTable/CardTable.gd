@@ -11,9 +11,9 @@ signal add_card_event_log(content, tags);
 onready var justnow_label : RichTextLabel = $ctl_justnow/lbl_justnow;
 onready var orgn = $Organism;
 onready var nxt_btn = $button_grid/btn_nxt;
-onready var status_bar = $ChromosomeStatus;
+onready var status_bar = $Border1/ChromosomeStatus;
 
-onready var map_button = $button_control/map_image_button
+onready var map_button = $Border2/button_control/map_image_button
 
 onready var energy_bar = get_node("EnergyBar")
 
@@ -21,6 +21,7 @@ onready var ph_filter_panel := $pnl_ph_filter;
 onready var justnow_ctl := $ctl_justnow;
 onready var temp_filter_panel := $pnl_temp_filter;
 
+var passed_replication = false;
 var has_gaps = false;
 var wait_on_anim = false;
 var wait_on_select = false;
@@ -114,6 +115,7 @@ func _on_replic_choices_item_activated(idx):
 	do_replicate(idx);
 
 func _on_btn_apply_replic_pressed():
+	passed_replication = true
 	do_replicate($pnl_reproduce/hsplit/ilist_choices.get_selected_items()[0]);
 
 func do_replicate(idx):
@@ -338,6 +340,8 @@ func upd_turn_display(upd_turn_unlocks: bool = Game.fresh_round, upd_env_markers
 		ph_filter_panel.upd_current_ph_marker(orgn.current_tile.hazards["pH"]);
 
 func _on_btn_nxt_pressed():
+	passed_replication = false
+	orgn.gene_val_with_temp()
 	STATS.set_gc_rep(orgn.get_behavior_profile().get_behavior("Replication"))
 	STATS.set_gc_sens(orgn.get_behavior_profile().get_behavior("Sensing"))
 	STATS.set_gc_loc(orgn.get_behavior_profile().get_behavior("Locomotion"))
@@ -347,7 +351,7 @@ func _on_btn_nxt_pressed():
 	STATS.set_gc_con(orgn.get_behavior_profile().get_behavior("Construction"))
 	STATS.set_gc_decon(orgn.get_behavior_profile().get_behavior("Deconstruction"))
 	STATS.set_gc_ate(orgn.get_behavior_profile().get_behavior("ate"))
-	
+	#nxt_btn.add_color_override("font_color",Color(255,255,255,255))
 	adv_turn();
 
 func disable_turn(is_disabled: bool = true):
@@ -357,6 +361,28 @@ func disable_turn(is_disabled: bool = true):
 		nxt_btn.disabled = true
 	else:
 		nxt_btn.disabled = false
+		
+		
+
+func flash_btn():
+	var i = 0
+	var iteration = 0
+	if(nxt_btn.disabled == false):
+		while(nxt_btn.pressed == false and iteration <= 20):
+			#print("flash_btn")
+			var every_other = 0;
+			while(i < 255):
+				every_other += 1
+				nxt_btn.get_stylebox("Normal").modulate_color = Color(i,i,i,255)
+				if(every_other %100 == 0):
+					i+=1
+			while(i > 0):
+				if(every_other % 100 == 0):
+					i-=1
+				nxt_btn.add_color_override("font_color",Color(i,i,i,255))
+				every_other += 1
+			iteration += 1
+	print("out of shade fade")
 
 func adv_turn():
 	orgn.iterate_genes()
@@ -425,6 +451,7 @@ func check_if_ready():
 			nxt_btn.disabled = false;
 		else:
 			nxt_btn.disabled = orgn.is_dead() || wait_on_anim || wait_on_select || has_gaps || disable_turn_adv;
+			
 	else:
 		nxt_btn.disabled = true;
 	
@@ -550,6 +577,7 @@ func refresh_visible_options():
 
 func _on_Organism_energy_changed(energy):
 	$EnergyBar.update_energy_allocation(energy);
+	#print("card table energy")
 	refresh_visible_options();
 
 func _on_Organism_resources_changed(cfp_resources, mineral_resources):
@@ -696,7 +724,7 @@ func _on_fix_all_pressed():
 func _on_fixAllBreaks_pressed(): #(This was created before the other buttons, therefore by default it is join ends.)
 	#the name of this function may be misleading.
 	#IT ONLY FIXES BREAKS THAT IT CAN IN FACT FIX WITH THAT TYPE OF CORRECTION
-	print("fix all breaks pressed")
+	#("fix all breaks pressed")
 	auto_repair_all_breaks_join_end(orgn.get_cmsm_pair());
 	pass # Replace with function body.
 
@@ -756,7 +784,7 @@ func auto_repair_all_breaks_collapse_dupes(cmsm_pair) -> bool:
 			orgn.is_ai = true; #the ai option will automate choosing one of the genes to the left and the right of the selected gene.
 			# This is needed for the organism to recognize what is an option to it
 			var possible_outcome = orgn.default_collapse_dupes(i);
-			print("collapse dupes was: "+ str(possible_outcome))
+			#print("collapse dupes was: "+ str(possible_outcome))
 			if(possible_outcome == true):
 				#attempts to repair the chromosome
 				orgn.auto_repair()
@@ -880,10 +908,41 @@ func _on_stats_image_button_pressed():
 
 
 func _on_event_image_button_pressed():
+	get_tree().paused = true
 	emit_signal("card_event_log")
 	pass # Replace with function body.
 
 
 func _on_map_image_button_pressed():
 	emit_signal("switch_to_map")
+	pass # Replace with function body.
+
+
+func _on_stats_image_button_mouse_entered():
+	$stats_hidden.show()
+	pass # Replace with function body.
+
+
+func _on_stats_image_button_mouse_exited():
+	$stats_hidden.hide()
+	pass # Replace with function body.
+
+
+func _on_event_image_button_mouse_entered():
+	$diary_hidden.show()
+	pass # Replace with function body.
+
+
+func _on_event_image_button_mouse_exited():
+	$diary_hidden.hide()
+	pass # Replace with function body.
+
+
+func _on_map_image_button_mouse_entered():
+	$map_hidden.show()
+	pass # Replace with function body.
+
+
+func _on_map_image_button_mouse_exited():
+	$map_hidden.hide()
 	pass # Replace with function body.

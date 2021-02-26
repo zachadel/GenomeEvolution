@@ -742,6 +742,8 @@ func update_ui_mineral_resources():
 	
 func update_ui_energy():
 	ui.irc.update_energy(current_player.organism.energy)
+	#emit_signal("add_card_event_log", "ui updated to "+str(current_player.organism.energy)+" from converting resources",{})
+	#print("UI: "+str(current_player.organism.energy))
 	pass
 
 func add_progeny_sprite(pos: Vector3):
@@ -857,6 +859,7 @@ func energy_before_worldmap_end():
 	pass
 
 func _on_WorldMap_UI_end_map_pressed():
+	current_player.organism.gene_val_with_temp()
 	energy_before_worldmap_end()
 	#put energy_before_worldmap_end in here
 	if current_player.organism.energy < CARD_TABLE_ENERGY:

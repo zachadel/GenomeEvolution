@@ -372,7 +372,7 @@ margin_left = 595.0
 margin_right = 730.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 135, 32 )
-text = "Show Event Log"
+text = "Genome Diary"
 [connection signal="pressed" from="GenomePanel/RepairGenome" to="." method="_on_EndMapTurn_pressed"]
 [connection signal="pressed" from="MenuPanel/HBoxContainer/AcquireResources" to="." method="_on_AcquireResources_pressed"]
 [connection signal="pressed" from="MenuPanel/HBoxContainer/StatsScreen" to="." method="_on_StatsScreen_pressed"]

@@ -268,6 +268,10 @@ func set_ess_behavior(dict):
 			ate_activity = dict[k];
 		else:
 			ess_behavior[k] = dict[k];
+			print(ess_behavior[k])
+			#if the abs(temp-optimal temp) > 10
+			#while(^that and ess_behavior > 0)
+			#ess_behavior -= 0.3
 		upd_behavior_disp(k);
 
 func get_ess_behavior_raw() -> Dictionary:
@@ -649,6 +653,86 @@ func perform_evolution(major: bool, up: bool) -> String:
 				change_text += " (the transposon is now entirely inactive)";
 	return "%s %s%s" % [magn_text, updown_text, change_text];
 
+func upgrade_to_optimal():
+	var current_organsim = get_parent().get_organism()
+	var my_biome = current_organsim.current_tile["biome"]
+	if(my_biome == 3): #grass, this is the first one because it almost always starts in this one
+		temp_preference = temp_preference + 1.25
+		
+	elif(my_biome == 0): # dirt
+		temp_preference = temp_preference +1.5
+		
+	elif(my_biome== 1): #fire
+		temp_preference = temp_preference + 5
+		
+	elif(my_biome == 2): #forest
+		temp_preference = temp_preference + 8.75
+		
+	elif(my_biome == 4): #Basalt
+		temp_preference = temp_preference + 15
+		
+	elif(my_biome == 5): #mountain
+		temp_preference = temp_preference + 6.25
+		
+	elif(my_biome == 6): #Ocean
+		temp_preference = temp_preference + 1.25
+		
+	elif(my_biome == 7): #purple
+		temp_preference = temp_preference + 0.0025
+		
+	elif(my_biome == 8): #sand
+		temp_preference = temp_preference + 3.25
+		
+	elif(my_biome == 9): #Shallow
+		temp_preference = temp_preference + 1.25
+		
+	elif(my_biome == 10): #Shallow salt
+		temp_preference = temp_preference + 0.375
+		
+	elif(my_biome == 11): #snow
+		temp_preference = temp_preference + 10
+	#print("temp preference after: "+str(temp_preference))
+
+func downgrade_to_optimal():
+	var current_organsim = get_parent().get_organism()
+	var my_biome = current_organsim.current_tile["biome"]
+	if(my_biome == 3): #grass, this is the first one because it almost always starts in this one
+		temp_preference = temp_preference - 1.25
+		
+	elif(my_biome == 0): # dirt
+		temp_preference = temp_preference -1.5
+		
+	elif(my_biome== 1): #fire
+		temp_preference = temp_preference - 5
+		
+	elif(my_biome == 2): #forest
+		temp_preference = temp_preference - 8.75
+		
+	elif(my_biome == 4): #Basalt
+		temp_preference = temp_preference - 15
+		
+	elif(my_biome == 5): #mountain
+		temp_preference = temp_preference - 6.25
+		
+	elif(my_biome == 6): #Ocean
+		temp_preference = temp_preference - 1.25
+		
+	elif(my_biome == 7): #purple
+		temp_preference = temp_preference - 0.0025
+		
+	elif(my_biome == 8): #sand
+		temp_preference = temp_preference - 3.25
+		
+	elif(my_biome == 9): #Shallow
+		temp_preference = temp_preference - 1.25
+		
+	elif(my_biome == 10): #Shallow salt
+		temp_preference = temp_preference - 0.375
+		
+	elif(my_biome == 11): #snow
+		temp_preference = temp_preference - 10
+	#print("temp preference after: "+str(temp_preference))
+
 # Returns a string describing the evolution that occurred
 # eg "major upgrade, improving its Replication ability"
 func evolve_by_name(ev_name: String) -> String:
@@ -660,15 +744,25 @@ func evolve_by_name(ev_name: String) -> String:
 				return "a fatal mutation";
 			"major_down":
 				STATS.increment_majorDowngrades()
+				#print("Major down")
+				downgrade_to_optimal()
+				downgrade_to_optimal()
 				return perform_evolution(true, false);
 			"minor_down":
 				STATS.increment_minorDowngrades()
+				#print("Minor down")
+				downgrade_to_optimal()
 				return perform_evolution(false, false);
 			"major_up":
 				STATS.increment_majorUpgrades()
+				#print("Major up")
+				upgrade_to_optimal()
+				upgrade_to_optimal()
 				return perform_evolution(true, true);
 			"minor_up":
 				STATS.increment_minorUpgrades()
+				#print("Minor up")
+				upgrade_to_optimal()
 				return perform_evolution(false, true);
 	return "";
 
@@ -735,6 +829,10 @@ func get_dominant_essential() -> String:
 			dominant_key = b;
 	
 	return dominant_key;
+
+func temp_to_genes():
+	
+	pass
 
 func upd_display():
 	var blankTiles = 0;

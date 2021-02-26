@@ -1,6 +1,7 @@
 extends Control
 
 signal cmsm_changed();
+signal add_card_event_log(conent, tags);
 
 onready var cmsms = $scroll/chromes
 
@@ -1452,7 +1453,8 @@ func get_current_ph(apply_buffer := false):
 
 func get_current_temp():
 	if current_tile.has("hazards"):
-		var temp: float = current_tile.hazards["temp"];
+		print(current_tile.hazards)
+		var temp: float = current_tile.hazards["temperature"];
 		return temp;
 	return null;
 	
@@ -1916,6 +1918,28 @@ func check_resources(action, amount = 1):
 	
 	return deficiencies
 
+func gene_val_with_temp():
+	#get the current temperature
+	var current_temp = get_current_temp()
+	var bhv_profile = get_behavior_profile()
+	#print(bhv_profile["cnearjfar"])
+	for i in $scroll/chromes.get_all_genes():
+		var key = i.id;
+		#print("Key: "+str(key))
+		var diff = current_temp - i.get_temp()
+		if(diff < 0):
+			diff = -diff
+		if(diff == 0):
+			bhv_profile.set_behavior(key,bhv_profile.get_behavior(key)+0.3 )
+		while(diff > 10 and bhv_profile.get_behavior(key) >=0.2):
+			bhv_profile.set_behavior(key,bhv_profile.get_behavior(key)-0.1 )
+			diff -= 10
+			#print('howdy')
+	#for every gene that is > 10 abs diff between opt temp and current temp
+	#gene val -= 0.1 so long as the gene is >= 0.2
+	
+	
+	pass
 #Can take a cfp resource or a resource class (simple_carbs, etc.)
 #Returns total energy content after downgrading it to energy and calculating costs
 #BROKEN
@@ -1937,6 +1961,7 @@ func get_processed_energy_value(resource: String) -> float:
 				for resource_name in simp_prots:
 					if resource_name != "total":	
 						var conversion_amount = simp_prots[resource_name] / (Settings.settings["resources"][cfp_resources["simple_carbs"].keys()[1]]["factor"] / Settings.settings["resources"][resource_name]["factor"])
+						#print("Conversion amount: "+str(conversion_amount))
 						if simp_sugars.has(cfp_resources["simple_carbs"].keys()[1]):
 							simp_sugars[cfp_resources["simple_carbs"].keys()[1]] += conversion_amount
 						else:
@@ -1948,6 +1973,7 @@ func get_processed_energy_value(resource: String) -> float:
 						if resource_name != "total":
 							processed_energy += simp_sugars[resource_name] * Settings.settings["resources"][resource_name]["factor"]
 							processed_energy -= get_energy_cost("simple_carbs_to_energy", simp_sugars[resource_name])
+							#print("processed energy: "+str(processed_energy))
 			else:
 				processed_energy = 0
 				
@@ -2932,7 +2958,44 @@ func acquire_resources():
 					if cfp_resources[resource_class]["total"] + current_tile["resources"][index] <= max_capacity:
 						cfp_resources[resource_class]["total"] += current_tile["resources"][index]
 						cfp_resources[resource_class][resource] += current_tile["resources"][index]
-	
+						#print("resource class: "+resource_class)
+						#print("resource: "+resource)
+						if(resource_class == "simple_carbs" and resource == "candy1"):
+							emit_signal("add_card_event_log",str(current_tile["resources"][index])+" peppermints were eaten",{})
+						
+						elif(resource_class == "simple_carbs" and resource == "candy2"):
+							emit_signal("add_card_event_log",str(current_tile["resources"][index])+" hard candies eaten",{})
+						
+						elif(resource_class == "simple_proteins" and resource == "proetin_shake"):
+							emit_signal("add_card_event_log",str(current_tile["resources"][index])+" protein shakes eaten",{})
+						
+						elif(resource_class == "simple_proteins" and resource == "egg"):
+							emit_signal("add_card_event_log",str(current_tile["resources"][index])+" eggs eaten",{})
+						
+						elif(resource_class == "complex_carbs" and resource == "bread"):
+							emit_signal("add_card_event_log",str(current_tile["resources"][index])+" bread eaten",{})
+						
+						elif(resource_class == "complex_carbs" and resource == "potato"):
+							emit_signal("add_card_event_log",str(current_tile["resources"][index])+" bread eaten",{})
+						
+						elif(resource_class == "complex_fats" and resource == "avocado"):
+							emit_signal("add_card_event_log",str(current_tile["resources"][index])+" avocados eaten",{})
+						
+						elif(resource_class == "simple_fats" and resource == "butter"):
+							emit_signal("add_card_event_log",str(current_tile["resources"][index])+" butter eaten",{})
+						
+						elif(resource_class == "complex_proteins" and resource == "steak"):
+							emit_signal("add_card_event_log",str(current_tile["resources"][index])+" steaks eaten",{})
+						
+						elif(resource_class == "complex_proteins" and resource == "chicken"):
+							emit_signal("add_card_event_log",str(current_tile["resources"][index])+" chickens eaten",{})
+						
+						elif(resource_class == "simple_fats" and resource == "oil"):
+							emit_signal("add_card_event_log",str(current_tile["resources"][index])+" oil eaten",{})
+						
+						elif(resource_class == "complex_fats" and resource == "peanut_butter"):
+							emit_signal("add_card_event_log",str(current_tile["resources"][index])+" jars of peanut butter eaten",{})
+						
 						current_tile["resources"][index] = 0
 	
 					#Can only accomodate some of the resources

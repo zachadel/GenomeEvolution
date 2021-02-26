@@ -25,6 +25,9 @@ func add_skill_dict(skill_dict: Dictionary) -> void:
 func get_behavior(behavior_key: String) -> float:
 	return bhv_prof_data.get(behavior_key, 0.0);
 
+func set_behavior(behavior_key: String, value: float):
+	bhv_prof_data[behavior_key] = value
+
 func has_behavior(behavior_key: String) -> bool:
 	return get_behavior(behavior_key) > 0.0;
 

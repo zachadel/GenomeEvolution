@@ -4,22 +4,22 @@
 [ext_resource path="res://Scenes/EventLog/eventLog.gd" type="Script" id=2]
 
 [node name="pnl_event_log" type="Panel"]
-margin_right = 612.0
-margin_bottom = 400.0
+margin_right = 685.0
+margin_bottom = 300.0
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VSplitContainer" type="VSplitContainer" parent="."]
-margin_right = 612.0
-margin_bottom = 400.0
+margin_right = 685.0
+margin_bottom = 300.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="PanelContainer" type="PanelContainer" parent="VSplitContainer"]
-margin_right = 612.0
+margin_right = 685.0
 margin_bottom = 45.0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -28,10 +28,10 @@ __meta__ = {
 [node name="title" type="Label" parent="VSplitContainer/PanelContainer"]
 margin_left = 7.0
 margin_top = 7.0
-margin_right = 605.0
+margin_right = 678.0
 margin_bottom = 38.0
 custom_fonts/font = ExtResource( 1 )
-text = "Event Log"
+text = "Genome Diary"
 align = 1
 __meta__ = {
 "_edit_use_anchors_": false
@@ -39,13 +39,13 @@ __meta__ = {
 
 [node name="RichTextLabel" type="RichTextLabel" parent="VSplitContainer"]
 margin_top = 57.0
-margin_right = 612.0
-margin_bottom = 400.0
+margin_right = 685.0
+margin_bottom = 300.0
 
 [node name="ButtonContainer" type="PanelContainer" parent="VSplitContainer"]
-margin_left = 575.0
+margin_left = 650.0
 margin_top = 7.0
-margin_right = 608.0
+margin_right = 683.0
 margin_bottom = 41.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
@@ -56,4 +56,17 @@ margin_top = 7.0
 margin_right = 26.0
 margin_bottom = 27.0
 text = "x"
+
+[node name="Panel" type="Panel" parent="VSplitContainer"]
+margin_top = 300.0
+margin_right = 685.0
+margin_bottom = 310.0
+
+[node name="ColorRect" type="ColorRect" parent="VSplitContainer/Panel"]
+margin_right = 685.0
+margin_bottom = 20.0
+color = Color( 0.180392, 0.176471, 0.219608, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="pressed" from="VSplitContainer/ButtonContainer/close" to="." method="_on_close_pressed"]
