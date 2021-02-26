@@ -1,7 +1,7 @@
 extends TextureRect
 
 signal resource_clicked(resource, value)
-
+signal add_card_event_log(content, tags);
 const MAX_ENERGY_UNITS = 25
 const MAX_RECT_SIZE = Vector2(500, 45)
 
@@ -25,8 +25,11 @@ func _ready():
 func _gui_input(event):
 	if event.is_action_pressed("mouse_left"):
 		emit_signal("resource_clicked", "energy", energy)
+		emit_signal("add_card_event_log","Energy increased to "+str(stepify(energy, 0.01)),{})
 
 func update_energy_allocation(amount):
+	#print("therey")
+	#emit_signal("add_card_event_log", "Energy bar inceased by " +str(amount)+" from converting resources", {})
 	var children = $HBoxContainer.get_children()
 	var energy_per_unit = MAX_ENERGY / float(MAX_ENERGY_UNITS)
 	
@@ -39,6 +42,8 @@ func update_energy_allocation(amount):
 			children[i].self_modulate = Color(1,1,1,0)
 
 func add_energy(amount):
+	
+	#print("there")
 	if energy + amount <= MAX_ENERGY:
 		STATS.increment_resources_converted()
 		update_energy_allocation(energy + amount)
@@ -53,6 +58,7 @@ func glow(enable: bool = true):
 
 func _on_Organism_energy_changed(energy):
 	update_energy_allocation(energy)
+	#print(energy)
 	pass # Replace with function body.
 	
 func get_tooltip_data():

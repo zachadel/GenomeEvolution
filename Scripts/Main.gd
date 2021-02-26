@@ -49,13 +49,18 @@ func _ready():
 	console.set_world_map(world_map)
 	console.set_organism(card_table.orgn)
 	console.set_card_table(card_table)
+	
 	$stats_Layer/statsScreen.connect('show_cardTable', self, "_show_cardTable")
 	$WorldMap/WorldMap_UI.connect('stats_screen', self, "_show_control")
+	$Canvas_CardTable/CardTable/Organism.connect("add_card_event_log", self, "_add_event_content")
 	$Canvas_CardTable/CardTable.connect('card_stats_screen', self, "_card_show_control")
 	$WorldMap/WorldMap_UI.connect("show_event_log", self, "_show_event_log")
 	$Canvas_CardTable/CardTable.connect("card_event_log", self, "_card_event_log")
 	$Canvas_CardTable/CardTable.connect("add_card_event_log", self, "_add_event_content")
 	$WorldMap.connect("add_card_event_log", self, "_add_event_content")
+	$WorldMap/WorldMap_UI/InternalPanel/InternalResourceController/EnergyBar.connect("add_card_event_log", self,"_add_event_content")
+	#$WorldMap.connect("add_card_event_log", self, "_add_event_content")
+	#$WorldMap/WorldMap_UI/InternalPanel/InternalResourceController.connect("add_card_event_log", self, "_add_event_content")
 func _add_event_content(content, tags):
 	$Event_Log_Layer/pnl_event_log.addContent(content, tags)
 	#print("what is being passed through: "+ title +" "+content)

@@ -735,4 +735,4 @@ func set_seed(value):
 		seed_value = value.hash()
 		seed(seed_value)
 		
-	print(seed_value)
+	#print(seed_value)

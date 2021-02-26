@@ -88,6 +88,9 @@ margin_bottom = -1.0
 text = "ERROR_name"
 align = 1
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="lbl_code" type="Label" parent="."]
 anchor_top = 1.0
