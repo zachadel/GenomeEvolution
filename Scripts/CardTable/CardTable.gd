@@ -33,7 +33,8 @@ func _ready():
 	orgn.setup(self);
 	reset_status_bar();
 	#$ViewMap.texture_normal = load(Game.get_large_cell_path(Game.current_cell_string))
-	
+	orgn.connect("show_warning", self, "_on_show_warning")
+	orgn.connect("close_warning", self, "_on_hide_warning")
 	
 	connect("next_turn", orgn, "adv_turn");
 	orgn.connect("energy_changed", energy_bar, "_on_Organism_energy_changed")
@@ -294,13 +295,21 @@ func _add_justnow_bbcode(bbcode : String, tags := {}):
 
 func _on_Organism_justnow_update(text):
 	_add_justnow_bbcode("\n%s\n" % text);
+	$WarningPopUp/Label.text = text
 	emit_signal("add_card_event_log", "\n%s\n" % text, {})
 
 func _on_Organism_gap_close_msg(text):
 	var t = "\n%s\n" % text;
 	_add_justnow_bbcode(t);
+	$WarningPopUp/Label.text = t
 	#$RepairTabs/pnl_repair_choices/vbox/scroll/RTLRepairResult.text += t;
 	emit_signal("add_card_event_log", t,{})
+	
+func _on_show_warning():
+	$WarningPopUp.visible = true
+
+func _on_hide_warning():
+	$WarningPopUp.visible = false
 	
 
 
@@ -558,7 +567,10 @@ func show_death_screen():
 		gaps_repaired += Unlocks.get_count(rtype);
 	$ph_button.hide()
 	$Temp_Button.hide()
-	$button_control.hide()
+	$Border2.hide()
+	$Border1.hide()
+	$Border3.hide()
+	$Border4.hide()
 	#$pnl_dead_overview/HSplitContainer/Panel/LblOverview.text = OVERVIEW_FORMAT % [death_descr, Game.round_num, orgn.num_progeny, gaps_repaired]
 	$pnl_dead_overview.visible = true;
 	$pnl_dead_overview.update_values();

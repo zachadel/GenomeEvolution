@@ -2,10 +2,15 @@ tool
 extends Control
 
 export var num := 0 setget set_num, get_num;
-export var lbl := "Number" setget set_lbl, get_lbl;
+#export var lbl := "Number" setget set_lbl, get_lbl;
 export var show_change := true setget set_is_change_anim, is_change_anim;
 
+func ready():
+	$lblText.text = "Turn"
+
+
 func set_num(n : int):
+	STATS.increment_turns()
 	var change := n - num;
 	num = n;
 	$lblNum.text = "%d" % n;
@@ -16,13 +21,13 @@ func set_num(n : int):
 func get_num() -> int:
 	return num;
 
-func set_lbl(l : String):
-	lbl = l;
-	STATS.increment_turns()
-	$lblText.text = l;
+#func set_lbl(l : String):#
+#	lbl = l;
+#	
+#	$lblText.text = l;
 
-func get_lbl() -> String:
-	return lbl;
+#func get_lbl() -> String:
+#	return lbl;
 
 func set_is_change_anim(s : bool):
 	show_change = s;

@@ -10,6 +10,7 @@ func _ready():
 		var turn_code : int = Game.turns[idx];
 		TurnList.add_child(nxt_disp);
 		nxt_disp.setup(idx, Game.get_turn_txt(turn_code), !Unlocks.has_turn_unlock(turn_code));
+		print("boopity")
 
 func highlight(idx: int):
 	if highlighted_node != null:
