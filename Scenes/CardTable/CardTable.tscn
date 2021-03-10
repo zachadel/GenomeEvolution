@@ -246,9 +246,9 @@ margin_bottom = 749.0
 
 [node name="Organism" parent="." instance=ExtResource( 2 )]
 anchor_left = -0.00105225
-anchor_top = -0.000623576
+anchor_top = 0.000535549
 anchor_right = 0.998948
-anchor_bottom = -0.000623576
+anchor_bottom = 0.00053555
 margin_left = -1.45789
 margin_top = 0.0117188
 margin_right = -1.45789
@@ -353,8 +353,8 @@ __meta__ = {
 
 [node name="LblInstr" type="Label" parent="RepairTabs/pnl_repair_choices/vbox"]
 visible = false
-margin_right = 605.0
-margin_bottom = 31.0
+margin_right = 686.0
+margin_bottom = 48.0
 text = "
 Select a break to repair.
 or"
@@ -971,7 +971,6 @@ margin_left = 1278.0
 margin_top = 756.0
 margin_right = 1419.0
 margin_bottom = 891.0
-lbl = "Round"
 
 [node name="lnum_progeny" parent="." instance=ExtResource( 17 )]
 visible = false
@@ -979,7 +978,6 @@ margin_left = 1337.14
 margin_top = 772.178
 margin_right = 1437.14
 margin_bottom = 872.178
-lbl = "Progeny"
 
 [node name="EnergyBar" parent="." instance=ExtResource( 14 )]
 visible = false
@@ -1844,15 +1842,51 @@ color = Color( 0, 0, 0, 1 )
 margin_left = 275.42
 margin_top = -49.1591
 margin_right = 280.42
-margin_bottom = 155.841
+margin_bottom = 150.841
 color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Border3" type="ColorRect" parent="."]
 margin_left = 520.0
 margin_top = 700.0
 margin_right = 525.0
-margin_bottom = 910.0
+margin_bottom = 905.0
 color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Border4" type="ColorRect" parent="."]
+margin_top = 890.0
+margin_right = 520.0
+margin_bottom = 905.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WarningPopUp" type="Panel" parent="."]
+visible = false
+margin_left = 547.0
+margin_top = 610.0
+margin_right = 1217.0
+margin_bottom = 750.0
+
+[node name="Label" type="Label" parent="WarningPopUp"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -150.0
+margin_top = -35.0
+margin_right = 150.0
+margin_bottom = 35.0
+text = "Test Text here"
+align = 1
+valign = 1
+autowrap = true
 [connection signal="bandage_msg" from="Organism" to="." method="_on_Organism_bandage_msg"]
 [connection signal="clear_gap_msg" from="Organism" to="." method="_on_Organism_clear_gap_msg"]
 [connection signal="cmsm_changed" from="Organism" to="Border1/ChromosomeStatus" method="update"]

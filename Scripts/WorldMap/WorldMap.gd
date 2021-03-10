@@ -27,7 +27,7 @@ var MAX_ZOOM = 2
 var MIN_ZOOM = .5
 var ZOOM_UPDATE = .1
 var CAMERA_MOVEMENT = 10
-
+var num_clicked = 1;
 #this will be the case if the player sprite and the tiles are the same size
 var player_sprite_offset = Vector2(0,0)
 
@@ -364,13 +364,16 @@ func _unhandled_input(event):
 	
 	if is_visible_in_tree():
 		if event.is_action_pressed("mouse_left"):
+			
 			var past_energy = ui.irc.energy_bar.energy
 			debug_bool = true
 			if input_elements["move"] and move_enabled:
 				var tile_position = Game.world_to_map(get_global_mouse_position())
 				var tile_index = $BiomeMap.get_cellv(Game.cube_coords_to_offsetv(tile_position))
 				var player_tile = Game.world_to_map(current_player.position)
-				
+				if event.doubleclick and tile_position == player_tile:
+					STATS.increment_resources_consumed()
+					_on_WorldMap_UI_acquire_resources()
 				if tile_position != player_tile:
 					
 					if move_player(tile_position) > 0:

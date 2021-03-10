@@ -2,7 +2,8 @@ extends Control
 
 signal cmsm_changed();
 signal add_card_event_log(conent, tags);
-
+signal show_warning();
+signal close_warning();
 onready var cmsms = $scroll/chromes
 
 var PRINT_DEBUG = false
@@ -955,6 +956,7 @@ func make_repair_choices(gap, repair_type: String):
 					gene_selection.append(gene);
 					gene.disable(false);
 				yield(self, "gene_clicked");
+				print('boom boom pow')
 				choice_info["left"] = get_gene_selection();
 				for g in gene_selection:
 					g.disable(true);
@@ -964,6 +966,7 @@ func make_repair_choices(gap, repair_type: String):
 			choice_info["left"].highlight_border(true, true);
 			
 			emit_signal("gap_close_msg", "Select the rightmost element of the pattern you will collapse.\n\nThe leftmost element is %s." % choice_info["left"].get_gene_name());
+			emit_signal("show_warning")
 			gene_selection.clear();
 			var sel_size_gene = null;
 			if (is_ai || blocks_dict[left_idx].size() == 1):
@@ -975,6 +978,7 @@ func make_repair_choices(gap, repair_type: String):
 					gene_selection.append(gene);
 					gene.disable(false);
 				yield(self, "gene_clicked");
+				emit_signal("close_warning")
 				sel_size_gene = get_gene_selection();
 				for g in gene_selection:
 					if (g != choice_info["left"]):
@@ -992,16 +996,19 @@ func make_repair_choices(gap, repair_type: String):
 				pattern_array.append(gap_cmsm.get_child(left_idx + i));
 			
 			emit_signal("gap_close_msg", "Select the first element of the pattern you will collapse to the right of the gap.\n\nThe pattern is: %s" % Game.pretty_element_name_list(pattern_array));
+			emit_signal("show_warning")
 			gene_selection.clear();
 			var right_choice_opts = blocks_dict[left_idx][choice_info["size"]];
 			if (is_ai || right_choice_opts.size() == 1):
 				choice_info["right"] = gap_cmsm.get_child(right_choice_opts[0]);
+				emit_signal("close_warning")
 			else:
 				for i in right_choice_opts:
 					var gene = gap_cmsm.get_child(i);
 					gene_selection.append(gene);
 					gene.disable(false);
 				yield(self, "gene_clicked");
+				emit_signal("close_warning")
 				choice_info["right"] = get_gene_selection();
 				for g in gene_selection:
 					g.disable(true);
@@ -1023,15 +1030,18 @@ func make_repair_choices(gap, repair_type: String):
 			var pairs_dict = template_cmsm.get_pairs(left_elm, right_elm);
 			
 			emit_signal("gap_close_msg", "Select the leftmost element of the pattern you will copy.");
+			emit_signal("show_warning")
 			gene_selection.clear();
 			if (is_ai || pairs_dict.size() == 1):
 				choice_info["left"] = template_cmsm.get_child(pairs_dict.keys()[0]);
+				emit_signal("close_warning")
 			else:
 				for k in pairs_dict.keys():
 					var gene = template_cmsm.get_child(k);
 					gene_selection.append(gene);
 					gene.disable(false);
 				yield(self, "gene_clicked");
+				emit_signal("close_warning")
 				choice_info["left"] = get_gene_selection();
 				for g in gene_selection:
 					g.disable(true);
@@ -1040,16 +1050,19 @@ func make_repair_choices(gap, repair_type: String):
 			choice_info["left"].highlight_border(true, true);
 			
 			emit_signal("gap_close_msg", "Select the rightmost element of the pattern you will copy.\n\nThe leftmost element is %s." % choice_info["left"].get_gene_name());
+			emit_signal("show_warning")
 			gene_selection.clear();
 			var right_idxs = pairs_dict[choice_info["left"].get_index()];
 			if (is_ai || right_idxs.size() == 1):
 				choice_info["right"] = template_cmsm.get_child(right_idxs[0]);
+				emit_signal("close_warning")
 			else:
 				for i in right_idxs:
 					var gene = template_cmsm.get_child(i);
 					gene_selection.append(gene);
 					gene.disable(false);
 				yield(self, "gene_clicked");
+				emit_signal("close_warning")
 				choice_info["right"] = get_gene_selection();
 				for g in gene_selection:
 					g.disable(true);
@@ -1133,7 +1146,7 @@ func repair_gap(gap, repair_type, choice_info = {}):
 					cmsms.close_gap(gap);
 				STATS.increment_break_repaired_collapseDuplicates()
 				emit_signal("gap_close_msg", "Gap at %d, %d closed: collapsed %d genes and ended due to %s." % (gap_pos_disp + [remove_count, ended_due_to]));
-				
+				#emit_signal("close_warning")
 				for times in range(remove_count):
 					use_resources("repair_cd");
 			
@@ -1172,6 +1185,7 @@ func repair_gap(gap, repair_type, choice_info = {}):
 						STATS.increment_breaks_cpyRepair_error()
 						gene_selection = cmsm.get_elms_around_pos(g_idx, true);
 						emit_signal("gap_close_msg", "Trying to copy the pattern from the other chromosome, but 1 gene is harmed; choose which.");
+						emit_signal("show_warning")
 						if (is_ai):
 							if (gene_selection[0].mode == "ate" || gene_selection[1].mode == "te"):
 								gene_selection.append(gene_selection[0]);
@@ -1179,6 +1193,8 @@ func repair_gap(gap, repair_type, choice_info = {}):
 								gene_selection.append(gene_selection[1]);
 						else:
 							yield(self, "gene_clicked");
+							emit_signal("close_warning")
+							
 						# Yield also ended when a gap is deselected and gene_selection is cleared
 						if (!repair_canceled && gene_selection.size() > 0):
 							for r in gene_selection:
@@ -1280,7 +1296,7 @@ func repair_gap(gap, repair_type, choice_info = {}):
 						repair_roll_storage["join_ends"][gap] = 0;
 				match (repair_roll_storage["join_ends"][gap]):
 					-1: # Inversion
-						print("INVERSION")
+						#print("INVERSION")
 						var seg_idxs : Array;
 						var seg_elms : Array;
 						if seg_left_of_gap:
@@ -1305,6 +1321,7 @@ func repair_gap(gap, repair_type, choice_info = {}):
 						STATS.increment_breaks_join_error()
 						gene_selection = cmsm.get_elms_around_pos(g_idx, true);
 						emit_signal("gap_close_msg", "Joining ends as a last-ditch effort, but a gene is harmed; choose which.");
+						emit_signal("show_warning")
 						if (is_ai):
 							if (gene_selection[0].mode == "ate" || gene_selection[1].mode == "te"):
 								gene_selection.append(gene_selection[0]);
@@ -1312,6 +1329,8 @@ func repair_gap(gap, repair_type, choice_info = {}):
 								gene_selection.append(gene_selection[1]);
 						else:
 							yield(self, "gene_clicked");
+							emit_signal("close_warning")
+							
 						# Yield also ended when a gap is deselected and gene_selection is cleared
 						if (!repair_canceled && gene_selection.size() > 0):
 							for r in gene_selection:
@@ -1502,6 +1521,7 @@ func recombination():
 		# For some reason, this func bugs out when picking from the first cmsm (see comment at get_other_cmsm below)
 		gene_selection = cmsms.highlight_common_genes(false, true);
 		yield(self, "gene_clicked");
+		print(" THE GENE WAS CLICKED !!!!!!!!!!")
 		# Because this step is optional, by the time a gene is clicked, it might be a different turn
 		if (Game.get_turn_type() == Game.TURN_TYPES.Recombination):
 			emit_signal("doing_work", true);
@@ -1715,7 +1735,9 @@ func replicate(idx):
 				rep_type = "meiosis";
 				
 				emit_signal("justnow_update", "Choose one chromosome to keep; the others go into the gene pool. Then, receive one randomly from the gene pool.");
+				emit_signal("show_warning")
 				var keep_idx = yield(self, "cmsm_picked");
+				emit_signal("close_warning")
 				cmsms.move_cmsm(keep_idx, 0);
 				
 				prune_cmsms(1);
