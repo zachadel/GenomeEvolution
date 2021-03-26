@@ -7,7 +7,7 @@ extends Node
 #settings[setting_type][section][key] = value
 var settings = {}
 var seed_value = 0
-
+var unlock_buttons = false
 const MIN = 0
 const MAX = 1
 
@@ -41,6 +41,8 @@ func _ready():
 	populate_cell_texture_paths()
 	reset_rng()
 	pass # Replace with function body.
+
+
 
 func reset():
 	_ready()
@@ -334,6 +336,8 @@ func tutorial() -> bool:
 	return settings["ingame_settings"]["tutorial"]["final_value"]
 	
 func unlock_everything() -> bool:
+	if settings["ingame_settings"]["unlock_everything"]["final_value"]:
+		unlock_buttons = true
 	return settings["ingame_settings"]["unlock_everything"]["final_value"]
 	
 func disable_movement_costs() -> bool:

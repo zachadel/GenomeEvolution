@@ -1,7 +1,8 @@
 extends Control
 
 signal go_to_game(settings, cell_string)
-
+signal unlock_all_buttons
+var unlock_buttons = false
 onready var transposon = get_node("CharTE")
 onready var cell_selection = get_node("CellSelection")
 onready var settings_menu = get_node("Panel/Settings")
@@ -9,12 +10,23 @@ onready var description = get_node("Description")
 onready var resources = get_node("ResourceSettings")
 onready var file_dialog = get_node("FileDialog")
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	transposon.set_color(Color.red)
 	_on_CellSelection_cell_changed(cell_selection.get_cell_string())
 	pass # Replace with function body.
+func _unlock_buttons():
+	#this will unlock all the buttons on the card table
+	#I am using a signal because this wasn't set up in the original dictionary of settings and 
+	#I need to access these values still. 
+	#To see where it connects go to the main file
+	unlock_buttons = true
+	#emit_signal("unlock_all_buttons")
+	print("outgoing signal")
 
+func is_unlocked_buttons():
+	return _unlock_buttons()
 
 func _on_GoToGame_pressed():
 	settings_menu.get_final_settings()
@@ -24,6 +36,8 @@ func _on_GoToGame_pressed():
 	Game.current_cell_string = cell_selection.get_cell_string()
 
 	Unlocks.unlock_override = Settings.unlock_everything()
+	if Unlocks.unlock_override:
+		_unlock_buttons()
 	Settings.apply_richness()
 	Settings.populate_cell_texture_paths()
 	Settings.update_seed()

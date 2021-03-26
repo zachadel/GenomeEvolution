@@ -12,11 +12,10 @@ onready var justnow_label : RichTextLabel = $ctl_justnow/lbl_justnow;
 onready var orgn = $Organism;
 onready var nxt_btn = $button_grid/btn_nxt;
 onready var status_bar = $Border1/ChromosomeStatus;
-
 onready var map_button = $Border2/button_control/map_image_button
 
 onready var energy_bar = get_node("EnergyBar")
-
+onready var notifications = get_node("CanvasLayer/Notifications")
 onready var ph_filter_panel := $pnl_ph_filter;
 onready var justnow_ctl := $ctl_justnow;
 onready var temp_filter_panel := $pnl_temp_filter;
@@ -59,6 +58,28 @@ func get_cmsm_status():
 func get_Organism():
 	return orgn
 # Replication
+
+
+func enable_serialized_buttons():
+	#hide the locks
+	$RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer2.visible = false
+	$RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer2.visible = false
+	#Hide the pop up texts
+	$RepairTabs/pnl_repair_choices/vbox/joinEndsHidden/Label.visible = false
+	$RepairTabs/pnl_repair_choices/vbox/copyPatternHidden/Label.visible = false
+	$RepairTabs/pnl_repair_choices/vbox/collapseDupesHidden/Label.visible = false
+	$RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer/fix_all/fix_all_details/Label.visible = false
+	#enable the buttons
+	$RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer/fixAllBreaksWJoinEnds.disabled = false
+	$RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer/fixAllBreaksWCopyPattern.disabled = false
+	$RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer/fixAllBreaksWCollapseDuplicates.disabled = false
+	$RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer/fix_all.disabled = false
+	pass
+
+func turn_to_repair():
+	#Call the repair all function
+	print("I want to be called at repair_dmg")
+
 
 func show_replicate_opts(show):
 	if $pnl_reproduce.visible != show:
@@ -407,8 +428,14 @@ func adv_turn():
 			
 			if recombos == 0:
 				skip_turn = true
-				
-		
+		if(Game.get_turn_type() == Game.TURN_TYPES.RepairDmg and Game.get_next_turn_type() == Game.TURN_TYPES.TEJump):
+			if check_if_any_dmg_in_chromosomes():
+				notifications.emit_signal("notification_needed", "There are still some harmed genes left you need to heal.")
+				$RepairTabs.current_tab = 3
+				$RepairTabs/pnl_repair_choices.hide()
+				$RepairTabs/pnl_bandage_dmg.show()
+				print("It should have happened.")
+				skip_turn = false
 		Game.adv_turn(skip_turn);
 		upd_turn_display();
 		
@@ -456,7 +483,7 @@ func check_if_ready():
 	var end_mapturn_on_mapscreen = Game.get_turn_type() == Game.TURN_TYPES.Map && Unlocks.has_turn_unlock(Game.TURN_TYPES.Map);
 	
 	if is_visible_in_tree():
-		if end_mapturn_on_mapscreen && !disable_turn_adv:
+		if end_mapturn_on_mapscreen && !disable_turn_adv and check_if_any_dmg_in_chromosomes():
 			nxt_btn.disabled = false;
 		else:
 			nxt_btn.disabled = orgn.is_dead() || wait_on_anim || wait_on_select || has_gaps || disable_turn_adv;
@@ -726,11 +753,34 @@ func _on_fix_one_pressed():
 	pass # Replace with function body.
 
 
-func _on_fix_all_pressed():
-	#print("Fix all genes function called")
+func check_if_any_dmg_in_chromosomes():
+	var list_dmg_genes = orgn.get_damaged_genes()
+	print("Length of damage genes list: " + str(len(list_dmg_genes)))
+	if(len(list_dmg_genes) > 0):
+		print("SCREEEEEECH")
+		return true
+	return false
+func _not_the_button():
+	show_repairs()
+	$RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer/fix_all.disabled = false
 	for i in orgn.get_damaged_genes():
 		orgn.bandage_elm(i);
-	pass # Replace with function body.
+		print("I: " + str(i))
+	for i in orgn.get_damaged_genes():
+		orgn.bandage_elm(i);
+		print("I: " + str(i))
+	$RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer/fix_all.disabled = true
+	show_choices()
+
+func show_repairs():
+	$RepairTabs.current_tab = 3
+
+func show_choices():
+	$RepairTabs.current_tab = 0
+
+func _on_fix_all_pressed():
+	for i in orgn.get_damaged_genes():
+		orgn.bandage_elm(i);
 
 
 func _on_fixAllBreaks_pressed(): #(This was created before the other buttons, therefore by default it is join ends.)
