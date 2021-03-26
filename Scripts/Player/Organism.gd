@@ -5,6 +5,9 @@ signal add_card_event_log(conent, tags);
 signal show_warning();
 signal close_warning();
 onready var cmsms = $scroll/chromes
+onready var spectrum = $Spectrum
+
+onready var indicators = $indicators
 
 var PRINT_DEBUG = false
 
@@ -183,6 +186,7 @@ signal max_dmg_reached();
 
 #NOTE: Don't call get_behavior_profile in ready
 func _ready():
+	spectrum.visible = false
 	#initialization done in _ready for restarts
 	behavior_profile = BehaviorProfile.new();
 	selected_gap = null;
@@ -598,8 +602,11 @@ func environmental_damage():
 	
 	accumulated_dmg = 0
 	accumulated_gaps = 0
+	if true_damaged == 1:
+		emit_signal("justnow_update", "%d gene%s was damaged by the environment." % [true_damaged, "" if true_damaged == 1 else "s"]);
+	else:
+		emit_signal("justnow_update", "%d gene%s were damaged by the environment." % [true_damaged, "" if true_damaged == 1 else "s"]);
 	
-	emit_signal("justnow_update", "%d gene%s were damaged by the environment." % [true_damaged, "" if true_damaged == 1 else "s"]);
 	emit_signal("justnow_update", "%d gap%s appeared due to environmental damage." % [gap_count, "" if gap_count == 1 else "s"]);
 
 func find_most_active_ate(ate_array: Array) -> int:
@@ -1071,6 +1078,7 @@ func make_repair_choices(gap, repair_type: String):
 				return false;
 	if perform_repair:
 		repair_gap(gap, repair_type, choice_info);
+	emit_signal("close_warning")
 
 var repair_canceled = false;
 func repair_gap(gap, repair_type, choice_info = {}):
@@ -1664,12 +1672,56 @@ func prune_cmsms(final_num, add_to_pool = true):
 			add_to_gene_pool(cmsms.get_cmsm(final_num));
 		cmsms.remove_cmsm(final_num);
 
+func check_cmsms_(idx): #returns whether or not the cmsm has a 0 in it
+	var dead_cell = false
+	if cmsms.get_child(idx).StatusBar.get_value_of("Replication") + cmsms.get_child(idx + 1).StatusBar.get_value_of("Replication") == 0:
+		dead_cell = true
+	if cmsms.get_child(idx).StatusBar.get_value_of("Sensing") + cmsms.get_child(idx + 1).StatusBar.get_value_of("Sensing") == 0:
+		dead_cell = true
+	if cmsms.get_child(idx).StatusBar.get_value_of("Locomotion") + cmsms.get_child(idx + 1).StatusBar.get_value_of("Locomotion") == 0:
+		dead_cell = true
+	if cmsms.get_child(idx).StatusBar.get_value_of("Helper") + cmsms.get_child(idx + 1).StatusBar.get_value_of("Helper") == 0:
+		dead_cell = true
+	if cmsms.get_child(idx).StatusBar.get_value_of("Manipulation") + cmsms.get_child(idx + 1).StatusBar.get_value_of("Manipulation") == 0:
+		dead_cell = true
+	if cmsms.get_child(idx).StatusBar.get_value_of("Component") + cmsms.get_child(idx + 1).StatusBar.get_value_of("Component")== 0:
+		dead_cell = true
+	if cmsms.get_child(idx).StatusBar.get_value_of("Construction") + cmsms.get_child(idx + 1).StatusBar.get_value_of("Construction") == 0:
+		dead_cell = true
+	if cmsms.get_child(idx).StatusBar.get_value_of("Deconstruction") + cmsms.get_child(idx + 1).StatusBar.get_value_of("Deconstruction") == 0:
+		dead_cell = true
+	return dead_cell;
+	
+func check_cmsm_(idx): #returns whether or not the cmsm has a 0 in it
+	var dead_cell = false
+	if cmsms.get_child(idx).StatusBar.get_value_of("Replication") == 0:
+		dead_cell = true
+	if cmsms.get_child(idx).StatusBar.get_value_of("Sensing")  == 0:
+		dead_cell = true
+	if cmsms.get_child(idx).StatusBar.get_value_of("Locomotion") == 0:
+		dead_cell = true
+	if cmsms.get_child(idx).StatusBar.get_value_of("Helper") == 0:
+		dead_cell = true
+	if cmsms.get_child(idx).StatusBar.get_value_of("Manipulation") == 0:
+		dead_cell = true
+	if cmsms.get_child(idx).StatusBar.get_value_of("Component") == 0:
+		dead_cell = true
+	if cmsms.get_child(idx).StatusBar.get_value_of("Construction") == 0:
+		dead_cell = true
+	if cmsms.get_child(idx).StatusBar.get_value_of("Deconstruction") == 0:
+		dead_cell = true
+	return dead_cell;
+
 func replicate(idx):
 	if (idx == 2):
 		emit_signal("finished_replication");
 		emit_signal("doing_work", false);
 		emit_signal("justnow_update", "Skipped reproduction.");
 	else:
+		#if the mouse enters where the skull or check is, the tool tip will appear.
+		
+		$Spectrum.visible = true
+		
 		replicated = true
 		perform_anims(false);
 		cmsms.replicate_cmsms([0, 1]);
@@ -1697,19 +1749,40 @@ func replicate(idx):
 		cmsms.lbl_cmsm(2, "Original");
 		cmsms.lbl_cmsm(3, "Copy");
 		perform_anims(true);
+		#mama mia
+		
 		
 		var rep_type = "some unknown freaky deaky shiznaz";
 		match idx:
 			0: # Mitosis
+				#if it's mitosis we will be showing the 2 indicators
+				$indicators.visible = true
+				$indicators/indicator1.visible = true
+				$indicators/indicator2.visible = true
 				use_resources("replicate_mitosis");
 				rep_type = "mitosis";
+				#check to see if there are any elms within the respective chromome lists that are 0
+				if check_cmsms_(0): #checks the first cell
+					print("the cell will die from 0")
+					$indicators/indicator1.texture = load("res://Assets/Images/DeathScreen/cross-scull.png")
+					$tool_tip/Label.text = "If you're wondering why this cell has a skull over it, if you look within the chromosomes to the left, the original cell has a 0 value under a needed gene."
 				
-				cmsms.link_cmsms(0, 1);
-				cmsms.link_cmsms(2, 3);
+				if check_cmsms_(2): #checks the second cell.
+					print("the cell will die from 2")
+					$indicatorsindicator2.texture = load("res://Assets/Images/DeathScreen/cross-scull.png")
+					$tool_tip2/Label.text = "If you're wondering why this cell has a skull over it, if you look within the chromosomes to the left, the original cell has a 0 value under a needed gene."
 				
+				#if they are 0, put an image of a skull over that cell
+				#if both chromsomes are good put a green check mark on that cell
+				#populate the respective tool tip on the right with why that gene will die.
+				cmsms.link_cmsms(0, 1); #links the first and second
+				cmsms.link_cmsms(2, 3); #links the 3rd and fourth
 				emit_signal("justnow_update", "Choose which chromosome pair (top two or bottom two) to keep.");
 				var keep_idx = yield(self, "cmsm_picked");
-				
+				if(keep_idx == 0 and check_cmsms_(0)):
+					kill("Ran out of genes")
+				elif(keep_idx and check_cmsms_(2)):
+					kill("Ran out of genes")
 				cmsms.move_cmsm(keep_idx, 0);
 				cmsms.move_cmsm(keep_idx+1, 1);
 				
@@ -1730,7 +1803,26 @@ func replicate(idx):
 					print(cmsms.get_cmsms()[0].get_elms_save())
 					print(cmsms.get_cmsms()[1].get_elms_save())
 			
-			1: # Meiosis
+			1: # Meiosis 
+				#if it's meiosis we're going to be showing 4 indicators.
+				
+				$indicators/indicator3.visible = true
+				$indicators/indicator4.visible = true
+				$indicators/indicator5.visible = true
+				$indicators/indicator6.visible = true
+				
+				if check_cmsm_(0):
+					$indicators/indicator3.texture = load("res://Assets/Images/DeathScreen/cross-scull.png")
+					$tool_tip3/Label.text = "If you're wondering why this cell has a skull over it, if you look within the chromosomes to the left, the original cell has a 0 value under a needed gene."
+				if check_cmsm_(1):
+					$indicators/indicator4.texture = load("res://Assets/Images/DeathScreen/cross-scull.png")
+					$tool_tip4/Label.text = "If you're wondering why this cell has a skull over it, if you look within the chromosomes to the left, the original cell has a 0 value under a needed gene."
+				if check_cmsm_(2):
+					$indicators/indicator5.texture = load("res://Assets/Images/DeathScreen/cross-scull.png")
+					$tool_tip5/Label.text = "If you're wondering why this cell has a skull over it, if you look within the chromosomes to the left, the original cell has a 0 value under a needed gene."
+				if check_cmsm_(3):
+					$indicators/indicator6.texture = load("res://Assets/Images/DeathScreen/cross-scull.png")
+					$tool_tip6/Label.text = "If you're wondering why this cell has a skull over it, if you look within the chromosomes to the left, the original cell has a 0 value under a needed gene."
 				use_resources("replicate_meiosis");
 				rep_type = "meiosis";
 				
@@ -1761,6 +1853,13 @@ func replicate(idx):
 		emit_signal("doing_work", false);
 		emit_signal("justnow_update", "Reproduced by %s." % rep_type);
 		perform_anims(true);
+		$Spectrum.visible= false
+		$indicators/indicator1.visible = false
+		$indicators/indicator2.visible = false
+		$indicators/indicator3.visible = false
+		$indicators/indicator4.visible = false
+		$indicators/indicator5.visible = false
+		$indicators/indicator6.visible = false
 		
 func get_missing_ess_classes():
 	refresh_bprof = true
@@ -1822,6 +1921,7 @@ func iterate_genes():
 	STATS.compare_maxTE()
 
 func adv_turn(round_num, turn_idx):
+	emit_signal("close_warning")
 	click_mode = "";
 	cmsms.highlight_genes(gene_selection, false);
 	gene_selection.clear();
@@ -3721,3 +3821,63 @@ func get_locomotion_tax(amount: int = 1) -> int:
 		return 0
 	else:
 		return taxes["move"]["energy"] * amount
+
+
+func _on_indicator1_mouse_entered():
+	$tool_tip.show()
+	pass # Replace with function body.
+
+
+func _on_indicator1_mouse_exited():
+	$tool_tip.hide()
+	pass # Replace with function body.
+
+
+func _on_indicator2_mouse_entered():
+	$tool_tip2.show()
+	pass # Replace with function body.
+
+
+func _on_indicator2_mouse_exited():
+	$tool_tip2.hide()
+	pass # Replace with function body.
+
+
+func _on_indicator3_mouse_entered():
+	$tool_tip3.show()
+	pass # Replace with function body.
+
+
+func _on_indicator3_mouse_exited():
+	$tool_tip3.hide()
+	pass # Replace with function body.
+
+
+func _on_indicator4_mouse_entered():
+	$tool_tip4.show()
+	pass # Replace with function body.
+
+
+func _on_indicator4_mouse_exited():
+	$tool_tip4.hide()
+	pass # Replace with function body.
+
+
+func _on_indicator5_mouse_entered():
+	$tool_tip5.show()
+	pass # Replace with function body.
+
+
+func _on_indicator5_mouse_exited():
+	$tool_tip5.hide()
+	pass # Replace with function body.
+
+
+func _on_indicator6_mouse_entered():
+	$tool_tip6.show()
+	pass # Replace with function body.
+
+
+func _on_indicator6_mouse_exited():
+	$tool_tip6.hide()
+	pass # Replace with function body.

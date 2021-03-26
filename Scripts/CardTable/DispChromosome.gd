@@ -64,6 +64,14 @@ func hide_cmsm(h = null, only_two = true):
 		emit_signal("cmsm_hide", self, hidden);
 	
 	upd_size();
+	var spec = get_parent().get_parent().get_parent().spectrum
+	if spec != null: #code breaks if this isn't here, because in loading nothing is initialized. 
+		if hidden :
+			get_parent().get_parent().get_parent().spectrum.visible = true
+			get_parent().get_parent().get_parent().indicators.visible = true
+		else:
+			get_parent().get_parent().get_parent().spectrum.visible = false
+			get_parent().get_parent().get_parent().indicators.visible = false
 
 func show_choice_buttons(show):
 	$container/ChoiceButtons.visible = show;

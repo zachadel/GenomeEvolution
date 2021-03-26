@@ -90,6 +90,7 @@ func lbl_cmsm(cm: int, lbl: String):
 
 func hide_cmsm(idx, h):
 	get_child(idx).hide_cmsm(h);
+	print(get_parent())
 
 func hide_all(h):
 	for c in get_children():
@@ -101,6 +102,8 @@ func show_choice_buttons(cmsm_idx, show):
 	disp_cmsm.show_choice_buttons(show);
 	if (!show && get_child_count() <= MAX_NUM_VISIBLE_CMSM):
 		disp_cmsm.hide_cmsm(false);
+	if show:
+		print("it was show")
 
 func show_all_choice_buttons(show):
 	for i in range(get_child_count()):

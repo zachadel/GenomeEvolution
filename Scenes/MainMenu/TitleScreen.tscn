@@ -1,10 +1,11 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Scripts/MainMenu/title_screen.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Images/pngs/CHAOS.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Images/pngs/DNA_left.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Images/pngs/DNA_right.png" type="Texture" id=4]
 [ext_resource path="res://Scenes/MainMenu/TitleCell.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Assets/Fonts/Chango-Regular.ttf" type="DynamicFontData" id=6]
 
 [sub_resource type="Curve2D" id=1]
 _data = {
@@ -494,6 +495,10 @@ use_mipmaps = true
 use_filter = true
 font_data = SubResource( 2 )
 
+[sub_resource type="DynamicFont" id=10]
+size = 30
+font_data = ExtResource( 6 )
+
 [node name="TitleScreen" type="Control"]
 margin_right = 1600.0
 margin_bottom = 900.0
@@ -572,7 +577,7 @@ custom_fonts/font = SubResource( 8 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 0.341176, 0.545098, 0.788235, 1 )
 enabled_focus_mode = 0
-text = "New Game"
+text = "Play Now"
 __meta__ = {
 "_edit_use_anchors_": false,
 "_editor_description_": ""
@@ -622,6 +627,24 @@ wait_time = 0.5
 autostart = true
 __meta__ = {
 "_editor_description_": "Controls the Spawn rate of cells on the TitleScreen"
+}
+
+[node name="tagline" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -441.0
+margin_top = -295.0
+margin_right = 441.0
+margin_bottom = -8.0
+custom_fonts/font = SubResource( 10 )
+text = "Beset by invading selfish genetic elements and a hostile environment, players will need to grow and repair their genomes so that they and their progeny survive as long as they can!"
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
 }
 [connection signal="begin_new_game" from="." to="." method="_on_TitleScreen_begin_new_game"]
 [connection signal="exit_game" from="." to="." method="_on_TitleScreen_exit_game"]

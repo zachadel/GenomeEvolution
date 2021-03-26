@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=2]
+[gd_scene load_steps=55 format=2]
 
 [ext_resource path="res://Scripts/CardTable/CardTable.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player/Organism.tscn" type="PackedScene" id=2]
@@ -43,6 +43,7 @@
 [ext_resource path="res://Assets/Images/icons/stats_button_image.png" type="Texture" id=41]
 [ext_resource path="res://Assets/Images/icons/journal_image.png" type="Texture" id=42]
 [ext_resource path="res://Assets/Images/icons/treasure-map_image.png" type="Texture" id=43]
+[ext_resource path="res://Scenes/TestScenes/Notifications.tscn" type="PackedScene" id=44]
 
 [sub_resource type="Theme" id=1]
 Button/colors/font_color_disabled = Color( 0, 0, 0, 1 )
@@ -245,6 +246,7 @@ margin_right = 1451.0
 margin_bottom = 749.0
 
 [node name="Organism" parent="." instance=ExtResource( 2 )]
+pause_mode = 2
 anchor_left = -0.00105225
 anchor_top = 0.000535549
 anchor_right = 0.998948
@@ -279,9 +281,9 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 margin_left = -265.0
-margin_top = -323.0
+margin_top = -328.0
 margin_right = 429.0
-margin_bottom = -13.0
+margin_bottom = -18.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -449,9 +451,9 @@ __meta__ = {
 
 [node name="joinEndsHidden" type="ColorRect" parent="RepairTabs/pnl_repair_choices/vbox"]
 visible = false
-margin_top = 62.0
+margin_top = 98.0
 margin_right = 686.0
-margin_bottom = 62.0
+margin_bottom = 98.0
 rect_min_size = Vector2( 148, 0 )
 color = Color( 0.0901961, 0.0980392, 0.0980392, 0.529412 )
 
@@ -971,6 +973,8 @@ margin_left = 1278.0
 margin_top = 756.0
 margin_right = 1419.0
 margin_bottom = 891.0
+num = 0
+show_change = true
 
 [node name="lnum_progeny" parent="." instance=ExtResource( 17 )]
 visible = false
@@ -978,6 +982,8 @@ margin_left = 1337.14
 margin_top = 772.178
 margin_right = 1437.14
 margin_bottom = 872.178
+num = 0
+show_change = true
 
 [node name="EnergyBar" parent="." instance=ExtResource( 14 )]
 visible = false
@@ -1888,6 +1894,11 @@ text = "Test Text here"
 align = 1
 valign = 1
 autowrap = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 12
+
+[node name="Notifications" parent="CanvasLayer" instance=ExtResource( 44 )]
 [connection signal="bandage_msg" from="Organism" to="." method="_on_Organism_bandage_msg"]
 [connection signal="clear_gap_msg" from="Organism" to="." method="_on_Organism_clear_gap_msg"]
 [connection signal="cmsm_changed" from="Organism" to="Border1/ChromosomeStatus" method="update"]

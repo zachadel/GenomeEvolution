@@ -39,6 +39,7 @@ func _has_unlock_quiet(unlock_key : String) -> bool:
 	return !unlocks.has(unlock_key) || _has_unlock(unlock_key);
 
 func _is_unlock_switched(unlock_key : String) -> bool:
+	
 	var switched_on = !unlocks[unlock_key].get("start_value", false);
 	return unlocks[unlock_key].current == switched_on;
 
@@ -54,6 +55,7 @@ func set_unlock(unlock_key : String, value : bool):
 	unlocks[unlock_key].current = value;
 
 func switch_unlock(unlock_key : String, on : bool):
+	print("Unlock was hit")
 	var switch_to = unlocks[unlock_key].get("start_value", false);
 	if on:
 		switch_to = !switch_to;
