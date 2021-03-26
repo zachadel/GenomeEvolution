@@ -1769,7 +1769,7 @@ func replicate(idx):
 				
 				if check_cmsms_(2): #checks the second cell.
 					print("the cell will die from 2")
-					$indicatorsindicator2.texture = load("res://Assets/Images/DeathScreen/cross-scull.png")
+					$indicators/indicator2.texture = load("res://Assets/Images/DeathScreen/cross-scull.png")
 					$tool_tip2/Label.text = "If you're wondering why this cell has a skull over it, if you look within the chromosomes to the left, the original cell has a 0 value under a needed gene."
 				
 				#if they are 0, put an image of a skull over that cell
