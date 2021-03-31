@@ -32,6 +32,7 @@ func addContent( text, tags:={}):
 	$VSplitContainer/RichTextLabel.append_bbcode(text);
 	for _t in tags:
 		$VSplitContainer/RichTextLabel.pop();
+	$VSplitContainer/RichTextLabel.scroll_following = true;
 
 func clearContent(): #you're not really going to need this funciton, this is just in case it's needed later.
 	pass

@@ -1674,21 +1674,19 @@ func prune_cmsms(final_num, add_to_pool = true):
 
 func check_cmsms_(idx): #returns whether or not the cmsm has a 0 in it
 	var dead_cell = false
-	if cmsms.get_child(idx).StatusBar.get_value_of("Replication") + cmsms.get_child(idx + 1).StatusBar.get_value_of("Replication") == 0:
+	if cmsms.get_child(idx).StatusBar.get_value_of("Replication") + cmsms.get_child(idx + 1).StatusBar.get_value_of("Replication") <= 0:
 		dead_cell = true
-	if cmsms.get_child(idx).StatusBar.get_value_of("Sensing") + cmsms.get_child(idx + 1).StatusBar.get_value_of("Sensing") == 0:
+	if cmsms.get_child(idx).StatusBar.get_value_of("Sensing") + cmsms.get_child(idx + 1).StatusBar.get_value_of("Sensing") <= 0:
 		dead_cell = true
-	if cmsms.get_child(idx).StatusBar.get_value_of("Locomotion") + cmsms.get_child(idx + 1).StatusBar.get_value_of("Locomotion") == 0:
+	if cmsms.get_child(idx).StatusBar.get_value_of("Locomotion") + cmsms.get_child(idx + 1).StatusBar.get_value_of("Locomotion") <= 0:
 		dead_cell = true
-	if cmsms.get_child(idx).StatusBar.get_value_of("Helper") + cmsms.get_child(idx + 1).StatusBar.get_value_of("Helper") == 0:
+	if cmsms.get_child(idx).StatusBar.get_value_of("Manipulation") + cmsms.get_child(idx + 1).StatusBar.get_value_of("Manipulation") <= 0:
 		dead_cell = true
-	if cmsms.get_child(idx).StatusBar.get_value_of("Manipulation") + cmsms.get_child(idx + 1).StatusBar.get_value_of("Manipulation") == 0:
+	if cmsms.get_child(idx).StatusBar.get_value_of("Component") + cmsms.get_child(idx + 1).StatusBar.get_value_of("Component") <= 0:
 		dead_cell = true
-	if cmsms.get_child(idx).StatusBar.get_value_of("Component") + cmsms.get_child(idx + 1).StatusBar.get_value_of("Component")== 0:
+	if cmsms.get_child(idx).StatusBar.get_value_of("Construction") + cmsms.get_child(idx + 1).StatusBar.get_value_of("Construction") <= 0:
 		dead_cell = true
-	if cmsms.get_child(idx).StatusBar.get_value_of("Construction") + cmsms.get_child(idx + 1).StatusBar.get_value_of("Construction") == 0:
-		dead_cell = true
-	if cmsms.get_child(idx).StatusBar.get_value_of("Deconstruction") + cmsms.get_child(idx + 1).StatusBar.get_value_of("Deconstruction") == 0:
+	if cmsms.get_child(idx).StatusBar.get_value_of("Deconstruction") + cmsms.get_child(idx + 1).StatusBar.get_value_of("Deconstruction") <= 0:
 		dead_cell = true
 	return dead_cell;
 	
@@ -1765,12 +1763,12 @@ func replicate(idx):
 				if check_cmsms_(0): #checks the first cell
 					print("the cell will die from 0")
 					$indicators/indicator1.texture = load("res://Assets/Images/DeathScreen/cross-scull.png")
-					$tool_tip/Label.text = "If you're wondering why this cell has a skull over it, if you look within the chromosomes to the left, the original cell has a 0 value under a needed gene."
+					$tool_tip/Label.text = "This organism is doomed, as it has lost all of its (replication, movement, sensing, transporter, construction, deconstruction, component) genes."
 				
 				if check_cmsms_(2): #checks the second cell.
 					print("the cell will die from 2")
 					$indicators/indicator2.texture = load("res://Assets/Images/DeathScreen/cross-scull.png")
-					$tool_tip2/Label.text = "If you're wondering why this cell has a skull over it, if you look within the chromosomes to the left, the original cell has a 0 value under a needed gene."
+					$tool_tip2/Label.text = "This organism is doomed, as it has lost all of its (replication, movement, sensing, transporter, construction, deconstruction, component) genes."
 				
 				#if they are 0, put an image of a skull over that cell
 				#if both chromsomes are good put a green check mark on that cell
@@ -1779,10 +1777,6 @@ func replicate(idx):
 				cmsms.link_cmsms(2, 3); #links the 3rd and fourth
 				emit_signal("justnow_update", "Choose which chromosome pair (top two or bottom two) to keep.");
 				var keep_idx = yield(self, "cmsm_picked");
-				if(keep_idx == 0 and check_cmsms_(0)):
-					kill("Ran out of genes")
-				elif(keep_idx and check_cmsms_(2)):
-					kill("Ran out of genes")
 				cmsms.move_cmsm(keep_idx, 0);
 				cmsms.move_cmsm(keep_idx+1, 1);
 				
@@ -1806,23 +1800,23 @@ func replicate(idx):
 			1: # Meiosis 
 				#if it's meiosis we're going to be showing 4 indicators.
 				
-				$indicators/indicator3.visible = true
-				$indicators/indicator4.visible = true
-				$indicators/indicator5.visible = true
-				$indicators/indicator6.visible = true
+#				$indicators/indicator3.visible = true
+#				$indicators/indicator4.visible = true
+#				$indicators/indicator5.visible = true
+#				$indicators/indicator6.visible = true
 				
-				if check_cmsm_(0):
-					$indicators/indicator3.texture = load("res://Assets/Images/DeathScreen/cross-scull.png")
-					$tool_tip3/Label.text = "If you're wondering why this cell has a skull over it, if you look within the chromosomes to the left, the original cell has a 0 value under a needed gene."
-				if check_cmsm_(1):
-					$indicators/indicator4.texture = load("res://Assets/Images/DeathScreen/cross-scull.png")
-					$tool_tip4/Label.text = "If you're wondering why this cell has a skull over it, if you look within the chromosomes to the left, the original cell has a 0 value under a needed gene."
-				if check_cmsm_(2):
-					$indicators/indicator5.texture = load("res://Assets/Images/DeathScreen/cross-scull.png")
-					$tool_tip5/Label.text = "If you're wondering why this cell has a skull over it, if you look within the chromosomes to the left, the original cell has a 0 value under a needed gene."
-				if check_cmsm_(3):
-					$indicators/indicator6.texture = load("res://Assets/Images/DeathScreen/cross-scull.png")
-					$tool_tip6/Label.text = "If you're wondering why this cell has a skull over it, if you look within the chromosomes to the left, the original cell has a 0 value under a needed gene."
+#				if check_cmsm_(0):
+#					$indicators/indicator3.texture = load("res://Assets/Images/DeathScreen/cross-scull.png")
+#					$tool_tip3/Label.text = "This organism is doomed, as it has lost all of its (replication, movement, sensing, transporter, construction, deconstruction, component) genes."
+#				if check_cmsm_(1):
+#					$indicators/indicator4.texture = load("res://Assets/Images/DeathScreen/cross-scull.png")
+#					$tool_tip4/Label.text = "This organism is doomed, as it has lost all of its (replication, movement, sensing, transporter, construction, deconstruction, component) genes."
+#				if check_cmsm_(2):
+#					$indicators/indicator5.texture = load("res://Assets/Images/DeathScreen/cross-scull.png")
+#					$tool_tip5/Label.text = "This organism is doomed, as it has lost all of its (replication, movement, sensing, transporter, construction, deconstruction, component) genes."
+#				if check_cmsm_(3):
+#					$indicators/indicator6.texture = load("res://Assets/Images/DeathScreen/cross-scull.png")
+#					$tool_tip6/Label.text = "This organism is doomed, as it has lost all of its (replication, movement, sensing, transporter, construction, deconstruction, component) genes." 
 				use_resources("replicate_meiosis");
 				rep_type = "meiosis";
 				
@@ -1854,6 +1848,11 @@ func replicate(idx):
 		emit_signal("justnow_update", "Reproduced by %s." % rep_type);
 		perform_anims(true);
 		$Spectrum.visible= false
+		$indicators/indicator1.texture = load("res://Assets/Images/DeathScreen/checkbox-152187_1280.png")
+		$tool_tip/Label.text = "This organism will survive, as still has all of its essential genes"
+		
+		$indicators/indicator2.texture = load("res://Assets/Images/DeathScreen/checkbox-152187_1280.png")
+		$tool_tip2/Label.text = "This organism will survive, as still has all of its essential genes"
 		$indicators/indicator1.visible = false
 		$indicators/indicator2.visible = false
 		$indicators/indicator3.visible = false

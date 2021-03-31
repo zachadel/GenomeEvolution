@@ -505,11 +505,13 @@ func insert_ate(ate_elm):
 	return index;
 
 func dupe_elm(elm):
+	print("Dupe elm: " + str(elm))
 	var copy_elm = Game.copy_elm(elm);
 	if (do_yields):
 		yield(elm.get_cmsm().add_elm(copy_elm, elm.get_index()), "completed");
 	else:
 		elm.get_cmsm().add_elm(copy_elm, elm.get_index());
+	print("copy elm: " + str(copy_elm))
 	return copy_elm;
 
 # HELPER FUNCTIONS

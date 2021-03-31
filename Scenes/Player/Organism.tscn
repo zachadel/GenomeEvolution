@@ -104,7 +104,7 @@ margin_top = 5.0
 margin_right = 296.0
 margin_bottom = 113.0
 custom_fonts/font = ExtResource( 5 )
-text = "Your cell will survive"
+text = "This organism will survive, as still has all of its essential genes"
 align = 1
 autowrap = true
 
@@ -121,7 +121,7 @@ margin_top = 5.0
 margin_right = 296.0
 margin_bottom = 113.0
 custom_fonts/font = ExtResource( 5 )
-text = "Your cell will survive."
+text = "This organism will survive, as still has all of its essential genes"
 align = 1
 autowrap = true
 
@@ -138,7 +138,7 @@ margin_top = 5.0
 margin_right = 296.0
 margin_bottom = 113.0
 custom_fonts/font = ExtResource( 5 )
-text = "Your cell will survive."
+text = "This organism will survive, as still has all of its essential genes"
 align = 1
 autowrap = true
 
@@ -155,7 +155,7 @@ margin_top = 5.0
 margin_right = 296.0
 margin_bottom = 113.0
 custom_fonts/font = ExtResource( 5 )
-text = "Your cell will survive."
+text = "This organism will survive, as still has all of its essential genes"
 align = 1
 autowrap = true
 
@@ -172,7 +172,7 @@ margin_top = 5.0
 margin_right = 296.0
 margin_bottom = 113.0
 custom_fonts/font = ExtResource( 5 )
-text = "Your cell will survive."
+text = "This organism will survive, as still has all of its essential genes"
 align = 1
 autowrap = true
 
@@ -189,7 +189,7 @@ margin_top = 5.0
 margin_right = 296.0
 margin_bottom = 113.0
 custom_fonts/font = ExtResource( 5 )
-text = "Your cell will survive."
+text = "This organism will survive, as still has all of its essential genes"
 align = 1
 autowrap = true
 

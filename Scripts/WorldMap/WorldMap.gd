@@ -94,70 +94,1384 @@ func _ready():
 func tile_hazard_grabs(hazard):
 	print("Tile info: "+str(hazard))
 
+
 func biome_temp_and_ph_setup():
 	#this guy will also set up the pH
 	starting_biome = current_player.organism.current_tile["biome"];
+	var temperature_pref = STATS.get_temp_dict();
+	var pH_pref = STATS.get_pH_dict();
+	var new_vals_t = {};
+	var new_vals_p ={};
 	#print("biome indexes: "+str(Settings.settings["biomes"]))
 	if(starting_biome == 3): #grass, this is the first one because it almost always starts in this one
 		for g in current_player.organism.get_all_genes():
 			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_temp(12.5, 1));
-				g.set_pH(Chance.rand_normal_temp(6.5,1));
+				if g.id == "Replication":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Sensing":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+					
+				elif g.id == "Locomotion":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Helper":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Manipulation":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Component":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Construction":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Deconstruction":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
 	elif(starting_biome == 0): # dirt
 		for g in current_player.organism.get_all_genes():
 			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_temp(21,1));
-				g.set_pH(Chance.rand_normal_temp(7,1));
+				if g.id == "Replication":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Sensing":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+					
+				elif g.id == "Locomotion":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Helper":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Manipulation":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Component":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Construction":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Deconstruction":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
 	elif(starting_biome == 1): #fire
 		for g in current_player.organism.get_all_genes():
 			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_temp(90,1));
-				g.set_pH(Chance.rand_normal_temp(0.5,1));
+				if g.id == "Replication":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Sensing":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+					
+				elif g.id == "Locomotion":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Helper":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Manipulation":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Component":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Construction":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Deconstruction":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
 	elif(starting_biome == 2): #forest
 		for g in current_player.organism.get_all_genes():
 			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_temp(22.5,1));
-				g.set_pH(Chance.rand_normal_temp(6.5,1));
+				if g.id == "Replication":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Sensing":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+					
+				elif g.id == "Locomotion":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Helper":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Manipulation":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Component":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Construction":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Deconstruction":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
 	elif(starting_biome == 4): #Basalt
 		for g in current_player.organism.get_all_genes():
 			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_temp(50,1));
-				g.set_pH(Chance.rand_normal_temp(4,1));
+				if g.id == "Replication":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Sensing":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+					
+				elif g.id == "Locomotion":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Helper":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Manipulation":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Component":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Construction":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Deconstruction":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
 	elif(starting_biome == 5): #mountain
 		for g in current_player.organism.get_all_genes():
 			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_temp(-2.5,1));
-				g.set_pH(Chance.rand_normal_temp(7,1));
+				if g.id == "Replication":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Sensing":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+					
+				elif g.id == "Locomotion":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Helper":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Manipulation":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Component":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Construction":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Deconstruction":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
 	elif(starting_biome == 6): #Ocean
 		for g in current_player.organism.get_all_genes():
 			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_temp(20.5,1));
-				g.set_pH(Chance.rand_normal_temp(7,1));
+				if g.id == "Replication":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Sensing":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+					
+				elif g.id == "Locomotion":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Helper":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Manipulation":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Component":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Construction":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Deconstruction":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
 	elif(starting_biome == 7): #purple
 		for g in current_player.organism.get_all_genes():
 			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_temp(16.995,1));
-				g.set_pH(Chance.rand_normal_temp(8,1));
+				if g.id == "Replication":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Sensing":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+					
+				elif g.id == "Locomotion":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Helper":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Manipulation":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Component":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Construction":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Deconstruction":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
 	elif(starting_biome == 8): #sand
 		for g in current_player.organism.get_all_genes():
 			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_temp(23.5,1));
-				g.set_pH(Chance.rand_normal_temp(6.995,1));
+				if g.id == "Replication":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Sensing":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+					
+				elif g.id == "Locomotion":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Helper":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Manipulation":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Component":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Construction":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Deconstruction":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
 	elif(starting_biome == 9): #Shallow
 		for g in current_player.organism.get_all_genes():
 			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_temp(20.5,1));
-				g.set_pH(Chance.rand_normal_temp(7,1));
+				if g.id == "Replication":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Sensing":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+					
+				elif g.id == "Locomotion":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Helper":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Manipulation":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Component":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Construction":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Deconstruction":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
 	elif(starting_biome == 10): #Shallow salt
 		for g in current_player.organism.get_all_genes():
 			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_temp(16.75,1));
-				g.set_pH(Chance.rand_normal_temp(8,1));
+				if g.id == "Replication":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Sensing":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+					
+				elif g.id == "Locomotion":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Helper":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Manipulation":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Component":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Construction":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Deconstruction":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
 	elif(starting_biome == 11): #snow
 		for g in current_player.organism.get_all_genes():
 			if !g.is_blank():
-				g.set_temp(Chance.rand_normal_temp(-20,1));
-				g.set_pH(Chance.rand_normal_temp(4.5,1));
+				if g.id == "Replication":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Sensing":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+					
+				elif g.id == "Locomotion":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Helper":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Manipulation":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Component":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Construction":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
+						
+				elif g.id == "Deconstruction":
+					var rand_it = Chance.rand_normal_temp(12.5, 1)
+					if new_vals_t.has(g.id): #COME BACK HERE
+						g.set_temp(new_vals_t[g.id])
+					else:
+						new_vals_t[g.id] = rand_it
+						g.set_temp(rand_it)
+					
+					if new_vals_p.has(g.id): #COME BACK HERE
+						g.set_pH(new_vals_p[g.id])
+					else:
+						new_vals_p[g.id] = rand_it
+						g.set_pH(rand_it)
 
 func setup(biome_seed, hazard_seeds, resource_seed, tiebreak_seed, _chunk_size, player):
 	Game.modified_tiles = {}

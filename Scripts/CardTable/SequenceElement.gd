@@ -8,7 +8,8 @@ var temp;
 var temperature_array := []
 
 var SEQ_ELM_COMPARE_GRADIENT = load("res://Scenes/CardTable/SeqElmColorCompare.tres");
-
+var preference_temp = {}
+var preference_pH = {}
 var ess_behavior := {
 	"Replication": 0.0,
 	"Locomotion": 0.0,
@@ -138,6 +139,7 @@ func _perf_ate_art_setup():
 func setup(_type : String, _id := "", _mode := "", _code := "", _par_code := "", _ph := -1.0, _code_dir := false, _dmg := false,_count =0, _temp := -1.0):
 	id = _id;
 	#print("\n current organism"+str(Settings.settings["hazards"])+"\n\n"  )
+	print("dictionary: " + str(preference_pH))
 	type = _type;
 	mode = _mode;
 	damage_gene(_dmg);
@@ -149,10 +151,21 @@ func setup(_type : String, _id := "", _mode := "", _code := "", _par_code := "",
 			temp_preference=0;
 		if(temp_preference>50):
 			temp_preference=50
+	#do the temperature setting here.
+	STATS.update_temperature(id, temp_preference)
+	temp_preference = STATS.get_temperature_dict_value(id)
+#	if preference_temp.has(id) : #if there is an entry, set the value
+#		temp_preference = preference_temp[id]
+#	else: #if there isn't a value, update the dictionary so that it sits there
+#		preference_temp[id] = temp_preference
+	
 	if (_ph < 0 || _ph > 14):
 		ph_preference = Chance.rand_normal_between(0, 14);
 	else:
 		ph_preference = _ph;
+	#do the pH setting here
+	STATS.update_pH(id, ph_preference)
+	ph_preference = STATS.get_pH_dict_value(id)
 	
 	if _code.empty() && type == "gene":
 		randomize_code();
