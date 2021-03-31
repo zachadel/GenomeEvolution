@@ -3,6 +3,8 @@ extends Node
 #replicate in organism, look for a successful reproduction 
 
 #TO DIE FAST: 
+var temperature_preference ={};
+var ph_preference = {};
 #delete genes using command console
 var temperature_array = [];
 #Declaring/initializing variables to keep track of: 
@@ -134,6 +136,30 @@ var gc_decon = 0
 var gc_ate = 0
 
 var first_temp =0
+
+func get_pH_dict():
+	return ph_preference;
+
+func get_temp_dict():
+	return temperature_preference
+
+func update_temperature(id, value):
+	print("Function called")
+	if !temperature_preference.has(id):
+		print("value taken in: "+str(value))
+		temperature_preference[id] = value
+
+func get_temperature_dict_value(id):
+	if temperature_preference.has(id):
+		print("value out: " + str(temperature_preference[id]))
+		return temperature_preference[id]
+		
+func update_pH(id, value):
+	if !ph_preference.has(id):
+		ph_preference[id] = value
+
+func get_pH_dict_value(id):
+	return ph_preference[id]
 
 func get_total_JE():
 	return breaks_join_error + breaks_join_no_error;
