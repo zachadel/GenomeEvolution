@@ -63,9 +63,18 @@ func _ready():
 	$Canvas_CardTable/CardTable.connect("add_card_event_log", self, "_add_event_content")
 	$WorldMap.connect("add_card_event_log", self, "_add_event_content")
 	$WorldMap/WorldMap_UI/InternalPanel/InternalResourceController/EnergyBar.connect("add_card_event_log", self,"_add_event_content")
+	STATS.connect("progeny_updated", self, "_on_new_progeny");
 	#$WorldMap.connect("add_card_event_log", self, "_add_event_content")
 	#$WorldMap/WorldMap_UI/InternalPanel/InternalResourceController.connect("add_card_event_log", self, "_add_event_content")
-
+func _on_new_progeny(alive):
+	if alive:
+		var new_player = create_player()
+		world_map.setup_new_cell(new_player, alive)
+	else:
+		var dead_cell = create_player()
+		world_map.setup_new_cell(dead_cell, alive)
+		print("Isaiah 65:20")
+	pass
 func _on_unlock_all_buttons():
 	print("buttons unlock now")
 

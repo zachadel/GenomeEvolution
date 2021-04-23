@@ -40,9 +40,10 @@ func _on_notification_received(msg: String, require_input: bool = false, centere
 		else:
 			no_input.popup()
 			
-	if auto_dismiss_delay >= 0:
+	if auto_dismiss_delay >= 1:
 		timer.wait_time = auto_dismiss_delay
 		timer.start()
+	
 		
 	
 func _on_notification_begin_dismissing():

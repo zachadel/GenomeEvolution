@@ -41,10 +41,19 @@ func set_cell_type(cell_type: String):
 	
 func get_cell_type():
 	return sprite.get_cell_type()
+
+func get_texture():
+	return sprite.texture;
 	
 func get_texture_size():
 	return sprite.texture.get_size()
 	
+func set_texture_size():
+	var scale = Vector2((0.15), (0.15))
+	var this_sprite = get_node("Body")
+	this_sprite.set_scale(scale)
+	#sprite.texture.set_size(x)
+
 func rotate_sprite(radians):
 	sprite.set_global_rotation(radians)
 	
@@ -122,3 +131,7 @@ func consume_resources(action):
 func kill(reason: String = "ran out of resources"):
 	organism.kill(reason)
 	emit_signal("player_died", self)
+	
+func kill_progeny_child(child):
+	child.organism.kill()
+	pass

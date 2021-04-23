@@ -39,6 +39,7 @@ autowrap = true
 [node name="FadeOut" type="Tween" parent="."]
 
 [node name="Timer" type="Timer" parent="."]
+wait_time = 100.0
 [connection signal="notification_begin_dismissing" from="." to="." method="_on_notification_begin_dismissing"]
 [connection signal="notification_needed" from="." to="." method="_on_notification_received"]
 [connection signal="popup_hide" from="UserInput" to="." method="_on_notification_dismissed"]

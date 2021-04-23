@@ -5,6 +5,8 @@ extends HBoxContainer
 # var b = "text"
 
 signal eject_resource(resource, value)
+signal n_for_s_to_am(value)
+signal n_for_am_to_s(value)
 
 var enabled_input = true
 
@@ -33,6 +35,9 @@ func update_resources_values(mineral_resources):
 				var bar = get_node(resource)
 				
 				bar.update_value(mineral_resources[resource_class][resource])
+				if resource == "nitrogen":
+					STATS.set_amt_of_nitrogen(mineral_resources[resource_class][resource])
+					#print(mineral_resources[resource_class][resource])
 
 func observe(resource: String):
 	if has_node(resource):
@@ -44,6 +49,13 @@ func observe(resource: String):
 func set_input(enabled: bool):
 	enabled_input = enabled
 
-#func _on_LevelBar_eject_resource(resource, value):
-#	if enabled_input:
-#		emit_signal("eject_resource", resource, value)
+func lower_nitrogen(val):
+	#print("hello")
+	STATS.set_amt_of_nitrogen(STATS.get_amt_of_nitrogen()-val)
+	var nitrogen_bar = get_node("nitrogen")
+	nitrogen_bar.update_value(STATS.get_amt_of_nitrogen())
+
+func raise_nitrogen(val):
+	STATS.set_amt_of_nitrogen(STATS.get_amt_of_nitrogen()+val)
+	var nitrogen_bar = get_node("nitrogen")
+	nitrogen_bar.update_value(STATS.get_amt_of_nitrogen())

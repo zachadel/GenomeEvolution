@@ -63,6 +63,9 @@ var BEHAVIOR_TO_MOD = {
 
 var RNG = RandomNumberGenerator.new();
 
+func rand_between_tiles(beg, end):
+	return RNG.randf_range(beg,end);
+
 func rand_normal_temp(mean, std_dev):
 	return RNG.randfn(mean, std_dev);
 # 1 stdev puts 68% of the random nums in the bounds, 2 gives 95%, 3 gives 99.7%
