@@ -1,8 +1,9 @@
 extends Node
 #is_viable will determine whether or not death in card table. 
 #replicate in organism, look for a successful reproduction 
-
+signal progeny_updated(alive);
 #TO DIE FAST: 
+var amt_of_nit =0 
 var temperature_preference ={};
 var ph_preference = {};
 #delete genes using command console
@@ -136,6 +137,13 @@ var gc_decon = 0
 var gc_ate = 0
 
 var first_temp =0
+var moves_between_rounds = 0
+
+func inc_round_moves():
+	moves_between_rounds += 1;
+	
+func get_round_moves():
+	return moves_between_rounds;
 
 func get_pH_dict():
 	return ph_preference;
@@ -144,14 +152,14 @@ func get_temp_dict():
 	return temperature_preference
 
 func update_temperature(id, value):
-	print("Function called")
+	#rint("Function called")
 	if !temperature_preference.has(id):
-		print("value taken in: "+str(value))
+		#print("value taken in: "+str(value))
 		temperature_preference[id] = value
 
 func get_temperature_dict_value(id):
 	if temperature_preference.has(id):
-		print("value out: " + str(temperature_preference[id]))
+		#print("value out: " + str(temperature_preference[id]))
 		return temperature_preference[id]
 		
 func update_pH(id, value):
@@ -190,7 +198,7 @@ func get_all_fix_damage_genes():
 	if(dmg_genes_error + dmg_genes_no_error >= 19):
 		return true;
 	else:
-		false
+		return false
 
 func get_temp_array():
 	return temperature_array[0];
@@ -433,6 +441,11 @@ func get_maxAte():
 func get_d():
 	return max_blank_tiles;
 
+func set_amt_of_nitrogen(val):
+	amt_of_nit = val;
+	#print("updated val: " + str(val))
+func get_amt_of_nitrogen():
+	return amt_of_nit;
 func _reset_game():
 	#Declaring/initializing variables to keep track of: 
 	gc_ate = 0
@@ -498,7 +511,7 @@ func _reset_game():
 	max_blank_tiles = 0
 	final_blank_tiles = 0
 	finalVal_blank = 0
-	death_reason
+	death_reason = 0
 	current_pseudo = 0
 	trimmedTiles = 0
 	splitGene = 0
@@ -1000,6 +1013,7 @@ func get_tiles_traveled():
 #Where: WorldMap, within the move_player function
 func increment_tiles_traveled():
 	tiles_traveled += 1
+	inc_round_moves()
 
 #What: returns the resources consumed
 #where: 
@@ -1038,12 +1052,19 @@ func get_progeny():
 
 #What: Increments progeny by 3 because of meiosis in replicate under Organism
 #Where: Replicate() in Organism
-func increment_progeny_meiosis():
+func increment_progeny_meiosis( alive):
+	print("alive array: " + str(alive))
+	emit_signal("progeny_updated", alive[0])
+	emit_signal("progeny_updated", alive[1])
+	emit_signal("progeny_updated", alive[2])
+	#emit signal to world map
 	progeny_made += 3
 
 #What: Increments progeny by 1 because of mitosis.
 #Where: Replicate() in Organism
-func increment_progeny_mitosis():
+func increment_progeny_mitosis(alive):
+	#emit signal to world map
+	emit_signal("progeny_updated", alive[0])
 	progeny_made += 1
 
 #what: returns RoundsRun
@@ -1055,6 +1076,7 @@ func get_rounds():
 #Where: adv_turn in Card Table
 func set_Rounds(rounds):
 	rounds_run = rounds
+	moves_between_rounds = 0;
 
 # Called when the node enters the scene tree for the first time, not sure what to do with this guy
 func _ready():

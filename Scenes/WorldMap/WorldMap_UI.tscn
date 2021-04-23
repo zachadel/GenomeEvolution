@@ -294,6 +294,8 @@ margin_right = 128.0
 margin_bottom = 63.9
 
 [node name="RepairGenome" type="Button" parent="GenomePanel"]
+anchor_top = -0.00768379
+anchor_bottom = -0.00768379
 margin_left = 2.0
 margin_top = 161.0
 margin_right = 268.0

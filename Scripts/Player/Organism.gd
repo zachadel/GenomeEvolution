@@ -1431,11 +1431,17 @@ func has_meiosis_viable_pool():
 func can_reproduce():
 	return !check_resources("replicate_mitosis") || !check_resources("replicate_meiosis")
 
-func add_to_gene_pool(cmsm):
-	get_gene_pool().append(cmsm.get_elms_save());
+func add_to_gene_pool(cmsm, status):
+	#print("cmsm: " + str(cmsm))
+	var new_genes = {
+	"genes": cmsm.get_elms_save(),
+	"status": status
+	}
+	
+	get_gene_pool().append(new_genes);
 
 func get_random_gene_from_pool():
-	return get_gene_pool()[randi() % get_gene_pool().size()];
+	return get_gene_pool()[randi() % get_gene_pool().size()]["genes"];
 
 func set_cmsm_from_save(cmsm, save_info):
 	perform_anims(false);
@@ -1666,10 +1672,10 @@ func bandage_elm(rep_elm) -> void:
 			rep_elm.damage_gene(false);
 		emit_signal("gene_bandaged", rep_elm);
 
-func prune_cmsms(final_num, add_to_pool = true):
+func prune_cmsms(final_num, add_to_pool = true, status = false):
 	while (cmsms.get_cmsms().size() > final_num):
 		if (add_to_pool):
-			add_to_gene_pool(cmsms.get_cmsm(final_num));
+			add_to_gene_pool(cmsms.get_cmsm(final_num), status);
 		cmsms.remove_cmsm(final_num);
 
 func check_cmsms_(idx): #returns whether or not the cmsm has a 0 in it
@@ -1710,6 +1716,28 @@ func check_cmsm_(idx): #returns whether or not the cmsm has a 0 in it
 		dead_cell = true
 	return dead_cell;
 
+func check_actual_cmsm(cmsm):
+	print(cmsm.get_genes())
+	var dead_cell = false
+	if cmsm.get_value_of("Replication") == 0:
+		dead_cell = true
+	if cmsm.get_value_of("Sensing")  == 0:
+		dead_cell = true
+	if cmsm.get_value_of("Locomotion") == 0:
+		dead_cell = true
+	if cmsms.get_value_of("Helper") == 0:
+		dead_cell = true
+	if cmsms.get_value_of("Manipulation") == 0:
+		dead_cell = true
+	if cmsms.get_value_of("Component") == 0:
+		dead_cell = true
+	if cmsms.get_value_of("Construction") == 0:
+		dead_cell = true
+	if cmsms.get_value_of("Deconstruction") == 0:
+		dead_cell = true
+	return dead_cell;
+	
+	pass
 func replicate(idx):
 	if (idx == 2):
 		emit_signal("finished_replication");
@@ -1749,7 +1777,7 @@ func replicate(idx):
 		perform_anims(true);
 		#mama mia
 		
-		
+		var alive_arr =[]
 		var rep_type = "some unknown freaky deaky shiznaz";
 		match idx:
 			0: # Mitosis
@@ -1758,16 +1786,20 @@ func replicate(idx):
 				$indicators/indicator1.visible = true
 				$indicators/indicator2.visible = true
 				use_resources("replicate_mitosis");
+				var alive_0 = true
+				var alive_1 = true
 				rep_type = "mitosis";
 				#check to see if there are any elms within the respective chromome lists that are 0
 				if check_cmsms_(0): #checks the first cell
-					print("the cell will die from 0")
+					#print("the cell will die from 0")
 					$indicators/indicator1.texture = load("res://Assets/Images/DeathScreen/cross-scull.png")
 					$tool_tip/Label.text = "This organism is doomed, as it has lost all of its (replication, movement, sensing, transporter, construction, deconstruction, component) genes."
+					alive_0 = false
 				
 				if check_cmsms_(2): #checks the second cell.
-					print("the cell will die from 2")
+					#print("the cell will die from 2")
 					$indicators/indicator2.texture = load("res://Assets/Images/DeathScreen/cross-scull.png")
+					alive_1 = false
 					$tool_tip2/Label.text = "This organism is doomed, as it has lost all of its (replication, movement, sensing, transporter, construction, deconstruction, component) genes."
 				
 				#if they are 0, put an image of a skull over that cell
@@ -1777,10 +1809,16 @@ func replicate(idx):
 				cmsms.link_cmsms(2, 3); #links the 3rd and fourth
 				emit_signal("justnow_update", "Choose which chromosome pair (top two or bottom two) to keep.");
 				var keep_idx = yield(self, "cmsm_picked");
+				if keep_idx == 0:
+					alive_arr.append(alive_1)
+				else:
+					alive_arr.append(alive_0)
 				cmsms.move_cmsm(keep_idx, 0);
 				cmsms.move_cmsm(keep_idx+1, 1);
-				
-				prune_cmsms(2);
+				if not check_cmsm_(0):
+					prune_cmsms(2, true, true);
+				else:
+					prune_cmsms(2,true, false)
 			
 				var cfp_splits = split_cfp_resources(MITOSIS_SPLITS)
 				var mineral_splits = split_mineral_resources(MITOSIS_SPLITS)
@@ -1790,7 +1828,7 @@ func replicate(idx):
 				mineral_resources = mineral_splits[randi() % MITOSIS_SPLITS]
 				set_energy(energy_split)
 				emit_signal("resources_changed", cfp_resources, mineral_resources)
-				STATS.increment_progeny_mitosis()
+				STATS.increment_progeny_mitosis(alive_arr)
 				num_progeny += 1;
 				if PRINT_DEBUG:
 					print('Post mitosis chromos...')
@@ -1823,10 +1861,16 @@ func replicate(idx):
 				emit_signal("justnow_update", "Choose one chromosome to keep; the others go into the gene pool. Then, receive one randomly from the gene pool.");
 				emit_signal("show_warning")
 				var keep_idx = yield(self, "cmsm_picked");
+				#if keep_idx == 1:
+				alive_arr.append(true)
+				alive_arr.append(true)
+				alive_arr.append(true)
 				emit_signal("close_warning")
 				cmsms.move_cmsm(keep_idx, 0);
-				
-				prune_cmsms(1);
+				if not check_cmsm_(0):
+					prune_cmsms(1, true, true);
+				else:
+					prune_cmsms(1, true, false)
 				
 				var cfp_splits = split_cfp_resources(MEIOSIS_SPLITS)
 				var mineral_splits = split_mineral_resources(MEIOSIS_SPLITS)
@@ -1839,7 +1883,7 @@ func replicate(idx):
 				
 				cmsms.add_cmsm(get_random_gene_from_pool(), true);
 				num_progeny += 3;
-				STATS.increment_progeny_meiosis()
+				STATS.increment_progeny_meiosis(alive_arr)
 		
 		cmsms.show_all_choice_buttons(false);
 		cmsms.hide_all(false);
@@ -2980,7 +3024,7 @@ const BEHAVIOR_TO_COST_MULT = {
 func use_resources(action, num_times_performed = 1):
 	for resource_class in cfp_resources: #should yield simple_carbs,complex_carbs, etc.
 		var cost = get_cfp_cost(action, resource_class, num_times_performed)
-		print("cfp cost: "+str(cost))
+		#print("cfp cost: "+str(cost))
 		if cost >= 0:
 			for resource in cfp_resources[resource_class]:
 				if cost <= cfp_resources[resource_class][resource]:

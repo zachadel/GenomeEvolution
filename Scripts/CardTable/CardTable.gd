@@ -363,6 +363,7 @@ func upd_turn_display(upd_turn_unlocks: bool = Game.fresh_round, upd_env_markers
 	$lnum_progeny.set_num(orgn.num_progeny);
 	STATS.set_Rounds(Game.round_num)
 	$TurnList.highlight(Game.turn_idx);
+	#print("organism thing: " + str(orgn.current_tile))
 	
 	if upd_turn_unlocks:
 		$TurnList.check_unlocks();
@@ -412,7 +413,7 @@ func flash_btn():
 				nxt_btn.add_color_override("font_color",Color(i,i,i,255))
 				every_other += 1
 			iteration += 1
-	print("out of shade fade")
+	#print("out of shade fade")
 
 func adv_turn():
 	orgn.iterate_genes()
@@ -434,7 +435,7 @@ func adv_turn():
 				$RepairTabs.current_tab = 3
 				$RepairTabs/pnl_repair_choices.hide()
 				$RepairTabs/pnl_bandage_dmg.show()
-				print("It should have happened.")
+				#print("It should have happened.")
 				skip_turn = false
 		Game.adv_turn(skip_turn);
 		upd_turn_display();
@@ -755,9 +756,9 @@ func _on_fix_one_pressed():
 
 func check_if_any_dmg_in_chromosomes():
 	var list_dmg_genes = orgn.get_damaged_genes()
-	print("Length of damage genes list: " + str(len(list_dmg_genes)))
+	#print("Length of damage genes list: " + str(len(list_dmg_genes)))
 	if(len(list_dmg_genes) > 0):
-		print("SCREEEEEECH")
+		#print("SCREEEEEECH")
 		return true
 	return false
 func _not_the_button():
@@ -765,10 +766,10 @@ func _not_the_button():
 	$RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer/fix_all.disabled = false
 	for i in orgn.get_damaged_genes():
 		orgn.bandage_elm(i);
-		print("I: " + str(i))
+		#print("I: " + str(i))
 	for i in orgn.get_damaged_genes():
 		orgn.bandage_elm(i);
-		print("I: " + str(i))
+		#("I: " + str(i))
 	$RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer/fix_all.disabled = true
 	show_choices()
 

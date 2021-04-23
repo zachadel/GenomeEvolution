@@ -323,6 +323,7 @@ func handle_click_with_selection():
 	var resources_to_process = {}
 	
 	var bhv_profile = organism.get_behavior_profile()
+	
 	var did_anything = false
 	if !energy_clicked:
 	
@@ -336,8 +337,44 @@ func handle_click_with_selection():
 					for resource in selected_resources[resource_class]:
 						#Check if we can do anything here
 						if len(selected_resources[resource_class][resource]) > 0:
-							if Game.is_valid_interaction(resource, container_name, bhv_profile):
-								resources_to_process[resource] = len(selected_resources[resource_class][resource])
+							
+							if (resource == "candy1" or resource == "candy2") and container_name == "simple_proteins":
+								
+								if STATS.get_amt_of_nitrogen() - len(selected_resources[resource_class][resource]) >= 0: #and not unlock everything mode.
+									#print("STATS nitrogen: " + str(STATS.get_amt_of_nitrogen()))
+									
+									if Game.is_valid_interaction(resource, container_name, bhv_profile) and len(selected_resources[resource_class][resource]) >1:
+										resources_to_process[resource] = len(selected_resources[resource_class][resource])
+										get_parent().get_child(2).lower_nitrogen(resources_to_process[resource])
+								elif STATS.get_amt_of_nitrogen() > 0:
+									if Game.is_valid_interaction(resource, container_name, bhv_profile) :
+										resources_to_process[resource] = len(selected_resources[resource_class][resource])
+										get_parent().get_child(2).raise_nitrogen(resources_to_process[resource])
+									
+								else:
+									#print("upper limits")
+									get_parent().get_parent().get_parent().nitrogen_lower_limits()
+							
+							elif (resource == "egg" or resource == "protein_shake") and container_name == "simple_carbs":
+								
+								if STATS.get_amt_of_nitrogen() + len(selected_resources[resource_class][resource]) <= 26: #and not unlock everything mode.
+									#print("STATS nitrogen: " + str(STATS.get_amt_of_nitrogen()))
+									if Game.is_valid_interaction(resource, container_name, bhv_profile) :
+										resources_to_process[resource] = len(selected_resources[resource_class][resource])
+										get_parent().get_child(2).raise_nitrogen(resources_to_process[resource])
+								elif STATS.get_amt_of_nitrogen() < 26:
+									#selected_resources[resource_class][resource] = 26 - STATS.get_amt_of_nitrogen()
+									if Game.is_valid_interaction(resource, container_name, bhv_profile) :
+										resources_to_process[resource] = len(selected_resources[resource_class][resource])
+										get_parent().get_child(2).raise_nitrogen(resources_to_process[resource])
+								else:
+									#print("lower limits")
+									get_parent().get_parent().get_parent().nitrogen_upper_limits()
+									
+							else:
+								if Game.is_valid_interaction(resource, container_name, bhv_profile):
+									print(resource)
+									resources_to_process[resource] = len(selected_resources[resource_class][resource])
 	
 				#Once we know what container we are in, we can leave at the end
 				if resources_to_process:

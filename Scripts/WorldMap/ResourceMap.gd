@@ -54,6 +54,11 @@ func setup(_biome_generator, _resource_generator, _tiebreak_generator, org_sensi
 		for j in range(-chunk_size + center_indices.y, chunk_size + center_indices.y + 1):
 			set_cell(i, j, get_tile_image_index(Vector2(i, j)))
 
+func progeny_added(tile_pos):
+	#rint(tile_pos[Texture])
+	pass
+
+
 func erase_current_map():
 	for i in range(-chunk_size + center_indices.x, chunk_size + 1 + center_indices.x):
 		for j in range(-chunk_size + center_indices.y, chunk_size + 1 + center_indices.y):
@@ -266,6 +271,10 @@ func get_tile_image_index(pos) -> int:
 			
 	return image_index
 			
+func clear_tile_resources(tile):
+	#tile["resources"] = []
+	pass
+	
 #resources[i] = value
 func get_tile_resources(pos):
 	

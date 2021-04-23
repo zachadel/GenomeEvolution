@@ -14,6 +14,8 @@ signal protein_to_am_acid
 
 var seed_value = 0
 
+var n_for_am_to_s = true
+var n_for_s_to_am = true
 var sqelm_textures = {"gene": load("res://Assets/Images/gene.png"), "break": load("res://Assets/Images/break.png")};
 var ess_textures = {};
 var default_te_texture = load("res://Assets/Images/tes/default_te.png");
@@ -158,6 +160,12 @@ var SeqElm_time_limit = 3.0
 var resource_mult = 0.1;
 
 var code_elements = [];
+
+func get_n_for_s_to_am(value):
+	n_for_s_to_am = value
+
+func get_n_for_am_to_s(value):
+	n_for_am_to_s = value
 
 func get_code_num(_char):
 	return code_elements.find(_char);
@@ -532,7 +540,7 @@ func is_valid_interaction(resource_from: String, resource_to: String, bhv_profil
 	var possible = false
 	var from_is_class = false
 	var to_is_class = false
-	
+	var amt_of_nit = STATS.get_amt_of_nitrogen()
 	if resource_from in Settings.settings["resources"].keys(): #if resource_from is a valid non-energy resource
 		var resource_from_class = get_class_from_name(resource_from)
 		if resource_to in VALID_INTERACTIONS.keys(): #if resource_to is a vesicle or energy
@@ -586,6 +594,7 @@ func is_valid_interaction(resource_from: String, resource_to: String, bhv_profil
 				emit_signal("sugar_to_fat_acid")
 				return true
 			elif resource_to_class == "simple_proteins" and bhv_profile.has_skill("sugar->am_acid"):
+				#print(Settings.settings["resources"])
 				#converts sugar to amino acids
 				emit_signal("sugar_to_am_acid")
 				return true
@@ -603,6 +612,7 @@ func is_valid_interaction(resource_from: String, resource_to: String, bhv_profil
 			else:
 				return false
 		elif resource_from_class == "simple_proteins":
+			
 			if resource_to_class == "complex_proteins" and bhv_profile.has_skill("am_acid->protein"):
 				#converts amino acids to protein
 				emit_signal("am_acid_to_protein")
@@ -691,6 +701,8 @@ func get_distance_cubev(vec1: Vector3, vec2: Vector3):
 	return (abs(vec1.x - vec2.x) + abs(vec1.y - vec2.y) + abs(vec1.z - vec2.z))/ 2
 	
 func get_tiles_inside_radius(pos: Vector3, radius = 1):
+	if radius < 1:
+		radius = 1
 	var tiles = []
 	
 	for a in range(-radius, radius + 1):
@@ -698,6 +710,7 @@ func get_tiles_inside_radius(pos: Vector3, radius = 1):
 			tiles.append(Vector3(a, b, -a-b) + pos)
 	
 	return tiles
+
 	
 func map_to_world(tile: Vector3, tile_size: Vector2 = Vector2(72*2/sqrt(3), 82)):
 	var vec = cube_to_pixel.basis_xform(Vector2(tile.x, tile.y))

@@ -90,7 +90,7 @@ func lbl_cmsm(cm: int, lbl: String):
 
 func hide_cmsm(idx, h):
 	get_child(idx).hide_cmsm(h);
-	print(get_parent())
+	#print(get_parent())
 
 func hide_all(h):
 	for c in get_children():
@@ -102,8 +102,7 @@ func show_choice_buttons(cmsm_idx, show):
 	disp_cmsm.show_choice_buttons(show);
 	if (!show && get_child_count() <= MAX_NUM_VISIBLE_CMSM):
 		disp_cmsm.hide_cmsm(false);
-	if show:
-		print("it was show")
+	
 
 func show_all_choice_buttons(show):
 	for i in range(get_child_count()):
@@ -505,13 +504,13 @@ func insert_ate(ate_elm):
 	return index;
 
 func dupe_elm(elm):
-	print("Dupe elm: " + str(elm))
+	#("Dupe elm: " + str(elm))
 	var copy_elm = Game.copy_elm(elm);
 	if (do_yields):
 		yield(elm.get_cmsm().add_elm(copy_elm, elm.get_index()), "completed");
 	else:
 		elm.get_cmsm().add_elm(copy_elm, elm.get_index());
-	print("copy elm: " + str(copy_elm))
+	#print("copy elm: " + str(copy_elm))
 	return copy_elm;
 
 # HELPER FUNCTIONS

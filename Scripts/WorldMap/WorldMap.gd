@@ -37,7 +37,7 @@ var astar = load("res://Scripts/WorldMap/HexAStar.gd").new()
 var move_enabled = false
 
 var default_start = Vector2(-20,0)
-
+var no_one_on_tile = true
 var biome_generator
 var tiebreak_generator
 var resource_generator
@@ -49,7 +49,7 @@ var starting_pos = Vector2(0,0)
 var map_offset = Vector2(0,0)
 
 var tile_sprite_size = Vector2(0,0)
-
+var visible_vec = Vector2(0,0)
 var max_dmg_reached = false
 var starting_biome;
 onready var tween = get_node("MapZoom")
@@ -88,9 +88,89 @@ func enable_fog():
 
 func _ready():
 	ui.stats_screen_button.emit_signal("pressed");
+	ui.connect("update_progeny_placement", self, "_on_update_progeny_placement")
+	#STATS.connect("progeny_updated", self, "_on_new_progeny")
 	#connect("invalid_action", msg, "show_high_low_warning")
 	pass
 	
+func nitrogen_lower_limits():
+	notifications.emit_signal("notification_needed", "not enough Nitrogen to convert.")
+
+func nitrogen_upper_limits():
+	notifications.emit_signal("notification_needed", "too much Nitrogen to convert.")
+	
+func _on_update_progeny_placement():
+	#print("Boom Boom pow, new progeny all around")
+	if len(PROGENY.progeny_created) > 0:
+		#for right now, we will use the arbritary value of 5 to say that someone moved.
+		for i in PROGENY.progeny_created:
+			var old_tile = i.position;
+			#I want to get their location
+			var child_tile = Game.world_to_map(i.position) #get the position of the child for the progeny
+			var closer_tiles = Game.get_tiles_inside_radius(child_tile, STATS.get_round_moves()) #returns list of tiles for child from specified radius
+			var rand_idx = Chance.rand_between_tiles(0, len(closer_tiles)) #gives us a random index
+			while Game.map_to_world(closer_tiles[rand_idx]) == i.position: #will ensure that they don't end up on the same tile
+				rand_idx = Chance.rand_between_tiles(0, len(closer_tiles))
+				
+			i.position = Game.map_to_world(closer_tiles[rand_idx]) #setting the position
+			i.organism.current_tile = get_tile_at_pos(closer_tiles[rand_idx]) #setting the tiles
+			print(i.organism.current_tile)
+			var path_of_tiles = astar.get_tile_path_from_to(Game.world_to_map(old_tile), Game.world_to_map(i.position))
+			for j in path_of_tiles:
+				$ResourceMap.clear_tile_resources(j)
+			print("path: " + str(path_of_tiles))
+#			#I wantt to modify it and move on
+#			print(i)
+		print("we have kids to move and eat")
+	else:
+		print("nothing happens")
+func setup_dead_cell(cell):
+	
+	pass
+func setup_new_cell(cell,alive):
+	var center_tile = Game.world_to_map(current_player.position)
+	var close_tiles = Game.get_tiles_inside_radius(center_tile)
+	var rand_idx = 0
+	if alive:
+		var placed_cell = false
+		while(placed_cell == false):
+			rand_idx = Chance.rand_between_tiles(0, len(close_tiles))
+			if close_tiles[rand_idx] != center_tile:
+				placed_cell = true
+				player_sprite_offset = (tile_sprite_size - cell.get_texture_size()) / 2
+				cell.position = Game.map_to_world(close_tiles[rand_idx])
+				cell.organism.current_tile = get_tile_at_pos(close_tiles[rand_idx])
+				cell.organism.set_start_tile(get_tile_at_pos(center_tile))
+				cell.sprite.texture = current_player.get_texture()
+				cell.sprite.nucleus.texture = current_player.sprite.get_nucleus_texture()
+				#var scale = Vector2((0.15), (0.15))
+				#cell.sprite.get_children()[0].texture = cell.sprite.get_children()[0].texture.set_scale(scale)
+				
+				#cell.set_texture_size()
+				
+				cell.organism.refresh_behavior_profile()
+				PROGENY.add_progeny(cell)
+				print("new cell at: " + str(close_tiles[rand_idx]))
+	else:
+		var placed_cell = false
+		while(placed_cell == false):
+			rand_idx = Chance.rand_between_tiles(0, len(close_tiles))
+			if close_tiles[rand_idx] != center_tile:
+				placed_cell = true
+				player_sprite_offset = (tile_sprite_size - cell.get_texture_size()) / 2
+				cell.position = Game.map_to_world(close_tiles[rand_idx])
+				cell.organism.current_tile = get_tile_at_pos(close_tiles[rand_idx])
+				cell.organism.set_start_tile(get_tile_at_pos(center_tile))
+				cell.sprite.texture = current_player.get_texture()
+				cell.sprite.nucleus.texture = current_player.sprite.get_nucleus_texture()
+				cell.organism.refresh_behavior_profile()
+				var obj = {"cell": cell, "round": STATS.get_rounds()}
+				PROGENY.add_dead_progeny(obj)
+				print("dead cell has been placed.")
+		#what i want to do is have it on for 2 turns.
+		
+		#$ResourceMap.add_resources_to_tile(close_tiles[rand_idx], {"simple_sugar1": 1.0})
+	pass
 func tile_hazard_grabs(hazard):
 	print("Tile info: "+str(hazard))
 
@@ -1711,9 +1791,9 @@ func _unhandled_input(event):
 						
 						ui.update_costs()
 						ui.update_valid_arrows()
-						
-						$MapCamera.position = Game.map_to_world(tile_position)
-						$MapCamera.offset = Vector2(0,0)
+						if no_one_on_tile:
+							$MapCamera.position = Game.map_to_world(tile_position)
+							$MapCamera.offset = Vector2(0,0)
 						
 						#This needs to become a signal.  This is just so bad.
 						ui.resource_ui.set_resources(current_player.organism.current_tile["resources"])
@@ -1887,6 +1967,7 @@ func teleport_player(pos: Vector3):
 	loc_highlight.position = current_player.position
 	
 func move_player(pos: Vector3):
+	no_one_on_tile = true
 	var player_tile = Game.world_to_map(current_player.position)
 	var tiles_moved = 0
 	
@@ -1903,18 +1984,19 @@ func move_player(pos: Vector3):
 			if path_and_cost["total_cost"] + loc_tax <= current_player.organism.energy:
 				tiles_moved = len(path_and_cost) - 1
 				current_player.organism.energy -= (path_and_cost["total_cost"] + loc_tax)
-				#We can reset them here 
-				#print("before")
-				#tile_hazard_grabs(current_player.get_current_tile()["hazards"])
-				#set_hazard(1,2)
-				#print("after")
-				#tile_hazard_grabs(current_player.get_current_tile()["biome"])
 				STATS.increment_tiles_traveled()
 				var new_position = Game.map_to_world(pos)
-			
-				current_player.rotate_sprite((new_position - current_player.position).angle())
-				current_player.position = new_position
-				current_player.organism.current_tile = get_tile_at_pos(pos)
+				
+				
+				if len(PROGENY.progeny_created) > 0:
+					for i in PROGENY.progeny_created:
+						if i.position == new_position:
+							no_one_on_tile = false
+				
+				if no_one_on_tile:
+					current_player.rotate_sprite((new_position - current_player.position).angle())
+					current_player.position = new_position
+					current_player.organism.current_tile = get_tile_at_pos(pos)
 				
 				var break_type = current_player.organism.apply_break_after_move()
 				
@@ -1926,8 +2008,8 @@ func move_player(pos: Vector3):
 				
 				ui.update_repair_button(current_player.organism.get_non_te_dmg(), current_player.organism.get_max_dmg())
 				#current_player.update_nucleus()
-				
-				astar.set_position_offset(pos, funcref(self, "costs"))
+				if no_one_on_tile:
+					astar.set_position_offset(pos, funcref(self, "costs"))
 				
 				emit_signal("player_energy_changed", current_player.organism.energy)
 				loc_highlight.position = current_player.position
@@ -1943,8 +2025,7 @@ func move_player(pos: Vector3):
 	elif player_tile != pos and distance > loc_radius:
 		notifications.emit_signal("notification_needed", "Movement value too low to move there.")
 		emit_signal("invalid_action", "movement", true, "moving there")
-			
-	
+		
 	return tiles_moved
 
 #Checks the mineral and cfp resource banks if they have acquired any particular
@@ -2007,6 +2088,7 @@ func observe_tiles(center_tile, observation_radius):
 			current_player.observed_tiles[[int(temp_vec.x), int(temp_vec.y)]]["resource_image"] = $ResourceMap.get_tile_image_index(temp_vec)
 						
 			$ObscurityMap.set_cellv(temp_vec, $ObscurityMap.VISION.CLEAR)
+	#print("temp vec: "+str(temp_vec))
 	
 	pass
 	
@@ -2176,6 +2258,8 @@ func energy_before_worldmap_end():
 	pass
 
 func _on_WorldMap_UI_end_map_pressed():
+	PROGENY.move_progeny(5)
+	#call the move progeny cells here 
 	current_player.organism.gene_val_with_temp()
 	energy_before_worldmap_end()
 	#put energy_before_worldmap_end in here

@@ -1,5 +1,5 @@
 extends CanvasLayer
-
+signal update_progeny_placement
 signal end_map_pressed
 signal quit_to_title
 signal acquire_resources
@@ -175,6 +175,8 @@ func _on_MineralLevels_eject_resource(resource, value):
 	
 func _on_EndMapTurn_pressed():
 	emit_signal("end_map_pressed")
+	emit_signal("update_progeny_placement")
+	PROGENY.kill_dead_progeny()
 	pass # Replace with function body.
 
 

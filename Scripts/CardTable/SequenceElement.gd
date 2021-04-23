@@ -139,7 +139,7 @@ func _perf_ate_art_setup():
 func setup(_type : String, _id := "", _mode := "", _code := "", _par_code := "", _ph := -1.0, _code_dir := false, _dmg := false,_count =0, _temp := -1.0):
 	id = _id;
 	#print("\n current organism"+str(Settings.settings["hazards"])+"\n\n"  )
-	print("dictionary: " + str(preference_pH))
+	#print("dictionary: " + str(preference_pH))
 	type = _type;
 	mode = _mode;
 	damage_gene(_dmg);
@@ -281,7 +281,7 @@ func set_ess_behavior(dict):
 			ate_activity = dict[k];
 		else:
 			ess_behavior[k] = dict[k];
-			print(ess_behavior[k])
+			#print(ess_behavior[k])
 			#if the abs(temp-optimal temp) > 10
 			#while(^that and ess_behavior > 0)
 			#ess_behavior -= 0.3

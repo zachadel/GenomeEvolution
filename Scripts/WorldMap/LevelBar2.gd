@@ -44,7 +44,6 @@ func _ready():
 
 func update_value(amount: float):
 	value = amount
-	
 	_update_fill()
 	_update_glow()
 	

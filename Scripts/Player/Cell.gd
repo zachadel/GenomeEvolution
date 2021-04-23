@@ -5,7 +5,7 @@ extends Sprite
 # var b = "text"
 export var cell_type: String = "cell_2"
 export var large = false
-
+onready var nucleus = $Nucleus
 const HIGHLIGHT_COLOR = Color(2,2,2,2)
 const DEFAULT_MODULATE = Color(1,1,1,1)
 
@@ -64,6 +64,8 @@ func get_cell_type():
 func is_large():
 	return large
 	
+func get_nucleus_texture():
+	return $Nucleus.texture
 func highlight_part(part: String):
 	var parts = Settings.settings["cells"][cell_type].keys()
 	
