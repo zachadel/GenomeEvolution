@@ -171,7 +171,7 @@ func get_biome(pos):
 			
 	#if it is in the modified tiles, then use that biome instead
 	else:
-		biome = Game.modified_tiles[[int(pos.x), int(pos.y)]]["biome"]
+		biome = get_parent().current_player.get_current_tile()["biome"]
 
 	return biome
 	

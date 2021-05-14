@@ -93,6 +93,32 @@ func _ready():
 	#connect("invalid_action", msg, "show_high_low_warning")
 	pass
 	
+	
+func disperse_resources_from_dead():
+	if len(PROGENY.dead_progeny) > 0:
+		for i in PROGENY.dead_progeny:
+			if STATS.get_rounds() - i["round"] == 2:
+				print(i.keys())
+				var player_pos = Game.world_to_map(i["cell"].position)
+				var curr_tile = get_tile_at_pos(player_pos)
+				i["cell"].set_current_tile(curr_tile)
+				var passed_cfp_resources = {}
+				passed_cfp_resources["bread"] = current_player.organism.cfp_resources["complex_carbs"]["bread"]
+				passed_cfp_resources["potato"] = current_player.organism.cfp_resources["complex_carbs"]["potato"]
+				passed_cfp_resources["avocado"] = current_player.organism.cfp_resources["complex_fats"]["avocado"]
+				passed_cfp_resources["peanut_butter"] = current_player.organism.cfp_resources["complex_fats"]["peanut_butter"]
+				passed_cfp_resources["chicken"] = current_player.organism.cfp_resources["complex_proteins"]["chicken"]
+				passed_cfp_resources["steak"] = current_player.organism.cfp_resources["complex_proteins"]["steak"]
+				passed_cfp_resources["candy1"] = current_player.organism.cfp_resources["simple_carbs"]["candy1"]
+				passed_cfp_resources["candy2"] = current_player.organism.cfp_resources["simple_carbs"]["candy2"]
+				passed_cfp_resources["butter"] = current_player.organism.cfp_resources["simple_fats"]["butter"]
+				passed_cfp_resources["oil"] = current_player.organism.cfp_resources["simple_fats"]["oil"]
+				passed_cfp_resources["protein_shake"] = current_player.organism.cfp_resources["simple_proteins"]["protein_shake"]
+				passed_cfp_resources["egg"]  = current_player.organism.cfp_resources["simple_proteins"]["egg"]
+				$ResourceMap.add_resources_to_tile(player_pos, passed_cfp_resources)
+				emit_signal("tile_changed", i["cell"].get_current_tile())
+			
+	
 func nitrogen_lower_limits():
 	notifications.emit_signal("notification_needed", "not enough Nitrogen to convert.")
 
@@ -147,7 +173,7 @@ func setup_new_cell(cell,alive):
 				#cell.sprite.get_children()[0].texture = cell.sprite.get_children()[0].texture.set_scale(scale)
 				
 				#cell.set_texture_size()
-				
+				cell.enable_sprite(false)
 				cell.organism.refresh_behavior_profile()
 				PROGENY.add_progeny(cell)
 				print("new cell at: " + str(close_tiles[rand_idx]))
@@ -164,6 +190,9 @@ func setup_new_cell(cell,alive):
 				cell.sprite.texture = current_player.get_texture()
 				cell.sprite.nucleus.texture = current_player.sprite.get_nucleus_texture()
 				cell.organism.refresh_behavior_profile()
+				#cell.visible = false
+				cell.enable_sprite(false)
+				
 				var obj = {"cell": cell, "round": STATS.get_rounds()}
 				PROGENY.add_dead_progeny(obj)
 				print("dead cell has been placed.")
@@ -2086,11 +2115,19 @@ func observe_tiles(center_tile, observation_radius):
 			current_player.observed_tiles[[int(temp_vec.x), int(temp_vec.y)]]["vision"] = $ObscurityMap.VISION.CLEAR
 			current_player.observed_tiles[[int(temp_vec.x), int(temp_vec.y)]]["biome_image"] = $BiomeMap.get_biome(temp_vec)
 			current_player.observed_tiles[[int(temp_vec.x), int(temp_vec.y)]]["resource_image"] = $ResourceMap.get_tile_image_index(temp_vec)
-						
+			update_clear_path(center_tile, observation_radius,1)
 			$ObscurityMap.set_cellv(temp_vec, $ObscurityMap.VISION.CLEAR)
 	#print("temp vec: "+str(temp_vec))
 	
 	pass
+func update_clear_path(center_tile, observation_radius, clear_val):
+	var child_tile = Game.world_to_map(current_player.position)
+	var tiles = Game.get_tiles_inside_radius(child_tile, observation_radius)
+	for i in tiles:
+		if clear_val == 1:
+			current_player.clear_path[[ int(Game.map_to_world(i)[0]), int(Game.map_to_world(i)[1]) ]] = $ObscurityMap.VISION.CLEAR
+		else:
+			current_player.clear_path[[ int(Game.map_to_world(i)[0]), int(Game.map_to_world(i)[1]) ]] = $ObscurityMap.VISION.HIDDEN
 	
 func hide_tiles(center_tile, observation_radius):
 	var temp_vec = Vector2(0,0)
@@ -2103,8 +2140,22 @@ func hide_tiles(center_tile, observation_radius):
 				current_player.observed_tiles[[int(temp_vec.x), int(temp_vec.y)]]["vision"] = $ObscurityMap.VISION.HIDDEN
 
 			$ObscurityMap.set_cellv(temp_vec, $ObscurityMap.VISION.HIDDEN)
+	if Settings.fog == true:
+		print("test")
+		if len(PROGENY.progeny_created) > 0:
+			print("me")
+			for i in PROGENY.progeny_created:
+				print("boop")
+				if current_player.clear_path.has([ int(i.position[0]), int(i.position[1]) ]):
+					print("hello")
+					if current_player.clear_path[[int(i.position[0]), int(i.position[1])]] == $ObscurityMap.VISION.HIDDEN || current_player.clear_path[[int(i.position[0]), int(i.position[1])]] == $ObscurityMap.VISION.CLEAR:
+						i.visible = true
+					else:
+						i.visible = false
+				else:
+					i.visible = false
 	
-	pass
+	
 
 #Get energy to move over a particular tile
 func costs(tile: Vector3):
