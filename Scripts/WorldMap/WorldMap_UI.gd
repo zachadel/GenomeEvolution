@@ -176,7 +176,8 @@ func _on_MineralLevels_eject_resource(resource, value):
 func _on_EndMapTurn_pressed():
 	emit_signal("end_map_pressed")
 	emit_signal("update_progeny_placement")
-	PROGENY.kill_dead_progeny()
+	get_parent().disperse_resources_from_dead()
+#	PROGENY.kill_dead_progeny()
 	pass # Replace with function body.
 
 
@@ -236,4 +237,54 @@ func _on_EventLog_pressed():
 	get_tree().paused = true
 	emit_signal("add_card_event_log","world_map_update"," ")
 	emit_signal("show_event_log")
+	pass # Replace with function body.
+
+
+func _on_q_mark_mouse_entered():
+	$control_hide/popup.show()
+	pass # Replace with function body.
+
+
+func _on_q_mark_mouse_exited():
+	$control_hide/popup.hide()
+	pass # Replace with function body.
+
+
+func _on_q_mark2_mouse_entered():
+	$control_hide/popup2.show()
+	pass # Replace with function body.
+
+
+func _on_q_mark2_mouse_exited():
+	$control_hide/popup2.hide()
+	pass # Replace with function body.
+
+
+func _on_q_mark3_mouse_entered():
+	$control_hide/popup3.show()
+	pass # Replace with function body.
+
+
+func _on_q_mark3_mouse_exited():
+	$control_hide/popup3.hide()
+	pass # Replace with function body.
+
+
+func _on_q_mark4_mouse_entered():
+	$control_hide/popup4.show()
+	pass # Replace with function body.
+
+
+func _on_q_mark4_mouse_exited():
+	$control_hide/popup4.hide()
+	pass # Replace with function body.
+
+
+func _on_q_mark5_mouse_entered():
+	$control_hide/popup5.show()
+	pass # Replace with function body.
+
+
+func _on_q_mark5_mouse_exited():
+	$control_hide/popup5.hide()
 	pass # Replace with function body.

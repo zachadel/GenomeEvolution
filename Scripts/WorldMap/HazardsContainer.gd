@@ -47,6 +47,7 @@ func set_starting_tile_hazards(world_tile_hazards: Dictionary):
 #	pass
 
 func set_hazards(hazard_values):
+	
 	temp.value = hazard_values["temperature"]
 	uv.value = hazard_values["uv_index"]
 	oxygen.value = hazard_values["oxygen"]

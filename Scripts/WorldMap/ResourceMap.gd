@@ -156,7 +156,7 @@ func get_biome(pos):
 			
 	#if it is in the modified tiles, then use that biome instead
 	else:
-		biome = Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["biome"]
+		biome = get_parent().current_player.get_current_tile()["biome"]
 
 	return biome
 		
@@ -223,7 +223,7 @@ func get_primary_resource(pos) -> int:
 		#if the random value is in multiple biome ranges, we assume there is a
 		#tiebreaker array associated with the biome we can use
 	else:
-		resource = Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["primary_resource"]
+		resource = get_parent().current_player.get_current_tile()["primary_resource"]
 		
 	return resource
 
@@ -417,7 +417,7 @@ func add_resources_to_tile(pos, resource_dict: Dictionary):
 	if not [int(conv_pos.x), int(conv_pos.y)] in Game.modified_tiles:
 		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]] = {}
 		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["resources"] = tile_resources
-		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["hazards"] = {}
+		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["hazards"] = get_parent().current_player.get_current_tile()["hazards"]
 		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["biome"] = get_biome(conv_pos)
 		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["primary_resource"] = get_primary_resource(conv_pos)
 		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["location"] = [int(conv_pos.x), int(conv_pos.y)]

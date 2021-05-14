@@ -23,6 +23,7 @@ func kill_dead_progeny():
 		if STATS.get_rounds() - i["round"] >= 2:
 			i.position = null
 			i["cell"].enable_sprite(false)
+			i["cell"].visible = false
 			#i.organism.current_tile = null
 			dead_progeny.erase(i)
 
