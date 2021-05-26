@@ -448,15 +448,12 @@ margin_left = 200.0
 margin_top = 50.0
 margin_right = 400.0
 margin_bottom = 150.0
-color = Color( 0, 0, 0, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+color = Color( 0, 0, 0, 0.572549 )
 
 [node name="Label" type="Label" parent="control_hide/popup"]
 margin_right = 196.0
 margin_bottom = 99.0
-text = "Click ? for help with acquiring and converting resources."
+text = "Click here for help with acquiring and converting resources."
 align = 1
 valign = 1
 autowrap = true
@@ -470,10 +467,7 @@ margin_left = 1322.0
 margin_top = 75.0
 margin_right = 1587.0
 margin_bottom = 175.0
-color = Color( 0, 0, 0, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+color = Color( 0, 0, 0, 0.572549 )
 
 [node name="Label" type="Label" parent="control_hide/popup2"]
 margin_right = 263.0
@@ -492,7 +486,7 @@ margin_left = 1322.0
 margin_top = 275.0
 margin_right = 1587.0
 margin_bottom = 375.0
-color = Color( 0, 0, 0, 1 )
+color = Color( 0, 0, 0, 0.572549 )
 
 [node name="Label" type="Label" parent="control_hide/popup3"]
 margin_right = 263.0
@@ -511,7 +505,7 @@ margin_left = 1322.0
 margin_top = 490.0
 margin_right = 1587.0
 margin_bottom = 590.0
-color = Color( 0, 0, 0, 1 )
+color = Color( 0, 0, 0, 0.572549 )
 
 [node name="Label" type="Label" parent="control_hide/popup4"]
 margin_right = 263.0
@@ -530,7 +524,7 @@ margin_left = 1322.0
 margin_top = 630.0
 margin_right = 1587.0
 margin_bottom = 730.0
-color = Color( 0, 0, 0, 1 )
+color = Color( 0, 0, 0, 0.572549 )
 
 [node name="Label" type="Label" parent="control_hide/popup5"]
 margin_right = 263.0
