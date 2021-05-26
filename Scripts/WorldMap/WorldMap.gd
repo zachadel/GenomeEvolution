@@ -119,6 +119,24 @@ func disperse_resources_from_dead():
 				emit_signal("tile_changed", i["cell"].get_current_tile())
 			
 	
+func greedy_behavior(pos, obs_radius): #returns position
+	#get tiles within set radius 
+	var tiles = Game.get_tiles_inside_radius(pos, obs_radius)
+	#
+	var counter = 0
+	for i in range(len(tiles)-1, 0, -1):
+		print("I: " + str(i))
+		for j in range(17):
+			if get_tile_at_pos(tiles[i])["resources"][j] > 2:
+				counter += 1
+				print(counter)
+				return tiles[i]
+				break
+			if counter == 4:
+				return tiles[i]
+	return pos # worst case of nothing in that range.
+	
+
 func nitrogen_lower_limits():
 	notifications.emit_signal("notification_needed", "not enough Nitrogen to convert.")
 
@@ -133,13 +151,22 @@ func _on_update_progeny_placement():
 			var old_tile = i.position;
 			#I want to get their location
 			var child_tile = Game.world_to_map(i.position) #get the position of the child for the progeny
-			var closer_tiles = Game.get_tiles_inside_radius(child_tile, STATS.get_round_moves()) #returns list of tiles for child from specified radius
-			var rand_idx = Chance.rand_between_tiles(0, len(closer_tiles)) #gives us a random index
-			while Game.map_to_world(closer_tiles[rand_idx]) == i.position: #will ensure that they don't end up on the same tile
-				rand_idx = Chance.rand_between_tiles(0, len(closer_tiles))
+			if greedy_behavior(child_tile, STATS.get_round_moves()) == child_tile:
+				print("not greedy")
+				var closer_tiles = Game.get_tiles_inside_radius(child_tile, STATS.get_round_moves()) #returns list of tiles for child from specified radius
+				var rand_idx = Chance.rand_between_tiles(0, len(closer_tiles)) #gives us a random index
+				while Game.map_to_world(closer_tiles[rand_idx]) == i.position: #will ensure that they don't end up on the same tile
+					rand_idx = Chance.rand_between_tiles(0, len(closer_tiles))
+					
+				i.position = Game.map_to_world(closer_tiles[rand_idx]) #setting the position
+				i.organism.current_tile = get_tile_at_pos(closer_tiles[rand_idx]) #setting the tiles
+			else:
+				print("greedy")
+				i.position = Game.map_to_world( greedy_behavior(child_tile, STATS.get_round_moves()))
+				print("Position: " + str(i.position))
+				i.organism.current_tile = get_tile_at_pos( greedy_behavior(child_tile, STATS.get_round_moves()))
+				print("current_tile: " + str(i.organism.current_tile))
 				
-			i.position = Game.map_to_world(closer_tiles[rand_idx]) #setting the position
-			i.organism.current_tile = get_tile_at_pos(closer_tiles[rand_idx]) #setting the tiles
 			print(i.organism.current_tile)
 			var path_of_tiles = astar.get_tile_path_from_to(Game.world_to_map(old_tile), Game.world_to_map(i.position))
 			for j in path_of_tiles:
@@ -2018,6 +2045,7 @@ func move_player(pos: Vector3):
 				
 				
 				if len(PROGENY.progeny_created) > 0:
+					print("progeny length: " + str(len(PROGENY.progeny_created)))
 					for i in PROGENY.progeny_created:
 						if i.position == new_position:
 							no_one_on_tile = false

@@ -251,10 +251,10 @@ anchor_left = -0.00105225
 anchor_top = 0.000535549
 anchor_right = 0.998948
 anchor_bottom = 0.00053555
-margin_left = -1.45789
-margin_top = 0.0117188
-margin_right = -1.45789
-margin_bottom = 600.012
+margin_left = -0.875126
+margin_top = 0.594482
+margin_right = -0.875122
+margin_bottom = 600.595
 
 [node name="lbl_behavior2" type="Label" parent="."]
 anchor_left = 1.0
@@ -378,18 +378,18 @@ __meta__ = {
 }
 
 [node name="fixAllBreaksWJoinEnds" type="Button" parent="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer"]
-margin_left = 29.0
-margin_right = 198.0
+margin_left = 10.0
+margin_right = 197.0
 margin_bottom = 20.0
 disabled = true
-text = "Fix Breaks with Join Ends"
+text = "Fix all breaks with Join Ends"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="fixAllBreaksWCopyPattern" type="Button" parent="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer"]
-margin_left = 202.0
-margin_right = 414.0
+margin_left = 201.0
+margin_right = 413.0
 margin_bottom = 20.0
 disabled = true
 text = "Fix all Breaks with Copy Pattern"
@@ -398,11 +398,11 @@ __meta__ = {
 }
 
 [node name="fixAllBreaksWCollapseDuplicates" type="Button" parent="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer"]
-margin_left = 418.0
-margin_right = 656.0
+margin_left = 417.0
+margin_right = 676.0
 margin_bottom = 20.0
 disabled = true
-text = "Fix Breaks with Collapse Duplicates"
+text = "Fix All Breaks with Collapse Duplicates"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -514,54 +514,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="pnl_rem_dmg" type="Panel" parent="RepairTabs"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 32.0
-margin_right = -4.0
-margin_bottom = -4.0
-
-[node name="LblInstr" type="Label" parent="RepairTabs/pnl_rem_dmg"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "
-
-Click a damaged gene to remove it.
-
-The number of genes you can remove is based on your Disassembly skill.
-You have %d removals remaining this turn."
-align = 1
-autowrap = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="pnl_rem_sides" type="Panel" parent="RepairTabs"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 32.0
-margin_right = -4.0
-margin_bottom = -4.0
-
-[node name="LblInstr" type="Label" parent="RepairTabs/pnl_rem_sides"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "
-
-Click a gene on either end of a break to remove the gene.
-
-The amount you remove is based on your Disassembly skill.
-You have %d removals remaining."
-align = 1
-autowrap = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="pnl_bandage_dmg" type="Panel" parent="RepairTabs"]
 visible = false
 anchor_right = 1.0
@@ -611,7 +563,6 @@ disabled = true
 text = "Fix All Damaged Genes"
 
 [node name="fix_all_details" type="ColorRect" parent="RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer/fix_all"]
-visible = false
 margin_left = 5.0
 margin_top = 50.0
 margin_right = 155.0
@@ -653,6 +604,54 @@ texture = ExtResource( 40 )
 margin_top = 154.0
 margin_right = 686.0
 margin_bottom = 158.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="pnl_rem_dmg" type="Panel" parent="RepairTabs"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="LblInstr" type="Label" parent="RepairTabs/pnl_rem_dmg"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "
+
+Click a damaged gene to remove it.
+
+The number of genes you can remove is based on your Disassembly skill.
+You have %d removals remaining this turn."
+align = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="pnl_rem_sides" type="Panel" parent="RepairTabs"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="LblInstr" type="Label" parent="RepairTabs/pnl_rem_sides"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "
+
+Click a gene on either end of a break to remove the gene.
+
+The amount you remove is based on your Disassembly skill.
+You have %d removals remaining."
+align = 1
+autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -1537,9 +1536,10 @@ __meta__ = {
 }
 
 [node name="pnl_temp_filter" type="Panel" parent="."]
-margin_left = 574.0
+visible = false
+margin_left = 573.145
 margin_top = 695.0
-margin_right = 1088.0
+margin_right = 1087.14
 margin_bottom = 831.0
 script = ExtResource( 35 )
 __meta__ = {

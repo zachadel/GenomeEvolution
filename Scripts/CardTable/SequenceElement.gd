@@ -505,6 +505,7 @@ func gain_specific_skill(behavior: String, skill_id: String) -> void:
 
 func evolve_skill(behave_key: String, gain := true) -> void:
 	if gain:
+		STATS.increment_num_skills()
 		var new_skill_id := Skills.get_random_skill_id(behave_key, get_skill_counts().keys());
 		if !new_skill_id.empty():
 			just_evolved_skill = true;
@@ -512,6 +513,7 @@ func evolve_skill(behave_key: String, gain := true) -> void:
 			
 			gain_specific_skill(behave_key, new_skill_id);
 	else:
+		STATS.decrement_num_sklls()
 		if !skills.get(behave_key, {}).empty():
 			var rand_skill_id : String = skills[behave_key].keys()[randi() % skills[behave_key].size()];
 			

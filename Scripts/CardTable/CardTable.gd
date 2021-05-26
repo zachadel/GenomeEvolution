@@ -730,6 +730,7 @@ func _on_ph_button_pressed():
 
 func _on_btn_qtmenu_pressed():
 	STATS._reset_game()
+	PROGENY.new_game()
 	Game.restart_game()
 	Settings.reset()
 	get_tree().change_scene("res://Scenes/MainMenu/TitleScreen.tscn")
@@ -905,7 +906,7 @@ func _on_fix_all_mouse_exited():
 
 func _on_fixAllBreaksWJoinEnds_mouse_entered():
 	if(STATS.get_total_JE() < 20):
-		$RepairTabs/pnl_repair_choices/vbox/joinEndsHidden/Label.text = "You have "+str(20-STATS.get_total_JE()) + " many more join ends to perform until this can be unlocked.";
+		$RepairTabs/pnl_repair_choices/vbox/joinEndsHidden/Label.text = "You have "+str(20-STATS.get_total_JE()) + " more join ends to perform until this can be unlocked.";
 	
 	$RepairTabs/pnl_repair_choices/vbox/joinEndsHidden.visible = true;
 	
@@ -919,7 +920,7 @@ func _on_fixAllBreaksWJoinEnds_mouse_exited():
 
 func _on_fixAllBreaksWCopyPattern_mouse_entered():
 	if(STATS.get_total_CPR() < 20):
-		$RepairTabs/pnl_repair_choices/vbox/copyPatternHidden/Label.text = "You have "+str(20-STATS.get_total_CPR()) + " many more copy repairs to perform until this can be unlocked.";
+		$RepairTabs/pnl_repair_choices/vbox/copyPatternHidden/Label.text = "You have "+str(20-STATS.get_total_CPR()) + " more copy repairs to perform until this can be unlocked.";
 	$RepairTabs/pnl_repair_choices/vbox/copyPatternHidden.visible = true;
 	pass # Replace with function body.
 
@@ -931,7 +932,7 @@ func _on_fixAllBreaksWCopyPattern_mouse_exited():
 
 func _on_fixAllBreaksWCollapseDuplicates_mouse_entered():
 	if(STATS.get_break_repaired_collapseDuplicates() < 20):
-		$RepairTabs/pnl_repair_choices/vbox/collapseDupesHidden/Label.text = "You have "+ str(20-STATS.get_break_repaired_collapseDuplicates()) + " many more collapse duplicates to perform until this can be unlocked."
+		$RepairTabs/pnl_repair_choices/vbox/collapseDupesHidden/Label.text = "You have "+ str(20-STATS.get_break_repaired_collapseDuplicates()) + " more collapse duplicates to perform until this can be unlocked."
 	$RepairTabs/pnl_repair_choices/vbox/collapseDupesHidden.visible = true;
 	pass # Replace with function body.
 

@@ -440,6 +440,7 @@ func insert_from_behavior(sq_elm, this_cmsm, ref_pos, behave_dict = Game.DEFAULT
 	# If applicable, split the gene at that spot
 	if final_idx < final_cmsm.get_child_count() && randf() <= behave_dict["split_chance"]:
 		var gene_at = final_cmsm.get_child(final_idx);
+		
 		if !gene_at.is_gap():
 			#print("splitting the element in the greater function")
 			final_cmsm.split_elm(gene_at);
