@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Scripts/WorldMap/WorldMap_UI.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/WorldMap/InternalResourceController.tscn" type="PackedScene" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://Assets/Images/Tiles/Resources/trash.png" type="Texture" id=8]
 [ext_resource path="res://Scenes/WorldMap/TransposonUI.tscn" type="PackedScene" id=9]
 [ext_resource path="res://Scenes/WorldMap/BiomeIcon.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Assets/Images/Menus/Q.png" type="Texture" id=11]
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
@@ -65,6 +66,20 @@ bbcode_enabled = true
 bbcode_text = "[center]Stored Resources[/center]"
 text = "Stored Resources"
 scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="q_mark" type="TextureRect" parent="InternalPanel/StoredResourcesLabel"]
+margin_left = 370.0
+margin_top = 12.0
+margin_right = 529.0
+margin_bottom = 206.0
+rect_scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 11 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="InternalResourceController" parent="InternalPanel" instance=ExtResource( 2 )]
 margin_left = 8.11011
@@ -171,6 +186,17 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="q_mark2" type="TextureRect" parent="ExternalPanel/TileResourcesLabel"]
+margin_left = 250.0
+margin_top = 5.6
+margin_right = 409.0
+margin_bottom = 199.6
+rect_scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 11 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="TileResourcesLabel3" type="RichTextLabel" parent="ExternalPanel"]
 margin_top = 236.0
 margin_right = 290.0
@@ -180,6 +206,17 @@ custom_fonts/normal_font = SubResource( 5 )
 bbcode_enabled = true
 bbcode_text = "[center]Environment[/center]"
 text = "Environment"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="q_mark3" type="TextureRect" parent="ExternalPanel/TileResourcesLabel3"]
+margin_left = 250.0
+margin_top = 5.0
+margin_right = 409.0
+margin_bottom = 199.0
+rect_scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 11 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -236,6 +273,17 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="q_mark4" type="TextureRect" parent="TransposonLabel"]
+margin_left = 250.0
+margin_top = 5.0
+margin_right = 409.0
+margin_bottom = 199.0
+rect_scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 11 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="GenomeStatusLabel2" type="RichTextLabel" parent="."]
 margin_left = 1310.0
 margin_top = 593.16
@@ -247,6 +295,17 @@ bbcode_enabled = true
 bbcode_text = "[center]Damaged Genes[/center]"
 text = "Damaged Genes"
 scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="q_mark5" type="TextureRect" parent="GenomeStatusLabel2"]
+margin_left = 250.0
+margin_top = 5.0
+margin_right = 409.0
+margin_bottom = 199.0
+rect_scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 11 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -375,6 +434,124 @@ margin_right = 730.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 135, 32 )
 text = "Genome Diary"
+
+[node name="control_hide" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="popup" type="ColorRect" parent="control_hide"]
+visible = false
+margin_left = 200.0
+margin_top = 50.0
+margin_right = 400.0
+margin_bottom = 150.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="control_hide/popup"]
+margin_right = 196.0
+margin_bottom = 99.0
+text = "Click ? for help with acquiring and converting resources."
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="popup2" type="ColorRect" parent="control_hide"]
+visible = false
+margin_left = 1322.0
+margin_top = 75.0
+margin_right = 1587.0
+margin_bottom = 175.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="control_hide/popup2"]
+margin_right = 263.0
+margin_bottom = 99.0
+text = "This shows the resources that can be eaten on your tile."
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="popup3" type="ColorRect" parent="control_hide"]
+visible = false
+margin_left = 1322.0
+margin_top = 275.0
+margin_right = 1587.0
+margin_bottom = 375.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="Label" type="Label" parent="control_hide/popup3"]
+margin_right = 263.0
+margin_bottom = 99.0
+text = "This shows the temperature, pH UV index and Oxygen levels on your current tile."
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="popup4" type="ColorRect" parent="control_hide"]
+visible = false
+margin_left = 1322.0
+margin_top = 490.0
+margin_right = 1587.0
+margin_bottom = 590.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="Label" type="Label" parent="control_hide/popup4"]
+margin_right = 263.0
+margin_bottom = 99.0
+text = "Each icon represents a new transposable element (TE) that has invaded your genome!"
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="popup5" type="ColorRect" parent="control_hide"]
+visible = false
+margin_left = 1322.0
+margin_top = 630.0
+margin_right = 1587.0
+margin_bottom = 730.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="Label" type="Label" parent="control_hide/popup5"]
+margin_right = 263.0
+margin_bottom = 99.0
+text = "Be sure to repair your genome before it is too damaged!"
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="mouse_entered" from="InternalPanel/StoredResourcesLabel/q_mark" to="." method="_on_q_mark_mouse_entered"]
+[connection signal="mouse_exited" from="InternalPanel/StoredResourcesLabel/q_mark" to="." method="_on_q_mark_mouse_exited"]
+[connection signal="mouse_entered" from="ExternalPanel/TileResourcesLabel/q_mark2" to="." method="_on_q_mark2_mouse_entered"]
+[connection signal="mouse_exited" from="ExternalPanel/TileResourcesLabel/q_mark2" to="." method="_on_q_mark2_mouse_exited"]
+[connection signal="mouse_entered" from="ExternalPanel/TileResourcesLabel3/q_mark3" to="." method="_on_q_mark3_mouse_entered"]
+[connection signal="mouse_exited" from="ExternalPanel/TileResourcesLabel3/q_mark3" to="." method="_on_q_mark3_mouse_exited"]
+[connection signal="mouse_entered" from="TransposonLabel/q_mark4" to="." method="_on_q_mark4_mouse_entered"]
+[connection signal="mouse_exited" from="TransposonLabel/q_mark4" to="." method="_on_q_mark4_mouse_exited"]
+[connection signal="mouse_entered" from="GenomeStatusLabel2/q_mark5" to="." method="_on_q_mark5_mouse_entered"]
+[connection signal="mouse_exited" from="GenomeStatusLabel2/q_mark5" to="." method="_on_q_mark5_mouse_exited"]
 [connection signal="pressed" from="GenomePanel/RepairGenome" to="." method="_on_EndMapTurn_pressed"]
 [connection signal="pressed" from="MenuPanel/HBoxContainer/AcquireResources" to="." method="_on_AcquireResources_pressed"]
 [connection signal="pressed" from="MenuPanel/HBoxContainer/StatsScreen" to="." method="_on_StatsScreen_pressed"]

@@ -8,6 +8,7 @@ extends Node
 var settings = {}
 var seed_value = 0
 var unlock_buttons = false
+var fog = true
 const MIN = 0
 const MAX = 1
 
@@ -347,6 +348,8 @@ func disable_resource_costs() -> bool:
 	return settings["ingame_settings"]["disable_resource_costs"]["final_value"]
 	
 func disable_fog() -> bool:
+	if settings["ingame_settings"]["disable_fog"]["final_value"] == true:
+		fog = false
 	return settings["ingame_settings"]["disable_fog"]["final_value"]
 	
 func disable_zoom_cap() -> bool:

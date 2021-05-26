@@ -298,7 +298,7 @@ func refresh_profile() -> String:
 
 func add_skill(chrom: String, pos: int, skill_name: String) -> String:
 	var output_str = ""
-	STATS.increment_num_skills()
+	
 	if chrom == "top" or chrom == "bottom":
 		if pos <= _get_chrom_length(chrom):
 			var chrom_idx = _get_chrom_idx(chrom)

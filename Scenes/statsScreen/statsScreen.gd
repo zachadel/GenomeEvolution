@@ -467,7 +467,7 @@ func _set_values():
 	$sub2/rep3/rep1Score/score1Text.text = str(breaksRepairedJoinEndsPerfect)
 	$sub2/rep3/rep1Score2/score2Text.text = str(breaksRepairedJoinEndsError)
 	$sub2/rep5/rep1Score/score1Text.text = str(tilesCopiedGenes)
-	$sub2/rep5/rep1Score/score1Text.text = str(tilesCopiedTotal)
+	$sub2/rep5/rep1Score2/score2Text.text = str(tilesCopiedTotal)
 	$sub2/rep6/rep1Score/score1Text.text = str(tilesCorrectedCopyRepair)
 	$sub2/rep7/rep1Score/score1Text.text = str(breaksRepairedCollapseDupes)
 	$sub2/rep8/rep1Score/score1Text.text = str(tilesRemovedCollapseDupes)

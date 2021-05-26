@@ -488,7 +488,10 @@ func get_start_current_tile_avg_diff() -> float:
 			average += abs(cur_norm - start_norm)
 		count += 1
 		
-	return average / float(count)
+	if float(count) > 0:
+		return average/ float(count)
+	else:
+		return average
 
 #Is between [0, 1]
 func get_component_break_multiplier() -> float:
@@ -1681,19 +1684,19 @@ func prune_cmsms(final_num, add_to_pool = true, status = false):
 func check_cmsms_(idx): #returns whether or not the cmsm has a 0 in it
 	var dead_cell = false
 	if cmsms.get_child(idx).StatusBar.get_value_of("Replication") + cmsms.get_child(idx + 1).StatusBar.get_value_of("Replication") <= 0:
-		dead_cell = true
+		dead_cell = "Replication"
 	if cmsms.get_child(idx).StatusBar.get_value_of("Sensing") + cmsms.get_child(idx + 1).StatusBar.get_value_of("Sensing") <= 0:
-		dead_cell = true
+		dead_cell = "Sensing"
 	if cmsms.get_child(idx).StatusBar.get_value_of("Locomotion") + cmsms.get_child(idx + 1).StatusBar.get_value_of("Locomotion") <= 0:
-		dead_cell = true
+		dead_cell = "Locomotion"
 	if cmsms.get_child(idx).StatusBar.get_value_of("Manipulation") + cmsms.get_child(idx + 1).StatusBar.get_value_of("Manipulation") <= 0:
-		dead_cell = true
+		dead_cell = "Manipulation"
 	if cmsms.get_child(idx).StatusBar.get_value_of("Component") + cmsms.get_child(idx + 1).StatusBar.get_value_of("Component") <= 0:
-		dead_cell = true
+		dead_cell = "Component"
 	if cmsms.get_child(idx).StatusBar.get_value_of("Construction") + cmsms.get_child(idx + 1).StatusBar.get_value_of("Construction") <= 0:
-		dead_cell = true
+		dead_cell = "Construction"
 	if cmsms.get_child(idx).StatusBar.get_value_of("Deconstruction") + cmsms.get_child(idx + 1).StatusBar.get_value_of("Deconstruction") <= 0:
-		dead_cell = true
+		dead_cell = "Deconstruction"
 	return dead_cell;
 	
 func check_cmsm_(idx): #returns whether or not the cmsm has a 0 in it
@@ -1790,17 +1793,19 @@ func replicate(idx):
 				var alive_1 = true
 				rep_type = "mitosis";
 				#check to see if there are any elms within the respective chromome lists that are 0
-				if check_cmsms_(0): #checks the first cell
+				var check_0 = check_cmsms_(0)
+				if typeof(check_0) == TYPE_STRING: #checks the first cell
 					#print("the cell will die from 0")
 					$indicators/indicator1.texture = load("res://Assets/Images/DeathScreen/cross-scull.png")
-					$tool_tip/Label.text = "This organism is doomed, as it has lost all of its (replication, movement, sensing, transporter, construction, deconstruction, component) genes."
+					$tool_tip/Label.text = "This organism is doomed, as it has lost all of its " + check_0 + " genes."
 					alive_0 = false
 				
-				if check_cmsms_(2): #checks the second cell.
+				var check_2 = check_cmsms_(2)
+				if typeof(check_2) == TYPE_STRING: #checks the second cell.
 					#print("the cell will die from 2")
 					$indicators/indicator2.texture = load("res://Assets/Images/DeathScreen/cross-scull.png")
 					alive_1 = false
-					$tool_tip2/Label.text = "This organism is doomed, as it has lost all of its (replication, movement, sensing, transporter, construction, deconstruction, component) genes."
+					$tool_tip2/Label.text = "This organism is doomed, as it has lost all of its " + check_2 + " genes."
 				
 				#if they are 0, put an image of a skull over that cell
 				#if both chromsomes are good put a green check mark on that cell

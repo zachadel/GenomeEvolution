@@ -19,6 +19,7 @@ func set_skills(skill_profs: Array) -> void:
 		add_skill_dict(p);
 
 func add_skill_dict(skill_dict: Dictionary) -> void:
+	
 	for k in skill_dict:
 		skill_prof_data = Game.add_numeric_dicts(skill_prof_data, skill_dict).duplicate(true);
 

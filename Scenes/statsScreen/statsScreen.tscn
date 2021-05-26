@@ -2709,8 +2709,9 @@ margin_right = 245.0
 margin_bottom = 60.0
 
 [node name="score2Text" type="Label" parent="sub2/rep5/rep1Score2"]
+margin_left = -0.799561
 margin_top = -5.0
-margin_right = 50.0
+margin_right = 49.2004
 margin_bottom = 59.0
 custom_fonts/font = SubResource( 56 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )

@@ -538,7 +538,6 @@ __meta__ = {
 }
 
 [node name="Cells" type="Control" parent="."]
-visible = false
 margin_right = 1600.0
 margin_bottom = 900.0
 mouse_filter = 2
@@ -553,9 +552,9 @@ mouse_filter = 2
 color = Color( 0.0431373, 0.0588235, 0.564706, 1 )
 
 [node name="SpeechBubble" type="TextureRect" parent="Cells"]
-margin_left = 262.0
+margin_left = 260.251
 margin_top = 32.0
-margin_right = 1293.0
+margin_right = 1291.25
 margin_bottom = 239.0
 mouse_filter = 2
 texture = ExtResource( 2 )
@@ -582,6 +581,9 @@ bbcode_enabled = true
 bbcode_text = "[i][center]All living cells are made of stuff...[/center][/i]"
 text = "All living cells are made of stuff..."
 scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Transposon" parent="Cells" instance=ExtResource( 3 )]
 margin_top = 177.954
@@ -646,7 +648,7 @@ __meta__ = {
 
 [node name="Cell2" type="Panel" parent="Cells/Cells"]
 margin_left = 371.0
-margin_right = 722.0
+margin_right = 723.0
 margin_bottom = 277.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -683,7 +685,7 @@ __meta__ = {
 }
 
 [node name="Cell3" type="Panel" parent="Cells/Cells"]
-margin_left = 742.0
+margin_left = 743.0
 margin_right = 1095.0
 margin_bottom = 277.0
 mouse_filter = 2
@@ -775,9 +777,9 @@ __meta__ = {
 
 [node name="Skip" type="Button" parent="Cells"]
 margin_left = 1016.0
-margin_top = 770.708
+margin_top = 771.735
 margin_right = 1277.0
-margin_bottom = 878.708
+margin_bottom = 879.735
 theme = SubResource( 9 )
 text = "Skip Intro"
 __meta__ = {

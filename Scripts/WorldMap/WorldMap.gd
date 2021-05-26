@@ -93,6 +93,50 @@ func _ready():
 	#connect("invalid_action", msg, "show_high_low_warning")
 	pass
 	
+	
+func disperse_resources_from_dead():
+	if len(PROGENY.dead_progeny) > 0:
+		for i in PROGENY.dead_progeny:
+			if STATS.get_rounds() - i["round"] == 2:
+				print(i.keys())
+				var player_pos = Game.world_to_map(i["cell"].position)
+				var curr_tile = get_tile_at_pos(player_pos)
+				i["cell"].set_current_tile(curr_tile)
+				var passed_cfp_resources = {}
+				passed_cfp_resources["bread"] = current_player.organism.cfp_resources["complex_carbs"]["bread"]
+				passed_cfp_resources["potato"] = current_player.organism.cfp_resources["complex_carbs"]["potato"]
+				passed_cfp_resources["avocado"] = current_player.organism.cfp_resources["complex_fats"]["avocado"]
+				passed_cfp_resources["peanut_butter"] = current_player.organism.cfp_resources["complex_fats"]["peanut_butter"]
+				passed_cfp_resources["chicken"] = current_player.organism.cfp_resources["complex_proteins"]["chicken"]
+				passed_cfp_resources["steak"] = current_player.organism.cfp_resources["complex_proteins"]["steak"]
+				passed_cfp_resources["candy1"] = current_player.organism.cfp_resources["simple_carbs"]["candy1"]
+				passed_cfp_resources["candy2"] = current_player.organism.cfp_resources["simple_carbs"]["candy2"]
+				passed_cfp_resources["butter"] = current_player.organism.cfp_resources["simple_fats"]["butter"]
+				passed_cfp_resources["oil"] = current_player.organism.cfp_resources["simple_fats"]["oil"]
+				passed_cfp_resources["protein_shake"] = current_player.organism.cfp_resources["simple_proteins"]["protein_shake"]
+				passed_cfp_resources["egg"]  = current_player.organism.cfp_resources["simple_proteins"]["egg"]
+				$ResourceMap.add_resources_to_tile(player_pos, passed_cfp_resources)
+				emit_signal("tile_changed", i["cell"].get_current_tile())
+			
+	
+func greedy_behavior(pos, obs_radius): #returns position
+	#get tiles within set radius 
+	var tiles = Game.get_tiles_inside_radius(pos, obs_radius)
+	#
+	var counter = 0
+	for i in range(len(tiles)-1, 0, -1):
+		print("I: " + str(i))
+		for j in range(17):
+			if get_tile_at_pos(tiles[i])["resources"][j] > 2:
+				counter += 1
+				print(counter)
+				return tiles[i]
+				break
+			if counter == 4:
+				return tiles[i]
+	return pos # worst case of nothing in that range.
+	
+
 func nitrogen_lower_limits():
 	notifications.emit_signal("notification_needed", "not enough Nitrogen to convert.")
 
@@ -107,13 +151,22 @@ func _on_update_progeny_placement():
 			var old_tile = i.position;
 			#I want to get their location
 			var child_tile = Game.world_to_map(i.position) #get the position of the child for the progeny
-			var closer_tiles = Game.get_tiles_inside_radius(child_tile, STATS.get_round_moves()) #returns list of tiles for child from specified radius
-			var rand_idx = Chance.rand_between_tiles(0, len(closer_tiles)) #gives us a random index
-			while Game.map_to_world(closer_tiles[rand_idx]) == i.position: #will ensure that they don't end up on the same tile
-				rand_idx = Chance.rand_between_tiles(0, len(closer_tiles))
+			if greedy_behavior(child_tile, STATS.get_round_moves()) == child_tile:
+				print("not greedy")
+				var closer_tiles = Game.get_tiles_inside_radius(child_tile, STATS.get_round_moves()) #returns list of tiles for child from specified radius
+				var rand_idx = Chance.rand_between_tiles(0, len(closer_tiles)) #gives us a random index
+				while Game.map_to_world(closer_tiles[rand_idx]) == i.position: #will ensure that they don't end up on the same tile
+					rand_idx = Chance.rand_between_tiles(0, len(closer_tiles))
+					
+				i.position = Game.map_to_world(closer_tiles[rand_idx]) #setting the position
+				i.organism.current_tile = get_tile_at_pos(closer_tiles[rand_idx]) #setting the tiles
+			else:
+				print("greedy")
+				i.position = Game.map_to_world( greedy_behavior(child_tile, STATS.get_round_moves()))
+				print("Position: " + str(i.position))
+				i.organism.current_tile = get_tile_at_pos( greedy_behavior(child_tile, STATS.get_round_moves()))
+				print("current_tile: " + str(i.organism.current_tile))
 				
-			i.position = Game.map_to_world(closer_tiles[rand_idx]) #setting the position
-			i.organism.current_tile = get_tile_at_pos(closer_tiles[rand_idx]) #setting the tiles
 			print(i.organism.current_tile)
 			var path_of_tiles = astar.get_tile_path_from_to(Game.world_to_map(old_tile), Game.world_to_map(i.position))
 			for j in path_of_tiles:
@@ -147,7 +200,7 @@ func setup_new_cell(cell,alive):
 				#cell.sprite.get_children()[0].texture = cell.sprite.get_children()[0].texture.set_scale(scale)
 				
 				#cell.set_texture_size()
-				
+				cell.enable_sprite(false)
 				cell.organism.refresh_behavior_profile()
 				PROGENY.add_progeny(cell)
 				print("new cell at: " + str(close_tiles[rand_idx]))
@@ -164,6 +217,9 @@ func setup_new_cell(cell,alive):
 				cell.sprite.texture = current_player.get_texture()
 				cell.sprite.nucleus.texture = current_player.sprite.get_nucleus_texture()
 				cell.organism.refresh_behavior_profile()
+				#cell.visible = false
+				cell.enable_sprite(false)
+				
 				var obj = {"cell": cell, "round": STATS.get_rounds()}
 				PROGENY.add_dead_progeny(obj)
 				print("dead cell has been placed.")
@@ -1989,6 +2045,7 @@ func move_player(pos: Vector3):
 				
 				
 				if len(PROGENY.progeny_created) > 0:
+					print("progeny length: " + str(len(PROGENY.progeny_created)))
 					for i in PROGENY.progeny_created:
 						if i.position == new_position:
 							no_one_on_tile = false
@@ -2086,11 +2143,19 @@ func observe_tiles(center_tile, observation_radius):
 			current_player.observed_tiles[[int(temp_vec.x), int(temp_vec.y)]]["vision"] = $ObscurityMap.VISION.CLEAR
 			current_player.observed_tiles[[int(temp_vec.x), int(temp_vec.y)]]["biome_image"] = $BiomeMap.get_biome(temp_vec)
 			current_player.observed_tiles[[int(temp_vec.x), int(temp_vec.y)]]["resource_image"] = $ResourceMap.get_tile_image_index(temp_vec)
-						
+			update_clear_path(center_tile, observation_radius,1)
 			$ObscurityMap.set_cellv(temp_vec, $ObscurityMap.VISION.CLEAR)
 	#print("temp vec: "+str(temp_vec))
 	
 	pass
+func update_clear_path(center_tile, observation_radius, clear_val):
+	var child_tile = Game.world_to_map(current_player.position)
+	var tiles = Game.get_tiles_inside_radius(child_tile, observation_radius)
+	for i in tiles:
+		if clear_val == 1:
+			current_player.clear_path[[ int(Game.map_to_world(i)[0]), int(Game.map_to_world(i)[1]) ]] = $ObscurityMap.VISION.CLEAR
+		else:
+			current_player.clear_path[[ int(Game.map_to_world(i)[0]), int(Game.map_to_world(i)[1]) ]] = $ObscurityMap.VISION.HIDDEN
 	
 func hide_tiles(center_tile, observation_radius):
 	var temp_vec = Vector2(0,0)
@@ -2103,8 +2168,22 @@ func hide_tiles(center_tile, observation_radius):
 				current_player.observed_tiles[[int(temp_vec.x), int(temp_vec.y)]]["vision"] = $ObscurityMap.VISION.HIDDEN
 
 			$ObscurityMap.set_cellv(temp_vec, $ObscurityMap.VISION.HIDDEN)
+	if Settings.fog == true:
+		print("test")
+		if len(PROGENY.progeny_created) > 0:
+			print("me")
+			for i in PROGENY.progeny_created:
+				print("boop")
+				if current_player.clear_path.has([ int(i.position[0]), int(i.position[1]) ]):
+					print("hello")
+					if current_player.clear_path[[int(i.position[0]), int(i.position[1])]] == $ObscurityMap.VISION.HIDDEN || current_player.clear_path[[int(i.position[0]), int(i.position[1])]] == $ObscurityMap.VISION.CLEAR:
+						i.visible = true
+					else:
+						i.visible = false
+				else:
+					i.visible = false
 	
-	pass
+	
 
 #Get energy to move over a particular tile
 func costs(tile: Vector3):

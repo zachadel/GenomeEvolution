@@ -12,7 +12,9 @@ var dead_progeny
 # Called when the node enters the scene tree for the first time.
 func _ready(): #sets up the array of progeny
 	progeny_created = []
+	progeny_created.clear()
 	dead_progeny = []
+	dead_progeny.clear()
 	pass # Replace with function body.
 
 
@@ -23,6 +25,7 @@ func kill_dead_progeny():
 		if STATS.get_rounds() - i["round"] >= 2:
 			i.position = null
 			i["cell"].enable_sprite(false)
+			i["cell"].visible = false
 			#i.organism.current_tile = null
 			dead_progeny.erase(i)
 
@@ -57,3 +60,9 @@ func move_progeny( distance ):
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
+func new_game():
+	progeny_created.clear()
+	dead_progeny.clear()
+	print("progeny_created: " + str(progeny_created))
+	print("dead_progeny: " + str(dead_progeny))
+	pass

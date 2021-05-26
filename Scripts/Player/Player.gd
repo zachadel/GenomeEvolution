@@ -17,7 +17,7 @@ var organism
 #observed_tiles[[int, int]]["resource_image"]
 #observed_tiles[[int, int]]["biome_image"]
 var observed_tiles = {}
-
+var clear_path = {}
 onready var sprite = get_node("Body")
 
 const STARTING_POS = Vector2(0, 0)
