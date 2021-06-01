@@ -4,7 +4,7 @@ extends Control
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-
+signal exit_join_ends_slides
 export var current_slide = 0
 
 const EXPLOSION_NUMBER = 60
@@ -20,7 +20,8 @@ func _ready():
 
 	
 func leave_intro():
-	get_tree().change_scene("res://Scenes/CardTable/CardTable.tscn")
+	emit_signal("exit_join_ends_slides")
+	#get_tree().change_scene("res://Scenes/CardTable/CardTable.tscn")
 	
 
 func _gui_input(event):
@@ -39,7 +40,7 @@ func _on_next_pressed():
 	var slide = get_children()[current_slide]
 	slide.hide()
 
-	if current_slide < get_child_count() :
+	if current_slide < get_child_count() -1  :
 		current_slide += 1
 		var next_slide = get_children()[current_slide]
 		next_slide.show()
