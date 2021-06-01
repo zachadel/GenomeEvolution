@@ -13,6 +13,10 @@ onready var orgn = $Organism;
 onready var nxt_btn = $button_grid/btn_nxt;
 onready var status_bar = $Border1/ChromosomeStatus;
 onready var map_button = $Border2/button_control/map_image_button
+onready var fixAllJoinEnds = $RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer/fixAllBreaksWJoinEnds
+onready var fixAllCopyPattern = $RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer/fixAllBreaksWCopyPattern
+onready var fixAllCollapseDupes = $RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer/fixAllBreaksWJoinEnds
+onready var fixAll = $RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer/fix_all
 
 onready var energy_bar = get_node("EnergyBar")
 onready var notifications = get_node("CanvasLayer/Notifications")
@@ -39,9 +43,9 @@ func _ready():
 	orgn.connect("energy_changed", energy_bar, "_on_Organism_energy_changed")
 	
 	$RepairTabs.set_tab_title(0, "Repair Breaks");
-	$RepairTabs.set_tab_title(1, "Trim Damaged Genes");
+	$RepairTabs.set_tab_title(1, "Fix Damaged Genes"); #Fix Damaged Genes
 	$RepairTabs.set_tab_title(2, "Trim Genes from Breaks");
-	$RepairTabs.set_tab_title(3, "Fix Damaged Genes");
+	$RepairTabs.set_tab_title(3, "Trim Damaged Genes"); #Trim Damaged Genes
 	
 	$EnergyBar.MAX_ENERGY = orgn.MAX_ENERGY
 	#$statsScreen.visible = false;
@@ -174,10 +178,10 @@ func upd_repair_lock_display():
 	var trim_dmg_lbl = $RepairTabs/pnl_rem_dmg/LblInstr;
 	trim_dmg_lbl.text = "\n\n";
 	if orgn.get_behavior_profile().has_skill("trim_dmg_genes"):
-		$RepairTabs.set_tab_icon(1, null);
+		$RepairTabs.set_tab_icon(1, load("res://Assets/Images/Menus/Q_s.png"));
 		trim_dmg_lbl.text += "Click a damaged gene to remove it.";
 	else:
-		$RepairTabs.set_tab_icon(1, load("res://Assets/Images/icons/padlock_small.png"));
+		$RepairTabs.set_tab_icon(3, load("res://Assets/Images/icons/padlock_small.png"));
 		var needed_skill : Skills.Skill = Skills.get_skill("trim_dmg_genes");
 		trim_dmg_lbl.text += "You are lacking the required '%s' %s skill to use this function." % [needed_skill.desc, needed_skill.behavior];
 	trim_dmg_lbl.text += num_left_txt;
@@ -204,18 +208,21 @@ func show_repair_opts(show):
 		close_extra_menus($RepairTabs, true);
 
 func _on_Organism_gap_selected(_gap, sel: bool):
-	if(STATS.get_all_JE_unlocked()):
-		$RepairTabs/pnl_repair_choices/vbox/HBoxContainer/fixAllBreaksWJoinEnds.disabled = false;
-		$RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer2/lock1.visible = false;
-	if(STATS.get_all_CD_unlocked()):
-		$RepairTabs/pnl_repair_choices/vbox/HBoxContainer/fixAllBreaksWCollapseDuplicates.disabled = false;
-		$RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer2/lock3.visible = false;
-	if(STATS.get_all_CPR_unlocked()):
-		$RepairTabs/pnl_repair_choices/vbox/HBoxContainer/fixAllBreaksWCopyPattern.disabled = false;
-		$RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer2/lock2.visible = false;
-	if(STATS.get_all_fix_damage_genes()):
-		$RepairTabs/pnl_bandage_dmg/vbox/HBoxContainer/fix_all.disabled = false;
-		$RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer2/lock4.visible = false;
+
+	if(STATS.get_all_JE_unlocked() and fixAllJoinEnds != null):
+		fixAllJoinEnds.disabled = false
+		$RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer2/lock1.texture = load("res://Assets/Images/Menus/Q_s.png")
+	if(STATS.get_all_CD_unlocked() and fixAllCollapseDupes != null):
+		fixAllCollapseDupes.disabled = false;
+		$RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer2/lock3.texture = load("res://Assets/Images/Menus/Q_s.png")
+	if(STATS.get_all_CPR_unlocked() and fixAllCopyPattern != null):
+		fixAllCopyPattern.disabled = false;
+		$RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer2/lock2.texture = load("res://Assets/Images/Menus/Q_s.png")
+	if(STATS.get_all_fix_damage_genes() and fixAll != null):
+		fixAll.disabled = false;
+		#$RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer2/lock4.expand = true
+		$RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer2/lock4.texture = load("res://Assets/Images/Menus/Q_s.png")
+		#$RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer2/lock4.rect_scale = Vector2(1, 1)
 	show_repair_types(sel);
 
 func _on_Organism_gene_trimmed(_gene):
@@ -260,13 +267,13 @@ func show_repair_tab(tab_idx: int, upd_locks_disp := true) -> void:
 			if orgn.total_scissors_left > 0:
 				continue;
 		1:
-			if orgn.get_behavior_profile().has_skill("trim_dmg_genes"):
-				orgn.highlight_dmg_genes("scissors");
+			orgn.highlight_dmg_genes("bandage");
 		2:
 			if orgn.get_behavior_profile().has_skill("trim_gap_genes"):
 				orgn.highlight_gap_end_genes();
 		3:
-			orgn.highlight_dmg_genes("bandage");
+			if orgn.get_behavior_profile().has_skill("trim_dmg_genes"):
+				orgn.highlight_dmg_genes("scissors");
 
 func _on_Organism_show_repair_opts(show):
 	show_repair_opts(show);
@@ -1009,4 +1016,48 @@ func _on_map_image_button_mouse_entered():
 
 func _on_map_image_button_mouse_exited():
 	$map_hidden.hide()
+	pass # Replace with function body.
+
+
+func _on_lock4_gui_input(event):
+	if (event is InputEventMouseButton) and event.pressed : #ok, so here is where I will change the scene from cardtable to my slides. 
+		print("hello")
+		var slides = load("res://Scenes/CardTable/fix_damaged_gene_slides.tscn").instance()
+		add_child(slides)
+		yield(slides, "exit_fix_damaged_genes_slides")
+		remove_child(slides)
+		slides.queue_free()
+	pass # Replace with function body.
+
+
+func _on_lock1_gui_input(event):
+	if (event is InputEventMouseButton) and event.pressed:
+		print("boop1")
+		var slides = load("res://Scenes/CardTable/join_ends_slides.tscn").instance()
+		add_child(slides)
+		yield(slides, "exit_join_ends_slides")
+		remove_child(slides)
+		slides.queue_free()
+	pass # Replace with function body.
+
+
+func _on_lock2_gui_input(event):
+	if (event is InputEventMouseButton) and event.pressed:
+		print("boop2")
+		var slides = load("res://Scenes/CardTable/copy_repair_slides.tscn").instance()
+		add_child(slides)
+		yield(slides, "exit_copy_repair_slides")
+		remove_child(slides)
+		slides.queue_free()
+	pass # Replace with function body.
+
+
+func _on_lock3_gui_input(event):
+	if (event is InputEventMouseButton) and event.pressed:
+		print('boop3')
+		var slides = load("res://Scenes/CardTable/collapse_dupes_slides.tscn").instance()
+		add_child(slides)
+		yield(slides, "exit_collapse_dupes_slides")
+		remove_child(slides)
+		slides.queue_free()
 	pass # Replace with function body.

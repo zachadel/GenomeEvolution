@@ -251,9 +251,9 @@ anchor_left = -0.00105225
 anchor_top = 0.000535549
 anchor_right = 0.998948
 anchor_bottom = 0.00053555
-margin_left = -0.875126
+margin_left = -0.270207
 margin_top = 0.594482
-margin_right = -0.875122
+margin_right = -0.270264
 margin_bottom = 600.595
 
 [node name="lbl_behavior2" type="Label" parent="."]
@@ -1928,9 +1928,13 @@ layer = 12
 [connection signal="mouse_entered" from="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer/fixAllBreaksWCollapseDuplicates" to="." method="_on_fixAllBreaksWCollapseDuplicates_mouse_entered"]
 [connection signal="mouse_exited" from="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer/fixAllBreaksWCollapseDuplicates" to="." method="_on_fixAllBreaksWCollapseDuplicates_mouse_exited"]
 [connection signal="pressed" from="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer/fixAllBreaksWCollapseDuplicates" to="." method="_on_fixAllBreaksWCollapseDuplicates_pressed"]
+[connection signal="gui_input" from="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer2/lock1" to="." method="_on_lock1_gui_input"]
+[connection signal="gui_input" from="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer2/lock2" to="." method="_on_lock2_gui_input"]
+[connection signal="gui_input" from="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer2/lock3" to="." method="_on_lock3_gui_input"]
 [connection signal="mouse_entered" from="RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer/fix_all" to="." method="_on_fix_all_mouse_entered"]
 [connection signal="mouse_exited" from="RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer/fix_all" to="." method="_on_fix_all_mouse_exited"]
 [connection signal="pressed" from="RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer/fix_all" to="." method="_on_fix_all_pressed"]
+[connection signal="gui_input" from="RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer2/lock4" to="." method="_on_lock4_gui_input"]
 [connection signal="pressed" from="pnl_quit_check/yes" to="." method="_on_quit_to_menu_check_yes"]
 [connection signal="pressed" from="pnl_quit_check/no" to="." method="_on_quit_to_menu_check_no"]
 [connection signal="item_activated" from="pnl_reproduce/hsplit/ilist_choices" to="." method="_on_replic_choices_item_activated"]

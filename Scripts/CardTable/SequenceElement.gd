@@ -186,7 +186,7 @@ func setup(_type : String, _id := "", _mode := "", _code := "", _par_code := "",
 				obtain_ate_personality(id);
 			"pseudo":
 				var ate_pers = Game.get_ate_personality_by_key(id);
-				if ate_pers == null:
+				if ate_pers == null and id != 'blank':
 					tex = Game.ess_textures[id];
 				else:
 					setup_ate_art();
