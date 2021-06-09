@@ -13,6 +13,8 @@ __meta__ = {
 }
 
 [node name="TitleScreen" parent="." instance=ExtResource( 2 )]
+margin_top = 4.0
+margin_bottom = 904.0
 
 [node name="CharacterSelection" parent="." instance=ExtResource( 3 )]
 visible = false

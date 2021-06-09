@@ -216,7 +216,9 @@ func get_average_essential_ph() -> float:
 		if g.is_essential():
 			total_ph += g.ph_preference;
 			num_ess_genes += 1;
-	return total_ph / num_ess_genes;
+	if num_ess_genes > 0:
+		return total_ph / num_ess_genes;
+	return total_ph
 
 func get_center():
 	return Vector2(get_viewport().size.x / 2.0, 

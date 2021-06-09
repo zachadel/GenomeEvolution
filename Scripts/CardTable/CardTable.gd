@@ -43,10 +43,11 @@ func _ready():
 	orgn.connect("energy_changed", energy_bar, "_on_Organism_energy_changed")
 	
 	$RepairTabs.set_tab_title(0, "Repair Breaks");
-	$RepairTabs.set_tab_title(1, "Fix Damaged Genes"); #Fix Damaged Genes
+	$RepairTabs.set_tab_title(1, "Fix Genes"); #Fix Damaged Genes
 	$RepairTabs.set_tab_title(2, "Trim Genes from Breaks");
 	$RepairTabs.set_tab_title(3, "Trim Damaged Genes"); #Trim Damaged Genes
-	
+	#$RepairTabs.set_tab_icon(0, load("res://Assets/Images/Menus/Q_s.png"))
+	$RepairTabs.set_tab_icon(1, load("res://Assets/Images/Menus/Q_s.png"))
 	$EnergyBar.MAX_ENERGY = orgn.MAX_ENERGY
 	#$statsScreen.visible = false;
 
@@ -178,7 +179,7 @@ func upd_repair_lock_display():
 	var trim_dmg_lbl = $RepairTabs/pnl_rem_dmg/LblInstr;
 	trim_dmg_lbl.text = "\n\n";
 	if orgn.get_behavior_profile().has_skill("trim_dmg_genes"):
-		$RepairTabs.set_tab_icon(1, load("res://Assets/Images/Menus/Q_s.png"));
+		$RepairTabs.set_tab_icon(3, load("res://Assets/Images/Menus/Q_s.png"));
 		trim_dmg_lbl.text += "Click a damaged gene to remove it.";
 	else:
 		$RepairTabs.set_tab_icon(3, load("res://Assets/Images/icons/padlock_small.png"));
@@ -189,7 +190,7 @@ func upd_repair_lock_display():
 	var trim_end_lbl = $RepairTabs/pnl_rem_sides/LblInstr;
 	trim_end_lbl.text = "\n\n";
 	if orgn.get_behavior_profile().has_skill("trim_gap_genes"):
-		$RepairTabs.set_tab_icon(2, null);
+		$RepairTabs.set_tab_icon(2, load("res://Assets/Images/Menus/Q_s.png"))
 		trim_end_lbl.text += "Click a gene on either ends of a break to remove the gene.";
 	else:
 		$RepairTabs.set_tab_icon(2, load("res://Assets/Images/icons/padlock_small.png"));
@@ -211,17 +212,17 @@ func _on_Organism_gap_selected(_gap, sel: bool):
 
 	if(STATS.get_all_JE_unlocked() and fixAllJoinEnds != null):
 		fixAllJoinEnds.disabled = false
-		$RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer2/lock1.texture = load("res://Assets/Images/Menus/Q_s.png")
+		$RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer2/lock1.visible = false
 	if(STATS.get_all_CD_unlocked() and fixAllCollapseDupes != null):
 		fixAllCollapseDupes.disabled = false;
-		$RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer2/lock3.texture = load("res://Assets/Images/Menus/Q_s.png")
+		$RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer2/lock3.visible = false
 	if(STATS.get_all_CPR_unlocked() and fixAllCopyPattern != null):
 		fixAllCopyPattern.disabled = false;
-		$RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer2/lock2.texture = load("res://Assets/Images/Menus/Q_s.png")
+		$RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer2/lock2.visible = false
 	if(STATS.get_all_fix_damage_genes() and fixAll != null):
 		fixAll.disabled = false;
 		#$RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer2/lock4.expand = true
-		$RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer2/lock4.texture = load("res://Assets/Images/Menus/Q_s.png")
+		$RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer2/lock4.visible = false
 		#$RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer2/lock4.rect_scale = Vector2(1, 1)
 	show_repair_types(sel);
 
@@ -521,6 +522,20 @@ func close_extra_menus(toggle_menu: Control = null, make_default := false) -> vo
 				restore_default = true;
 		else:
 			p.visible = false;
+		
+		if p == $RepairTabs:
+			if p.visible == true:
+			#	$q_s1.visible = true
+				$q_s2.visible = true
+				if $RepairTabs.get_tab_icon(2) == load("res://Assets/Images/Menus/Q_s.png"):
+					$q_s3.visible = true
+				if $RepairTabs.get_tab_icon(3) == load("res://Assets/Images/Menus/Q_s.png"):
+					$q_s4.visible = true
+			else:
+	#			$q_s1.visible = false
+				$q_s2.visible = false
+				$q_s3.visible = false
+				$q_s4.visible = false
 	if make_default:
 		if toggle_menu.visible:
 			default_menu = toggle_menu;
@@ -583,6 +598,7 @@ func _on_Organism_show_reprod_opts(show):
 	show_replicate_opts(show);
 
 func _on_quit_to_menu_check_yes():
+	PROGENY.new_game()
 	STATS._reset_game()
 	Game.restart_game()
 	Settings.reset()
@@ -1061,3 +1077,68 @@ func _on_lock3_gui_input(event):
 		remove_child(slides)
 		slides.queue_free()
 	pass # Replace with function body.
+
+
+func _on_q_s2_gui_input(event):
+	if (event is InputEventMouseButton) and event.pressed:
+		print("boop4")
+		var slides = load("res://Scenes/CardTable/fix_damaged_gene_slides.tscn").instance()
+		add_child(slides)
+		yield(slides, "exit_fix_damaged_genes_slides")
+		remove_child(slides)
+		slides.queue_free()
+	pass # Replace with function body.
+
+
+func _on_q_s3_gui_input(event):
+	if (event is InputEventMouseButton) and event.pressed:
+		print("boop5")
+		var slides = load("res://Scenes/CardTable/trim_ends_slides.tscn").instance()
+		add_child(slides)
+		yield(slides, "exit_trim_ends_slides")
+		remove_child(slides)
+		slides.queue_free()
+	pass # Replace with function body.
+
+
+func _on_q_s4_gui_input(event):
+	if (event is InputEventMouseButton) and event.pressed:
+		print("boop5")
+		var slides = load("res://Scenes/CardTable/trim_dmg_genes_slides.tscn").instance()
+		add_child(slides)
+		yield(slides, "exit_trim_dmg_genes_slides")
+		remove_child(slides)
+		slides.queue_free()
+	pass # Replace with function body.
+
+
+func _on_join_end_q_pressed():
+	print("boop1")
+	var slides = load("res://Scenes/CardTable/join_ends_slides.tscn").instance()
+	add_child(slides)
+	yield(slides, "exit_join_ends_slides")
+	remove_child(slides)
+	slides.queue_free()
+	pass # Replace with function body.
+
+
+func _on_copy_pat_q_pressed():
+	print("boop2")
+	var slides = load("res://Scenes/CardTable/copy_repair_slides.tscn").instance()
+	add_child(slides)
+	yield(slides, "exit_copy_repair_slides")
+	remove_child(slides)
+	slides.queue_free()
+	pass # Replace with function body.
+
+
+func _on_collaps_q_pressed():
+	print('boop3')
+	var slides = load("res://Scenes/CardTable/collapse_dupes_slides.tscn").instance()
+	add_child(slides)
+	yield(slides, "exit_collapse_dupes_slides")
+	remove_child(slides)
+	slides.queue_free()
+	pass # Replace with function body.
+
+
