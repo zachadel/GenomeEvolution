@@ -546,54 +546,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="pnl_rem_dmg" type="Panel" parent="RepairTabs"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 32.0
-margin_right = -4.0
-margin_bottom = -4.0
-
-[node name="LblInstr" type="Label" parent="RepairTabs/pnl_rem_dmg"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "
-
-Click a damaged gene to remove it.
-
-The number of genes you can remove is based on your Disassembly skill.
-You have %d removals remaining this turn."
-align = 1
-autowrap = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="pnl_rem_sides" type="Panel" parent="RepairTabs"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 32.0
-margin_right = -4.0
-margin_bottom = -4.0
-
-[node name="LblInstr" type="Label" parent="RepairTabs/pnl_rem_sides"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "
-
-Click a gene on either end of a break to remove the gene.
-
-The amount you remove is based on your Disassembly skill.
-You have %d removals remaining."
-align = 1
-autowrap = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="pnl_bandage_dmg" type="Panel" parent="RepairTabs"]
 visible = false
 anchor_right = 1.0
@@ -684,6 +636,54 @@ texture = ExtResource( 40 )
 margin_top = 154.0
 margin_right = 691.0
 margin_bottom = 158.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="pnl_rem_sides" type="Panel" parent="RepairTabs"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="LblInstr" type="Label" parent="RepairTabs/pnl_rem_sides"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "
+
+Click a gene on either end of a break to remove the gene.
+
+The amount you remove is based on your Disassembly skill.
+You have %d removals remaining."
+align = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="pnl_rem_dmg" type="Panel" parent="RepairTabs"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="LblInstr" type="Label" parent="RepairTabs/pnl_rem_dmg"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "
+
+Click a damaged gene to remove it.
+
+The number of genes you can remove is based on your Disassembly skill.
+You have %d removals remaining this turn."
+align = 1
+autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
