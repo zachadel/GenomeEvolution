@@ -6,7 +6,7 @@
 [ext_resource path="res://Scripts/MainMenu/Credits.gd" type="Script" id=4]
 [ext_resource path="res://Scripts/MainMenu/CreditsDisplay.gd" type="Script" id=5]
 
-[sub_resource type="StyleBoxFlat" id=2]
+[sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.219608, 0.231373, 0.690196, 1 )
 border_width_left = 5
 border_width_top = 5
@@ -20,7 +20,7 @@ expand_margin_right = 5.0
 expand_margin_top = 10.0
 expand_margin_bottom = 10.0
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="DynamicFont" id=2]
 size = 20
 outline_size = 2
 outline_color = Color( 0, 0, 0, 1 )
@@ -28,37 +28,37 @@ use_mipmaps = true
 use_filter = true
 font_data = ExtResource( 1 )
 
-[sub_resource type="DynamicFontData" id=11]
+[sub_resource type="DynamicFontData" id=3]
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="DynamicFont" id=4]
 outline_size = 1
 outline_color = Color( 0, 0, 0, 1 )
 use_mipmaps = true
 use_filter = true
-font_data = SubResource( 11 )
+font_data = SubResource( 3 )
 
-[sub_resource type="DynamicFontData" id=12]
+[sub_resource type="DynamicFontData" id=5]
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
 
-[sub_resource type="DynamicFont" id=13]
+[sub_resource type="DynamicFont" id=6]
 size = 96
 outline_size = 2
 outline_color = Color( 0, 0, 0, 1 )
 use_mipmaps = true
 use_filter = true
-font_data = SubResource( 12 )
+font_data = SubResource( 5 )
 
-[sub_resource type="DynamicFontData" id=9]
+[sub_resource type="DynamicFontData" id=7]
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
 
-[sub_resource type="DynamicFont" id=10]
+[sub_resource type="DynamicFont" id=8]
 size = 45
 use_mipmaps = true
 use_filter = true
-font_data = SubResource( 9 )
+font_data = SubResource( 7 )
 
-[sub_resource type="StyleBoxFlat" id=4]
+[sub_resource type="StyleBoxFlat" id=9]
 bg_color = Color( 0.94902, 0.952941, 0.956863, 1 )
 border_width_left = 10
 border_width_top = 10
@@ -73,7 +73,7 @@ corner_radius_bottom_left = 30
 corner_detail = 20
 shadow_color = Color( 0.282353, 0.282353, 0.282353, 1 )
 
-[sub_resource type="StyleBoxFlat" id=5]
+[sub_resource type="StyleBoxFlat" id=10]
 bg_color = Color( 0.341176, 0.545098, 0.788235, 1 )
 border_width_left = 10
 border_width_top = 10
@@ -88,7 +88,7 @@ corner_radius_bottom_left = 30
 corner_detail = 20
 shadow_color = Color( 0.282353, 0.282353, 0.282353, 1 )
 
-[sub_resource type="StyleBoxFlat" id=6]
+[sub_resource type="StyleBoxFlat" id=11]
 bg_color = Color( 0.427451, 0.427451, 0.427451, 1 )
 border_width_left = 10
 border_width_top = 10
@@ -101,18 +101,18 @@ corner_radius_top_right = 30
 corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
 
-[sub_resource type="Theme" id=7]
+[sub_resource type="Theme" id=12]
 Button/colors/font_color = Color( 1, 1, 1, 1 )
 Button/colors/font_color_disabled = Color( 0, 0, 0, 1 )
 Button/colors/font_color_hover = Color( 0.341176, 0.545098, 0.788235, 1 )
 Button/colors/font_color_pressed = Color( 0, 0, 0, 1 )
 Button/constants/hseparation = 2
-Button/fonts/font = SubResource( 10 )
+Button/fonts/font = SubResource( 8 )
 Button/styles/disabled = null
 Button/styles/focus = null
-Button/styles/hover = SubResource( 4 )
-Button/styles/normal = SubResource( 5 )
-Button/styles/pressed = SubResource( 6 )
+Button/styles/hover = SubResource( 9 )
+Button/styles/normal = SubResource( 10 )
+Button/styles/pressed = SubResource( 11 )
 CheckBox/colors/font_color = Color( 0, 0, 0, 1 )
 CheckBox/colors/font_color_disabled = Color( 0, 0, 0, 1 )
 CheckBox/colors/font_color_hover = Color( 0, 0, 0, 1 )
@@ -520,11 +520,11 @@ WindowDialog/icons/close = null
 WindowDialog/icons/close_highlight = null
 WindowDialog/styles/panel = null
 
-[sub_resource type="DynamicFont" id=8]
+[sub_resource type="DynamicFont" id=13]
 size = 64
 use_mipmaps = true
 use_filter = true
-font_data = SubResource( 9 )
+font_data = SubResource( 7 )
 
 [node name="Credits" type="Control"]
 anchor_right = 1.0
@@ -565,7 +565,7 @@ margin_left = 3.05176e-05
 rect_min_size = Vector2( 250, 100 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/panel = SubResource( 2 )
+custom_styles/panel = SubResource( 1 )
 script = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": true
@@ -574,8 +574,8 @@ __meta__ = {
 [node name="RichTextLabel" type="RichTextLabel" parent="CreditsDisplay"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_fonts/bold_font = SubResource( 1 )
-custom_fonts/normal_font = SubResource( 3 )
+custom_fonts/bold_font = SubResource( 2 )
+custom_fonts/normal_font = SubResource( 4 )
 bbcode_enabled = true
 text = "A game by
 Dr. Zach Adelman
@@ -583,7 +583,9 @@ Dr. Zach Adelman
 Programming
 Alex Cavasso
 Ryan Malthaner
+Samuel Mahan
 Edward Mondragon
+
 
 Additional Programming
 Marco Ravelo
@@ -637,7 +639,7 @@ margin_left = 220.0
 margin_top = 40.0
 margin_right = 1380.0
 margin_bottom = 180.0
-custom_fonts/normal_font = SubResource( 13 )
+custom_fonts/normal_font = SubResource( 6 )
 bbcode_enabled = true
 bbcode_text = "[center]Credits[/center]"
 text = "Credits"
@@ -652,9 +654,9 @@ margin_top = 750.0
 margin_right = 1411.0
 margin_bottom = 858.0
 focus_mode = 0
-theme = SubResource( 7 )
-custom_styles/normal = SubResource( 5 )
-custom_fonts/font = SubResource( 8 )
+theme = SubResource( 12 )
+custom_styles/normal = SubResource( 10 )
+custom_fonts/font = SubResource( 13 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 0.341176, 0.545098, 0.788235, 1 )
 enabled_focus_mode = 0

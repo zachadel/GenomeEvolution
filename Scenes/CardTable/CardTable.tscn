@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=2]
+[gd_scene load_steps=56 format=2]
 
 [ext_resource path="res://Scripts/CardTable/CardTable.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player/Organism.tscn" type="PackedScene" id=2]
@@ -44,6 +44,7 @@
 [ext_resource path="res://Assets/Images/icons/journal_image.png" type="Texture" id=42]
 [ext_resource path="res://Assets/Images/icons/treasure-map_image.png" type="Texture" id=43]
 [ext_resource path="res://Scenes/TestScenes/Notifications.tscn" type="PackedScene" id=44]
+[ext_resource path="res://Assets/Images/Menus/Q_s.png" type="Texture" id=45]
 
 [sub_resource type="Theme" id=1]
 Button/colors/font_color_disabled = Color( 0, 0, 0, 1 )
@@ -240,7 +241,7 @@ __meta__ = {
 }
 
 [node name="TurnList" parent="." instance=ExtResource( 15 )]
-margin_left = 1241.0
+margin_left = 1248.0
 margin_top = 604.0
 margin_right = 1451.0
 margin_bottom = 749.0
@@ -251,9 +252,9 @@ anchor_left = -0.00105225
 anchor_top = 0.000535549
 anchor_right = 0.998948
 anchor_bottom = 0.00053555
-margin_left = -0.270207
+margin_left = -1.26948
 margin_top = 0.594482
-margin_right = -0.270264
+margin_right = -1.26953
 margin_bottom = 600.595
 
 [node name="lbl_behavior2" type="Label" parent="."]
@@ -282,8 +283,9 @@ anchor_right = 0.5
 anchor_bottom = 1.0
 margin_left = -265.0
 margin_top = -328.0
-margin_right = 429.0
+margin_right = 434.0
 margin_bottom = -18.0
+tab_align = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -315,20 +317,50 @@ __meta__ = {
 
 [node name="ilist_choices" type="ItemList" parent="RepairTabs/pnl_repair_choices/hsplit"]
 margin_right = 230.0
-margin_bottom = 227.0
+margin_bottom = 269.0
 items = [ "Collapse Duplicates", ExtResource( 4 ), false, "Copy Pattern", ExtResource( 5 ), false, "Join Ends", ExtResource( 6 ), false ]
 same_column_width = true
 fixed_icon_size = Vector2( 50, 50 )
 
+[node name="collaps_q" type="TextureButton" parent="RepairTabs/pnl_repair_choices/hsplit/ilist_choices"]
+margin_left = 190.0
+margin_top = 15.0
+margin_right = 230.0
+margin_bottom = 55.0
+texture_normal = ExtResource( 45 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="copy_pat_q" type="TextureButton" parent="RepairTabs/pnl_repair_choices/hsplit/ilist_choices"]
+margin_left = 190.0
+margin_top = 75.0
+margin_right = 230.0
+margin_bottom = 115.0
+texture_normal = ExtResource( 45 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="join_end_q" type="TextureButton" parent="RepairTabs/pnl_repair_choices/hsplit/ilist_choices"]
+margin_left = 190.0
+margin_top = 130.0
+margin_right = 230.0
+margin_bottom = 170.0
+texture_normal = ExtResource( 45 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="vsplit" type="VSplitContainer" parent="RepairTabs/pnl_repair_choices/hsplit"]
 margin_left = 242.0
-margin_right = 680.0
-margin_bottom = 227.0
+margin_right = 753.0
+margin_bottom = 269.0
 split_offset = 160
 dragger_visibility = 1
 
 [node name="scroll" type="ScrollContainer" parent="RepairTabs/pnl_repair_choices/hsplit/vsplit"]
-margin_right = 438.0
+margin_right = 511.0
 margin_bottom = 160.0
 scroll_horizontal_enabled = false
 
@@ -341,8 +373,8 @@ autowrap = true
 
 [node name="btn_apply_repair" type="Button" parent="RepairTabs/pnl_repair_choices/hsplit/vsplit"]
 margin_top = 172.0
-margin_right = 438.0
-margin_bottom = 227.0
+margin_right = 511.0
+margin_bottom = 269.0
 text = "Repair"
 
 [node name="vbox" type="VBoxContainer" parent="RepairTabs/pnl_repair_choices"]
@@ -366,11 +398,11 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="RepairTabs/pnl_repair_choices/vbox"]
-margin_right = 686.0
+margin_right = 691.0
 margin_bottom = 56.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="RepairTabs/pnl_repair_choices/vbox/VBoxContainer"]
-margin_right = 686.0
+margin_right = 691.0
 margin_bottom = 20.0
 alignment = 1
 __meta__ = {
@@ -378,8 +410,8 @@ __meta__ = {
 }
 
 [node name="fixAllBreaksWJoinEnds" type="Button" parent="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer"]
-margin_left = 10.0
-margin_right = 197.0
+margin_left = 12.0
+margin_right = 199.0
 margin_bottom = 20.0
 disabled = true
 text = "Fix all breaks with Join Ends"
@@ -388,8 +420,8 @@ __meta__ = {
 }
 
 [node name="fixAllBreaksWCopyPattern" type="Button" parent="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer"]
-margin_left = 201.0
-margin_right = 413.0
+margin_left = 203.0
+margin_right = 415.0
 margin_bottom = 20.0
 disabled = true
 text = "Fix all Breaks with Copy Pattern"
@@ -398,8 +430,8 @@ __meta__ = {
 }
 
 [node name="fixAllBreaksWCollapseDuplicates" type="Button" parent="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer"]
-margin_left = 417.0
-margin_right = 676.0
+margin_left = 419.0
+margin_right = 678.0
 margin_bottom = 20.0
 disabled = true
 text = "Fix All Breaks with Collapse Duplicates"
@@ -409,33 +441,33 @@ __meta__ = {
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="RepairTabs/pnl_repair_choices/vbox/VBoxContainer"]
 margin_top = 24.0
-margin_right = 686.0
+margin_right = 691.0
 margin_bottom = 56.0
 custom_constants/separation = 200
 alignment = 1
 
 [node name="lock1" type="TextureRect" parent="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer2"]
-margin_left = 110.0
-margin_right = 132.0
+margin_left = 112.0
+margin_right = 134.0
 margin_bottom = 32.0
 texture = ExtResource( 40 )
 stretch_mode = 4
 
 [node name="lock2" type="TextureRect" parent="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer2"]
-margin_left = 332.0
-margin_right = 354.0
+margin_left = 334.0
+margin_right = 356.0
 margin_bottom = 32.0
 texture = ExtResource( 40 )
 
 [node name="lock3" type="TextureRect" parent="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer2"]
-margin_left = 554.0
-margin_right = 576.0
+margin_left = 556.0
+margin_right = 578.0
 margin_bottom = 32.0
 texture = ExtResource( 40 )
 
 [node name="Label" type="Label" parent="RepairTabs/pnl_repair_choices/vbox"]
 margin_top = 64.0
-margin_right = 686.0
+margin_right = 691.0
 margin_bottom = 78.0
 text = "These buttons will fix all breaks that they can of their kind."
 align = 1
@@ -443,7 +475,7 @@ valign = 1
 
 [node name="HSeparator" type="HSeparator" parent="RepairTabs/pnl_repair_choices/vbox"]
 margin_top = 86.0
-margin_right = 686.0
+margin_right = 691.0
 margin_bottom = 90.0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -532,7 +564,7 @@ __meta__ = {
 }
 
 [node name="LblInstr" type="Label" parent="RepairTabs/pnl_bandage_dmg/vbox"]
-margin_right = 686.0
+margin_right = 691.0
 margin_bottom = 82.0
 text = "
 Click a damaged gene to attempt to repair it.
@@ -546,18 +578,18 @@ __meta__ = {
 
 [node name="VBoxContainer" type="VBoxContainer" parent="RepairTabs/pnl_bandage_dmg/vbox"]
 margin_top = 90.0
-margin_right = 686.0
+margin_right = 691.0
 margin_bottom = 146.0
 alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer"]
-margin_right = 686.0
+margin_right = 691.0
 margin_bottom = 20.0
 alignment = 1
 
 [node name="fix_all" type="Button" parent="RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer"]
-margin_left = 263.0
-margin_right = 423.0
+margin_left = 265.0
+margin_right = 425.0
 margin_bottom = 20.0
 disabled = true
 text = "Fix All Damaged Genes"
@@ -590,19 +622,19 @@ __meta__ = {
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer"]
 margin_top = 24.0
-margin_right = 686.0
+margin_right = 691.0
 margin_bottom = 56.0
 alignment = 1
 
 [node name="lock4" type="TextureRect" parent="RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer2"]
-margin_left = 332.0
-margin_right = 354.0
+margin_left = 334.0
+margin_right = 356.0
 margin_bottom = 32.0
 texture = ExtResource( 40 )
 
 [node name="HSeparator" type="HSeparator" parent="RepairTabs/pnl_bandage_dmg/vbox"]
 margin_top = 154.0
-margin_right = 686.0
+margin_right = 691.0
 margin_bottom = 158.0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -720,6 +752,28 @@ margin_bottom = 239.0
 items = [ "Mitosis", ExtResource( 7 ), false, "Meiosis", ExtResource( 8 ), false, "Skip", ExtResource( 9 ), false ]
 same_column_width = true
 fixed_icon_size = Vector2( 50, 50 )
+
+[node name="mit_q" type="TextureButton" parent="pnl_reproduce/hsplit/ilist_choices"]
+visible = false
+margin_left = 170.0
+margin_top = 15.0
+margin_right = 193.0
+margin_bottom = 42.0
+texture_normal = ExtResource( 45 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="me_q" type="TextureButton" parent="pnl_reproduce/hsplit/ilist_choices"]
+visible = false
+margin_left = 170.0
+margin_top = 75.0
+margin_right = 193.0
+margin_bottom = 102.0
+texture_normal = ExtResource( 45 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="vsplit" type="VSplitContainer" parent="pnl_reproduce/hsplit"]
 margin_left = 242.0
@@ -968,9 +1022,9 @@ __meta__ = {
 }
 
 [node name="lnum_turn" parent="." instance=ExtResource( 17 )]
-margin_left = 1278.0
+margin_left = 1282.0
 margin_top = 756.0
-margin_right = 1419.0
+margin_right = 1423.0
 margin_bottom = 891.0
 num = 0
 show_change = true
@@ -1000,12 +1054,13 @@ one_shot = true
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -132.0
+margin_left = -130.0
 margin_top = 570.0
 margin_right = -9.99988
 margin_bottom = -15.0
 grow_horizontal = 0
 grow_vertical = 0
+rect_min_size = Vector2( 70, 0 )
 custom_constants/separation = 10
 alignment = 2
 __meta__ = {
@@ -1013,57 +1068,52 @@ __meta__ = {
 }
 
 [node name="btn_qtmenu" type="Button" parent="button_grid"]
-margin_right = 122.0
-margin_bottom = 40.0
-rect_min_size = Vector2( 120, 40 )
+margin_top = 10.0
+margin_right = 120.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 60, 40 )
 size_flags_horizontal = 3
 text = "Quit to Menu"
 
 [node name="btn_bugreport" type="Button" parent="button_grid"]
-margin_top = 50.0
-margin_right = 122.0
-margin_bottom = 95.0
-rect_min_size = Vector2( 120, 45 )
+margin_top = 60.0
+margin_right = 120.0
+margin_bottom = 105.0
+rect_min_size = Vector2( 60, 45 )
 size_flags_horizontal = 3
 text = "Report Bug"
 
 [node name="btn_saveload" type="Button" parent="button_grid"]
-margin_top = 105.0
-margin_right = 122.0
-margin_bottom = 145.0
-rect_min_size = Vector2( 120, 40 )
+margin_top = 115.0
+margin_right = 120.0
+margin_bottom = 155.0
+rect_min_size = Vector2( 60, 40 )
 size_flags_horizontal = 3
 text = "Save/Load"
 
 [node name="spacer" type="ColorRect" parent="button_grid"]
-margin_top = 155.0
-margin_right = 122.0
-margin_bottom = 155.0
-color = Color( 1, 1, 1, 0 )
-
-[node name="spacer4" type="ColorRect" parent="button_grid"]
 margin_top = 165.0
-margin_right = 122.0
+margin_right = 120.0
 margin_bottom = 165.0
 color = Color( 1, 1, 1, 0 )
 
-[node name="spacer2" type="ColorRect" parent="button_grid"]
+[node name="spacer4" type="ColorRect" parent="button_grid"]
 margin_top = 175.0
-margin_right = 122.0
+margin_right = 120.0
 margin_bottom = 175.0
 color = Color( 1, 1, 1, 0 )
 
-[node name="spacer3" type="ColorRect" parent="button_grid"]
+[node name="spacer2" type="ColorRect" parent="button_grid"]
 margin_top = 185.0
-margin_right = 122.0
+margin_right = 120.0
 margin_bottom = 185.0
 color = Color( 1, 1, 1, 0 )
 
 [node name="btn_nxt" type="Button" parent="button_grid"]
 margin_top = 195.0
-margin_right = 122.0
+margin_right = 120.0
 margin_bottom = 315.0
-rect_min_size = Vector2( 80, 120 )
+rect_min_size = Vector2( 60, 120 )
 size_flags_horizontal = 3
 custom_styles/normal = SubResource( 6 )
 custom_fonts/font = ExtResource( 13 )
@@ -1898,6 +1948,36 @@ autowrap = true
 layer = 12
 
 [node name="Notifications" parent="CanvasLayer" instance=ExtResource( 44 )]
+
+[node name="q_s2" type="TextureRect" parent="."]
+visible = false
+margin_left = 678.0
+margin_top = 576.542
+margin_right = 701.0
+margin_bottom = 603.542
+texture = ExtResource( 45 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="q_s3" type="TextureRect" parent="."]
+visible = false
+margin_left = 800.458
+margin_top = 577.0
+margin_right = 823.458
+margin_bottom = 604.0
+texture = ExtResource( 45 )
+
+[node name="q_s4" type="TextureRect" parent="."]
+visible = false
+margin_left = 1014.0
+margin_top = 577.935
+margin_right = 1037.0
+margin_bottom = 604.935
+texture = ExtResource( 45 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="bandage_msg" from="Organism" to="." method="_on_Organism_bandage_msg"]
 [connection signal="clear_gap_msg" from="Organism" to="." method="_on_Organism_clear_gap_msg"]
 [connection signal="cmsm_changed" from="Organism" to="Border1/ChromosomeStatus" method="update"]
@@ -1918,6 +1998,9 @@ layer = 12
 [connection signal="tab_changed" from="RepairTabs" to="." method="_on_RepairTabs_tab_changed"]
 [connection signal="item_activated" from="RepairTabs/pnl_repair_choices/hsplit/ilist_choices" to="." method="_on_ilist_choices_item_activated"]
 [connection signal="item_selected" from="RepairTabs/pnl_repair_choices/hsplit/ilist_choices" to="." method="upd_repair_desc"]
+[connection signal="pressed" from="RepairTabs/pnl_repair_choices/hsplit/ilist_choices/collaps_q" to="." method="_on_collaps_q_pressed"]
+[connection signal="pressed" from="RepairTabs/pnl_repair_choices/hsplit/ilist_choices/copy_pat_q" to="." method="_on_copy_pat_q_pressed"]
+[connection signal="pressed" from="RepairTabs/pnl_repair_choices/hsplit/ilist_choices/join_end_q" to="." method="_on_join_end_q_pressed"]
 [connection signal="pressed" from="RepairTabs/pnl_repair_choices/hsplit/vsplit/btn_apply_repair" to="." method="_on_btn_apply_repair_pressed"]
 [connection signal="mouse_entered" from="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer/fixAllBreaksWJoinEnds" to="." method="_on_fixAllBreaksWJoinEnds_mouse_entered"]
 [connection signal="mouse_exited" from="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer/fixAllBreaksWJoinEnds" to="." method="_on_fixAllBreaksWJoinEnds_mouse_exited"]
@@ -1928,9 +2011,6 @@ layer = 12
 [connection signal="mouse_entered" from="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer/fixAllBreaksWCollapseDuplicates" to="." method="_on_fixAllBreaksWCollapseDuplicates_mouse_entered"]
 [connection signal="mouse_exited" from="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer/fixAllBreaksWCollapseDuplicates" to="." method="_on_fixAllBreaksWCollapseDuplicates_mouse_exited"]
 [connection signal="pressed" from="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer/fixAllBreaksWCollapseDuplicates" to="." method="_on_fixAllBreaksWCollapseDuplicates_pressed"]
-[connection signal="gui_input" from="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer2/lock1" to="." method="_on_lock1_gui_input"]
-[connection signal="gui_input" from="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer2/lock2" to="." method="_on_lock2_gui_input"]
-[connection signal="gui_input" from="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer2/lock3" to="." method="_on_lock3_gui_input"]
 [connection signal="mouse_entered" from="RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer/fix_all" to="." method="_on_fix_all_mouse_entered"]
 [connection signal="mouse_exited" from="RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer/fix_all" to="." method="_on_fix_all_mouse_exited"]
 [connection signal="pressed" from="RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer/fix_all" to="." method="_on_fix_all_pressed"]
@@ -1973,3 +2053,6 @@ layer = 12
 [connection signal="mouse_entered" from="Border2/button_control/map_image_button" to="." method="_on_map_image_button_mouse_entered"]
 [connection signal="mouse_exited" from="Border2/button_control/map_image_button" to="." method="_on_map_image_button_mouse_exited"]
 [connection signal="pressed" from="Border2/button_control/map_image_button" to="." method="_on_map_image_button_pressed"]
+[connection signal="gui_input" from="q_s2" to="." method="_on_q_s2_gui_input"]
+[connection signal="gui_input" from="q_s3" to="." method="_on_q_s3_gui_input"]
+[connection signal="gui_input" from="q_s4" to="." method="_on_q_s4_gui_input"]
