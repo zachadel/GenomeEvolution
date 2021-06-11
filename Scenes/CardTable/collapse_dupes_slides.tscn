@@ -786,7 +786,6 @@ __meta__ = {
 }
 
 [node name="2" type="Control" parent="."]
-visible = false
 margin_right = 40.0
 margin_bottom = 40.0
 __meta__ = {
@@ -1108,7 +1107,6 @@ custom_fonts/font = ExtResource( 9 )
 text = "Broken"
 
 [node name="3" type="Control" parent="."]
-visible = false
 margin_right = 40.0
 margin_bottom = 40.0
 __meta__ = {
@@ -1403,7 +1401,6 @@ __meta__ = {
 }
 
 [node name="4" type="Control" parent="."]
-visible = false
 margin_right = 40.0
 margin_bottom = 40.0
 __meta__ = {
@@ -1750,7 +1747,6 @@ expand = true
 flip_h = true
 
 [node name="5" type="Control" parent="."]
-visible = false
 margin_right = 40.0
 margin_bottom = 40.0
 __meta__ = {
@@ -2065,7 +2061,6 @@ expand = true
 flip_h = true
 
 [node name="6" type="Control" parent="."]
-visible = false
 margin_right = 40.0
 margin_bottom = 40.0
 __meta__ = {
@@ -2319,7 +2314,6 @@ __meta__ = {
 }
 
 [node name="7" type="Control" parent="."]
-visible = false
 margin_right = 40.0
 margin_bottom = 40.0
 __meta__ = {
@@ -2337,17 +2331,17 @@ __meta__ = {
 }
 
 [node name="speech_bubble" type="TextureRect" parent="7"]
-margin_right = 1200.0
+margin_right = 1241.0
 margin_bottom = 300.0
 texture = ExtResource( 6 )
 expand = true
 flip_h = true
 
 [node name="text" type="Label" parent="7/speech_bubble"]
-margin_left = 39.4207
-margin_top = 64.6351
-margin_right = 1165.42
-margin_bottom = 205.635
+margin_left = 62.7973
+margin_top = 71.7497
+margin_right = 1188.8
+margin_bottom = 212.75
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "The farther you go the more likely the repair may fail, but..."
@@ -2637,7 +2631,6 @@ __meta__ = {
 }
 
 [node name="8" type="Control" parent="."]
-visible = false
 margin_right = 40.0
 margin_bottom = 40.0
 __meta__ = {
@@ -2814,7 +2807,6 @@ __meta__ = {
 }
 
 [node name="9" type="Control" parent="."]
-visible = false
 margin_right = 40.0
 margin_bottom = 40.0
 __meta__ = {
@@ -2832,17 +2824,17 @@ __meta__ = {
 }
 
 [node name="speech_bubble" type="TextureRect" parent="9"]
-margin_right = 1200.0
+margin_right = 1247.0
 margin_bottom = 300.0
 texture = ExtResource( 6 )
 expand = true
 flip_h = true
 
 [node name="text" type="Label" parent="9/speech_bubble"]
-margin_left = 39.4207
-margin_top = 64.6351
-margin_right = 1165.42
-margin_bottom = 205.635
+margin_left = 61.4954
+margin_top = 69.7292
+margin_right = 1187.49
+margin_bottom = 210.729
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Depending on where the break is, the pattern you select could be more than one gene."
@@ -3140,7 +3132,6 @@ __meta__ = {
 }
 
 [node name="10" type="Control" parent="."]
-visible = false
 margin_right = 40.0
 margin_bottom = 40.0
 __meta__ = {
@@ -3450,7 +3441,6 @@ __meta__ = {
 }
 
 [node name="11" type="Control" parent="."]
-visible = false
 margin_right = 40.0
 margin_bottom = 40.0
 __meta__ = {
@@ -3468,20 +3458,20 @@ __meta__ = {
 }
 
 [node name="speech_bubble" type="TextureRect" parent="11"]
-margin_right = 1200.0
+margin_right = 1226.0
 margin_bottom = 300.0
 texture = ExtResource( 6 )
 expand = true
 flip_h = true
 
 [node name="text" type="Label" parent="11/speech_bubble"]
-margin_left = 39.4207
-margin_top = 64.6351
-margin_right = 1165.42
-margin_bottom = 205.635
+margin_left = 54.9546
+margin_top = 65.606
+margin_right = 1180.95
+margin_bottom = 206.606
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Here we can select the farthest gene on the left."
+text = "And then the closer gene of the left - this sets the pattern to look for on the right. "
 align = 1
 valign = 1
 autowrap = true
@@ -4102,6 +4092,7 @@ __meta__ = {
 }
 
 [node name="13" type="Control" parent="."]
+visible = false
 margin_right = 40.0
 margin_bottom = 40.0
 __meta__ = {
@@ -4119,17 +4110,17 @@ __meta__ = {
 }
 
 [node name="speech_bubble" type="TextureRect" parent="13"]
-margin_right = 1200.0
+margin_right = 1228.0
 margin_bottom = 300.0
 texture = ExtResource( 6 )
 expand = true
 flip_h = true
 
 [node name="text" type="Label" parent="13/speech_bubble"]
-margin_left = 39.4207
-margin_top = 64.6351
-margin_right = 1165.42
-margin_bottom = 205.635
+margin_left = 57.2503
+margin_top = 73.9744
+margin_right = 1183.25
+margin_bottom = 214.974
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "The longer the pattern, the more likely the repair will succeed!"

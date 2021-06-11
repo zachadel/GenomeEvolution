@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Assets/Images/tes/ATE_Full_Template.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Images/genes/Construction.png" type="Texture" id=2]
@@ -485,6 +485,21 @@ WindowDialog/icons/close = null
 WindowDialog/icons/close_highlight = null
 WindowDialog/styles/panel = null
 
+[sub_resource type="Shader" id=7]
+code = "shader_type canvas_item;
+uniform sampler2D diffuse;
+
+void fragment(){
+	COLOR = texture(TEXTURE, UV);
+	COLOR.r = 1.0;
+	COLOR.g = 0.79;
+	COLOR.b = 0.05;
+	
+}"
+
+[sub_resource type="ShaderMaterial" id=8]
+shader = SubResource( 7 )
+
 [node name="fix_damaged_gene_slides" type="Control"]
 margin_right = 40.0
 margin_bottom = 40.0
@@ -494,7 +509,6 @@ __meta__ = {
 }
 
 [node name="1" type="Control" parent="."]
-visible = false
 margin_right = 40.0
 margin_bottom = 40.0
 __meta__ = {
@@ -507,17 +521,17 @@ margin_bottom = 900.0
 color = Color( 0.0431373, 0.0588235, 0.564706, 1 )
 
 [node name="speech_bubble" type="TextureRect" parent="1"]
-margin_right = 1200.0
-margin_bottom = 300.0
+margin_right = 1412.0
+margin_bottom = 328.0
 texture = ExtResource( 8 )
 expand = true
 flip_h = true
 
 [node name="Label" type="Label" parent="1/speech_bubble"]
-margin_left = 190.216
-margin_top = 42.1194
-margin_right = 1006.22
-margin_bottom = 183.119
+margin_left = 190.0
+margin_top = 42.0
+margin_right = 1248.0
+margin_bottom = 183.0
 custom_fonts/font = ExtResource( 9 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Many things can damage your genome"
@@ -526,10 +540,10 @@ valign = 1
 autowrap = true
 
 [node name="transposon" type="TextureRect" parent="1"]
-margin_left = 1160.32
-margin_top = 144.021
-margin_right = 1517.32
-margin_bottom = 420.021
+margin_left = 1105.0
+margin_top = 254.0
+margin_right = 1462.0
+margin_bottom = 530.0
 texture = ExtResource( 1 )
 
 [node name="cmsm1" type="Control" parent="1"]
@@ -763,17 +777,17 @@ margin_bottom = 900.0
 color = Color( 0.0431373, 0.0588235, 0.564706, 1 )
 
 [node name="speech_bubble" type="TextureRect" parent="2"]
-margin_right = 1200.0
-margin_bottom = 300.0
+margin_right = 1412.0
+margin_bottom = 328.0
 texture = ExtResource( 8 )
 expand = true
 flip_h = true
 
 [node name="Label" type="Label" parent="2/speech_bubble"]
-margin_left = 190.216
-margin_top = 42.1194
-margin_right = 1006.22
-margin_bottom = 183.119
+margin_left = 157.0
+margin_top = 74.0
+margin_right = 1297.0
+margin_bottom = 215.0
 custom_fonts/font = ExtResource( 9 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "When a gene is damaged, it may not work as well as before."
@@ -785,10 +799,10 @@ __meta__ = {
 }
 
 [node name="transposon" type="TextureRect" parent="2"]
-margin_left = 1160.32
-margin_top = 144.021
-margin_right = 1517.32
-margin_bottom = 420.021
+margin_left = 1105.0
+margin_top = 254.0
+margin_right = 1462.0
+margin_bottom = 530.0
 texture = ExtResource( 1 )
 
 [node name="cmsm1" type="Control" parent="2"]
@@ -1022,17 +1036,17 @@ margin_bottom = 900.0
 color = Color( 0.0431373, 0.0588235, 0.564706, 1 )
 
 [node name="speech_bubble" type="TextureRect" parent="3"]
-margin_right = 1200.0
-margin_bottom = 300.0
+margin_right = 1412.0
+margin_bottom = 328.0
 texture = ExtResource( 8 )
 expand = true
 flip_h = true
 
 [node name="Label" type="Label" parent="3/speech_bubble"]
-margin_left = 190.216
-margin_top = 42.1194
-margin_right = 1006.22
-margin_bottom = 183.119
+margin_left = 190.0
+margin_top = 42.0
+margin_right = 1267.0
+margin_bottom = 183.0
 custom_fonts/font = ExtResource( 9 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "And it cannot be copied during replication"
@@ -1044,10 +1058,10 @@ __meta__ = {
 }
 
 [node name="transposon" type="TextureRect" parent="3"]
-margin_left = 1160.32
-margin_top = 144.021
-margin_right = 1517.32
-margin_bottom = 420.021
+margin_left = 1105.0
+margin_top = 254.0
+margin_right = 1462.0
+margin_bottom = 530.0
 texture = ExtResource( 1 )
 
 [node name="cmsm1" type="Control" parent="3"]
@@ -1281,20 +1295,20 @@ margin_bottom = 900.0
 color = Color( 0.0431373, 0.0588235, 0.564706, 1 )
 
 [node name="speech_bubble" type="TextureRect" parent="4"]
-margin_right = 1200.0
-margin_bottom = 300.0
+margin_right = 1412.0
+margin_bottom = 328.0
 texture = ExtResource( 8 )
 expand = true
 flip_h = true
 
 [node name="Label" type="Label" parent="4/speech_bubble"]
-margin_left = 166.695
-margin_top = 4.91525
-margin_right = 1047.69
-margin_bottom = 217.915
+margin_left = 167.0
+margin_top = 22.6383
+margin_right = 1260.0
+margin_bottom = 235.638
 custom_fonts/font = ExtResource( 9 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "So if you want to stay alive and divide, you will need to fix and damaged genes"
+text = "So if you want to stay alive and divide, you will need to fix any damaged genes"
 align = 1
 valign = 1
 autowrap = true
@@ -1303,10 +1317,10 @@ __meta__ = {
 }
 
 [node name="transposon" type="TextureRect" parent="4"]
-margin_left = 1160.32
-margin_top = 144.021
-margin_right = 1517.32
-margin_bottom = 420.021
+margin_left = 1105.0
+margin_top = 254.0
+margin_right = 1462.0
+margin_bottom = 530.0
 texture = ExtResource( 1 )
 
 [node name="cmsm1" type="Control" parent="4"]
@@ -1540,17 +1554,17 @@ margin_bottom = 900.0
 color = Color( 0.0431373, 0.0588235, 0.564706, 1 )
 
 [node name="speech_bubble" type="TextureRect" parent="5"]
-margin_right = 1200.0
-margin_bottom = 300.0
+margin_right = 1412.0
+margin_bottom = 328.0
 texture = ExtResource( 8 )
 expand = true
 flip_h = true
 
 [node name="Label" type="Label" parent="5/speech_bubble"]
-margin_left = 166.695
-margin_top = 4.91525
-margin_right = 1047.69
-margin_bottom = 217.915
+margin_left = 165.74
+margin_top = 23.8982
+margin_right = 1273.74
+margin_bottom = 236.898
 custom_fonts/font = ExtResource( 9 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Just give it a click, and if you are lucky, the gene can be fixed"
@@ -1562,11 +1576,14 @@ __meta__ = {
 }
 
 [node name="transposon" type="TextureRect" parent="5"]
-margin_left = 1160.32
-margin_top = 144.021
-margin_right = 1517.32
-margin_bottom = 420.021
+margin_left = 1105.0
+margin_top = 254.0
+margin_right = 1462.0
+margin_bottom = 530.0
 texture = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="cmsm1" type="Control" parent="5"]
 margin_left = 200.0
@@ -1801,22 +1818,24 @@ __meta__ = {
 }
 
 [node name="background" type="ColorRect" parent="6"]
-margin_right = 1600.0
-margin_bottom = 900.0
+margin_left = 5.45349
+margin_top = -1.25848
+margin_right = 1605.45
+margin_bottom = 898.742
 color = Color( 0.0431373, 0.0588235, 0.564706, 1 )
 
 [node name="speech_bubble" type="TextureRect" parent="6"]
-margin_right = 1200.0
-margin_bottom = 300.0
+margin_right = 1412.0
+margin_bottom = 328.0
 texture = ExtResource( 8 )
 expand = true
 flip_h = true
 
 [node name="Label" type="Label" parent="6/speech_bubble"]
-margin_left = 160.18
-margin_top = 25.1855
-margin_right = 1041.18
-margin_bottom = 238.186
+margin_left = 160.0
+margin_top = 25.0
+margin_right = 1292.0
+margin_bottom = 238.0
 custom_fonts/font = ExtResource( 9 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "However, sometimes the gene is damaged beyond repair and the gene dies"
@@ -1828,17 +1847,20 @@ __meta__ = {
 }
 
 [node name="transposon" type="TextureRect" parent="6"]
-margin_left = 1160.32
-margin_top = 144.021
-margin_right = 1517.32
-margin_bottom = 420.021
+margin_left = 1105.0
+margin_top = 254.0
+margin_right = 1462.0
+margin_bottom = 530.0
 texture = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="cmsm1" type="Control" parent="6"]
 margin_left = 200.0
-margin_top = 400.0
+margin_top = 412.0
 margin_right = 240.0
-margin_bottom = 440.0
+margin_bottom = 452.0
 
 [node name="empt1" type="TextureRect" parent="6/cmsm1"]
 margin_right = 40.0
@@ -1875,6 +1897,7 @@ __meta__ = {
 }
 
 [node name="cons" type="TextureRect" parent="6/cmsm1/cons1"]
+material = SubResource( 8 )
 margin_right = 40.0
 margin_bottom = 40.0
 texture = ExtResource( 2 )
@@ -1927,9 +1950,9 @@ __meta__ = {
 
 [node name="cmsm2" type="Control" parent="6"]
 margin_left = 200.0
-margin_top = 550.0
+margin_top = 559.0
 margin_right = 240.0
-margin_bottom = 590.0
+margin_bottom = 599.0
 
 [node name="empt1" type="TextureRect" parent="6/cmsm2"]
 margin_right = 40.0
@@ -2011,19 +2034,22 @@ __meta__ = {
 
 [node name="arrow" type="TextureRect" parent="6"]
 margin_left = 646.09
-margin_top = 317.955
+margin_top = 329.955
 margin_right = 740.09
-margin_bottom = 420.955
+margin_bottom = 432.955
 rect_rotation = 90.0
 texture = ExtResource( 11 )
 expand = true
 flip_h = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Label" type="Label" parent="6"]
 margin_left = 327.569
-margin_top = 281.539
+margin_top = 290.539
 margin_right = 596.569
-margin_bottom = 312.539
+margin_bottom = 321.539
 rect_scale = Vector2( 2, 2 )
 custom_fonts/font = ExtResource( 12 )
 text = "Pseudogene = dead gene"
@@ -2072,17 +2098,17 @@ margin_bottom = 900.0
 color = Color( 0.0431373, 0.0588235, 0.564706, 1 )
 
 [node name="speech_bubble" type="TextureRect" parent="7"]
-margin_right = 1200.0
-margin_bottom = 300.0
+margin_right = 1412.0
+margin_bottom = 328.0
 texture = ExtResource( 8 )
 expand = true
 flip_h = true
 
 [node name="Label" type="Label" parent="7/speech_bubble"]
-margin_left = 160.18
-margin_top = 25.1855
-margin_right = 1041.18
-margin_bottom = 238.186
+margin_left = 264.75
+margin_top = 23.9256
+margin_right = 1145.75
+margin_bottom = 236.926
 custom_fonts/font = ExtResource( 9 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Or is lost..."
@@ -2094,10 +2120,10 @@ __meta__ = {
 }
 
 [node name="transposon" type="TextureRect" parent="7"]
-margin_left = 1160.32
-margin_top = 144.021
-margin_right = 1517.32
-margin_bottom = 420.021
+margin_left = 1105.0
+margin_top = 254.0
+margin_right = 1462.0
+margin_bottom = 530.0
 texture = ExtResource( 1 )
 
 [node name="cmsm1" type="Control" parent="7"]
@@ -2336,17 +2362,17 @@ margin_bottom = 900.0
 color = Color( 0.0431373, 0.0588235, 0.564706, 1 )
 
 [node name="speech_bubble" type="TextureRect" parent="8"]
-margin_right = 1200.0
-margin_bottom = 300.0
+margin_right = 1412.0
+margin_bottom = 328.0
 texture = ExtResource( 8 )
 expand = true
 flip_h = true
 
 [node name="Label" type="Label" parent="8/speech_bubble"]
-margin_left = 192.004
-margin_top = 22.4507
-margin_right = 1008.0
-margin_bottom = 235.451
+margin_left = 192.0
+margin_top = 22.0
+margin_right = 1302.0
+margin_bottom = 235.0
 custom_fonts/font = ExtResource( 9 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "The higher your Replication score, the more often you will fix damaged genes correctly."
@@ -2358,11 +2384,14 @@ __meta__ = {
 }
 
 [node name="transposon" type="TextureRect" parent="8"]
-margin_left = 1160.32
-margin_top = 144.021
-margin_right = 1517.32
-margin_bottom = 420.021
+margin_left = 1105.0
+margin_top = 254.0
+margin_right = 1462.0
+margin_bottom = 530.0
 texture = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="cmsm1" type="Control" parent="8"]
 margin_left = 200.0
@@ -2582,6 +2611,7 @@ theme = SubResource( 6 )
 text = "Back"
 
 [node name="9" type="Control" parent="."]
+visible = false
 margin_right = 40.0
 margin_bottom = 40.0
 __meta__ = {
@@ -2594,17 +2624,17 @@ margin_bottom = 900.0
 color = Color( 0.0431373, 0.0588235, 0.564706, 1 )
 
 [node name="speech_bubble" type="TextureRect" parent="9"]
-margin_right = 1200.0
-margin_bottom = 300.0
+margin_right = 1412.0
+margin_bottom = 328.0
 texture = ExtResource( 8 )
 expand = true
 flip_h = true
 
 [node name="Label" type="Label" parent="9/speech_bubble"]
-margin_left = 167.179
-margin_top = 27.1522
-margin_right = 1087.18
-margin_bottom = 240.152
+margin_left = 167.0
+margin_top = 27.0
+margin_right = 1307.0
+margin_bottom = 240.0
 custom_fonts/font = ExtResource( 9 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Otherwise, try to keep your genome in good shape and don't let too many genes take damage!"
@@ -2616,10 +2646,10 @@ __meta__ = {
 }
 
 [node name="transposon" type="TextureRect" parent="9"]
-margin_left = 1160.32
-margin_top = 144.021
-margin_right = 1517.32
-margin_bottom = 420.021
+margin_left = 1105.0
+margin_top = 254.0
+margin_right = 1462.0
+margin_bottom = 530.0
 texture = ExtResource( 1 )
 
 [node name="cmsm1" type="Control" parent="9"]
