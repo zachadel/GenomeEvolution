@@ -199,7 +199,7 @@ func _show_world_map():
 	world_map.update_vision()
 	world_map.ui.update_valid_arrows()
 	world_map.ui.update_costs()
-	world_map.ui.center_resources()
+#	world_map.ui.center_resources()
 	
 func _hide_world_map():
 	world_map.hide()

@@ -71,6 +71,8 @@ __meta__ = {
 }
 
 [node name="q_mark" type="TextureRect" parent="InternalPanel/StoredResourcesLabel"]
+anchor_top = 0.00806749
+anchor_bottom = 0.00806763
 margin_left = 370.0
 margin_top = 12.0
 margin_right = 529.0
@@ -116,6 +118,18 @@ bbcode_enabled = true
 bbcode_text = "Elements"
 text = "Elements"
 scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="q_mark1" type="TextureRect" parent="InternalPanel"]
+margin_left = 139.581
+margin_top = 778.961
+margin_right = 298.581
+margin_bottom = 972.961
+rect_scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 11 )
+expand = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -370,6 +384,8 @@ __meta__ = {
 }
 
 [node name="MenuPanel" type="Panel" parent="."]
+anchor_top = -0.000887994
+anchor_bottom = -0.000887994
 margin_left = 410.0
 margin_top = 830.0
 margin_right = 1310.0
@@ -395,31 +411,32 @@ __meta__ = {
 }
 
 [node name="AcquireResources" type="Button" parent="MenuPanel/HBoxContainer"]
-margin_right = 131.0
+margin_right = 178.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Acquire Resources"
 
 [node name="StatsScreen" type="Button" parent="MenuPanel/HBoxContainer"]
-margin_left = 151.0
-margin_right = 279.0
+margin_left = 198.0
+margin_right = 376.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Show Stats"
 
-[node name="JiggleResources" type="Button" parent="MenuPanel/HBoxContainer"]
+[node name="Help" type="Button" parent="MenuPanel/HBoxContainer"]
+visible = false
 margin_left = 299.0
 margin_right = 427.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "Jiggle Resources"
+text = "Help"
 
 [node name="CheckGenome" type="Button" parent="MenuPanel/HBoxContainer"]
-margin_left = 447.0
-margin_right = 575.0
+margin_left = 396.0
+margin_right = 574.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -429,14 +446,26 @@ __meta__ = {
 }
 
 [node name="EventLog" type="Button" parent="MenuPanel/HBoxContainer"]
-margin_left = 595.0
-margin_right = 730.0
+margin_left = 594.0
+margin_right = 729.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 135, 32 )
 text = "Genome Diary"
 
+[node name="map_q_mark" type="TextureRect" parent="MenuPanel"]
+margin_left = 810.462
+margin_top = 20.5986
+margin_right = 969.462
+margin_bottom = 214.599
+rect_scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 11 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="control_hide" type="Control" parent="."]
-margin_right = 40.0
+margin_left = 2.0
+margin_right = 42.0
 margin_bottom = 40.0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -536,8 +565,10 @@ autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
+[connection signal="gui_input" from="InternalPanel/StoredResourcesLabel/q_mark" to="." method="_on_q_mark_gui_input"]
 [connection signal="mouse_entered" from="InternalPanel/StoredResourcesLabel/q_mark" to="." method="_on_q_mark_mouse_entered"]
 [connection signal="mouse_exited" from="InternalPanel/StoredResourcesLabel/q_mark" to="." method="_on_q_mark_mouse_exited"]
+[connection signal="gui_input" from="InternalPanel/q_mark1" to="." method="_on_q_mark1_gui_input"]
 [connection signal="mouse_entered" from="ExternalPanel/TileResourcesLabel/q_mark2" to="." method="_on_q_mark2_mouse_entered"]
 [connection signal="mouse_exited" from="ExternalPanel/TileResourcesLabel/q_mark2" to="." method="_on_q_mark2_mouse_exited"]
 [connection signal="mouse_entered" from="ExternalPanel/TileResourcesLabel3/q_mark3" to="." method="_on_q_mark3_mouse_entered"]
@@ -549,6 +580,6 @@ __meta__ = {
 [connection signal="pressed" from="GenomePanel/RepairGenome" to="." method="_on_EndMapTurn_pressed"]
 [connection signal="pressed" from="MenuPanel/HBoxContainer/AcquireResources" to="." method="_on_AcquireResources_pressed"]
 [connection signal="pressed" from="MenuPanel/HBoxContainer/StatsScreen" to="." method="_on_StatsScreen_pressed"]
-[connection signal="pressed" from="MenuPanel/HBoxContainer/JiggleResources" to="." method="center_resources"]
 [connection signal="pressed" from="MenuPanel/HBoxContainer/CheckGenome" to="." method="_on_CheckGenome_pressed"]
 [connection signal="pressed" from="MenuPanel/HBoxContainer/EventLog" to="." method="_on_EventLog_pressed"]
+[connection signal="gui_input" from="MenuPanel/map_q_mark" to="." method="_on_map_q_mark_gui_input"]
