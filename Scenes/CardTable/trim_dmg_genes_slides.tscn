@@ -495,7 +495,6 @@ __meta__ = {
 }
 
 [node name="1" type="Control" parent="."]
-visible = false
 margin_right = 40.0
 margin_bottom = 40.0
 __meta__ = {
@@ -522,16 +521,19 @@ __meta__ = {
 }
 
 [node name="text" type="Label" parent="1/background/speechBubble"]
-margin_left = 93.5486
-margin_top = 56.288
-margin_right = 1074.55
-margin_bottom = 197.288
+margin_left = 94.0
+margin_top = 56.0
+margin_right = 1073.0
+margin_bottom = 197.0
 custom_fonts/font = ExtResource( 11 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Trimming damaged genes is an alternative to trying to fix them."
 align = 1
 valign = 1
 autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="TextureRect" type="TextureRect" parent="1/background/speechBubble"]
 margin_left = 1200.0
@@ -694,10 +696,10 @@ margin_bottom = 40.0
 texture = ExtResource( 5 )
 
 [node name="next" type="Button" parent="1"]
-margin_left = 1373.73
-margin_top = 748.0
-margin_right = 1573.73
-margin_bottom = 848.0
+margin_left = 1374.64
+margin_top = 750.724
+margin_right = 1574.64
+margin_bottom = 850.724
 theme = SubResource( 6 )
 text = "Next"
 __meta__ = {
@@ -722,11 +724,14 @@ text = "Back"
 
 [node name="arrow" type="TextureRect" parent="1"]
 margin_left = 557.805
-margin_top = 423.299
+margin_top = 424.207
 margin_right = 687.805
-margin_bottom = 526.299
+margin_bottom = 527.207
 rect_rotation = 199.0
 texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Label" type="Label" parent="1"]
 margin_left = 255.166

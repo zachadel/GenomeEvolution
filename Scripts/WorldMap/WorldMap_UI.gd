@@ -195,9 +195,7 @@ func _on_AcquireResources_pressed():
 	emit_signal("acquire_resources")
 	pass # Replace with function body.
 
-func center_resources():
-	for resource_class in irc.resources:
-		irc.center_resources(resource_class)
+
 
 func get_resource_dict_differences(cfp_1:Dictionary, cfp_2: Dictionary):
 	var diff_dict = {}
@@ -287,4 +285,43 @@ func _on_q_mark5_mouse_entered():
 
 func _on_q_mark5_mouse_exited():
 	$control_hide/popup5.hide()
+	pass # Replace with function body.
+
+
+func _on_q_mark_gui_input(event):
+	if (event is InputEventMouseButton) and event.pressed:
+		$InternalPanel.visible=false
+		print("boop4")
+		var slides = load("res://Scenes/WorldMap/map_resources_slides.tscn").instance()
+		add_child(slides)
+		yield(slides, "exit_map_resources_slides")
+		remove_child(slides)
+		slides.queue_free()
+		$InternalPanel.visible=true
+		pass # Replace with function body.
+
+
+func _on_q_mark1_gui_input(event):
+	if (event is InputEventMouseButton) and event.pressed:
+		$InternalPanel.visible=false
+		print("boop4")
+		var slides = load("res://Scenes/WorldMap/elements_slides.tscn").instance()
+		add_child(slides)
+		yield(slides, "exit_elements_slides")
+		remove_child(slides)
+		slides.queue_free()
+		$InternalPanel.visible=true
+	pass # Replace with function body.
+
+
+func _on_map_q_mark_gui_input(event):
+	if (event is InputEventMouseButton) and event.pressed:
+		$InternalPanel.visible=false
+		print("boop4")
+		var slides = load("res://Scenes/WorldMap/map_slides.tscn").instance()
+		add_child(slides)
+		yield(slides, "exit_map_slides")
+		remove_child(slides)
+		slides.queue_free()
+		$InternalPanel.visible=true
 	pass # Replace with function body.
