@@ -1,0 +1,73 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Assets/Fonts/OpenSans-22.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Scenes/WorldMap/pop_quiz.gd" type="Script" id=2]
+
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 0.121569, 0.431373, 0.803922, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0, 0, 0, 1 )
+
+[node name="pop_quiz" type="Control"]
+anchor_right = 0.5
+anchor_bottom = 0.555
+margin_right = 6.10352e-05
+margin_bottom = 0.500031
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="background" type="ColorRect" parent="."]
+margin_right = 800.0
+margin_bottom = 500.0
+color = Color( 0.133333, 0.133333, 0.133333, 1 )
+
+[node name="Question" type="Label" parent="."]
+margin_right = 795.0
+margin_bottom = 100.0
+custom_fonts/font = ExtResource( 1 )
+text = "Question goes here."
+align = 1
+valign = 1
+autowrap = true
+
+[node name="Answer" type="Label" parent="."]
+visible = false
+margin_top = 150.0
+margin_right = 795.0
+margin_bottom = 250.0
+custom_fonts/font = ExtResource( 1 )
+text = "Answer goes here."
+align = 1
+valign = 1
+autowrap = true
+
+[node name="no" type="Button" parent="."]
+margin_left = 700.0
+margin_top = 450.0
+margin_right = 775.0
+margin_bottom = 483.0
+custom_styles/normal = SubResource( 6 )
+custom_fonts/font = ExtResource( 1 )
+text = "No"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="yes" type="Button" parent="."]
+margin_left = 25.0
+margin_top = 450.0
+margin_right = 100.0
+margin_bottom = 483.0
+custom_styles/normal = SubResource( 6 )
+custom_fonts/font = ExtResource( 1 )
+text = "Yes"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="no" to="." method="_on_no_pressed"]
+[connection signal="pressed" from="yes" to="." method="_on_yes_pressed"]

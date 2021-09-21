@@ -7,6 +7,7 @@ signal next_turn(turn_text, round_num);
 signal card_stats_screen;
 signal card_event_log;
 signal add_card_event_log(content, tags);
+signal show_pop_quiz;
 
 onready var justnow_label : RichTextLabel = $ctl_justnow/lbl_justnow;
 onready var orgn = $Organism;
@@ -28,6 +29,7 @@ var passed_replication = false;
 var has_gaps = false;
 var wait_on_anim = false;
 var wait_on_select = false;
+var quiz_counter = 0;
 
 var disable_turn_adv = true
 
@@ -390,6 +392,12 @@ func _on_btn_nxt_pressed():
 	STATS.set_gc_con(orgn.get_behavior_profile().get_behavior("Construction"))
 	STATS.set_gc_decon(orgn.get_behavior_profile().get_behavior("Deconstruction"))
 	STATS.set_gc_ate(orgn.get_behavior_profile().get_behavior("ate"))
+	
+	#if STATS.get_rounds() % 2 == 1:
+#		$pop_quiz.setup_q(quiz_counter)
+#		$pop_quiz.visible = true#
+#		quiz_counter += 1
+		#We can change the values here to ask biology questions.
 	#nxt_btn.add_color_override("font_color",Color(255,255,255,255))
 	adv_turn();
 
@@ -661,16 +669,18 @@ func _on_ViewMap_pressed():
 	emit_signal("switch_to_map")
 
 func _on_btn_bugreport_pressed():
-	close_extra_menus($pnl_bugreport);
+	#close_extra_menus($pnl_bugreport);
+	$Turns_Check.visible = true
 func _on_btn_load_pressed():
 	SaveExports.flag_bug($pnl_bugreport/tbox_bugdesc.text);
 	
 	var title = $pnl_bugreport/tbox_bugtitle.text
 	var description = $pnl_bugreport/tbox_bugdesc.text
 	
-	get_node("pnl_bugreport")._make_post_request(title, description)
+	$pnl_bugreport._make_post_request(title, description)
 	yield($pnl_bugreport/HTTPRequest, "request_completed")
 	var response = get_node("pnl_bugreport").response
+	print(str(response))
 	var success = false
 	if (response == 201):
 		success = true
@@ -1142,3 +1152,14 @@ func _on_collaps_q_pressed():
 	pass # Replace with function body.
 
 
+
+
+func _on_go_to_survey_pressed():
+	OS.shell_open("https://qfreeaccountssjc1.az1.qualtrics.com/jfe/form/SV_1SPZSQMgUxFOwrI")
+	$Turns_Check.visible = false
+	pass # Replace with function body.
+
+
+func _on_btn_bugreport_toggled(button_pressed):
+	
+	pass # Replace with function body.

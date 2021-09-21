@@ -12,7 +12,7 @@ func set_respoonse(response_code):
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$HTTPRequest.connect('request_completed', self, '_on_request_copmleted')
+	$HTTPRequest.connect('request_completed', self, '_on_request_completed')
 
 
 func _make_post_request(title, description):

@@ -198,12 +198,13 @@ func _ready():
 	
 	set_energy(20);
 	energy_allocations = {};
-	populate_cfp_resources_dict()
+	populate_cfp_resources_dict() #This adds in the resources we're after
 	populate_mineral_dict()
 
 func populate_cfp_resources_dict():
 	for resource_type in Game.resource_groups:
 		if resource_type in Game.CFP_RESOURCES:
+			print("resources: " + str(resource_type))
 			for tier in Game.resource_groups[resource_type]:
 				var resource_class = tier + Game.SEPARATOR + resource_type
 				cfp_resources[resource_class] = {}
@@ -3114,7 +3115,6 @@ func acquire_resources():
 			if current_tile["resources"][index] > 0:
 				if Settings.settings["resources"][resource]["group"] == "minerals":
 					modified = true
-	
 					mineral_resources[resource_class][resource] += current_tile["resources"][index]
 					mineral_resources[resource_class]["total"] += current_tile["resources"][index]
 					current_tile["resources"][index] = 0
@@ -3176,8 +3176,7 @@ func acquire_resources():
 						cfp_resources[resource_class]["total"] = max_capacity
 	
 	else:
-		modified = false		
-		
+		modified = false
 	#Reestablish what the new primary_resource indicator on the tile should be
 	#NOTE: Not currently based on sensing; will cause some weird behavior
 	if modified and current_tile["primary_resource"] != -1:

@@ -78,6 +78,7 @@ func _on_new_progeny(alive):
 func _on_unlock_all_buttons():
 	print("buttons unlock now")
 
+
 func _add_event_content(content, tags):
 	$Event_Log_Layer/pnl_event_log.addContent(content, tags)
 	#print("what is being passed through: "+ title +" "+content)
