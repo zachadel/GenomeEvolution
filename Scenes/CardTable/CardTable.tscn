@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=2]
+[gd_scene load_steps=57 format=2]
 
 [ext_resource path="res://Scripts/CardTable/CardTable.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player/Organism.tscn" type="PackedScene" id=2]
@@ -45,6 +45,7 @@
 [ext_resource path="res://Assets/Images/icons/treasure-map_image.png" type="Texture" id=43]
 [ext_resource path="res://Scenes/TestScenes/Notifications.tscn" type="PackedScene" id=44]
 [ext_resource path="res://Assets/Images/Menus/Q_s.png" type="Texture" id=45]
+[ext_resource path="res://Scenes/WorldMap/pop_quiz.tscn" type="PackedScene" id=46]
 
 [sub_resource type="Theme" id=1]
 Button/colors/font_color_disabled = Color( 0, 0, 0, 1 )
@@ -849,6 +850,9 @@ margin_top = 177.0
 margin_right = 399.0
 margin_bottom = 427.0
 script = ExtResource( 18 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="btn_load" type="Button" parent="pnl_bugreport"]
 anchor_left = 1.0
@@ -1978,6 +1982,54 @@ texture = ExtResource( 45 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Turns_Check" type="ColorRect" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -600.0
+margin_top = -150.0
+margin_right = 600.0
+margin_bottom = 150.0
+color = Color( 0.176471, 0.176471, 0.176471, 1 )
+
+[node name="Title" type="Label" parent="Turns_Check"]
+margin_right = 799.0
+margin_bottom = 67.0
+rect_scale = Vector2( 1.5, 1.5 )
+custom_fonts/font = ExtResource( 24 )
+text = "Are you having an issue?"
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="go_to_survey" type="Button" parent="Turns_Check"]
+margin_left = 300.0
+margin_top = 150.0
+margin_right = 600.0
+margin_bottom = 200.0
+rect_scale = Vector2( 2, 2 )
+custom_styles/normal = SubResource( 6 )
+custom_fonts/font = ExtResource( 13 )
+text = "Click Here to let us know"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="pop_quiz" parent="." instance=ExtResource( 46 )]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = -400.0
+margin_top = -250.0
+margin_right = 400.0
+margin_bottom = 250.0
 [connection signal="bandage_msg" from="Organism" to="." method="_on_Organism_bandage_msg"]
 [connection signal="clear_gap_msg" from="Organism" to="." method="_on_Organism_clear_gap_msg"]
 [connection signal="cmsm_changed" from="Organism" to="Border1/ChromosomeStatus" method="update"]
@@ -2056,3 +2108,4 @@ __meta__ = {
 [connection signal="gui_input" from="q_s2" to="." method="_on_q_s2_gui_input"]
 [connection signal="gui_input" from="q_s3" to="." method="_on_q_s3_gui_input"]
 [connection signal="gui_input" from="q_s4" to="." method="_on_q_s4_gui_input"]
+[connection signal="pressed" from="Turns_Check/go_to_survey" to="." method="_on_go_to_survey_pressed"]

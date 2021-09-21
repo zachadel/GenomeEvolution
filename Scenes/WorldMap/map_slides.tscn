@@ -1439,7 +1439,6 @@ __meta__ = {
 }
 
 [node name="slide10" type="Control" parent="."]
-visible = false
 margin_right = 40.0
 margin_bottom = 40.0
 __meta__ = {
@@ -1474,7 +1473,7 @@ margin_right = 1525.0
 margin_bottom = 210.0
 custom_fonts/font = ExtResource( 3 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Just because there is no icon, doesn't meant ther is nothring there. As your Sensing abilities increase, you can detect rare resources from farther away!"
+text = "Just because there is no icon, doesn't mean there is nothing there. As your Sensing abilities increase, you can detect rare resources from farther away!"
 align = 1
 valign = 1
 autowrap = true
@@ -2427,6 +2426,7 @@ __meta__ = {
 }
 
 [node name="slide19" type="Control" parent="."]
+visible = false
 margin_right = 40.0
 margin_bottom = 40.0
 __meta__ = {

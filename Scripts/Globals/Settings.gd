@@ -155,6 +155,7 @@ func apply_richness():
 #		print("Secondary Min: ", settings["resources"][resource]["secondary_resource_min"])
 #		print("Accessory Max: ", settings["resources"][resource]["accessory_resource_max"])
 #		print("Accessory Min: ", settings["resources"][resource]["accessory_resource_min"])
+	
 		
 		settings["resources"][resource]["primary_resource_max"] = int(settings["resources"][resource]["primary_resource_max"] * richness_scale)
 		settings["resources"][resource]["primary_resource_min"] = max(int(settings["resources"][resource]["primary_resource_min"] * richness_scale), 1)
