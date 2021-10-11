@@ -1814,7 +1814,6 @@ func _unhandled_input(event):
 	
 	if is_visible_in_tree():
 		if event.is_action_pressed("mouse_left"):
-			
 			var past_energy = ui.irc.energy_bar.energy
 			debug_bool = true
 			if input_elements["move"] and move_enabled:
@@ -2440,3 +2439,6 @@ func _on_Notifications_notification_dismissed():
 		_on_WorldMap_UI_end_map_pressed()
 		
 	pass # Replace with function body.
+
+
+
