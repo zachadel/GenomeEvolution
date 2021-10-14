@@ -2,13 +2,24 @@ extends Node
 #is_viable will determine whether or not death in card table. 
 #replicate in organism, look for a successful reproduction 
 signal progeny_updated(alive);
+signal mission_accomplished(index);
+signal progress_bar(percent);
 #TO DIE FAST: 
 var amt_of_nit =0 
 var temperature_preference ={};
 var ph_preference = {};
 #delete genes using command console
+var missions =["Go 5 spaces", "perform a cut action on your genes."];
+var completed_missions=[];
+var fix_genes_mission = 0;
+var join_ends_mission = 0;
+var trim_genes_mission = 0;
+var collapse_dupes_mission = 0;
+var copy_rep_mission = 0;
+
 var temperature_array = [];
 #Declaring/initializing variables to keep track of: 
+var mission_index = 999999
 var tiles_traveled = 0
 var resources_consumed = 0
 var resources_converted = 0
@@ -138,6 +149,11 @@ var gc_ate = 0
 
 var first_temp =0
 var moves_between_rounds = 0
+func start_mission(index):
+	#passes in the index of the goal I am trying to accomplish
+	#var goal = missions[index]
+	mission_index = index
+	
 
 func inc_round_moves():
 	moves_between_rounds += 1;
@@ -697,6 +713,12 @@ func get_geneSplit():
 	return splitGene;
 func increment_trimmedTiles():
 	trimmedTiles +=1
+	if mission_index == 3:
+		trim_genes_mission += 1
+		emit_signal("progress_bar", trim_genes_mission/5.0);
+	if trim_genes_mission == 5:
+		emit_signal("mission_accomplished", 3)
+		
 func get_trimmedTiles():
 	return trimmedTiles;
 func increment_currentPseudo():
@@ -898,6 +920,11 @@ func get_break_repaired_collapseDuplicates():
 #where:
 func increment_break_repaired_collapseDuplicates():
 	breaks_repaired_collapseDuplicates += 1
+	if mission_index == 4:
+		collapse_dupes_mission += 1;
+		emit_signal("progress_bar", collapse_dupes_mission/5.0)
+	if collapse_dupes_mission == 5:
+		emit_signal("mission_accomplished", 4)
 
 #What:Track number of tile corrected during copy repair
 #Where:
@@ -938,6 +965,12 @@ func get_breaks_cpyRepair_error():
 #where: in repair_gene of organism, copy Pattern switch case 1-3.
 func increment_breaks_cpyRepair_error():
 	breaks_cpyRepair_error += 1
+	if mission_index == 5:
+		copy_rep_mission += 1
+		emit_signal("progress_bar", copy_rep_mission/ 5.0)
+	if copy_rep_mission == 5:
+		emit_signal("mission_accomplished", 5)
+		print("accomplished")
 
 #What:Track number of breaks repaired using copy-repair with no errors
 #where:
@@ -948,6 +981,12 @@ func get_breaks_cpyRepair_no_error():
 #where: in repair_gene of organism, copy Pattern switch case zero.
 func increment_breaks_cpyRepair_no_error():
 	breaks_cpyRepair_no_error += 1
+	if mission_index == 5:
+		copy_rep_mission += 1
+		emit_signal("progress_bar", copy_rep_mission/ 5.0)
+	if copy_rep_mission == 5:
+		emit_signal("mission_accomplished", 5)
+		print('done')
 
 #What:Track number of breaks repaired using join ends with errors
 #where:
@@ -958,6 +997,11 @@ func get_breaks_join_error():
 #where:in repair_gap, in organism
 func increment_breaks_join_error():
 	breaks_join_error += 1
+	if mission_index == 2:
+		join_ends_mission += 1
+		emit_signal("progress_bar", join_ends_mission/ 5.0)
+	if join_ends_mission == 5:
+		emit_signal("mission_accomplished", 2)
  
 #What: Track number of breaks repaired using join ends with no errors
 #where: 
@@ -968,6 +1012,11 @@ func get_breaks_join():
 #where:in repair_gap, in organism
 func increment_breaks_join():
 	breaks_join_no_error += 1
+	if mission_index == 2:
+		join_ends_mission += 1
+		emit_signal("progress_bar", join_ends_mission/ 5.0)
+	if join_ends_mission == 5:
+		emit_signal("mission_accomplished", 2)
 
 #What:Track number of damaged genes repaired using fix damaged genes with errors
 #where:
@@ -977,7 +1026,13 @@ func get_dmg_genes_error():
 #What:Track number of damaged genes repaired using fix damaged genes with errors
 #where:in repair_gap, in organism
 func increment_dmg_genes_error():
-	 dmg_genes_error += 1
+	dmg_genes_error += 1
+	if mission_index == 1:
+		fix_genes_mission += 1
+		emit_signal("progress_bar", fix_genes_mission / 5.0)
+	if fix_genes_mission == 5:
+		emit_signal("mission_accomplished", 1)
+		
 
 #What:Track number of damaged genes repaired using fix damaged genes with no errors
 #where:
@@ -988,6 +1043,11 @@ func get_dmg_genes_no_error():
 #where:in repair_gap, in organism
 func increment_dmg_genes_no_error():
 	dmg_genes_no_error += 1 
+	if mission_index == 1:
+		fix_genes_mission += 1
+		emit_signal("progress_bar", fix_genes_mission / 5.0)
+	if fix_genes_mission == 5:
+		emit_signal("mission_accomplished", 1)
 
 #What: Returns the number of times that reproduction is called.
 #where: 
@@ -1011,8 +1071,15 @@ func get_tiles_traveled():
 
 #What: Increments the tiles traveled variable
 #Where: WorldMap, within the move_player function
+var walking_mission = 0;
 func increment_tiles_traveled():
 	tiles_traveled += 1
+	if mission_index == 0:
+		walking_mission += 1
+		emit_signal("progress_bar", walking_mission/5.0)
+		if walking_mission == 5: #retuning the index pof the mission array that it accomplished.
+			emit_signal("mission_accomplished", 0)
+			
 	inc_round_moves()
 
 #What: returns the resources consumed

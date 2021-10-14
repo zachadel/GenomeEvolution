@@ -50,19 +50,23 @@ func reset():
 
 func load_setting(setting_type: String, use_user_settings_if_possible: bool = true):
 	if setting_type in FILE_NAMES:
-		
+		#print("setting type: " + str(setting_type))
 		if setting_type == "ate_personalities":
 			load_personalities(FILE_NAMES[setting_type], settings["ate_personalities"])
 			
 		else:
 			#load user settings
+			print("it's ok, " + str(setting_type))
 			if use_user_settings_if_possible:
+				print("user settings possible")
 				var config = ConfigFile.new()
-				var err = config.load(USER_PATH + FILE_NAMES[setting_type])
-				
+				var err = config.load(DEFAULT_PATH + FILE_NAMES[setting_type])
+				print(USER_PATH)
+				print(FILE_NAMES[setting_type])
 				#load user settings if you can, if not load default
 				if err == OK:
 					for section in config.get_sections():
+						print("section: " + str(section))
 						settings[setting_type][section] = {}
 						for key in config.get_section_keys(section):
 							settings[setting_type][section][key] = config.get_value(section, key)
@@ -70,7 +74,8 @@ func load_setting(setting_type: String, use_user_settings_if_possible: bool = tr
 				elif err == ERR_FILE_NOT_FOUND:
 					config = ConfigFile.new()
 					err = config.load(DEFAULT_PATH + FILE_NAMES[setting_type])
-					
+					print("default path: " + str(DEFAULT_PATH))
+					print("file names: " + str(FILE_NAMES[setting_type]))
 					if err == OK:
 						for section in config.get_sections():
 							settings[setting_type][section] = {}
@@ -81,6 +86,8 @@ func load_setting(setting_type: String, use_user_settings_if_possible: bool = tr
 						print("ERROR CODE %d in load_settings" % err)
 			else:
 				var config = ConfigFile.new()
+				print("default path: " + str(DEFAULT_PATH))
+				print("file names: " + str(FILE_NAMES[setting_type]))
 				var err = config.load(DEFAULT_PATH + FILE_NAMES[setting_type])
 					
 				if err == OK:
@@ -122,6 +129,7 @@ func load_personalities(file_name, dict):
 		for s in data.get_sections():
 			dict[s] = cfg_sec_to_dict(data, s);
 			dict[s]["key"] = s;
+			#print("s: " + str(s))
 			if (dict[s].has("art")):
 				dict[s]["art"] = load("res://Assets/Images/tes/" + dict[s]["art"] + ".png");
 			else:
