@@ -21,7 +21,7 @@ var tile_textures = {}
 func _ready():
 	var i = 0
 	tile_textures["question_mark"] = load(Game.DEFAULT_RESOURCE_PATH)
-	
+	print(Game.DEFAULT_RESOURCE_PATH)
 	tile_set = TileSet.new()
 	for resource in Settings.settings["resources"].keys():
 		tile_textures[resource] = {}

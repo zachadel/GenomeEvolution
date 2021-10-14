@@ -64,6 +64,8 @@ func _ready():
 	$WorldMap.connect("add_card_event_log", self, "_add_event_content")
 	$WorldMap/WorldMap_UI/InternalPanel/InternalResourceController/EnergyBar.connect("add_card_event_log", self,"_add_event_content")
 	STATS.connect("progeny_updated", self, "_on_new_progeny");
+	STATS.connect("mission_accomplished", self, "_on_mission_accomplished");
+	STATS.connect("progress_bar", self, "_on_progress_bar");
 	#$WorldMap.connect("add_card_event_log", self, "_add_event_content")
 	#$WorldMap/WorldMap_UI/InternalPanel/InternalResourceController.connect("add_card_event_log", self, "_add_event_content")
 func _on_new_progeny(alive):
@@ -78,6 +80,12 @@ func _on_new_progeny(alive):
 func _on_unlock_all_buttons():
 	print("buttons unlock now")
 
+func _on_mission_accomplished(index):
+	$WorldMap/WorldMap_UI._update_mission(index)
+	print("mission accomplished!")
+
+func _on_progress_bar(percent):
+		$WorldMap/WorldMap_UI.progress_bar(percent)
 
 func _add_event_content(content, tags):
 	$Event_Log_Layer/pnl_event_log.addContent(content, tags)

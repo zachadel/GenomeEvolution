@@ -628,7 +628,13 @@ func damage_gene(dmg := true):
 
 # Returns a string describing the evolution that occurred
 func perform_evolution(major: bool, up: bool) -> String:
-	just_evolved_skill = false;
+	rng = RandomNumberGenerator.new()
+	var val = rng.randi_range(0, 10);
+	if val % 2== 1:
+		just_evolved_skill = false;
+	else:
+		just_evolved_skill = true;
+		print("true")
 	latest_skill_id_evol = "";
 	latest_beh_evol = "";
 	var original_mode = mode;
@@ -751,6 +757,7 @@ func downgrade_to_optimal():
 # Returns a string describing the evolution that occurred
 # eg "major upgrade, improving its Replication ability"
 func evolve_by_name(ev_name: String) -> String:
+	print('evolve by name is called.')
 	if type == "gene":
 		match ev_name:
 			"dead":
