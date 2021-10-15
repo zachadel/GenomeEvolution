@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://Assets/Images/Menus/right_arrow_normal.svg" type="Texture" id=1]
 [ext_resource path="res://Assets/Images/Menus/left_arrow_pressed.svg" type="Texture" id=2]
@@ -17,6 +17,8 @@
 [ext_resource path="res://Assets/Images/genes/Deconstruction.png" type="Texture" id=15]
 [ext_resource path="res://Assets/Images/genes/Replication.png" type="Texture" id=16]
 [ext_resource path="res://Assets/Images/genes/Manipulation.png" type="Texture" id=17]
+[ext_resource path="res://Assets/Images/pngs/SpeechRectLeft.png" type="Texture" id=18]
+[ext_resource path="res://Scenes/MainMenu/TextScript.gd" type="Script" id=19]
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
@@ -27,7 +29,83 @@ use_mipmaps = true
 use_filter = true
 font_data = SubResource( 1 )
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="GDScript" id=3]
+script/source = "extends NinePatchRect
+
+
+# Declare member variables here. Examples:
+# var a = 2
+# var b = \"text\"
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	self.set_texture(null)
+	connect(\"mouse_entered\", self, \"_on_mouse_entered\")
+	connect(\"mouse_exited\", self, \"_on_mouse_exited\")
+	pass # Replace with function body.
+	
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+#func _process(delta):
+#	pass
+
+
+func _on_Replication_mouse_entered():
+	self.set_texture(load(\"res://.import/SpeechRectLeft.png-f6bb2d2ed643c75702148229d976685c.stex\"))
+
+func _on_Replication_mouse_exited():
+	self.set_texture(null)
+
+
+func _on_Component_mouse_entered():
+	self.set_texture(load(\"res://.import/SpeechRectLeft.png-f6bb2d2ed643c75702148229d976685c.stex\"))
+
+
+func _on_Component_mouse_exited():
+	self.set_texture(null)
+
+
+func _on_Deconstruction_mouse_entered():
+	self.set_texture(load(\"res://.import/SpeechRectLeft.png-f6bb2d2ed643c75702148229d976685c.stex\"))
+
+
+func _on_Deconstruction_mouse_exited():
+	self.set_texture(null)
+
+
+func _on_Helper_mouse_entered():
+	self.set_texture(load(\"res://.import/SpeechRectLeft.png-f6bb2d2ed643c75702148229d976685c.stex\"))
+
+
+func _on_Helper_mouse_exited():
+	self.set_texture(null)
+
+
+func _on_Locomotion_mouse_entered():
+	self.set_texture(load(\"res://.import/SpeechRectLeft.png-f6bb2d2ed643c75702148229d976685c.stex\"))
+
+
+func _on_Locomotion_mouse_exited():
+	self.set_texture(null)
+
+
+func _on_Manipulation_mouse_entered():
+	self.set_texture(load(\"res://.import/SpeechRectLeft.png-f6bb2d2ed643c75702148229d976685c.stex\"))
+
+
+func _on_Manipulation_mouse_exited():
+	self.set_texture(null)
+
+
+func _on_Sensing_mouse_entered():
+	self.set_texture(load(\"res://.import/SpeechRectLeft.png-f6bb2d2ed643c75702148229d976685c.stex\"))
+
+
+func _on_Sensing_mouse_exited():
+	self.set_texture(null)
+"
+
+[sub_resource type="DynamicFont" id=4]
 size = 48
 use_mipmaps = true
 use_filter = true
@@ -58,11 +136,12 @@ bbcode_text = "[center][u]Select your Cell![/u][/center]"
 text = "Select your Cell!"
 
 [node name="CellDisplay" parent="VBoxContainer" instance=ExtResource( 6 )]
+margin_bottom = 376.0
 
 [node name="Arrows" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 395.0
+margin_top = 396.0
 margin_right = 399.0
-margin_bottom = 498.0
+margin_bottom = 499.0
 custom_constants/separation = 20
 alignment = 1
 
@@ -89,7 +168,7 @@ texture_hover = ExtResource( 3 )
 stretch_mode = 5
 
 [node name="Genome" type="GridContainer" parent="VBoxContainer"]
-margin_top = 518.0
+margin_top = 519.0
 margin_right = 399.0
 margin_bottom = 853.0
 size_flags_horizontal = 3
@@ -106,7 +185,7 @@ texture = ExtResource( 10 )
 expand = true
 stretch_mode = 5
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Genome/Construction"]
+[node name="Construction" type="TextureRect" parent="VBoxContainer/Genome/Construction"]
 anchor_right = 0.885417
 anchor_bottom = 1.0
 size_flags_horizontal = 3
@@ -118,6 +197,40 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
+[node name="ToolTip" type="NinePatchRect" parent="VBoxContainer/Genome/Construction/Construction"]
+margin_left = 11.89
+margin_top = -197.991
+margin_right = 362.89
+margin_bottom = 30.009
+texture = ExtResource( 18 )
+region_rect = Rect2( 0, 0, 643, 302 )
+script = SubResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/Genome/Construction/Construction/ToolTip"]
+anchor_left = 0.021
+anchor_top = 0.034
+anchor_right = 0.086
+anchor_bottom = 0.035
+margin_left = 0.629
+margin_top = 1.248
+margin_right = 300.814
+margin_bottom = 104.02
+grow_horizontal = 2
+rect_scale = Vector2( 1.1, 1.1 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+tab_size = 7
+text = "ASSEMBLY
+
+
+Assembly genes encode proteins required to build all your other proteins or store resources"
+script = ExtResource( 19 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Construction_Label" type="Label" parent="VBoxContainer/Genome"]
 margin_left = 114.0
 margin_top = 6.0
@@ -125,7 +238,7 @@ margin_right = 181.0
 margin_bottom = 73.0
 size_flags_horizontal = 6
 size_flags_vertical = 6
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 4 )
 text = "x 2"
 align = 1
 valign = 1
@@ -143,7 +256,7 @@ texture = ExtResource( 10 )
 expand = true
 stretch_mode = 5
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Genome/Component"]
+[node name="Component" type="TextureRect" parent="VBoxContainer/Genome/Component"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
@@ -155,6 +268,40 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
+[node name="ToolTip" type="NinePatchRect" parent="VBoxContainer/Genome/Component/Component"]
+margin_left = 11.89
+margin_top = -197.991
+margin_right = 362.89
+margin_bottom = 30.009
+texture = ExtResource( 18 )
+region_rect = Rect2( 0, 0, 643, 302 )
+script = SubResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/Genome/Component/Component/ToolTip"]
+anchor_left = 0.021
+anchor_top = 0.034
+anchor_right = 0.086
+anchor_bottom = 0.035
+margin_left = -0.371
+margin_top = 0.248
+margin_right = 286.814
+margin_bottom = 98.02
+grow_horizontal = 2
+rect_scale = Vector2( 1.1, 1.1 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+tab_size = 7
+text = "COMPONENT
+
+
+Component genes encode proteins that are used as building blocks for your organism."
+script = ExtResource( 19 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Component_Label" type="Label" parent="VBoxContainer/Genome"]
 margin_left = 314.0
 margin_top = 6.0
@@ -162,7 +309,7 @@ margin_right = 381.0
 margin_bottom = 73.0
 size_flags_horizontal = 6
 size_flags_vertical = 6
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 4 )
 text = "x 2"
 align = 1
 valign = 1
@@ -180,7 +327,7 @@ texture = ExtResource( 10 )
 expand = true
 stretch_mode = 5
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Genome/Deconstruction"]
+[node name="Deconstruction" type="TextureRect" parent="VBoxContainer/Genome/Deconstruction"]
 anchor_right = 0.885417
 anchor_bottom = 1.0
 size_flags_horizontal = 3
@@ -192,6 +339,40 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
+[node name="ToolTip" type="NinePatchRect" parent="VBoxContainer/Genome/Deconstruction/Deconstruction"]
+margin_left = 11.89
+margin_top = -197.991
+margin_right = 362.89
+margin_bottom = 30.009
+texture = ExtResource( 18 )
+region_rect = Rect2( 0, 0, 643, 302 )
+script = SubResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/Genome/Deconstruction/Deconstruction/ToolTip"]
+anchor_left = 0.021
+anchor_top = 0.034
+anchor_right = 0.086
+anchor_bottom = 0.035
+margin_left = -0.371
+margin_top = 0.248
+margin_right = 286.814
+margin_bottom = 98.02
+grow_horizontal = 2
+rect_scale = Vector2( 1.1, 1.1 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+tab_size = 7
+text = "DISSASEMBLY
+
+
+Dissasembly genes encode proteins required to break down complex resources into simpler, useable ones."
+script = ExtResource( 19 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Deconstruction_Label" type="Label" parent="VBoxContainer/Genome"]
 margin_left = 114.0
 margin_top = 90.0
@@ -199,7 +380,7 @@ margin_right = 181.0
 margin_bottom = 157.0
 size_flags_horizontal = 6
 size_flags_vertical = 6
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 4 )
 text = "x 2"
 align = 1
 valign = 1
@@ -218,7 +399,7 @@ texture = ExtResource( 10 )
 expand = true
 stretch_mode = 5
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Genome/Helper"]
+[node name="Helper" type="TextureRect" parent="VBoxContainer/Genome/Helper"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
@@ -230,6 +411,39 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
+[node name="ToolTip" type="NinePatchRect" parent="VBoxContainer/Genome/Helper/Helper"]
+margin_left = 11.89
+margin_top = -197.991
+margin_right = 362.89
+margin_bottom = 30.009
+texture = ExtResource( 18 )
+region_rect = Rect2( 0, 0, 643, 302 )
+script = SubResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/Genome/Helper/Helper/ToolTip"]
+anchor_left = 0.021
+anchor_top = 0.034
+anchor_right = 0.086
+anchor_bottom = 0.035
+margin_left = -0.371
+margin_top = 0.248
+margin_right = 286.814
+margin_bottom = 87.02
+grow_horizontal = 2
+rect_scale = Vector2( 1.1, 1.1 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+tab_size = 7
+text = "HELPER
+
+Helper genes encode proteins that help another gene do its job more effectively."
+script = ExtResource( 19 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Helper_Label" type="Label" parent="VBoxContainer/Genome"]
 margin_left = 314.0
 margin_top = 90.0
@@ -237,7 +451,7 @@ margin_right = 381.0
 margin_bottom = 157.0
 size_flags_horizontal = 6
 size_flags_vertical = 6
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 4 )
 text = "x 2"
 align = 1
 valign = 1
@@ -255,7 +469,7 @@ texture = ExtResource( 10 )
 expand = true
 stretch_mode = 5
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Genome/Locomotion"]
+[node name="Locomotion" type="TextureRect" parent="VBoxContainer/Genome/Locomotion"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
@@ -267,6 +481,40 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
+[node name="ToolTip" type="NinePatchRect" parent="VBoxContainer/Genome/Locomotion/Locomotion"]
+margin_left = 11.89
+margin_top = -197.991
+margin_right = 362.89
+margin_bottom = 30.009
+texture = ExtResource( 18 )
+region_rect = Rect2( 0, 0, 643, 302 )
+script = SubResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/Genome/Locomotion/Locomotion/ToolTip"]
+anchor_left = 0.021
+anchor_top = 0.034
+anchor_right = 0.086
+anchor_bottom = 0.035
+margin_left = -0.371
+margin_top = 0.248
+margin_right = 286.814
+margin_bottom = 105.02
+grow_horizontal = 2
+rect_scale = Vector2( 1.1, 1.1 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+tab_size = 7
+text = "MOVEMENT
+
+
+Movement genes encode proteins needed to move your organism around in the world."
+script = ExtResource( 19 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Locomotion_Label" type="Label" parent="VBoxContainer/Genome"]
 margin_left = 114.0
 margin_top = 174.0
@@ -274,7 +522,7 @@ margin_right = 181.0
 margin_bottom = 241.0
 size_flags_horizontal = 6
 size_flags_vertical = 6
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 4 )
 text = "x 2"
 align = 1
 valign = 1
@@ -293,7 +541,7 @@ texture = ExtResource( 10 )
 expand = true
 stretch_mode = 5
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Genome/Manipulation"]
+[node name="Manipulation" type="TextureRect" parent="VBoxContainer/Genome/Manipulation"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
@@ -305,6 +553,40 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
+[node name="ToolTip" type="NinePatchRect" parent="VBoxContainer/Genome/Manipulation/Manipulation"]
+margin_left = 11.89
+margin_top = -197.991
+margin_right = 362.89
+margin_bottom = 30.009
+texture = ExtResource( 18 )
+region_rect = Rect2( 0, 0, 643, 302 )
+script = SubResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/Genome/Manipulation/Manipulation/ToolTip"]
+anchor_left = 0.021
+anchor_top = 0.034
+anchor_right = 0.086
+anchor_bottom = 0.035
+margin_left = -0.371
+margin_top = 0.248
+margin_right = 286.814
+margin_bottom = 93.02
+grow_horizontal = 2
+rect_scale = Vector2( 1.1, 1.1 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+tab_size = 7
+text = "TRANSPORTER
+
+
+Transporter genes encode proteins that help you aqcuire nutrients and get rid of waste."
+script = ExtResource( 19 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Manipulation_Label" type="Label" parent="VBoxContainer/Genome"]
 margin_left = 314.0
 margin_top = 174.0
@@ -312,7 +594,7 @@ margin_right = 381.0
 margin_bottom = 241.0
 size_flags_horizontal = 6
 size_flags_vertical = 6
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 4 )
 text = "x 2"
 align = 1
 valign = 1
@@ -330,7 +612,7 @@ texture = ExtResource( 10 )
 expand = true
 stretch_mode = 5
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Genome/Replication"]
+[node name="Replication" type="TextureRect" parent="VBoxContainer/Genome/Replication"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
@@ -342,6 +624,40 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
+[node name="ToolTip" type="NinePatchRect" parent="VBoxContainer/Genome/Replication/Replication"]
+margin_left = 11.89
+margin_top = -197.991
+margin_right = 362.89
+margin_bottom = 30.009
+texture = ExtResource( 18 )
+region_rect = Rect2( 0, 0, 643, 302 )
+script = SubResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/Genome/Replication/Replication/ToolTip"]
+anchor_left = 0.021
+anchor_top = 0.034
+anchor_right = 0.086
+anchor_bottom = 0.035
+margin_left = -0.371
+margin_top = 0.248
+margin_right = 286.814
+margin_bottom = 92.02
+grow_horizontal = 2
+rect_scale = Vector2( 1.1, 1.1 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+tab_size = 7
+text = "REPLICATION
+
+
+Replication genes encode proteins needed to copy (replicate) your genome or repair it when it is broken."
+script = ExtResource( 19 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Replication_Label" type="Label" parent="VBoxContainer/Genome"]
 margin_left = 114.0
 margin_top = 258.0
@@ -349,7 +665,7 @@ margin_right = 181.0
 margin_bottom = 325.0
 size_flags_horizontal = 6
 size_flags_vertical = 6
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 4 )
 text = "x 2"
 align = 1
 valign = 1
@@ -368,7 +684,7 @@ texture = ExtResource( 10 )
 expand = true
 stretch_mode = 5
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Genome/Sensing"]
+[node name="Sensing" type="TextureRect" parent="VBoxContainer/Genome/Sensing"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
@@ -380,6 +696,37 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
+[node name="ToolTip" type="NinePatchRect" parent="VBoxContainer/Genome/Sensing/Sensing"]
+margin_left = 11.89
+margin_top = -197.991
+margin_right = 362.89
+margin_bottom = 30.009
+texture = ExtResource( 18 )
+region_rect = Rect2( 0, 0, 643, 302 )
+script = SubResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/Genome/Sensing/Sensing/ToolTip"]
+anchor_left = 0.021
+anchor_top = 0.034
+anchor_right = 0.086
+anchor_bottom = 0.035
+margin_left = -0.371
+margin_top = 0.248
+margin_right = 286.814
+margin_bottom = 92.02
+grow_horizontal = 2
+rect_scale = Vector2( 1.1, 1.1 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+tab_size = 7
+text = "SENSING
+
+
+Sensing genes encode proteins that sense resources or dangers in either the world or inside your organism."
+script = ExtResource( 19 )
+
 [node name="Sensing_Label" type="Label" parent="VBoxContainer/Genome"]
 margin_left = 314.0
 margin_top = 258.0
@@ -387,12 +734,45 @@ margin_right = 381.0
 margin_bottom = 325.0
 size_flags_horizontal = 6
 size_flags_vertical = 6
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 4 )
 text = "x 2"
 align = 1
 valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
 [connection signal="pressed" from="VBoxContainer/Arrows/LeftArrow" to="." method="_on_LeftArrow_pressed"]
 [connection signal="pressed" from="VBoxContainer/Arrows/RightArrow" to="." method="_on_RightArrow_pressed"]
+[connection signal="mouse_entered" from="VBoxContainer/Genome/Construction/Construction" to="VBoxContainer/Genome/Construction/Construction/ToolTip/RichTextLabel" method="_on_Replication_mouse_entered"]
+[connection signal="mouse_entered" from="VBoxContainer/Genome/Construction/Construction" to="VBoxContainer/Genome/Construction/Construction/ToolTip" method="_on_Replication_mouse_entered"]
+[connection signal="mouse_exited" from="VBoxContainer/Genome/Construction/Construction" to="VBoxContainer/Genome/Construction/Construction/ToolTip/RichTextLabel" method="_on_Replication_mouse_exited"]
+[connection signal="mouse_exited" from="VBoxContainer/Genome/Construction/Construction" to="VBoxContainer/Genome/Construction/Construction/ToolTip" method="_on_Replication_mouse_exited"]
+[connection signal="mouse_entered" from="VBoxContainer/Genome/Component/Component" to="VBoxContainer/Genome/Component/Component/ToolTip/RichTextLabel" method="_on_Component_mouse_entered"]
+[connection signal="mouse_entered" from="VBoxContainer/Genome/Component/Component" to="VBoxContainer/Genome/Component/Component/ToolTip" method="_on_Component_mouse_entered"]
+[connection signal="mouse_exited" from="VBoxContainer/Genome/Component/Component" to="VBoxContainer/Genome/Component/Component/ToolTip/RichTextLabel" method="_on_Component_mouse_exited"]
+[connection signal="mouse_exited" from="VBoxContainer/Genome/Component/Component" to="VBoxContainer/Genome/Component/Component/ToolTip" method="_on_Component_mouse_exited"]
+[connection signal="mouse_entered" from="VBoxContainer/Genome/Deconstruction/Deconstruction" to="VBoxContainer/Genome/Deconstruction/Deconstruction/ToolTip/RichTextLabel" method="_on_Deconstruction_mouse_entered"]
+[connection signal="mouse_entered" from="VBoxContainer/Genome/Deconstruction/Deconstruction" to="VBoxContainer/Genome/Deconstruction/Deconstruction/ToolTip" method="_on_Deconstruction_mouse_entered"]
+[connection signal="mouse_exited" from="VBoxContainer/Genome/Deconstruction/Deconstruction" to="VBoxContainer/Genome/Deconstruction/Deconstruction/ToolTip/RichTextLabel" method="_on_Deconstruction_mouse_exited"]
+[connection signal="mouse_exited" from="VBoxContainer/Genome/Deconstruction/Deconstruction" to="VBoxContainer/Genome/Deconstruction/Deconstruction/ToolTip" method="_on_Deconstruction_mouse_exited"]
+[connection signal="mouse_entered" from="VBoxContainer/Genome/Helper/Helper" to="VBoxContainer/Genome/Helper/Helper/ToolTip/RichTextLabel" method="_on_Helper_mouse_entered"]
+[connection signal="mouse_entered" from="VBoxContainer/Genome/Helper/Helper" to="VBoxContainer/Genome/Helper/Helper/ToolTip" method="_on_Helper_mouse_entered"]
+[connection signal="mouse_exited" from="VBoxContainer/Genome/Helper/Helper" to="VBoxContainer/Genome/Helper/Helper/ToolTip/RichTextLabel" method="_on_Helper_mouse_exited"]
+[connection signal="mouse_exited" from="VBoxContainer/Genome/Helper/Helper" to="VBoxContainer/Genome/Helper/Helper/ToolTip" method="_on_Helper_mouse_exited"]
+[connection signal="mouse_entered" from="VBoxContainer/Genome/Locomotion/Locomotion" to="VBoxContainer/Genome/Locomotion/Locomotion/ToolTip/RichTextLabel" method="_on_Locomotion_mouse_entered"]
+[connection signal="mouse_entered" from="VBoxContainer/Genome/Locomotion/Locomotion" to="VBoxContainer/Genome/Locomotion/Locomotion/ToolTip" method="_on_Locomotion_mouse_entered"]
+[connection signal="mouse_exited" from="VBoxContainer/Genome/Locomotion/Locomotion" to="VBoxContainer/Genome/Locomotion/Locomotion/ToolTip/RichTextLabel" method="_on_Locomotion_mouse_exited"]
+[connection signal="mouse_exited" from="VBoxContainer/Genome/Locomotion/Locomotion" to="VBoxContainer/Genome/Locomotion/Locomotion/ToolTip" method="_on_Locomotion_mouse_exited"]
+[connection signal="mouse_entered" from="VBoxContainer/Genome/Manipulation/Manipulation" to="VBoxContainer/Genome/Manipulation/Manipulation/ToolTip/RichTextLabel" method="_on_Manipulation_mouse_entered"]
+[connection signal="mouse_entered" from="VBoxContainer/Genome/Manipulation/Manipulation" to="VBoxContainer/Genome/Manipulation/Manipulation/ToolTip" method="_on_Manipulation_mouse_entered"]
+[connection signal="mouse_exited" from="VBoxContainer/Genome/Manipulation/Manipulation" to="VBoxContainer/Genome/Manipulation/Manipulation/ToolTip/RichTextLabel" method="_on_Manipulation_mouse_exited"]
+[connection signal="mouse_exited" from="VBoxContainer/Genome/Manipulation/Manipulation" to="VBoxContainer/Genome/Manipulation/Manipulation/ToolTip" method="_on_Manipulation_mouse_exited"]
+[connection signal="mouse_entered" from="VBoxContainer/Genome/Replication/Replication" to="VBoxContainer/Genome/Replication/Replication/ToolTip/RichTextLabel" method="_on_Replication_mouse_entered"]
+[connection signal="mouse_entered" from="VBoxContainer/Genome/Replication/Replication" to="VBoxContainer/Genome/Replication/Replication/ToolTip" method="_on_Replication_mouse_entered"]
+[connection signal="mouse_exited" from="VBoxContainer/Genome/Replication/Replication" to="VBoxContainer/Genome/Replication/Replication/ToolTip/RichTextLabel" method="_on_Replication_mouse_exited"]
+[connection signal="mouse_exited" from="VBoxContainer/Genome/Replication/Replication" to="VBoxContainer/Genome/Replication/Replication/ToolTip" method="_on_Replication_mouse_exited"]
+[connection signal="mouse_entered" from="VBoxContainer/Genome/Sensing/Sensing" to="VBoxContainer/Genome/Sensing/Sensing/ToolTip/RichTextLabel" method="_on_Sensing_mouse_entered"]
+[connection signal="mouse_entered" from="VBoxContainer/Genome/Sensing/Sensing" to="VBoxContainer/Genome/Sensing/Sensing/ToolTip" method="_on_Sensing_mouse_entered"]
+[connection signal="mouse_exited" from="VBoxContainer/Genome/Sensing/Sensing" to="VBoxContainer/Genome/Sensing/Sensing/ToolTip/RichTextLabel" method="_on_Sensing_mouse_exited"]
+[connection signal="mouse_exited" from="VBoxContainer/Genome/Sensing/Sensing" to="VBoxContainer/Genome/Sensing/Sensing/ToolTip" method="_on_Sensing_mouse_exited"]

@@ -1030,8 +1030,6 @@ margin_left = 1282.0
 margin_top = 756.0
 margin_right = 1423.0
 margin_bottom = 891.0
-num = 0
-show_change = true
 
 [node name="lnum_progeny" parent="." instance=ExtResource( 17 )]
 visible = false
@@ -1039,8 +1037,6 @@ margin_left = 1337.14
 margin_top = 772.178
 margin_right = 1437.14
 margin_bottom = 872.178
-num = 0
-show_change = true
 
 [node name="EnergyBar" parent="." instance=ExtResource( 14 )]
 visible = false
@@ -2030,6 +2026,7 @@ margin_left = -400.0
 margin_top = -250.0
 margin_right = 400.0
 margin_bottom = 250.0
+
 [connection signal="bandage_msg" from="Organism" to="." method="_on_Organism_bandage_msg"]
 [connection signal="clear_gap_msg" from="Organism" to="." method="_on_Organism_clear_gap_msg"]
 [connection signal="cmsm_changed" from="Organism" to="Border1/ChromosomeStatus" method="update"]

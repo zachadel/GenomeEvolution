@@ -2,7 +2,7 @@ extends Panel
 
 var result = {}
 var response = 0;
-var token = Actions.env['token']
+var 	token = Actions.env['token']
 
 func set_result(res):
 	result = res
