@@ -334,14 +334,17 @@ func _on_Organism_gap_close_msg(text):
 	var t = "\n%s\n" % text;
 	_add_justnow_bbcode(t);
 	$WarningPopUp/Label.text = t
+	#$WarningPopUp.visible = true;
 	#$RepairTabs/pnl_repair_choices/vbox/scroll/RTLRepairResult.text += t;
 	emit_signal("add_card_event_log", t,{})
 	
 func _on_show_warning():
 	$WarningPopUp.visible = true
+	print("here")
 
 func _on_hide_warning():
 	$WarningPopUp.visible = false
+	print("Hide warning called")
 	
 
 
@@ -360,6 +363,7 @@ func _on_Organism_updated_gaps(gaps_exist, gap_text):
 	has_gaps = gaps_exist;
 	if !$RepairTabs/pnl_repair_choices/vbox/LblInstr.visible:
 		upd_gap_select_instruction_visibility();
+		print("it got called")
 		_on_Organism_gap_close_msg(gap_text);
 	check_if_ready();
 

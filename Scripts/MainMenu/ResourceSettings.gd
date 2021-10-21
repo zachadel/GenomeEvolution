@@ -14,7 +14,7 @@ func _ready():
 		settings[i] = {}
 		
 		var resource_name = Settings.settings["resources"].keys()[i]
-		print("Resource name: " + str(resource_name))
+		#print("Resource name: " + str(resource_name))
 		settings[i]["biomes"] = Settings.settings["resources"][resource_name]["biomes"]
 		settings[i]["scale"] = Settings.settings["resources"][resource_name]["scale"]
 		settings[i]["bias"] = Settings.settings["resources"][resource_name]["bias"]

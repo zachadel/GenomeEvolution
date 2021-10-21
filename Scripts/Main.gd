@@ -50,7 +50,7 @@ func _ready():
 	console.set_world_map(world_map)
 	console.set_organism(card_table.orgn)
 	console.set_card_table(card_table)
-	print("unlock_buttons: " + str(Settings.unlock_buttons))
+	#print("unlock_buttons: " + str(Settings.unlock_buttons))
 	if Settings.unlock_buttons:
 		$Canvas_CardTable/CardTable.enable_serialized_buttons()
 	#this_settings.connect("unlock_all_buttons", self, "_on_unlock_all_buttons")

@@ -505,6 +505,7 @@ func gain_specific_skill(behavior: String, skill_id: String) -> void:
 
 func evolve_skill(behave_key: String, gain := true) -> void:
 	if gain:
+		print("is gain")
 		STATS.increment_num_skills()
 		var new_skill_id := Skills.get_random_skill_id(behave_key, get_skill_counts().keys());
 		if !new_skill_id.empty():
@@ -540,6 +541,7 @@ func evolve_new_behavior(gain: bool, behavior_key := "") -> void:
 	just_evolved_skill = false;
 	if ess_behavior[behavior_key] > 0 && randf() <= get_skill_evolve_chance():
 		evolve_skill(behavior_key, gain);
+		print("gain")
 	
 	# just_evolved_skill is used because sometimes evolve_skill() fails
 	# for non-obvious reasons (eg no new skills available to gain)
@@ -628,13 +630,7 @@ func damage_gene(dmg := true):
 
 # Returns a string describing the evolution that occurred
 func perform_evolution(major: bool, up: bool) -> String:
-	rng = RandomNumberGenerator.new()
-	var val = rng.randi_range(0, 10);
-	if val % 2== 1:
-		just_evolved_skill = false;
-	else:
-		just_evolved_skill = true;
-		print("true")
+	just_evolved_skill = false;
 	latest_skill_id_evol = "";
 	latest_beh_evol = "";
 	var original_mode = mode;
@@ -757,7 +753,7 @@ func downgrade_to_optimal():
 # Returns a string describing the evolution that occurred
 # eg "major upgrade, improving its Replication ability"
 func evolve_by_name(ev_name: String) -> String:
-	print('evolve by name is called.')
+	print('evolve by name is called. with String: ' + ev_name)
 	if type == "gene":
 		match ev_name:
 			"dead":

@@ -26,7 +26,7 @@ func _ready():
 	for resource in Settings.settings["resources"].keys():
 		tile_textures[resource] = {}
 		tile_textures[resource]["texture"] = load(Settings.settings["resources"][resource]['tile_image'])
-		print("this one; " + str(resource))
+		#print("this one; " + str(resource))
 		tile_textures[resource]["observed"] = false
 		
 		tile_set.create_tile(i)
