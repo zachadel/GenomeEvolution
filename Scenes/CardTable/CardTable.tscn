@@ -650,6 +650,22 @@ margin_right = -4.0
 margin_bottom = -4.0
 
 [node name="LblInstr" type="Label" parent="RepairTabs/pnl_rem_sides"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "
+
+Click a gene on either end of a break to remove the gene.
+
+The amount you remove is based on your Disassembly skill.
+You have %d removals remaining."
+align = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LblInstr" type="Label" parent="RepairTabs/pnl_rem_sides"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "
@@ -673,17 +689,10 @@ margin_top = 32.0
 margin_right = -4.0
 margin_bottom = -4.0
 
-[node name="LblInstr" type="Label" parent="RepairTabs/pnl_rem_sides"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "
-
-Click a gene on either end of a break to remove the gene.
-
-The amount you remove is based on your Disassembly skill.
-You have %d removals remaining."
+[node name="LblInstr" type="Label" parent="RepairTabs/pnl_rem_dmg"]
+margin_right = 689.0
+margin_bottom = 121.0
 align = 1
-autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
