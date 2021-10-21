@@ -56,17 +56,17 @@ func load_setting(setting_type: String, use_user_settings_if_possible: bool = tr
 			
 		else:
 			#load user settings
-			print("it's ok, " + str(setting_type))
+			#print("it's ok, " + str(setting_type))
 			if use_user_settings_if_possible:
-				print("user settings possible")
+				#print("user settings possible")
 				var config = ConfigFile.new()
 				var err = config.load(DEFAULT_PATH + FILE_NAMES[setting_type])
-				print(USER_PATH)
-				print(FILE_NAMES[setting_type])
+				#print(USER_PATH)
+				#print(FILE_NAMES[setting_type])
 				#load user settings if you can, if not load default
 				if err == OK:
 					for section in config.get_sections():
-						print("section: " + str(section))
+						#print("section: " + str(section))
 						settings[setting_type][section] = {}
 						for key in config.get_section_keys(section):
 							settings[setting_type][section][key] = config.get_value(section, key)
@@ -74,8 +74,8 @@ func load_setting(setting_type: String, use_user_settings_if_possible: bool = tr
 				elif err == ERR_FILE_NOT_FOUND:
 					config = ConfigFile.new()
 					err = config.load(DEFAULT_PATH + FILE_NAMES[setting_type])
-					print("default path: " + str(DEFAULT_PATH))
-					print("file names: " + str(FILE_NAMES[setting_type]))
+					#print("default path: " + str(DEFAULT_PATH))
+					#print("file names: " + str(FILE_NAMES[setting_type]))
 					if err == OK:
 						for section in config.get_sections():
 							settings[setting_type][section] = {}
@@ -374,7 +374,9 @@ func disable_genome_damage() -> bool:
 	return settings["ingame_settings"]["disable_genome_damage"]["final_value"]
 
 func skill_evolve_chance() -> float:
-	return settings["ingame_settings"]["skill_evolve_chance"]["final_value"]
+	#So, the higher the value. the more likely it will return a new skill
+	return 0.3
+	#return settings["ingame_settings"]["skill_evolve_chance"]["final_value"]
 
 func component_curve_exponent() -> float:
 	return settings["ingame_settings"]["component_curve_exponent"]["final_value"]

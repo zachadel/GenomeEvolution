@@ -95,8 +95,11 @@ func get_tooltip_data():
 	return ["set_test_ttip", ["res://Assets/Images/Tiles/Resources/ironbar_icon.png"]]
 	
 func hide():
+	print("get children: " + str(get_children()))
 	for node in get_children():
-		node.hide()
+		print("node name: "+node.get_class())
+		if not node.get_class() == "Timer":
+			node.hide()
 
 func _unhandled_input(event):
 	#if event.is_action_pressed("mouse_left"):
