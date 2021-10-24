@@ -9,6 +9,7 @@ signal card_event_log;
 signal add_card_event_log(content, tags);
 signal show_pop_quiz;
 
+
 onready var justnow_label : RichTextLabel = $ctl_justnow/lbl_justnow;
 onready var orgn = $Organism;
 onready var nxt_btn = $button_grid/btn_nxt;
@@ -30,7 +31,7 @@ var has_gaps = false;
 var wait_on_anim = false;
 var wait_on_select = false;
 var quiz_counter = 0;
-
+var show_popUp = true;
 var disable_turn_adv = true
 
 func _ready():
@@ -43,13 +44,13 @@ func _ready():
 	
 	connect("next_turn", orgn, "adv_turn");
 	orgn.connect("energy_changed", energy_bar, "_on_Organism_energy_changed")
+	$RepairTabs.set_tab_title(0, "Fix Genes"); #Fix Damaged Genes
+	$RepairTabs.set_tab_title(1, "Repair Breaks");
 	
-	$RepairTabs.set_tab_title(0, "Repair Breaks");
-	$RepairTabs.set_tab_title(1, "Fix Genes"); #Fix Damaged Genes
 	$RepairTabs.set_tab_title(2, "Trim Genes from Breaks");
 	$RepairTabs.set_tab_title(3, "Trim Damaged Genes"); #Trim Damaged Genes
 	#$RepairTabs.set_tab_icon(0, load("res://Assets/Images/Menus/Q_s.png"))
-	$RepairTabs.set_tab_icon(1, load("res://Assets/Images/Menus/Q_s.png"))
+	$RepairTabs.set_tab_icon(0, load("res://Assets/Images/Menus/Q_s.png"))
 	$EnergyBar.MAX_ENERGY = orgn.MAX_ENERGY
 	#$statsScreen.visible = false;
 
@@ -264,12 +265,12 @@ func show_repair_tab(tab_idx: int, upd_locks_disp := true) -> void:
 	orgn.clear_repair_elm_selections();
 	show_repair_types(false);
 	match tab_idx:
-		0:
+		1:
 			orgn.highlight_gap_choices();
-		1, 2:
+		0, 2:
 			if orgn.total_scissors_left > 0:
 				continue;
-		1:
+		0:
 			orgn.highlight_dmg_genes("bandage");
 		2:
 			if orgn.get_behavior_profile().has_skill("trim_gap_genes"):
@@ -333,14 +334,17 @@ func _on_Organism_gap_close_msg(text):
 	var t = "\n%s\n" % text;
 	_add_justnow_bbcode(t);
 	$WarningPopUp/Label.text = t
+	#$WarningPopUp.visible = true;
 	#$RepairTabs/pnl_repair_choices/vbox/scroll/RTLRepairResult.text += t;
 	emit_signal("add_card_event_log", t,{})
 	
 func _on_show_warning():
 	$WarningPopUp.visible = true
+	print("here")
 
 func _on_hide_warning():
 	$WarningPopUp.visible = false
+	print("Hide warning called")
 	
 
 
@@ -359,6 +363,7 @@ func _on_Organism_updated_gaps(gaps_exist, gap_text):
 	has_gaps = gaps_exist;
 	if !$RepairTabs/pnl_repair_choices/vbox/LblInstr.visible:
 		upd_gap_select_instruction_visibility();
+		print("it got called")
 		_on_Organism_gap_close_msg(gap_text);
 	check_if_ready();
 
@@ -638,6 +643,13 @@ func show_death_screen():
 func _on_Organism_finished_replication():
 	reset_status_bar();
 	status_bar.visible = true;
+
+func _unhandled_input(event):
+	if event.is_action_pressed("mouse_left"):
+		$popUp/inputTimer.set_timer_process_mode(20)
+		$popUp/inputTimer.start()
+	pass
+
 
 func refresh_visible_options():
 	if ($RepairTabs/pnl_repair_choices/hsplit.visible):
@@ -1047,7 +1059,7 @@ func _on_map_image_button_mouse_exited():
 
 func _on_lock4_gui_input(event):
 	if (event is InputEventMouseButton) and event.pressed : #ok, so here is where I will change the scene from cardtable to my slides. 
-		print("hello")
+		#print("hello")
 		var slides = load("res://Scenes/CardTable/fix_damaged_gene_slides.tscn").instance()
 		add_child(slides)
 		yield(slides, "exit_fix_damaged_genes_slides")
@@ -1058,7 +1070,7 @@ func _on_lock4_gui_input(event):
 
 func _on_lock1_gui_input(event):
 	if (event is InputEventMouseButton) and event.pressed:
-		print("boop1")
+		#print("boop1")
 		var slides = load("res://Scenes/CardTable/join_ends_slides.tscn").instance()
 		add_child(slides)
 		yield(slides, "exit_join_ends_slides")
@@ -1069,7 +1081,7 @@ func _on_lock1_gui_input(event):
 
 func _on_lock2_gui_input(event):
 	if (event is InputEventMouseButton) and event.pressed:
-		print("boop2")
+		#print("boop2")
 		var slides = load("res://Scenes/CardTable/copy_repair_slides.tscn").instance()
 		add_child(slides)
 		yield(slides, "exit_copy_repair_slides")
@@ -1080,7 +1092,7 @@ func _on_lock2_gui_input(event):
 
 func _on_lock3_gui_input(event):
 	if (event is InputEventMouseButton) and event.pressed:
-		print('boop3')
+		#print('boop3')
 		var slides = load("res://Scenes/CardTable/collapse_dupes_slides.tscn").instance()
 		add_child(slides)
 		yield(slides, "exit_collapse_dupes_slides")
@@ -1091,7 +1103,7 @@ func _on_lock3_gui_input(event):
 
 func _on_q_s2_gui_input(event):
 	if (event is InputEventMouseButton) and event.pressed:
-		print("boop4")
+		#print("boop4")
 		var slides = load("res://Scenes/CardTable/fix_damaged_gene_slides.tscn").instance()
 		add_child(slides)
 		yield(slides, "exit_fix_damaged_genes_slides")
@@ -1162,4 +1174,66 @@ func _on_go_to_survey_pressed():
 
 func _on_btn_bugreport_toggled(button_pressed):
 	
+	pass # Replace with function body.
+
+
+func _on_inputTimer_timeout():
+	print("Timer ran out")
+	if show_popUp:
+		$popUp.visible = true;
+	pass # Replace with function body.
+
+
+func _on_Exit_pop_pressed():
+	$popUp.visible = false;
+	pass # Replace with function body.
+
+
+func _on_CheckBox_pressed():
+	show_popUp = false
+	pass # Replace with function body.
+
+
+func _on_popUp_report_pressed():
+	OS.shell_open("https://qfreeaccountssjc1.az1.qualtrics.com/jfe/form/SV_1SPZSQMgUxFOwrI")
+	pass # Replace with function body.
+
+
+func _on_slide_1_gui_input(event):
+	if (event is InputEventMouseButton) and event.pressed:
+		var slides = load("res://Scenes/CardTable/fix_damaged_gene_slides.tscn").instance()
+		add_child(slides)
+		yield(slides, "exit_fix_damaged_genes_slides")
+		remove_child(slides)
+		slides.queue_free()
+	pass # Replace with function body.
+
+
+func _on_slide_2_gui_input(event):
+	if (event is InputEventMouseButton) and event.pressed:
+		var slides = load("res://Scenes/CardTable/join_ends_slides.tscn").instance()
+		add_child(slides)
+		yield(slides, "exit_join_ends_slides")
+		remove_child(slides)
+		slides.queue_free()
+	pass # Replace with function body.
+
+
+func _on_slide_3_gui_input(event):
+	if (event is InputEventMouseButton) and event.pressed:
+		var slides = load("res://Scenes/CardTable/copy_repair_slides.tscn").instance()
+		add_child(slides)
+		yield(slides, "exit_copy_repair_slides")
+		remove_child(slides)
+		slides.queue_free()
+	pass # Replace with function body.
+
+
+func _on_slide_4_gui_input(event):
+	if (event is InputEventMouseButton) and event.pressed:
+		var slides = load("res://Scenes/CardTable/collapse_dupes_slides.tscn").instance()
+		add_child(slides)
+		yield(slides, "exit_collapse_dupes_slides")
+		remove_child(slides)
+		slides.queue_free()
 	pass # Replace with function body.

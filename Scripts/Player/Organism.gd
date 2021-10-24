@@ -204,7 +204,7 @@ func _ready():
 func populate_cfp_resources_dict():
 	for resource_type in Game.resource_groups:
 		if resource_type in Game.CFP_RESOURCES:
-			print("resources: " + str(resource_type))
+			#print("resources: " + str(resource_type))
 			for tier in Game.resource_groups[resource_type]:
 				var resource_class = tier + Game.SEPARATOR + resource_type
 				cfp_resources[resource_class] = {}
@@ -989,6 +989,7 @@ func make_repair_choices(gap, repair_type: String):
 					gene_selection.append(gene);
 					gene.disable(false);
 				yield(self, "gene_clicked");
+				print("1")
 				emit_signal("close_warning")
 				sel_size_gene = get_gene_selection();
 				for g in gene_selection:
@@ -1012,6 +1013,7 @@ func make_repair_choices(gap, repair_type: String):
 			var right_choice_opts = blocks_dict[left_idx][choice_info["size"]];
 			if (is_ai || right_choice_opts.size() == 1):
 				choice_info["right"] = gap_cmsm.get_child(right_choice_opts[0]);
+				print("2")
 				emit_signal("close_warning")
 			else:
 				for i in right_choice_opts:
@@ -1019,6 +1021,7 @@ func make_repair_choices(gap, repair_type: String):
 					gene_selection.append(gene);
 					gene.disable(false);
 				yield(self, "gene_clicked");
+				print("3")
 				emit_signal("close_warning")
 				choice_info["right"] = get_gene_selection();
 				for g in gene_selection:
@@ -1045,6 +1048,7 @@ func make_repair_choices(gap, repair_type: String):
 			gene_selection.clear();
 			if (is_ai || pairs_dict.size() == 1):
 				choice_info["left"] = template_cmsm.get_child(pairs_dict.keys()[0]);
+				print("4")
 				emit_signal("close_warning")
 			else:
 				for k in pairs_dict.keys():
@@ -1052,6 +1056,7 @@ func make_repair_choices(gap, repair_type: String):
 					gene_selection.append(gene);
 					gene.disable(false);
 				yield(self, "gene_clicked");
+				print("5")
 				emit_signal("close_warning")
 				choice_info["left"] = get_gene_selection();
 				for g in gene_selection:
@@ -1066,6 +1071,7 @@ func make_repair_choices(gap, repair_type: String):
 			var right_idxs = pairs_dict[choice_info["left"].get_index()];
 			if (is_ai || right_idxs.size() == 1):
 				choice_info["right"] = template_cmsm.get_child(right_idxs[0]);
+				print("6")
 				emit_signal("close_warning")
 			else:
 				for i in right_idxs:
@@ -1073,6 +1079,7 @@ func make_repair_choices(gap, repair_type: String):
 					gene_selection.append(gene);
 					gene.disable(false);
 				yield(self, "gene_clicked");
+				print("7")
 				emit_signal("close_warning")
 				choice_info["right"] = get_gene_selection();
 				for g in gene_selection:
@@ -1082,7 +1089,8 @@ func make_repair_choices(gap, repair_type: String):
 				return false;
 	if perform_repair:
 		repair_gap(gap, repair_type, choice_info);
-	emit_signal("close_warning")
+	print("8")
+	#emit_signal("close_warning")
 
 var repair_canceled = false;
 func repair_gap(gap, repair_type, choice_info = {}):
@@ -1205,6 +1213,7 @@ func repair_gap(gap, repair_type, choice_info = {}):
 								gene_selection.append(gene_selection[1]);
 						else:
 							yield(self, "gene_clicked");
+							print("9")
 							emit_signal("close_warning")
 							
 						# Yield also ended when a gap is deselected and gene_selection is cleared
@@ -1303,7 +1312,10 @@ func repair_gap(gap, repair_type, choice_info = {}):
 						keep_gene.merge_with(rem_gene);
 						cmsms.remove_elm(rem_gene, false);
 						STATS.increment_transposonFuse()
+						
 						emit_signal("gap_close_msg", "Joined ends for the gap at %d, %d; the %s and %s genes merged." % (gap_pos_disp+ [left_id, right_id]));
+						emit_signal("show_warning")
+						
 					else:
 						repair_roll_storage["join_ends"][gap] = 0;
 				match (repair_roll_storage["join_ends"][gap]):
@@ -1340,7 +1352,9 @@ func repair_gap(gap, repair_type, choice_info = {}):
 							else:
 								gene_selection.append(gene_selection[1]);
 						else:
+							print("yielding")
 							yield(self, "gene_clicked");
+							print("yielded")
 							emit_signal("close_warning")
 							
 						# Yield also ended when a gap is deselected and gene_selection is cleared
@@ -1871,6 +1885,7 @@ func replicate(idx):
 				alive_arr.append(true)
 				alive_arr.append(true)
 				alive_arr.append(true)
+				print("11")
 				emit_signal("close_warning")
 				cmsms.move_cmsm(keep_idx, 0);
 				if not check_cmsm_(0):
@@ -1970,6 +1985,7 @@ func iterate_genes():
 	STATS.compare_maxTE()
 
 func adv_turn(round_num, turn_idx):
+	print("12")
 	emit_signal("close_warning")
 	click_mode = "";
 	cmsms.highlight_genes(gene_selection, false);

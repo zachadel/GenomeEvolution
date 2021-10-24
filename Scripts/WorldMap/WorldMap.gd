@@ -125,7 +125,7 @@ func greedy_behavior(pos, obs_radius): #returns position
 	#
 	var counter = 0
 	for i in range(len(tiles)-1, 0, -1):
-		print("I: " + str(i))
+		#print("I: " + str(i))
 		for j in range(17):
 			if get_tile_at_pos(tiles[i])["resources"][j] > 2:
 				counter += 1
@@ -1814,7 +1814,6 @@ func _unhandled_input(event):
 	
 	if is_visible_in_tree():
 		if event.is_action_pressed("mouse_left"):
-			
 			var past_energy = ui.irc.energy_bar.energy
 			debug_bool = true
 			if input_elements["move"] and move_enabled:
@@ -2169,7 +2168,7 @@ func hide_tiles(center_tile, observation_radius):
 
 			$ObscurityMap.set_cellv(temp_vec, $ObscurityMap.VISION.HIDDEN)
 	if Settings.fog == true:
-		print("test")
+		#print("test")
 		if len(PROGENY.progeny_created) > 0:
 			print("me")
 			for i in PROGENY.progeny_created:
@@ -2440,3 +2439,6 @@ func _on_Notifications_notification_dismissed():
 		_on_WorldMap_UI_end_map_pressed()
 		
 	pass # Replace with function body.
+
+
+

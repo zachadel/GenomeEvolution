@@ -34,8 +34,12 @@ const DEFAULT_BUTTON_TEXT = {
 	
 const REPAIR_DEFAULT_COLOR = Color(0, 0.109804, 1)
 const REPAIR_DANGER_COLOR = Color.red
-
+var rng = RandomNumberGenerator.new()
 var test_cases = ["simple_carbs", "simple_fats", "simple_proteins", "complex_carbs", "complex_fats", "complex_proteins", "carbs_0", "carbs_1", "fats_0", "fats_1", "proteins_0", "proteins_1"]
+var mission_toggle = 0;
+var missions =["Go 5 spaces", "Heal 5 Genes", "Perform 5 Join Ends on the chromosome.", "Trim 5 Genes from breaks", "Perform 5 Collapse Duplicates on the chromosome.", "Perform 5 Copy Repairs on the chromosome."];
+var completed_missions=[];
+var curr_index = 0;
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -44,6 +48,45 @@ func _ready():
 	check_genome_button.text = DEFAULT_BUTTON_TEXT[BUTTONS.CHECK]
 	end_turn_button.text = DEFAULT_BUTTON_TEXT[BUTTONS.END]
 	
+	curr_index = rng.randi_range(0,len(missions))
+	STATS.start_mission(curr_index)
+	$MissionControl/greenLight/Label.text = "Current Mission: "+missions[curr_index]
+	#$popUp.visible = false;
+	
+func progress_bar(percent):
+	#print("percent: " + str(percent))
+	$MissionControl/greenLight/ProgressBar.value = percent * 100
+	pass
+
+func _update_mission(index):
+	print("running")
+	
+	var length_mission = len(missions)
+	var new_index = rng.randi_range(0, length_mission)
+	print("new index: " + str(new_index))
+	var new_prompt = missions[new_index]
+	var curr_mission = missions[index]
+	$MissionControl/greenLight.color = Color(0.08,0.8,.15,1)
+	var t = Timer.new()
+	t.set_wait_time(3)
+	t.set_one_shot(true)
+	self.add_child(t)
+	t.start()
+	yield(t, "timeout")
+	t.queue_free()
+	STATS.start_mission(new_index)
+	$MissionControl/greenLight/ProgressBar.value = 0
+	$MissionControl/greenLight.color = Color(12,219,39,0)
+	$MissionControl/greenLight/Label.text = "Current Mission: "+ new_prompt
+	print("index: "+ str(index))
+	completed_missions.append(curr_mission);
+	missions.remove(curr_mission)
+	curr_index = new_index
+	var completed_list = "Completed Missions: \n"
+	for i in completed_missions:
+		completed_list += i +"\n";
+	$MissionControl/completed/Completed_list.text = completed_list
+	pass
 	
 func set_organism(org):
 	irc.set_organism(org)
@@ -52,9 +95,17 @@ func get_tooltip_data():
 	return ["set_test_ttip", ["res://Assets/Images/Tiles/Resources/ironbar_icon.png"]]
 	
 func hide():
+	print("get children: " + str(get_children()))
 	for node in get_children():
-		node.hide()
-	
+		print("node name: "+node.get_class())
+		if not node.get_class() == "Timer":
+			node.hide()
+
+func _unhandled_input(event):
+	#if event.is_action_pressed("mouse_left"):
+		#$popUp/inputTimer.set_timer_process_mode(30)
+		#$popUp/inputTimer.start()
+	pass
 func show():
 	for node in get_children():
 		node.show()
@@ -324,4 +375,28 @@ func _on_map_q_mark_gui_input(event):
 		remove_child(slides)
 		slides.queue_free()
 		$InternalPanel.visible=true
+	pass # Replace with function body.
+
+
+func _on_close_pop_pressed():
+	$popUp.visible = false;
+	pass # Replace with function body.
+
+
+
+
+
+func _on_greenLight_gui_input(event):
+	
+	if (event is InputEventMouseButton) and event.pressed:
+		mission_toggle += 1
+		if mission_toggle % 2 == 1:
+			$MissionControl/completed.visible = true;
+		else:
+			$MissionControl/completed.visible = false;
+	pass # Replace with function body.
+
+
+func _on_xout_pressed():
+	$MissionControl/completed.visible = false;
 	pass # Replace with function body.
