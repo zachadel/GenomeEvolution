@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scripts/WorldMap/Vesicle.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Images/Tiles/Resources/vesicle.svg" type="Texture" id=2]
+[ext_resource path="res://Scenes/WorldMap/Sprite.gd" type="Script" id=3]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -73,6 +74,7 @@ __meta__ = {
 [node name="Sprite" type="Sprite" parent="."]
 material = SubResource( 2 )
 texture = ExtResource( 2 )
+script = ExtResource( 3 )
 
 [node name="Collision" type="CollisionPolygon2D" parent="."]
 build_mode = 1
@@ -92,5 +94,6 @@ collision_mask = 2
 build_mode = 1
 polygon = PoolVector2Array( -25.0769, 35.1474, 25.8857, 35.4629, 32.3547, 31.6762, 35.668, 24.4184, 35.5103, -25.1242, 31.8813, -32.2243, 24.7813, -35.6954, -25.5502, -35.6954, -31.0725, -32.5399, -35.5833, -26.5055, -35.9637, 25.3651, -31.8615, 31.5185 )
 one_way_collision_margin = 0.0
+
 [connection signal="mouse_entered" from="MouseDetection" to="." method="_on_Area2D_mouse_entered"]
 [connection signal="mouse_exited" from="MouseDetection" to="." method="_on_Area2D_mouse_exited"]

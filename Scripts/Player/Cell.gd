@@ -10,7 +10,8 @@ const HIGHLIGHT_COLOR = Color(2,2,2,2)
 const DEFAULT_MODULATE = Color(1,1,1,1)
 
 const DANGER_MODULATE = Color(5, 0, 0, 5)
-
+var flip = false
+var grow = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -90,5 +91,24 @@ func reset_highlights():
 			child.self_modulate = DEFAULT_MODULATE
 		
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _process(delta):
+	if(scale.x > 1.1):
+		grow = false
+	if(scale.x < .9):
+		grow = true
+	if(get_rotation_degrees() < -10):
+		flip = true
+	if(get_rotation_degrees() > 10):
+		flip = false
+	if(!flip):
+		rotation_degrees-=.025
+	else:
+		rotation_degrees+=.025
+		
+	if(grow):
+		scale.x *= 1.001
+		scale.y *= 1.001
+	else:
+		scale.x /= 1.001
+		scale.y /= 1.001
+	
