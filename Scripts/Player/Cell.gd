@@ -9,9 +9,9 @@ onready var nucleus = $Nucleus
 const HIGHLIGHT_COLOR = Color(2,2,2,2)
 const DEFAULT_MODULATE = Color(1,1,1,1)
 
-const DANGER_MODULATE = Color(5, 0, 0, 5)
 var flip = false
 var grow = true
+const DANGER_MODULATE = Color(5, 0, 0, 5)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -91,7 +91,7 @@ func reset_highlights():
 			child.self_modulate = DEFAULT_MODULATE
 		
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(delta):	
 	if(scale.x > 1.1):
 		grow = false
 	if(scale.x < .9):
@@ -111,4 +111,4 @@ func _process(delta):
 	else:
 		scale.x /= 1.001
 		scale.y /= 1.001
-	
+	pass
