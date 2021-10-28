@@ -101,9 +101,9 @@ func _process(delta):
 	if(get_rotation_degrees() > 10):
 		flip = false
 	if(!flip):
-		rotation_degrees-=.025
+		rotation_degrees-=.2
 	else:
-		rotation_degrees+=.025
+		rotation_degrees+=.2
 		
 	if(grow):
 		scale.x *= 1.001
