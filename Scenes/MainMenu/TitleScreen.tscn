@@ -545,6 +545,9 @@ margin_right = 1599.17
 margin_bottom = 900.0
 mouse_filter = 2
 texture = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Logo" type="TextureRect" parent="."]
 anchor_left = 0.5
@@ -646,6 +649,7 @@ autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
 [connection signal="begin_new_game" from="." to="." method="_on_TitleScreen_begin_new_game"]
 [connection signal="exit_game" from="." to="." method="_on_TitleScreen_exit_game"]
 [connection signal="pressed" from="NewGame" to="." method="_on_NewGame_pressed"]

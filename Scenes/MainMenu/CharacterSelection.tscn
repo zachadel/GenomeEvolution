@@ -112,10 +112,10 @@ margin_right = 0.0
 margin_bottom = 0.0
 
 [node name="CharTE" parent="." instance=ExtResource( 2 )]
-margin_left = 402.0
-margin_top = 399.0
-margin_right = 362.0
-margin_bottom = 359.0
+margin_left = 437.867
+margin_top = 368.796
+margin_right = 397.867
+margin_bottom = 328.796
 rect_scale = Vector2( 2, 2 )
 
 [node name="CharSpeech" type="TextureRect" parent="CharTE"]
@@ -198,6 +198,7 @@ current_path = "/"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
 [connection signal="pressed" from="GoToGame" to="." method="_on_GoToGame_pressed"]
 [connection signal="cell_changed" from="CellSelection" to="." method="_on_CellSelection_cell_changed"]
 [connection signal="pressed" from="Save" to="." method="_on_Save_pressed"]
