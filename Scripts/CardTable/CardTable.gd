@@ -645,9 +645,7 @@ func _on_Organism_finished_replication():
 	status_bar.visible = true;
 
 func _unhandled_input(event):
-	if event.is_action_pressed("mouse_left"):
-		$popUp/inputTimer.set_timer_process_mode(20)
-		$popUp/inputTimer.start()
+	
 	pass
 
 
@@ -1179,7 +1177,7 @@ func _on_btn_bugreport_toggled(button_pressed):
 
 func _on_inputTimer_timeout():
 	print("Timer ran out")
-	if show_popUp:
+	if show_popUp :
 		$popUp.visible = true;
 	pass # Replace with function body.
 
@@ -1236,4 +1234,14 @@ func _on_slide_4_gui_input(event):
 		yield(slides, "exit_collapse_dupes_slides")
 		remove_child(slides)
 		slides.queue_free()
+	pass # Replace with function body.
+
+
+func _on_CardTable_gui_input(event):
+	print("event: " + str(event))
+	$popUp/inputTimer.start(30)
+	if event.is_action_pressed("mouse_left") :
+		$popUp/inputTimer.set_timer_process_mode(30)
+		print("timer started")
+		$popUp/inputTimer.start(30)
 	pass # Replace with function body.

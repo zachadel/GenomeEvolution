@@ -10,6 +10,7 @@ var turns_taken = 0;
 var resources_consumed= 0;
 var num_progeny= 0;
 var tiles_explored= 0;
+var mission_accomplished = 0;
 
 var current_replication_value = 0
 var current_locomotion_value= 0
@@ -398,7 +399,7 @@ func _set_values():
 	$mainStat2/score.text = str(resources_consumed)
 	$mainStat3/score.text = str(tiles_explored)
 	$mainStat4/score.text = str(num_progeny)
-	
+	$missions_prompt/missions_back/missions_text.text = str(STATS.get_missions())
 	
 	#Composition values
 	var genesNumber = first_pseudo_value+ first_blank_value + first_replication_value + first_locomotion_value + first_helper_value + first_manipulation_value + first_sensing_value + first_component_value + first_construction_value + first_deconstruction_value + first_ate_value;
@@ -496,6 +497,7 @@ func _ready():
 func _reset_values():
 	has_updated_values = false;
 	#reset variables
+	mission_accomplished = 0;
 	turns_taken = 0;
 	resources_consumed= 0;
 	num_progeny= 0;

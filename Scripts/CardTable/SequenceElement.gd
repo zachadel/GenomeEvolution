@@ -6,7 +6,7 @@ var mode; #holds essential, ate, or pseudogene
 var id;   #holds unique identifier
 var temp;
 var temperature_array := []
-
+var toggled_rect = false;
 var SEQ_ELM_COMPARE_GRADIENT = load("res://Scenes/CardTable/SeqElmColorCompare.tres");
 var preference_temp = {}
 var preference_pH = {}
@@ -933,7 +933,7 @@ func disable(dis):
 	disabled = dis;
 	highlight_border(!dis);
 
-func highlight_border(on : bool, force_color := false):
+func highlight_border(on : bool, force_color := false, side_genes:=false):
 	$BorderRect.visible = on;
 	if force_color:
 		$BorderRect.modulate = toggle_rect_clr[pressed];
@@ -941,6 +941,13 @@ func highlight_border(on : bool, force_color := false):
 	if is_gap():
 		$lbl_id.text = "Click to repair!";
 		$lbl_id.visible = on;
+	
+	if toggled_rect:
+		$lbl_id.visible = false
+	if side_genes:
+		$lbl_id.text = "hello"
+		$lbl_id.visible = true;
+
 
 func is_highlighted():
 	return $BorderRect.visible;
@@ -985,7 +992,10 @@ func get_active_behavior(jump): #if jump==false, get the copy range
 
 var toggle_rect_clr = {true: Color(0.5, 0.5, 0), false: Color(1, 1, 1)};
 func _on_SeqElm_toggled(on):
+	print("switfh")
 	$BorderRect.modulate = toggle_rect_clr[on];
+	toggled_rect = !toggled_rect;
+	
 
 const Y_OFFSET_UPWARD_BIAS = 50;
 var y_offset = 0;

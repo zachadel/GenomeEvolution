@@ -60,7 +60,7 @@ func progress_bar(percent):
 
 func _update_mission(index):
 	print("running")
-	
+	STATS.inc_missions()
 	var length_mission = len(missions)
 	var new_index = rng.randi_range(0, length_mission)
 	print("new index: " + str(new_index))
