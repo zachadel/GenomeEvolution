@@ -2420,9 +2420,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -29.9998
+margin_left = -30.8458
 margin_top = -130.0
-margin_right = 152.0
+margin_right = 151.154
 margin_bottom = -56.0
 rect_scale = Vector2( 0.7, 0.7 )
 custom_fonts/font = SubResource( 46 )
@@ -2848,10 +2848,11 @@ rect_scale = Vector2( 0.05, 0.05 )
 texture = ExtResource( 14 )
 
 [node name="rep8" type="ColorRect" parent="sub2"]
-margin_left = -20.0
+margin_left = -20.8141
 margin_top = 570.0
-margin_right = 100.0
+margin_right = 99.1859
 margin_bottom = 630.0
+rect_pivot_offset = Vector2( 2.30859, 28.7551 )
 color = Color( 0.447059, 0.447059, 0.447059, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -4539,6 +4540,42 @@ custom_fonts/font = SubResource( 114 )
 text = "This is the current value of transposons you had in your chromosome: "
 align = 1
 autowrap = true
+
+[node name="missions_prompt" type="Label" parent="."]
+anchor_left = -0.000528717
+anchor_right = -0.000528717
+margin_left = 697.846
+margin_top = 792.0
+margin_right = 946.846
+margin_bottom = 884.0
+rect_scale = Vector2( 0.75, 0.75 )
+custom_fonts/font = ExtResource( 3 )
+text = "Missions Accomplished:"
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="missions_back" type="ColorRect" parent="missions_prompt"]
+margin_left = 260.0
+margin_top = 23.0
+margin_right = 310.0
+margin_bottom = 83.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="missions_text" type="Label" parent="missions_prompt/missions_back"]
+margin_right = 50.0
+margin_bottom = 64.0
+custom_fonts/font = SubResource( 56 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "0"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="mouse_entered" from="mainStat1" to="." method="_on_mainStat1_mouse_entered"]
 [connection signal="mouse_exited" from="mainStat1" to="." method="_on_mainStat1_mouse_exited"]
 [connection signal="mouse_entered" from="mainStat2" to="." method="_on_mainStat2_mouse_entered"]

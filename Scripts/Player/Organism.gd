@@ -967,7 +967,7 @@ func make_repair_choices(gap, repair_type: String):
 					gene_selection.append(gene);
 					gene.disable(false);
 				yield(self, "gene_clicked");
-				print('boom boom pow')
+				# print('boom boom pow')
 				choice_info["left"] = get_gene_selection();
 				for g in gene_selection:
 					g.disable(true);
