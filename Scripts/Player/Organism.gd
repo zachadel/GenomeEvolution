@@ -150,6 +150,8 @@ var reproduct_gene_pool = [] setget ,get_gene_pool;
 var has_done_recombination = false
 var has_done_mitosis = false
 var has_done_meiosis = false
+var mitosis_animation = true
+var meiosis_animation = true
 
 const RESOURCE_TYPES = ["simple_carbs", "complex_carbs", "simple_fats", "complex_fats", "simple_proteins", "complex_proteins"]
 
@@ -1734,6 +1736,7 @@ func check_cmsm_(idx): #returns whether or not the cmsm has a 0 in it
 		dead_cell = true
 	return dead_cell;
 
+
 func check_actual_cmsm(cmsm):
 	print(cmsm.get_genes())
 	var dead_cell = false
@@ -1756,6 +1759,9 @@ func check_actual_cmsm(cmsm):
 	return dead_cell;
 	
 	pass
+
+
+
 func replicate(idx):
 	if (idx == 2):
 		emit_signal("finished_replication");
@@ -1764,9 +1770,10 @@ func replicate(idx):
 	else:
 		#if the mouse enters where the skull or check is, the tool tip will appear.
 		
-		$Spectrum.visible = true
+		$Spectrum.visible = false;
+		print("SHOWING STUFF");
 		
-		replicated = true
+		replicated = true;
 		perform_anims(false);
 		cmsms.replicate_cmsms([0, 1]);
 		
@@ -1787,6 +1794,11 @@ func replicate(idx):
 			yield(get_card_table().play_meiosis_slides(), "completed")
 			has_done_meiosis = true
 		
+		#NOW DO ANIM THIS IS MY PART
+		if idx == 0 and mitosis_animation:
+			yield(get_card_table().play_mitosis_animation(), "completed")
+			pass
+		
 		cmsms.show_all_choice_buttons(true);
 		cmsms.lbl_cmsm(0, "Original");
 		cmsms.lbl_cmsm(1, "Copy");
@@ -1796,7 +1808,7 @@ func replicate(idx):
 		#mama mia
 		
 		var alive_arr =[]
-		var rep_type = "some unknown freaky deaky shiznaz";
+		var rep_type = "";
 		match idx:
 			0: # Mitosis
 				#if it's mitosis we will be showing the 2 indicators

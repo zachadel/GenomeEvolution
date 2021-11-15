@@ -47,7 +47,7 @@ func play_and_show(slide: Control):
 	slide.show()
 
 func leave_intro():
-	emit_signal("exit_mitosis_slides")
+	emit_signal("exit_replication_slides")
 
 func _on_Skip_pressed():
 	var cur_slide = get_children()[current_slide]

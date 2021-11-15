@@ -587,6 +587,15 @@ func play_mitosis_slides():
 	slides.queue_free()
 	pass
 	
+func play_mitosis_animation():
+	var slides = load("res://Scenes/CardTable/ReplicationAnimation.tscn").instance()
+	add_child(slides)
+	slides.start()
+	yield(slides, "exit_replication_slides")
+	remove_child(slides)
+	slides.queue_free()
+	pass
+	
 func play_meiosis_slides():
 	var slides = load("res://Scenes/CardTable/Meiosis.tscn").instance()
 	add_child(slides)
