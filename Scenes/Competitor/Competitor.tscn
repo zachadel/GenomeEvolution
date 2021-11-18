@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/Player/Cell.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/Competitor/Competitor.gd" type="Script" id=2]
+
+[node name="Competitor" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Body" parent="." instance=ExtResource( 1 )]
+position = Vector2( 819.347, 420.781 )

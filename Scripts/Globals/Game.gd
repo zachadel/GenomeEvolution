@@ -149,6 +149,7 @@ var all_time_players = 0
 var current_players = 0
 
 var current_cell_string = "cell_1"
+var agent_cell_string = "cell_2"
 
 var animation_speed = 600
 var animation_ease = Tween.EASE_IN

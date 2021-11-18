@@ -36,14 +36,22 @@ func _ready():
 	#player to the WorldMap for setup
 	#If there is character creation, then that should go here before creating the player
 	var first_player = create_player()
+	#Uncomment below to add the agent back into the game.
+	#var agent = create_agent()
+	#COMPETITORS.add_competitors(agent) #This lets me control the little one.
+	#For now, I'm just trying to make our agent copy our original player
 	first_player.set_cell_type(Game.current_cell_string)
+	#agent.set_cell_type("cell_3")
 	
 	var hazard_seeds = {}
 	for hazard in Settings.settings["hazards"].keys():
 		hazard_seeds[hazard] = randi()
 	
+	
 	#This order enables the WorldMap to make its camera the current one
-	world_map.setup(randi(), hazard_seeds, randi(), randi(), chunk_size, first_player)
+	#To Add the agent into the game, add agent after first player in this setup method.
+	world_map.setup(randi(), hazard_seeds, randi(), randi(), chunk_size, [first_player])
+	#world_map.setup(randi(), hazard_seeds, randi(), randi(), chunk_size, agent)
 	_show_world_map()
 	world_map.set_input(Game.PLAYER_VIEW.ON_MAP)
 	
@@ -75,14 +83,14 @@ func _on_new_progeny(alive):
 	else:
 		var dead_cell = create_player()
 		world_map.setup_new_cell(dead_cell, alive)
-		print("Isaiah 65:20")
+		
 	pass
 func _on_unlock_all_buttons():
 	print("buttons unlock now")
 
 func _on_mission_accomplished(index):
 	$WorldMap/WorldMap_UI._update_mission(index)
-	print("mission accomplished!")
+	#print("mission accomplished!")
 
 func _on_progress_bar(percent):
 		$WorldMap/WorldMap_UI.progress_bar(percent)
@@ -147,8 +155,19 @@ func _on_WorldMap_end_map_turn():
 	STATS.set_gc_man(thisProfile.get_behavior("Manipulation"))
 	pass
 
-############################MULTIPLAYER HANDLING###############################
-
+############################MULTIPLAYER/MULTI-AGENT HANDLING###############################
+func create_agent():
+	var agent = Player.instance() #This should make a new instance of the player class
+	agent.add_to_group("players") #It seems all "players" are here, players and agents are interchangeable in name, not variable.
+	agent.setup(2,2) # This adds in where the agent should appears, by default it's 0,0. 
+	#For now, I will hard code in 2,2 into the positional points above. Moving forward, if we want more tahn 
+	#One single competitor, we'll need an algorithm to check what spots are taken, and then choosing one that isn't taken.
+	add_child(agent) #adds the agent as a child of the main game function
+	Game.all_time_players += 1
+	Game.current_players += 1
+	return agent
+	# There is no death funciton for this guy, bec
+	
 func create_player():
 	var player = Player.instance()
 	

@@ -1,4 +1,8 @@
 extends Node2D
+
+
+#Essentially, all I did was make this thing a competitor
+#This comes from the Player code. I will modify as needed
 """
 	Notes:
 		-Every player is in the 'players' group
@@ -12,19 +16,24 @@ var update_sensing = false
 var move_enabled = false
 
 var organism
-
-#observed_tiles[[int, int]]["vison"]
-#observed_tiles[[int, int]]["resource_image"]
-#observed_tiles[[int, int]]["biome_image"]
+var rng = RandomNumberGenerator.new()
 var observed_tiles = {}
 var clear_path = {}
 onready var sprite = get_node("Body")
 
-const STARTING_POS = Vector2(0, 0)
+const STARTING_POS = Vector2(2, 2) #Player is at 0,0
+# I want to intimidate them, but not be immediately the same.
 
 #I see this potentially causing issues for creating AI players in the future
 func _ready():
-	organism = get_tree().get_root().get_node("Main/Canvas_CardTable/CardTable/Organism")
+	#This bit of code below, sets the organism variable
+	# I need to make a duplicate of this for competitors, with thte same funcitonality basically 
+	var index = rng.randi()
+	if index % 2 == 1:
+		self.set_cell_type("cell_1")
+	else:
+		self.set_cell_type("cell_2")
+	organism = get_tree().get_root().get_node("Main/Canvas_CardTable/CardTable/Comp_Organism")
 	position = STARTING_POS
 
 func setup(x = STARTING_POS.x, y = STARTING_POS.y):
@@ -49,7 +58,7 @@ func get_texture_size():
 	return sprite.texture.get_size()
 	
 func set_texture_size():
-	var scale = Vector2((0.1), (0.1))
+	var scale = Vector2((0.15), (0.15))
 	var this_sprite = get_node("Body")
 	this_sprite.set_scale(scale)
 	#sprite.texture.set_size(x)

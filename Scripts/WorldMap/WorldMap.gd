@@ -32,11 +32,15 @@ var num_clicked = 1;
 var player_sprite_offset = Vector2(0,0)
 
 var current_player
+var agent
 var astar = load("res://Scripts/WorldMap/HexAStar.gd").new()
 
 var move_enabled = false
 
 var default_start = Vector2(-20,0)
+
+var agent_start = Vector2(50, 40)
+
 var no_one_on_tile = true
 var biome_generator
 var tiebreak_generator
@@ -89,6 +93,7 @@ func enable_fog():
 func _ready():
 	ui.stats_screen_button.emit_signal("pressed");
 	ui.connect("update_progeny_placement", self, "_on_update_progeny_placement")
+	ui.connect("update_competitor_placement", self, "_on_update_competitor_placement")
 	#STATS.connect("progeny_updated", self, "_on_new_progeny")
 	#connect("invalid_action", msg, "show_high_low_warning")
 	pass
@@ -142,6 +147,36 @@ func nitrogen_lower_limits():
 
 func nitrogen_upper_limits():
 	notifications.emit_signal("notification_needed", "too much Nitrogen to convert.")
+func _on_update_competitor_placement():
+	if len(COMPETITORS.competitors_created) > 0:
+		print("we have a competitor")
+		for i in COMPETITORS.competitors_created:
+			var old_tile = i.position;
+			#I want to get their location
+			var child_tile = Game.world_to_map(i.position) #get the position of the child for the progeny
+			if greedy_behavior(child_tile, STATS.get_round_moves()) == child_tile:
+				print("not greedy")
+				var closer_tiles = Game.get_tiles_inside_radius(child_tile, STATS.get_round_moves()) #returns list of tiles for child from specified radius
+				var rand_idx = Chance.rand_between_tiles(0, len(closer_tiles)) #gives us a random index
+				while Game.map_to_world(closer_tiles[rand_idx]) == i.position: #will ensure that they don't end up on the same tile
+					rand_idx = Chance.rand_between_tiles(0, len(closer_tiles))
+					
+				i.position = Game.map_to_world(closer_tiles[rand_idx]) #setting the position
+				i.organism.current_tile = get_tile_at_pos(closer_tiles[rand_idx]) #setting the tiles
+			else:
+				print("greedy")
+				i.position = Game.map_to_world( greedy_behavior(child_tile, STATS.get_round_moves()))
+				print("Position: " + str(i.position))
+				i.organism.current_tile = get_tile_at_pos( greedy_behavior(child_tile, STATS.get_round_moves()))
+				print("current_tile: " + str(i.organism.current_tile))
+				
+			print(i.organism.current_tile)
+			var path_of_tiles = astar.get_tile_path_from_to(Game.world_to_map(old_tile), Game.world_to_map(i.position))
+			for j in path_of_tiles:
+				$ResourceMap.clear_tile_resources(j)
+			print("path: " + str(path_of_tiles))
+	
+	pass
 	
 func _on_update_progeny_placement():
 	#print("Boom Boom pow, new progeny all around")
@@ -1609,7 +1644,8 @@ func biome_temp_and_ph_setup():
 						new_vals_p[g.id] = rand_it
 						g.set_pH(rand_it)
 
-func setup(biome_seed, hazard_seeds, resource_seed, tiebreak_seed, _chunk_size, player):
+func setup(biome_seed, hazard_seeds, resource_seed, tiebreak_seed, _chunk_size, players):
+	#players is an array variable now, the first entry HAS to be the current player.
 	Game.modified_tiles = {}
 	#this is where the game starts.
 	chunk_size = _chunk_size
@@ -1649,7 +1685,8 @@ func setup(biome_seed, hazard_seeds, resource_seed, tiebreak_seed, _chunk_size, 
 	resource_generator.persistence = .1
 	resource_generator.lacunarity = 5
 	
-	current_player = player
+	current_player = players[0]
+	# agent = players[1]
 	
 	tile_sprite_size = $BiomeMap.tile_texture_size
 	$BiomeMap.setup(biome_generator, tiebreak_generator, hazard_generators, chunk_size, starting_pos)
@@ -1665,12 +1702,22 @@ func setup(biome_seed, hazard_seeds, resource_seed, tiebreak_seed, _chunk_size, 
 	loc_highlight.self_modulate = Color.blue 
 	loc_highlight.position = current_player.position
 	current_player.organism.refresh_behavior_profile()
+	#This gets done for the current player
+	
+	#To add the agent back into the game, uncomment 1708, 1711-1714.
+	#agent = players[1]
+	#player_sprite_offset = (tile_sprite_size - agent.get_texture_size()) / 2
+	#agent.set_texture_size() #This kinda sets things based off a consant. It's not great.
+	#agent.position = Game.map_to_world(Game.world_to_map(agent_start))
+	#agent.organism.current_tile = get_tile_at_pos(Game.world_to_map(agent_start))
+	#agent.organism.set_start_tile(get_tile_at_pos(Game.world_to_map((agent_start))))
+	#agent.organism.refresh_behavior_profile()
+	#Now we need to start applying it to the agents
+	
+	
 	
 	hide_tiles(Game.world_to_map(default_start), current_player.organism.get_vision_radius())
 	observe_tiles(Game.world_to_map(default_start), current_player.organism.get_vision_radius())
-#	if current_player.organism.get_vision_radius() == 2:
-#		print(current_player.organism.get_vision_radius())
-#		print(current_player.organism.get_locomotion_radius())
 	astar.initialize_astar(max(1, min(current_player.organism.get_vision_radius(), current_player.organism.get_locomotion_radius())), funcref(self, "costs"))
 	
 	ui.resource_ui.set_resources(current_player.organism.current_tile["resources"])
@@ -1689,7 +1736,6 @@ func setup(biome_seed, hazard_seeds, resource_seed, tiebreak_seed, _chunk_size, 
 	#current_player.organism.connect("invalid_action", msg, "show_high_low_warning")
 	
 	$MapCamera.position = current_player.position
-	
 	$Path.default_color = Color(0,0,1)
 	
 	if !move_enabled and !input_elements["move"]:
