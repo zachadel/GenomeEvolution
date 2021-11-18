@@ -386,6 +386,7 @@ func upd_turn_display(upd_turn_unlocks: bool = Game.fresh_round, upd_env_markers
 		ph_filter_panel.upd_current_ph_marker(orgn.current_tile.hazards["pH"]);
 
 func _on_btn_nxt_pressed():
+	$popUp/inputTimer.stop()
 	passed_replication = false
 	orgn.gene_val_with_temp()
 	STATS.set_gc_rep(orgn.get_behavior_profile().get_behavior("Replication"))
@@ -451,6 +452,7 @@ func adv_turn():
 			if recombos == 0:
 				skip_turn = true
 		if(Game.get_turn_type() == Game.TURN_TYPES.RepairDmg and Game.get_next_turn_type() == Game.TURN_TYPES.TEJump):
+			print(Game.get_turn_type())
 			if check_if_any_dmg_in_chromosomes():
 				notifications.emit_signal("notification_needed", "There are still some harmed genes left you need to heal.")
 				$RepairTabs.current_tab = 3
@@ -1238,10 +1240,13 @@ func _on_slide_4_gui_input(event):
 
 
 func _on_CardTable_gui_input(event):
-	print("event: " + str(event))
+	# print("event: " + str(event))
 	$popUp/inputTimer.start(30)
+	
+	
+		
 	if event.is_action_pressed("mouse_left") :
-		$popUp/inputTimer.set_timer_process_mode(30)
-		print("timer started")
+		#$popUp/inputTimer.set_timer_process_mode(30)
+		#print("timer started")
 		$popUp/inputTimer.start(30)
 	pass # Replace with function body.
