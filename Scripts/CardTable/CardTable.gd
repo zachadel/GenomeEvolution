@@ -449,17 +449,22 @@ func adv_turn():
 			var recombos = orgn.get_recombos_per_turn()
 			if recombos == 0:
 				skip_turn = true
-		if(Game.get_turn_type() == Game.TURN_TYPES.RepairDmg):if check_if_any_dmg_in_chromosomes():
-			notifications.emit_signal("notification_needed", "There are still some harmed genes left you need to heal.")
-			$RepairTabs.current_tab = 3
-			$RepairTabs/pnl_repair_choices.hide()
-			$RepairTabs/pnl_bandage_dmg.show()
-			#print("It should have happened.")
-			skip_turn = true
+		if(Game.get_turn_type() == Game.TURN_TYPES.RepairDmg and Game.get_next_turn_type() == Game.TURN_TYPES.Recombination):
+			print("Step 4->5")
+			if orgn.get_cmsm_pair().get_gap_list() != []:
+				print("there's damage")
+				notifications.emit_signal("notification_needed", "There are still some harmed genes left you need to heal.")
+				$RepairTabs.current_tab = 3
+				$RepairTabs/pnl_repair_choices.hide()
+				$RepairTabs/pnl_bandage_dmg.show()
+				#print("It should have happened.")
+				skip_turn = true
 			
 		if(Game.get_turn_type() == Game.TURN_TYPES.RepairDmg and Game.get_next_turn_type() == Game.TURN_TYPES.TEJump):
+			print("Step 2->3")
 			if check_if_any_dmg_in_chromosomes():
-				notifications.emit_signal("notification_needed", "There are still some harmed genes left you need to heal.")
+				print("there's damage 2")
+				notifications.emit_signal("notification_needed", "There are still some breaks that you need to mend.")
 				$RepairTabs.current_tab = 3
 				$RepairTabs/pnl_repair_choices.hide()
 				$RepairTabs/pnl_bandage_dmg.show()
