@@ -47,110 +47,125 @@ func play_and_show(slide: Control):
 						if(child == 0):
 							old = cmsms.get_child(0).StatusBar.get_value_of("Replication")
 							new = cmsms.get_child(1).StatusBar.get_value_of("Replication")
-							if old > new:
-								anims.get_child(node).get_child(child).texture = load("res://Assets/Images/icons/Down2.png")
-							else:
-								anims.get_child(node).get_child(child).texture = load("res://Assets/Images/icons/Down1.png")
-								
-							anims.get_child(node).get_child(child).get_child(0).bbcode_text = str(old)
-							anims.get_child(node).get_child(child).get_child(1).bbcode_text = str(new)
+							anims.get_child(node).get_child(child).get_child(0).bbcode_text = "[center]"+str(round(old*100)/100)+"[/center]"
+							anims.get_child(node).get_child(child).get_child(1).bbcode_text = "[center]"+str(round(new*100)/100)+"[/center]"
 						if(child == 1):
 							old = cmsms.get_child(0).StatusBar.get_value_of("Locomotion")
 							new = cmsms.get_child(1).StatusBar.get_value_of("Locomotion")
-							anims.get_child(node).get_child(child).get_child(0).bbcode_text = str(old)
-							anims.get_child(node).get_child(child).get_child(1).bbcode_text = str(new)
+							anims.get_child(node).get_child(child).get_child(0).bbcode_text = "[center]"+str(round(old*100)/100)+"[/center]"
+							anims.get_child(node).get_child(child).get_child(1).bbcode_text = "[center]"+str(round(new*100)/100)+"[/center]"
 						if(child == 2):
 							old = cmsms.get_child(0).StatusBar.get_value_of("Helper")
 							new = cmsms.get_child(1).StatusBar.get_value_of("Helper")
-							anims.get_child(node).get_child(child).get_child(0).bbcode_text = str(old)
-							anims.get_child(node).get_child(child).get_child(1).bbcode_text = str(new)
+							anims.get_child(node).get_child(child).get_child(0).bbcode_text = "[center]"+str(round(old*100)/100)+"[/center]"
+							anims.get_child(node).get_child(child).get_child(1).bbcode_text = "[center]"+str(round(new*100)/100)+"[/center]"
 						if(child == 3):
 							old = cmsms.get_child(0).StatusBar.get_value_of("Manipulation")
 							new = cmsms.get_child(1).StatusBar.get_value_of("Manipulation")
-							anims.get_child(node).get_child(child).get_child(0).bbcode_text = str(old)
-							anims.get_child(node).get_child(child).get_child(1).bbcode_text = str(new)
+							anims.get_child(node).get_child(child).get_child(0).bbcode_text = "[center]"+str(round(old*100)/100)+"[/center]"
+							anims.get_child(node).get_child(child).get_child(1).bbcode_text = "[center]"+str(round(new*100)/100)+"[/center]"
 						if(child == 4):
 							old = cmsms.get_child(0).StatusBar.get_value_of("Sensing")
 							new = cmsms.get_child(1).StatusBar.get_value_of("Sensing")
-							anims.get_child(node).get_child(child).get_child(0).bbcode_text = str(old)
-							anims.get_child(node).get_child(child).get_child(1).bbcode_text = str(new)
+							anims.get_child(node).get_child(child).get_child(0).bbcode_text = "[center]"+str(round(old*100)/100)+"[/center]"
+							anims.get_child(node).get_child(child).get_child(1).bbcode_text = "[center]"+str(round(new*100)/100)+"[/center]"
 						if(child == 5):
 							old = cmsms.get_child(0).StatusBar.get_value_of("Component")
 							new = cmsms.get_child(1).StatusBar.get_value_of("Component")
-							anims.get_child(node).get_child(child).get_child(0).bbcode_text = str(old)
-							anims.get_child(node).get_child(child).get_child(1).bbcode_text = str(new)
+							anims.get_child(node).get_child(child).get_child(0).bbcode_text = "[center]"+str(round(old*100)/100)+"[/center]"
+							anims.get_child(node).get_child(child).get_child(1).bbcode_text = "[center]"+str(round(new*100)/100)+"[/center]"
 						if(child == 6):
 							old = cmsms.get_child(0).StatusBar.get_value_of("Construction")
 							new = cmsms.get_child(1).StatusBar.get_value_of("Construction")
-							anims.get_child(node).get_child(child).get_child(0).bbcode_text = str(old)
-							anims.get_child(node).get_child(child).get_child(1).bbcode_text = str(new)
+							anims.get_child(node).get_child(child).get_child(0).bbcode_text = "[center]"+str(round(old*100)/100)+"[/center]"
+							anims.get_child(node).get_child(child).get_child(1).bbcode_text = "[center]"+str(round(new*100)/100)+"[/center]"
 						if(child == 7):
 							old = cmsms.get_child(0).StatusBar.get_value_of("Deconstruction")
 							new = cmsms.get_child(1).StatusBar.get_value_of("Deconstruction")
-							anims.get_child(node).get_child(child).get_child(0).bbcode_text = str(old)
-							anims.get_child(node).get_child(child).get_child(1).bbcode_text = str(new)
+							anims.get_child(node).get_child(child).get_child(0).bbcode_text = "[center]"+str(round(old*100)/100)+"[/center]"
+							anims.get_child(node).get_child(child).get_child(1).bbcode_text = "[center]"+str(round(new*100)/100)+"[/center]"
 						if(child == 8):
 							old = cmsms.get_child(0).StatusBar.get_value_of("ate")
 							new = cmsms.get_child(1).StatusBar.get_value_of("ate")
-							anims.get_child(node).get_child(child).get_child(0).bbcode_text = str(old)
-							anims.get_child(node).get_child(child).get_child(1).bbcode_text = str(new)
+							anims.get_child(node).get_child(child).get_child(0).bbcode_text = "[center]"+str(round(old*100)/100)+"[/center]"
+							anims.get_child(node).get_child(child).get_child(1).bbcode_text = "[center]"+str(round(new*100)/100)+"[/center]"
 					
 						if old > new:
 							anims.get_child(node).get_child(child).texture = load("res://Assets/Images/icons/Down2.png")
+							if new == 0:
+								anims.get_child(node).get_child(child).texture = load("res://Assets/Images/icons/gene_death.png")
+								
+							$Choose/AnimationPlayer/Original.get_child(child).get_child(0).visible = false
+							$Choose/AnimationPlayer/Original.get_child(child).get_child(1).visible = true
+							$Choose/AnimationPlayer/GeneCopies.get_child(child).get_child(1).visible = false
+							$Choose/AnimationPlayer/GeneCopies.get_child(child).get_child(0).visible = true
 						else:
 							anims.get_child(node).get_child(child).texture = load("res://Assets/Images/icons/Down1.png")
+							$Choose/AnimationPlayer/Original.get_child(child).get_child(0).visible = true
+							$Choose/AnimationPlayer/Original.get_child(child).get_child(1).visible = false
+							$Choose/AnimationPlayer/GeneCopies.get_child(child).get_child(1).visible = true
+							$Choose/AnimationPlayer/GeneCopies.get_child(child).get_child(0).visible = false
 			elif anims.get_child(node).name == "Row2":
 				for child in anims.get_child(node).get_child_count():
 						if(child == 0):
 							old = cmsms.get_child(2).StatusBar.get_value_of("Replication")
 							new = cmsms.get_child(3).StatusBar.get_value_of("Replication")
-							anims.get_child(node).get_child(child).get_child(0).bbcode_text = str(old)
-							anims.get_child(node).get_child(child).get_child(1).bbcode_text = str(new)
+							anims.get_child(node).get_child(child).get_child(0).bbcode_text = "[center]"+str(round(old*100)/100) + "[/center]"
+							anims.get_child(node).get_child(child).get_child(1).bbcode_text = "[center]"+str(round(new*100)/100)+"[/center]"
 						if(child == 1):
 							old = cmsms.get_child(2).StatusBar.get_value_of("Locomotion")
 							new = cmsms.get_child(3).StatusBar.get_value_of("Locomotion")
-							anims.get_child(node).get_child(child).get_child(0).bbcode_text = str(old)
-							anims.get_child(node).get_child(child).get_child(1).bbcode_text = str(new)
+							anims.get_child(node).get_child(child).get_child(0).bbcode_text = "[center]"+str(round(old*100)/100)+"[/center]"
+							anims.get_child(node).get_child(child).get_child(1).bbcode_text = "[center]"+str(round(new*100)/100)+"[/center]"
 						if(child == 2):
 							old = cmsms.get_child(2).StatusBar.get_value_of("Helper")
 							new = cmsms.get_child(3).StatusBar.get_value_of("Helper")
-							anims.get_child(node).get_child(child).get_child(0).bbcode_text = str(old)
-							anims.get_child(node).get_child(child).get_child(1).bbcode_text = str(new)
+							anims.get_child(node).get_child(child).get_child(0).bbcode_text = "[center]"+str(round(old*100)/100)+"[/center]"
+							anims.get_child(node).get_child(child).get_child(1).bbcode_text = "[center]"+str(round(new*100)/100)+"[/center]"
 						if(child == 3):
 							old = cmsms.get_child(2).StatusBar.get_value_of("Manipulation")
 							new = cmsms.get_child(3).StatusBar.get_value_of("Manipulation")
-							anims.get_child(node).get_child(child).get_child(0).bbcode_text = str(old)
-							anims.get_child(node).get_child(child).get_child(1).bbcode_text = str(new)
+							anims.get_child(node).get_child(child).get_child(0).bbcode_text = "[center]"+str(round(old*100)/100)+"[/center]"
+							anims.get_child(node).get_child(child).get_child(1).bbcode_text = "[center]"+str(round(new*100)/100)+"[/center]"
 						if(child == 4):
 							old = cmsms.get_child(2).StatusBar.get_value_of("Sensing")
 							new = cmsms.get_child(3).StatusBar.get_value_of("Sensing")
-							anims.get_child(node).get_child(child).get_child(0).bbcode_text = str(old)
-							anims.get_child(node).get_child(child).get_child(1).bbcode_text = str(new)
+							anims.get_child(node).get_child(child).get_child(0).bbcode_text = "[center]"+str(round(old*100)/100)+"[/center]"
+							anims.get_child(node).get_child(child).get_child(1).bbcode_text = "[center]"+str(round(new*100)/100)+"[/center]"
 						if(child == 5):
 							old = cmsms.get_child(2).StatusBar.get_value_of("Component")
 							new = cmsms.get_child(3).StatusBar.get_value_of("Component")
-							anims.get_child(node).get_child(child).get_child(0).bbcode_text = str(old)
-							anims.get_child(node).get_child(child).get_child(1).bbcode_text = str(new)
+							anims.get_child(node).get_child(child).get_child(0).bbcode_text = "[center]"+str(round(old*100)/100)+"[/center]"
+							anims.get_child(node).get_child(child).get_child(1).bbcode_text = "[center]"+str(round(new*100)/100)+"[/center]"
 						if(child == 6):
 							old = cmsms.get_child(2).StatusBar.get_value_of("Construction")
 							new = cmsms.get_child(3).StatusBar.get_value_of("Construction")
-							anims.get_child(node).get_child(child).get_child(0).bbcode_text = str(old)
-							anims.get_child(node).get_child(child).get_child(1).bbcode_text = str(new)
+							anims.get_child(node).get_child(child).get_child(0).bbcode_text = "[center]"+str(round(old*100)/100)+"[/center]"
+							anims.get_child(node).get_child(child).get_child(1).bbcode_text = "[center]"+str(round(new*100)/100)+"[/center]"
 						if(child == 7):
 							old = cmsms.get_child(2).StatusBar.get_value_of("Deconstruction")
 							new = cmsms.get_child(3).StatusBar.get_value_of("Deconstruction")
-							anims.get_child(node).get_child(child).get_child(0).bbcode_text = str(old)
-							anims.get_child(node).get_child(child).get_child(1).bbcode_text = str(new)
+							anims.get_child(node).get_child(child).get_child(0).bbcode_text = "[center]"+str(round(old*100)/100)+"[/center]"
+							anims.get_child(node).get_child(child).get_child(1).bbcode_text = "[center]"+str(round(new*100)/100)+"[/center]"
 						if(child == 8):
 							old = cmsms.get_child(2).StatusBar.get_value_of("ate")
 							new = cmsms.get_child(3).StatusBar.get_value_of("ate")
-							anims.get_child(node).get_child(child).get_child(0).bbcode_text = str(old)
-							anims.get_child(node).get_child(child).get_child(1).bbcode_text = str(new)
+							anims.get_child(node).get_child(child).get_child(0).bbcode_text = "[center]"+str(round(old*100)/100)+"[/center]"
+							anims.get_child(node).get_child(child).get_child(1).bbcode_text = "[center]"+str(round(new*100)/100)+"[/center]"
 						if old > new:
 							anims.get_child(node).get_child(child).texture = load("res://Assets/Images/icons/Down2.png")
+							if new == 0:
+								anims.get_child(node).get_child(child).texture = load("res://Assets/Images/icons/gene_death.png")
+							$Choose/AnimationPlayer/Original2.get_child(child).get_child(0).visible = false
+							$Choose/AnimationPlayer/Original2.get_child(child).get_child(1).visible = true
+							$Choose/AnimationPlayer/GeneCopies2.get_child(child).get_child(1).visible = false
+							$Choose/AnimationPlayer/GeneCopies2.get_child(child).get_child(0).visible = true
 						else:
 							anims.get_child(node).get_child(child).texture = load("res://Assets/Images/icons/Down1.png")
-				
+							$Choose/AnimationPlayer/Original2.get_child(child).get_child(0).visible = true
+							$Choose/AnimationPlayer/Original2.get_child(child).get_child(1).visible = false
+							$Choose/AnimationPlayer/GeneCopies2.get_child(child).get_child(1).visible = true
+							$Choose/AnimationPlayer/GeneCopies2.get_child(child).get_child(0).visible = false
 		
 		if slide.name == "Copying":
 			anims.play("Copying Genome")

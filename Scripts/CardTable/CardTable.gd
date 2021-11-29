@@ -447,9 +447,16 @@ func adv_turn():
 				
 		if Game.get_next_turn_type() == Game.TURN_TYPES.Recombination:
 			var recombos = orgn.get_recombos_per_turn()
-			
 			if recombos == 0:
 				skip_turn = true
+		if(Game.get_turn_type() == Game.TURN_TYPES.RepairDmg):if check_if_any_dmg_in_chromosomes():
+			notifications.emit_signal("notification_needed", "There are still some harmed genes left you need to heal.")
+			$RepairTabs.current_tab = 3
+			$RepairTabs/pnl_repair_choices.hide()
+			$RepairTabs/pnl_bandage_dmg.show()
+			#print("It should have happened.")
+			skip_turn = true
+			
 		if(Game.get_turn_type() == Game.TURN_TYPES.RepairDmg and Game.get_next_turn_type() == Game.TURN_TYPES.TEJump):
 			if check_if_any_dmg_in_chromosomes():
 				notifications.emit_signal("notification_needed", "There are still some harmed genes left you need to heal.")
@@ -457,15 +464,16 @@ func adv_turn():
 				$RepairTabs/pnl_repair_choices.hide()
 				$RepairTabs/pnl_bandage_dmg.show()
 				#print("It should have happened.")
-				skip_turn = false
-		Game.adv_turn(skip_turn);
-		upd_turn_display();
-		
-		_add_justnow_bbcode("\n\n%s" % Game.get_turn_txt(), {"color": Color(1, 0.75, 0)});
-		emit_signal("add_card_event_log","\n\n%s" % Game.get_turn_txt(), {"color": Color(1, 0.75, 0)})
-		
-		emit_signal("next_turn", Game.round_num, Game.turn_idx);
-		$pnl_saveload.new_save(SaveExports.get_save_str(self));
+				skip_turn = true
+		if !skip_turn:
+			Game.adv_turn(skip_turn);
+			upd_turn_display();
+			
+			_add_justnow_bbcode("\n\n%s" % Game.get_turn_txt(), {"color": Color(1, 0.75, 0)});
+			emit_signal("add_card_event_log","\n\n%s" % Game.get_turn_txt(), {"color": Color(1, 0.75, 0)})
+			
+			emit_signal("next_turn", Game.round_num, Game.turn_idx);
+			$pnl_saveload.new_save(SaveExports.get_save_str(self));
 
 func _on_animating_changed(state):
 	wait_on_anim = state;
@@ -587,7 +595,7 @@ func play_mitosis_slides():
 	slides.queue_free()
 	pass
 	
-func play_mitosis_animation():
+func play_replication_animation():
 	var slides = load("res://Scenes/CardTable/ReplicationAnimation.tscn").instance()
 	add_child(slides)
 	slides.start()

@@ -150,8 +150,6 @@ var reproduct_gene_pool = [] setget ,get_gene_pool;
 var has_done_recombination = false
 var has_done_mitosis = false
 var has_done_meiosis = false
-var mitosis_animation = true
-var meiosis_animation = true
 
 const RESOURCE_TYPES = ["simple_carbs", "complex_carbs", "simple_fats", "complex_fats", "simple_proteins", "complex_proteins"]
 
@@ -1794,10 +1792,8 @@ func replicate(idx):
 			yield(get_card_table().play_meiosis_slides(), "completed")
 			has_done_meiosis = true
 		
-		#NOW DO ANIM THIS IS MY PART
-		if idx == 0 and mitosis_animation:
-			yield(get_card_table().play_mitosis_animation(), "completed")
-			pass
+		
+		yield(get_card_table().play_replication_animation(), "completed")
 		
 		cmsms.show_all_choice_buttons(true);
 		cmsms.lbl_cmsm(0, "Original");
@@ -1997,7 +1993,6 @@ func iterate_genes():
 	STATS.compare_maxTE()
 
 func adv_turn(round_num, turn_idx):
-	print("12")
 	emit_signal("close_warning")
 	click_mode = "";
 	cmsms.highlight_genes(gene_selection, false);
@@ -2010,7 +2005,7 @@ func adv_turn(round_num, turn_idx):
 			Game.TURN_TYPES.TEJump:
 				emit_signal("doing_work", true);
 				emit_signal("transposon_activity", true);
-				
+				print("memory usage: " + str(OS.get_static_memory_usage()))
 				# Add new TEs
 				Game.SeqElm_time_limit = Game.TE_INSERT_TIME_LIMIT;
 #				var min_max = Settings.transposons_per_turn()
