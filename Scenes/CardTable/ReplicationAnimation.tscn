@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=2]
+[gd_scene load_steps=41 format=2]
 
 [ext_resource path="res://Scenes/CardTable/ReplicationAnimation.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Fonts/BoldItalics_50.tres" type="DynamicFont" id=2]
@@ -13,11 +13,12 @@
 [ext_resource path="res://Assets/Images/genes/Manipulation.png" type="Texture" id=11]
 [ext_resource path="res://Assets/Images/genes/Construction.png" type="Texture" id=12]
 [ext_resource path="res://Assets/Fonts/OpenSans-Italic.ttf" type="DynamicFontData" id=13]
-[ext_resource path="res://Assets/Images/genes/Helper.png" type="Texture" id=14]
+[ext_resource path="res://Assets/Images/Helper.png" type="Texture" id=14]
 [ext_resource path="res://Assets/Fonts/OpenSans-SemiBold.ttf" type="DynamicFontData" id=15]
 [ext_resource path="res://Assets/Images/genes/Deconstruction.png" type="Texture" id=16]
 [ext_resource path="res://Assets/Images/genes/downgraded_gene.gdshader" type="Shader" id=17]
 [ext_resource path="res://Assets/Images/genes/upgraded_gene.gdshader" type="Shader" id=18]
+[ext_resource path="res://Assets/Images/genes/Helper.png" type="Texture" id=19]
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
@@ -1262,12 +1263,15 @@ shader = ExtResource( 17 )
 [sub_resource type="ShaderMaterial" id=18]
 shader = ExtResource( 18 )
 
-[sub_resource type="ShaderMaterial" id=19]
-shader = ExtResource( 17 )
+[sub_resource type="ShaderMaterial" id=21]
+shader = ExtResource( 18 )
 
-[sub_resource type="DynamicFont" id=20]
+[sub_resource type="DynamicFont" id=19]
 size = 60
 font_data = ExtResource( 15 )
+
+[sub_resource type="ShaderMaterial" id=20]
+shader = ExtResource( 17 )
 
 [node name="Mitosis" type="Control"]
 anchor_right = 1.0
@@ -1775,10 +1779,10 @@ __meta__ = {
 
 [node name="GeneBackground" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies"]
 material = SubResource( 16 )
-margin_left = 48.6603
-margin_top = 157.704
-margin_right = 188.66
-margin_bottom = 288.704
+margin_left = 49.5512
+margin_top = 152.359
+margin_right = 189.551
+margin_bottom = 283.359
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1819,6 +1823,17 @@ stretch_mode = 5
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="TextureRect" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies/GeneBackground"]
+visible = false
+material = SubResource( 21 )
+anchor_left = 0.601
+anchor_right = 0.645
+anchor_bottom = 0.072
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 0.115, 0.114 )
+texture = ExtResource( 19 )
 
 [node name="GeneBackground2" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies"]
 margin_left = 185.893
@@ -1865,6 +1880,17 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="TextureRect" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies/GeneBackground2"]
+visible = false
+material = SubResource( 21 )
+anchor_left = 0.601
+anchor_right = 0.645
+anchor_bottom = 0.072
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 0.115, 0.114 )
+texture = ExtResource( 19 )
+
 [node name="GeneBackground3" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies"]
 margin_left = 317.993
 margin_top = 149.851
@@ -1910,6 +1936,17 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="TextureRect" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies/GeneBackground3"]
+visible = false
+material = SubResource( 21 )
+anchor_left = 0.601
+anchor_right = 0.645
+anchor_bottom = 0.072
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 0.115, 0.114 )
+texture = ExtResource( 19 )
+
 [node name="GeneBackground4" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies"]
 margin_left = 450.057
 margin_top = 147.695
@@ -1951,6 +1988,17 @@ stretch_mode = 5
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="TextureRect" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies/GeneBackground4"]
+visible = false
+material = SubResource( 21 )
+anchor_left = 0.601
+anchor_right = 0.645
+anchor_bottom = 0.072
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 0.115, 0.114 )
+texture = ExtResource( 19 )
 
 [node name="GeneBackground5" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies"]
 margin_left = 590.479
@@ -1994,6 +2042,17 @@ stretch_mode = 5
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="TextureRect" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies/GeneBackground5"]
+visible = false
+material = SubResource( 21 )
+anchor_left = 0.601
+anchor_right = 0.645
+anchor_bottom = 0.072
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 0.115, 0.114 )
+texture = ExtResource( 19 )
 
 [node name="GeneBackground6" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies"]
 margin_left = 726.739
@@ -2040,6 +2099,17 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="TextureRect" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies/GeneBackground6"]
+visible = false
+material = SubResource( 21 )
+anchor_left = 0.601
+anchor_right = 0.645
+anchor_bottom = 0.072
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 0.115, 0.114 )
+texture = ExtResource( 19 )
+
 [node name="GeneBackground7" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies"]
 margin_left = 860.303
 margin_top = 149.283
@@ -2084,6 +2154,17 @@ stretch_mode = 5
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="TextureRect" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies/GeneBackground7"]
+visible = false
+material = SubResource( 21 )
+anchor_left = 0.601
+anchor_right = 0.645
+anchor_bottom = 0.072
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 0.115, 0.114 )
+texture = ExtResource( 19 )
 
 [node name="GeneBackground8" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies"]
 margin_left = 989.783
@@ -2141,11 +2222,22 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="TextureRect" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies/GeneBackground8"]
+visible = false
+material = SubResource( 21 )
+anchor_left = 0.601
+anchor_right = 0.645
+anchor_bottom = 0.072
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 0.115, 0.114 )
+texture = ExtResource( 19 )
+
 [node name="GeneBackground9" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies"]
-margin_left = 1120.14
-margin_top = 150.0
-margin_right = 1253.14
-margin_bottom = 279.998
+margin_left = 1122.81
+margin_top = 144.661
+margin_right = 1255.81
+margin_bottom = 274.659
 rect_pivot_offset = Vector2( 135.417, 64.9994 )
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -2191,6 +2283,324 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="TextureRect" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies/GeneBackground9"]
+visible = false
+material = SubResource( 21 )
+anchor_left = 0.601
+anchor_right = 0.645
+anchor_bottom = 0.072
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 0.115, 0.114 )
+texture = ExtResource( 19 )
+
+[node name="Row1" type="Control" parent="Choose/AnimationPlayer"]
+margin_left = 240.0
+margin_top = 162.0
+margin_right = 1326.0
+margin_bottom = 264.0
+rect_pivot_offset = Vector2( 642, 4.52185 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="Choose/AnimationPlayer/Row1"]
+margin_left = 7.0
+margin_top = 20.0
+margin_right = 258.0
+margin_bottom = 354.0
+rect_scale = Vector2( 0.405, 0.277 )
+texture = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="1Result1" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect"]
+margin_left = -1.81207
+margin_top = -67.0
+margin_right = 252.188
+margin_bottom = 20.0
+custom_fonts/normal_font = SubResource( 19 )
+bbcode_enabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="1Result2" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect"]
+margin_left = 4.40973
+margin_top = 315.07
+margin_right = 258.41
+margin_bottom = 402.07
+custom_fonts/normal_font = SubResource( 19 )
+bbcode_enabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect2" type="TextureRect" parent="Choose/AnimationPlayer/Row1"]
+margin_left = 142.417
+margin_top = 20.0
+margin_right = 393.417
+margin_bottom = 354.0
+rect_scale = Vector2( 0.405, 0.277 )
+texture = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="1Result1" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect2"]
+margin_left = -1.81207
+margin_top = -67.0
+margin_right = 252.188
+margin_bottom = 20.0
+custom_fonts/normal_font = SubResource( 19 )
+bbcode_enabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="1Result2" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect2"]
+margin_left = 4.40973
+margin_top = 315.07
+margin_right = 258.41
+margin_bottom = 402.07
+custom_fonts/normal_font = SubResource( 19 )
+bbcode_enabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect3" type="TextureRect" parent="Choose/AnimationPlayer/Row1"]
+margin_left = 284.07
+margin_top = 20.0
+margin_right = 535.07
+margin_bottom = 354.0
+rect_scale = Vector2( 0.405, 0.277 )
+texture = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="1Result1" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect3"]
+margin_left = -1.81207
+margin_top = -67.0
+margin_right = 252.188
+margin_bottom = 20.0
+custom_fonts/normal_font = SubResource( 19 )
+bbcode_enabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="1Result2" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect3"]
+margin_left = 4.40973
+margin_top = 315.07
+margin_right = 258.41
+margin_bottom = 402.07
+custom_fonts/normal_font = SubResource( 19 )
+bbcode_enabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect4" type="TextureRect" parent="Choose/AnimationPlayer/Row1"]
+margin_left = 414.106
+margin_top = 20.0
+margin_right = 665.106
+margin_bottom = 354.0
+rect_scale = Vector2( 0.405, 0.277 )
+texture = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="1Result1" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect4"]
+margin_left = -1.81207
+margin_top = -67.0
+margin_right = 252.188
+margin_bottom = 20.0
+custom_fonts/normal_font = SubResource( 19 )
+bbcode_enabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="1Result2" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect4"]
+margin_left = 4.40973
+margin_top = 315.07
+margin_right = 258.41
+margin_bottom = 402.07
+custom_fonts/normal_font = SubResource( 19 )
+bbcode_enabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect5" type="TextureRect" parent="Choose/AnimationPlayer/Row1"]
+margin_left = 557.3
+margin_top = 20.0
+margin_right = 808.3
+margin_bottom = 354.0
+rect_scale = Vector2( 0.405, 0.277 )
+texture = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="1Result1" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect5"]
+margin_left = -1.81207
+margin_top = -67.0
+margin_right = 252.188
+margin_bottom = 20.0
+custom_fonts/normal_font = SubResource( 19 )
+bbcode_enabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="1Result2" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect5"]
+margin_left = 4.40973
+margin_top = 315.07
+margin_right = 258.41
+margin_bottom = 402.07
+custom_fonts/normal_font = SubResource( 19 )
+bbcode_enabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect6" type="TextureRect" parent="Choose/AnimationPlayer/Row1"]
+margin_left = 692.723
+margin_top = 20.0
+margin_right = 943.723
+margin_bottom = 354.0
+rect_scale = Vector2( 0.405, 0.277 )
+texture = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="1Result1" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect6"]
+margin_left = -1.81207
+margin_top = -67.0
+margin_right = 252.188
+margin_bottom = 20.0
+custom_fonts/normal_font = SubResource( 19 )
+bbcode_enabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="1Result2" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect6"]
+margin_left = 4.40973
+margin_top = 315.07
+margin_right = 258.41
+margin_bottom = 402.07
+custom_fonts/normal_font = SubResource( 19 )
+bbcode_enabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect7" type="TextureRect" parent="Choose/AnimationPlayer/Row1"]
+margin_left = 827.708
+margin_top = 20.0
+margin_right = 1078.71
+margin_bottom = 354.0
+rect_scale = Vector2( 0.405, 0.277 )
+texture = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="1Result1" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect7"]
+margin_left = -1.81207
+margin_top = -67.0
+margin_right = 252.188
+margin_bottom = 20.0
+custom_fonts/normal_font = SubResource( 19 )
+bbcode_enabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="1Result2" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect7"]
+margin_left = 4.40973
+margin_top = 315.07
+margin_right = 258.41
+margin_bottom = 402.07
+custom_fonts/normal_font = SubResource( 19 )
+bbcode_enabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect8" type="TextureRect" parent="Choose/AnimationPlayer/Row1"]
+margin_left = 960.622
+margin_top = 20.0
+margin_right = 1211.62
+margin_bottom = 354.0
+rect_scale = Vector2( 0.405, 0.277 )
+texture = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="1Result1" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect8"]
+margin_left = -1.81207
+margin_top = -67.0
+margin_right = 252.188
+margin_bottom = 20.0
+custom_fonts/normal_font = SubResource( 19 )
+bbcode_enabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="1Result2" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect8"]
+margin_left = 4.40973
+margin_top = 315.07
+margin_right = 258.41
+margin_bottom = 402.07
+custom_fonts/normal_font = SubResource( 19 )
+bbcode_enabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect9" type="TextureRect" parent="Choose/AnimationPlayer/Row1"]
+margin_left = 1083.48
+margin_top = 20.0
+margin_right = 1334.48
+margin_bottom = 354.0
+rect_scale = Vector2( 0.405, 0.277 )
+texture = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="1Result1" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect9"]
+margin_left = -1.81207
+margin_top = -67.0
+margin_right = 252.188
+margin_bottom = 20.0
+custom_fonts/normal_font = SubResource( 19 )
+bbcode_enabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="1Result2" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect9"]
+margin_left = 4.40973
+margin_top = 315.07
+margin_right = 258.41
+margin_bottom = 402.07
+custom_fonts/normal_font = SubResource( 19 )
+bbcode_enabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="OriginalLabel2" type="RichTextLabel" parent="Choose/AnimationPlayer"]
 margin_left = 3.23915
 margin_top = 425.186
@@ -2208,6 +2618,28 @@ custom_colors/default_color = Color( 1, 1, 1, 1 )
 bbcode_enabled = true
 bbcode_text = "[b]Original[/b]"
 text = "Original"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CopyLabel2" type="RichTextLabel" parent="Choose/AnimationPlayer"]
+margin_left = 3.82312
+margin_top = 620.572
+margin_right = 219.823
+margin_bottom = 699.572
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.09
+custom_fonts/bold_italics_font = ExtResource( 2 )
+custom_fonts/italics_font = SubResource( 7 )
+custom_fonts/bold_font = SubResource( 8 )
+custom_fonts/normal_font = SubResource( 10 )
+custom_colors/default_color = Color( 1, 1, 1, 1 )
+bbcode_enabled = true
+bbcode_text = "[b]Copy[/b]"
+text = "Copy"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -2623,28 +3055,6 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="CopyLabel2" type="RichTextLabel" parent="Choose/AnimationPlayer"]
-margin_left = 3.82312
-margin_top = 620.572
-margin_right = 219.823
-margin_bottom = 699.572
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 1.09
-custom_fonts/bold_italics_font = ExtResource( 2 )
-custom_fonts/italics_font = SubResource( 7 )
-custom_fonts/bold_font = SubResource( 8 )
-custom_fonts/normal_font = SubResource( 10 )
-custom_colors/default_color = Color( 1, 1, 1, 1 )
-bbcode_enabled = true
-bbcode_text = "[b]Copy[/b]"
-text = "Copy"
-scroll_active = false
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="GeneCopies2" type="Control" parent="Choose/AnimationPlayer"]
 margin_left = 184.558
 margin_top = 455.967
@@ -2674,7 +3084,7 @@ __meta__ = {
 
 [node name="Component" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2/GeneBackground"]
 visible = false
-material = SubResource( 19 )
+material = SubResource( 20 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
@@ -2702,6 +3112,17 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="TextureRect" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2/GeneBackground"]
+visible = false
+material = SubResource( 21 )
+anchor_left = 0.601
+anchor_right = 0.645
+anchor_bottom = 0.072
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 0.115, 0.114 )
+texture = ExtResource( 19 )
+
 [node name="GeneBackground2" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2"]
 margin_left = 185.893
 margin_top = 150.0
@@ -2721,7 +3142,7 @@ __meta__ = {
 
 [node name="Sensing" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2/GeneBackground2"]
 visible = false
-material = SubResource( 19 )
+material = SubResource( 20 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
@@ -2747,6 +3168,17 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
+[node name="TextureRect" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2/GeneBackground2"]
+visible = false
+material = SubResource( 21 )
+anchor_left = 0.601
+anchor_right = 0.645
+anchor_bottom = 0.072
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 0.115, 0.114 )
+texture = ExtResource( 19 )
+
 [node name="GeneBackground3" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2"]
 margin_left = 316.0
 margin_top = 150.0
@@ -2766,7 +3198,7 @@ __meta__ = {
 
 [node name="Sensing" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2/GeneBackground3"]
 visible = false
-material = SubResource( 19 )
+material = SubResource( 20 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
@@ -2792,6 +3224,17 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
+[node name="TextureRect" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2/GeneBackground3"]
+visible = false
+material = SubResource( 21 )
+anchor_left = 0.601
+anchor_right = 0.645
+anchor_bottom = 0.072
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 0.115, 0.114 )
+texture = ExtResource( 19 )
+
 [node name="GeneBackground4" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2"]
 margin_left = 456.414
 margin_top = 150.0
@@ -2810,7 +3253,7 @@ __meta__ = {
 
 [node name="Assembly" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2/GeneBackground4"]
 visible = false
-material = SubResource( 19 )
+material = SubResource( 20 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
@@ -2834,6 +3277,17 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="TextureRect" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2/GeneBackground4"]
+visible = false
+material = SubResource( 21 )
+anchor_left = 0.601
+anchor_right = 0.645
+anchor_bottom = 0.072
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 0.115, 0.114 )
+texture = ExtResource( 19 )
+
 [node name="GeneBackground5" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2"]
 margin_left = 590.479
 margin_top = 150.0
@@ -2853,7 +3307,7 @@ __meta__ = {
 
 [node name="Replication" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2/GeneBackground5"]
 visible = false
-material = SubResource( 19 )
+material = SubResource( 20 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
@@ -2877,6 +3331,17 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="TextureRect" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2/GeneBackground5"]
+visible = false
+material = SubResource( 21 )
+anchor_left = 0.601
+anchor_right = 0.645
+anchor_bottom = 0.072
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 0.115, 0.114 )
+texture = ExtResource( 19 )
+
 [node name="GeneBackground6" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2"]
 margin_left = 726.739
 margin_top = 148.107
@@ -2896,7 +3361,7 @@ __meta__ = {
 
 [node name="Sensing" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2/GeneBackground6"]
 visible = false
-material = SubResource( 19 )
+material = SubResource( 20 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
@@ -2922,6 +3387,17 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
+[node name="TextureRect" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2/GeneBackground6"]
+visible = false
+material = SubResource( 21 )
+anchor_left = 0.601
+anchor_right = 0.645
+anchor_bottom = 0.072
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 0.115, 0.114 )
+texture = ExtResource( 19 )
+
 [node name="GeneBackground7" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2"]
 margin_left = 860.303
 margin_top = 150.0
@@ -2941,7 +3417,7 @@ __meta__ = {
 
 [node name="Sensing" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2/GeneBackground7"]
 visible = false
-material = SubResource( 19 )
+material = SubResource( 20 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
@@ -2967,6 +3443,17 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
+[node name="TextureRect" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2/GeneBackground7"]
+visible = false
+material = SubResource( 21 )
+anchor_left = 0.601
+anchor_right = 0.645
+anchor_bottom = 0.072
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 0.115, 0.114 )
+texture = ExtResource( 19 )
+
 [node name="GeneBackground8" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2"]
 margin_left = 989.783
 margin_top = 150.0
@@ -2985,7 +3472,7 @@ __meta__ = {
 
 [node name="Sensing" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2/GeneBackground8"]
 visible = false
-material = SubResource( 19 )
+material = SubResource( 20 )
 anchor_left = 0.135341
 anchor_top = 0.100001
 anchor_right = 0.864681
@@ -3017,6 +3504,17 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
+[node name="TextureRect" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2/GeneBackground8"]
+visible = false
+material = SubResource( 21 )
+anchor_left = 0.601
+anchor_right = 0.645
+anchor_bottom = 0.072
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 0.115, 0.114 )
+texture = ExtResource( 19 )
+
 [node name="GeneBackground9" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2"]
 margin_left = 1110.0
 margin_top = 150.0
@@ -3035,7 +3533,7 @@ __meta__ = {
 
 [node name="Sensing" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2/GeneBackground9"]
 visible = false
-material = SubResource( 19 )
+material = SubResource( 20 )
 anchor_left = 0.138231
 anchor_top = 0.230225
 anchor_right = 0.83748
@@ -3065,312 +3563,16 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="Row1" type="Control" parent="Choose/AnimationPlayer"]
-margin_left = 240.0
-margin_top = 162.0
-margin_right = 1326.0
-margin_bottom = 264.0
-rect_pivot_offset = Vector2( 642, 4.52185 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TextureRect" type="TextureRect" parent="Choose/AnimationPlayer/Row1"]
-margin_left = 7.0
-margin_top = 20.0
-margin_right = 258.0
-margin_bottom = 354.0
-rect_scale = Vector2( 0.405, 0.277 )
-texture = ExtResource( 9 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="1Result1" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect"]
-margin_left = -1.81207
-margin_top = -67.0
-margin_right = 252.188
-margin_bottom = 20.0
-custom_fonts/normal_font = SubResource( 20 )
-bbcode_enabled = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="1Result2" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect"]
-margin_left = 4.40973
-margin_top = 315.07
-margin_right = 258.41
-margin_bottom = 402.07
-custom_fonts/normal_font = SubResource( 20 )
-bbcode_enabled = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TextureRect2" type="TextureRect" parent="Choose/AnimationPlayer/Row1"]
-margin_left = 142.417
-margin_top = 20.0
-margin_right = 393.417
-margin_bottom = 354.0
-rect_scale = Vector2( 0.405, 0.277 )
-texture = ExtResource( 9 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="1Result1" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect2"]
-margin_left = -1.81207
-margin_top = -67.0
-margin_right = 252.188
-margin_bottom = 20.0
-custom_fonts/normal_font = SubResource( 20 )
-bbcode_enabled = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="1Result2" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect2"]
-margin_left = 4.40973
-margin_top = 315.07
-margin_right = 258.41
-margin_bottom = 402.07
-custom_fonts/normal_font = SubResource( 20 )
-bbcode_enabled = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TextureRect3" type="TextureRect" parent="Choose/AnimationPlayer/Row1"]
-margin_left = 284.07
-margin_top = 20.0
-margin_right = 535.07
-margin_bottom = 354.0
-rect_scale = Vector2( 0.405, 0.277 )
-texture = ExtResource( 9 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="1Result1" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect3"]
-margin_left = -1.81207
-margin_top = -67.0
-margin_right = 252.188
-margin_bottom = 20.0
-custom_fonts/normal_font = SubResource( 20 )
-bbcode_enabled = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="1Result2" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect3"]
-margin_left = 4.40973
-margin_top = 315.07
-margin_right = 258.41
-margin_bottom = 402.07
-custom_fonts/normal_font = SubResource( 20 )
-bbcode_enabled = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TextureRect4" type="TextureRect" parent="Choose/AnimationPlayer/Row1"]
-margin_left = 414.106
-margin_top = 20.0
-margin_right = 665.106
-margin_bottom = 354.0
-rect_scale = Vector2( 0.405, 0.277 )
-texture = ExtResource( 9 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="1Result1" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect4"]
-margin_left = -1.81207
-margin_top = -67.0
-margin_right = 252.188
-margin_bottom = 20.0
-custom_fonts/normal_font = SubResource( 20 )
-bbcode_enabled = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="1Result2" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect4"]
-margin_left = 4.40973
-margin_top = 315.07
-margin_right = 258.41
-margin_bottom = 402.07
-custom_fonts/normal_font = SubResource( 20 )
-bbcode_enabled = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TextureRect5" type="TextureRect" parent="Choose/AnimationPlayer/Row1"]
-margin_left = 557.3
-margin_top = 20.0
-margin_right = 808.3
-margin_bottom = 354.0
-rect_scale = Vector2( 0.405, 0.277 )
-texture = ExtResource( 9 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="1Result1" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect5"]
-margin_left = -1.81207
-margin_top = -67.0
-margin_right = 252.188
-margin_bottom = 20.0
-custom_fonts/normal_font = SubResource( 20 )
-bbcode_enabled = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="1Result2" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect5"]
-margin_left = 4.40973
-margin_top = 315.07
-margin_right = 258.41
-margin_bottom = 402.07
-custom_fonts/normal_font = SubResource( 20 )
-bbcode_enabled = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TextureRect6" type="TextureRect" parent="Choose/AnimationPlayer/Row1"]
-margin_left = 692.723
-margin_top = 20.0
-margin_right = 943.723
-margin_bottom = 354.0
-rect_scale = Vector2( 0.405, 0.277 )
-texture = ExtResource( 9 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="1Result1" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect6"]
-margin_left = -1.81207
-margin_top = -67.0
-margin_right = 252.188
-margin_bottom = 20.0
-custom_fonts/normal_font = SubResource( 20 )
-bbcode_enabled = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="1Result2" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect6"]
-margin_left = 4.40973
-margin_top = 315.07
-margin_right = 258.41
-margin_bottom = 402.07
-custom_fonts/normal_font = SubResource( 20 )
-bbcode_enabled = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TextureRect7" type="TextureRect" parent="Choose/AnimationPlayer/Row1"]
-margin_left = 827.708
-margin_top = 20.0
-margin_right = 1078.71
-margin_bottom = 354.0
-rect_scale = Vector2( 0.405, 0.277 )
-texture = ExtResource( 9 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="1Result1" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect7"]
-margin_left = -1.81207
-margin_top = -67.0
-margin_right = 252.188
-margin_bottom = 20.0
-custom_fonts/normal_font = SubResource( 20 )
-bbcode_enabled = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="1Result2" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect7"]
-margin_left = 4.40973
-margin_top = 315.07
-margin_right = 258.41
-margin_bottom = 402.07
-custom_fonts/normal_font = SubResource( 20 )
-bbcode_enabled = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TextureRect8" type="TextureRect" parent="Choose/AnimationPlayer/Row1"]
-margin_left = 960.622
-margin_top = 20.0
-margin_right = 1211.62
-margin_bottom = 354.0
-rect_scale = Vector2( 0.405, 0.277 )
-texture = ExtResource( 9 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="1Result1" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect8"]
-margin_left = -1.81207
-margin_top = -67.0
-margin_right = 252.188
-margin_bottom = 20.0
-custom_fonts/normal_font = SubResource( 20 )
-bbcode_enabled = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="1Result2" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect8"]
-margin_left = 4.40973
-margin_top = 315.07
-margin_right = 258.41
-margin_bottom = 402.07
-custom_fonts/normal_font = SubResource( 20 )
-bbcode_enabled = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TextureRect9" type="TextureRect" parent="Choose/AnimationPlayer/Row1"]
-margin_left = 1083.48
-margin_top = 20.0
-margin_right = 1334.48
-margin_bottom = 354.0
-rect_scale = Vector2( 0.405, 0.277 )
-texture = ExtResource( 9 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="1Result1" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect9"]
-margin_left = -1.81207
-margin_top = -67.0
-margin_right = 252.188
-margin_bottom = 20.0
-custom_fonts/normal_font = SubResource( 20 )
-bbcode_enabled = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="1Result2" type="RichTextLabel" parent="Choose/AnimationPlayer/Row1/TextureRect9"]
-margin_left = 4.40973
-margin_top = 315.07
-margin_right = 258.41
-margin_bottom = 402.07
-custom_fonts/normal_font = SubResource( 20 )
-bbcode_enabled = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="TextureRect" type="TextureRect" parent="Choose/AnimationPlayer/GeneCopies2/GeneBackground9"]
+visible = false
+material = SubResource( 21 )
+anchor_left = 0.601
+anchor_right = 0.645
+anchor_bottom = 0.072
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 0.115, 0.114 )
+texture = ExtResource( 19 )
 
 [node name="Row2" type="Control" parent="Choose/AnimationPlayer"]
 margin_left = 234.007
@@ -3398,7 +3600,7 @@ margin_left = -1.81207
 margin_top = -67.0
 margin_right = 252.188
 margin_bottom = 20.0
-custom_fonts/normal_font = SubResource( 20 )
+custom_fonts/normal_font = SubResource( 19 )
 bbcode_enabled = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -3409,7 +3611,7 @@ margin_left = 4.40973
 margin_top = 315.07
 margin_right = 258.41
 margin_bottom = 402.07
-custom_fonts/normal_font = SubResource( 20 )
+custom_fonts/normal_font = SubResource( 19 )
 bbcode_enabled = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -3431,7 +3633,7 @@ margin_left = -1.81207
 margin_top = -67.0
 margin_right = 252.188
 margin_bottom = 20.0
-custom_fonts/normal_font = SubResource( 20 )
+custom_fonts/normal_font = SubResource( 19 )
 bbcode_enabled = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -3442,7 +3644,7 @@ margin_left = 4.40973
 margin_top = 315.07
 margin_right = 258.41
 margin_bottom = 402.07
-custom_fonts/normal_font = SubResource( 20 )
+custom_fonts/normal_font = SubResource( 19 )
 bbcode_enabled = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -3464,7 +3666,7 @@ margin_left = -1.81207
 margin_top = -67.0
 margin_right = 252.188
 margin_bottom = 20.0
-custom_fonts/normal_font = SubResource( 20 )
+custom_fonts/normal_font = SubResource( 19 )
 bbcode_enabled = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -3475,7 +3677,7 @@ margin_left = 4.40973
 margin_top = 315.07
 margin_right = 258.41
 margin_bottom = 402.07
-custom_fonts/normal_font = SubResource( 20 )
+custom_fonts/normal_font = SubResource( 19 )
 bbcode_enabled = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -3497,7 +3699,7 @@ margin_left = -1.81207
 margin_top = -67.0
 margin_right = 252.188
 margin_bottom = 20.0
-custom_fonts/normal_font = SubResource( 20 )
+custom_fonts/normal_font = SubResource( 19 )
 bbcode_enabled = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -3508,7 +3710,7 @@ margin_left = 4.40973
 margin_top = 315.07
 margin_right = 258.41
 margin_bottom = 402.07
-custom_fonts/normal_font = SubResource( 20 )
+custom_fonts/normal_font = SubResource( 19 )
 bbcode_enabled = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -3530,7 +3732,7 @@ margin_left = -1.81207
 margin_top = -67.0
 margin_right = 252.188
 margin_bottom = 20.0
-custom_fonts/normal_font = SubResource( 20 )
+custom_fonts/normal_font = SubResource( 19 )
 bbcode_enabled = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -3541,7 +3743,7 @@ margin_left = 4.40973
 margin_top = 315.07
 margin_right = 258.41
 margin_bottom = 402.07
-custom_fonts/normal_font = SubResource( 20 )
+custom_fonts/normal_font = SubResource( 19 )
 bbcode_enabled = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -3563,7 +3765,7 @@ margin_left = -1.81207
 margin_top = -67.0
 margin_right = 252.188
 margin_bottom = 20.0
-custom_fonts/normal_font = SubResource( 20 )
+custom_fonts/normal_font = SubResource( 19 )
 bbcode_enabled = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -3574,7 +3776,7 @@ margin_left = 4.40973
 margin_top = 315.07
 margin_right = 258.41
 margin_bottom = 402.07
-custom_fonts/normal_font = SubResource( 20 )
+custom_fonts/normal_font = SubResource( 19 )
 bbcode_enabled = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -3596,7 +3798,7 @@ margin_left = -1.81207
 margin_top = -67.0
 margin_right = 252.188
 margin_bottom = 20.0
-custom_fonts/normal_font = SubResource( 20 )
+custom_fonts/normal_font = SubResource( 19 )
 bbcode_enabled = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -3607,7 +3809,7 @@ margin_left = 4.40973
 margin_top = 315.07
 margin_right = 258.41
 margin_bottom = 402.07
-custom_fonts/normal_font = SubResource( 20 )
+custom_fonts/normal_font = SubResource( 19 )
 bbcode_enabled = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -3631,7 +3833,7 @@ margin_left = -1.81207
 margin_top = -67.0
 margin_right = 252.188
 margin_bottom = 20.0
-custom_fonts/normal_font = SubResource( 20 )
+custom_fonts/normal_font = SubResource( 19 )
 bbcode_enabled = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -3642,7 +3844,7 @@ margin_left = 4.40973
 margin_top = 315.07
 margin_right = 258.41
 margin_bottom = 402.07
-custom_fonts/normal_font = SubResource( 20 )
+custom_fonts/normal_font = SubResource( 19 )
 bbcode_enabled = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -3665,7 +3867,7 @@ margin_left = -1.81207
 margin_top = -67.0
 margin_right = 252.188
 margin_bottom = 20.0
-custom_fonts/normal_font = SubResource( 20 )
+custom_fonts/normal_font = SubResource( 19 )
 bbcode_enabled = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -3676,7 +3878,7 @@ margin_left = 4.40973
 margin_top = 315.07
 margin_right = 258.41
 margin_bottom = 402.07
-custom_fonts/normal_font = SubResource( 20 )
+custom_fonts/normal_font = SubResource( 19 )
 bbcode_enabled = true
 __meta__ = {
 "_edit_use_anchors_": false

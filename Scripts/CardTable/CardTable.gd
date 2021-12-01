@@ -453,7 +453,7 @@ func adv_turn():
 			print("Step 4->5")
 			if orgn.get_cmsm_pair().get_gap_list() != []:
 				print("there's damage")
-				notifications.emit_signal("notification_needed", "There are still some harmed genes left you need to heal.")
+				notifications.emit_signal("notification_needed", "There are still some breaks that you need to mend.")
 				$RepairTabs.current_tab = 3
 				$RepairTabs/pnl_repair_choices.hide()
 				$RepairTabs/pnl_bandage_dmg.show()
@@ -464,7 +464,7 @@ func adv_turn():
 			print("Step 2->3")
 			if check_if_any_dmg_in_chromosomes():
 				print("there's damage 2")
-				notifications.emit_signal("notification_needed", "There are still some breaks that you need to mend.")
+				notifications.emit_signal("notification_needed", "There are still some harmed genes left you need to heal.")
 				$RepairTabs.current_tab = 3
 				$RepairTabs/pnl_repair_choices.hide()
 				$RepairTabs/pnl_bandage_dmg.show()

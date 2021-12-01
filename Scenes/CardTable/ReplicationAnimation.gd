@@ -34,12 +34,16 @@ func stop_and_hide(slide: Control):
 		
 	slide.hide()
 
+#var gene_types = ["Replication","Locomotion","Helper","Manipulation","Sensing","Component","Construction","Deconstruction"]
+
 func play_and_show(slide: Control):
 	var old = 0
 	var new = 0
 	if slide.has_node("AnimationPlayer"):
 		var anims = slide.get_node("AnimationPlayer")
-		
+		var skill_indicator
+		var compare_status_bar
+		#Needs to be refactored using an array of keywords
 		for node in anims.get_child_count():
 			anims.get_child(node).show()
 			if anims.get_child(node).name == "Row1":
@@ -49,6 +53,8 @@ func play_and_show(slide: Control):
 							new = cmsms.get_child(1).StatusBar.get_value_of("Replication")
 							anims.get_child(node).get_child(child).get_child(0).bbcode_text = "[center]"+str(round(old*100)/100)+"[/center]"
 							anims.get_child(node).get_child(child).get_child(1).bbcode_text = "[center]"+str(round(new*100)/100)+"[/center]"
+							#if has more skills
+							# anims.get_child(node).get_child(child).get_child(1).visible = true
 						if(child == 1):
 							old = cmsms.get_child(0).StatusBar.get_value_of("Locomotion")
 							new = cmsms.get_child(1).StatusBar.get_value_of("Locomotion")
