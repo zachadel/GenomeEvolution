@@ -219,6 +219,9 @@ func load_from_save(elms):
 		nxt_gelm.load_from_save(args);
 		add_elm(nxt_gelm);
 
+
+#IS THIS THE CULPRIT
+
 func get_elm_anim_duration(distance):
 	if (Game.turns[Game.turn_idx] == Game.TURN_TYPES.TEJump):
 		var _actives = get_cmsm_pair().ate_list + [];
@@ -363,9 +366,10 @@ func remove_elm(elm):
 	_on_cmsm_changed()
 	queue_sort();
 
+### HERE IS WHERE THE TRANSPOSONS DANCE
 func remove_elm_create_gap(elm):
 	var elm_idx = elm.get_index();
-	if (elm_idx > 0 && get_child(elm_idx - 1).is_gap()) || (elm_idx < get_child_count() - 1 && get_child(elm_idx + 1).is_gap()):
+	if (elm_idx > 0 && get_child(elm_idx - 1).is_gap()) && elm_idx < get_child_count() || (elm_idx < get_child_count() - 1 && get_child(elm_idx + 1).is_gap()):
 		if do_animations:
 			yield(remove_elm(elm), "completed");
 		else:

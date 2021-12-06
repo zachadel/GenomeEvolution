@@ -1090,7 +1090,7 @@ func make_repair_choices(gap, repair_type: String):
 	if perform_repair:
 		repair_gap(gap, repair_type, choice_info);
 	print("8")
-	emit_signal("close_warning")
+	#emit_signal("close_warning")
 
 var repair_canceled = false;
 func repair_gap(gap, repair_type, choice_info = {}):
@@ -1734,7 +1734,6 @@ func check_cmsm_(idx): #returns whether or not the cmsm has a 0 in it
 		dead_cell = true
 	return dead_cell;
 
-
 func check_actual_cmsm(cmsm):
 	print(cmsm.get_genes())
 	var dead_cell = false
@@ -1757,9 +1756,6 @@ func check_actual_cmsm(cmsm):
 	return dead_cell;
 	
 	pass
-
-
-
 func replicate(idx):
 	if (idx == 2):
 		emit_signal("finished_replication");
@@ -1768,10 +1764,9 @@ func replicate(idx):
 	else:
 		#if the mouse enters where the skull or check is, the tool tip will appear.
 		
-		$Spectrum.visible = false;
-		print("SHOWING STUFF");
+		$Spectrum.visible = true
 		
-		replicated = true;
+		replicated = true
 		perform_anims(false);
 		cmsms.replicate_cmsms([0, 1]);
 		
@@ -1792,9 +1787,6 @@ func replicate(idx):
 			yield(get_card_table().play_meiosis_slides(), "completed")
 			has_done_meiosis = true
 		
-		
-		yield(get_card_table().play_replication_animation(), "completed")
-		
 		cmsms.show_all_choice_buttons(true);
 		cmsms.lbl_cmsm(0, "Original");
 		cmsms.lbl_cmsm(1, "Copy");
@@ -1804,7 +1796,7 @@ func replicate(idx):
 		#mama mia
 		
 		var alive_arr =[]
-		var rep_type = "";
+		var rep_type = "some unknown freaky deaky shiznaz";
 		match idx:
 			0: # Mitosis
 				#if it's mitosis we will be showing the 2 indicators
@@ -1993,6 +1985,7 @@ func iterate_genes():
 	STATS.compare_maxTE()
 
 func adv_turn(round_num, turn_idx):
+	print("12")
 	emit_signal("close_warning")
 	click_mode = "";
 	cmsms.highlight_genes(gene_selection, false);
@@ -2005,7 +1998,7 @@ func adv_turn(round_num, turn_idx):
 			Game.TURN_TYPES.TEJump:
 				emit_signal("doing_work", true);
 				emit_signal("transposon_activity", true);
-				print("memory usage: " + str(OS.get_static_memory_usage()))
+				
 				# Add new TEs
 				Game.SeqElm_time_limit = Game.TE_INSERT_TIME_LIMIT;
 #				var min_max = Settings.transposons_per_turn()
@@ -3138,6 +3131,10 @@ func acquire_resources():
 			if current_tile["resources"][index] > 0:
 				if Settings.settings["resources"][resource]["group"] == "minerals":
 					modified = true
+					print("Resource: "+ resource) #Theses are numbered minimally 0-33
+					
+					print("Mineral resources: "+ str(mineral_resources[resource_class][resource]))
+					
 					mineral_resources[resource_class][resource] += current_tile["resources"][index]
 					mineral_resources[resource_class]["total"] += current_tile["resources"][index]
 					current_tile["resources"][index] = 0

@@ -18,7 +18,7 @@
 [ext_resource path="res://Assets/Images/statsScreen/document-35941_1280.png" type="Texture" id=16]
 [ext_resource path="res://Assets/Images/genes/Sensing.png" type="Texture" id=17]
 [ext_resource path="res://Assets/Images/genes/Deconstruction.png" type="Texture" id=18]
-[ext_resource path="res://Assets/Images/Helper.png" type="Texture" id=19]
+[ext_resource path="res://Assets/Images/genes/Helper.png" type="Texture" id=19]
 [ext_resource path="res://Assets/Images/genes/Construction.png" type="Texture" id=20]
 [ext_resource path="res://Assets/Images/genes/Component.png" type="Texture" id=21]
 [ext_resource path="res://Assets/Images/genes/Manipulation.png" type="Texture" id=22]
@@ -31,7 +31,6 @@
 [ext_resource path="res://Assets/Images/genes/Locomotion.png" type="Texture" id=29]
 [ext_resource path="res://Assets/Images/statsScreen/transposon.png" type="Texture" id=30]
 [ext_resource path="res://Assets/Fonts/OpenSans-Bold.ttf" type="DynamicFontData" id=31]
-
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"

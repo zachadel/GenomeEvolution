@@ -1307,7 +1307,7 @@ __meta__ = {
 
 [node name="GeneBackground2" type="TextureRect" parent="Copying/Genes"]
 margin_left = 330.0
-margin_right = 657.0
+margin_right = 656.0
 margin_bottom = 324.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -1333,8 +1333,8 @@ __meta__ = {
 }
 
 [node name="Blank" type="TextureRect" parent="Copying/Genes"]
-margin_left = 661.0
-margin_right = 987.0
+margin_left = 660.0
+margin_right = 986.0
 margin_bottom = 324.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -1343,8 +1343,8 @@ texture = ExtResource( 9 )
 expand = true
 
 [node name="GeneBackground3" type="TextureRect" parent="Copying/Genes"]
-margin_left = 991.0
-margin_right = 1318.0
+margin_left = 990.0
+margin_right = 1316.0
 margin_bottom = 324.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -1369,8 +1369,8 @@ __meta__ = {
 }
 
 [node name="GeneBackground4" type="TextureRect" parent="Copying/Genes"]
-margin_left = 1322.0
-margin_right = 1649.0
+margin_left = 1320.0
+margin_right = 1646.0
 margin_bottom = 324.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -1395,7 +1395,7 @@ __meta__ = {
 }
 
 [node name="Blank2" type="TextureRect" parent="Copying/Genes"]
-margin_left = 1653.0
+margin_left = 1650.0
 margin_right = 1980.0
 margin_bottom = 324.0
 mouse_filter = 2
@@ -1409,9 +1409,9 @@ expand = true
 
 [node name="GeneBackground" type="TextureRect" parent="Copying/AnimationPlayer"]
 margin_left = 216.0
-margin_top = 296.0
+margin_top = 458.0
 margin_right = 378.0
-margin_bottom = 456.996
+margin_bottom = 618.996
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1438,9 +1438,9 @@ __meta__ = {
 
 [node name="GeneBackground2" type="TextureRect" parent="Copying/AnimationPlayer"]
 margin_left = 381.0
-margin_top = 296.0
+margin_top = 457.0
 margin_right = 543.0
-margin_bottom = 457.02
+margin_bottom = 618.019
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1453,6 +1453,7 @@ __meta__ = {
 }
 
 [node name="Sensing" type="TextureRect" parent="Copying/AnimationPlayer/GeneBackground2"]
+self_modulate = Color( 0, 1, 0, 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
@@ -1466,9 +1467,9 @@ __meta__ = {
 
 [node name="Blank" type="TextureRect" parent="Copying/AnimationPlayer"]
 margin_left = 546.0
-margin_top = 295.542
+margin_top = 457.0
 margin_right = 709.0
-margin_bottom = 457.552
+margin_bottom = 619.01
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1477,9 +1478,9 @@ expand = true
 
 [node name="GeneBackground3" type="TextureRect" parent="Copying/AnimationPlayer"]
 margin_left = 711.0
-margin_top = 296.0
+margin_top = 457.0
 margin_right = 874.0
-margin_bottom = 457.992
+margin_bottom = 618.992
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1503,10 +1504,10 @@ __meta__ = {
 }
 
 [node name="GeneBackground4" type="TextureRect" parent="Copying/AnimationPlayer"]
-margin_left = 876.0
-margin_top = 296.0
-margin_right = 1038.01
-margin_bottom = 456.998
+margin_left = 874.0
+margin_top = 457.0
+margin_right = 1036.01
+margin_bottom = 617.998
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1519,6 +1520,7 @@ __meta__ = {
 }
 
 [node name="Replication" type="TextureRect" parent="Copying/AnimationPlayer/GeneBackground4"]
+self_modulate = Color( 0.717647, 0.717647, 0, 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
@@ -1531,9 +1533,9 @@ __meta__ = {
 
 [node name="Blank2" type="TextureRect" parent="Copying/AnimationPlayer"]
 margin_left = 1041.0
-margin_top = 296.0
+margin_top = 408.7
 margin_right = 1206.0
-margin_bottom = 458.0
+margin_bottom = 570.7
 rect_rotation = 0.064891
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -1557,7 +1559,7 @@ custom_fonts/bold_italics_font = ExtResource( 2 )
 custom_fonts/italics_font = SubResource( 9 )
 custom_fonts/bold_font = SubResource( 12 )
 custom_fonts/normal_font = SubResource( 2 )
-custom_colors/default_color = Color( 1, 1, 1, 0 )
+custom_colors/default_color = Color( 1, 1, 1, 1 )
 bbcode_enabled = true
 bbcode_text = "[b]Sometimes big mistakes are made and a gene is destroyed.[/b]"
 text = "Sometimes big mistakes are made and a gene is destroyed."
@@ -1679,7 +1681,7 @@ __meta__ = {
 
 [node name="GeneBackground2" type="TextureRect" parent="Choose/Original"]
 margin_left = 270.0
-margin_right = 537.0
+margin_right = 536.0
 margin_bottom = 269.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -1705,8 +1707,8 @@ __meta__ = {
 }
 
 [node name="Blank" type="TextureRect" parent="Choose/Original"]
-margin_left = 541.0
-margin_right = 807.0
+margin_left = 540.0
+margin_right = 806.0
 margin_bottom = 269.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -1715,8 +1717,8 @@ texture = ExtResource( 9 )
 expand = true
 
 [node name="GeneBackground3" type="TextureRect" parent="Choose/Original"]
-margin_left = 811.0
-margin_right = 1078.0
+margin_left = 810.0
+margin_right = 1076.0
 margin_bottom = 269.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -1741,8 +1743,8 @@ __meta__ = {
 }
 
 [node name="GeneBackground4" type="TextureRect" parent="Choose/Original"]
-margin_left = 1082.0
-margin_right = 1348.0
+margin_left = 1080.0
+margin_right = 1346.0
 margin_bottom = 269.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -1767,7 +1769,7 @@ __meta__ = {
 }
 
 [node name="Blank2" type="TextureRect" parent="Choose/Original"]
-margin_left = 1352.0
+margin_left = 1350.0
 margin_right = 1619.0
 margin_bottom = 269.0
 mouse_filter = 2
@@ -2037,7 +2039,7 @@ __meta__ = {
 
 [node name="Blank" type="TextureRect" parent="Choose/AnimationPlayer/Original2"]
 margin_left = 540.0
-margin_right = 807.0
+margin_right = 806.0
 margin_bottom = 268.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -2046,8 +2048,8 @@ texture = ExtResource( 9 )
 expand = true
 
 [node name="GeneBackground3" type="TextureRect" parent="Choose/AnimationPlayer/Original2"]
-margin_left = 811.0
-margin_right = 1077.0
+margin_left = 810.0
+margin_right = 1076.0
 margin_bottom = 268.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -2072,8 +2074,8 @@ __meta__ = {
 }
 
 [node name="GeneBackground4" type="TextureRect" parent="Choose/AnimationPlayer/Original2"]
-margin_left = 1081.0
-margin_right = 1347.0
+margin_left = 1080.0
+margin_right = 1346.0
 margin_bottom = 268.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -2098,7 +2100,7 @@ __meta__ = {
 }
 
 [node name="Blank2" type="TextureRect" parent="Choose/AnimationPlayer/Original2"]
-margin_left = 1351.0
+margin_left = 1350.0
 margin_right = 1618.0
 margin_bottom = 268.0
 mouse_filter = 2
@@ -2284,9 +2286,9 @@ margin_bottom = 268.709
 
 [node name="CellDisplay2" parent="Choose/AnimationPlayer" instance=ExtResource( 11 )]
 margin_left = 1197.14
-margin_top = 318.404
+margin_top = 320.523
 margin_right = 1571.14
-margin_bottom = 538.406
+margin_bottom = 540.525
 
 [node name="Keep" type="Button" parent="Choose/AnimationPlayer"]
 margin_top = 118.193
@@ -2349,7 +2351,6 @@ scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
 [connection signal="pressed" from="Copying/Skip" to="." method="_on_Skip_pressed"]
 [connection signal="pressed" from="Copying/Next" to="." method="_on_Next_pressed"]
 [connection signal="pressed" from="Choose/Back" to="." method="_on_Back_pressed"]

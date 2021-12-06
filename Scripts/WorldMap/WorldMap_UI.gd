@@ -66,7 +66,11 @@ func _update_mission(index):
 	var new_index = rng.randi_range(0, length_mission)
 	print("new index: " + str(new_index))
 	var new_prompt = missions[new_index]
-	var curr_mission = missions[index]
+	var curr_mission 
+	if index < len(missions):
+		curr_mission = missions[index]
+	else:
+		curr_mission = completed_missions[0]
 	$MissionControl/greenLight.color = Color(0.08,0.8,.15,1)
 	var t = Timer.new()
 	t.set_wait_time(3)
@@ -205,6 +209,7 @@ func reset_repair_button():
 #is printed if the player tries to store too many resources
 func _on_WorldMap_player_resources_changed(cfp_resources, mineral_resources):
 	irc.update_resources(cfp_resources)
+	#Mineral_levels are the internal panel.
 	mineral_levels.update_resources_values(mineral_resources)
 	pass # Replace with function body.
 	

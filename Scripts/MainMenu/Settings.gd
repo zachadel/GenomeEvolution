@@ -15,7 +15,7 @@ func _ready():
 		row.add_child(node)
 		scroller.add_child(row)
 	pass # Replace with function body.
-	
+
 #If you want the name of the setting to the left of the option, stacked = false
 func create_settings_row(name: String, stacked: bool = true, value_label: bool = false) -> VBoxContainer:
 	var box = null
@@ -39,7 +39,7 @@ func create_settings_row(name: String, stacked: bool = true, value_label: bool =
 	box.add_child(label)
 	
 	return box
-	
+
 func create_node_from_dictionary(option_name: String, godot_type: String, options: Dictionary) -> Control:
 	var node = null
 
@@ -67,7 +67,7 @@ func create_node_from_dictionary(option_name: String, godot_type: String, option
 		use_dictionary_to_populate_node(node, option_name, options)
 		
 	return node
-	
+
 func use_dictionary_to_populate_node(node: Control, option_name: String, options: Dictionary):
 	node.name = option_name
 	for option in options:
@@ -94,7 +94,6 @@ func use_dictionary_to_populate_node(node: Control, option_name: String, options
 #				-Setting
 func get_final_settings()->Dictionary:
 	var settings = {}
-	
 	#Loop over boxes
 	for box in scroller.get_children():
 		#Get the setting which isn't a label
@@ -110,7 +109,6 @@ func get_final_settings()->Dictionary:
 					Settings.settings["ingame_settings"][child.name]["final_value"] = child.get("pressed")
 				elif child.get("text") != null:
 					Settings.settings["ingame_settings"][child.name]["final_value"] = child.text
-	
 	return settings
 
 func update_global_settings():

@@ -443,43 +443,34 @@ func adv_turn():
 		close_extra_menus();
 		var skip_turn = false
 		if (Game.get_turn_type() == Game.TURN_TYPES.Recombination):
+			print("recombination")
 			for g in orgn.gene_selection:
 				g.disable(true);
 				
 		if Game.get_next_turn_type() == Game.TURN_TYPES.Recombination:
 			var recombos = orgn.get_recombos_per_turn()
+			
 			if recombos == 0:
 				skip_turn = true
-		if(Game.get_turn_type() == Game.TURN_TYPES.RepairDmg and Game.get_next_turn_type() == Game.TURN_TYPES.Recombination):
-			print("Step 4->5")
-			if orgn.get_cmsm_pair().get_gap_list() != []:
-				print("there's damage")
-				notifications.emit_signal("notification_needed", "There are still some breaks that you need to mend.")
-				$RepairTabs.current_tab = 3
-				$RepairTabs/pnl_repair_choices.hide()
-				$RepairTabs/pnl_bandage_dmg.show()
-				#print("It should have happened.")
-				skip_turn = true
-			
 		if(Game.get_turn_type() == Game.TURN_TYPES.RepairDmg and Game.get_next_turn_type() == Game.TURN_TYPES.TEJump):
-			print("Step 2->3")
+			print(Game.get_turn_type())
+			print("here we are all over again.")
 			if check_if_any_dmg_in_chromosomes():
-				print("there's damage 2")
 				notifications.emit_signal("notification_needed", "There are still some harmed genes left you need to heal.")
 				$RepairTabs.current_tab = 3
 				$RepairTabs/pnl_repair_choices.hide()
 				$RepairTabs/pnl_bandage_dmg.show()
 				#print("It should have happened.")
-				skip_turn = true
-		if !skip_turn:
-			Game.adv_turn(skip_turn);
-			upd_turn_display();
-			
-			_add_justnow_bbcode("\n\n%s" % Game.get_turn_txt(), {"color": Color(1, 0.75, 0)});
-			emit_signal("add_card_event_log","\n\n%s" % Game.get_turn_txt(), {"color": Color(1, 0.75, 0)})
-			
-			emit_signal("next_turn", Game.round_num, Game.turn_idx);
-			$pnl_saveload.new_save(SaveExports.get_save_str(self));
+				skip_turn = false
+		Game.adv_turn(skip_turn); #What does this do
+		upd_turn_display(); #What does this do?
+		# updates the display information.
+		_add_justnow_bbcode("\n\n%s" % Game.get_turn_txt(), {"color": Color(1, 0.75, 0)});
+		emit_signal("add_card_event_log","\n\n%s" % Game.get_turn_txt(), {"color": Color(1, 0.75, 0)})
+		
+		#moves the game onto the next turn
+		emit_signal("next_turn", Game.round_num, Game.turn_idx);
+		$pnl_saveload.new_save(SaveExports.get_save_str(self));
 
 func _on_animating_changed(state):
 	wait_on_anim = state;
@@ -597,15 +588,6 @@ func play_mitosis_slides():
 	add_child(slides)
 	slides.start()
 	yield(slides, "exit_mitosis_slides")
-	remove_child(slides)
-	slides.queue_free()
-	pass
-	
-func play_replication_animation():
-	var slides = load("res://Scenes/CardTable/ReplicationAnimation.tscn").instance()
-	add_child(slides)
-	slides.start()
-	yield(slides, "exit_replication_slides")
 	remove_child(slides)
 	slides.queue_free()
 	pass

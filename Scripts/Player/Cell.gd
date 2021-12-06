@@ -11,7 +11,6 @@ const DEFAULT_MODULATE = Color(1,1,1,1)
 var rng = RandomNumberGenerator.new()
 var spin_rate = .2
 var flip = false
-var grow_rate = 1
 var grow = true
 const DANGER_MODULATE = Color(5, 0, 0, 5)
 
@@ -96,7 +95,6 @@ func reset_highlights():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	spin_rate = rng.randf_range(.15,.25)
-	grow_rate = rng.randf_range(1,1.002)
 	
 	if(scale.x > 1.1):
 		grow = false
