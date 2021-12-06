@@ -545,6 +545,9 @@ margin_right = 1599.17
 margin_bottom = 900.0
 mouse_filter = 2
 texture = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Logo" type="TextureRect" parent="."]
 anchor_left = 0.5

@@ -8,12 +8,15 @@ export var large = false
 onready var nucleus = $Nucleus
 const HIGHLIGHT_COLOR = Color(2,2,2,2)
 const DEFAULT_MODULATE = Color(1,1,1,1)
-
+var rng = RandomNumberGenerator.new()
+var spin_rate = .2
+var flip = false
+var grow = true
 const DANGER_MODULATE = Color(5, 0, 0, 5)
-
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	rng.randomize()
 	if cell_type in Settings.settings["cells"]:
 		var tex_path = ""
 		if not large:
@@ -90,5 +93,26 @@ func reset_highlights():
 			child.self_modulate = DEFAULT_MODULATE
 		
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _process(delta):
+	spin_rate = rng.randf_range(.15,.25)
+	
+	if(scale.x > 1.1):
+		grow = false
+	if(scale.x < .9):
+		grow = true
+	if(get_rotation_degrees() < -10):
+		flip = true
+	if(get_rotation_degrees() > 10):
+		flip = false
+	if(!flip):
+		rotation_degrees-=spin_rate
+	else:
+		rotation_degrees+=spin_rate
+	self.modulate.a
+	if(grow):
+		scale.x *= 1.001
+		scale.y *= 1.001
+	else:
+		scale.x /= 1.001
+		scale.y /= 1.001
+	pass

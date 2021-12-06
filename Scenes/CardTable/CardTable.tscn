@@ -650,6 +650,22 @@ margin_right = -4.0
 margin_bottom = -4.0
 
 [node name="LblInstr" type="Label" parent="RepairTabs/pnl_rem_sides"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "
+
+Click a gene on either end of a break to remove the gene.
+
+The amount you remove is based on your Disassembly skill.
+You have %d removals remaining."
+align = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LblInstr" type="Label" parent="RepairTabs/pnl_rem_sides"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "
@@ -674,16 +690,9 @@ margin_right = -4.0
 margin_bottom = -4.0
 
 [node name="LblInstr" type="Label" parent="RepairTabs/pnl_rem_dmg"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "
-
-Click a damaged gene to remove it.
-
-The number of genes you can remove is based on your Disassembly skill.
-You have %d removals remaining this turn."
+margin_right = 689.0
+margin_bottom = 121.0
 align = 1
-autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -1953,10 +1962,10 @@ layer = 12
 [node name="Notifications" parent="CanvasLayer" instance=ExtResource( 44 )]
 
 [node name="q_s2" type="TextureRect" parent="."]
-margin_left = 560.0
-margin_top = 576.542
-margin_right = 583.0
-margin_bottom = 603.542
+margin_left = 559.589
+margin_top = 576.953
+margin_right = 582.589
+margin_bottom = 603.953
 texture = ExtResource( 45 )
 __meta__ = {
 "_edit_use_anchors_": false
