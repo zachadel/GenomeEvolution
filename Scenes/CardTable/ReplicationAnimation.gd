@@ -8,6 +8,9 @@ extends Control
 signal exit_replication_slides()
 
 onready var cmsms = $"../Organism/scroll/chromes"
+
+var progress1 = 0
+var progress2 = 0
 export var current_slide = 0
 
 # Called when the node enters the scene tree for the first time.
@@ -22,6 +25,31 @@ func _ready():
 
 func start():
 	var first_slide = get_children()[current_slide]
+	var remove_counter = 0
+	while remove_counter < $Choose/AnimationPlayer/Original.get_child_count():
+		$Choose/AnimationPlayer/Original.get_child(remove_counter).queue_free()
+		remove_counter = remove_counter + 1
+	remove_counter = 0
+	while remove_counter < $Choose/AnimationPlayer/Original2.get_child_count():
+		$Choose/AnimationPlayer/Original2.get_child(remove_counter).queue_free()
+		remove_counter = remove_counter + 1
+	remove_counter = 0
+	while remove_counter < $Choose/AnimationPlayer/Row1.get_child_count():
+		$Choose/AnimationPlayer/Row1.get_child(remove_counter).queue_free()
+		remove_counter = remove_counter + 1
+	remove_counter = 0
+	while remove_counter < $Choose/AnimationPlayer/Row2.get_child_count():
+		$Choose/AnimationPlayer/Row2.get_child(remove_counter).queue_free()
+		remove_counter = remove_counter + 1
+	remove_counter = 0
+	while remove_counter < $Choose/AnimationPlayer/GeneCopies1.get_child_count():
+		$Choose/AnimationPlayer/GeneCopies1.get_child(remove_counter).queue_free()
+		remove_counter = remove_counter + 1
+	remove_counter = 0
+	while remove_counter < $Choose/AnimationPlayer/GeneCopies2.get_child_count():
+		$Choose/AnimationPlayer/GeneCopies2.get_child(remove_counter).queue_free()
+		remove_counter = remove_counter + 1
+	
 	play_and_show(first_slide)
 	
 func stop_and_hide(slide: Control):
@@ -41,40 +69,107 @@ func play_and_show(slide: Control):
 	var new = 0
 	if slide.has_node("AnimationPlayer"):
 		var anims = slide.get_node("AnimationPlayer")
-		var length1 = cmsms.get_child(0).get_child(0).get_child(2).get_child(0).get_length() #This is the length of chromosome 1
-		var length2 = cmsms.get_child(2).get_child(0).get_child(2).get_child(0).get_length()
+		var length1 = len(cmsms.get_child(0).get_genes()) #This is the length of chromosome 1
+		var clength1 = len(cmsms.get_child(1).get_genes()) #len of copy of chrom 1
+		var length2 = len(cmsms.get_child(2).get_genes()) #len chrom 2
+		var clength2 = len(cmsms.get_child(3).get_genes()) #len of copy of chrom 2
 		
-		var cmsm1 = cmsms.get_child(0).get_child(0).get_child(2).get_child(0).get_genes()
-		#var cmsm2 = cmsms.get_child(1).get_child(0).get_child(2).get_child(0).get_genes()
-		#var cmsm3 = cmsms.get_child(2).get_child(0).get_child(2).get_child(0).get_genes()
-		#var cmsm4 = cmsms.get_child(3).get_child(0).get_child(2).get_child(0).get_genes()
+		print(str(cmsms.get_child_count()) + " children")
+		var cmsm1 = cmsms.get_child(0).get_genes()
+		var cmsm2 = cmsms.get_child(1).get_genes()
+		var cmsm3 = cmsms.get_child(2).get_genes()
+		var cmsm4 = cmsms.get_child(3).get_genes()
 		
 		var skill_indicator
 		var compare_status_bar
 		
 		var counter1 = 0
-		while counter1 < length1 and counter1 < 8:
-			var original1 = load("res://Scenes/CardTable/SequenceElement.tscn").instance()
-			original1.is_display = true
-			$Choose/AnimationPlayer/Original.add_child(original1)
-			original1.set_elm_size(263)
-			original1.get_child(3).visible = false
-			original1.setup(cmsm1[counter1].type, cmsm1[counter1].id, cmsm1[counter1].mode, cmsm1[counter1].code, cmsm1[counter1].par_code, cmsm1[counter1].ph, cmsm1[counter1].code_dir, cmsm1[counter1].dmg, cmsm1[counter1].count, cmsm1[counter1].temp)
+		while counter1 < 8:
+			var limit1 = false
+			var limit2 = false
+			if progress1 < length1:
+				var original = load("res://Scenes/CardTable/SequenceElement.tscn").instance()
+				original.is_display = true
+				$Choose/AnimationPlayer/Original.add_child(original)
+				original.set_h_size_flags(1)
+				original.set_elm_size(263)
+				original.get_child(3).visible = false
+				original.ess_behavior = cmsm1[progress1].ess_behavior
+				original.setup(cmsm1[progress1].type, cmsm1[progress1].id, cmsm1[progress1].mode, cmsm1[progress1].code, cmsm1[progress1].par_code, cmsm1[progress1].ph, cmsm1[progress1].code_dir, cmsm1[progress1].dmg, cmsm1[progress1].count, cmsm1[progress1].temp)
+				$Choose/AnimationPlayer/Original.show()
+			else:
+				limit1 = true
+				
 			
-			var arrow = load("res://Scenes/CardTable/result_arrow.tscn").instance()
-			$Choose/AnimationPlayer/Row1.add_child(arrow)
 			
-			var copies1 = load("res://Scenes/CardTable/SequenceElement.tscn").instance()
-			copies1.is_display = true
-			$Choose/AnimationPlayer/GeneCopies1.add_child(copies1)
-			copies1.set_elm_size(263)
-			copies1.get_child(3).visible = false
+			if progress1 < clength1:
+				var copies = load("res://Scenes/CardTable/SequenceElement.tscn").instance()
+				copies.is_display = true
+				$Choose/AnimationPlayer/GeneCopies1.add_child(copies)
+				copies.set_h_size_flags(1)
+				copies.set_elm_size(263)
+				copies.get_child(3).visible = false
+				copies.ess_behavior = cmsm2[progress1].ess_behavior
+				copies.setup(cmsm2[progress1].type, cmsm2[progress1].id, cmsm2[progress1].mode, cmsm2[progress1].code, cmsm2[progress1].par_code, cmsm2[progress1].ph, cmsm2[progress1].code_dir, cmsm2[progress1].dmg, cmsm2[progress1].count, cmsm2[progress1].temp)
+				$Choose/AnimationPlayer/GeneCopies1.get_child(counter1).show()
+			else:
+				limit2 = true
 			
-			$Choose/AnimationPlayer/Original.show()
-			$Choose/AnimationPlayer/Row1.get_child(counter1).show()
-			$Choose/AnimationPlayer/GeneCopies1.get_child(counter1).show()
+			if not limit1 or not limit2:
+				var arrow = load("res://Scenes/CardTable/result_arrow.tscn").instance()
+				$Choose/AnimationPlayer/Row1.add_child(arrow)
+				$Choose/AnimationPlayer/Row1.get_child(counter1).show()
 			
 			counter1 = counter1 + 1
+			progress1 = progress1 + 1
+			
+		
+		var counter2 = 0
+		while counter2 < 8:
+			var limit1 = false
+			var limit2 = false
+			if progress2 < length2:
+				var original = load("res://Scenes/CardTable/SequenceElement.tscn").instance()
+				original.is_display = true
+				$Choose/AnimationPlayer/Original2.add_child(original)
+				original.set_h_size_flags(1)
+				original.set_elm_size(263)
+				original.get_child(3).visible = false
+				original.ess_behavior = cmsm3[progress2].ess_behavior
+				original.setup(cmsm3[progress2].type, cmsm3[progress2].id, cmsm3[progress2].mode, cmsm3[progress2].code, cmsm3[progress2].par_code, cmsm3[progress2].ph, cmsm3[progress2].code_dir, cmsm3[progress2].dmg, cmsm3[progress2].count, cmsm3[progress2].temp)
+				$Choose/AnimationPlayer/Original.show()
+			else:
+				limit1 = true
+			
+			
+			
+			if progress2 < clength2:
+				var copies = load("res://Scenes/CardTable/SequenceElement.tscn").instance()
+				copies.is_display = true
+				$Choose/AnimationPlayer/GeneCopies2.add_child(copies)
+				copies.set_h_size_flags(1)
+				copies.set_elm_size(263)
+				copies.get_child(3).visible = false
+				copies.ess_behavior = cmsm4[progress2].ess_behavior
+				copies.setup(cmsm4[progress2].type, cmsm4[progress2].id, cmsm4[progress2].mode, cmsm4[progress2].code, cmsm4[progress2].par_code, cmsm4[progress2].ph, cmsm4[progress2].code_dir, cmsm4[progress2].dmg, cmsm4[progress2].count, cmsm4[progress2].temp)
+				$Choose/AnimationPlayer/GeneCopies2.get_child(counter2).show()
+			else:
+				limit2 = true
+			
+			if not limit1 or not limit2:
+				var arrow = load("res://Scenes/CardTable/result_arrow.tscn").instance()
+				$Choose/AnimationPlayer/Row2.add_child(arrow)
+				$Choose/AnimationPlayer/Row2.get_child(counter2).show()
+			
+			counter2 = counter2 + 1
+			progress2 = progress2 + 1
+		
+		#fix this
+		print("prog 1 " + str(progress1) + " " + str(length1))
+		print("prog 2 " + str(progress2) + " " + str(length2))
+		if progress2 >= length2 and progress1 >= length1:
+			$Choose/Next.visible = false
+		
 		#print("Added " + str(counter1) + " children to original")
 		##Needs to be refactored using an array of keywords
 		#for node in anims.get_child_count():
@@ -103,7 +198,7 @@ func play_and_show(slide: Control):
 						#	$Choose/AnimationPlayer/Original.get_child(child).get_child(1).visible = false
 						#	$Choose/AnimationPlayer/GeneCopies.get_child(child).get_child(1).visible = true
 						#	$Choose/AnimationPlayer/GeneCopies.get_child(child).get_child(0).visible = false
-
+		
 
 	slide.get_node("AnimationPlayer").play("Replication")
 	slide.show()
@@ -115,3 +210,7 @@ func _on_Skip_pressed():
 	var cur_slide = get_children()[current_slide]
 	stop_and_hide(cur_slide)
 	leave_intro()
+
+func _on_Next_pressed():
+	start()
+	

@@ -6,7 +6,7 @@ signal show_warning();
 signal close_warning();
 onready var cmsms = $scroll/chromes
 onready var spectrum = $Spectrum
-
+var firsttime = false
 onready var indicators = $indicators
 
 var PRINT_DEBUG = false
@@ -1792,7 +1792,7 @@ func replicate(idx):
 			yield(get_card_table().play_meiosis_slides(), "completed")
 			has_done_meiosis = true
 		
-		
+	
 		yield(get_card_table().play_replication_animation(), "completed")
 		
 		cmsms.show_all_choice_buttons(true);

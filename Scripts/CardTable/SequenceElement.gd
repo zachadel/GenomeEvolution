@@ -150,11 +150,11 @@ func setup(_type : String, _id := "", _mode := "", _code := "", _par_code := "",
 	mode = _mode;
 	code = _code;
 	par_code = _par_code;
+	ph = _ph;
 	code_dir = _code_dir;
 	dmg = _dmg;
 	count = _count;
 	temp = _temp;
-	ph = _ph;
 	damage_gene(_dmg);
 	var t_p = Chance.rand_normal_between(0,50);
 	if(t_p != null):
@@ -820,7 +820,10 @@ func upd_behavior_disp(behavior = ""):
 		"essential":
 			if (behavior != ""):
 				var indicator = get_node("Indic%s" % behavior);
-				indicator.set_value(ess_behavior[behavior]);
+				if not is_display:
+					indicator.set_value(ess_behavior[behavior]);
+				else:
+					indicator.hide_label();
 				indicator.set_skilled(!skills.get(behavior, []).empty());
 				indicator.ttip_data = [behavior, "base", skills];
 			else:
@@ -882,10 +885,8 @@ func upd_display():
 						$lbl_id.visible = true;
 					"essential":
 						self_modulate = Color(0, .66, 0);
-						if not is_display:
-							set_texture(Game.ess_textures[get_dominant_essential()]);
-						else:
-							pass
+						print("dom gene is " + get_dominant_essential())
+						set_texture(Game.ess_textures[get_dominant_essential()]);
 							#we need to set_texture of the proper texture ... but how to get?
 					"pseudo":
 						self_modulate = Color(.5, .5, 0);

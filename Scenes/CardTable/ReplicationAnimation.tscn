@@ -1,7 +1,8 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Scenes/CardTable/ReplicationAnimation.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Fonts/BoldItalics_50.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Scenes/CardTable/result_arrow.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Fonts/OpenSans-Bold.ttf" type="DynamicFontData" id=6]
 [ext_resource path="res://Assets/Fonts/OpenSans-Italic.ttf" type="DynamicFontData" id=13]
 
@@ -516,7 +517,7 @@ tracks/2/keys = {
 "values": [ true ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("AnimationPlayer/Row1:visible")
+tracks/3/path = NodePath("AnimationPlayer/GeneCopies1:visible")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
@@ -528,7 +529,7 @@ tracks/3/keys = {
 "values": [ true ]
 }
 tracks/4/type = "value"
-tracks/4/path = NodePath("AnimationPlayer/GeneCopies1:visible")
+tracks/4/path = NodePath("AnimationPlayer/OriginalLabel2:visible")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
@@ -540,7 +541,7 @@ tracks/4/keys = {
 "values": [ true ]
 }
 tracks/5/type = "value"
-tracks/5/path = NodePath("AnimationPlayer/OriginalLabel2:visible")
+tracks/5/path = NodePath("AnimationPlayer/Original2:visible")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/imported = false
@@ -552,7 +553,7 @@ tracks/5/keys = {
 "values": [ true ]
 }
 tracks/6/type = "value"
-tracks/6/path = NodePath("AnimationPlayer/Original2:visible")
+tracks/6/path = NodePath("AnimationPlayer/Row1:visible")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/imported = false
@@ -564,7 +565,7 @@ tracks/6/keys = {
 "values": [ true ]
 }
 tracks/7/type = "value"
-tracks/7/path = NodePath("AnimationPlayer/Row2:visible")
+tracks/7/path = NodePath("AnimationPlayer/CopyLabel2:visible")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/imported = false
@@ -576,7 +577,7 @@ tracks/7/keys = {
 "values": [ true ]
 }
 tracks/8/type = "value"
-tracks/8/path = NodePath("AnimationPlayer/CopyLabel2:visible")
+tracks/8/path = NodePath("AnimationPlayer/GeneCopies2:visible")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/imported = false
@@ -588,7 +589,7 @@ tracks/8/keys = {
 "values": [ true ]
 }
 tracks/9/type = "value"
-tracks/9/path = NodePath("AnimationPlayer/GeneCopies2:visible")
+tracks/9/path = NodePath("AnimationPlayer/Row2:visible")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/imported = false
@@ -644,10 +645,21 @@ __meta__ = {
 }
 
 [node name="Skip" type="Button" parent="Choose"]
-margin_left = 1330.14
-margin_top = 777.128
-margin_right = 1591.14
-margin_bottom = 885.128
+margin_left = 1.91693
+margin_top = 787.639
+margin_right = 262.917
+margin_bottom = 895.639
+theme = SubResource( 6 )
+text = "Skip"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Next" type="Button" parent="Choose"]
+margin_left = 1338.74
+margin_top = 786.683
+margin_right = 1599.74
+margin_bottom = 894.683
 theme = SubResource( 6 )
 text = "Next"
 __meta__ = {
@@ -681,10 +693,10 @@ __meta__ = {
 }
 
 [node name="CopyLabel" type="RichTextLabel" parent="Choose/AnimationPlayer"]
-margin_left = 4.41437
-margin_top = 280.417
+margin_left = 4.414
+margin_top = 310.0
 margin_right = 220.414
-margin_bottom = 359.417
+margin_bottom = 389.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -716,13 +728,15 @@ __meta__ = {
 
 [node name="Row1" type="HBoxContainer" parent="Choose/AnimationPlayer"]
 margin_left = 245.0
-margin_top = 192.0
+margin_top = 180.0
 margin_right = 2664.0
-margin_bottom = 526.0
+margin_bottom = 514.0
 rect_scale = Vector2( 0.5, 0.3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="TextureRect" parent="Choose/AnimationPlayer/Row1" instance=ExtResource( 3 )]
 
 [node name="GeneCopies1" type="HBoxContainer" parent="Choose/AnimationPlayer"]
 anchor_left = 0.00496063
@@ -730,9 +744,9 @@ anchor_top = 0.0352755
 anchor_right = 0.00496063
 anchor_bottom = 0.0352755
 margin_left = 227.65
-margin_top = 270.598
+margin_top = 258.252
 margin_right = 2646.65
-margin_bottom = 533.598
+margin_bottom = 521.252
 rect_scale = Vector2( 0.5, 0.5 )
 mouse_filter = 2
 __meta__ = {
@@ -741,10 +755,10 @@ __meta__ = {
 }
 
 [node name="OriginalLabel2" type="RichTextLabel" parent="Choose/AnimationPlayer"]
-margin_left = 3.23915
-margin_top = 425.186
+margin_left = 3.239
+margin_top = 450.0
 margin_right = 219.239
-margin_bottom = 504.188
+margin_bottom = 529.002
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -762,33 +776,11 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Original2" type="HBoxContainer" parent="Choose/AnimationPlayer"]
-margin_left = 234.0
-margin_top = 411.56
-margin_right = 2653.0
-margin_bottom = 674.56
-rect_scale = Vector2( 0.5, 0.5 )
-mouse_filter = 2
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Row2" type="HBoxContainer" parent="Choose/AnimationPlayer"]
-margin_left = 245.0
-margin_top = 525.0
-margin_right = 2664.0
-margin_bottom = 859.0
-rect_scale = Vector2( 0.5, 0.3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="CopyLabel2" type="RichTextLabel" parent="Choose/AnimationPlayer"]
-margin_left = 3.82312
-margin_top = 620.572
+margin_left = 3.823
+margin_top = 660.0
 margin_right = 219.823
-margin_bottom = 699.572
+margin_bottom = 739.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -806,11 +798,33 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Original2" type="HBoxContainer" parent="Choose/AnimationPlayer"]
+margin_left = 234.0
+margin_top = 410.0
+margin_right = 2653.0
+margin_bottom = 673.0
+rect_scale = Vector2( 0.5, 0.5 )
+mouse_filter = 2
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Row2" type="HBoxContainer" parent="Choose/AnimationPlayer"]
+margin_left = 245.0
+margin_top = 545.0
+margin_right = 2664.0
+margin_bottom = 879.0
+rect_scale = Vector2( 0.5, 0.3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="GeneCopies2" type="HBoxContainer" parent="Choose/AnimationPlayer"]
 margin_left = 234.0
-margin_top = 613.26
+margin_top = 640.0
 margin_right = 2653.0
-margin_bottom = 876.26
+margin_bottom = 903.0
 rect_scale = Vector2( 0.5, 0.5 )
 mouse_filter = 2
 __meta__ = {
@@ -819,3 +833,4 @@ __meta__ = {
 }
 
 [connection signal="pressed" from="Choose/Skip" to="." method="_on_Skip_pressed"]
+[connection signal="pressed" from="Choose/Next" to="." method="_on_Next_pressed"]

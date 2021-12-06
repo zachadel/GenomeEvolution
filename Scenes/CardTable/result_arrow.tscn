@@ -9,25 +9,23 @@ size = 60
 font_data = ExtResource( 2 )
 
 [node name="TextureRect" type="TextureRect"]
-margin_right = 260.0
-margin_bottom = 263.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
+margin_right = 263.0
+margin_bottom = 334.0
+rect_min_size = Vector2( 263, 334 )
 expand = true
-stretch_mode = 5
+stretch_mode = 6
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="green_arrow" type="TextureRect" parent="."]
-margin_right = 263.0
-margin_bottom = 340.0
+margin_right = 251.0
+margin_bottom = 334.0
+rect_min_size = Vector2( 232, 334 )
 mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+size_flags_horizontal = 0
+size_flags_vertical = 0
 texture = ExtResource( 1 )
-expand = true
-stretch_mode = 6
 __meta__ = {
 "_edit_use_anchors_": false
 }

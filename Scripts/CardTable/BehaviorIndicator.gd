@@ -44,6 +44,9 @@ func set_value(v: float) -> void:
 func get_value() -> float:
 	return val;
 
+func hide_label():
+	$LblVal.visible = false
+
 func set_skilled(s: bool) -> void:
 	$LblSkilled.visible = s;
 	skilled = s;
