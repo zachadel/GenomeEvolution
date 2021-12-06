@@ -1,11 +1,17 @@
 extends TextureButton
 
-
+var is_display = false
 var type; #holds break or gene
 var mode; #holds essential, ate, or pseudogene
 var id;   #holds unique identifier
 var temp;
 var temperature_array := []
+var code
+var par_code
+var code_dir
+var dmg
+var count
+var ph
 
 var SEQ_ELM_COMPARE_GRADIENT = load("res://Scenes/CardTable/SeqElmColorCompare.tres");
 var preference_temp = {}
@@ -142,6 +148,13 @@ func setup(_type : String, _id := "", _mode := "", _code := "", _par_code := "",
 	#print("dictionary: " + str(preference_pH))
 	type = _type;
 	mode = _mode;
+	code = _code;
+	par_code = _par_code;
+	code_dir = _code_dir;
+	dmg = _dmg;
+	count = _count;
+	temp = _temp;
+	ph = _ph;
 	damage_gene(_dmg);
 	var t_p = Chance.rand_normal_between(0,50);
 	if(t_p != null):
@@ -869,7 +882,11 @@ func upd_display():
 						$lbl_id.visible = true;
 					"essential":
 						self_modulate = Color(0, .66, 0);
-						set_texture(Game.ess_textures[get_dominant_essential()]);
+						if not is_display:
+							set_texture(Game.ess_textures[get_dominant_essential()]);
+						else:
+							pass
+							#we need to set_texture of the proper texture ... but how to get?
 					"pseudo":
 						self_modulate = Color(.5, .5, 0);
 					"blank":
@@ -1009,12 +1026,15 @@ func set_elm_size(size = null):
 	AnthroArt.safe_callv("_upd_size");
 
 func _on_SeqElm_pressed():
-	emit_signal("elm_clicked", self);
+	if not is_display:
+		emit_signal("elm_clicked", self);
 
 func _on_SeqElm_mouse_entered():
-	get_cmsm().magnify_elm(self);
-	emit_signal("elm_mouse_entered", self);
+	if not is_display:
+		get_cmsm().magnify_elm(self);
+		emit_signal("elm_mouse_entered", self);
 
 func _on_SeqElm_mouse_exited():
-	get_cmsm().demagnify_elm(self);
-	emit_signal("elm_mouse_exited", self);
+	if not is_display:
+		get_cmsm().demagnify_elm(self);
+		emit_signal("elm_mouse_exited", self);
