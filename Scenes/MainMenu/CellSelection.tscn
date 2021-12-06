@@ -11,7 +11,7 @@
 [ext_resource path="res://Assets/Images/genes/Component.png" type="Texture" id=9]
 [ext_resource path="res://Assets/Images/genes/Helix_Circle.png" type="Texture" id=10]
 [ext_resource path="res://Assets/Images/genes/Construction.png" type="Texture" id=11]
-[ext_resource path="res://Assets/Images/genes/Helper.png" type="Texture" id=12]
+[ext_resource path="res://Assets/Images/Helper.png" type="Texture" id=12]
 [ext_resource path="res://Assets/Images/genes/Sensing.png" type="Texture" id=13]
 [ext_resource path="res://Assets/Images/genes/Locomotion.png" type="Texture" id=14]
 [ext_resource path="res://Assets/Images/genes/Deconstruction.png" type="Texture" id=15]
@@ -19,6 +19,7 @@
 [ext_resource path="res://Assets/Images/genes/Manipulation.png" type="Texture" id=17]
 [ext_resource path="res://Assets/Images/pngs/SpeechRectLeft.png" type="Texture" id=18]
 [ext_resource path="res://Scenes/MainMenu/TextScript.gd" type="Script" id=19]
+
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"

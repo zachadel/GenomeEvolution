@@ -32,7 +32,7 @@ func stop_and_hide(slide: Control):
 			child.hide()
 		
 	slide.hide()
-	
+
 func play_and_show(slide: Control):
 	if slide.has_node("AnimationPlayer"):
 		var anims = slide.get_node("AnimationPlayer")

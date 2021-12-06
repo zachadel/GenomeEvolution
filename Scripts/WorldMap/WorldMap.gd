@@ -2216,9 +2216,8 @@ func hide_tiles(center_tile, observation_radius):
 	if Settings.fog == true:
 		#print("test")
 		if len(PROGENY.progeny_created) > 0:
-			print("me")
 			for i in PROGENY.progeny_created:
-				print("boop")
+				print("memory usage: " + str(OS.get_static_memory_usage()/(1024*1024)) + " mb")
 				if current_player.clear_path.has([ int(i.position[0]), int(i.position[1]) ]):
 					print("hello")
 					if current_player.clear_path[[int(i.position[0]), int(i.position[1])]] == $ObscurityMap.VISION.HIDDEN || current_player.clear_path[[int(i.position[0]), int(i.position[1])]] == $ObscurityMap.VISION.CLEAR:

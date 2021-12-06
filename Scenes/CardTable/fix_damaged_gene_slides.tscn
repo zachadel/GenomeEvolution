@@ -2868,6 +2868,7 @@ margin_right = 300.0
 margin_bottom = 848.0
 theme = SubResource( 6 )
 text = "Back"
+
 [connection signal="pressed" from="1/next" to="." method="_on_next_pressed"]
 [connection signal="pressed" from="1/skip" to="." method="_on_skip_pressed"]
 [connection signal="pressed" from="1/back" to="." method="_on_back_pressed"]

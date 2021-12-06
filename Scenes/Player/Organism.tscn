@@ -5,6 +5,8 @@
 [ext_resource path="res://Assets/Images/genes/Replication.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Images/statsScreen/checkbox-152187_1280.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Fonts/OpenSans-22.tres" type="DynamicFont" id=5]
+[ext_resource path="res://Assets/Images/genes/downgraded_gene.gdshader" type="Shader" id=6]
+[ext_resource path="res://Assets/Images/genes/upgraded_gene.gdshader" type="Shader" id=7]
 
 [sub_resource type="Animation" id=1]
 resource_name = "correction"
@@ -24,28 +26,11 @@ tracks/0/keys = {
 } ]
 }
 
-[sub_resource type="Shader" id=2]
-code = "shader_type canvas_item;
-void fragment(){
-	COLOR = texture(TEXTURE, UV); //read from texture 
-	COLOR.r = 1.0;
-	
-}
-"
+[sub_resource type="ShaderMaterial" id=2]
+shader = ExtResource( 6 )
 
 [sub_resource type="ShaderMaterial" id=3]
-shader = SubResource( 2 )
-
-[sub_resource type="Shader" id=4]
-code = "shader_type canvas_item;
-void fragment(){
-	COLOR = texture(TEXTURE, UV); //read from texture 
-	COLOR.g = 1.0;
-	
-}"
-
-[sub_resource type="ShaderMaterial" id=5]
-shader = SubResource( 4 )
+shader = ExtResource( 7 )
 
 [node name="Organism" type="Control"]
 anchor_right = 1.0
@@ -194,7 +179,6 @@ align = 1
 autowrap = true
 
 [node name="Spectrum" type="ColorRect" parent="."]
-visible = false
 margin_left = 50.0
 margin_top = 410.0
 margin_right = 650.0
@@ -205,7 +189,7 @@ __meta__ = {
 }
 
 [node name="Bad_gene" type="TextureRect" parent="Spectrum"]
-material = SubResource( 3 )
+material = SubResource( 2 )
 margin_left = -230.513
 margin_top = -123.0
 margin_right = 345.487
@@ -219,7 +203,7 @@ __meta__ = {
 }
 
 [node name="Good_gene" type="TextureRect" parent="Spectrum"]
-material = SubResource( 5 )
+material = SubResource( 3 )
 margin_left = 251.0
 margin_top = -120.0
 margin_right = 827.0
@@ -246,6 +230,9 @@ margin_left = 119.487
 margin_top = 75.0
 margin_right = 484.487
 margin_bottom = 80.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="red_gene_exp" type="Label" parent="Spectrum"]
 margin_left = 5.0
@@ -278,6 +265,7 @@ __meta__ = {
 }
 
 [node name="indicators" type="Control" parent="."]
+visible = false
 margin_right = 40.0
 margin_bottom = 40.0
 __meta__ = {
@@ -355,6 +343,7 @@ texture = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
 [connection signal="cmsm_picked" from="scroll/chromes" to="." method="_on_chromes_cmsm_picked"]
 [connection signal="elm_clicked" from="scroll/chromes" to="." method="_on_chromes_elm_clicked"]
 [connection signal="elm_mouse_entered" from="scroll/chromes" to="." method="_on_chromes_elm_mouse_entered"]
