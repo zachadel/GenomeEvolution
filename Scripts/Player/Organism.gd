@@ -1090,7 +1090,7 @@ func make_repair_choices(gap, repair_type: String):
 	if perform_repair:
 		repair_gap(gap, repair_type, choice_info);
 	print("8")
-	emit_signal("close_warning")
+	#emit_signal("close_warning")
 
 var repair_canceled = false;
 func repair_gap(gap, repair_type, choice_info = {}):
@@ -3131,6 +3131,10 @@ func acquire_resources():
 			if current_tile["resources"][index] > 0:
 				if Settings.settings["resources"][resource]["group"] == "minerals":
 					modified = true
+					print("Resource: "+ resource) #Theses are numbered minimally 0-33
+					
+					print("Mineral resources: "+ str(mineral_resources[resource_class][resource]))
+					
 					mineral_resources[resource_class][resource] += current_tile["resources"][index]
 					mineral_resources[resource_class]["total"] += current_tile["resources"][index]
 					current_tile["resources"][index] = 0

@@ -147,28 +147,30 @@ func nitrogen_lower_limits():
 
 func nitrogen_upper_limits():
 	notifications.emit_signal("notification_needed", "too much Nitrogen to convert.")
+	
 func _on_update_competitor_placement():
 	if len(COMPETITORS.competitors_created) > 0:
+		for i in COMPETITORS.competitors_created:
+			i.set_hibernation(current_player.position)
+			i.hibernation_mode(current_player.position)
 		print("we have a competitor")
 		for i in COMPETITORS.competitors_created:
 			var old_tile = i.position;
 			#I want to get their location
 			var child_tile = Game.world_to_map(i.position) #get the position of the child for the progeny
 			if greedy_behavior(child_tile, STATS.get_round_moves()) == child_tile:
-				print("not greedy")
 				var closer_tiles = Game.get_tiles_inside_radius(child_tile, STATS.get_round_moves()) #returns list of tiles for child from specified radius
 				var rand_idx = Chance.rand_between_tiles(0, len(closer_tiles)) #gives us a random index
+				
 				while Game.map_to_world(closer_tiles[rand_idx]) == i.position: #will ensure that they don't end up on the same tile
 					rand_idx = Chance.rand_between_tiles(0, len(closer_tiles))
 					
 				i.position = Game.map_to_world(closer_tiles[rand_idx]) #setting the position
 				i.organism.current_tile = get_tile_at_pos(closer_tiles[rand_idx]) #setting the tiles
 			else:
-				print("greedy")
 				i.position = Game.map_to_world( greedy_behavior(child_tile, STATS.get_round_moves()))
-				print("Position: " + str(i.position))
 				i.organism.current_tile = get_tile_at_pos( greedy_behavior(child_tile, STATS.get_round_moves()))
-				print("current_tile: " + str(i.organism.current_tile))
+	
 				
 			print(i.organism.current_tile)
 			var path_of_tiles = astar.get_tile_path_from_to(Game.world_to_map(old_tile), Game.world_to_map(i.position))
@@ -2261,6 +2263,7 @@ func update_ui_cfp_resources():
 
 func update_ui_mineral_resources():
 	ui.mineral_levels.update_resources_values(current_player.organism.mineral_resources)
+	
 	pass
 	
 func update_ui_energy():
@@ -2429,6 +2432,7 @@ func _on_WorldMap_UI_acquire_resources():
 #	print("After acquiring resources energy: ", current_player.organism.energy, '\n')
 #	print("After acquiring resources ui: ", ui.irc.resources, '\n')
 #	print("Current tile resources: ", Game.get_pretty_resources_from_indices(curr_tile["resources"]), '\n')
+	#Passing in the minerals for updating. 
 	emit_signal("player_resources_changed", current_player.organism.cfp_resources, current_player.organism.mineral_resources)
 	emit_signal("player_energy_changed", current_player.organism.energy)
 

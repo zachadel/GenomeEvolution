@@ -315,7 +315,7 @@ func adv_turn(skip: bool = false):
 	
 	fresh_round = false;
 	
-	_incr_turn_idx();
+	_incr_turn_idx(); #Increments the turn indx=ex
 	while !Unlocks.has_turn_unlock(get_turn_type()):
 		_incr_turn_idx();
 	

@@ -205,6 +205,7 @@ func reset_repair_button():
 #is printed if the player tries to store too many resources
 func _on_WorldMap_player_resources_changed(cfp_resources, mineral_resources):
 	irc.update_resources(cfp_resources)
+	#Mineral_levels are the internal panel.
 	mineral_levels.update_resources_values(mineral_resources)
 	pass # Replace with function body.
 	

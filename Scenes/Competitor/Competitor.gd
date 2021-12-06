@@ -14,13 +14,14 @@ signal player_died(player)
 
 var update_sensing = false
 var move_enabled = false
-
+var hibernation = false
 var organism
 var rng = RandomNumberGenerator.new()
 var observed_tiles = {}
 var clear_path = {}
 onready var sprite = get_node("Body")
-
+#Number of turns out of range.
+var num_turns_OR = 0
 const STARTING_POS = Vector2(2, 2) #Player is at 0,0
 # I want to intimidate them, but not be immediately the same.
 
@@ -48,6 +49,28 @@ func set_cell_type(cell_type: String):
 	organism.set_cell_type(cell_type)
 	sprite.set_cell_type(cell_type)
 	
+#Checks to see if the competitor is out of range, and adds to the number of turns if it is.
+func set_hibernation(player_pos): 
+	if(player_pos.x > position.x + 32):
+		hibernation = true
+	elif( player_pos.x < position.x -32):
+		hibernation = true
+	elif( player_pos.y > position.y + 32):
+		hibernation = true
+	elif(player_pos.y < position.y -32):
+		hibernation = true
+	else:
+		hibernation = false
+	
+	if hibernation:
+		num_turns_OR += 1
+
+func hibernation_mode(player_pos):
+	if not hibernation: #If the competitor is not in hibernation
+		for i in num_turns_OR: #For every amount of times it was out of range. move moves far.
+			print("go x amount of moves. ")
+		#Since you have been in range, then your number of moves will be zeroed out.
+		num_turns_OR = 0
 func get_cell_type():
 	return sprite.get_cell_type()
 
