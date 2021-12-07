@@ -820,11 +820,10 @@ func upd_behavior_disp(behavior = ""):
 		"essential":
 			if (behavior != ""):
 				var indicator = get_node("Indic%s" % behavior);
-				if not is_display:
-					indicator.set_value(ess_behavior[behavior]);
-				else:
-					indicator.hide_label();
+				indicator.set_value(ess_behavior[behavior]);
 				indicator.set_skilled(!skills.get(behavior, []).empty());
+				if is_display:
+					indicator.visible = false
 				indicator.ttip_data = [behavior, "base", skills];
 			else:
 				for b in ess_behavior:

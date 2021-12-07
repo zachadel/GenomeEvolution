@@ -1,8 +1,7 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Scenes/CardTable/ReplicationAnimation.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Fonts/BoldItalics_50.tres" type="DynamicFont" id=2]
-[ext_resource path="res://Scenes/CardTable/result_arrow.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Fonts/OpenSans-Bold.ttf" type="DynamicFontData" id=6]
 [ext_resource path="res://Assets/Fonts/OpenSans-Italic.ttf" type="DynamicFontData" id=13]
 
@@ -727,16 +726,14 @@ __meta__ = {
 }
 
 [node name="Row1" type="HBoxContainer" parent="Choose/AnimationPlayer"]
-margin_left = 245.0
+margin_left = 238.0
 margin_top = 180.0
-margin_right = 2664.0
+margin_right = 2657.0
 margin_bottom = 514.0
 rect_scale = Vector2( 0.5, 0.3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="TextureRect" parent="Choose/AnimationPlayer/Row1" instance=ExtResource( 3 )]
 
 [node name="GeneCopies1" type="HBoxContainer" parent="Choose/AnimationPlayer"]
 anchor_left = 0.00496063
@@ -811,9 +808,9 @@ __meta__ = {
 }
 
 [node name="Row2" type="HBoxContainer" parent="Choose/AnimationPlayer"]
-margin_left = 245.0
+margin_left = 238.0
 margin_top = 545.0
-margin_right = 2664.0
+margin_right = 2657.0
 margin_bottom = 879.0
 rect_scale = Vector2( 0.5, 0.3 )
 __meta__ = {
@@ -822,9 +819,9 @@ __meta__ = {
 
 [node name="GeneCopies2" type="HBoxContainer" parent="Choose/AnimationPlayer"]
 margin_left = 234.0
-margin_top = 640.0
+margin_top = 650.0
 margin_right = 2653.0
-margin_bottom = 903.0
+margin_bottom = 913.0
 rect_scale = Vector2( 0.5, 0.5 )
 mouse_filter = 2
 __meta__ = {

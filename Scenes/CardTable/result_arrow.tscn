@@ -1,8 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Assets/Images/icons/Down1.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Fonts/OpenSans-SemiBold.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://Assets/Images/icons/Down2.png" type="Texture" id=3]
+[ext_resource path="res://Scenes/CardTable/result_arrow.gd" type="Script" id=4]
+[ext_resource path="res://Assets/Images/icons/gene_death.png" type="Texture" id=5]
 
 [sub_resource type="DynamicFont" id=1]
 size = 60
@@ -14,11 +16,13 @@ margin_bottom = 334.0
 rect_min_size = Vector2( 263, 334 )
 expand = true
 stretch_mode = 6
+script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="green_arrow" type="TextureRect" parent="."]
+visible = false
 margin_right = 251.0
 margin_bottom = 334.0
 rect_min_size = Vector2( 232, 334 )
@@ -43,10 +47,15 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="1Result1" type="RichTextLabel" parent="."]
-margin_left = -1.81207
+[node name="TextureRect" type="TextureRect" parent="."]
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 5 )
+
+[node name="top_value" type="RichTextLabel" parent="."]
 margin_top = -67.0
-margin_right = 252.188
+margin_right = 254.0
 margin_bottom = 20.0
 custom_fonts/normal_font = SubResource( 1 )
 bbcode_enabled = true
@@ -54,10 +63,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="1Result2" type="RichTextLabel" parent="."]
-margin_left = 4.40973
+[node name="bottom_value" type="RichTextLabel" parent="."]
 margin_top = 315.07
-margin_right = 258.41
+margin_right = 254.0
 margin_bottom = 402.07
 custom_fonts/normal_font = SubResource( 1 )
 bbcode_enabled = true
