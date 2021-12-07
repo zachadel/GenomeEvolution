@@ -766,7 +766,7 @@ func downgrade_to_optimal():
 # Returns a string describing the evolution that occurred
 # eg "major upgrade, improving its Replication ability"
 func evolve_by_name(ev_name: String) -> String:
-	print('evolve by name is called. with String: ' + ev_name)
+	#print('evolve by name is called. with String: ' + ev_name)
 	if type == "gene":
 		match ev_name:
 			"dead":
@@ -825,6 +825,7 @@ func upd_behavior_disp(behavior = ""):
 				if is_display:
 					indicator.visible = false
 				indicator.ttip_data = [behavior, "base", skills];
+				
 			else:
 				for b in ess_behavior:
 					upd_behavior_disp(b);
@@ -884,7 +885,6 @@ func upd_display():
 						$lbl_id.visible = true;
 					"essential":
 						self_modulate = Color(0, .66, 0);
-						print("dom gene is " + get_dominant_essential())
 						set_texture(Game.ess_textures[get_dominant_essential()]);
 							#we need to set_texture of the proper texture ... but how to get?
 					"pseudo":

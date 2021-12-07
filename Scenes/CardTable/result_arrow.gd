@@ -28,10 +28,23 @@ func choose_arrow():
 	else:
 		$green_arrow.visible = true
 
-func golden_arrow():
+func skill_gained():
+	#make golden arrow
+	$skill_box.visible = true
+	$skill_box/skill_text.bbcode_text = "[center] New skill(s) gained! [/center]"
+	pass
+
+func skill_lost():
+	$skill_box.visible = true
+	$skill_box/skill_text.bbcode_text = "[center] Skill(s) lost! [/center]"
+
+func skill_mixed():
+	$skill_box.visible = true
+	$skill_box/skill_text.bbcode_text = "[center] Skill(s) lost and gained! [/center]"
 	pass
 
 func psuedogene():
+	$psuedo_arrow.visible = true
 	pass
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

@@ -75,7 +75,6 @@ func get_skill_comparison_type(other_indicator) -> String:
 	
 	var my_skills := get_skill_list();
 	var other_skills : Dictionary = other_indicator.get_skill_list();
-	
 	for sk in my_skills.keys() + other_skills.keys():
 		if my_skills.get(sk, 0) > other_skills.get(sk, 0):
 			new_skill = true;
@@ -90,6 +89,10 @@ func get_skill_comparison_type(other_indicator) -> String:
 		return "LESS";
 	
 	if is_skilled():
+		print("size of my dict: " + str(my_skills.size()))
+		print("size of other dict: " + str(other_skills.size()))
+		print("my td " + str(ttip_data.size()))
+		print("other td " + str(other_indicator.ttip_data.size()))
 		return "HAS";
 	return "NONE";
 
