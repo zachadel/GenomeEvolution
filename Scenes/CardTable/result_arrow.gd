@@ -43,6 +43,11 @@ func skill_mixed():
 	$skill_box/skill_text.bbcode_text = "[center][wave amp=50 freq=2]Skill Changed![/wave][/center]"
 	pass
 
+func skill_kept():
+	$skill_box.visible = true
+	$skill_box/skill_text.bbcode_text = "[center][wave amp=50 freq=2]Skills Kept![/wave][/center]"
+	
+
 func pseudogene():
 	$green_arrow.visible = false
 	$red_arrow.visible = false

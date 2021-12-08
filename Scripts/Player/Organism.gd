@@ -1803,6 +1803,8 @@ func replicate(idx):
 		perform_anims(true);
 		#mama mia
 		
+		
+		
 		var alive_arr =[]
 		var rep_type = "";
 		match idx:

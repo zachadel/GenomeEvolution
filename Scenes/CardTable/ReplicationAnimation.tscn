@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Scenes/CardTable/ReplicationAnimation.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Fonts/BoldItalics_50.tres" type="DynamicFont" id=2]
@@ -476,145 +476,21 @@ WindowDialog/icons/close = null
 WindowDialog/icons/close_highlight = null
 WindowDialog/styles/panel = null
 
-[sub_resource type="Animation" id=7]
-resource_name = "Replication"
-length = 10.0
-tracks/0/type = "value"
-tracks/0/path = NodePath("AnimationPlayer/Original:visible")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("AnimationPlayer/OriginalLabel:visible")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath("AnimationPlayer/CopyLabel:visible")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
-}
-tracks/3/type = "value"
-tracks/3/path = NodePath("AnimationPlayer/GeneCopies1:visible")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
-}
-tracks/4/type = "value"
-tracks/4/path = NodePath("AnimationPlayer/OriginalLabel2:visible")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
-}
-tracks/5/type = "value"
-tracks/5/path = NodePath("AnimationPlayer/Original2:visible")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
-}
-tracks/6/type = "value"
-tracks/6/path = NodePath("AnimationPlayer/Row1:visible")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
-}
-tracks/7/type = "value"
-tracks/7/path = NodePath("AnimationPlayer/CopyLabel2:visible")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
-}
-tracks/8/type = "value"
-tracks/8/path = NodePath("AnimationPlayer/GeneCopies2:visible")
-tracks/8/interp = 1
-tracks/8/loop_wrap = true
-tracks/8/imported = false
-tracks/8/enabled = true
-tracks/8/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
-}
-tracks/9/type = "value"
-tracks/9/path = NodePath("AnimationPlayer/Row2:visible")
-tracks/9/interp = 1
-tracks/9/loop_wrap = true
-tracks/9/imported = false
-tracks/9/enabled = true
-tracks/9/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
-}
-
-[sub_resource type="DynamicFont" id=8]
+[sub_resource type="DynamicFont" id=7]
 size = 50
 font_data = ExtResource( 13 )
 
-[sub_resource type="DynamicFont" id=9]
+[sub_resource type="DynamicFont" id=8]
 size = 50
 font_data = ExtResource( 6 )
 
-[sub_resource type="DynamicFontData" id=10]
+[sub_resource type="DynamicFontData" id=9]
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
 
-[sub_resource type="DynamicFont" id=11]
+[sub_resource type="DynamicFont" id=10]
 use_mipmaps = true
 use_filter = true
-font_data = SubResource( 10 )
+font_data = SubResource( 9 )
 
 [node name="Mitosis" type="Control"]
 anchor_right = 1.0
@@ -633,17 +509,100 @@ __meta__ = {
 }
 
 [node name="ColorRect" type="ColorRect" parent="Choose"]
-margin_left = -0.810791
-margin_top = -0.133476
-margin_right = 1599.19
-margin_bottom = 899.867
+margin_left = -1.0
+margin_right = 29999.0
+margin_bottom = 921.0
 mouse_filter = 2
 color = Color( 0.0431373, 0.0588235, 0.564706, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Skip" type="Button" parent="Choose"]
+[node name="Original" type="HBoxContainer" parent="Choose"]
+margin_left = 270.0
+margin_top = 45.881
+margin_right = 2689.0
+margin_bottom = 308.881
+rect_scale = Vector2( 0.5, 0.5 )
+mouse_filter = 2
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Row1" type="HBoxContainer" parent="Choose"]
+margin_left = 270.0
+margin_top = 180.0
+margin_right = 2689.0
+margin_bottom = 514.0
+rect_scale = Vector2( 0.5, 0.3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneCopies1" type="HBoxContainer" parent="Choose"]
+anchor_left = 0.00496063
+anchor_top = 0.0352755
+anchor_right = 0.00496063
+anchor_bottom = 0.0352755
+margin_left = 262.063
+margin_top = 258.252
+margin_right = 2681.06
+margin_bottom = 521.252
+rect_scale = Vector2( 0.5, 0.5 )
+mouse_filter = 2
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Original2" type="HBoxContainer" parent="Choose"]
+margin_left = 270.0
+margin_top = 410.0
+margin_right = 2689.0
+margin_bottom = 673.0
+rect_scale = Vector2( 0.5, 0.5 )
+mouse_filter = 2
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Row2" type="HBoxContainer" parent="Choose"]
+margin_left = 270.0
+margin_top = 545.0
+margin_right = 2689.0
+margin_bottom = 879.0
+rect_scale = Vector2( 0.5, 0.3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneCopies2" type="HBoxContainer" parent="Choose"]
+margin_left = 270.0
+margin_top = 650.0
+margin_right = 2689.0
+margin_bottom = 913.0
+rect_scale = Vector2( 0.5, 0.5 )
+mouse_filter = 2
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="UI" type="ColorRect" parent="."]
+margin_right = 264.0
+margin_bottom = 920.0
+color = Color( 0.0431373, 0.0588235, 0.564706, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Skip" type="Button" parent="UI"]
 margin_left = 1.91693
 margin_top = 787.639
 margin_right = 262.917
@@ -654,22 +613,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Next" type="Button" parent="Choose"]
-margin_left = 1338.74
-margin_top = 786.683
-margin_right = 1599.74
-margin_bottom = 894.683
-theme = SubResource( 6 )
-text = "Next"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Choose"]
-playback_speed = 3.0
-anims/Replication = SubResource( 7 )
-
-[node name="OriginalLabel" type="RichTextLabel" parent="Choose/AnimationPlayer"]
+[node name="OriginalLabel" type="RichTextLabel" parent="UI"]
 margin_left = 3.58119
 margin_top = 67.7401
 margin_right = 219.581
@@ -679,9 +623,9 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 1.09
 custom_fonts/bold_italics_font = ExtResource( 2 )
-custom_fonts/italics_font = SubResource( 8 )
-custom_fonts/bold_font = SubResource( 9 )
-custom_fonts/normal_font = SubResource( 11 )
+custom_fonts/italics_font = SubResource( 7 )
+custom_fonts/bold_font = SubResource( 8 )
+custom_fonts/normal_font = SubResource( 10 )
 custom_colors/default_color = Color( 1, 1, 1, 1 )
 bbcode_enabled = true
 bbcode_text = "[b]Original[/b]"
@@ -691,7 +635,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CopyLabel" type="RichTextLabel" parent="Choose/AnimationPlayer"]
+[node name="CopyLabel" type="RichTextLabel" parent="UI"]
 margin_left = 4.414
 margin_top = 310.0
 margin_right = 220.414
@@ -701,9 +645,9 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 1.09
 custom_fonts/bold_italics_font = ExtResource( 2 )
-custom_fonts/italics_font = SubResource( 8 )
-custom_fonts/bold_font = SubResource( 9 )
-custom_fonts/normal_font = SubResource( 11 )
+custom_fonts/italics_font = SubResource( 7 )
+custom_fonts/bold_font = SubResource( 8 )
+custom_fonts/normal_font = SubResource( 10 )
 custom_colors/default_color = Color( 1, 1, 1, 1 )
 bbcode_enabled = true
 bbcode_text = "[b]Copy[/b]"
@@ -713,45 +657,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Original" type="HBoxContainer" parent="Choose/AnimationPlayer"]
-margin_left = 234.0
-margin_top = 45.881
-margin_right = 2653.0
-margin_bottom = 308.881
-rect_scale = Vector2( 0.5, 0.5 )
-mouse_filter = 2
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Row1" type="HBoxContainer" parent="Choose/AnimationPlayer"]
-margin_left = 238.0
-margin_top = 180.0
-margin_right = 2657.0
-margin_bottom = 514.0
-rect_scale = Vector2( 0.5, 0.3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="GeneCopies1" type="HBoxContainer" parent="Choose/AnimationPlayer"]
-anchor_left = 0.00496063
-anchor_top = 0.0352755
-anchor_right = 0.00496063
-anchor_bottom = 0.0352755
-margin_left = 227.65
-margin_top = 258.252
-margin_right = 2646.65
-margin_bottom = 521.252
-rect_scale = Vector2( 0.5, 0.5 )
-mouse_filter = 2
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="OriginalLabel2" type="RichTextLabel" parent="Choose/AnimationPlayer"]
+[node name="OriginalLabel2" type="RichTextLabel" parent="UI"]
 margin_left = 3.239
 margin_top = 450.0
 margin_right = 219.239
@@ -761,9 +667,9 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 1.09
 custom_fonts/bold_italics_font = ExtResource( 2 )
-custom_fonts/italics_font = SubResource( 8 )
-custom_fonts/bold_font = SubResource( 9 )
-custom_fonts/normal_font = SubResource( 11 )
+custom_fonts/italics_font = SubResource( 7 )
+custom_fonts/bold_font = SubResource( 8 )
+custom_fonts/normal_font = SubResource( 10 )
 custom_colors/default_color = Color( 1, 1, 1, 1 )
 bbcode_enabled = true
 bbcode_text = "[b]Original[/b]"
@@ -773,7 +679,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CopyLabel2" type="RichTextLabel" parent="Choose/AnimationPlayer"]
+[node name="CopyLabel2" type="RichTextLabel" parent="UI"]
 margin_left = 3.823
 margin_top = 660.0
 margin_right = 219.823
@@ -783,9 +689,9 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 1.09
 custom_fonts/bold_italics_font = ExtResource( 2 )
-custom_fonts/italics_font = SubResource( 8 )
-custom_fonts/bold_font = SubResource( 9 )
-custom_fonts/normal_font = SubResource( 11 )
+custom_fonts/italics_font = SubResource( 7 )
+custom_fonts/bold_font = SubResource( 8 )
+custom_fonts/normal_font = SubResource( 10 )
 custom_colors/default_color = Color( 1, 1, 1, 1 )
 bbcode_enabled = true
 bbcode_text = "[b]Copy[/b]"
@@ -795,39 +701,4 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Original2" type="HBoxContainer" parent="Choose/AnimationPlayer"]
-margin_left = 234.0
-margin_top = 410.0
-margin_right = 2653.0
-margin_bottom = 673.0
-rect_scale = Vector2( 0.5, 0.5 )
-mouse_filter = 2
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Row2" type="HBoxContainer" parent="Choose/AnimationPlayer"]
-margin_left = 238.0
-margin_top = 545.0
-margin_right = 2657.0
-margin_bottom = 879.0
-rect_scale = Vector2( 0.5, 0.3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="GeneCopies2" type="HBoxContainer" parent="Choose/AnimationPlayer"]
-margin_left = 234.0
-margin_top = 650.0
-margin_right = 2653.0
-margin_bottom = 913.0
-rect_scale = Vector2( 0.5, 0.5 )
-mouse_filter = 2
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[connection signal="pressed" from="Choose/Skip" to="." method="_on_Skip_pressed"]
-[connection signal="pressed" from="Choose/Next" to="." method="_on_Next_pressed"]
+[connection signal="pressed" from="UI/Skip" to="." method="_on_Skip_pressed"]

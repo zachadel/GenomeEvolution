@@ -1200,7 +1200,7 @@ func _on_btn_bugreport_toggled(button_pressed):
 
 
 func _on_inputTimer_timeout():
-	print("Timer ran out")
+	#print("Timer ran out")
 	if show_popUp:
 		$popUp.visible = true;
 	pass # Replace with function body.
