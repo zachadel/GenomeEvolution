@@ -23,6 +23,7 @@ func _ready():
 			for node in child.get_node("AnimationPlayer").get_children():
 				node.hide()
 
+
 func start():
 	var first_slide = get_children()[current_slide]
 	var remove_counter = 0
@@ -119,7 +120,7 @@ func play_and_show(slide: Control):
 				
 				o_animation.track_set_path(o_track_index, "Choose/AnimationPlayer/Original:position:y")
 				o_animation.track_insert_key(o_track_index, 0.0, 0)
-				o_animation.track_insert_key(o_track_index, 0.5, 100)
+				o_animation.track_insert_key(o_track_index, 3, 300)
 				var err = anims.add_animation("original"+str(progress1), o_animation)
 				if err:
 					print("fix me " + str(err))
