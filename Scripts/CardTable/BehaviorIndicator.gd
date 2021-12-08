@@ -69,6 +69,17 @@ func set_skilled_indicator(type := "HAS") -> void:
 		_:
 			lbl.text = "??";
 
+func animation_skill_comparison_type(other_indicator) -> String:
+	if ttip_data[2].size() > other_indicator.ttip_data[2].size():
+		return "MORE"
+	elif ttip_data[2].size() < other_indicator.ttip_data[2].size():
+		return "LESS"
+	elif ttip_data[2].has_all(other_indicator.ttip_data[2].keys()) and ttip_data[2].size() > 0:
+		return "HAS"
+	elif not ttip_data[2].has_all(other_indicator.ttip_data[2].keys()) and ttip_data[2].size() > 0:
+		return "MIXED"
+	return "NONE"
+
 func get_skill_comparison_type(other_indicator) -> String:
 	var new_skill := false;
 	var lost_skill := false;
@@ -89,10 +100,6 @@ func get_skill_comparison_type(other_indicator) -> String:
 		return "LESS";
 	
 	if is_skilled():
-		print("size of my dict: " + str(my_skills.size()))
-		print("size of other dict: " + str(other_skills.size()))
-		print("my td " + str(ttip_data.size()))
-		print("other td " + str(other_indicator.ttip_data.size()))
 		return "HAS";
 	return "NONE";
 

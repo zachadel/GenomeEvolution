@@ -98,6 +98,12 @@ func reset_ate_carried_elms() -> void:
 	ate_carried_elms["left"].clear();
 	ate_carried_elms["right"].clear();
 
+func animation_hide():
+	$lbl_id.visible = false
+	$lbl_code.visible = false
+	$lbl_affected.visible = false
+	$BorderRect.visible = false
+
 func add_carry_elm(idx_offset: int) -> void:
 	if idx_offset != 0:
 		var carry_idx = get_index() + idx_offset;
@@ -134,7 +140,7 @@ func _perf_ate_art_setup():
 	else:
 		set_texture(ate_pers["art"]);
 	
-	AnthroArt.visible = ate_pers.has("art_scene");
+	AnthroArt.visible = ate_pers.has("art_scene") or is_display;
 	if AnthroArt.visible && !AnthroArt.has_art():
 		AnthroArt.add_art("res://Scenes/CardTable/Art/%s.tscn" % ate_pers.get("art_scene"));
 	

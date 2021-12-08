@@ -74,7 +74,6 @@ func play_and_show(slide: Control):
 		var length2 = len(cmsms.get_child(2).get_genes()) #len chrom 2
 		var clength2 = len(cmsms.get_child(3).get_genes()) #len of copy of chrom 2
 		
-		print(str(cmsms.get_child_count()) + " children")
 		var cmsm1 = cmsms.get_child(0).get_genes()
 		var cmsm2 = cmsms.get_child(1).get_genes()
 		var cmsm3 = cmsms.get_child(2).get_genes()
@@ -86,15 +85,20 @@ func play_and_show(slide: Control):
 		var c_value = 0
 		var essential_count = 0
 		var counter1 = 0
-		var psuedo = false
+		var pseudo = false
 		
 		while counter1 < 8:
 			o_value = 0
 			c_value = 0
 			o_indicator = ""
 			c_indicator = ""
+			pseudo = false
 			var limit1 = false
 			var limit2 = false
+			var o_animation = Animation.new()
+			var o_track_index = o_animation.add_track(Animation.TYPE_VALUE)
+			
+			
 			if progress1 < length1:
 				var original = load("res://Scenes/CardTable/SequenceElement.tscn").instance()
 				original.is_display = true
@@ -102,16 +106,25 @@ func play_and_show(slide: Control):
 				original.load_from_save(cmsm1[progress1].get_save_data())
 				original.set_h_size_flags(1)
 				original.set_elm_size(263)
-				original.get_child(3).visible = false
 				original.ate_personality = cmsm1[progress1].ate_personality
 				if original.mode == "essential":
 					o_value = original.get_node("Indic%s" % original.get_dominant_essential()).get_value()
 					o_indicator = original.get_node("Indic%s" % original.get_dominant_essential());
 					o_indicator.ttip_data =  cmsm1[progress1].get_node("Indic%s" % original.get_dominant_essential()).ttip_data
-					o_indicator.skill_ttip =  cmsm1[progress1].get_node("Indic%s" % original.get_dominant_essential()).skill_ttip
 					essential_count = essential_count + 1
 				elif original.mode == "ate":
 					o_value = original.get_node("IndicATE").get_value()
+				
+				original.animation_hide()
+				
+				o_animation.track_set_path(o_track_index, "Choose/AnimationPlayer/Original:position:y")
+				o_animation.track_insert_key(o_track_index, 0.0, 0)
+				o_animation.track_insert_key(o_track_index, 0.5, 100)
+				var err = anims.add_animation("original"+str(progress1), o_animation)
+				if err:
+					print("fix me " + str(err))
+				else:
+					print(str(err))
 				$Choose/AnimationPlayer/Original.show()
 			else:
 				limit1 = true
@@ -125,20 +138,21 @@ func play_and_show(slide: Control):
 				copies.load_from_save(cmsm2[progress1].get_save_data())
 				copies.set_h_size_flags(1)
 				copies.set_elm_size(263)
-				copies.get_child(3).visible = false
 				copies.ate_personality = cmsm2[progress1].ate_personality
 				
 				if copies.mode == "essential":
 					c_value = copies.get_node("Indic%s" % copies.get_dominant_essential()).get_value()
 					c_indicator = copies.get_node("Indic%s" % copies.get_dominant_essential());
 					c_indicator.ttip_data =  cmsm2[progress1].get_node("Indic%s" % copies.get_dominant_essential()).ttip_data
-					c_indicator.skill_ttip =  cmsm2[progress1].get_node("Indic%s" % copies.get_dominant_essential()).skill_ttip
 					essential_count = essential_count + 1
 				elif copies.mode == "ate":
 					c_value = copies.get_node("IndicATE").get_value()
-				elif copies.mode == "psuedo":
-					psuedo = true
+				elif copies.mode == "pseudo":
+					pseudo = true
 				
+				
+				
+				copies.animation_hide()
 				$Choose/AnimationPlayer/GeneCopies1.get_child(counter1).show()
 			else:
 				limit2 = true
@@ -147,8 +161,7 @@ func play_and_show(slide: Control):
 				var arrow = load("res://Scenes/CardTable/result_arrow.tscn").instance()
 				$Choose/AnimationPlayer/Row1.add_child(arrow)
 				if typeof(c_indicator) != 4 and typeof(o_indicator) != 4:
-					var comparison = c_indicator.get_skill_comparison_type(o_indicator)
-					print("comparison is " + comparison)
+					var comparison = c_indicator.animation_skill_comparison_type(o_indicator)
 					match (comparison):
 						"MORE":
 							arrow.skill_gained()
@@ -160,9 +173,8 @@ func play_and_show(slide: Control):
 				arrow.set_bottom_value(c_value)
 				arrow.choose_arrow()
 
-				if psuedo:
-					#show psuedo arrow & text
-					pass
+				if pseudo:
+					arrow.pseudogene()
 				$Choose/AnimationPlayer/Row1.get_child(counter1).show()
 			
 			counter1 = counter1 + 1
@@ -175,35 +187,26 @@ func play_and_show(slide: Control):
 			c_value = 0
 			c_indicator = ""
 			o_indicator = ""
+			pseudo = false
 			var limit1 = false
 			var limit2 = false
 			if progress2 < length2:
 				var original = load("res://Scenes/CardTable/SequenceElement.tscn").instance()
 				original.is_display = true
 				$Choose/AnimationPlayer/Original2.add_child(original)
-				#original.skills = cmsm3[progress2].skills
-				#original.aura = cmsm3[progress2].aura
-				#original.code_direction = cmsm3[progress2].code_direction
-				#original.set_h_size_flags(1)
-				#original.set_elm_size(263)
-				#original.get_child(3).visible = false
-				#original.ess_behavior = cmsm3[progress2].ess_behavior
-				#original.setup(cmsm3[progress2].type, cmsm3[progress2].id, cmsm3[progress2].mode, cmsm3[progress2].code, cmsm3[progress2].par_code, cmsm3[progress2].ph, cmsm3[progress2].code_dir, cmsm3[progress2].dmg, cmsm3[progress2].count, cmsm3[progress2].temp)
 				original.load_from_save(cmsm3[progress2].get_save_data())
 				original.set_h_size_flags(1)
 				original.set_elm_size(263)
-				original.get_child(3).visible = false
 				original.ate_personality = cmsm3[progress2].ate_personality
-				
 				if original.mode == "essential":
 					o_value = original.get_node("Indic%s" % original.get_dominant_essential()).get_value()
 					o_indicator = original.get_node("Indic%s" % original.get_dominant_essential());
 					o_indicator.ttip_data =  cmsm3[progress2].get_node("Indic%s" % original.get_dominant_essential()).ttip_data
-					o_indicator.skill_ttip =  cmsm3[progress2].get_node("Indic%s" % original.get_dominant_essential()).skill_ttip
 					essential_count = essential_count + 1
 				elif original.mode == "ate":
 					o_value = original.get_node("IndicATE").get_value()
 				
+				original.animation_hide()
 				$Choose/AnimationPlayer/Original.show()
 			else:
 				limit1 = true
@@ -214,29 +217,23 @@ func play_and_show(slide: Control):
 				var copies = load("res://Scenes/CardTable/SequenceElement.tscn").instance()
 				copies.is_display = true
 				$Choose/AnimationPlayer/GeneCopies2.add_child(copies)
-				#copies.skills = cmsm4[progress2].skills
-				#copies.aura = cmsm4[progress2].aura
-				#copies.code_direction = cmsm4[progress2].code_direction
-				#copies.set_h_size_flags(1)
-				#copies.set_elm_size(263)
-				#copies.get_child(3).visible = false
-				#copies.ess_behavior = cmsm4[progress2].ess_behavior
-				#copies.setup(cmsm4[progress2].type, cmsm4[progress2].id, cmsm4[progress2].mode, cmsm4[progress2].code, cmsm4[progress2].par_code, cmsm4[progress2].ph, cmsm4[progress2].code_dir, cmsm4[progress2].dmg, cmsm4[progress2].count, cmsm4[progress2].temp)
 				copies.load_from_save(cmsm4[progress2].get_save_data())
 				copies.set_h_size_flags(1)
 				copies.set_elm_size(263)
-				copies.get_child(3).visible = false
+				
 				copies.ate_personality = cmsm4[progress2].ate_personality
 				
 				if copies.mode == "essential":
 					c_value = copies.get_node("Indic%s" % copies.get_dominant_essential()).get_value()
 					c_indicator = copies.get_node("Indic%s" % copies.get_dominant_essential());
 					c_indicator.ttip_data =  cmsm4[progress2].get_node("Indic%s" % copies.get_dominant_essential()).ttip_data
-					c_indicator.skill_ttip =  cmsm4[progress2].get_node("Indic%s" % copies.get_dominant_essential()).skill_ttip
 					essential_count = essential_count + 1
 				elif copies.mode == "ate":
 					c_value = copies.get_node("IndicATE").get_value()
+				elif copies.mode == "pseudo":
+					pseudo = true
 				
+				copies.animation_hide()
 				$Choose/AnimationPlayer/GeneCopies2.get_child(counter2).show()
 			else:
 				limit2 = true
@@ -245,8 +242,7 @@ func play_and_show(slide: Control):
 				var arrow = load("res://Scenes/CardTable/result_arrow.tscn").instance()
 				$Choose/AnimationPlayer/Row2.add_child(arrow)
 				if typeof(c_indicator) != 4 and typeof(o_indicator) != 4:
-					var comparison = c_indicator.get_skill_comparison_type(o_indicator)
-					print("comparison is " + comparison)
+					var comparison = c_indicator.animation_skill_comparison_type(o_indicator)
 					match (comparison):
 						"MORE":
 							arrow.skill_gained()
@@ -258,49 +254,15 @@ func play_and_show(slide: Control):
 				arrow.set_bottom_value(c_value)
 				arrow.choose_arrow()
 
-				if psuedo:
-					#show psuedo arrow & text
-					pass
+				if pseudo:
+					arrow.pseudogene()
 				$Choose/AnimationPlayer/Row2.get_child(counter2).show()
 			
 			counter2 = counter2 + 1
 			progress2 = progress2 + 1
 		
-		#fix this
-		print("prog 1 " + str(progress1) + " " + str(length1))
-		print("prog 2 " + str(progress2) + " " + str(length2))
 		if progress2 >= length2 and progress1 >= length1:
 			$Choose/Next.visible = false
-		
-		#print("Added " + str(counter1) + " children to original")
-		##Needs to be refactored using an array of keywords
-		#for node in anims.get_child_count():
-			#anims.get_child(node).show()
-			#if anims.get_child(node).name == "Row1":
-				#for child in anims.get_child(node).get_child_count():
-						#if(child == 1):
-						#	old = cmsms.get_child(0).StatusBar.get_value_of("Locomotion")
-						#	new = cmsms.get_child(1).StatusBar.get_value_of("Locomotion")
-						#	anims.get_child(node).get_child(child).get_child(0).bbcode_text = "[center]"+str(round(old*100)/100)+"[/center]"
-						#	anims.get_child(node).get_child(child).get_child(1).bbcode_text = "[center]"+str(round(new*100)/100)+"[/center]"
-
-					
-						#if old > new:
-						#	anims.get_child(node).get_child(child).texture = load("res://Assets/Images/icons/Down2.png")
-						#	if new == 0:
-						#		anims.get_child(node).get_child(child).texture = load("res://Assets/Images/icons/gene_death.png")
-						#		
-						#	$Choose/AnimationPlayer/Original.get_child(child).get_child(0).visible = false
-						#	$Choose/AnimationPlayer/Original.get_child(child).get_child(1).visible = true
-						#	$Choose/AnimationPlayer/GeneCopies.get_child(child).get_child(1).visible = false
-						#	$Choose/AnimationPlayer/GeneCopies.get_child(child).get_child(0).visible = true
-						#else:
-						#	anims.get_child(node).get_child(child).texture = load("res://Assets/Images/icons/Down1.png")
-						#	$Choose/AnimationPlayer/Original.get_child(child).get_child(0).visible = true
-						#	$Choose/AnimationPlayer/Original.get_child(child).get_child(1).visible = false
-						#	$Choose/AnimationPlayer/GeneCopies.get_child(child).get_child(1).visible = true
-						#	$Choose/AnimationPlayer/GeneCopies.get_child(child).get_child(0).visible = false
-		
 
 	slide.get_node("AnimationPlayer").play("Replication")
 	slide.show()
