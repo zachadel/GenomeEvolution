@@ -66,7 +66,11 @@ func _update_mission(index):
 	var new_index = rng.randi_range(0, length_mission)
 	print("new index: " + str(new_index))
 	var new_prompt = missions[new_index]
-	var curr_mission = missions[index]
+	var curr_mission 
+	if index < len(missions):
+		curr_mission = missions[index]
+	else:
+		curr_mission = completed_missions[0]
 	$MissionControl/greenLight.color = Color(0.08,0.8,.15,1)
 	var t = Timer.new()
 	t.set_wait_time(3)

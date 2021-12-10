@@ -1962,9 +1962,9 @@ layer = 12
 [node name="Notifications" parent="CanvasLayer" instance=ExtResource( 44 )]
 
 [node name="q_s2" type="TextureRect" parent="."]
-margin_left = 559.589
+margin_left = 557.589
 margin_top = 576.953
-margin_right = 582.589
+margin_right = 580.589
 margin_bottom = 603.953
 texture = ExtResource( 45 )
 __meta__ = {

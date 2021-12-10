@@ -376,7 +376,10 @@ func _on_ilist_choices_item_activated(idx):
 func upd_turn_display(upd_turn_unlocks: bool = Game.fresh_round, upd_env_markers: bool = Game.fresh_round):
 	$lnum_turn.set_num(Game.round_num);
 	$lnum_progeny.set_num(orgn.num_progeny);
-	STATS.set_Rounds(Game.round_num)
+	if Game.round_num >= STATS.get_rounds():
+		STATS.set_Rounds(Game.round_num)
+	
+	print("game round: " + str(Game.round_num))
 	$TurnList.highlight(Game.turn_idx);
 	#print("organism thing: " + str(orgn.current_tile))
 	
@@ -533,6 +536,7 @@ onready var central_menus := [$pnl_saveload, ph_filter_panel, $pnl_bugreport, te
 onready var default_menu : Control = justnow_ctl;
 func close_extra_menus(toggle_menu: Control = null, make_default := false) -> void:
 	var restore_default = toggle_menu == null;
+	print("close extra menus called")
 	for p in central_menus:
 		if (p == toggle_menu):
 			p.visible = !p.visible;
@@ -554,6 +558,10 @@ func close_extra_menus(toggle_menu: Control = null, make_default := false) -> vo
 				$q_s2.visible = false
 				$q_s3.visible = false
 				$q_s4.visible = false
+	if $pnl_dead_overview.visible:
+		$q_s2.visible = false
+		$q_s3.visible = false
+		$q_s4.visible = false
 	if make_default:
 		if toggle_menu.visible:
 			default_menu = toggle_menu;
@@ -561,6 +569,7 @@ func close_extra_menus(toggle_menu: Control = null, make_default := false) -> vo
 			default_menu = justnow_ctl;
 	if restore_default:
 		default_menu.visible = true;
+	
 
 func show_chaos_anim():
 	close_extra_menus($pnl_chaos);
@@ -640,6 +649,8 @@ func show_death_screen():
 	$Border1.hide()
 	$Border3.hide()
 	$Border4.hide()
+	$q_s2.hide()
+	$q_s2.visible = false;
 	#$pnl_dead_overview/HSplitContainer/Panel/LblOverview.text = OVERVIEW_FORMAT % [death_descr, Game.round_num, orgn.num_progeny, gaps_repaired]
 	$pnl_dead_overview.visible = true;
 	$pnl_dead_overview.update_values();
