@@ -382,12 +382,30 @@ func handle_click_with_selection():
 									if Game.is_valid_interaction(resource, container_name, bhv_profile) :
 										resources_to_process[resource] = len(selected_resources[resource_class][resource])
 										get_parent().get_child(2).raise_nitrogen(resources_to_process[resource])
+										var curr_org = get_parent().get_parent().get_parent().current_player.organism
+										for resource_type in curr_org.mineral_resources:
+											for j in curr_org.mineral_resources[resource_type]:
+												if j == "nitrogen":
+								
+													curr_org.mineral_resources[resource_type][j] = STATS.get_amt_of_nitrogen()
+													print("Resource type: " + str(resource_type))
+													print("J: " + str(j))
+													print(STATS.get_amt_of_nitrogen())
 										#Raise the nirtogent by x amount. 
 								elif STATS.get_amt_of_nitrogen() < 26:
 									#selected_resources[resource_class][resource] = 26 - STATS.get_amt_of_nitrogen()
 									if Game.is_valid_interaction(resource, container_name, bhv_profile) :
 										resources_to_process[resource] = len(selected_resources[resource_class][resource])
 										get_parent().get_child(2).raise_nitrogen(resources_to_process[resource])
+										var curr_org = get_parent().get_parent().get_parent().current_player.organism
+										for resource_type in curr_org.mineral_resources:
+											for j in curr_org.mineral_resources[resource_type]:
+												if j == "nitrogen":
+								
+													curr_org.mineral_resources[resource_type][j] = STATS.get_amt_of_nitrogen()
+													print("Resource type: " + str(resource_type))
+													print("J: " + str(j))
+													print(STATS.get_amt_of_nitrogen())
 										#Raise the nitrogent by X amount. 
 								else:
 									#print("lower limits")
