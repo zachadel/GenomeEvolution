@@ -459,6 +459,8 @@ func adv_turn():
 				$RepairTabs/pnl_bandage_dmg.show()
 				#print("It should have happened.")
 				skip_turn = true
+			else:
+				skip_turn = false
 			
 		if(Game.get_turn_type() == Game.TURN_TYPES.RepairDmg and Game.get_next_turn_type() == Game.TURN_TYPES.TEJump):
 			print("Step 2->3")
