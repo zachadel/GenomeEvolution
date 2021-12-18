@@ -80,7 +80,7 @@ func replicate_cmsm(cmsm_idx):
 	get_organism().evolve_cmsm(new_disp_cmsm.get_cmsm());
 	new_disp_cmsm.color_compare(par_disp_cmsm);
 	move_child(new_disp_cmsm, cmsm_idx + 1);
-	return new_disp_cmsm;
+	add_child(new_disp_cmsm);
 
 func link_cmsms(par: int, child: int) -> void:
 	get_child(par).set_link(get_child(child));

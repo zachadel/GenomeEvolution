@@ -44,6 +44,9 @@ func set_value(v: float) -> void:
 func get_value() -> float:
 	return val;
 
+func hide_label():
+	$LblVal.visible = false
+
 func set_skilled(s: bool) -> void:
 	$LblSkilled.visible = s;
 	skilled = s;
@@ -66,13 +69,23 @@ func set_skilled_indicator(type := "HAS") -> void:
 		_:
 			lbl.text = "??";
 
+func animation_skill_comparison_type(other_indicator) -> String:
+	if ttip_data[2].size() > other_indicator.ttip_data[2].size():
+		return "MORE"
+	elif ttip_data[2].size() < other_indicator.ttip_data[2].size():
+		return "LESS"
+	elif ttip_data[2].has_all(other_indicator.ttip_data[2].keys()) and ttip_data[2].size() > 0:
+		return "HAS"
+	elif not ttip_data[2].has_all(other_indicator.ttip_data[2].keys()) and ttip_data[2].size() > 0:
+		return "MIXED"
+	return "NONE"
+
 func get_skill_comparison_type(other_indicator) -> String:
 	var new_skill := false;
 	var lost_skill := false;
 	
 	var my_skills := get_skill_list();
 	var other_skills : Dictionary = other_indicator.get_skill_list();
-	
 	for sk in my_skills.keys() + other_skills.keys():
 		if my_skills.get(sk, 0) > other_skills.get(sk, 0):
 			new_skill = true;

@@ -1,12 +1,18 @@
 extends TextureButton
 
-
+var is_display = false
 var type; #holds break or gene
 var mode; #holds essential, ate, or pseudogene
 var id;   #holds unique identifier
 var temp;
 var temperature_array := []
-var toggled_rect = false;
+var code
+var par_code
+var code_dir
+var dmg
+var count
+var ph
+
 var SEQ_ELM_COMPARE_GRADIENT = load("res://Scenes/CardTable/SeqElmColorCompare.tres");
 var preference_temp = {}
 var preference_pH = {}
@@ -92,6 +98,12 @@ func reset_ate_carried_elms() -> void:
 	ate_carried_elms["left"].clear();
 	ate_carried_elms["right"].clear();
 
+func animation_hide():
+	$lbl_id.visible = false
+	$lbl_code.visible = false
+	$lbl_affected.visible = false
+	$BorderRect.visible = false
+
 func add_carry_elm(idx_offset: int) -> void:
 	if idx_offset != 0:
 		var carry_idx = get_index() + idx_offset;
@@ -128,7 +140,7 @@ func _perf_ate_art_setup():
 	else:
 		set_texture(ate_pers["art"]);
 	
-	AnthroArt.visible = ate_pers.has("art_scene");
+	AnthroArt.visible = ate_pers.has("art_scene") or is_display;
 	if AnthroArt.visible && !AnthroArt.has_art():
 		AnthroArt.add_art("res://Scenes/CardTable/Art/%s.tscn" % ate_pers.get("art_scene"));
 	
@@ -142,6 +154,13 @@ func setup(_type : String, _id := "", _mode := "", _code := "", _par_code := "",
 	#print("dictionary: " + str(preference_pH))
 	type = _type;
 	mode = _mode;
+	code = _code;
+	par_code = _par_code;
+	ph = _ph;
+	code_dir = _code_dir;
+	dmg = _dmg;
+	count = _count;
+	temp = _temp;
 	damage_gene(_dmg);
 	var t_p = Chance.rand_normal_between(0,50);
 	if(t_p != null):
@@ -753,7 +772,7 @@ func downgrade_to_optimal():
 # Returns a string describing the evolution that occurred
 # eg "major upgrade, improving its Replication ability"
 func evolve_by_name(ev_name: String) -> String:
-	print('evolve by name is called. with String: ' + ev_name)
+	#print('evolve by name is called. with String: ' + ev_name)
 	if type == "gene":
 		match ev_name:
 			"dead":
@@ -809,7 +828,10 @@ func upd_behavior_disp(behavior = ""):
 				var indicator = get_node("Indic%s" % behavior);
 				indicator.set_value(ess_behavior[behavior]);
 				indicator.set_skilled(!skills.get(behavior, []).empty());
+				if is_display:
+					indicator.visible = false
 				indicator.ttip_data = [behavior, "base", skills];
+				
 			else:
 				for b in ess_behavior:
 					upd_behavior_disp(b);
@@ -870,6 +892,7 @@ func upd_display():
 					"essential":
 						self_modulate = Color(0, .66, 0);
 						set_texture(Game.ess_textures[get_dominant_essential()]);
+							#we need to set_texture of the proper texture ... but how to get?
 					"pseudo":
 						self_modulate = Color(.5, .5, 0);
 					"blank":
@@ -1019,12 +1042,15 @@ func set_elm_size(size = null):
 	AnthroArt.safe_callv("_upd_size");
 
 func _on_SeqElm_pressed():
-	emit_signal("elm_clicked", self);
+	if not is_display:
+		emit_signal("elm_clicked", self);
 
 func _on_SeqElm_mouse_entered():
-	get_cmsm().magnify_elm(self);
-	emit_signal("elm_mouse_entered", self);
+	if not is_display:
+		get_cmsm().magnify_elm(self);
+		emit_signal("elm_mouse_entered", self);
 
 func _on_SeqElm_mouse_exited():
-	get_cmsm().demagnify_elm(self);
-	emit_signal("elm_mouse_exited", self);
+	if not is_display:
+		get_cmsm().demagnify_elm(self);
+		emit_signal("elm_mouse_exited", self);

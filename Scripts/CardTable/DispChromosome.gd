@@ -111,6 +111,9 @@ func set_sizers_height(h: float) -> void:
 func set_title(title: String) -> void:
 	LblTitle.text = title;
 
+func get_genes():
+	return $container/scroll/cmsm.get_genes()
+
 func upd_link_vis(delay := true):
 	if delay:
 		$update_link_delay.start();

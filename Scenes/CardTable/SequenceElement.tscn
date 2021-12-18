@@ -20,7 +20,8 @@
 margin_right = 200.0
 margin_bottom = 200.0
 rect_min_size = Vector2( 200, 200 )
-size_flags_vertical = 4
+size_flags_horizontal = 3
+size_flags_vertical = 6
 expand = true
 stretch_mode = 5
 script = ExtResource( 1 )
@@ -65,8 +66,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 rect_min_size = Vector2( 200, 200 )
 mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 texture = ExtResource( 3 )
 expand = true
+stretch_mode = 6
 __meta__ = {
 "_edit_use_anchors_": false
 }

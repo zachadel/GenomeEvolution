@@ -455,6 +455,19 @@ func adv_turn():
 			
 			if recombos == 0:
 				skip_turn = true
+		if(Game.get_turn_type() == Game.TURN_TYPES.RepairDmg and Game.get_next_turn_type() == Game.TURN_TYPES.Recombination):
+			print("Step 4->5")
+			if orgn.get_cmsm_pair().get_gap_list() != []:
+				print("there's damage")
+				notifications.emit_signal("notification_needed", "There are still some breaks that you need to mend.")
+				$RepairTabs.current_tab = 3
+				$RepairTabs/pnl_repair_choices.hide()
+				$RepairTabs/pnl_bandage_dmg.show()
+				#print("It should have happened.")
+				skip_turn = true
+			else:
+				skip_turn = false
+			
 		if(Game.get_turn_type() == Game.TURN_TYPES.RepairDmg and Game.get_next_turn_type() == Game.TURN_TYPES.TEJump):
 			print(Game.get_turn_type())
 			print("here we are all over again.")
@@ -1192,8 +1205,8 @@ func _on_btn_bugreport_toggled(button_pressed):
 
 
 func _on_inputTimer_timeout():
-	print("Timer ran out")
-	if show_popUp :
+	#print("Timer ran out")
+	if show_popUp:
 		$popUp.visible = true;
 	pass # Replace with function body.
 
