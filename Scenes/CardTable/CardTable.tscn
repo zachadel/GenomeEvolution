@@ -28,7 +28,7 @@
 [ext_resource path="res://Assets/Images/genes/Helix_Circle.png" type="Texture" id=26]
 [ext_resource path="res://Assets/Images/genes/Sensing.png" type="Texture" id=27]
 [ext_resource path="res://Assets/Images/genes/Deconstruction.png" type="Texture" id=28]
-[ext_resource path="res://Assets/Images/Helper.png" type="Texture" id=29]
+[ext_resource path="res://Assets/Images/genes/Helper.png" type="Texture" id=29]
 [ext_resource path="res://Assets/Images/genes/Construction.png" type="Texture" id=30]
 [ext_resource path="res://Assets/Images/genes/Locomotion.png" type="Texture" id=31]
 [ext_resource path="res://Assets/Images/genes/Component.png" type="Texture" id=32]
@@ -650,6 +650,22 @@ margin_right = -4.0
 margin_bottom = -4.0
 
 [node name="LblInstr" type="Label" parent="RepairTabs/pnl_rem_sides"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "
+
+Click a gene on either end of a break to remove the gene.
+
+The amount you remove is based on your Disassembly skill.
+You have %d removals remaining."
+align = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LblInstr" type="Label" parent="RepairTabs/pnl_rem_sides"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "
@@ -674,16 +690,9 @@ margin_right = -4.0
 margin_bottom = -4.0
 
 [node name="LblInstr" type="Label" parent="RepairTabs/pnl_rem_dmg"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "
-
-Click a damaged gene to remove it.
-
-The number of genes you can remove is based on your Disassembly skill.
-You have %d removals remaining this turn."
+margin_right = 689.0
+margin_bottom = 121.0
 align = 1
-autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -1029,6 +1038,8 @@ margin_left = 1282.0
 margin_top = 756.0
 margin_right = 1423.0
 margin_bottom = 891.0
+num = 0
+show_change = true
 
 [node name="lnum_progeny" parent="." instance=ExtResource( 17 )]
 visible = false
@@ -1036,6 +1047,8 @@ margin_left = 1337.14
 margin_top = 772.178
 margin_right = 1437.14
 margin_bottom = 872.178
+num = 0
+show_change = true
 
 [node name="EnergyBar" parent="." instance=ExtResource( 14 )]
 visible = false
@@ -1934,13 +1947,13 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -150.0
+margin_left = -321.0
 margin_top = -35.0
-margin_right = 150.0
-margin_bottom = 35.0
+margin_right = 318.0
+margin_bottom = 67.0
+custom_fonts/font = ExtResource( 13 )
 text = "Test Text here"
 align = 1
-valign = 1
 autowrap = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -1949,10 +1962,10 @@ layer = 12
 [node name="Notifications" parent="CanvasLayer" instance=ExtResource( 44 )]
 
 [node name="q_s2" type="TextureRect" parent="."]
-margin_left = 560.0
-margin_top = 576.542
-margin_right = 583.0
-margin_bottom = 603.542
+margin_left = 557.589
+margin_top = 576.953
+margin_right = 580.589
+margin_bottom = 603.953
 texture = ExtResource( 45 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -2042,7 +2055,6 @@ __meta__ = {
 
 [node name="inputTimer" type="Timer" parent="popUp"]
 wait_time = 30.0
-autostart = true
 
 [node name="Label" type="Label" parent="popUp"]
 margin_left = 240.0
@@ -2155,7 +2167,7 @@ margin_top = 274.0
 margin_right = 776.0
 margin_bottom = 288.0
 text = "Collapse Duplicates"
-
+[connection signal="gui_input" from="." to="." method="_on_CardTable_gui_input"]
 [connection signal="bandage_msg" from="Organism" to="." method="_on_Organism_bandage_msg"]
 [connection signal="clear_gap_msg" from="Organism" to="." method="_on_Organism_clear_gap_msg"]
 [connection signal="cmsm_changed" from="Organism" to="Border1/ChromosomeStatus" method="update"]

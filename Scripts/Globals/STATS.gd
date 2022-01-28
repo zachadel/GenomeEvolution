@@ -7,6 +7,7 @@ signal progress_bar(percent);
 #TO DIE FAST: 
 var amt_of_nit =0 
 var temperature_preference ={};
+var missions_accomplished = 0;
 var ph_preference = {};
 #delete genes using command console
 var missions =["Go 5 spaces", "perform a cut action on your genes."];
@@ -149,6 +150,13 @@ var gc_ate = 0
 
 var first_temp =0
 var moves_between_rounds = 0
+
+func inc_missions():
+	missions_accomplished +=1;
+
+func get_missions():
+	return missions_accomplished;
+
 func start_mission(index):
 	#passes in the index of the goal I am trying to accomplish
 	#var goal = missions[index]

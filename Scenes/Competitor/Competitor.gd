@@ -1,4 +1,8 @@
 extends Node2D
+
+
+#Essentially, all I did was make this thing a competitor
+#This comes from the Player code. I will modify as needed
 """
 	Notes:
 		-Every player is in the 'players' group
@@ -10,21 +14,27 @@ signal player_died(player)
 
 var update_sensing = false
 var move_enabled = false
-
+var hibernation = false
 var organism
-
-#observed_tiles[[int, int]]["vison"]
-#observed_tiles[[int, int]]["resource_image"]
-#observed_tiles[[int, int]]["biome_image"]
+var rng = RandomNumberGenerator.new()
 var observed_tiles = {}
 var clear_path = {}
 onready var sprite = get_node("Body")
-
-const STARTING_POS = Vector2(0, 0)
+#Number of turns out of range.
+var num_turns_OR = 0
+const STARTING_POS = Vector2(2, 2) #Player is at 0,0
+# I want to intimidate them, but not be immediately the same.
 
 #I see this potentially causing issues for creating AI players in the future
 func _ready():
-	organism = get_tree().get_root().get_node("Main/Canvas_CardTable/CardTable/Organism")
+	#This bit of code below, sets the organism variable
+	# I need to make a duplicate of this for competitors, with thte same funcitonality basically 
+	var index = rng.randi()
+	if index % 2 == 1:
+		self.set_cell_type("cell_1")
+	else:
+		self.set_cell_type("cell_2")
+	organism = get_tree().get_root().get_node("Main/Canvas_CardTable/CardTable/Comp_Organism")
 	position = STARTING_POS
 
 func setup(x = STARTING_POS.x, y = STARTING_POS.y):
@@ -39,6 +49,28 @@ func set_cell_type(cell_type: String):
 	organism.set_cell_type(cell_type)
 	sprite.set_cell_type(cell_type)
 	
+#Checks to see if the competitor is out of range, and adds to the number of turns if it is.
+func set_hibernation(player_pos): 
+	if(player_pos.x > position.x + 32):
+		hibernation = true
+	elif( player_pos.x < position.x -32):
+		hibernation = true
+	elif( player_pos.y > position.y + 32):
+		hibernation = true
+	elif(player_pos.y < position.y -32):
+		hibernation = true
+	else:
+		hibernation = false
+	
+	if hibernation:
+		num_turns_OR += 1
+
+func hibernation_mode(player_pos):
+	if not hibernation: #If the competitor is not in hibernation
+		for i in num_turns_OR: #For every amount of times it was out of range. move moves far.
+			print("go x amount of moves. ")
+		#Since you have been in range, then your number of moves will be zeroed out.
+		num_turns_OR = 0
 func get_cell_type():
 	return sprite.get_cell_type()
 
@@ -49,7 +81,7 @@ func get_texture_size():
 	return sprite.texture.get_size()
 	
 func set_texture_size():
-	var scale = Vector2((0.1), (0.1))
+	var scale = Vector2((0.15), (0.15))
 	var this_sprite = get_node("Body")
 	this_sprite.set_scale(scale)
 	#sprite.texture.set_size(x)

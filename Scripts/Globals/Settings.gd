@@ -375,7 +375,7 @@ func disable_genome_damage() -> bool:
 
 func skill_evolve_chance() -> float:
 	#So, the higher the value. the more likely it will return a new skill
-	return 0.3
+	return 0.7
 	#return settings["ingame_settings"]["skill_evolve_chance"]["final_value"]
 
 func component_curve_exponent() -> float:

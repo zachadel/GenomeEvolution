@@ -149,6 +149,7 @@ var all_time_players = 0
 var current_players = 0
 
 var current_cell_string = "cell_1"
+var agent_cell_string = "cell_2"
 
 var animation_speed = 600
 var animation_ease = Tween.EASE_IN
@@ -314,7 +315,7 @@ func adv_turn(skip: bool = false):
 	
 	fresh_round = false;
 	
-	_incr_turn_idx();
+	_incr_turn_idx(); #Increments the turn indx=ex
 	while !Unlocks.has_turn_unlock(get_turn_type()):
 		_incr_turn_idx();
 	

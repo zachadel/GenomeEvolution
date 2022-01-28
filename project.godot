@@ -42,6 +42,7 @@ Skills="*res://Scripts/Globals/Skills.gd"
 Actions="*res://Scripts/Globals/Actions.gd"
 STATS="*res://Scripts/Globals/STATS.gd"
 PROGENY="*res://Scripts/Globals/PROGENY.gd"
+COMPETITORS="*res://Scripts/Globals/COMPETITORS.gd"
 
 [display]
 

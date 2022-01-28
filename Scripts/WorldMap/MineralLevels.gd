@@ -35,8 +35,8 @@ func update_resources_values(mineral_resources):
 				var bar = get_node(resource)
 				
 				bar.update_value(mineral_resources[resource_class][resource])
-				if resource == "nitrogen":
-					STATS.set_amt_of_nitrogen(mineral_resources[resource_class][resource])
+				if resource == "nitrogen": #Looks for the nitrogen feature. 
+					STATS.set_amt_of_nitrogen(mineral_resources[resource_class][resource]) #Sets the new value.
 					#print(mineral_resources[resource_class][resource])
 
 func observe(resource: String):

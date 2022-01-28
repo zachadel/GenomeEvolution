@@ -5,9 +5,9 @@ signal add_card_event_log(conent, tags);
 signal show_warning();
 signal close_warning();
 onready var cmsms = $scroll/chromes
-onready var spectrum = $Spectrum
-var firsttime = false
-onready var indicators = $indicators
+#onready var spectrum = $Spectrum
+
+# onready var indicators = $indicators
 
 var PRINT_DEBUG = false
 
@@ -186,7 +186,7 @@ signal max_dmg_reached();
 
 #NOTE: Don't call get_behavior_profile in ready
 func _ready():
-	spectrum.visible = false
+	#spectrum.visible = false
 	#initialization done in _ready for restarts
 	behavior_profile = BehaviorProfile.new();
 	selected_gap = null;
@@ -1764,7 +1764,7 @@ func replicate(idx):
 	else:
 		#if the mouse enters where the skull or check is, the tool tip will appear.
 		
-		$Spectrum.visible = true
+		#$Spectrum.visible = true
 		
 		replicated = true
 		perform_anims(false);
@@ -1787,9 +1787,6 @@ func replicate(idx):
 			yield(get_card_table().play_meiosis_slides(), "completed")
 			has_done_meiosis = true
 		
-	
-		yield(get_card_table().play_replication_animation(), "completed")
-		
 		cmsms.show_all_choice_buttons(true);
 		cmsms.lbl_cmsm(0, "Original");
 		cmsms.lbl_cmsm(1, "Copy");
@@ -1798,16 +1795,14 @@ func replicate(idx):
 		perform_anims(true);
 		#mama mia
 		
-		
-		
 		var alive_arr =[]
 		var rep_type = "some unknown freaky deaky shiznaz";
 		match idx:
 			0: # Mitosis
 				#if it's mitosis we will be showing the 2 indicators
-				$indicators.visible = true
-				$indicators/indicator1.visible = true
-				$indicators/indicator2.visible = true
+				#$indicators.visible = true
+				#$indicators/indicator1.visible = true
+				#$indicators/indicator2.visible = true
 				use_resources("replicate_mitosis");
 				var alive_0 = true
 				var alive_1 = true
@@ -1816,16 +1811,16 @@ func replicate(idx):
 				var check_0 = check_cmsms_(0)
 				if typeof(check_0) == TYPE_STRING: #checks the first cell
 					#print("the cell will die from 0")
-					$indicators/indicator1.texture = load("res://Assets/Images/DeathScreen/cross-scull.png")
-					$tool_tip/Label.text = "This organism is doomed, as it has lost all of its " + check_0 + " genes."
+					#$indicators/indicator1.texture = load("res://Assets/Images/DeathScreen/cross-scull.png")
+					#$tool_tip/Label.text = "This organism is doomed, as it has lost all of its " + check_0 + " genes."
 					alive_0 = false
 				
 				var check_2 = check_cmsms_(2)
 				if typeof(check_2) == TYPE_STRING: #checks the second cell.
 					#print("the cell will die from 2")
-					$indicators/indicator2.texture = load("res://Assets/Images/DeathScreen/cross-scull.png")
+					#$indicators/indicator2.texture = load("res://Assets/Images/DeathScreen/cross-scull.png")
 					alive_1 = false
-					$tool_tip2/Label.text = "This organism is doomed, as it has lost all of its " + check_2 + " genes."
+					#$tool_tip2/Label.text = "This organism is doomed, as it has lost all of its " + check_2 + " genes."
 				
 				#if they are 0, put an image of a skull over that cell
 				#if both chromsomes are good put a green check mark on that cell
@@ -1917,18 +1912,18 @@ func replicate(idx):
 		emit_signal("doing_work", false);
 		emit_signal("justnow_update", "Reproduced by %s." % rep_type);
 		perform_anims(true);
-		$Spectrum.visible= false
-		$indicators/indicator1.texture = load("res://Assets/Images/DeathScreen/checkbox-152187_1280.png")
-		$tool_tip/Label.text = "This organism will survive, as still has all of its essential genes"
+		#$Spectrum.visible= false
+		#$indicators/indicator1.texture = load("res://Assets/Images/DeathScreen/checkbox-152187_1280.png")
+		#$tool_tip/Label.text = "This organism will survive, as still has all of its essential genes"
 		
-		$indicators/indicator2.texture = load("res://Assets/Images/DeathScreen/checkbox-152187_1280.png")
-		$tool_tip2/Label.text = "This organism will survive, as still has all of its essential genes"
-		$indicators/indicator1.visible = false
-		$indicators/indicator2.visible = false
-		$indicators/indicator3.visible = false
-		$indicators/indicator4.visible = false
-		$indicators/indicator5.visible = false
-		$indicators/indicator6.visible = false
+		#$indicators/indicator2.texture = load("res://Assets/Images/DeathScreen/checkbox-152187_1280.png")
+		#$tool_tip2/Label.text = "This organism will survive, as still has all of its essential genes"
+		#$indicators/indicator1.visible = false
+		#$indicators/indicator2.visible = false
+		#$indicators/indicator3.visible = false
+		#$indicators/indicator4.visible = false
+		#$indicators/indicator5.visible = false
+		#$indicators/indicator6.visible = false
 		
 func get_missing_ess_classes():
 	refresh_bprof = true
@@ -3136,10 +3131,6 @@ func acquire_resources():
 			if current_tile["resources"][index] > 0:
 				if Settings.settings["resources"][resource]["group"] == "minerals":
 					modified = true
-					print("Resource: "+ resource) #Theses are numbered minimally 0-33
-					
-					print("Mineral resources: "+ str(mineral_resources[resource_class][resource]))
-					
 					mineral_resources[resource_class][resource] += current_tile["resources"][index]
 					mineral_resources[resource_class]["total"] += current_tile["resources"][index]
 					current_tile["resources"][index] = 0
@@ -3895,61 +3886,3 @@ func get_locomotion_tax(amount: int = 1) -> int:
 		return taxes["move"]["energy"] * amount
 
 
-func _on_indicator1_mouse_entered():
-	$tool_tip.show()
-	pass # Replace with function body.
-
-
-func _on_indicator1_mouse_exited():
-	$tool_tip.hide()
-	pass # Replace with function body.
-
-
-func _on_indicator2_mouse_entered():
-	$tool_tip2.show()
-	pass # Replace with function body.
-
-
-func _on_indicator2_mouse_exited():
-	$tool_tip2.hide()
-	pass # Replace with function body.
-
-
-func _on_indicator3_mouse_entered():
-	$tool_tip3.show()
-	pass # Replace with function body.
-
-
-func _on_indicator3_mouse_exited():
-	$tool_tip3.hide()
-	pass # Replace with function body.
-
-
-func _on_indicator4_mouse_entered():
-	$tool_tip4.show()
-	pass # Replace with function body.
-
-
-func _on_indicator4_mouse_exited():
-	$tool_tip4.hide()
-	pass # Replace with function body.
-
-
-func _on_indicator5_mouse_entered():
-	$tool_tip5.show()
-	pass # Replace with function body.
-
-
-func _on_indicator5_mouse_exited():
-	$tool_tip5.hide()
-	pass # Replace with function body.
-
-
-func _on_indicator6_mouse_entered():
-	$tool_tip6.show()
-	pass # Replace with function body.
-
-
-func _on_indicator6_mouse_exited():
-	$tool_tip6.hide()
-	pass # Replace with function body.

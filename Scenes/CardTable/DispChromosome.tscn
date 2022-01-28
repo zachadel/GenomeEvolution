@@ -146,7 +146,6 @@ one_shot = true
 [node name="update_link_delay" type="Timer" parent="."]
 wait_time = 0.01
 one_shot = true
-
 [connection signal="pressed" from="container/ChoiceButtons/Sizer/BtnCollapse" to="." method="_on_BtnCollapse_pressed"]
 [connection signal="cmsm_changed" from="container/scroll/cmsm" to="." method="_on_cmsm_cmsm_changed"]
 [connection signal="elm_clicked" from="container/scroll/cmsm" to="." method="_propogate_click"]

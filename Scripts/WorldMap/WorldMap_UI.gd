@@ -1,5 +1,6 @@
 extends CanvasLayer
 signal update_progeny_placement
+signal update_competitor_placement
 signal end_map_pressed
 signal quit_to_title
 signal acquire_resources
@@ -35,6 +36,7 @@ const DEFAULT_BUTTON_TEXT = {
 const REPAIR_DEFAULT_COLOR = Color(0, 0.109804, 1)
 const REPAIR_DANGER_COLOR = Color.red
 var rng = RandomNumberGenerator.new()
+
 var test_cases = ["simple_carbs", "simple_fats", "simple_proteins", "complex_carbs", "complex_fats", "complex_proteins", "carbs_0", "carbs_1", "fats_0", "fats_1", "proteins_0", "proteins_1"]
 var mission_toggle = 0;
 var missions =["Go 5 spaces", "Heal 5 Genes", "Perform 5 Join Ends on the chromosome.", "Trim 5 Genes from breaks", "Perform 5 Collapse Duplicates on the chromosome.", "Perform 5 Copy Repairs on the chromosome."];
@@ -47,25 +49,28 @@ func _ready():
 	stats_screen_button.text = DEFAULT_BUTTON_TEXT[BUTTONS.STATS]
 	check_genome_button.text = DEFAULT_BUTTON_TEXT[BUTTONS.CHECK]
 	end_turn_button.text = DEFAULT_BUTTON_TEXT[BUTTONS.END]
-	
-	curr_index = rng.randi_range(0,len(missions))
+	rng.randomize()
+	curr_index = rng.randi_range(0,len(missions)-1)
 	STATS.start_mission(curr_index)
 	$MissionControl/greenLight/Label.text = "Current Mission: "+missions[curr_index]
 	#$popUp.visible = false;
 	
 func progress_bar(percent):
-	#print("percent: " + str(percent))
 	$MissionControl/greenLight/ProgressBar.value = percent * 100
 	pass
 
 func _update_mission(index):
-	print("running")
-	
-	var length_mission = len(missions)
+	STATS.inc_missions()
+	var length_mission = len(missions)-1
+	#rng = RandomNumberGenerator.new()
 	var new_index = rng.randi_range(0, length_mission)
 	print("new index: " + str(new_index))
 	var new_prompt = missions[new_index]
-	var curr_mission = missions[index]
+	var curr_mission 
+	if index < len(missions):
+		curr_mission = missions[index]
+	else:
+		curr_mission = completed_missions[0]
 	$MissionControl/greenLight.color = Color(0.08,0.8,.15,1)
 	var t = Timer.new()
 	t.set_wait_time(3)
@@ -98,7 +103,8 @@ func hide():
 	print("get children: " + str(get_children()))
 	for node in get_children():
 		print("node name: "+node.get_class())
-		if not node.get_class() == "Timer":
+		if not node.get_class() == "Timer": #In adding a timer in the attempts to try and help players, a ghost timer seems to be appearing and disappearing. This stops the program from shutting down
+			#I'm not a fan of this implementation, and suggest against this, but it works. So maybe fry bigger fish
 			node.hide()
 
 func _unhandled_input(event):
@@ -203,6 +209,7 @@ func reset_repair_button():
 #is printed if the player tries to store too many resources
 func _on_WorldMap_player_resources_changed(cfp_resources, mineral_resources):
 	irc.update_resources(cfp_resources)
+	#Mineral_levels are the internal panel.
 	mineral_levels.update_resources_values(mineral_resources)
 	pass # Replace with function body.
 	
@@ -226,6 +233,8 @@ func _on_MineralLevels_eject_resource(resource, value):
 	
 func _on_EndMapTurn_pressed():
 	emit_signal("end_map_pressed")
+	#Automates the progeny going places. I'm going to mirror this process with the competitors.
+	emit_signal("update_competitor_placement")
 	emit_signal("update_progeny_placement")
 	get_parent().disperse_resources_from_dead()
 #	PROGENY.kill_dead_progeny()
