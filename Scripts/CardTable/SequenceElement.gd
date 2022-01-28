@@ -12,6 +12,7 @@ var code_dir
 var dmg
 var count
 var ph
+var toggled_rect = false
 
 var SEQ_ELM_COMPARE_GRADIENT = load("res://Scenes/CardTable/SeqElmColorCompare.tres");
 var preference_temp = {}

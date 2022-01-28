@@ -76,7 +76,7 @@ func animation_skill_comparison_type(other_indicator) -> String:
 		return "LESS"
 	elif ttip_data[2].has_all(other_indicator.ttip_data[2].keys()) and ttip_data[2].size() > 0:
 		return "HAS"
-	elif not ttip_data[2].has_all(other_indicator.ttip_data[2].keys()) and ttip_data[2].size() > 0:
+	elif (not ttip_data[2].has_all(other_indicator.ttip_data[2].keys())) and ttip_data[2].size() > 0:
 		return "MIXED"
 	return "NONE"
 

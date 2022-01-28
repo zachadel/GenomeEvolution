@@ -605,6 +605,16 @@ func play_recombination_slides():
 	slides.queue_free()
 	pass
 
+func play_replication_animation():
+	var slides = load("res://Scenes/CardTable/ReplicationAnimation.tscn").instance()
+	add_child(slides)
+	slides.start()
+	yield(slides, "exit_replication_slides")
+	remove_child(slides)
+	slides.queue_free()
+	pass
+	
+
 func play_mitosis_slides():
 	var slides = load("res://Scenes/CardTable/Mitosis.tscn").instance()
 	add_child(slides)
