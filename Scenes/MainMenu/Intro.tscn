@@ -1525,7 +1525,6 @@ __meta__ = {
 }
 
 [node name="Blanks" type="Control" parent="."]
-visible = false
 margin_right = 1600.0
 margin_bottom = 900.0
 mouse_filter = 2
@@ -1680,7 +1679,7 @@ __meta__ = {
 
 [node name="GeneBackground2" type="TextureRect" parent="Blanks/Genes"]
 margin_left = 335.0
-margin_right = 666.0
+margin_right = 667.0
 margin_bottom = 323.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -1706,8 +1705,8 @@ __meta__ = {
 }
 
 [node name="Blank" type="TextureRect" parent="Blanks/Genes"]
-margin_left = 670.0
-margin_right = 1001.0
+margin_left = 671.0
+margin_right = 1002.0
 margin_bottom = 323.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -1716,8 +1715,8 @@ texture = ExtResource( 20 )
 expand = true
 
 [node name="GeneBackground3" type="TextureRect" parent="Blanks/Genes"]
-margin_left = 1005.0
-margin_right = 1336.0
+margin_left = 1006.0
+margin_right = 1338.0
 margin_bottom = 323.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -1742,8 +1741,8 @@ __meta__ = {
 }
 
 [node name="GeneBackground4" type="TextureRect" parent="Blanks/Genes"]
-margin_left = 1340.0
-margin_right = 1671.0
+margin_left = 1342.0
+margin_right = 1674.0
 margin_bottom = 323.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -1768,7 +1767,7 @@ __meta__ = {
 }
 
 [node name="Blank2" type="TextureRect" parent="Blanks/Genes"]
-margin_left = 1675.0
+margin_left = 1678.0
 margin_right = 2010.0
 margin_bottom = 323.0
 mouse_filter = 2
@@ -2010,7 +2009,7 @@ __meta__ = {
 
 [node name="GeneBackground2" type="TextureRect" parent="Transposon/Genes"]
 margin_left = 439.0
-margin_right = 874.0
+margin_right = 875.0
 margin_bottom = 453.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -2036,8 +2035,8 @@ __meta__ = {
 }
 
 [node name="Blank" type="TextureRect" parent="Transposon/Genes"]
-margin_left = 878.0
-margin_right = 1313.0
+margin_left = 879.0
+margin_right = 1314.0
 margin_bottom = 453.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -2045,8 +2044,8 @@ size_flags_vertical = 3
 expand = true
 
 [node name="GeneBackground3" type="TextureRect" parent="Transposon/Genes"]
-margin_left = 1317.0
-margin_right = 1752.0
+margin_left = 1318.0
+margin_right = 1754.0
 margin_bottom = 453.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -2071,8 +2070,8 @@ __meta__ = {
 }
 
 [node name="GeneBackground4" type="TextureRect" parent="Transposon/Genes"]
-margin_left = 1756.0
-margin_right = 2191.0
+margin_left = 1758.0
+margin_right = 2193.0
 margin_bottom = 453.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -2097,7 +2096,7 @@ __meta__ = {
 }
 
 [node name="Blank2" type="TextureRect" parent="Transposon/Genes"]
-margin_left = 2195.0
+margin_left = 2197.0
 margin_right = 2633.0
 margin_bottom = 453.0
 mouse_filter = 2

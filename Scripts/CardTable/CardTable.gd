@@ -378,8 +378,6 @@ func upd_turn_display(upd_turn_unlocks: bool = Game.fresh_round, upd_env_markers
 	$lnum_progeny.set_num(orgn.num_progeny);
 	if Game.round_num >= STATS.get_rounds():
 		STATS.set_Rounds(Game.round_num)
-	
-	print("game round: " + str(Game.round_num))
 	$TurnList.highlight(Game.turn_idx);
 	#print("organism thing: " + str(orgn.current_tile))
 	
@@ -389,7 +387,6 @@ func upd_turn_display(upd_turn_unlocks: bool = Game.fresh_round, upd_env_markers
 		ph_filter_panel.upd_current_ph_marker(orgn.current_tile.hazards["pH"]);
 
 func _on_btn_nxt_pressed():
-	$popUp/inputTimer.stop()
 	passed_replication = false
 	orgn.gene_val_with_temp()
 	STATS.set_gc_rep(orgn.get_behavior_profile().get_behavior("Replication"))
@@ -446,13 +443,11 @@ func adv_turn():
 		close_extra_menus();
 		var skip_turn = false
 		if (Game.get_turn_type() == Game.TURN_TYPES.Recombination):
-			print("recombination")
 			for g in orgn.gene_selection:
 				g.disable(true);
 				
 		if Game.get_next_turn_type() == Game.TURN_TYPES.Recombination:
 			var recombos = orgn.get_recombos_per_turn()
-			
 			if recombos == 0:
 				skip_turn = true
 		if(Game.get_turn_type() == Game.TURN_TYPES.RepairDmg and Game.get_next_turn_type() == Game.TURN_TYPES.Recombination):
@@ -469,24 +464,24 @@ func adv_turn():
 				skip_turn = false
 			
 		if(Game.get_turn_type() == Game.TURN_TYPES.RepairDmg and Game.get_next_turn_type() == Game.TURN_TYPES.TEJump):
-			print(Game.get_turn_type())
-			print("here we are all over again.")
+			print("Step 2->3")
 			if check_if_any_dmg_in_chromosomes():
+				print("there's damage 2")
 				notifications.emit_signal("notification_needed", "There are still some harmed genes left you need to heal.")
 				$RepairTabs.current_tab = 3
 				$RepairTabs/pnl_repair_choices.hide()
 				$RepairTabs/pnl_bandage_dmg.show()
 				#print("It should have happened.")
-				skip_turn = false
-		Game.adv_turn(skip_turn); #What does this do
-		upd_turn_display(); #What does this do?
-		# updates the display information.
-		_add_justnow_bbcode("\n\n%s" % Game.get_turn_txt(), {"color": Color(1, 0.75, 0)});
-		emit_signal("add_card_event_log","\n\n%s" % Game.get_turn_txt(), {"color": Color(1, 0.75, 0)})
-		
-		#moves the game onto the next turn
-		emit_signal("next_turn", Game.round_num, Game.turn_idx);
-		$pnl_saveload.new_save(SaveExports.get_save_str(self));
+				skip_turn = true
+		if !skip_turn:
+			Game.adv_turn(skip_turn);
+			upd_turn_display();
+			
+			_add_justnow_bbcode("\n\n%s" % Game.get_turn_txt(), {"color": Color(1, 0.75, 0)});
+			emit_signal("add_card_event_log","\n\n%s" % Game.get_turn_txt(), {"color": Color(1, 0.75, 0)})
+			
+			emit_signal("next_turn", Game.round_num, Game.turn_idx);
+			$pnl_saveload.new_save(SaveExports.get_save_str(self));
 
 func _on_animating_changed(state):
 	wait_on_anim = state;
@@ -549,7 +544,6 @@ onready var central_menus := [$pnl_saveload, ph_filter_panel, $pnl_bugreport, te
 onready var default_menu : Control = justnow_ctl;
 func close_extra_menus(toggle_menu: Control = null, make_default := false) -> void:
 	var restore_default = toggle_menu == null;
-	print("close extra menus called")
 	for p in central_menus:
 		if (p == toggle_menu):
 			p.visible = !p.visible;
@@ -582,7 +576,6 @@ func close_extra_menus(toggle_menu: Control = null, make_default := false) -> vo
 			default_menu = justnow_ctl;
 	if restore_default:
 		default_menu.visible = true;
-	
 
 func show_chaos_anim():
 	close_extra_menus($pnl_chaos);
@@ -610,6 +603,15 @@ func play_mitosis_slides():
 	add_child(slides)
 	slides.start()
 	yield(slides, "exit_mitosis_slides")
+	remove_child(slides)
+	slides.queue_free()
+	pass
+	
+func play_replication_animation():
+	var slides = load("res://Scenes/CardTable/ReplicationAnimation.tscn").instance()
+	add_child(slides)
+	slides.start()
+	yield(slides, "exit_replication_slides")
 	remove_child(slides)
 	slides.queue_free()
 	pass
@@ -662,8 +664,6 @@ func show_death_screen():
 	$Border1.hide()
 	$Border3.hide()
 	$Border4.hide()
-	$q_s2.hide()
-	$q_s2.visible = false;
 	#$pnl_dead_overview/HSplitContainer/Panel/LblOverview.text = OVERVIEW_FORMAT % [death_descr, Game.round_num, orgn.num_progeny, gaps_repaired]
 	$pnl_dead_overview.visible = true;
 	$pnl_dead_overview.update_values();
@@ -674,7 +674,9 @@ func _on_Organism_finished_replication():
 	status_bar.visible = true;
 
 func _unhandled_input(event):
-	
+	if event.is_action_pressed("mouse_left"):
+		$popUp/inputTimer.set_timer_process_mode(20)
+		$popUp/inputTimer.start()
 	pass
 
 
@@ -1263,17 +1265,4 @@ func _on_slide_4_gui_input(event):
 		yield(slides, "exit_collapse_dupes_slides")
 		remove_child(slides)
 		slides.queue_free()
-	pass # Replace with function body.
-
-
-func _on_CardTable_gui_input(event):
-	# print("event: " + str(event))
-	$popUp/inputTimer.start(30)
-	
-	
-		
-	if event.is_action_pressed("mouse_left") :
-		#$popUp/inputTimer.set_timer_process_mode(30)
-		#print("timer started")
-		$popUp/inputTimer.start(30)
 	pass # Replace with function body.

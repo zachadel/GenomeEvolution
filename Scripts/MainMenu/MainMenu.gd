@@ -19,6 +19,7 @@ func _process(delta):
 
 func _on_TitleScreen_begin_new_game():
 	emit_signal("change_to_world_map")
+	print("we hit it")
 	title_screen.hide()
 	pass # Replace with function body.
 

@@ -1787,7 +1787,7 @@ func replicate(idx):
 			yield(get_card_table().play_meiosis_slides(), "completed")
 			has_done_meiosis = true
 		
-	
+		#big issue here
 		yield(get_card_table().play_replication_animation(), "completed")
 		
 		cmsms.show_all_choice_buttons(true);

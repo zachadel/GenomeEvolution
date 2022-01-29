@@ -3,5 +3,5 @@
 [ext_resource path="res://Assets/Fonts/OpenSans-BoldItalic.ttf" type="DynamicFontData" id=1]
 
 [resource]
-size = 90
+size = 50
 font_data = ExtResource( 1 )
