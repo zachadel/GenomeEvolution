@@ -450,25 +450,23 @@ func adv_turn():
 			for g in orgn.gene_selection:
 				g.disable(true);
 				
-		if Game.get_next_turn_type() == Game.TURN_TYPES.Recombination:
+		elif Game.get_next_turn_type() == Game.TURN_TYPES.Recombination:
 			var recombos = orgn.get_recombos_per_turn()
 			
+			print("recombos: " + str(recombos))
 			if recombos == 0:
 				skip_turn = true
-		if(Game.get_turn_type() == Game.TURN_TYPES.RepairDmg and Game.get_next_turn_type() == Game.TURN_TYPES.Recombination):
-			print("Step 4->5")
 			if orgn.get_cmsm_pair().get_gap_list() != []:
 				print("there's damage")
 				notifications.emit_signal("notification_needed", "There are still some breaks that you need to mend.")
 				$RepairTabs.current_tab = 3
-				$RepairTabs/pnl_repair_choices.hide()
-				$RepairTabs/pnl_bandage_dmg.show()
+				$RepairTabs/pnl_repair_choices.show()
+				$RepairTabs/pnl_bandage_dmg.hide()
 				#print("It should have happened.")
-				skip_turn = true
-			else:
-				skip_turn = false
+				#turn shouldn't advance, perhaps subtract idx by one
+				Game.turn_idx = Game.turn_idx - 1
 			
-		if(Game.get_turn_type() == Game.TURN_TYPES.RepairDmg and Game.get_next_turn_type() == Game.TURN_TYPES.TEJump):
+		elif(Game.get_next_turn_type() == Game.TURN_TYPES.TEJump):
 			print(Game.get_turn_type())
 			print("here we are all over again.")
 			if check_if_any_dmg_in_chromosomes():
@@ -477,7 +475,8 @@ func adv_turn():
 				$RepairTabs/pnl_repair_choices.hide()
 				$RepairTabs/pnl_bandage_dmg.show()
 				#print("It should have happened.")
-				skip_turn = false
+				Game.turn_idx = Game.turn_idx - 1
+		print("skip_turn: " + str(skip_turn))
 		Game.adv_turn(skip_turn); #What does this do
 		upd_turn_display(); #What does this do?
 		# updates the display information.
