@@ -3,7 +3,7 @@
 [ext_resource path="res://Assets/Fonts/OpenSans-SemiBold.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://Scenes/CardTable/result_arrow.gd" type="Script" id=4]
 [ext_resource path="res://Assets/Images/pngs/SpeechRectCenter.png" type="Texture" id=6]
-[ext_resource path="res://Assets/Fonts/BoldItalics_50.tres" type="DynamicFont" id=7]
+[ext_resource path="res://Assets/Fonts/BoldItalics_50 Arrow.tres" type="DynamicFont" id=7]
 
 [sub_resource type="DynamicFont" id=1]
 size = 60
