@@ -453,6 +453,7 @@ func adv_turn():
 			
 			print("recombos: " + str(recombos))
 			if recombos == 0:
+				print("Skipping step because no recombos")
 				skip_turn = true
 			if orgn.get_cmsm_pair().get_gap_list() != []:
 				print("there's damage")
@@ -462,18 +463,18 @@ func adv_turn():
 				$RepairTabs/pnl_bandage_dmg.hide()
 				#print("It should have happened.")
 				#turn shouldn't advance, perhaps subtract idx by one
-				Game.turn_idx = Game.turn_idx - 1
+				return "can't advance yet"
 			
 		elif(Game.get_next_turn_type() == Game.TURN_TYPES.TEJump):
 			print(Game.get_turn_type())
 			print("here we are all over again.")
 			if check_if_any_dmg_in_chromosomes():
 				notifications.emit_signal("notification_needed", "There are still some harmed genes left you need to heal.")
-				$RepairTabs.current_tab = 3
+				$RepairTabs.current_tab = 0
 				$RepairTabs/pnl_repair_choices.hide()
 				$RepairTabs/pnl_bandage_dmg.show()
 				#print("It should have happened.")
-				Game.turn_idx = Game.turn_idx - 1
+				return "can't advance yet"
 		print("skip_turn: " + str(skip_turn))
 		Game.adv_turn(skip_turn); #What does this do
 		upd_turn_display(); #What does this do?
