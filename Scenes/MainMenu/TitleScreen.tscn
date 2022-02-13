@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Scripts/MainMenu/title_screen.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Images/pngs/CHAOS.png" type="Texture" id=2]
@@ -6,6 +6,8 @@
 [ext_resource path="res://Assets/Images/pngs/DNA_right.png" type="Texture" id=4]
 [ext_resource path="res://Scenes/MainMenu/TitleCell.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Assets/Fonts/Chango-Regular.ttf" type="DynamicFontData" id=6]
+[ext_resource path="res://Scenes/MainMenu/Button.gd" type="Script" id=7]
+[ext_resource path="res://Assets/Fonts/BoldItalics_50 Arrow.tres" type="DynamicFont" id=8]
 
 [sub_resource type="Curve2D" id=1]
 _data = {
@@ -650,9 +652,27 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Button" type="Button" parent="."]
+visible = false
+anchor_right = 0.00875004
+margin_left = 285.363
+margin_top = 240.452
+margin_right = 847.363
+margin_bottom = 370.452
+custom_fonts/font = ExtResource( 8 )
+text = "TEST BUTTON"
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
 [connection signal="begin_new_game" from="." to="." method="_on_TitleScreen_begin_new_game"]
 [connection signal="exit_game" from="." to="." method="_on_TitleScreen_exit_game"]
 [connection signal="pressed" from="NewGame" to="." method="_on_NewGame_pressed"]
 [connection signal="pressed" from="Credits" to="." method="_on_Credits_pressed"]
 [connection signal="pressed" from="Exit" to="." method="_on_Exit_pressed"]
 [connection signal="timeout" from="CellTimer" to="." method="_on_CellTimer_timeout"]
+[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
+[connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]

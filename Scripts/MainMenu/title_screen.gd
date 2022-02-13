@@ -10,6 +10,7 @@ const MIN_SPEED = 150
 const MAX_SPEED = 250
 
 func _ready():
+	$HTTPRequest.connect("request_completed", self, "_on_request_completed")
 	$CellTimer.start()
 
 func _on_NewGame_pressed():
@@ -58,3 +59,14 @@ func _on_TitleScreen_exit_game():
 func _on_Credits_pressed():
 	get_tree().change_scene("res://Scenes/MainMenu/Credits.tscn")
 	pass # Replace with function body.
+
+
+func _on_Button_pressed():
+	$HTTPRequest.request("https://getpantry.cloud/apiv1/pantry/4eb404d9-6961-4797-a4bc-6179d5a5fdf4/basket/Test Pantry")
+	#0 is get, 3 is put
+
+
+
+func _on_HTTPRequest_request_completed(result, response_code, headers, body):
+	var json = JSON.parse(body.get_string_from_utf8())
+	print(json.result)
