@@ -458,7 +458,7 @@ func adv_turn():
 			if orgn.get_cmsm_pair().get_gap_list() != []:
 				print("there's damage")
 				notifications.emit_signal("notification_needed", "There are still some breaks that you need to mend.")
-				$RepairTabs.current_tab = 3
+				$RepairTabs.current_tab = 1
 				$RepairTabs/pnl_repair_choices.show()
 				$RepairTabs/pnl_bandage_dmg.hide()
 				#print("It should have happened.")
