@@ -1706,14 +1706,17 @@ func setup(biome_seed, hazard_seeds, resource_seed, tiebreak_seed, _chunk_size, 
 	current_player.organism.refresh_behavior_profile()
 	#This gets done for the current player
 	
+	print(players)
+	if len(players) > 1:
+		print("oops")
 	#To add the agent back into the game, uncomment 1708, 1711-1714.
-	#agent = players[1]
-	#player_sprite_offset = (tile_sprite_size - agent.get_texture_size()) / 2
-	#agent.set_texture_size() #This kinda sets things based off a consant. It's not great.
-	#agent.position = Game.map_to_world(Game.world_to_map(agent_start))
-	#agent.organism.current_tile = get_tile_at_pos(Game.world_to_map(agent_start))
-	#agent.organism.set_start_tile(get_tile_at_pos(Game.world_to_map((agent_start))))
-	#agent.organism.refresh_behavior_profile()
+		agent = players[1]
+		player_sprite_offset = (tile_sprite_size - agent.get_texture_size()) / 2
+		agent.set_texture_size() #This kinda sets things based off a consant. It's not great.
+		agent.position = Game.map_to_world(Game.world_to_map(agent_start))
+		agent.organism.current_tile = get_tile_at_pos(Game.world_to_map(agent_start))
+		agent.organism.set_start_tile(get_tile_at_pos(Game.world_to_map((agent_start))))
+		agent.organism.refresh_behavior_profile()
 	#Now we need to start applying it to the agents
 	
 	

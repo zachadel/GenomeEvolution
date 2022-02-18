@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Scripts/WorldMap/WorldMap_UI.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/WorldMap/InternalResourceController.tscn" type="PackedScene" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://Scenes/WorldMap/TransposonUI.tscn" type="PackedScene" id=9]
 [ext_resource path="res://Scenes/WorldMap/BiomeIcon.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Assets/Images/Menus/Q.png" type="Texture" id=11]
+[ext_resource path="res://Scenes/Missions/Missions.tscn" type="PackedScene" id=12]
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
@@ -517,8 +518,9 @@ __meta__ = {
 
 [node name="Label" type="Label" parent="MissionControl/greenLight"]
 margin_left = -1.0
+margin_top = -1.73126
 margin_right = 563.0
-margin_bottom = 65.0
+margin_bottom = 63.2687
 custom_fonts/font = ExtResource( 7 )
 text = "Mission Number: 
 Mission: "
@@ -641,6 +643,13 @@ autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Missions" parent="." instance=ExtResource( 12 )]
+visible = false
+margin_left = 413.0
+margin_top = 0.0
+margin_right = -283.0
+margin_bottom = -830.0
 [connection signal="gui_input" from="InternalPanel/StoredResourcesLabel/q_mark" to="." method="_on_q_mark_gui_input"]
 [connection signal="mouse_entered" from="InternalPanel/StoredResourcesLabel/q_mark" to="." method="_on_q_mark_mouse_entered"]
 [connection signal="mouse_exited" from="InternalPanel/StoredResourcesLabel/q_mark" to="." method="_on_q_mark_mouse_exited"]

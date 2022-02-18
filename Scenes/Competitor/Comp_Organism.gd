@@ -1426,6 +1426,7 @@ func highlight_gap_choices():
 		auto_repair();
 
 func highlight_dmg_genes(mode: String):
+	print("line 1429 for damage genes.")
 	match mode:
 		"scissors":
 			start_scissors("get_damaged_genes");

@@ -207,6 +207,7 @@ func show_repair_opts(show):
 		#$RepairTabs/pnl_bandage_dmg/vbox/scroll/RTLRepairResult.text = "";
 		#$pnl_log_module/VSplitContainer/ScrollContainer/outputLog.text = "";
 		yield(get_tree(), "idle_frame");
+		print("line 210")
 		show_repair_tab(0);
 	if $RepairTabs.visible != show:
 		close_extra_menus($RepairTabs, true);
@@ -239,12 +240,14 @@ func _on_Organism_gene_bandaged(_gene):
 func _refresh_repair_tab():
 	upd_repair_lock_display();
 	yield(get_tree(), "idle_frame");
+	print("line 243")
 	show_repair_tab($RepairTabs.current_tab);
 
 func upd_gap_select_instruction_visibility():
 	$RepairTabs/pnl_repair_choices/vbox/LblInstr.visible = orgn.selected_gap == null;
 
 func show_repair_types(show: bool) -> void:
+	print("Show repair types being called.")
 	upd_repair_lock_display();
 	var rep_pnl = $RepairTabs/pnl_repair_choices/hsplit;
 	rep_pnl.visible = show;
@@ -259,19 +262,30 @@ func _on_RepairTabs_tab_changed(idx: int):
 
 func show_repair_tab(tab_idx: int, upd_locks_disp := true) -> void:
 	$RepairTabs.current_tab = tab_idx;
+	print($RepairTabs.current_tab)
 	if upd_locks_disp:
+		print("upd locks disp")
 		upd_repair_lock_display();
-	
+	print("organism clear repair elms selections")
 	orgn.clear_repair_elm_selections();
+	print ("Setting type to false")
 	show_repair_types(false);
+	print("tab: "+ str(tab_idx))
+	
 	match tab_idx:
 		1:
 			orgn.highlight_gap_choices();
 		0, 2:
 			if orgn.total_scissors_left > 0:
+				print("organism total scissors: " + str(orgn.total_scissors_left))
+				continue;
+			else: 
+				print("organism total scissors: " + str(orgn.total_scissors_left))
 				continue;
 		0:
 			orgn.highlight_dmg_genes("bandage");
+			print(orgn.get_behavior_profile())
+			print("bandage")
 		2:
 			if orgn.get_behavior_profile().has_skill("trim_gap_genes"):
 				orgn.highlight_gap_end_genes();
@@ -387,7 +401,6 @@ func upd_turn_display(upd_turn_unlocks: bool = Game.fresh_round, upd_env_markers
 		ph_filter_panel.upd_current_ph_marker(orgn.current_tile.hazards["pH"]);
 
 func _on_btn_nxt_pressed():
-	$popUp/inputTimer.stop()
 	passed_replication = false
 	orgn.gene_val_with_temp()
 	STATS.set_gc_rep(orgn.get_behavior_profile().get_behavior("Replication"))
@@ -444,35 +457,35 @@ func adv_turn():
 		close_extra_menus();
 		var skip_turn = false
 		if (Game.get_turn_type() == Game.TURN_TYPES.Recombination):
-			print("recombination")
 			for g in orgn.gene_selection:
 				g.disable(true);
 				
-		elif Game.get_next_turn_type() == Game.TURN_TYPES.Recombination:
+		if Game.get_next_turn_type() == Game.TURN_TYPES.Recombination:
 			var recombos = orgn.get_recombos_per_turn()
-			
-			print("recombos: " + str(recombos))
 			if recombos == 0:
-				print("Skipping step because no recombos")
 				skip_turn = true
+		if(Game.get_turn_type() == Game.TURN_TYPES.RepairDmg and Game.get_next_turn_type() == Game.TURN_TYPES.Recombination):
+			print("Step 4->5")
 			if orgn.get_cmsm_pair().get_gap_list() != []:
 				print("there's damage")
 				notifications.emit_signal("notification_needed", "There are still some breaks that you need to mend.")
-				$RepairTabs.current_tab = 1
-				$RepairTabs/pnl_repair_choices.show()
-				$RepairTabs/pnl_bandage_dmg.hide()
+				$RepairTabs.current_tab = 0
+				#$RepairTabs/pnl_repair_choices.hide()
+				#$RepairTabs/pnl_bandage_dmg.show()
 				#print("It should have happened.")
-				#turn shouldn't advance, perhaps subtract idx by one
-				return "can't advance yet"
+				skip_turn = true
+			else:
+				skip_turn = false
 			
-		elif(Game.get_next_turn_type() == Game.TURN_TYPES.TEJump):
-			print(Game.get_turn_type())
-			print("here we are all over again.")
+		if(Game.get_turn_type() == Game.TURN_TYPES.RepairDmg and Game.get_next_turn_type() == Game.TURN_TYPES.TEJump):
+			print("Step 2->3")
 			if check_if_any_dmg_in_chromosomes():
+			
+				print("there's damage 2")
 				notifications.emit_signal("notification_needed", "There are still some harmed genes left you need to heal.")
 				$RepairTabs.current_tab = 0
-				$RepairTabs/pnl_repair_choices.hide()
-				$RepairTabs/pnl_bandage_dmg.show()
+				#$RepairTabs/pnl_repair_choices.show()
+				#$RepairTabs/pnl_bandage_dmg.show()
 				#print("It should have happened.")
 				return "can't advance yet"
 		print("skip_turn: " + str(skip_turn))
@@ -547,7 +560,6 @@ onready var central_menus := [$pnl_saveload, ph_filter_panel, $pnl_bugreport, te
 onready var default_menu : Control = justnow_ctl;
 func close_extra_menus(toggle_menu: Control = null, make_default := false) -> void:
 	var restore_default = toggle_menu == null;
-	print("close extra menus called")
 	for p in central_menus:
 		if (p == toggle_menu):
 			p.visible = !p.visible;
@@ -580,7 +592,6 @@ func close_extra_menus(toggle_menu: Control = null, make_default := false) -> vo
 			default_menu = justnow_ctl;
 	if restore_default:
 		default_menu.visible = true;
-	
 
 func show_chaos_anim():
 	close_extra_menus($pnl_chaos);
@@ -837,6 +848,7 @@ func _on_fix_one_pressed():
 
 func check_if_any_dmg_in_chromosomes():
 	var list_dmg_genes = orgn.get_damaged_genes()
+	print(list_dmg_genes)
 	#print("Length of damage genes list: " + str(len(list_dmg_genes)))
 	if(len(list_dmg_genes) > 0):
 		#print("SCREEEEEECH")
@@ -855,9 +867,11 @@ func _not_the_button():
 	show_choices()
 
 func show_repairs():
+	print("show repairs being called")
 	$RepairTabs.current_tab = 3
 
 func show_choices():
+	print("show choices being called")
 	$RepairTabs.current_tab = 0
 
 func _on_fix_all_pressed():
@@ -1275,13 +1289,5 @@ func _on_slide_4_gui_input(event):
 
 
 func _on_CardTable_gui_input(event):
-	# print("event: " + str(event))
-	$popUp/inputTimer.start(30)
-	
-	
-		
-	if event.is_action_pressed("mouse_left") :
-		#$popUp/inputTimer.set_timer_process_mode(30)
-		#print("timer started")
-		$popUp/inputTimer.start(30)
+	#print("here")
 	pass # Replace with function body.

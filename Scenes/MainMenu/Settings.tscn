@@ -25,4 +25,13 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+margin_right = 120.0
+margin_bottom = 20.0
 custom_constants/separation = 20
+
+[node name="add_competitors" type="Button" parent="ScrollContainer/VBoxContainer"]
+margin_right = 120.0
+margin_bottom = 20.0
+toggle_mode = true
+text = "Add Competitors"
+[connection signal="pressed" from="ScrollContainer/VBoxContainer/add_competitors" to="." method="_on_add_competitors_pressed"]

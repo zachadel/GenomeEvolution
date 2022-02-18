@@ -151,6 +151,165 @@ var gc_ate = 0
 var first_temp =0
 var moves_between_rounds = 0
 
+
+
+func mission_control(category, idx):
+	var string_category
+	match category:
+		"eat": #eat
+			if idx < 11 and idx > -1:
+				match idx:
+					0:
+						print("eat 2 sugars")
+					1: 
+						print("eat 2 amino acids")
+					2:
+						print("eat 2 simple fats")
+					3: 
+						print("eat 2 proteins")
+					4: 
+						print("eat 2 complex carbs")
+					5:
+						print("eat 2 fats")
+					6:
+						print("eat till the Fe border is green")
+					7:
+						print("eat till the Ca border is green")
+					8:
+						print("eat till the Na border is green")
+					9:
+						print("eat till the P border is green")
+					10:
+						print("eat till the Hg border is green")
+			else:
+				return false
+		"explore": #explore
+			if idx < 6:
+				match idx:
+					0:
+						print("eat 2 sugars")
+					1: 
+						print("eat 2 amino acids")
+					2:
+						print("eat 2 simple fats")
+					3: 
+						print("eat 2 proteins")
+					4: 
+						print("eat 2 complex carbs")
+					5:
+						print("eat 2 fats")
+					6:
+						print("eat till the Fe border is green")
+			else:
+				return false
+		"repair":  #repair
+			if idx < 33:
+				match idx:
+					0:
+						print("eat 2 sugars")
+					1: 
+						print("eat 2 amino acids")
+					2:
+						print("eat 2 simple fats")
+					3: 
+						print("eat 2 proteins")
+					4: 
+						print("eat 2 complex carbs")
+					5:
+						print("eat 2 fats")
+					6:
+						print("eat till the Fe border is green")
+					7:
+						print("eat till the Ca border is green")
+					8:
+						print("eat till the Na border is green")
+					9:
+						print("eat till the P border is green")
+					10:
+						print("eat till the Hg border is green")
+					11: 
+						print("eat 2 amino acids")
+					12:
+						print("eat 2 simple fats")
+					13: 
+						print("eat 2 proteins")
+					14: 
+						print("eat 2 complex carbs")
+					15:
+						print("eat 2 fats")
+					16:
+						print("eat till the Fe border is green")
+					17:
+						print("eat till the Ca border is green")
+					18:
+						print("eat till the Na border is green")
+					19:
+						print("eat till the P border is green")
+					20:
+						print("eat till the Hg border is green")
+					21: 
+						print("eat 2 amino acids")
+					22:
+						print("eat 2 simple fats")
+					23: 
+						print("eat 2 proteins")
+					24: 
+						print("eat 2 complex carbs")
+					25:
+						print("eat 2 fats")
+					26:
+						print("eat till the Fe border is green")
+					27:
+						print("eat till the Ca border is green")
+					28:
+						print("eat till the Na border is green")
+					29:
+						print("eat till the P border is green")
+					30:
+						print("eat till the Hg border is green")
+					31: 
+						print("eat 2 amino acids")
+					32:
+						print("eat 2 simple fats")
+					33: 
+						print("eat 2 proteins")
+			else:
+				return false
+		"replication": #replication
+			if idx < 6:
+				match idx:
+					0:
+						print("eat 2 sugars")
+					1: 
+						print("eat 2 amino acids")
+					2:
+						print("eat 2 simple fats")
+					3: 
+						print("eat 2 proteins")
+					4: 
+						print("eat 2 complex carbs")
+					5:
+						print("eat 2 fats")
+					6:
+						print("eat till the Fe border is green")
+			else:
+				return false
+		"genome": #genome
+			string_category = "genome";
+			if idx < 3:
+				match idx:
+					0:
+						print("eat 2 sugars")
+					1: 
+						print("eat 2 amino acids")
+					2:
+						print("eat 2 simple fats")
+			else:
+				return false
+
+
+
+
 func inc_missions():
 	missions_accomplished +=1;
 

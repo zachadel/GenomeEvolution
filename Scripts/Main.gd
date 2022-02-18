@@ -34,23 +34,35 @@ func _ready():
 
 	#Add looping after first_player if there are multiple players, but only give the first
 	#player to the WorldMap for setup
+	var competitors_allowed = COMPETITORS.get_active_toggle()
+	print(competitors_allowed)
 	#If there is character creation, then that should go here before creating the player
 	var first_player = create_player()
-	#Uncomment below to add the agent back into the game.
-	#var agent = create_agent()
-	#COMPETITORS.add_competitors(agent) #This lets me control the little one.
-	#For now, I'm just trying to make our agent copy our original player
 	first_player.set_cell_type(Game.current_cell_string)
-	#agent.set_cell_type("cell_3")
+	
+	var list_of_actors = [first_player]
+	#Uncomment below to add the agent back into the game.
+	if competitors_allowed:
+		print("Compettitors are in this game.")
+		var agent = create_agent()
+		COMPETITORS.add_competitors(agent) #This lets me control the little one.
+		agent.set_cell_type("cell_3")
+		list_of_actors.append(agent)
+		
+	
+	#For now, I'm just trying to make our agent copy our original player
+	
+	
 	
 	var hazard_seeds = {}
 	for hazard in Settings.settings["hazards"].keys():
 		hazard_seeds[hazard] = randi()
 	
 	
+	
 	#This order enables the WorldMap to make its camera the current one
 	#To Add the agent into the game, add agent after first player in this setup method.
-	world_map.setup(randi(), hazard_seeds, randi(), randi(), chunk_size, [first_player])
+	world_map.setup(randi(), hazard_seeds, randi(), randi(), chunk_size, list_of_actors)
 	#world_map.setup(randi(), hazard_seeds, randi(), randi(), chunk_size, agent)
 	_show_world_map()
 	world_map.set_input(Game.PLAYER_VIEW.ON_MAP)

@@ -252,10 +252,10 @@ anchor_left = -0.00105225
 anchor_top = 0.000535549
 anchor_right = 0.998948
 anchor_bottom = 0.00053555
-margin_left = -1.81587
-margin_top = -0.930054
-margin_right = -1.81592
-margin_bottom = 599.07
+margin_left = -6.3164
+margin_top = -0.481994
+margin_right = -6.31677
+margin_bottom = 599.518
 
 [node name="lbl_behavior2" type="Label" parent="."]
 anchor_left = 1.0
@@ -1038,6 +1038,8 @@ margin_left = 1282.0
 margin_top = 756.0
 margin_right = 1423.0
 margin_bottom = 891.0
+num = 0
+show_change = true
 
 [node name="lnum_progeny" parent="." instance=ExtResource( 17 )]
 visible = false
@@ -1045,6 +1047,8 @@ margin_left = 1337.14
 margin_top = 772.178
 margin_right = 1437.14
 margin_bottom = 872.178
+num = 0
+show_change = true
 
 [node name="EnergyBar" parent="." instance=ExtResource( 14 )]
 visible = false
@@ -2163,7 +2167,6 @@ margin_top = 274.0
 margin_right = 776.0
 margin_bottom = 288.0
 text = "Collapse Duplicates"
-
 [connection signal="gui_input" from="." to="." method="_on_CardTable_gui_input"]
 [connection signal="bandage_msg" from="Organism" to="." method="_on_Organism_bandage_msg"]
 [connection signal="clear_gap_msg" from="Organism" to="." method="_on_Organism_clear_gap_msg"]

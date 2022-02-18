@@ -8,6 +8,8 @@ extends Node
 #the variable isn't assigned anything until the ready function to 
 #ensure that the array is empty at the beginning of every game. 
 var competitors_created
+var active_competitors = false
+
 var dead_competitors
 # Called when the node enters the scene tree for the first time.
 func _ready(): #sets up the array of progeny
@@ -17,6 +19,12 @@ func _ready(): #sets up the array of progeny
 	dead_competitors.clear()
 	pass # Replace with function body.
 
+func active_toggle():
+	active_competitors = !active_competitors
+	return active_competitors
+
+func get_active_toggle():
+	return active_competitors
 
 #the child being passed in is the instance of the progeny that is on the world map
 func kill_dead_competitors():

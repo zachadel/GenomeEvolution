@@ -1426,6 +1426,7 @@ func highlight_gap_choices():
 		auto_repair();
 
 func highlight_dmg_genes(mode: String):
+	print("highlighting damage genes organism.")
 	match mode:
 		"scissors":
 			start_scissors("get_damaged_genes");
@@ -1553,7 +1554,6 @@ func recombination():
 		# For some reason, this func bugs out when picking from the first cmsm (see comment at get_other_cmsm below)
 		gene_selection = cmsms.highlight_common_genes(false, true);
 		yield(self, "gene_clicked");
-		print(" THE GENE WAS CLICKED !!!!!!!!!!")
 		# Because this step is optional, by the time a gene is clicked, it might be a different turn
 		if (Game.get_turn_type() == Game.TURN_TYPES.Recombination):
 			emit_signal("doing_work", true);
@@ -1612,7 +1612,9 @@ func is_doing_scissors() -> bool:
 
 func set_doing_bandage(is_doing: bool) -> void:
 	_set_clickmode_on_criteria(is_doing, "bandage");
+
 func is_doing_bandage() -> bool:
+	print("seeing if there needs bandaged.")
 	return click_mode == "bandage";
 
 var total_scissors_left := 0;
@@ -1645,6 +1647,7 @@ func start_bandage():
 			cmsms.highlight_genes(gene_selection);
 
 func bandage_elm(rep_elm) -> void:
+	print("HOWEHWOEO")
 	if is_doing_bandage():
 		var g_pos_disp = rep_elm.get_position_display();
 		var g_id = rep_elm.get_gene_name();
@@ -1990,7 +1993,9 @@ func iterate_genes():
 	STATS.compare_maxTE()
 
 func adv_turn(round_num, turn_idx):
+	#This 
 	print("12")
+	print(Game.get_turn_type())
 	emit_signal("close_warning")
 	click_mode = "";
 	cmsms.highlight_genes(gene_selection, false);
@@ -2075,6 +2080,8 @@ func adv_turn(round_num, turn_idx):
 					print("Replication cmsms after...")
 					print(cmsms.get_cmsms()[0].get_elms_save())
 					print(cmsms.get_cmsms()[1].get_elms_save())
+			2:
+				emit_signal("doing_work",true)
 
 func kill(descr := "died"):
 	emit_signal("died", self, descr);

@@ -1,0 +1,45 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/Missions/Missions.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Fonts/OpenSans-22.tres" type="DynamicFont" id=2]
+
+[node name="Missions" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 2.53772
+margin_top = 7.82089
+margin_right = 2.53772
+margin_bottom = 7.82092
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="ColorRect" parent="."]
+margin_left = -1.78033
+margin_right = 901.22
+margin_bottom = 70.0
+color = Color( 0.117647, 0.117647, 0.117647, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Background"]
+margin_left = 5.32061
+margin_top = 3.08998
+margin_right = 423.321
+margin_bottom = 72.09
+custom_fonts/font = ExtResource( 2 )
+text = "Mission"
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ProgressBar" type="ProgressBar" parent="Background"]
+margin_left = 581.0
+margin_top = 20.0
+margin_right = 886.0
+margin_bottom = 47.0

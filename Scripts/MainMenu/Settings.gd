@@ -126,3 +126,8 @@ func reload():
 		child.queue_free()
 		
 	_ready()
+
+
+func _on_add_competitors_pressed():
+	COMPETITORS.active_toggle()
+	pass # Replace with function body.

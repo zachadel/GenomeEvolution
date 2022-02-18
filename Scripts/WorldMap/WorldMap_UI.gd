@@ -39,6 +39,10 @@ var rng = RandomNumberGenerator.new()
 
 var test_cases = ["simple_carbs", "simple_fats", "simple_proteins", "complex_carbs", "complex_fats", "complex_proteins", "carbs_0", "carbs_1", "fats_0", "fats_1", "proteins_0", "proteins_1"]
 var mission_toggle = 0;
+# Choose random from the organized mission categories, 
+# For i in organized_missions.eat
+#	if i.value() == false, do that one.
+
 var missions =["Go 5 spaces", "Heal 5 Genes", "Perform 5 Join Ends on the chromosome.", "Trim 5 Genes from breaks", "Perform 5 Collapse Duplicates on the chromosome.", "Perform 5 Copy Repairs on the chromosome."];
 var completed_missions=[];
 var curr_index = 0;
@@ -52,12 +56,9 @@ func _ready():
 	rng.randomize()
 	curr_index = rng.randi_range(0,len(missions)-1)
 	STATS.start_mission(curr_index)
-	$MissionControl/greenLight/Label.text = "Current Mission: "+missions[curr_index]
+	 
 	#$popUp.visible = false;
 	
-func progress_bar(percent):
-	$MissionControl/greenLight/ProgressBar.value = percent * 100
-	pass
 
 func _update_mission(index):
 	STATS.inc_missions()
