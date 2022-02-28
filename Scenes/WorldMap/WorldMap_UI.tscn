@@ -650,6 +650,7 @@ margin_left = 413.0
 margin_top = 0.0
 margin_right = -283.0
 margin_bottom = -830.0
+
 [connection signal="gui_input" from="InternalPanel/StoredResourcesLabel/q_mark" to="." method="_on_q_mark_gui_input"]
 [connection signal="mouse_entered" from="InternalPanel/StoredResourcesLabel/q_mark" to="." method="_on_q_mark_mouse_entered"]
 [connection signal="mouse_exited" from="InternalPanel/StoredResourcesLabel/q_mark" to="." method="_on_q_mark_mouse_exited"]

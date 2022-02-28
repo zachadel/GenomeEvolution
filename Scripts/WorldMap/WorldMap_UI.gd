@@ -60,6 +60,10 @@ func _ready():
 	#$popUp.visible = false;
 	
 
+func progress_bar(percent):
+	$MissionControl/greenLight/ProgressBar.value = percent * 100
+pass
+
 func _update_mission(index):
 	STATS.inc_missions()
 	var length_mission = len(missions)-1
