@@ -1038,8 +1038,7 @@ margin_left = 1282.0
 margin_top = 756.0
 margin_right = 1423.0
 margin_bottom = 891.0
-num = 0
-show_change = 0
+show_change = false
 
 [node name="lnum_progeny" parent="." instance=ExtResource( 17 )]
 visible = false
@@ -1047,8 +1046,7 @@ margin_left = 1337.14
 margin_top = 772.178
 margin_right = 1437.14
 margin_bottom = 872.178
-num = 0
-show_change = 0
+show_change = false
 
 [node name="EnergyBar" parent="." instance=ExtResource( 14 )]
 visible = false

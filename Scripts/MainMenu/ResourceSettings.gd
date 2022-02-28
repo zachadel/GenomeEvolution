@@ -9,6 +9,7 @@ var settings = {}
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	print("HELLO WORLD")
 	settings = {}
 	for i in range(len(Settings.settings["resources"].keys())):
 		settings[i] = {}

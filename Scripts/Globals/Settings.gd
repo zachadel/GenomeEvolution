@@ -35,6 +35,7 @@ const SAVE_NAMES = ["resources", "cells", "hazards", "biomes", "ingame_settings"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	print("please see me once")
 	for setting_type in FILE_NAMES:
 		settings[setting_type] = {}
 		

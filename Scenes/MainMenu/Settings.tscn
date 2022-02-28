@@ -34,4 +34,5 @@ margin_right = 120.0
 margin_bottom = 20.0
 toggle_mode = true
 text = "Add Competitors"
+
 [connection signal="pressed" from="ScrollContainer/VBoxContainer/add_competitors" to="." method="_on_add_competitors_pressed"]
