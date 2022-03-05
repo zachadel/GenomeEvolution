@@ -28,7 +28,9 @@ const VISIBLE = Color(1,1,1,1)
 func _ready():
 	if Settings.settings["resources"].has(resource):
 		set_maximum(Settings.settings["resources"][resource]["safe_range"][1])
+	#	print("mineral: " + str(resource) + "\n\n\n\n")
 		set_optimal_value(Settings.settings["resources"][resource]["optimal"])
+		
 		set_optimal_radius(Settings.settings["resources"][resource]["optimal_radius"])
 		set_yellow_radius(Settings.settings["resources"][resource]["yellow_radius"])
 	else:
@@ -103,6 +105,10 @@ func _update_fill():
 	
 func _update_glow():
 	var NORMED_OPTIMAL = OPTIMAL_VALUE - MINIMUM_VALUE
+	#print("normed optimal:  "+str(NORMED_OPTIMAL))
+	#print("optimal_value: " + str(OPTIMAL_VALUE))
+	#print("min value: "+ str(MINIMUM_VALUE))
+	#_range_radius: "+ str(OPTIMAL_RANGE_RADIUS))
 	if value > NORMED_OPTIMAL - OPTIMAL_RANGE_RADIUS and value <= NORMED_OPTIMAL + OPTIMAL_RANGE_RADIUS:
 		get_material().set_shader_param("outline_color", OPTIMAL_COLOR)
 	#both yellow zones (lower first)

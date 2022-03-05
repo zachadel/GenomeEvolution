@@ -100,12 +100,14 @@ func _on_new_progeny(alive):
 func _on_unlock_all_buttons():
 	print("buttons unlock now")
 
-func _on_mission_accomplished(index):
-	$WorldMap/WorldMap_UI._update_mission(index)
+func _on_mission_accomplished(category, index):
+	
+	$WorldMap/WorldMap_UI/Missions.completeMission(category, index)
 	#print("mission accomplished!")
 
-func _on_progress_bar(percent):
-		$WorldMap/WorldMap_UI.progress_bar(percent)
+func _on_progress_bar(category, index, percent):
+		$WorldMap/WorldMap_UI/Missions.progressBar(percent)
+		pass
 
 func _add_event_content(content, tags):
 	$Event_Log_Layer/pnl_event_log.addContent(content, tags)

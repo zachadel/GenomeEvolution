@@ -2,8 +2,8 @@ extends Node
 #is_viable will determine whether or not death in card table. 
 #replicate in organism, look for a successful reproduction 
 signal progeny_updated(alive);
-signal mission_accomplished(index);
-signal progress_bar(percent);
+signal mission_accomplished(category, index);
+signal progress_bar(category, index, percent);
 #TO DIE FAST: 
 var amt_of_nit =0 
 var temperature_preference ={};
@@ -12,15 +12,15 @@ var ph_preference = {};
 #delete genes using command console
 var missions =["Go 5 spaces", "perform a cut action on your genes."];
 var completed_missions=[];
+var completed_missions_count = 0;
 var fix_genes_mission = 0;
 var join_ends_mission = 0;
 var trim_genes_mission = 0;
 var collapse_dupes_mission = 0;
 var copy_rep_mission = 0;
-
 var temperature_array = [];
 #Declaring/initializing variables to keep track of: 
-var mission_index = 999999
+
 var tiles_traveled = 0
 var resources_consumed = 0
 var resources_converted = 0
@@ -151,26 +151,111 @@ var gc_ate = 0
 var first_temp =0
 var moves_between_rounds = 0
 
+var ca_amt = 0;
+var hg_amt = 0;
+var p_amt = 0;
+var n_amt = 0;
+var fe_amt = 0;
+var na_amt =0;
+
+#these missins are based off of the index from the list categories for part 1.
+# If anything updates prompting style, that is ok. We want to make sure the
+#requirements match the same index however. 
+
+var current_mission = ["category", -1];
+var start_curr_mission = 0;
+var end_curr_mission = 2;
+
+var sugars_eaten = 0;
+var amino_acids_eaten = 0;
+var simple_fats_eaten = 0;
+var proteins_eaten = 0;
+var complex_carbs_eaten = 0;
+var fats_eaten = 0;
+
+func incr_sugars():
+	sugars_eaten +=1
+	if current_mission[0] == 'eat' and current_mission[1] == 0:
+		start_curr_mission += 1;
+		if start_curr_mission < end_curr_mission:
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+		else:
+			emit_signal("mission_accomplished", current_mission[0], current_mission[1])
+			completed_missions_count+=1
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+
+func incr_amino():
+	amino_acids_eaten +=1
+	if current_mission[0] == 'eat' and current_mission[1] == 1:
+		start_curr_mission += 1;
+		if start_curr_mission < end_curr_mission:
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+		else:
+			emit_signal("mission_accomplished", current_mission[0], current_mission[1])
+			completed_missions_count+=1
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+
+func incr_simple_fats():
+	simple_fats_eaten +=1
+	if current_mission[0] == 'eat' and current_mission[1] == 2:
+		start_curr_mission += 1;
+		if start_curr_mission < end_curr_mission:
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+		else:
+			emit_signal("mission_accomplished", current_mission[0], current_mission[1])
+			completed_missions_count+=1
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+
+func incr_proteins():
+	proteins_eaten +=1
+	if current_mission[0] == 'eat' and current_mission[1] == 3:
+		start_curr_mission += 1;
+		if start_curr_mission < end_curr_mission:
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+		else:
+			emit_signal("mission_accomplished", current_mission[0], current_mission[1])
+			completed_missions_count+=1
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+
+func inc_cc():
+	complex_carbs_eaten +=1
+	if current_mission[0] == 'eat' and current_mission[1] == 4:
+		start_curr_mission += 1;
+		if start_curr_mission < end_curr_mission:
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+		else:
+			emit_signal("mission_accomplished", current_mission[0], current_mission[1])
+			completed_missions_count+=1
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+
+func inc_fats():
+	fats_eaten +=1
+	if current_mission[0] == 'eat' and current_mission[1] == 5:
+		start_curr_mission += 1;
+		if start_curr_mission < end_curr_mission:
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+		else:
+			emit_signal("mission_accomplished", current_mission[0], current_mission[1])
+			completed_missions_count+=1
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+
+var hidden_tiles_uncovered = 0
+
 
 
 func mission_control(category, idx):
+	current_mission = [category, idx];
+	start_curr_mission = 0
 	var string_category
+	print("category: " + category)
+	print("index: " + str(idx))
 	match category:
 		"eat": #eat
 			if idx < 11 and idx > -1:
 				match idx:
-					0:
-						print("eat 2 sugars")
-					1: 
-						print("eat 2 amino acids")
-					2:
-						print("eat 2 simple fats")
-					3: 
-						print("eat 2 proteins")
-					4: 
-						print("eat 2 complex carbs")
-					5:
-						print("eat 2 fats")
+					0,1,2,3,4,5:
+						print("eat 2 of something")
+						end_curr_mission = 2;
 					6:
 						print("eat till the Fe border is green")
 					7:
@@ -181,117 +266,158 @@ func mission_control(category, idx):
 						print("eat till the P border is green")
 					10:
 						print("eat till the Hg border is green")
+					11:
+						print("eat till the N border is green")
 			else:
 				return false
 		"explore": #explore
 			if idx < 6:
 				match idx:
 					0:
-						print("eat 2 sugars")
+						print("Explore any 5 tiles")
+						end_curr_mission = 5
 					1: 
-						print("eat 2 amino acids")
+						print("Uncover 10 hidden tiles")
+						end_curr_mission = 10
 					2:
-						print("eat 2 simple fats")
+						print("Uncover 20 hidden tiles")
+						end_curr_mission = 20
 					3: 
-						print("eat 2 proteins")
+						print("Uncover 30 hidden tiles")
+						end_curr_mission = 30
 					4: 
-						print("eat 2 complex carbs")
+						print("Uncover 40 hidden tiles")
+						end_curr_mission = 40
 					5:
-						print("eat 2 fats")
-					6:
-						print("eat till the Fe border is green")
+						print("Uncover 50 hidden tiles")
+						end_curr_mission = 50
 			else:
 				return false
 		"repair":  #repair
 			if idx < 33:
 				match idx:
 					0:
-						print("eat 2 sugars")
+						print("Fix 3 damaged genes")
+						end_curr_mission = 3
 					1: 
-						print("eat 2 amino acids")
+						print("Fix 5 damaged genes")
+						end_curr_mission = 5
 					2:
-						print("eat 2 simple fats")
+						print("Fix 7 damaged genes")
+						end_curr_mission = 7
 					3: 
-						print("eat 2 proteins")
+						print("Fix 10 damaged genes")
+						end_curr_mission = 10
 					4: 
-						print("eat 2 complex carbs")
+						print("Perform 2 Join end successfully")
+						end_curr_mission = 2
 					5:
-						print("eat 2 fats")
+						print("Perform 4 Join end successfully")
+						end_curr_mission = 4
 					6:
-						print("eat till the Fe border is green")
+						print("Perform 6 Join end successfully")
+						end_curr_mission = 6
 					7:
-						print("eat till the Ca border is green")
+						print("Perform 8 Join end successfully")
+						end_curr_mission = 8
 					8:
-						print("eat till the Na border is green")
+						print("Perform 10 Join end successfully")
+						end_curr_mission = 10
 					9:
-						print("eat till the P border is green")
+						print("Turn 1 Transposon into a pseudogene")
+						end_curr_mission = 1
 					10:
-						print("eat till the Hg border is green")
+						print("Turn 3 Transposon into a pseudogene")
+						end_curr_mission = 3
 					11: 
-						print("eat 2 amino acids")
+						print("Turn 5 Transposon into a pseudogene")
+						end_curr_mission = 5
 					12:
-						print("eat 2 simple fats")
+						print("Turn 7 Transposon into a pseudogene")
+						end_curr_mission = 7
 					13: 
-						print("eat 2 proteins")
+						print("Turn 11 Transposon into a pseudogene")
+						end_curr_mission = 11
 					14: 
-						print("eat 2 complex carbs")
+						print("Perform copy-repair to generate 1 new tile")
+						end_curr_mission = 1
 					15:
-						print("eat 2 fats")
+						print("Perform copy-repair to generate 3 new tile")
+						end_curr_mission = 3
 					16:
-						print("eat till the Fe border is green")
+						print("Perform copy-repair to generate 5 new tile")
+						end_curr_mission = 5
 					17:
-						print("eat till the Ca border is green")
+						print("Perform copy-repair to generate 7 new tile")
+						end_curr_mission = 7
 					18:
-						print("eat till the Na border is green")
+						print("Perform copy-repair to generate 11 new tile")
+						end_curr_mission = 11
 					19:
-						print("eat till the P border is green")
+						print("Perform copy-repair to generate 1 new gene")
+						end_curr_mission = 1
 					20:
-						print("eat till the Hg border is green")
+						print("Perform copy-repair to generate 3 new gene")
+						end_curr_mission = 3
 					21: 
-						print("eat 2 amino acids")
+						print("Perform copy-repair to generate 5 new gene")
+						end_curr_mission = 5
 					22:
-						print("eat 2 simple fats")
+						print("Perform copy-repair to generate 7 new gene")
+						end_curr_mission = 7
 					23: 
-						print("eat 2 proteins")
+						print("Perform copy-repair to generate 11 new gene")
+						end_curr_mission = 11
 					24: 
-						print("eat 2 complex carbs")
+						print("Perform 1 inversion during repair")
+						end_curr_mission = 1
 					25:
-						print("eat 2 fats")
+						print("Perform 3 inversion during repair")
+						end_curr_mission = 3
 					26:
-						print("eat till the Fe border is green")
+						print("Perform 5 inversion during repair")
+						end_curr_mission = 5
 					27:
-						print("eat till the Ca border is green")
+						print("Merge 1 Gene")
+						end_curr_mission = 1
 					28:
-						print("eat till the Na border is green")
+						print("Merge 3 Gene")
+						end_curr_mission = 3
 					29:
-						print("eat till the P border is green")
+						print("Merge 5 Gene")
+						end_curr_mission = 5
 					30:
-						print("eat till the Hg border is green")
+						print("Split 1 Gene")
+						end_curr_mission = 1
 					31: 
-						print("eat 2 amino acids")
+						print("Split 3 Gene")
+						end_curr_mission = 3
 					32:
-						print("eat 2 simple fats")
-					33: 
-						print("eat 2 proteins")
+						print("Split 5 Gene")
+						end_curr_mission = 5
 			else:
 				return false
 		"replication": #replication
 			if idx < 6:
 				match idx:
 					0:
-						print("eat 2 sugars")
+						print("Perform Mitosis 1 time")
+						end_curr_mission = 1
 					1: 
-						print("eat 2 amino acids")
+						print("Perform Mitosis 2 time")
+						end_curr_mission = 2
 					2:
-						print("eat 2 simple fats")
+						print("Perform Mitosis 3 time")
+						end_curr_mission = 3
 					3: 
-						print("eat 2 proteins")
+						print("Learn 1 new skill")
+						end_curr_mission = 1
 					4: 
-						print("eat 2 complex carbs")
+						print("Learn 3 new skill")
+						end_curr_mission = 3
 					5:
-						print("eat 2 fats")
-					6:
-						print("eat till the Fe border is green")
+						print("Learn 5 new skill")
+						end_curr_mission = 5
 			else:
 				return false
 		"genome": #genome
@@ -299,14 +425,123 @@ func mission_control(category, idx):
 			if idx < 3:
 				match idx:
 					0:
-						print("eat 2 sugars")
+						print("Add 1 new Transposon type ot the composition of your genome.")
+						end_curr_mission = 1
 					1: 
-						print("eat 2 amino acids")
+						print("Add 3 new Transposon type ot the composition of your genome.")
+						end_curr_mission = 3
 					2:
-						print("eat 2 simple fats")
+						print("Add 5 new Transposon type ot the composition of your genome.")
+						end_curr_mission = 5
 			else:
 				return false
+#bool functions to track if the element is in the green.
 
+func set_missions_complete(length):
+	missions_accomplished = length
+
+func is_Ca_green():
+	if ca_amt > 25 - 2.5 and ca_amt <= 25 + 2.5:
+		return true
+	else:
+		false
+
+func is_Hg_green():
+	if hg_amt > - 1 and hg_amt <= 0 + 2.5:
+		return true;
+	else:
+		return false;
+
+func is_Fe_green():
+	if fe_amt > 20 - 2.5 and fe_amt <= 20 +2.5:
+		return true;
+	else:
+		return false;
+
+func is_N_green():
+	if n_amt > 25 - 12 and n_amt <= 25 +12:
+		return true;
+	else:
+		return false;
+	
+
+func is_P_green():
+	if p_amt > 25 - 2.5 and p_amt <= 25 +2.5:
+		return true;
+	else:
+		return false;
+
+func is_Na_green():
+	if na_amt > 25 - 7 and na_amt <= 25 +7:
+		return true;
+	else:
+		return false;
+
+func set_Ca(ca):
+	ca_amt = ca;
+	if current_mission[0] == 'eat' and current_mission[1] == 7:
+		start_curr_mission += 1;
+		if(!is_Ca_green()):
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+		else:
+			emit_signal("mission_accomplished", current_mission[0], current_mission[1])
+			completed_missions_count+=1
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+
+func set_Hg(hg):
+	hg_amt = hg;
+	if current_mission[0] == 'eat' and current_mission[1] == 10:
+		start_curr_mission += 1;
+		if(!is_Hg_green()):
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+		else:
+			emit_signal("mission_accomplished", current_mission[0], current_mission[1])
+			completed_missions_count+=1
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+
+func set_Na(na):
+	na_amt = na;
+	if current_mission[0] == 'eat' and current_mission[1] == 8:
+		start_curr_mission += 1;
+		if(!is_Na_green()):
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+		else:
+			emit_signal("mission_accomplished", current_mission[0], current_mission[1])
+			completed_missions_count+=1
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+
+func set_Fe(fe):
+	fe_amt = fe;
+	if current_mission[0] == 'eat' and current_mission[1] == 6:
+		start_curr_mission += 1;
+		if(!is_Fe_green()):
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+		else:
+			emit_signal("mission_accomplished", current_mission[0], current_mission[1])
+			completed_missions_count+=1
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+
+func set_N(n):
+	n_amt = n;
+	if current_mission[0] == 'eat' and current_mission[1] ==11:
+		start_curr_mission += 1;
+		if(!is_N_green()):
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+		else:
+			emit_signal("mission_accomplished", current_mission[0], current_mission[1])
+			completed_missions_count+=1
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+
+func set_P(p):
+	p_amt = p;
+	if current_mission[0] == 'eat' and current_mission[1] == 9:
+		start_curr_mission += 1;
+		if(!is_P_green()):
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+		else:
+			emit_signal("mission_accomplished", current_mission[0], current_mission[1])
+			completed_missions_count+=1
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
 
 
 
@@ -315,12 +550,6 @@ func inc_missions():
 
 func get_missions():
 	return missions_accomplished;
-
-func start_mission(index):
-	#passes in the index of the goal I am trying to accomplish
-	#var goal = missions[index]
-	mission_index = index
-	
 
 func inc_round_moves():
 	moves_between_rounds += 1;
@@ -400,9 +629,6 @@ func set_first_temp(temp):
 func get_first_temp():
 	return first_temp;
 
-func print_me(me):
-	print("This is it: ")
-	print(str(me))
 
 func set_gc_rep(rep):
 	gc_rep = rep;
@@ -633,6 +859,7 @@ func _reset_game():
 	#Declaring/initializing variables to keep track of: 
 	gc_ate = 0
 	gc_comp=0
+	completed_missions_count = 0
 	gc_con=0
 	gc_decon =0
 	gc_help=0
@@ -801,6 +1028,14 @@ func update_maxType():
 
 func increment_transposonFuse():
 	transposonFuse += 1
+	if current_mission[0] == 'repair' and current_mission[1] > 26 and current_mission[1] < 30:
+		start_curr_mission += 1;
+		if(start_curr_mission < end_curr_mission):
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+		elif( start_curr_mission == end_curr_mission):
+			emit_signal("mission_accomplished", current_mission[0], current_mission[1])
+			completed_missions_count+=1
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
 func get_TEFuse():
 	return transposonFuse;
 	
@@ -873,18 +1108,30 @@ func increment_tilesInverted():
 	tilesInverted += 1
 func increment_numInversions():
 	numInversions += 1
+	if current_mission[0] == 'repair' and current_mission[1] > 23 and current_mission[1] < 27:
+		start_curr_mission += 1;
+		if(start_curr_mission < end_curr_mission):
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+		elif( start_curr_mission == end_curr_mission):
+			emit_signal("mission_accomplished", current_mission[0], current_mission[1])
+			completed_missions_count+=1
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
 
 func increment_geneSplits():
 	splitGene += 1
+	if current_mission[0] == 'repair' and current_mission[1] > 29 and current_mission[1] < 33:
+		start_curr_mission += 1;
+		if(start_curr_mission < end_curr_mission):
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+		elif( start_curr_mission == end_curr_mission):
+			emit_signal("mission_accomplished", current_mission[0], current_mission[1])
+			completed_missions_count+=1
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+			
 func get_geneSplit():
 	return splitGene;
 func increment_trimmedTiles():
 	trimmedTiles +=1
-	if mission_index == 3:
-		trim_genes_mission += 1
-		emit_signal("progress_bar", trim_genes_mission/5.0);
-	if trim_genes_mission == 5:
-		emit_signal("mission_accomplished", 3)
 		
 func get_trimmedTiles():
 	return trimmedTiles;
@@ -898,6 +1145,19 @@ func maxBlankTiles():
 func compare_maxTransposon(TE):
 	if(TE > max_transposon_tiles):
 		max_transposon_tiles = TE
+var ate_to_pseudo = 0;
+
+func incr_ate_to_pseudo():
+	ate_to_pseudo += 1;
+	if current_mission[0] == 'repair' and current_mission[1] > 8 and current_mission[1] < 13:
+		start_curr_mission += 1;
+		if(start_curr_mission < end_curr_mission):
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+		elif( start_curr_mission == end_curr_mission):
+			emit_signal("mission_accomplished", current_mission[0], current_mission[1])
+			completed_missions_count+=1
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+	
 
 func set_currentTransposon(TE):
 	current_transposon_tiles = TE
@@ -937,6 +1197,14 @@ func get_final_transposon_tiles():
 #Where: 
 func increment_final_transposon_tiles():
 	current_transposon_tiles += 1
+	if current_mission[0] == 'genome' and current_mission[1] > -1 and current_mission[1] < 3:
+		start_curr_mission += 1;
+		if(start_curr_mission < end_curr_mission):
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+		elif( start_curr_mission == end_curr_mission):
+			emit_signal("mission_accomplished", current_mission[0], current_mission[1])
+			completed_missions_count+=1
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
 	
 #What:Track the maximum number of transposon tiles
 #Where: 
@@ -1011,8 +1279,17 @@ func get_skills_lost():
 #What:Track the number of skills learned by genes
 #Where: 
 func increment_num_skills():
+	
 	num_skills += 1
 	skills_gained +=1
+	if current_mission[0] == 'replication' and current_mission[1] > 2 and current_mission[1] < 6:
+		start_curr_mission += 1;
+		if(start_curr_mission < end_curr_mission):
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+		elif( start_curr_mission == end_curr_mission):
+			emit_signal("mission_accomplished", current_mission[0], current_mission[1])
+			completed_missions_count+=1
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
 
 func decrement_num_sklls():
 	num_skills -= 1
@@ -1087,11 +1364,6 @@ func get_break_repaired_collapseDuplicates():
 #where:
 func increment_break_repaired_collapseDuplicates():
 	breaks_repaired_collapseDuplicates += 1
-	if mission_index == 4:
-		collapse_dupes_mission += 1;
-		emit_signal("progress_bar", collapse_dupes_mission/5.0)
-	if collapse_dupes_mission == 5:
-		emit_signal("mission_accomplished", 4)
 
 #What:Track number of tile corrected during copy repair
 #Where:
@@ -1102,6 +1374,14 @@ func get_tiles_crctd_cpyRepair():
 #where:
 func increment_tiles_crctd_cpyRepair():
 	tiles_crctd_cpyRepair += 1
+	if current_mission[0] == 'repair' and current_mission[1] > 12 and current_mission[1] < 18:
+		start_curr_mission += 1;
+		if(start_curr_mission < end_curr_mission):
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+		elif( start_curr_mission == end_curr_mission):
+			emit_signal("mission_accomplished", current_mission[0], current_mission[1])
+			completed_missions_count+=1
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
 
 #What:  Track number of genes copied using the copy-repair function
 #Where:
@@ -1112,6 +1392,14 @@ func get_genes_copied_cpyRepair():
 #Where: in repair_gene of organism, copy Pattern switch case 1-3.
 func increment_genes_copied_cpyRepair():
 	genes_copied_cpyRepair += 1
+	if current_mission[0] == 'repair' and current_mission[1] > 18 and current_mission[1] < 24:
+		start_curr_mission += 1;
+		if(start_curr_mission < end_curr_mission):
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+		elif( start_curr_mission == end_curr_mission):
+			emit_signal("mission_accomplished", current_mission[0], current_mission[1])
+			completed_missions_count+=1
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
 
 #What:   Track number of tiles copied using the copy-repair function
 #Where: 
@@ -1132,12 +1420,6 @@ func get_breaks_cpyRepair_error():
 #where: in repair_gene of organism, copy Pattern switch case 1-3.
 func increment_breaks_cpyRepair_error():
 	breaks_cpyRepair_error += 1
-	if mission_index == 5:
-		copy_rep_mission += 1
-		emit_signal("progress_bar", copy_rep_mission/ 5.0)
-	if copy_rep_mission == 5:
-		emit_signal("mission_accomplished", 5)
-		print("accomplished")
 
 #What:Track number of breaks repaired using copy-repair with no errors
 #where:
@@ -1148,12 +1430,13 @@ func get_breaks_cpyRepair_no_error():
 #where: in repair_gene of organism, copy Pattern switch case zero.
 func increment_breaks_cpyRepair_no_error():
 	breaks_cpyRepair_no_error += 1
-	if mission_index == 5:
-		copy_rep_mission += 1
-		emit_signal("progress_bar", copy_rep_mission/ 5.0)
-	if copy_rep_mission == 5:
-		emit_signal("mission_accomplished", 5)
-		print('done')
+	if current_mission[0] == "repair":
+		match current_mission[1]:
+			0,1,2:
+				if start_curr_mission+1  <= end_curr_mission:
+					start_curr_mission +=1
+					#emit signal, for this. 
+					#emit_signal("progress_bar", )
 
 #What:Track number of breaks repaired using join ends with errors
 #where:
@@ -1164,11 +1447,14 @@ func get_breaks_join_error():
 #where:in repair_gap, in organism
 func increment_breaks_join_error():
 	breaks_join_error += 1
-	if mission_index == 2:
-		join_ends_mission += 1
-		emit_signal("progress_bar", join_ends_mission/ 5.0)
-	if join_ends_mission == 5:
-		emit_signal("mission_accomplished", 2)
+	if current_mission[0] == 'repair' and current_mission[1] > 3 and current_mission[1] < 9:
+		start_curr_mission += 1;
+		if(start_curr_mission < end_curr_mission):
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+		if( start_curr_mission == end_curr_mission):
+			emit_signal("mission_accomplished", current_mission[0], current_mission[1])
+			completed_missions_count+=1
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
  
 #What: Track number of breaks repaired using join ends with no errors
 #where: 
@@ -1179,26 +1465,33 @@ func get_breaks_join():
 #where:in repair_gap, in organism
 func increment_breaks_join():
 	breaks_join_no_error += 1
-	if mission_index == 2:
-		join_ends_mission += 1
-		emit_signal("progress_bar", join_ends_mission/ 5.0)
-	if join_ends_mission == 5:
-		emit_signal("mission_accomplished", 2)
+	if current_mission[0] == 'repair' and current_mission[1] > 3 and current_mission[1] < 9:
+		start_curr_mission += 1;
+		if(start_curr_mission < end_curr_mission):
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+		if( start_curr_mission == end_curr_mission):
+			emit_signal("mission_accomplished", current_mission[0], current_mission[1])
+			completed_missions_count+=1
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
 
 #What:Track number of damaged genes repaired using fix damaged genes with errors
 #where:
 func get_dmg_genes_error():
+	
 	return dmg_genes_error
 
 #What:Track number of damaged genes repaired using fix damaged genes with errors
 #where:in repair_gap, in organism
 func increment_dmg_genes_error():
 	dmg_genes_error += 1
-	if mission_index == 1:
-		fix_genes_mission += 1
-		emit_signal("progress_bar", fix_genes_mission / 5.0)
-	if fix_genes_mission == 5:
-		emit_signal("mission_accomplished", 1)
+	if current_mission[0] == 'repair' and current_mission[1] > -1 and current_mission[1] < 4:
+		start_curr_mission += 1;
+		if(start_curr_mission < end_curr_mission):
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+		if( start_curr_mission == end_curr_mission):
+			emit_signal("mission_accomplished", current_mission[0], current_mission[1])
+			completed_missions_count+=1
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
 		
 
 #What:Track number of damaged genes repaired using fix damaged genes with no errors
@@ -1210,11 +1503,14 @@ func get_dmg_genes_no_error():
 #where:in repair_gap, in organism
 func increment_dmg_genes_no_error():
 	dmg_genes_no_error += 1 
-	if mission_index == 1:
-		fix_genes_mission += 1
-		emit_signal("progress_bar", fix_genes_mission / 5.0)
-	if fix_genes_mission == 5:
-		emit_signal("mission_accomplished", 1)
+	if current_mission[0] == 'repair' and current_mission[1] > -1 and current_mission[1] < 4:
+		start_curr_mission += 1;
+		if(start_curr_mission < end_curr_mission):
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+		if( start_curr_mission == end_curr_mission):
+			emit_signal("mission_accomplished", current_mission[0], current_mission[1])
+			completed_missions_count+=1
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
 
 #What: Returns the number of times that reproduction is called.
 #where: 
@@ -1241,12 +1537,16 @@ func get_tiles_traveled():
 var walking_mission = 0;
 func increment_tiles_traveled():
 	tiles_traveled += 1
-	if mission_index == 0:
-		walking_mission += 1
-		emit_signal("progress_bar", walking_mission/5.0)
-		if walking_mission == 5: #retuning the index pof the mission array that it accomplished.
-			emit_signal("mission_accomplished", 0)
-			
+	if current_mission[0] == 'explore' and current_mission[1] > -1 and current_mission[1] < 6:
+		start_curr_mission += 1;
+		print(start_curr_mission)
+		if start_curr_mission < end_curr_mission:
+			print("percentage done: " + str(float(start_curr_mission) / float(end_curr_mission)))
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+		else:
+			emit_signal("mission_accomplished", current_mission[0], current_mission[1])
+			completed_missions_count+=1
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
 	inc_round_moves()
 
 #What: returns the resources consumed
@@ -1254,7 +1554,7 @@ func increment_tiles_traveled():
 func get_resources_consumed():
 	return resources_consumed
 
-#What: increments the resouces consumed variable
+	#What: increments the resouces consumed variable
 #where: In Organism, function: add_resource
 func increment_resources_consumed():
 	resources_consumed += 1
@@ -1300,6 +1600,14 @@ func increment_progeny_mitosis(alive):
 	#emit signal to world map
 	emit_signal("progeny_updated", alive[0])
 	progeny_made += 1
+	if current_mission[0] == 'replication' and current_mission[1] > -1 and current_mission[1] < 3:
+		start_curr_mission += 1;
+		if(start_curr_mission < end_curr_mission):
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
+		elif( start_curr_mission == end_curr_mission):
+			emit_signal("mission_accomplished", current_mission[0], current_mission[1])
+			completed_missions_count+=1
+			emit_signal("progress_bar", current_mission[0], current_mission[1], float(start_curr_mission) / float(end_curr_mission))
 
 #what: returns RoundsRun
 #Where: pnl_dead_overview

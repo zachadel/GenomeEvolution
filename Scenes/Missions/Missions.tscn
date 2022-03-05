@@ -17,7 +17,7 @@ __meta__ = {
 
 [node name="Background" type="ColorRect" parent="."]
 margin_left = -1.78033
-margin_right = 901.22
+margin_right = 908.22
 margin_bottom = 70.0
 color = Color( 0.117647, 0.117647, 0.117647, 1 )
 __meta__ = {
@@ -39,7 +39,18 @@ __meta__ = {
 }
 
 [node name="ProgressBar" type="ProgressBar" parent="Background"]
-margin_left = 581.0
-margin_top = 20.0
-margin_right = 886.0
-margin_bottom = 47.0
+margin_left = 461.025
+margin_top = 21.076
+margin_right = 766.025
+margin_bottom = 48.076
+
+[node name="Button" type="Button" parent="Background"]
+margin_left = 796.62
+margin_top = 10.7019
+margin_right = 890.62
+margin_bottom = 61.7019
+text = "New Mission"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="Background/Button" to="." method="_on_Button_pressed"]

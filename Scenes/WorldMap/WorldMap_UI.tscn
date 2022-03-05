@@ -91,6 +91,8 @@ margin_right = -11.8899
 margin_bottom = -9.37012
 
 [node name="MineralLevels" parent="InternalPanel" instance=ExtResource( 3 )]
+anchor_top = -0.000779894
+anchor_bottom = 0.99922
 margin_left = 23.0
 margin_top = 814.0
 margin_right = -91.0
@@ -464,83 +466,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MissionControl" type="Panel" parent="."]
-anchor_top = -0.000887994
-anchor_bottom = -0.000887994
-margin_left = 410.177
-margin_top = 0.973053
-margin_right = 1310.18
-margin_bottom = 70.9731
-mouse_filter = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="completed" type="ColorRect" parent="MissionControl"]
-visible = false
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -150.0
-margin_top = 180.0
-margin_right = 150.0
-margin_bottom = 580.0
-color = Color( 0.145098, 0.145098, 0.164706, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Completed_list" type="Label" parent="MissionControl/completed"]
-margin_right = 310.0
-margin_bottom = 399.0
-text = "Completed Missions:"
-align = 1
-autowrap = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="x-out" type="Button" parent="MissionControl/completed"]
-margin_left = 277.634
-margin_top = 2.04187
-margin_right = 297.634
-margin_bottom = 22.0419
-text = "X"
-
-[node name="greenLight" type="ColorRect" parent="MissionControl"]
-margin_right = 903.0
-margin_bottom = 70.0
-color = Color( 0.0470588, 0.858824, 0.152941, 0 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="MissionControl/greenLight"]
-margin_left = -1.0
-margin_top = -1.73126
-margin_right = 563.0
-margin_bottom = 63.2687
-custom_fonts/font = ExtResource( 7 )
-text = "Mission Number: 
-Mission: "
-align = 1
-valign = 1
-autowrap = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ProgressBar" type="ProgressBar" parent="MissionControl/greenLight"]
-margin_left = 608.035
-margin_top = 17.1071
-margin_right = 858.035
-margin_bottom = 46.1071
-rounded = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="control_hide" type="Control" parent="."]
 margin_left = 2.0
 margin_right = 42.0
@@ -645,10 +570,9 @@ __meta__ = {
 }
 
 [node name="Missions" parent="." instance=ExtResource( 12 )]
-visible = false
-margin_left = 413.0
+margin_left = 411.0
 margin_top = 0.0
-margin_right = -283.0
+margin_right = -285.0
 margin_bottom = -830.0
 [connection signal="gui_input" from="InternalPanel/StoredResourcesLabel/q_mark" to="." method="_on_q_mark_gui_input"]
 [connection signal="mouse_entered" from="InternalPanel/StoredResourcesLabel/q_mark" to="." method="_on_q_mark_mouse_entered"]
@@ -668,5 +592,3 @@ margin_bottom = -830.0
 [connection signal="pressed" from="MenuPanel/HBoxContainer/CheckGenome" to="." method="_on_CheckGenome_pressed"]
 [connection signal="pressed" from="MenuPanel/HBoxContainer/EventLog" to="." method="_on_EventLog_pressed"]
 [connection signal="gui_input" from="MenuPanel/map_q_mark" to="." method="_on_map_q_mark_gui_input"]
-[connection signal="pressed" from="MissionControl/completed/x-out" to="." method="_on_xout_pressed"]
-[connection signal="gui_input" from="MissionControl/greenLight" to="." method="_on_greenLight_gui_input"]

@@ -1376,7 +1376,9 @@ func repair_gap(gap, repair_type, choice_info = {}):
 									damage_str = "received a " + gene.evolve_by_name("major_down");
 								3: # Minor down
 									damage_str = "received a " + gene.evolve_by_name("minor_down");
-							#STATS.increment_breaks_join()
+							#STATS.increment_breaks_join()']
+							if(gene.is_ate()):
+								STATS.incr_ate_to_pseudo()
 							emit_signal("gap_close_msg", "Joined ends for the gap at %d, %d; during the repair, a %s gene %s." % (gap_pos_disp + [g_id, damage_str]));
 					4, 5, 6:
 						STATS.increment_breaks_join()
@@ -3163,39 +3165,65 @@ func acquire_resources():
 						#print("resource class: "+resource_class)
 						#print("resource: "+resource)
 						if(resource_class == "simple_carbs" and resource == "candy1"):
+							for i in range(current_tile['resources'][index]):
+								STATS.incr_sugars()
+								print("eating sugar")
 							emit_signal("add_card_event_log",str(current_tile["resources"][index])+" peppermints were eaten",{})
 						
 						elif(resource_class == "simple_carbs" and resource == "candy2"):
+							for i in range(current_tile['resources'][index]):
+								STATS.incr_sugars()
+								print("eating sugar also")
 							emit_signal("add_card_event_log",str(current_tile["resources"][index])+" hard candies eaten",{})
 						
 						elif(resource_class == "simple_proteins" and resource == "proetin_shake"):
+							for i in range(current_tile['resources'][index]):
+								STATS.incr_amino()
 							emit_signal("add_card_event_log",str(current_tile["resources"][index])+" protein shakes eaten",{})
 						
 						elif(resource_class == "simple_proteins" and resource == "egg"):
+							for i in range(current_tile['resources'][index]):
+								STATS.incr_amino()
 							emit_signal("add_card_event_log",str(current_tile["resources"][index])+" eggs eaten",{})
 						
 						elif(resource_class == "complex_carbs" and resource == "bread"):
+							for i in range(current_tile['resources'][index]):
+								STATS.inc_cc()
 							emit_signal("add_card_event_log",str(current_tile["resources"][index])+" bread eaten",{})
 						
 						elif(resource_class == "complex_carbs" and resource == "potato"):
+							for i in range(current_tile['resources'][index]):
+								STATS.inc_cc()
 							emit_signal("add_card_event_log",str(current_tile["resources"][index])+" bread eaten",{})
 						
 						elif(resource_class == "complex_fats" and resource == "avocado"):
+							for i in range(current_tile['resources'][index]):
+								STATS.inc_fats()
 							emit_signal("add_card_event_log",str(current_tile["resources"][index])+" avocados eaten",{})
 						
 						elif(resource_class == "simple_fats" and resource == "butter"):
+							for i in range(current_tile['resources'][index]):
+								STATS.inc_fats()
 							emit_signal("add_card_event_log",str(current_tile["resources"][index])+" butter eaten",{})
 						
 						elif(resource_class == "complex_proteins" and resource == "steak"):
+							for i in range(current_tile['resources'][index]):
+								STATS.incr_proteins()
 							emit_signal("add_card_event_log",str(current_tile["resources"][index])+" steaks eaten",{})
 						
 						elif(resource_class == "complex_proteins" and resource == "chicken"):
+							for i in range(current_tile['resources'][index]):
+								STATS.incr_proteins()
 							emit_signal("add_card_event_log",str(current_tile["resources"][index])+" chickens eaten",{})
 						
 						elif(resource_class == "simple_fats" and resource == "oil"):
+							for i in range(current_tile['resources'][index]):
+								STATS.incr_simple_fats()
 							emit_signal("add_card_event_log",str(current_tile["resources"][index])+" oil eaten",{})
 						
 						elif(resource_class == "complex_fats" and resource == "peanut_butter"):
+							for i in range(current_tile['resources'][index]):
+								STATS.inc_fats()
 							emit_signal("add_card_event_log",str(current_tile["resources"][index])+" jars of peanut butter eaten",{})
 						
 						current_tile["resources"][index] = 0

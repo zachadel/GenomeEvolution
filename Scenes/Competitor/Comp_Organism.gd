@@ -1192,7 +1192,7 @@ func repair_gap(gap, repair_type, choice_info = {}):
 						var copied_section = range(choice_info["left"].get_index()+1, choice_info["right"].get_index());
 						if (do_yields):
 							for i in copied_section:
-								STATS.increment_tiles_copied_cpyRepair()
+								STATS.increment_genes_copied_cpyRepair()
 								var copy_elm = Game.copy_elm(other_cmsm.get_child(i));
 								yield(cmsm.add_elm(copy_elm, gap.get_index()), "completed");
 						else:

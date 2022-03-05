@@ -55,13 +55,11 @@ func _ready():
 	end_turn_button.text = DEFAULT_BUTTON_TEXT[BUTTONS.END]
 	rng.randomize()
 	curr_index = rng.randi_range(0,len(missions)-1)
-	STATS.start_mission(curr_index)
 	 
 	#$popUp.visible = false;
 	
 
 func _update_mission(index):
-	STATS.inc_missions()
 	var length_mission = len(missions)-1
 	#rng = RandomNumberGenerator.new()
 	var new_index = rng.randi_range(0, length_mission)

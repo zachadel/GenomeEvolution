@@ -1963,9 +1963,9 @@ layer = 12
 
 [node name="q_s2" type="TextureRect" parent="."]
 margin_left = 557.589
-margin_top = 576.953
+margin_top = 577.324
 margin_right = 580.589
-margin_bottom = 603.953
+margin_bottom = 604.324
 texture = ExtResource( 45 )
 __meta__ = {
 "_edit_use_anchors_": false

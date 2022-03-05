@@ -399,7 +399,7 @@ func _set_values():
 	$mainStat2/score.text = str(resources_consumed)
 	$mainStat3/score.text = str(tiles_explored)
 	$mainStat4/score.text = str(num_progeny)
-	$missions_prompt/missions_back/missions_text.text = str(STATS.get_missions())
+	$missions_prompt/missions_back/missions_text.text = str(STATS.completed_missions_count)
 	
 	#Composition values
 	var genesNumber = first_pseudo_value+ first_blank_value + first_replication_value + first_locomotion_value + first_helper_value + first_manipulation_value + first_sensing_value + first_component_value + first_construction_value + first_deconstruction_value + first_ate_value;

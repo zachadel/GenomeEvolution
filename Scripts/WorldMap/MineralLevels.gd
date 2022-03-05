@@ -38,6 +38,16 @@ func update_resources_values(mineral_resources):
 				if resource == "nitrogen": #Looks for the nitrogen feature. 
 					STATS.set_amt_of_nitrogen(mineral_resources[resource_class][resource]) #Sets the new value.
 					#print(mineral_resources[resource_class][resource])
+				elif resource == "phosphorus":
+					STATS.set_P(mineral_resources[resource_class][resource])
+				elif resource == "iron":
+					STATS.set_Fe(mineral_resources[resource_class][resource])
+				elif resource == "calcium":
+					STATS.set_Ca(mineral_resources[resource_class][resource])
+				elif resource == "sodium":
+					STATS.set_Na(mineral_resources[resource_class][resource])
+				elif resource == "mercury":
+					STATS.set_P(mineral_resources[resource_class][resource])
 
 func observe(resource: String):
 	if has_node(resource):
