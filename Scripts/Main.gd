@@ -58,7 +58,7 @@ func _ready():
 	for hazard in Settings.settings["hazards"].keys():
 		hazard_seeds[hazard] = randi()
 	
-	
+
 	
 	#This order enables the WorldMap to make its camera the current one
 	#To Add the agent into the game, add agent after first player in this setup method.

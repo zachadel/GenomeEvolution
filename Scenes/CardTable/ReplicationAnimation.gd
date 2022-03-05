@@ -365,8 +365,8 @@ func play_and_show(slide: Control):
 	#print(tween.tell())
 	#tween.set_repeat(true)
 	
-	print(tween.interpolate_property(self,"rect_position:x",0,0-(200*(longest-8)),(.40*longest),Tween.TRANS_LINEAR, Tween.EASE_IN_OUT,4))
-	print(tween.interpolate_property($UI,"rect_position:x",0,200*(longest-8),(.40*longest),Tween.TRANS_LINEAR, Tween.EASE_IN_OUT,4))
+	print(tween.interpolate_property(self,"rect_position:x",0,0-(200*(longest-8)),(.575*longest),Tween.TRANS_LINEAR, Tween.EASE_IN_OUT,4))
+	print(tween.interpolate_property($UI,"rect_position:x",0,200*(longest-8),(.575*longest),Tween.TRANS_LINEAR, Tween.EASE_IN_OUT,4))
 	tween.start()
 	#yield(timer,"timeout")
 	yield(tween,"tween_all_completed")

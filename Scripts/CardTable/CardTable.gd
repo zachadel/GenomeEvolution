@@ -460,32 +460,31 @@ func adv_turn():
 			for g in orgn.gene_selection:
 				g.disable(true);
 				
-		if Game.get_next_turn_type() == Game.TURN_TYPES.Recombination:
+		elif Game.get_next_turn_type() == Game.TURN_TYPES.Recombination:
 			var recombos = orgn.get_recombos_per_turn()
+			print("recombos: " + str(recombos))
 			if recombos == 0:
 				skip_turn = true
-		if(Game.get_turn_type() == Game.TURN_TYPES.RepairDmg and Game.get_next_turn_type() == Game.TURN_TYPES.Recombination):
-			print("Step 4->5")
+		elif(Game.get_turn_type() == Game.TURN_TYPES.RepairDmg and Game.get_next_turn_type() == Game.TURN_TYPES.Recombination):
 			if orgn.get_cmsm_pair().get_gap_list() != []:
 				print("there's damage")
 				notifications.emit_signal("notification_needed", "There are still some breaks that you need to mend.")
+				$RepairTabs.current_tab = 1
+				$RepairTabs/pnl_repair_choices.hide()
+				$RepairTabs/pnl_bandage_dmg.show()
 				$RepairTabs.current_tab = 0
-				#$RepairTabs/pnl_repair_choices.hide()
-				#$RepairTabs/pnl_bandage_dmg.show()
+				$RepairTabs.current_tab = 1
 				#print("It should have happened.")
-				skip_turn = true
+				return "can't advance yet"
 			else:
 				skip_turn = false
 			
-		if(Game.get_turn_type() == Game.TURN_TYPES.RepairDmg and Game.get_next_turn_type() == Game.TURN_TYPES.TEJump):
-			print("Step 2->3")
+		elif(Game.get_next_turn_type() == Game.TURN_TYPES.TEJump):
 			if check_if_any_dmg_in_chromosomes():
-			
-				print("there's damage 2")
 				notifications.emit_signal("notification_needed", "There are still some harmed genes left you need to heal.")
 				$RepairTabs.current_tab = 0
-				#$RepairTabs/pnl_repair_choices.show()
-				#$RepairTabs/pnl_bandage_dmg.show()
+				$RepairTabs/pnl_repair_choices.show()
+				$RepairTabs/pnl_bandage_dmg.hide()
 				#print("It should have happened.")
 				return "can't advance yet"
 		print("skip_turn: " + str(skip_turn))
@@ -660,7 +659,7 @@ func _on_quit_to_menu_check_yes():
 	PROGENY.new_game()
 	STATS._reset_game()
 	Game.restart_game()
-	Settings.reset()
+	#Settings.reset()
 	get_tree().change_scene("res://Scenes/MainMenu/TitleScreen.tscn")
 
 func _on_quit_to_menu_check_no():
