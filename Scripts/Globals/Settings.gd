@@ -244,8 +244,8 @@ func starting_blanks() -> Array:
 			min_max[MAX] = 6
 			
 		"Absurd":
-			min_max[MIN] = 7
-			min_max[MAX] = 10
+			min_max[MIN] = 40
+			min_max[MAX] = 40
 			
 	return min_max
 	
@@ -266,8 +266,8 @@ func starting_transposons() -> Array:
 			min_max[MAX] = 6
 			
 		"Chaos":
-			min_max[MIN] = 7
-			min_max[MAX] = 10
+			min_max[MIN] = 40
+			min_max[MAX] = 40
 			
 	return min_max
 
@@ -288,8 +288,8 @@ func starting_additional_genes() -> Array:
 			min_max[MAX] = 6
 			
 		"Absurd":
-			min_max[MIN] = 7
-			min_max[MAX] = 10
+			min_max[MIN] = 40
+			min_max[MAX] = 40
 	
 	return min_max
 	
@@ -310,8 +310,8 @@ func transposons_per_turn() -> Array:
 			min_max[MAX] = 6
 			
 		"Chaos":
-			min_max[MIN] = 7
-			min_max[MAX] = 10
+			min_max[MIN] = 100
+			min_max[MAX] = 100
 	
 	return min_max
 	
