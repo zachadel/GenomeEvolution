@@ -252,9 +252,9 @@ anchor_left = -0.00105225
 anchor_top = 0.000535549
 anchor_right = 0.998948
 anchor_bottom = 0.00053555
-margin_left = -6.3164
+margin_left = -4.74633
 margin_top = -0.481994
-margin_right = -6.31677
+margin_right = -4.7467
 margin_bottom = 599.518
 
 [node name="lbl_behavior2" type="Label" parent="."]
@@ -281,9 +281,9 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -265.0
+margin_left = -266.221
 margin_top = -328.0
-margin_right = 434.0
+margin_right = 432.779
 margin_bottom = -18.0
 tab_align = 0
 __meta__ = {
@@ -1038,6 +1038,7 @@ margin_left = 1282.0
 margin_top = 756.0
 margin_right = 1423.0
 margin_bottom = 891.0
+num = 0
 show_change = false
 
 [node name="lnum_progeny" parent="." instance=ExtResource( 17 )]
@@ -1046,6 +1047,7 @@ margin_left = 1337.14
 margin_top = 772.178
 margin_right = 1437.14
 margin_bottom = 872.178
+num = 0
 show_change = false
 
 [node name="EnergyBar" parent="." instance=ExtResource( 14 )]
@@ -1960,9 +1962,9 @@ layer = 12
 [node name="Notifications" parent="CanvasLayer" instance=ExtResource( 44 )]
 
 [node name="q_s2" type="TextureRect" parent="."]
-margin_left = 557.589
+margin_left = 558.589
 margin_top = 577.324
-margin_right = 580.589
+margin_right = 581.589
 margin_bottom = 604.324
 texture = ExtResource( 45 )
 __meta__ = {
@@ -1971,17 +1973,17 @@ __meta__ = {
 
 [node name="q_s3" type="TextureRect" parent="."]
 visible = false
-margin_left = 800.458
+margin_left = 806.458
 margin_top = 577.0
-margin_right = 823.458
+margin_right = 829.458
 margin_bottom = 604.0
 texture = ExtResource( 45 )
 
 [node name="q_s4" type="TextureRect" parent="."]
 visible = false
-margin_left = 1014.0
+margin_left = 1025.0
 margin_top = 577.935
-margin_right = 1037.0
+margin_right = 1048.0
 margin_bottom = 604.935
 texture = ExtResource( 45 )
 __meta__ = {
@@ -2165,7 +2167,6 @@ margin_top = 274.0
 margin_right = 776.0
 margin_bottom = 288.0
 text = "Collapse Duplicates"
-
 [connection signal="gui_input" from="." to="." method="_on_CardTable_gui_input"]
 [connection signal="bandage_msg" from="Organism" to="." method="_on_Organism_bandage_msg"]
 [connection signal="clear_gap_msg" from="Organism" to="." method="_on_Organism_clear_gap_msg"]

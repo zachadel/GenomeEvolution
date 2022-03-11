@@ -49,8 +49,8 @@ func _ready():
 	
 	$RepairTabs.set_tab_title(2, "Trim Genes from Breaks");
 	$RepairTabs.set_tab_title(3, "Trim Damaged Genes"); #Trim Damaged Genes
+	$RepairTabs.set_tab_icon(0, load("res://Assets/Images/Menus/grey.png"))
 	#$RepairTabs.set_tab_icon(0, load("res://Assets/Images/Menus/Q_s.png"))
-	$RepairTabs.set_tab_icon(0, load("res://Assets/Images/Menus/Q_s.png"))
 	$EnergyBar.MAX_ENERGY = orgn.MAX_ENERGY
 	#$statsScreen.visible = false;
 
@@ -182,7 +182,7 @@ func upd_repair_lock_display():
 	var trim_dmg_lbl = $RepairTabs/pnl_rem_dmg/LblInstr;
 	trim_dmg_lbl.text = "\n\n";
 	if orgn.get_behavior_profile().has_skill("trim_dmg_genes"):
-		$RepairTabs.set_tab_icon(3, load("res://Assets/Images/Menus/Q_s.png"));
+		$RepairTabs.set_tab_icon(3, load("res://Assets/Images/Menus/grey.png"));
 		trim_dmg_lbl.text += "Click a damaged gene to remove it.";
 	else:
 		$RepairTabs.set_tab_icon(3, load("res://Assets/Images/icons/padlock_small.png"));
@@ -193,7 +193,7 @@ func upd_repair_lock_display():
 	var trim_end_lbl = $RepairTabs/pnl_rem_sides/LblInstr;
 	trim_end_lbl.text = "\n\n";
 	if orgn.get_behavior_profile().has_skill("trim_gap_genes"):
-		$RepairTabs.set_tab_icon(2, load("res://Assets/Images/Menus/Q_s.png"))
+		$RepairTabs.set_tab_icon(2, load("res://Assets/Images/Menus/grey.png"))
 		trim_end_lbl.text += "Click a gene on either ends of a break to remove the gene.";
 	else:
 		$RepairTabs.set_tab_icon(2, load("res://Assets/Images/icons/padlock_small.png"));
@@ -571,9 +571,10 @@ func close_extra_menus(toggle_menu: Control = null, make_default := false) -> vo
 			if p.visible == true:
 			#	$q_s1.visible = true
 				$q_s2.visible = true
-				if $RepairTabs.get_tab_icon(2) == load("res://Assets/Images/Menus/Q_s.png"):
+				if $RepairTabs.get_tab_icon(2) == load("res://Assets/Images/Menus/grey.png"):
+					
 					$q_s3.visible = true
-				if $RepairTabs.get_tab_icon(3) == load("res://Assets/Images/Menus/Q_s.png"):
+				if $RepairTabs.get_tab_icon(3) == load("res://Assets/Images/Menus/grey.png"):
 					$q_s4.visible = true
 			else:
 	#			$q_s1.visible = false
