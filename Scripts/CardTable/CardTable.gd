@@ -463,28 +463,27 @@ func adv_turn():
 		elif Game.get_next_turn_type() == Game.TURN_TYPES.Recombination:
 			var recombos = orgn.get_recombos_per_turn()
 			print("recombos: " + str(recombos))
-			if recombos == 0:
-				skip_turn = true
-		elif(Game.get_turn_type() == Game.TURN_TYPES.RepairDmg and Game.get_next_turn_type() == Game.TURN_TYPES.Recombination):
 			if orgn.get_cmsm_pair().get_gap_list() != []:
 				print("there's damage")
 				notifications.emit_signal("notification_needed", "There are still some breaks that you need to mend.")
 				$RepairTabs.current_tab = 1
-				$RepairTabs/pnl_repair_choices.hide()
-				$RepairTabs/pnl_bandage_dmg.show()
+				$RepairTabs/pnl_repair_choices.show()
+				$RepairTabs/pnl_bandage_dmg.hide()
 				$RepairTabs.current_tab = 0
 				$RepairTabs.current_tab = 1
 				#print("It should have happened.")
 				return "can't advance yet"
+			elif recombos == 0:
+				skip_turn = true
 			else:
 				skip_turn = false
-			
+
 		elif(Game.get_next_turn_type() == Game.TURN_TYPES.TEJump):
-			if check_if_any_dmg_in_chromosomes():
-				notifications.emit_signal("notification_needed", "There are still some harmed genes left you need to heal.")
+			if check_if_any_dmg_in_chromosomes() or orgn.get_cmsm_pair().get_gap_list() != []:
+				notifications.emit_signal("notification_needed", "There are still some harmed genes and breaks left you need to heal.")
 				$RepairTabs.current_tab = 0
-				$RepairTabs/pnl_repair_choices.show()
-				$RepairTabs/pnl_bandage_dmg.hide()
+				$RepairTabs/pnl_repair_choices.hide()
+				$RepairTabs/pnl_bandage_dmg.show()
 				#print("It should have happened.")
 				return "can't advance yet"
 		print("skip_turn: " + str(skip_turn))

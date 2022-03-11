@@ -519,9 +519,9 @@ __meta__ = {
 }
 
 [node name="Original" type="HBoxContainer" parent="Choose"]
-margin_left = 270.0
+margin_left = 200.0
 margin_top = 45.881
-margin_right = 2689.0
+margin_right = 2600.0
 margin_bottom = 308.881
 rect_scale = Vector2( 0.5, 0.5 )
 mouse_filter = 2
@@ -531,9 +531,9 @@ __meta__ = {
 }
 
 [node name="Row1" type="HBoxContainer" parent="Choose"]
-margin_left = 270.0
+margin_left = 200.0
 margin_top = 180.0
-margin_right = 2689.0
+margin_right = 2600.0
 margin_bottom = 514.0
 rect_scale = Vector2( 0.5, 0.3 )
 __meta__ = {
@@ -545,9 +545,9 @@ anchor_left = 0.00496063
 anchor_top = 0.0352755
 anchor_right = 0.00496063
 anchor_bottom = 0.0352755
-margin_left = 262.063
+margin_left = 192.063
 margin_top = 258.252
-margin_right = 2681.06
+margin_right = 2592.06
 margin_bottom = 521.252
 rect_scale = Vector2( 0.5, 0.5 )
 mouse_filter = 2
@@ -557,9 +557,9 @@ __meta__ = {
 }
 
 [node name="Original2" type="HBoxContainer" parent="Choose"]
-margin_left = 270.0
+margin_left = 200.0
 margin_top = 410.0
-margin_right = 2689.0
+margin_right = 2600.0
 margin_bottom = 673.0
 rect_scale = Vector2( 0.5, 0.5 )
 mouse_filter = 2
@@ -569,9 +569,9 @@ __meta__ = {
 }
 
 [node name="Row2" type="HBoxContainer" parent="Choose"]
-margin_left = 270.0
+margin_left = 200.0
 margin_top = 545.0
-margin_right = 2689.0
+margin_right = 2600.0
 margin_bottom = 879.0
 rect_scale = Vector2( 0.5, 0.3 )
 __meta__ = {
@@ -579,9 +579,9 @@ __meta__ = {
 }
 
 [node name="GeneCopies2" type="HBoxContainer" parent="Choose"]
-margin_left = 270.0
+margin_left = 200.0
 margin_top = 650.0
-margin_right = 2689.0
+margin_right = 2600.0
 margin_bottom = 913.0
 rect_scale = Vector2( 0.5, 0.5 )
 mouse_filter = 2
@@ -595,7 +595,7 @@ __meta__ = {
 [node name="Timer" type="Timer" parent="."]
 
 [node name="UI" type="ColorRect" parent="."]
-margin_right = 264.0
+margin_right = 200.0
 margin_bottom = 920.0
 color = Color( 0.0431373, 0.0588235, 0.564706, 1 )
 __meta__ = {
@@ -605,7 +605,7 @@ __meta__ = {
 [node name="Skip" type="Button" parent="UI"]
 margin_left = 1.91693
 margin_top = 787.639
-margin_right = 262.917
+margin_right = 201.917
 margin_bottom = 895.639
 theme = SubResource( 6 )
 text = "Skip"
