@@ -2079,9 +2079,12 @@ func is_viable(missing_classes: Array) -> bool:
 	if missing_classes.size() == 0:
 		return true
 	else:
-		return not (missing_classes.has("Component") or missing_classes.has("Deconstruction") or \
-			   missing_classes.has("Construction") or missing_classes.has("Locomotion") or \
-			   missing_classes.has("Manipulation") or missing_classes.has("Replication"))
+		return not (missing_classes.has("Replication") or missing_classes.has("Locomotion") or \
+			   missing_classes.has("Helper") or missing_classes.has("Manipulation") or \
+			   missing_classes.has("Sensing") or missing_classes.has("Component") or \
+			   missing_classes.has("Construction") or missing_classes.has("Deconstruction")
+			   )
+			   #Replication, Locomotion, Helper, Manipulation, Sensing, Component, Construction, Deconstruction
 
 func is_dead():
 	return died_on_turn > -1;

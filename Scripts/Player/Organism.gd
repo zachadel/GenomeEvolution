@@ -2092,9 +2092,12 @@ func is_viable(missing_classes: Array) -> bool:
 	if missing_classes.size() == 0:
 		return true
 	else:
-		return not (missing_classes.has("Component") or missing_classes.has("Deconstruction") or \
-			   missing_classes.has("Construction") or missing_classes.has("Locomotion") or \
-			   missing_classes.has("Manipulation") or missing_classes.has("Replication"))
+		return not (missing_classes.has("Replication") or missing_classes.has("Locomotion") or \
+			   missing_classes.has("Helper") or missing_classes.has("Manipulation") or \
+			   missing_classes.has("Sensing") or missing_classes.has("Component") or \
+			   missing_classes.has("Construction") or missing_classes.has("Deconstruction")
+			   )
+			   #Replication, Locomotion, Helper, Manipulation, Sensing, Component, Construction, Deconstruction
 
 func is_dead():
 	return died_on_turn > -1;
@@ -3900,7 +3903,7 @@ func _on_chromes_on_cmsm_changed():
 ####################################SENSING AND LOCOMOTION#####################
 #This is what you can directly see, not counting the cone system
 func get_vision_radius():
-	return floor(get_behavior_profile().get_behavior("Sensing"))
+	return min(floor(get_behavior_profile().get_behavior("Sensing")),10)
 	
 func get_locomotion_radius():
 	return floor(get_behavior_profile().get_behavior("Locomotion"))
