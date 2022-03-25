@@ -659,7 +659,7 @@ func _on_quit_to_menu_check_yes():
 	PROGENY.new_game()
 	STATS._reset_game()
 	Game.restart_game()
-	#Settings.reset()
+	Settings.reset()
 	get_tree().change_scene("res://Scenes/MainMenu/TitleScreen.tscn")
 
 func _on_quit_to_menu_check_no():
@@ -694,7 +694,6 @@ func _on_Organism_finished_replication():
 func _unhandled_input(event):
 	
 	pass
-
 
 func refresh_visible_options():
 	if ($RepairTabs/pnl_repair_choices/hsplit.visible):

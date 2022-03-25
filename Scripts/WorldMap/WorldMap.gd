@@ -1902,6 +1902,7 @@ func _unhandled_input(event):
 							$MapCamera.offset = Vector2(0,0)
 						
 						#This needs to become a signal.  This is just so bad.
+						#from someone else: LOL
 						ui.resource_ui.set_resources(current_player.organism.current_tile["resources"])
 						ui.hazards_ui.set_hazards(current_player.organism.current_tile["hazards"])
 						ui.biome_icon.set_icon(current_player.organism.current_tile["biome"])

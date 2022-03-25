@@ -35,7 +35,6 @@ const SAVE_NAMES = ["resources", "cells", "hazards", "biomes", "ingame_settings"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print("please see me once")
 	for setting_type in FILE_NAMES:
 		settings[setting_type] = {}
 		
@@ -47,7 +46,10 @@ func _ready():
 
 
 func reset():
-	_ready()
+	load_all_settings()
+	populate_cell_texture_paths()
+	reset_rng()
+	pass # Replace 
 
 func load_setting(setting_type: String, use_user_settings_if_possible: bool = true):
 	if setting_type in FILE_NAMES:
@@ -59,9 +61,9 @@ func load_setting(setting_type: String, use_user_settings_if_possible: bool = tr
 			#load user settings
 			#print("it's ok, " + str(setting_type))
 			if use_user_settings_if_possible:
-				#print("user settings possible")
+				print("user settings possible")
 				var config = ConfigFile.new()
-				var err = config.load(DEFAULT_PATH + FILE_NAMES[setting_type])
+				var err = config.load(USER_PATH + FILE_NAMES[setting_type])
 				#print(USER_PATH)
 				#print(FILE_NAMES[setting_type])
 				#load user settings if you can, if not load default
@@ -112,6 +114,8 @@ func save_setting(setting_type: String):
 		var err = config.save(USER_PATH + FILE_NAMES[setting_type])
 		if err != OK:
 			print("ERROR CODE %d in save_setting" % err)
+		else:
+			print("settings saved")
 	else:
 		print("ERROR: Invalid setting_type of %s given for function save_setting" % setting_type)
 

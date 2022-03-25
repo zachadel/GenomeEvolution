@@ -698,7 +698,6 @@ __meta__ = {
 }
 
 [node name="pnl_quit_check" type="Panel" parent="."]
-visible = false
 margin_left = 530.439
 margin_top = 431.893
 margin_right = 1140.44
@@ -1038,7 +1037,6 @@ margin_left = 1282.0
 margin_top = 756.0
 margin_right = 1423.0
 margin_bottom = 891.0
-num = 0
 show_change = false
 
 [node name="lnum_progeny" parent="." instance=ExtResource( 17 )]
@@ -1047,7 +1045,6 @@ margin_left = 1337.14
 margin_top = 772.178
 margin_right = 1437.14
 margin_bottom = 872.178
-num = 0
 show_change = false
 
 [node name="EnergyBar" parent="." instance=ExtResource( 14 )]
@@ -2167,6 +2164,7 @@ margin_top = 274.0
 margin_right = 776.0
 margin_bottom = 288.0
 text = "Collapse Duplicates"
+
 [connection signal="gui_input" from="." to="." method="_on_CardTable_gui_input"]
 [connection signal="bandage_msg" from="Organism" to="." method="_on_Organism_bandage_msg"]
 [connection signal="clear_gap_msg" from="Organism" to="." method="_on_Organism_clear_gap_msg"]
