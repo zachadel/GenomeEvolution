@@ -273,6 +273,8 @@ func biome_temp_and_ph_setup():
 	starting_biome = current_player.organism.current_tile["biome"];
 	var temperature_pref = STATS.get_temp_dict();
 	var pH_pref = STATS.get_pH_dict();
+	print('PH PREFERERNCE 			HERE')
+	print(pH_pref)
 	var new_vals_t = {};
 	var new_vals_p ={};
 	#print("biome indexes: "+str(Settings.settings["biomes"]))
@@ -286,7 +288,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(6, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -300,7 +302,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(6, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -314,7 +316,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(6, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -328,7 +330,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(6, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -342,7 +344,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(6, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -356,7 +358,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(6, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -370,7 +372,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(6, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -384,7 +386,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(6, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -401,7 +403,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(5, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -415,7 +417,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(5, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -429,7 +431,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(5, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -443,7 +445,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(5, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -457,7 +459,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(5, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -471,7 +473,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(5, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -485,7 +487,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(5, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -499,7 +501,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(5, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -515,7 +517,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(0, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -529,7 +531,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(0, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -543,7 +545,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(0, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -557,7 +559,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(0, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -571,7 +573,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(0, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -585,7 +587,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(0, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -599,7 +601,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(0, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -613,7 +615,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(0, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -629,7 +631,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(0, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -643,7 +645,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(0, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -657,7 +659,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(0, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -671,7 +673,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(0, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -685,7 +687,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(0, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -699,7 +701,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(0, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -713,7 +715,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(0, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -727,7 +729,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(0, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -743,7 +745,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(1, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -757,7 +759,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(1, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -771,7 +773,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(1, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -785,7 +787,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(1, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -799,7 +801,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(1, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -813,7 +815,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(1, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -827,7 +829,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(1, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -841,7 +843,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(1, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -857,7 +859,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(4, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -871,7 +873,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(4, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -885,7 +887,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(4, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -899,7 +901,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(4, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -913,7 +915,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(4, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -927,7 +929,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(4, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -941,7 +943,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(4, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -955,7 +957,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(4, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -971,7 +973,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(6, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -985,7 +987,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(6, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -999,7 +1001,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(6, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1013,7 +1015,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(6, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1027,7 +1029,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(6, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1041,7 +1043,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(6, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1055,7 +1057,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(6, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1069,7 +1071,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(6, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1085,7 +1087,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(7.5, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1099,7 +1101,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(7.5, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1113,7 +1115,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(7.5, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1127,7 +1129,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(7.5, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1141,7 +1143,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(7.5, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1155,7 +1157,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(7.5, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1169,7 +1171,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(7.5, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1183,7 +1185,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(7.5, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1199,7 +1201,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(6.99, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1213,7 +1215,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(6.99, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1227,7 +1229,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(6.99, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1241,7 +1243,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(6.99, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1255,7 +1257,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(6.99, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1269,7 +1271,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(6.99, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1283,7 +1285,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(6.99, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1297,7 +1299,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(6.99, 1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1313,7 +1315,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(6, 2)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1327,7 +1329,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(6, 2)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1341,7 +1343,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(6, 2)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1355,7 +1357,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(6, 2)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1369,7 +1371,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(6, 2)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1383,7 +1385,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(6, 2)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1397,7 +1399,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(6, 2)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1411,7 +1413,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(6, 2)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1427,7 +1429,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(7.5, 2)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1441,7 +1443,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(7.5, 2)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1455,7 +1457,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(7.5, 2)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1469,7 +1471,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(7.5, 2)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1483,7 +1485,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(7.5, 2)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1497,7 +1499,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(7.5, 2)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1511,7 +1513,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(7.5, 2)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1525,7 +1527,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(7.5, 2)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1541,7 +1543,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(4,1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1555,7 +1557,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(4,1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1569,7 +1571,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(4,1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1583,7 +1585,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(4,1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1597,7 +1599,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(4,1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1611,7 +1613,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(4,1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1625,7 +1627,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(4,1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:
@@ -1639,7 +1641,7 @@ func biome_temp_and_ph_setup():
 					else:
 						new_vals_t[g.id] = rand_it
 						g.set_temp(rand_it)
-					
+					rand_it = Chance.rand_normal_temp(4,1)
 					if new_vals_p.has(g.id): #COME BACK HERE
 						g.set_pH(new_vals_p[g.id])
 					else:

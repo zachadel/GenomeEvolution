@@ -3151,10 +3151,14 @@ func acquire_resources():
 					print("Resource: "+ resource) #Theses are numbered minimally 0-33
 					
 					print("Mineral resources: "+ str(mineral_resources[resource_class][resource]))
-					
-					mineral_resources[resource_class][resource] += current_tile["resources"][index]
-					mineral_resources[resource_class]["total"] += current_tile["resources"][index]
-					current_tile["resources"][index] = 0
+					if mineral_resources[resource_class][resource] + current_tile["resources"][index] <= 33:
+						mineral_resources[resource_class][resource] += current_tile["resources"][index]
+						mineral_resources[resource_class]["total"] += current_tile["resources"][index]
+						current_tile["resources"][index] = 0
+					else:
+						while mineral_resources[resource_class][resource] <= 40:
+							mineral_resources[resource_class][resource] +=1
+							current_tile["resources"][index]-=1
 
 			#Acquire carbs, fats, proteins
 				elif cfp_resources[resource_class]["total"] < get_estimated_capacity(resource_class):
@@ -3242,6 +3246,7 @@ func acquire_resources():
 		modified = false
 	#Reestablish what the new primary_resource indicator on the tile should be
 	#NOTE: Not currently based on sensing; will cause some weird behavior
+	print("?: " + str(current_tile["primary_resource"]))
 	if modified and current_tile["primary_resource"] != -1:
 		if current_tile["resources"][current_tile["primary_resource"]] < Settings.settings["resources"][Settings.settings["resources"].keys()[current_tile["primary_resource"]]]["primary_resource_min"]:
 			current_tile["primary_resource"] = -1
@@ -3249,7 +3254,7 @@ func acquire_resources():
 				if current_tile["resources"][index] >= Settings.settings["resources"][Settings.settings["resources"].keys()[index]]["primary_resource_min"]:
 					current_tile["primary_resource"] = index
 					break
-					
+	
 	#Make sure these changes are reflected in modified_tiles
 	if modified and Game.modified_tiles.has(current_tile["location"]):
 		for property in Game.modified_tiles[current_tile["location"]].keys():
