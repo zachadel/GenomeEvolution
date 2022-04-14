@@ -58,10 +58,23 @@ func stop_and_hide(slide: Control):
 
 func play_and_show(slide: Control):
 	var tween = $Tween
-	var length1 = len(cmsms.get_child(0).get_genes()) #This is the length of chromosome 1
-	var clength1 = len(cmsms.get_child(1).get_genes()) #len of copy of chrom 1
-	var length2 = len(cmsms.get_child(2).get_genes()) #len chrom 2
-	var clength2 = len(cmsms.get_child(3).get_genes()) #len of copy of chrom 2
+	
+	var cmsm1 = cmsms.get_child(0).get_genes()
+	var cmsm1data = cmsms.get_child(0).get_csmsm().get_elms_save()
+	
+	var cmsm2 = cmsms.get_child(1).get_genes()
+	var cmsm2data = cmsms.get_child(1).get_csmsm().get_elms_save()
+	
+	var cmsm3 = cmsms.get_child(2).get_genes()
+	var cmsm3data = cmsms.get_child(2).get_csmsm().get_elms_save()
+	
+	var cmsm4 = cmsms.get_child(3).get_genes()
+	var cmsm4data = cmsms.get_child(3).get_csmsm().get_elms_save()
+	
+	var length1 = len(cmsm1) #This is the length of chromosome 1
+	var clength1 = len(cmsm2) #len of copy of chrom 1
+	var length2 = len(cmsm3) #len chrom 2
+	var clength2 = len(cmsm4) #len of copy of chrom 2
 	
 
 	
@@ -72,11 +85,7 @@ func play_and_show(slide: Control):
 		longest = length2
 	if longest < clength2:
 		longest = clength2
-	
-	var cmsm1 = cmsms.get_child(0).get_genes()
-	var cmsm2 = cmsms.get_child(1).get_genes()
-	var cmsm3 = cmsms.get_child(2).get_genes()
-	var cmsm4 = cmsms.get_child(3).get_genes()
+
 	
 	var o_indicator = ""
 	var c_indicator = ""
@@ -103,7 +112,7 @@ func play_and_show(slide: Control):
 				var original = load("res://Scenes/CardTable/SequenceElement.tscn").instance()
 				original.is_display = true
 				$Choose/Original.add_child(original)
-				original.load_from_save(cmsm1[progress1].get_save_data())
+				original.load_from_save(cmsm1data[progress1])
 				original.set_h_size_flags(1)
 				original.set_elm_size(263)
 				original.ate_personality = cmsm1[progress1].ate_personality
@@ -139,14 +148,12 @@ func play_and_show(slide: Control):
 				$Choose/Original.show()
 			else:
 				limit1 = true
-				
-			
 			
 			if progress1 < clength1:
 				var copies = load("res://Scenes/CardTable/SequenceElement.tscn").instance()
 				copies.is_display = true
 				$Choose/GeneCopies1.add_child(copies)
-				copies.load_from_save(cmsm2[progress1].get_save_data())
+				copies.load_from_save(cmsm2data[progress1])
 				copies.set_h_size_flags(1)
 				copies.set_elm_size(263)
 				copies.ate_personality = cmsm2[progress1].ate_personality
@@ -160,8 +167,6 @@ func play_and_show(slide: Control):
 					c_value = copies.get_node("IndicATE").get_value()
 				elif copies.mode == "pseudo":
 					pseudo = true
-				
-				
 				
 				copies.animation_hide()
 				
@@ -224,7 +229,9 @@ func play_and_show(slide: Control):
 			
 			counter1 = counter1 + 1
 			progress1 = progress1 + 1
-			
+		
+		
+		
 		var counter2 = 0
 		while counter2 < 8:
 			essential_count = 0
@@ -239,7 +246,7 @@ func play_and_show(slide: Control):
 				var original = load("res://Scenes/CardTable/SequenceElement.tscn").instance()
 				original.is_display = true
 				$Choose/Original2.add_child(original)
-				original.load_from_save(cmsm3[progress2].get_save_data())
+				original.load_from_save(cmsm3data[progress2])
 				original.set_h_size_flags(1)
 				original.set_elm_size(263)
 				original.ate_personality = cmsm3[progress2].ate_personality
@@ -279,7 +286,7 @@ func play_and_show(slide: Control):
 				var copies = load("res://Scenes/CardTable/SequenceElement.tscn").instance()
 				copies.is_display = true
 				$Choose/GeneCopies2.add_child(copies)
-				copies.load_from_save(cmsm4[progress2].get_save_data())
+				copies.load_from_save(cmsm4data[progress2])
 				copies.set_h_size_flags(1)
 				copies.set_elm_size(263)
 				
@@ -368,10 +375,13 @@ func play_and_show(slide: Control):
 	if longest < 25:
 		print(tween.interpolate_property(self,"rect_position:x",0,0-(200*(longest-9)),(.47*longest),Tween.TRANS_LINEAR, Tween.EASE_IN_OUT,4.5))
 		print(tween.interpolate_property($UI,"rect_position:x",0,200*(longest-9),(.47*longest),Tween.TRANS_LINEAR, Tween.EASE_IN_OUT,4.5))
+		print(tween.interpolate_property($Choose/ColorRect, "rect_position:x",0,200*(longest-9),(.47*longest),Tween.TRANS_LINEAR, Tween.EASE_IN_OUT,4.5))
 	else:
 		print(tween.interpolate_property(self,"rect_position:x",0,0-(200*(longest-10)),(.6725*longest),Tween.TRANS_LINEAR, Tween.EASE_IN_OUT,5))
 		print(tween.interpolate_property($UI,"rect_position:x",0,200*(longest-10),(.6725*longest),Tween.TRANS_LINEAR, Tween.EASE_IN_OUT,5))
+		print(tween.interpolate_property($Choose/ColorRect, "rect_position:x",0,200*(longest-10),(.6725*longest),Tween.TRANS_LINEAR, Tween.EASE_IN_OUT,5))
 		
+	
 	tween.start()
 	#yield(timer,"timeout")
 	yield(tween,"tween_all_completed")

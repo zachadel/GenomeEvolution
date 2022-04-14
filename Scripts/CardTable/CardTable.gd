@@ -463,9 +463,8 @@ func adv_turn():
 		elif Game.get_next_turn_type() == Game.TURN_TYPES.Recombination:
 			var recombos = orgn.get_recombos_per_turn()
 			print("recombos: " + str(recombos))
-			if orgn.get_cmsm_pair().get_gap_list() != []:
-				print("there's damage")
-				notifications.emit_signal("notification_needed", "There are still some breaks that you need to mend.")
+			if check_if_any_dmg_in_chromosomes() or orgn.get_cmsm_pair().get_gap_list() != []: 
+				notifications.emit_signal("notification_needed", "There are still some breaks and harmed genes that you need to mend.")
 				$RepairTabs.current_tab = 1
 				$RepairTabs/pnl_repair_choices.show()
 				$RepairTabs/pnl_bandage_dmg.hide()

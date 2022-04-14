@@ -335,7 +335,6 @@ expand = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
 [connection signal="value_changed" from="scale" to="." method="_on_scale_value_changed"]
 [connection signal="value_changed" from="bias" to="." method="_on_bias_value_changed"]
 [connection signal="value_changed" from="richness" to="." method="_on_richness_value_changed"]
