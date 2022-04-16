@@ -509,9 +509,8 @@ __meta__ = {
 }
 
 [node name="ColorRect" type="ColorRect" parent="Choose"]
-margin_left = -1.0
-margin_right = 29999.0
-margin_bottom = 921.0
+margin_right = 1600.0
+margin_bottom = 900.0
 mouse_filter = 2
 color = Color( 0.0431373, 0.0588235, 0.564706, 1 )
 __meta__ = {
@@ -596,7 +595,7 @@ __meta__ = {
 
 [node name="UI" type="ColorRect" parent="."]
 margin_right = 200.0
-margin_bottom = 920.0
+margin_bottom = 900.0
 color = Color( 0.0431373, 0.0588235, 0.564706, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -700,5 +699,4 @@ scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
 [connection signal="pressed" from="UI/Skip" to="." method="_on_Skip_pressed"]

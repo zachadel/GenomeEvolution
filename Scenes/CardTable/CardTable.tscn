@@ -764,7 +764,6 @@ same_column_width = true
 fixed_icon_size = Vector2( 50, 50 )
 
 [node name="mit_q" type="TextureButton" parent="pnl_reproduce/hsplit/ilist_choices"]
-visible = false
 margin_left = 170.0
 margin_top = 15.0
 margin_right = 193.0
@@ -775,7 +774,6 @@ __meta__ = {
 }
 
 [node name="me_q" type="TextureButton" parent="pnl_reproduce/hsplit/ilist_choices"]
-visible = false
 margin_left = 170.0
 margin_top = 75.0
 margin_right = 193.0
@@ -1039,7 +1037,6 @@ margin_left = 1282.0
 margin_top = 756.0
 margin_right = 1423.0
 margin_bottom = 891.0
-num = 0
 show_change = false
 
 [node name="lnum_progeny" parent="." instance=ExtResource( 17 )]
@@ -1048,7 +1045,6 @@ margin_left = 1337.14
 margin_top = 772.178
 margin_right = 1437.14
 margin_bottom = 872.178
-num = 0
 show_change = false
 
 [node name="EnergyBar" parent="." instance=ExtResource( 14 )]
