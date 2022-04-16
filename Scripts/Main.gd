@@ -16,6 +16,7 @@ var chunk_size = 15
 #of Main
 #Why on earth did I make this const?  I'll check on that later.
 const Player = preload("res://Scenes/Player/Player.tscn")
+const competitor = preload("res://Scenes/Competitor/Competitor.tscn")
 
 onready var world_map = get_node("WorldMap") #access world_map ui via world_map.ui
 onready var card_table = get_node("Canvas_CardTable/CardTable")
@@ -28,14 +29,17 @@ onready var statsScreen = get_node("stats_Layer/statsScreen")
 #allows for multiplayer
 var cardTable = false;
 var worldMapUI = false;
+var competitors_allowed;
 func _ready(): 
 	
 	_hide_card_table()
-
 	#Add looping after first_player if there are multiple players, but only give the first
 	#player to the WorldMap for setup
-	var competitors_allowed = COMPETITORS.get_active_toggle()
-	print(competitors_allowed)
+	#print("setting if it has competitors here.")
+	competitors_allowed = COMPETITORS.get_active_toggle()
+	STATS.set_has_competitors(competitors_allowed)
+	print(STATS.has_competitors)
+	#print(competitors_allowed)
 	#If there is character creation, then that should go here before creating the player
 	var first_player = create_player()
 	first_player.set_cell_type(Game.current_cell_string)
@@ -43,7 +47,7 @@ func _ready():
 	var list_of_actors = [first_player]
 	#Uncomment below to add the agent back into the game.
 	if competitors_allowed:
-		print("Compettitors are in this game.")
+		#print("Compettitors are in this game.")
 		var agent = create_agent()
 		COMPETITORS.add_competitors(agent) #This lets me control the little one.
 		agent.set_cell_type("cell_3")
@@ -51,14 +55,10 @@ func _ready():
 		
 	
 	#For now, I'm just trying to make our agent copy our original player
-	
-	
-	
 	var hazard_seeds = {}
 	for hazard in Settings.settings["hazards"].keys():
 		hazard_seeds[hazard] = randi()
 	
-
 	
 	#This order enables the WorldMap to make its camera the current one
 	#To Add the agent into the game, add agent after first player in this setup method.
@@ -171,7 +171,7 @@ func _on_WorldMap_end_map_turn():
 
 ############################MULTIPLAYER/MULTI-AGENT HANDLING###############################
 func create_agent():
-	var agent = Player.instance() #This should make a new instance of the player class
+	var agent = competitor.instance() #This should make a new instance of the player class
 	agent.add_to_group("players") #It seems all "players" are here, players and agents are interchangeable in name, not variable.
 	agent.setup(2,2) # This adds in where the agent should appears, by default it's 0,0. 
 	#For now, I will hard code in 2,2 into the positional points above. Moving forward, if we want more tahn 

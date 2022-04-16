@@ -9,11 +9,17 @@ const NON_GODOT_VALUES = ["type", "stacked", "final_value"]
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	var iterator = 0
 	for setting in Settings.settings["ingame_settings"]:
+		iterator+=1
 		var node = create_node_from_dictionary(setting, Settings.settings["ingame_settings"][setting]["type"], Settings.settings["ingame_settings"][setting])
+		#So for each of the nodes, you want to seperate them into their respective fields.
+		#print("node: " + str(typeof(node)))
 		var row = create_settings_row(setting, Settings.settings["ingame_settings"][setting]["stacked"])
 		row.add_child(node)
 		scroller.add_child(row)
+		if iterator == 3: # This is to stop the settings from continuing to populate the table. 
+			break
 	pass # Replace with function body.
 
 #If you want the name of the setting to the left of the option, stacked = false
@@ -93,6 +99,7 @@ func use_dictionary_to_populate_node(node: Control, option_name: String, options
 #				-Label
 #				-Setting
 func get_final_settings()->Dictionary:
+	#print("getting final settings")
 	var settings = {}
 	#Loop over boxes
 	for box in scroller.get_children():
@@ -112,6 +119,7 @@ func get_final_settings()->Dictionary:
 	return settings
 
 func update_global_settings():
+	print("UPDATING THE SETTINGS SETTINGS")
 	for box in scroller.get_children():
 		for child in box.get_children():
 			var prop_list = child.get_property_list()
@@ -129,5 +137,5 @@ func reload():
 
 
 func _on_add_competitors_pressed():
-	COMPETITORS.active_toggle()
+	STATS.set_has_competitors(COMPETITORS.active_toggle())
 	pass # Replace with function body.

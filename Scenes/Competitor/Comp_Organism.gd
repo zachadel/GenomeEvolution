@@ -4,8 +4,9 @@ signal cmsm_changed();
 signal add_card_event_log(conent, tags);
 signal show_warning();
 signal close_warning();
-onready var cmsms = $scroll/chromes
-#onready var spectrum = $Spectrum
+onready var cmsms = $ScrollContainer/ChromPair
+onready var spectrum = $Spectrum
+onready var indicators = $Indicators
 
 # onready var indicators = $indicators
 
@@ -26,7 +27,7 @@ var num_progeny := 0;
 var num_dmg_genes := 0;
 var accumulated_dmg := 0;
 var accumulated_gaps := 0;
-var accumulated_transposons := 0;
+var accumulated_transposons := 1;
 
 var replicated = false
 
@@ -350,7 +351,7 @@ func load_from_save(orgn_info):
 #		perform_anims(true);
 
 func setup(card_table):
-	perform_anims(false);
+	#perform_anims(false);
 	
 	var essential_names = Game.ESSENTIAL_CLASSES.keys();
 	
@@ -413,6 +414,7 @@ func setup(card_table):
 	for type in Game.ESSENTIAL_CLASSES.values():
 		energy_allocations[type] = 0;
 	cmsms.setup(card_table);
+	#print("CHROMOSOMES SET UP")
 
 func add_gene(chrom: int, pos: int, gene_type: String, value: float):
 	var gene = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
@@ -439,21 +441,30 @@ func get_max_gene_dist():
 	return max_equality_dist;
 
 func gain_ates(count = 1):
+	print("gain ates getting called in competittor organism.")
 	yield(get_tree(), "idle_frame")
 	var justnow = "";
+	print("I made it to the loop. ")
 	for i in range(count):
+		print("before the new te")
 		var nxt_te = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
+		print("after the new te")
 		nxt_te.setup("gene", "", "ate");
+		print('set up the te')
 		var pos;
 		if (do_yields):
+			print("do yields")
 			pos = yield(cmsms.insert_ate(nxt_te), "completed");
 		else:
+			print("does not yields")
 			pos = cmsms.insert_ate(nxt_te);
 			yield(get_tree(), "idle_frame");
 		justnow += "Inserted %s into position %d (%d, %d).\n" % ([nxt_te.get_gene_name(), pos] + nxt_te.get_position_display());
+	print('it made it to the end')
 	emit_signal("justnow_update", justnow);
 
 func gain_gaps(count = 1):
+	print("gain gaps getting called in competittor organism.")
 	for i in range(count):
 		if (do_yields):
 			yield(cmsms.create_gap(), "completed");
@@ -461,6 +472,7 @@ func gain_gaps(count = 1):
 		else:
 			yield(get_tree(), "idle_frame");
 			cmsms.create_gap();
+	print('it made it to the end')
 	return cmsms.collapse_gaps();
 	
 func create_gap(pos: int):
@@ -956,7 +968,7 @@ func make_repair_choices(gap, repair_type: String):
 			var g_idx = gap.get_index();
 			
 			var blocks_dict = gap_cmsm.find_dupe_blocks(g_idx);
-			print("for collapse dupes: the blocks dict size is: "+str(blocks_dict.size()))
+			#print("for collapse dupes: the blocks dict size is: "+str(blocks_dict.size()))
 			emit_signal("gap_close_msg", "Select the leftmost element of the pattern you will collapse.");
 			gene_selection.clear();
 			if (is_ai || blocks_dict.size() == 1):
@@ -989,7 +1001,7 @@ func make_repair_choices(gap, repair_type: String):
 					gene_selection.append(gene);
 					gene.disable(false);
 				yield(self, "gene_clicked");
-				print("1")
+				#print("1")
 				emit_signal("close_warning")
 				sel_size_gene = get_gene_selection();
 				for g in gene_selection:
@@ -1013,7 +1025,7 @@ func make_repair_choices(gap, repair_type: String):
 			var right_choice_opts = blocks_dict[left_idx][choice_info["size"]];
 			if (is_ai || right_choice_opts.size() == 1):
 				choice_info["right"] = gap_cmsm.get_child(right_choice_opts[0]);
-				print("2")
+				#print("2")
 				emit_signal("close_warning")
 			else:
 				for i in right_choice_opts:
@@ -1021,7 +1033,7 @@ func make_repair_choices(gap, repair_type: String):
 					gene_selection.append(gene);
 					gene.disable(false);
 				yield(self, "gene_clicked");
-				print("3")
+				#print("3")
 				emit_signal("close_warning")
 				choice_info["right"] = get_gene_selection();
 				for g in gene_selection:
@@ -1048,7 +1060,7 @@ func make_repair_choices(gap, repair_type: String):
 			gene_selection.clear();
 			if (is_ai || pairs_dict.size() == 1):
 				choice_info["left"] = template_cmsm.get_child(pairs_dict.keys()[0]);
-				print("4")
+				#"4")
 				emit_signal("close_warning")
 			else:
 				for k in pairs_dict.keys():
@@ -1056,7 +1068,7 @@ func make_repair_choices(gap, repair_type: String):
 					gene_selection.append(gene);
 					gene.disable(false);
 				yield(self, "gene_clicked");
-				print("5")
+				#print("5")
 				emit_signal("close_warning")
 				choice_info["left"] = get_gene_selection();
 				for g in gene_selection:
@@ -1071,7 +1083,7 @@ func make_repair_choices(gap, repair_type: String):
 			var right_idxs = pairs_dict[choice_info["left"].get_index()];
 			if (is_ai || right_idxs.size() == 1):
 				choice_info["right"] = template_cmsm.get_child(right_idxs[0]);
-				print("6")
+				#print("6")
 				emit_signal("close_warning")
 			else:
 				for i in right_idxs:
@@ -1079,7 +1091,7 @@ func make_repair_choices(gap, repair_type: String):
 					gene_selection.append(gene);
 					gene.disable(false);
 				yield(self, "gene_clicked");
-				print("7")
+				#print("7")
 				emit_signal("close_warning")
 				choice_info["right"] = get_gene_selection();
 				for g in gene_selection:
@@ -1089,7 +1101,7 @@ func make_repair_choices(gap, repair_type: String):
 				return false;
 	if perform_repair:
 		repair_gap(gap, repair_type, choice_info);
-	print("8")
+	#print("8")
 	#emit_signal("close_warning")
 
 var repair_canceled = false;
@@ -1213,7 +1225,7 @@ func repair_gap(gap, repair_type, choice_info = {}):
 								gene_selection.append(gene_selection[1]);
 						else:
 							yield(self, "gene_clicked");
-							print("9")
+							#print("9")
 							emit_signal("close_warning")
 							
 						# Yield also ended when a gap is deselected and gene_selection is cleared
@@ -1352,9 +1364,9 @@ func repair_gap(gap, repair_type, choice_info = {}):
 							else:
 								gene_selection.append(gene_selection[1]);
 						else:
-							print("yielding")
+							#print("yielding")
 							yield(self, "gene_clicked");
-							print("yielded")
+							#print("yielded")
 							emit_signal("close_warning")
 							
 						# Yield also ended when a gap is deselected and gene_selection is cleared
@@ -1426,7 +1438,7 @@ func highlight_gap_choices():
 		auto_repair();
 
 func highlight_dmg_genes(mode: String):
-	print("line 1429 for damage genes.")
+	#print("line 1429 for damage genes.")
 	match mode:
 		"scissors":
 			start_scissors("get_damaged_genes");
@@ -1554,7 +1566,7 @@ func recombination():
 		# For some reason, this func bugs out when picking from the first cmsm (see comment at get_other_cmsm below)
 		gene_selection = cmsms.highlight_common_genes(false, true);
 		yield(self, "gene_clicked");
-		print(" THE GENE WAS CLICKED !!!!!!!!!!")
+		#print(" THE GENE WAS CLICKED !!!!!!!!!!")
 		# Because this step is optional, by the time a gene is clicked, it might be a different turn
 		if (Game.get_turn_type() == Game.TURN_TYPES.Recombination):
 			emit_signal("doing_work", true);
@@ -1736,7 +1748,7 @@ func check_cmsm_(idx): #returns whether or not the cmsm has a 0 in it
 	return dead_cell;
 
 func check_actual_cmsm(cmsm):
-	print(cmsm.get_genes())
+	#print(cmsm.get_genes())
 	var dead_cell = false
 	if cmsm.get_value_of("Replication") == 0:
 		dead_cell = true
@@ -1986,7 +1998,7 @@ func iterate_genes():
 	STATS.compare_maxTE()
 
 func adv_turn(round_num, turn_idx):
-	print("12")
+	#print("12")
 	emit_signal("close_warning")
 	click_mode = "";
 	cmsms.highlight_genes(gene_selection, false);

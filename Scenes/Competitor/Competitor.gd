@@ -15,7 +15,7 @@ signal player_died(player)
 var update_sensing = false
 var move_enabled = false
 var hibernation = false
-var organism
+var organism 
 var rng = RandomNumberGenerator.new()
 var observed_tiles = {}
 var clear_path = {}
@@ -30,11 +30,12 @@ func _ready():
 	#This bit of code below, sets the organism variable
 	# I need to make a duplicate of this for competitors, with thte same funcitonality basically 
 	var index = rng.randi()
+	organism =  get_tree().get_root().get_node("Main/Canvas_CardTable/CardTable/Comp_Organism")
 	if index % 2 == 1:
-		self.set_cell_type("cell_1")
+		set_cell_type("cell_1")
 	else:
-		self.set_cell_type("cell_2")
-	organism = get_tree().get_root().get_node("Main/Canvas_CardTable/CardTable/Comp_Organism")
+		set_cell_type("cell_2")
+	
 	position = STARTING_POS
 
 func setup(x = STARTING_POS.x, y = STARTING_POS.y):

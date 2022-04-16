@@ -61,7 +61,7 @@ func load_setting(setting_type: String, use_user_settings_if_possible: bool = tr
 			#load user settings
 			#print("it's ok, " + str(setting_type))
 			if use_user_settings_if_possible:
-				print("user settings possible")
+				#print("user settings possible")
 				var config = ConfigFile.new()
 				var err = config.load(USER_PATH + FILE_NAMES[setting_type])
 				#print(USER_PATH)
@@ -89,8 +89,8 @@ func load_setting(setting_type: String, use_user_settings_if_possible: bool = tr
 						print("ERROR CODE %d in load_settings" % err)
 			else:
 				var config = ConfigFile.new()
-				print("default path: " + str(DEFAULT_PATH))
-				print("file names: " + str(FILE_NAMES[setting_type]))
+				#print("default path: " + str(DEFAULT_PATH))
+				#print("file names: " + str(FILE_NAMES[setting_type]))
 				var err = config.load(DEFAULT_PATH + FILE_NAMES[setting_type])
 					
 				if err == OK:
@@ -104,6 +104,7 @@ func load_setting(setting_type: String, use_user_settings_if_possible: bool = tr
 		print("ERROR: Invalid setting_type of %s given for function load_setting." % setting_type)
 
 func save_setting(setting_type: String):
+	print("Save settings going off now")
 	var config = ConfigFile.new()
 	
 	if setting_type in SAVE_NAMES:
@@ -124,7 +125,9 @@ func load_all_settings(use_user_settings_if_possible: bool = true):
 		load_setting(setting_type, use_user_settings_if_possible)
 		
 func save_all_settings():
+	print("save all settings")
 	for setting_type in SAVE_NAMES:
+		print(setting_type)
 		save_setting(setting_type)
 
 func load_personalities(file_name, dict):

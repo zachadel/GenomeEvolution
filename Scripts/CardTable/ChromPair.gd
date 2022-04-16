@@ -27,6 +27,7 @@ const SIGNAL_PROPAGATION = {
 	};
 
 func _ready():
+	#print("ready")
 	add_cmsm();
 	add_cmsm();
 
@@ -559,7 +560,7 @@ func highlight_genes(elms: Array, highlight := true):
 		g.disable(!highlight);
 
 func highlight_gaps():
-	print("highlighting the gene , 562")
+	#print("highlighting the gene , 562")
 	highlight_genes(get_gap_list());
 
 func highlight_damaged_genes():

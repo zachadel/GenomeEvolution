@@ -12,6 +12,7 @@ signal show_pop_quiz;
 
 onready var justnow_label : RichTextLabel = $ctl_justnow/lbl_justnow;
 onready var orgn = $Organism;
+onready var C_orgn = $Comp_Organism;
 onready var nxt_btn = $button_grid/btn_nxt;
 onready var status_bar = $Border1/ChromosomeStatus;
 onready var map_button = $Border2/button_control/map_image_button
@@ -35,8 +36,12 @@ var show_popUp = true;
 var disable_turn_adv = true
 
 func _ready():
+	#print("entered card table")
 	visible = false; # Prevents an auto-turn before the game begins
 	orgn.setup(self);
+	if STATS.has_competitors:
+		setup_comp()
+
 	reset_status_bar();
 	#$ViewMap.texture_normal = load(Game.get_large_cell_path(Game.current_cell_string))
 	orgn.connect("show_warning", self, "_on_show_warning")
@@ -53,6 +58,7 @@ func _ready():
 	#$RepairTabs.set_tab_icon(0, load("res://Assets/Images/Menus/Q_s.png"))
 	$EnergyBar.MAX_ENERGY = orgn.MAX_ENERGY
 	#$statsScreen.visible = false;
+	#print("Exited card table")
 
 func reset_status_bar():
 	status_bar.clear_cmsms();
@@ -67,6 +73,11 @@ func get_Organism():
 	return orgn
 # Replication
 
+func setup_comp():
+	#print("look here \n\n")
+	print(STATS.get_has_competitors())
+	C_orgn.setup(self)
+	#print("setting up the competitor organism.")
 
 func enable_serialized_buttons():
 	#hide the locks
@@ -86,7 +97,8 @@ func enable_serialized_buttons():
 
 func turn_to_repair():
 	#Call the repair all function
-	print("I want to be called at repair_dmg")
+	#print("I want to be called at repair_dmg")
+	pass
 
 
 func show_replicate_opts(show):
@@ -207,7 +219,7 @@ func show_repair_opts(show):
 		#$RepairTabs/pnl_bandage_dmg/vbox/scroll/RTLRepairResult.text = "";
 		#$pnl_log_module/VSplitContainer/ScrollContainer/outputLog.text = "";
 		yield(get_tree(), "idle_frame");
-		print("line 210")
+		#print("line 210")
 		show_repair_tab(0);
 	if $RepairTabs.visible != show:
 		close_extra_menus($RepairTabs, true);
@@ -240,14 +252,14 @@ func _on_Organism_gene_bandaged(_gene):
 func _refresh_repair_tab():
 	upd_repair_lock_display();
 	yield(get_tree(), "idle_frame");
-	print("line 243")
+	#print("line 243")
 	show_repair_tab($RepairTabs.current_tab);
 
 func upd_gap_select_instruction_visibility():
 	$RepairTabs/pnl_repair_choices/vbox/LblInstr.visible = orgn.selected_gap == null;
 
 func show_repair_types(show: bool) -> void:
-	print("Show repair types being called.")
+	#print("Show repair types being called.")
 	upd_repair_lock_display();
 	var rep_pnl = $RepairTabs/pnl_repair_choices/hsplit;
 	rep_pnl.visible = show;
@@ -266,11 +278,11 @@ func show_repair_tab(tab_idx: int, upd_locks_disp := true) -> void:
 	if upd_locks_disp:
 		print("upd locks disp")
 		upd_repair_lock_display();
-	print("organism clear repair elms selections")
+	#print("organism clear repair elms selections")
 	orgn.clear_repair_elm_selections();
-	print ("Setting type to false")
+	#print ("Setting type to false")
 	show_repair_types(false);
-	print("tab: "+ str(tab_idx))
+	#print("tab: "+ str(tab_idx))
 	
 	match tab_idx:
 		1:
@@ -284,8 +296,8 @@ func show_repair_tab(tab_idx: int, upd_locks_disp := true) -> void:
 				continue;
 		0:
 			orgn.highlight_dmg_genes("bandage");
-			print(orgn.get_behavior_profile())
-			print("bandage")
+			#print(orgn.get_behavior_profile())
+			#print("bandage")
 		2:
 			if orgn.get_behavior_profile().has_skill("trim_gap_genes"):
 				orgn.highlight_gap_end_genes();
@@ -354,11 +366,11 @@ func _on_Organism_gap_close_msg(text):
 	
 func _on_show_warning():
 	$WarningPopUp.visible = true
-	print("here")
+	#print("here")
 
 func _on_hide_warning():
 	$WarningPopUp.visible = false
-	print("Hide warning called")
+	#print("Hide warning called")
 	
 
 
@@ -377,7 +389,7 @@ func _on_Organism_updated_gaps(gaps_exist, gap_text):
 	has_gaps = gaps_exist;
 	if !$RepairTabs/pnl_repair_choices/vbox/LblInstr.visible:
 		upd_gap_select_instruction_visibility();
-		print("it got called")
+		#print("it got called")
 		_on_Organism_gap_close_msg(gap_text);
 	check_if_ready();
 
@@ -462,9 +474,9 @@ func adv_turn():
 				
 		elif Game.get_next_turn_type() == Game.TURN_TYPES.Recombination:
 			var recombos = orgn.get_recombos_per_turn()
-			print("recombos: " + str(recombos))
+			#print("recombos: " + str(recombos))
 			if orgn.get_cmsm_pair().get_gap_list() != []:
-				print("there's damage")
+				#print("there's damage")
 				notifications.emit_signal("notification_needed", "There are still some breaks that you need to mend.")
 				$RepairTabs.current_tab = 1
 				$RepairTabs/pnl_repair_choices.show()
@@ -486,7 +498,7 @@ func adv_turn():
 				$RepairTabs/pnl_bandage_dmg.show()
 				#print("It should have happened.")
 				return "can't advance yet"
-		print("skip_turn: " + str(skip_turn))
+		#print("skip_turn: " + str(skip_turn))
 		Game.adv_turn(skip_turn); #What does this do
 		upd_turn_display(); #What does this do?
 		# updates the display information.
@@ -865,11 +877,11 @@ func _not_the_button():
 	show_choices()
 
 func show_repairs():
-	print("show repairs being called")
+	#print("show repairs being called")
 	$RepairTabs.current_tab = 3
 
 func show_choices():
-	print("show choices being called")
+	#print("show choices being called")
 	$RepairTabs.current_tab = 0
 
 func _on_fix_all_pressed():
@@ -1161,7 +1173,7 @@ func _on_q_s2_gui_input(event):
 
 func _on_q_s3_gui_input(event):
 	if (event is InputEventMouseButton) and event.pressed:
-		print("boop5")
+		#print("boop5")
 		var slides = load("res://Scenes/CardTable/trim_ends_slides.tscn").instance()
 		add_child(slides)
 		yield(slides, "exit_trim_ends_slides")
@@ -1172,7 +1184,7 @@ func _on_q_s3_gui_input(event):
 
 func _on_q_s4_gui_input(event):
 	if (event is InputEventMouseButton) and event.pressed:
-		print("boop5")
+		#print("boop5")
 		var slides = load("res://Scenes/CardTable/trim_dmg_genes_slides.tscn").instance()
 		add_child(slides)
 		yield(slides, "exit_trim_dmg_genes_slides")
@@ -1182,7 +1194,7 @@ func _on_q_s4_gui_input(event):
 
 
 func _on_join_end_q_pressed():
-	print("boop1")
+	#print("boop1")
 	var slides = load("res://Scenes/CardTable/join_ends_slides.tscn").instance()
 	add_child(slides)
 	yield(slides, "exit_join_ends_slides")
@@ -1192,7 +1204,7 @@ func _on_join_end_q_pressed():
 
 
 func _on_copy_pat_q_pressed():
-	print("boop2")
+	#print("boop2")
 	var slides = load("res://Scenes/CardTable/copy_repair_slides.tscn").instance()
 	add_child(slides)
 	yield(slides, "exit_copy_repair_slides")
@@ -1202,7 +1214,7 @@ func _on_copy_pat_q_pressed():
 
 
 func _on_collaps_q_pressed():
-	print('boop3')
+	#print('boop3')
 	var slides = load("res://Scenes/CardTable/collapse_dupes_slides.tscn").instance()
 	add_child(slides)
 	yield(slides, "exit_collapse_dupes_slides")

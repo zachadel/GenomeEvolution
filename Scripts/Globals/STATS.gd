@@ -173,6 +173,14 @@ var proteins_eaten = 0;
 var complex_carbs_eaten = 0;
 var fats_eaten = 0;
 
+var has_competitors;
+
+func set_has_competitors(v):
+	has_competitors = v
+
+func get_has_competitors():
+	return has_competitors;
+
 func incr_sugars():
 	sugars_eaten +=1
 	if current_mission[0] == 'eat' and current_mission[1] == 0:
@@ -247,14 +255,14 @@ func mission_control(category, idx):
 	current_mission = [category, idx];
 	start_curr_mission = 0
 	var string_category
-	print("category: " + category)
-	print("index: " + str(idx))
+	#print("category: " + category)
+	#print("index: " + str(idx))
 	match category:
 		"eat": #eat
 			if idx < 11 and idx > -1:
 				match idx:
 					0,1,2,3,4,5:
-						print("eat 2 of something")
+						#print("eat 2 of something")
 						end_curr_mission = 2;
 					6:
 						print("eat till the Fe border is green")
@@ -274,22 +282,22 @@ func mission_control(category, idx):
 			if idx < 6:
 				match idx:
 					0:
-						print("Explore any 5 tiles")
+						#print("Explore any 5 tiles")
 						end_curr_mission = 5
 					1: 
-						print("Uncover 10 hidden tiles")
+						#print("Uncover 10 hidden tiles")
 						end_curr_mission = 10
 					2:
-						print("Uncover 20 hidden tiles")
+						#print("Uncover 20 hidden tiles")
 						end_curr_mission = 20
 					3: 
-						print("Uncover 30 hidden tiles")
+						#print("Uncover 30 hidden tiles")
 						end_curr_mission = 30
 					4: 
-						print("Uncover 40 hidden tiles")
+						#print("Uncover 40 hidden tiles")
 						end_curr_mission = 40
 					5:
-						print("Uncover 50 hidden tiles")
+						#print("Uncover 50 hidden tiles")
 						end_curr_mission = 50
 			else:
 				return false
@@ -297,103 +305,103 @@ func mission_control(category, idx):
 			if idx < 33:
 				match idx:
 					0:
-						print("Fix 3 damaged genes")
+						#print("Fix 3 damaged genes")
 						end_curr_mission = 3
 					1: 
-						print("Fix 5 damaged genes")
+						#print("Fix 5 damaged genes")
 						end_curr_mission = 5
 					2:
-						print("Fix 7 damaged genes")
+						#print("Fix 7 damaged genes")
 						end_curr_mission = 7
 					3: 
-						print("Fix 10 damaged genes")
+						#print("Fix 10 damaged genes")
 						end_curr_mission = 10
 					4: 
-						print("Perform 2 Join end successfully")
+						#print("Perform 2 Join end successfully")
 						end_curr_mission = 2
 					5:
-						print("Perform 4 Join end successfully")
+						#print("Perform 4 Join end successfully")
 						end_curr_mission = 4
 					6:
-						print("Perform 6 Join end successfully")
+						#print("Perform 6 Join end successfully")
 						end_curr_mission = 6
 					7:
-						print("Perform 8 Join end successfully")
+						#print("Perform 8 Join end successfully")
 						end_curr_mission = 8
 					8:
-						print("Perform 10 Join end successfully")
+						#print("Perform 10 Join end successfully")
 						end_curr_mission = 10
 					9:
-						print("Turn 1 Transposon into a pseudogene")
+						#print("Turn 1 Transposon into a pseudogene")
 						end_curr_mission = 1
 					10:
-						print("Turn 3 Transposon into a pseudogene")
+						#print("Turn 3 Transposon into a pseudogene")
 						end_curr_mission = 3
 					11: 
-						print("Turn 5 Transposon into a pseudogene")
+						#print("Turn 5 Transposon into a pseudogene")
 						end_curr_mission = 5
 					12:
-						print("Turn 7 Transposon into a pseudogene")
+						#print("Turn 7 Transposon into a pseudogene")
 						end_curr_mission = 7
 					13: 
-						print("Turn 11 Transposon into a pseudogene")
+						#print("Turn 11 Transposon into a pseudogene")
 						end_curr_mission = 11
 					14: 
-						print("Perform copy-repair to generate 1 new tile")
+						#print("Perform copy-repair to generate 1 new tile")
 						end_curr_mission = 1
 					15:
-						print("Perform copy-repair to generate 3 new tile")
+						#print("Perform copy-repair to generate 3 new tile")
 						end_curr_mission = 3
 					16:
-						print("Perform copy-repair to generate 5 new tile")
+						#print("Perform copy-repair to generate 5 new tile")
 						end_curr_mission = 5
 					17:
-						print("Perform copy-repair to generate 7 new tile")
+						#print("Perform copy-repair to generate 7 new tile")
 						end_curr_mission = 7
 					18:
-						print("Perform copy-repair to generate 11 new tile")
+						#print("Perform copy-repair to generate 11 new tile")
 						end_curr_mission = 11
 					19:
-						print("Perform copy-repair to generate 1 new gene")
+						#print("Perform copy-repair to generate 1 new gene")
 						end_curr_mission = 1
 					20:
-						print("Perform copy-repair to generate 3 new gene")
+						#print("Perform copy-repair to generate 3 new gene")
 						end_curr_mission = 3
 					21: 
-						print("Perform copy-repair to generate 5 new gene")
+						#print("Perform copy-repair to generate 5 new gene")
 						end_curr_mission = 5
 					22:
-						print("Perform copy-repair to generate 7 new gene")
+						#print("Perform copy-repair to generate 7 new gene")
 						end_curr_mission = 7
 					23: 
-						print("Perform copy-repair to generate 11 new gene")
+						#print("Perform copy-repair to generate 11 new gene")
 						end_curr_mission = 11
 					24: 
-						print("Perform 1 inversion during repair")
+						#print("Perform 1 inversion during repair")
 						end_curr_mission = 1
 					25:
-						print("Perform 3 inversion during repair")
+						#print("Perform 3 inversion during repair")
 						end_curr_mission = 3
 					26:
-						print("Perform 5 inversion during repair")
+						#print("Perform 5 inversion during repair")
 						end_curr_mission = 5
 					27:
-						print("Merge 1 Gene")
+						#print("Merge 1 Gene")
 						end_curr_mission = 1
 					28:
-						print("Merge 3 Gene")
+						#print("Merge 3 Gene")
 						end_curr_mission = 3
 					29:
-						print("Merge 5 Gene")
+						#print("Merge 5 Gene")
 						end_curr_mission = 5
 					30:
-						print("Split 1 Gene")
+						#print("Split 1 Gene")
 						end_curr_mission = 1
 					31: 
-						print("Split 3 Gene")
+						#print("Split 3 Gene")
 						end_curr_mission = 3
 					32:
-						print("Split 5 Gene")
+						#print("Split 5 Gene")
 						end_curr_mission = 5
 			else:
 				return false
@@ -401,22 +409,22 @@ func mission_control(category, idx):
 			if idx < 6:
 				match idx:
 					0:
-						print("Perform Mitosis 1 time")
+						#print("Perform Mitosis 1 time")
 						end_curr_mission = 1
 					1: 
-						print("Perform Mitosis 2 time")
+						#print("Perform Mitosis 2 time")
 						end_curr_mission = 2
 					2:
-						print("Perform Mitosis 3 time")
+						#print("Perform Mitosis 3 time")
 						end_curr_mission = 3
 					3: 
-						print("Learn 1 new skill")
+						#print("Learn 1 new skill")
 						end_curr_mission = 1
 					4: 
-						print("Learn 3 new skill")
+						#print("Learn 3 new skill")
 						end_curr_mission = 3
 					5:
-						print("Learn 5 new skill")
+						#print("Learn 5 new skill")
 						end_curr_mission = 5
 			else:
 				return false
@@ -425,13 +433,13 @@ func mission_control(category, idx):
 			if idx < 3:
 				match idx:
 					0:
-						print("Add 1 new Transposon type ot the composition of your genome.")
+						#print("Add 1 new Transposon type ot the composition of your genome.")
 						end_curr_mission = 1
 					1: 
-						print("Add 3 new Transposon type ot the composition of your genome.")
+						#print("Add 3 new Transposon type ot the composition of your genome.")
 						end_curr_mission = 3
 					2:
-						print("Add 5 new Transposon type ot the composition of your genome.")
+						#print("Add 5 new Transposon type ot the composition of your genome.")
 						end_curr_mission = 5
 			else:
 				return false
@@ -619,7 +627,7 @@ func append_temp_array(val):
 	temperature_array.append(val);
 
 func print_temp_array():
-	print("Printing temperature array: ")
+	#print("Printing temperature array: ")
 	for i in temperature_array:
 		print(str(i)+", ")
 

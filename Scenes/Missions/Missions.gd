@@ -97,7 +97,7 @@ func _ready():
 	setMission("testing");
 	updateMission();
 	
-	print("here")
+	#print("here")
 	pass # Replace with function body.
 
 func updateMission():
@@ -112,17 +112,17 @@ func updateMission():
 			0: #eat
 				string_category = "eat";
 				mission_index = rng.randi_range(0, 10)
-				print("eat mission index: "+ str(mission_index))
+				#print("eat mission index: "+ str(mission_index))
 			1: #explore
 				string_category = "explore";
 				mission_index = rng.randi_range(0, 5)
-				print("explore mission index: "+ str(mission_index))
+				#print("explore mission index: "+ str(mission_index))
 				#if mission_index > 0 and !organized_missions1[string_category][mission_index-1].values()[0]:
 				#	continue
 			2:  #repair
 				string_category = "repair";
 				mission_index = rng.randi_range(0, 32)
-				print("repair mission index: "+ str(mission_index))
+				#print("repair mission index: "+ str(mission_index))
 #				""" 
 #				if mission_index > 0 and mission_index < 4 and not organized_missions1[string_category][mission_index-1].values()[0] :
 #					continue
@@ -144,7 +144,7 @@ func updateMission():
 			3: #replication
 				string_category = "replication";
 				mission_index = rng.randi_range(0, 5)
-				print("replication mission index: "+ str(mission_index))
+				#print("replication mission index: "+ str(mission_index))
 #				"""
 #				if mission_index > 0 and mission_index < 3 and not organized_missions1[string_category][mission_index-1].values()[0] :
 #					continue
@@ -153,7 +153,7 @@ func updateMission():
 			4: #genome
 				string_category = "genome";
 				mission_index = rng.randi_range(0, 2)
-				print("genome mission index: "+ str(mission_index))
+				#print("genome mission index: "+ str(mission_index))
 #				if mission_index > 0 and !organized_missions1[string_category][mission_index-1].values()[0]:
 #					continue
 		# Looking through keys.
@@ -163,14 +163,14 @@ func updateMission():
 		#This only gets called if the value is true. Else it just conitnues on. 
 	var should_continue = false
 	while(true): 
-		print("Entered the loop")
+		#print("Entered the loop")
 		match category:
 			0: #eat, genuinely any of these could be used
 				mission_index = rng.randi_range(0, 10)
 			1: #explore, each of these have to be in successive order.
 				mission_index = rng.randi_range(0, 5)
 				if mission_index > 0 and !organized_missions1[string_category][mission_index-1].values()[0]:
-					print("Calling continue")
+					#print("Calling continue")
 					should_continue = true
 				else:
 					should_continue = false
@@ -209,12 +209,12 @@ func updateMission():
 				else:
 					should_continue = false
 		if should_continue:
-			print("mission index: " + str(mission_index))
+			#print("mission index: " + str(mission_index))
 			continue
 		prompt = organized_missions1[string_category][mission_index].keys()[0];
 		if not organized_missions1[string_category][mission_index][prompt]:
 			break
-	print(prompt)
+	#print(prompt)
 	setMission(prompt);
 	set_currents(prompt, mission_index, string_category)
 	STATS.mission_control(string_category, mission_index)
@@ -228,7 +228,7 @@ func set_currents(mission, mission_index, category):
 func completeMission(category, index):
 	completed_missions_count +=1
 	if category == current_mission_category and index == current_mission_index:
-		print("all good")
+		print("all good with the missions")
 	else:
 		print("Mission does not match the one completed.")
 		return
@@ -311,14 +311,14 @@ func reshuffle(): #function that outputs a new missions from any category and an
 		#This only gets called if the value is true. Else it just conitnues on. 
 	var should_continue = false
 	while(true): 
-		print("Entered the loop")
+		#print("Entered the loop")
 		match category:
 			0: #eat, genuinely any of these could be used
 				mission_index = rng.randi_range(0, 10)
 			1: #explore, each of these have to be in successive order.
 				mission_index = rng.randi_range(0, 5)
 				if mission_index > 0 and !organized_missions1[string_category][mission_index-1].values()[0]:
-					print("Calling continue")
+					#print("Calling continue")
 					should_continue = true
 				else:
 					should_continue = false
@@ -357,7 +357,7 @@ func reshuffle(): #function that outputs a new missions from any category and an
 				else:
 					should_continue = false
 		if should_continue:
-			print("mission index: " + str(mission_index))
+			#print("mission index: " + str(mission_index))
 			continue
 		prompt = organized_missions1[string_category][mission_index].keys()[0];
 		if not organized_missions1[string_category][mission_index][prompt]:
@@ -381,7 +381,7 @@ func progressMission(category, mission):
 	if missions_ind == -1:
 		return -1
 	else:
-		print(missions_ind)
+		#print(missions_ind)
 		currentOutOf = mission.to_int()
 		# I want to parse the string for numeric characters, and then pull them out
 		# that will be the new outOf vlaue. 

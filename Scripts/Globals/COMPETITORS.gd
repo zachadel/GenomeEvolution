@@ -29,7 +29,7 @@ func get_active_toggle():
 #the child being passed in is the instance of the progeny that is on the world map
 func kill_dead_competitors():
 	for i in dead_competitors:
-		print("i: " + str(i))
+		#print("i: " + str(i))
 		if STATS.get_rounds() - i["round"] >= 2:
 			i.position = null
 			i["cell"].enable_sprite(false)
@@ -51,9 +51,6 @@ func move_competitor( distance ):
 	var direction = randi() % 2;
 	if direction == 1:
 		distance = -distance
-	
-	
-
 	for i in competitors_created:
 		var player_pos = Game.world_to_map(i.position)
 		#var curr_tile = get_tile_at_pos(player_pos)
@@ -71,6 +68,6 @@ func move_competitor( distance ):
 func new_game():
 	competitors_created.clear()
 	dead_competitors.clear()
-	print("competitors_created: " + str(competitors_created))
-	print("dead_competitors: " + str(dead_competitors))
+	#print("competitors_created: " + str(competitors_created))
+	#print("dead_competitors: " + str(dead_competitors))
 	pass

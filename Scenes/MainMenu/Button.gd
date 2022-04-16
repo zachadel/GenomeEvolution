@@ -17,5 +17,5 @@ func _ready():
 
 
 func _on_Button_pressed():
-	
-	print("clicked")
+	pass
+	#print("clicked")

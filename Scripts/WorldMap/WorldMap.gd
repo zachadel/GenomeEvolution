@@ -153,7 +153,7 @@ func _on_update_competitor_placement():
 		for i in COMPETITORS.competitors_created:
 			i.set_hibernation(current_player.position)
 			i.hibernation_mode(current_player.position)
-		print("we have a competitor")
+		#print("we have a competitor")
 		for i in COMPETITORS.competitors_created:
 			var old_tile = i.position;
 			#I want to get their location
@@ -176,7 +176,7 @@ func _on_update_competitor_placement():
 			var path_of_tiles = astar.get_tile_path_from_to(Game.world_to_map(old_tile), Game.world_to_map(i.position))
 			for j in path_of_tiles:
 				$ResourceMap.clear_tile_resources(j)
-			print("path: " + str(path_of_tiles))
+			#print("path: " + str(path_of_tiles))
 	
 	pass
 	
@@ -189,7 +189,7 @@ func _on_update_progeny_placement():
 			#I want to get their location
 			var child_tile = Game.world_to_map(i.position) #get the position of the child for the progeny
 			if greedy_behavior(child_tile, STATS.get_round_moves()) == child_tile:
-				print("not greedy")
+				#print("not greedy")
 				var closer_tiles = Game.get_tiles_inside_radius(child_tile, STATS.get_round_moves()) #returns list of tiles for child from specified radius
 				var rand_idx = Chance.rand_between_tiles(0, len(closer_tiles)) #gives us a random index
 				while Game.map_to_world(closer_tiles[rand_idx]) == i.position: #will ensure that they don't end up on the same tile
@@ -198,20 +198,20 @@ func _on_update_progeny_placement():
 				i.position = Game.map_to_world(closer_tiles[rand_idx]) #setting the position
 				i.organism.current_tile = get_tile_at_pos(closer_tiles[rand_idx]) #setting the tiles
 			else:
-				print("greedy")
+				#print("greedy")
 				i.position = Game.map_to_world( greedy_behavior(child_tile, STATS.get_round_moves()))
-				print("Position: " + str(i.position))
+				#print("Position: " + str(i.position))
 				i.organism.current_tile = get_tile_at_pos( greedy_behavior(child_tile, STATS.get_round_moves()))
-				print("current_tile: " + str(i.organism.current_tile))
+				#print("current_tile: " + str(i.organism.current_tile))
 				
 			print(i.organism.current_tile)
 			var path_of_tiles = astar.get_tile_path_from_to(Game.world_to_map(old_tile), Game.world_to_map(i.position))
 			for j in path_of_tiles:
 				$ResourceMap.clear_tile_resources(j)
-			print("path: " + str(path_of_tiles))
+			#rint("path: " + str(path_of_tiles))
 #			#I wantt to modify it and move on
 #			print(i)
-		print("we have kids to move and eat")
+		#print("we have kids to move and eat")
 	else:
 		print("nothing happens")
 func setup_dead_cell(cell):
@@ -240,7 +240,7 @@ func setup_new_cell(cell,alive):
 				cell.enable_sprite(false)
 				cell.organism.refresh_behavior_profile()
 				PROGENY.add_progeny(cell)
-				print("new cell at: " + str(close_tiles[rand_idx]))
+				#print("new cell at: " + str(close_tiles[rand_idx]))
 	else:
 		var placed_cell = false
 		while(placed_cell == false):
@@ -259,7 +259,7 @@ func setup_new_cell(cell,alive):
 				
 				var obj = {"cell": cell, "round": STATS.get_rounds()}
 				PROGENY.add_dead_progeny(obj)
-				print("dead cell has been placed.")
+				#print("dead cell has been placed.")
 		#what i want to do is have it on for 2 turns.
 		
 		#$ResourceMap.add_resources_to_tile(close_tiles[rand_idx], {"simple_sugar1": 1.0})
@@ -273,7 +273,7 @@ func biome_temp_and_ph_setup():
 	starting_biome = current_player.organism.current_tile["biome"];
 	var temperature_pref = STATS.get_temp_dict();
 	var pH_pref = STATS.get_pH_dict();
-	print('PH PREFERERNCE 			HERE')
+	#print('PH PREFERERNCE 			HERE')
 	print(pH_pref)
 	var new_vals_t = {};
 	var new_vals_p ={};
@@ -1710,11 +1710,12 @@ func setup(biome_seed, hazard_seeds, resource_seed, tiebreak_seed, _chunk_size, 
 	
 	print(players)
 	if len(players) > 1:
-		print("oops")
 	#To add the agent back into the game, uncomment 1708, 1711-1714.
 		agent = players[1]
 		player_sprite_offset = (tile_sprite_size - agent.get_texture_size()) / 2
-		agent.set_texture_size() #This kinda sets things based off a consant. It's not great.
+		#So for whatever reason, if you set the texture size here. It creates this weird bug where it keeps growing.
+		#I'm not super sure why it's acting so odd. But if you comment out the function it doesn't keep going.
+		#agent.set_texture_size() #This kinda sets things based off a consant. It's not great.
 		agent.position = Game.map_to_world(Game.world_to_map(agent_start))
 		agent.organism.current_tile = get_tile_at_pos(Game.world_to_map(agent_start))
 		agent.organism.set_start_tile(get_tile_at_pos(Game.world_to_map((agent_start))))
@@ -2098,7 +2099,7 @@ func move_player(pos: Vector3):
 				
 				
 				if len(PROGENY.progeny_created) > 0:
-					print("progeny length: " + str(len(PROGENY.progeny_created)))
+					#print("progeny length: " + str(len(PROGENY.progeny_created)))
 					for i in PROGENY.progeny_created:
 						if i.position == new_position:
 							no_one_on_tile = false
@@ -2224,11 +2225,11 @@ func hide_tiles(center_tile, observation_radius):
 	if Settings.fog == true:
 		#print("test")
 		if len(PROGENY.progeny_created) > 0:
-			print("me")
+			#print("me")
 			for i in PROGENY.progeny_created:
-				print("boop")
+				#print("boop")
 				if current_player.clear_path.has([ int(i.position[0]), int(i.position[1]) ]):
-					print("hello")
+					#print("hello")
 					if current_player.clear_path[[int(i.position[0]), int(i.position[1])]] == $ObscurityMap.VISION.HIDDEN || current_player.clear_path[[int(i.position[0]), int(i.position[1])]] == $ObscurityMap.VISION.CLEAR:
 						i.visible = true
 					else:
@@ -2299,7 +2300,7 @@ func check_on_resources():
 	pass
 
 func energy_before_worldmap_end():
-	print("simple fat stuff: "+str(current_player.organism.cfp_resources["simple_fats"]))
+	#print("simple fat stuff: "+str(current_player.organism.cfp_resources["simple_fats"]))
 	#check to see if the player's energy is less than 5. if it's not ignore this function.
 	if(current_player.organism.energy<5):#if the player's energy is less than 5
 		#let's check to see how much sugar resource they have. 

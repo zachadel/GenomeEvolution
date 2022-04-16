@@ -989,7 +989,7 @@ func make_repair_choices(gap, repair_type: String):
 					gene_selection.append(gene);
 					gene.disable(false);
 				yield(self, "gene_clicked");
-				print("1")
+				#print("1")
 				emit_signal("close_warning")
 				sel_size_gene = get_gene_selection();
 				for g in gene_selection:
@@ -1013,7 +1013,7 @@ func make_repair_choices(gap, repair_type: String):
 			var right_choice_opts = blocks_dict[left_idx][choice_info["size"]];
 			if (is_ai || right_choice_opts.size() == 1):
 				choice_info["right"] = gap_cmsm.get_child(right_choice_opts[0]);
-				print("2")
+				#print("2")
 				emit_signal("close_warning")
 			else:
 				for i in right_choice_opts:
@@ -1021,7 +1021,7 @@ func make_repair_choices(gap, repair_type: String):
 					gene_selection.append(gene);
 					gene.disable(false);
 				yield(self, "gene_clicked");
-				print("3")
+				#print("3")
 				emit_signal("close_warning")
 				choice_info["right"] = get_gene_selection();
 				for g in gene_selection:
@@ -1048,7 +1048,7 @@ func make_repair_choices(gap, repair_type: String):
 			gene_selection.clear();
 			if (is_ai || pairs_dict.size() == 1):
 				choice_info["left"] = template_cmsm.get_child(pairs_dict.keys()[0]);
-				print("4")
+				#print("4")
 				emit_signal("close_warning")
 			else:
 				for k in pairs_dict.keys():
@@ -1056,7 +1056,7 @@ func make_repair_choices(gap, repair_type: String):
 					gene_selection.append(gene);
 					gene.disable(false);
 				yield(self, "gene_clicked");
-				print("5")
+				#print("5")
 				emit_signal("close_warning")
 				choice_info["left"] = get_gene_selection();
 				for g in gene_selection:
@@ -1071,7 +1071,7 @@ func make_repair_choices(gap, repair_type: String):
 			var right_idxs = pairs_dict[choice_info["left"].get_index()];
 			if (is_ai || right_idxs.size() == 1):
 				choice_info["right"] = template_cmsm.get_child(right_idxs[0]);
-				print("6")
+				#print("6")
 				emit_signal("close_warning")
 			else:
 				for i in right_idxs:
@@ -1079,7 +1079,7 @@ func make_repair_choices(gap, repair_type: String):
 					gene_selection.append(gene);
 					gene.disable(false);
 				yield(self, "gene_clicked");
-				print("7")
+				#print("7")
 				emit_signal("close_warning")
 				choice_info["right"] = get_gene_selection();
 				for g in gene_selection:
@@ -1089,7 +1089,7 @@ func make_repair_choices(gap, repair_type: String):
 				return false;
 	if perform_repair:
 		repair_gap(gap, repair_type, choice_info);
-	print("8")
+	#print("8")
 	#emit_signal("close_warning")
 
 var repair_canceled = false;
@@ -1213,7 +1213,7 @@ func repair_gap(gap, repair_type, choice_info = {}):
 								gene_selection.append(gene_selection[1]);
 						else:
 							yield(self, "gene_clicked");
-							print("9")
+							#print("9")
 							emit_signal("close_warning")
 							
 						# Yield also ended when a gap is deselected and gene_selection is cleared
@@ -1352,9 +1352,9 @@ func repair_gap(gap, repair_type, choice_info = {}):
 							else:
 								gene_selection.append(gene_selection[1]);
 						else:
-							print("yielding")
+							#print("yielding")
 							yield(self, "gene_clicked");
-							print("yielded")
+							#print("yielded")
 							emit_signal("close_warning")
 							
 						# Yield also ended when a gap is deselected and gene_selection is cleared
@@ -1428,7 +1428,7 @@ func highlight_gap_choices():
 		auto_repair();
 
 func highlight_dmg_genes(mode: String):
-	print("highlighting damage genes organism.")
+	#print("highlighting damage genes organism.")
 	match mode:
 		"scissors":
 			start_scissors("get_damaged_genes");
@@ -1616,7 +1616,7 @@ func set_doing_bandage(is_doing: bool) -> void:
 	_set_clickmode_on_criteria(is_doing, "bandage");
 
 func is_doing_bandage() -> bool:
-	print("seeing if there needs bandaged.")
+	#print("seeing if there needs bandaged.")
 	return click_mode == "bandage";
 
 var total_scissors_left := 0;
@@ -1649,7 +1649,7 @@ func start_bandage():
 			cmsms.highlight_genes(gene_selection);
 
 func bandage_elm(rep_elm) -> void:
-	print("HOWEHWOEO")
+	#print("HOWEHWOEO")
 	if is_doing_bandage():
 		var g_pos_disp = rep_elm.get_position_display();
 		var g_id = rep_elm.get_gene_name();
@@ -1806,6 +1806,8 @@ func replicate(idx):
 		
 		
 		var alive_arr =[]
+		#if you come across this variable and it changes. make a note of it. I think this 
+		#is just arbitrary from an earlier programmer.
 		var rep_type = "some unknown freaky deaky shiznaz";
 		match idx:
 			0: # Mitosis
@@ -1895,7 +1897,7 @@ func replicate(idx):
 				alive_arr.append(true)
 				alive_arr.append(true)
 				alive_arr.append(true)
-				print("11")
+				#print("11")
 				emit_signal("close_warning")
 				cmsms.move_cmsm(keep_idx, 0);
 				if not check_cmsm_(0):
@@ -1907,6 +1909,7 @@ func replicate(idx):
 				var mineral_splits = split_mineral_resources(MEIOSIS_SPLITS)
 				var energy_split = split_energy(MEIOSIS_SPLITS)
 				
+				#LOOK HEREE FOR UPDATING MEIOSIS
 				cfp_resources = cfp_splits[randi() % MEIOSIS_SPLITS]
 				mineral_resources = mineral_splits[randi() % MEIOSIS_SPLITS]
 				set_energy(energy_split)
@@ -1996,7 +1999,7 @@ func iterate_genes():
 
 func adv_turn(round_num, turn_idx):
 	#This 
-	print("12")
+	#print("12")
 	print(Game.get_turn_type())
 	emit_signal("close_warning")
 	click_mode = "";
@@ -2086,6 +2089,15 @@ func adv_turn(round_num, turn_idx):
 				emit_signal("doing_work",true)
 
 func kill(descr := "died"):
+	STATS.set_gc_rep(get_behavior_profile().get_behavior("Replication"))
+	STATS.set_gc_sens(get_behavior_profile().get_behavior("Sensing"))
+	STATS.set_gc_loc(get_behavior_profile().get_behavior("Locomotion"))
+	STATS.set_gc_help(get_behavior_profile().get_behavior("Helper"))
+	STATS.set_gc_man(get_behavior_profile().get_behavior("Manipulation"))
+	STATS.set_gc_comp(get_behavior_profile().get_behavior("Component"))
+	STATS.set_gc_con(get_behavior_profile().get_behavior("Construction"))
+	STATS.set_gc_decon(get_behavior_profile().get_behavior("Deconstruction"))
+	STATS.set_gc_ate(get_behavior_profile().get_behavior("ate"))
 	emit_signal("died", self, descr);
 
 func is_viable(missing_classes: Array) -> bool:
@@ -3148,9 +3160,9 @@ func acquire_resources():
 			if current_tile["resources"][index] > 0:
 				if Settings.settings["resources"][resource]["group"] == "minerals":
 					modified = true
-					print("Resource: "+ resource) #Theses are numbered minimally 0-33
+					#print("Resource: "+ resource) #Theses are numbered minimally 0-33
 					
-					print("Mineral resources: "+ str(mineral_resources[resource_class][resource]))
+					#print("Mineral resources: "+ str(mineral_resources[resource_class][resource]))
 					if mineral_resources[resource_class][resource] + current_tile["resources"][index] <= 33:
 						mineral_resources[resource_class][resource] += current_tile["resources"][index]
 						mineral_resources[resource_class]["total"] += current_tile["resources"][index]
@@ -3174,13 +3186,13 @@ func acquire_resources():
 						if(resource_class == "simple_carbs" and resource == "candy1"):
 							for i in range(current_tile['resources'][index]):
 								STATS.incr_sugars()
-								print("eating sugar")
+								#print("eating sugar")
 							emit_signal("add_card_event_log",str(current_tile["resources"][index])+" peppermints were eaten",{})
 						
 						elif(resource_class == "simple_carbs" and resource == "candy2"):
 							for i in range(current_tile['resources'][index]):
 								STATS.incr_sugars()
-								print("eating sugar also")
+								#print("eating sugar also")
 							emit_signal("add_card_event_log",str(current_tile["resources"][index])+" hard candies eaten",{})
 						
 						elif(resource_class == "simple_proteins" and resource == "proetin_shake"):
@@ -3246,7 +3258,7 @@ func acquire_resources():
 		modified = false
 	#Reestablish what the new primary_resource indicator on the tile should be
 	#NOTE: Not currently based on sensing; will cause some weird behavior
-	print("?: " + str(current_tile["primary_resource"]))
+	#print("?: " + str(current_tile["primary_resource"]))
 	if modified and current_tile["primary_resource"] != -1:
 		if current_tile["resources"][current_tile["primary_resource"]] < Settings.settings["resources"][Settings.settings["resources"].keys()[current_tile["primary_resource"]]]["primary_resource_min"]:
 			current_tile["primary_resource"] = -1

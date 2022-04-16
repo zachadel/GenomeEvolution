@@ -67,7 +67,7 @@ func _update_mission(index):
 	var length_mission = len(missions)-1
 	#rng = RandomNumberGenerator.new()
 	var new_index = rng.randi_range(0, length_mission)
-	print("new index: " + str(new_index))
+	#print("new index: " + str(new_index))
 	var new_prompt = missions[new_index]
 	var curr_mission 
 	if index < len(missions):
@@ -86,7 +86,7 @@ func _update_mission(index):
 	$MissionControl/greenLight/ProgressBar.value = 0
 	$MissionControl/greenLight.color = Color(12,219,39,0)
 	$MissionControl/greenLight/Label.text = "Current Mission: "+ new_prompt
-	print("index: "+ str(index))
+	#print("index: "+ str(index))
 	completed_missions.append(curr_mission);
 	missions.remove(curr_mission)
 	curr_index = new_index
@@ -103,9 +103,9 @@ func get_tooltip_data():
 	return ["set_test_ttip", ["res://Assets/Images/Tiles/Resources/ironbar_icon.png"]]
 	
 func hide():
-	print("get children: " + str(get_children()))
+	#print("get children: " + str(get_children()))
 	for node in get_children():
-		print("node name: "+node.get_class())
+		#print("node name: "+node.get_class())
 		if not node.get_class() == "Timer": #In adding a timer in the attempts to try and help players, a ghost timer seems to be appearing and disappearing. This stops the program from shutting down
 			#I'm not a fan of this implementation, and suggest against this, but it works. So maybe fry bigger fish
 			node.hide()
@@ -240,6 +240,14 @@ func _on_EndMapTurn_pressed():
 	emit_signal("update_competitor_placement")
 	emit_signal("update_progeny_placement")
 	get_parent().disperse_resources_from_dead()
+	#print("LETS SEE THE GAPS FOR COMPETITORS: \n")
+	# rng.randi() % 4 == 0 and 
+	if len(COMPETITORS.competitors_created) > 0:
+		#print("added ate")
+		COMPETITORS.competitors_created[0].organism.environmental_damage()
+		print("new competitors added:" + str(COMPETITORS.competitors_created[0].organism.get_transposons()))
+		
+	print("\n\n\n")
 #	PROGENY.kill_dead_progeny()
 	pass # Replace with function body.
 
@@ -354,7 +362,7 @@ func _on_q_mark5_mouse_exited():
 func _on_q_mark_gui_input(event):
 	if (event is InputEventMouseButton) and event.pressed:
 		$InternalPanel.visible=false
-		print("boop4")
+		#print("boop4")
 		var slides = load("res://Scenes/WorldMap/map_resources_slides.tscn").instance()
 		add_child(slides)
 		yield(slides, "exit_map_resources_slides")
@@ -367,7 +375,7 @@ func _on_q_mark_gui_input(event):
 func _on_q_mark1_gui_input(event):
 	if (event is InputEventMouseButton) and event.pressed:
 		$InternalPanel.visible=false
-		print("boop4")
+		#print("boop4")
 		var slides = load("res://Scenes/WorldMap/elements_slides.tscn").instance()
 		add_child(slides)
 		yield(slides, "exit_elements_slides")
@@ -380,7 +388,7 @@ func _on_q_mark1_gui_input(event):
 func _on_map_q_mark_gui_input(event):
 	if (event is InputEventMouseButton) and event.pressed:
 		$InternalPanel.visible=false
-		print("boop4")
+		#print("boop4")
 		var slides = load("res://Scenes/WorldMap/map_slides.tscn").instance()
 		add_child(slides)
 		yield(slides, "exit_map_slides")

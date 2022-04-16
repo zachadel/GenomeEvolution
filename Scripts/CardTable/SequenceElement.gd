@@ -1016,7 +1016,7 @@ func get_active_behavior(jump): #if jump==false, get the copy range
 
 var toggle_rect_clr = {true: Color(0.5, 0.5, 0), false: Color(1, 1, 1)};
 func _on_SeqElm_toggled(on):
-	print("switfh")
+	#print("switfh")
 	$BorderRect.modulate = toggle_rect_clr[on];
 	toggled_rect = !toggled_rect;
 	

@@ -353,9 +353,9 @@ func handle_click_with_selection():
 												if j == "nitrogen":
 								
 													curr_org.mineral_resources[resource_type][j] = STATS.get_amt_of_nitrogen()
-													print("Resource type: " + str(resource_type))
-													print("J: " + str(j))
-													print(STATS.get_amt_of_nitrogen())
+													#print("Resource type: " + str(resource_type))
+													#print("J: " + str(j))
+													#print(STATS.get_amt_of_nitrogen())
 								elif STATS.get_amt_of_nitrogen() > 0:
 									if Game.is_valid_interaction(resource, container_name, bhv_profile) :
 										resources_to_process[resource] = len(selected_resources[resource_class][resource])
@@ -366,9 +366,9 @@ func handle_click_with_selection():
 												if j == "nitrogen":
 								
 													curr_org.mineral_resources[resource_type][j] = STATS.get_amt_of_nitrogen()
-													print("Resource type: " + str(resource_type))
-													print("J: " + str(j))
-													print(STATS.get_amt_of_nitrogen())
+													#print("Resource type: " + str(resource_type))
+													#print("J: " + str(j))
+													#print(STATS.get_amt_of_nitrogen())
 									
 								else:
 									#print("upper limits")
@@ -376,7 +376,7 @@ func handle_click_with_selection():
 							
 							elif (resource == "egg" or resource == "protein_shake") and container_name == "simple_carbs":
 								#If the resource is eggs and it goes to simple carb
-								print("Egg or shake to simple carb")
+								#print("Egg or shake to simple carb")
 								if STATS.get_amt_of_nitrogen() + len(selected_resources[resource_class][resource]) <= 26: #and not unlock everything mode.
 									#print("STATS nitrogen: " + str(STATS.get_amt_of_nitrogen()))
 									if Game.is_valid_interaction(resource, container_name, bhv_profile) :
@@ -388,9 +388,9 @@ func handle_click_with_selection():
 												if j == "nitrogen":
 								
 													curr_org.mineral_resources[resource_type][j] = STATS.get_amt_of_nitrogen()
-													print("Resource type: " + str(resource_type))
-													print("J: " + str(j))
-													print(STATS.get_amt_of_nitrogen())
+													#"Resource type: " + str(resource_type))
+													#print("J: " + str(j))
+													#print(STATS.get_amt_of_nitrogen())
 										#Raise the nirtogent by x amount. 
 								elif STATS.get_amt_of_nitrogen() < 26:
 									#selected_resources[resource_class][resource] = 26 - STATS.get_amt_of_nitrogen()
@@ -403,9 +403,9 @@ func handle_click_with_selection():
 												if j == "nitrogen":
 								
 													curr_org.mineral_resources[resource_type][j] = STATS.get_amt_of_nitrogen()
-													print("Resource type: " + str(resource_type))
-													print("J: " + str(j))
-													print(STATS.get_amt_of_nitrogen())
+													#print("Resource type: " + str(resource_type))
+													#print("J: " + str(j))
+													#print(STATS.get_amt_of_nitrogen())
 										#Raise the nitrogent by X amount. 
 								else:
 									#print("lower limits")

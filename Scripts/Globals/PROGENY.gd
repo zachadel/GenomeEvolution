@@ -63,6 +63,6 @@ func move_progeny( distance ):
 func new_game():
 	progeny_created.clear()
 	dead_progeny.clear()
-	print("progeny_created: " + str(progeny_created))
-	print("dead_progeny: " + str(dead_progeny))
+	#print("progeny_created: " + str(progeny_created))
+	#print("dead_progeny: " + str(dead_progeny))
 	pass

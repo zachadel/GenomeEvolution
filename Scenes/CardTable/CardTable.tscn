@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=2]
+[gd_scene load_steps=59 format=2]
 
 [ext_resource path="res://Scripts/CardTable/CardTable.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player/Organism.tscn" type="PackedScene" id=2]
@@ -47,6 +47,7 @@
 [ext_resource path="res://Assets/Images/Menus/Q_s.png" type="Texture" id=45]
 [ext_resource path="res://Scenes/WorldMap/pop_quiz.tscn" type="PackedScene" id=46]
 [ext_resource path="res://Assets/Images/Menus/Q.png" type="Texture" id=47]
+[ext_resource path="res://Scenes/Competitor/Comp_Organism.tscn" type="PackedScene" id=48]
 
 [sub_resource type="Theme" id=1]
 Button/colors/font_color_disabled = Color( 0, 0, 0, 1 )
@@ -2167,6 +2168,9 @@ margin_top = 274.0
 margin_right = 776.0
 margin_bottom = 288.0
 text = "Collapse Duplicates"
+
+[node name="Comp_Organism" parent="." instance=ExtResource( 48 )]
+visible = false
 [connection signal="gui_input" from="." to="." method="_on_CardTable_gui_input"]
 [connection signal="bandage_msg" from="Organism" to="." method="_on_Organism_bandage_msg"]
 [connection signal="clear_gap_msg" from="Organism" to="." method="_on_Organism_clear_gap_msg"]

@@ -8,7 +8,7 @@ func set_result(res):
 	
 func set_respoonse(response_code):
 	response = response_code
-	print("Response:" + str(response))
+	#print("Response:" + str(response))
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
