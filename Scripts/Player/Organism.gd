@@ -1550,7 +1550,7 @@ func recombination():
 	if (is_ai):
 		gene_selection.clear();
 	else:
-		if !has_done_recombination and Settings.tutorial() and get_behavior_profile().get_skill_count("recombo") > 0:
+		if Settings.tutorial() and !has_done_recombination and get_behavior_profile().get_skill_count("recombo") > 0:
 			#yield(get_card_table().play_recombination_slides(), "completed")
 			print("changed")
 			has_done_recombination = true

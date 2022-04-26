@@ -214,9 +214,11 @@ func _on_update_progeny_placement():
 		print("we have kids to move and eat")
 	else:
 		print("nothing happens")
+		
 func setup_dead_cell(cell):
-	
+	#needs to be implemented
 	pass
+	
 func setup_new_cell(cell,alive):
 	var center_tile = Game.world_to_map(current_player.position)
 	var close_tiles = Game.get_tiles_inside_radius(center_tile)
