@@ -424,7 +424,12 @@ func _on_btn_nxt_pressed():
 	STATS.set_gc_con(orgn.get_behavior_profile().get_behavior("Construction"))
 	STATS.set_gc_decon(orgn.get_behavior_profile().get_behavior("Deconstruction"))
 	STATS.set_gc_ate(orgn.get_behavior_profile().get_behavior("ate"))
-	
+	#Here we will add in the new funcitonality of healing all the competitors.
+	if(len(COMPETITORS.competitors_created) > 0 ):
+		print("we have comps in the game.")
+		for i in COMPETITORS.competitors_created:
+			auto_repair_all_breaks_join_end_competitors(i.organism.get_cmsm_pair())
+			print(i)
 	#if STATS.get_rounds() % 2 == 1:
 #		$pop_quiz.setup_q(quiz_counter)
 #		$pop_quiz.visible = true#
@@ -928,6 +933,27 @@ func auto_repair_all_breaks_join_end(cmsm_pair) -> bool:
 	else:
 		return true;
 
+func auto_repair_all_breaks_join_end_competitors(cmsm_pair) -> bool:
+	var num_gaps_found = 0;
+	for i in cmsm_pair.get_all_genes():# gets a list of all the genes and iterates through them. 
+		if(i.is_gap() ): #checks if the point is a gap in the chromosome
+			num_gaps_found += 1;
+			#These are needed to set the conditions for the organism to attempt a repair
+			C_orgn.sel_repair_gap = i; 
+			C_orgn.sel_repair_type = "join_ends";
+			C_orgn.is_ai = true; #the ai option will automate choosing one of the genes to the left and the right of the selected gene.
+			# This is needed for the organism to recognize what is an option to it
+			C_orgn.upd_repair_opts(i)
+			C_orgn.sel_repair_type = "join_ends"; #forces it to take the thing I want it to
+			#attempts to repair the chromosome
+			C_orgn.auto_repair()
+			#updates UI
+			show_repair_types(false);
+			orgn.is_ai = false;
+	if(num_gaps_found == 0):
+		return false;
+	else:
+		return true;
 
 func _on_fixAllBreaksWCollapseDuplicates_pressed():
 	#the name of this function may be misleading.

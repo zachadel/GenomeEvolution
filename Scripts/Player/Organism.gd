@@ -308,6 +308,9 @@ func update_vesicle_sizes():
 		if len(Settings.settings["cells"][cell_str]["vesicle_thresholds"][i]) == 2: #Case where we have two things to compare
 			if Settings.settings["cells"][cell_str]["vesicle_thresholds"][i][0] <= component and component < Settings.settings["cells"][cell_str]["vesicle_thresholds"][i][1]:
 				for resource_class in vesicle_scales:
+					print(resource_class)
+					print(scale_str)
+					print(Settings.settings["cells"][cell_str])
 					vesicle_scales[resource_class]["scale"] = Vector2(Settings.settings["cells"][cell_str][resource_class + scale_str][i], Settings.settings["cells"][cell_str][resource_class + scale_str][i])
 					var new_capacity = get_estimated_capacity(resource_class)
 					
@@ -511,6 +514,7 @@ func apply_break_after_move() -> String:
 		var roll = randf()
 		
 		var mineral_dangers = get_minerals_in_danger_zone()
+		
 		var max_minerals = float(get_number_of_minerals())
 		var mineral_value = 0
 		
@@ -519,6 +523,8 @@ func apply_break_after_move() -> String:
 				mineral_value = clamp(mineral_value + 2, 0, max_minerals)
 			else:
 				mineral_value = clamp(mineral_value + 1, 0, max_minerals)
+				
+		
 		mineral_value = float(mineral_value) / max_minerals
 		
 		var avg_diff = get_start_current_tile_avg_diff()
@@ -526,6 +532,12 @@ func apply_break_after_move() -> String:
 		var dmg_threshold = get_component_break_multiplier()
 		var final_damage_probability = clamp(base_damage_probability + (avg_diff*Settings.environment_weight() + mineral_value*Settings.mineral_weight()) / (Settings.environment_weight() + Settings.mineral_weight()) - dmg_threshold, 0.02, 0.98)
 		
+		#If i have poison, then add in 0,1 for final_damage_probability;
+		#HERE 
+		print("poison: " + str(cfp_resources["complex_proteins"]["poison"]))
+		print("final damage prob; " + str(final_damage_probability))
+		for i in range(cfp_resources["complex_proteins"]["poison"]):
+			final_damage_probability += 0.03
 	#	print("dmg_threshold: ", dmg_threshold)
 	#	print("dmg_weight: ", dmg_weight)
 	#	print("avg_diff: ", avg_diff)
@@ -1856,7 +1868,6 @@ func replicate(idx):
 				var cfp_splits = split_cfp_resources(MITOSIS_SPLITS)
 				var mineral_splits = split_mineral_resources(MITOSIS_SPLITS)
 				var energy_split = split_energy(MITOSIS_SPLITS)
-
 				cfp_resources = cfp_splits[randi() % MITOSIS_SPLITS]
 				mineral_resources = mineral_splits[randi() % MITOSIS_SPLITS]
 				set_energy(energy_split)
@@ -3177,6 +3188,17 @@ func acquire_resources():
 				elif cfp_resources[resource_class]["total"] < get_estimated_capacity(resource_class):
 					modified = true
 					var max_capacity = get_estimated_capacity(resource_class)
+					
+					
+					if resource == "poison":
+						while(cfp_resources["complex_proteins"]["antidote"] > 0 && current_tile["resources"][index] > 0 ):
+							current_tile["resources"][index] -=1
+							cfp_resources["complex_proteins"]["antidote"] -= 1
+							
+					if resource == "antidote":
+						while(cfp_resources["complex_proteins"]["poison"] > 0 && current_tile["resources"][index] > 0 ):
+							current_tile["resources"][index] -=1
+							cfp_resources["complex_proteins"]["poison"] -= 1
 	
 					#Vesicle can accomodate all resources
 					if cfp_resources[resource_class]["total"] + current_tile["resources"][index] <= max_capacity:
@@ -3184,6 +3206,7 @@ func acquire_resources():
 						cfp_resources[resource_class][resource] += current_tile["resources"][index]
 						#print("resource class: "+resource_class)
 						#print("resource: "+resource)
+					
 						if(resource_class == "simple_carbs" and resource == "candy1"):
 							for i in range(current_tile['resources'][index]):
 								STATS.incr_sugars()
@@ -3251,7 +3274,7 @@ func acquire_resources():
 					#Can only accomodate some of the resources
 					else:
 						current_tile["resources"][index] -= (max_capacity - cfp_resources[resource_class]["total"])
-						
+						#print(cfp_resources[resource_class].keys())
 						cfp_resources[resource_class][resource] += (max_capacity - cfp_resources[resource_class]["total"])
 						cfp_resources[resource_class]["total"] = max_capacity
 	

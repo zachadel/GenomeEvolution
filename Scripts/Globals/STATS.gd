@@ -865,6 +865,7 @@ func get_amt_of_nitrogen():
 	return amt_of_nit;
 func _reset_game():
 	#Declaring/initializing variables to keep track of: 
+	start_curr_mission = 0
 	gc_ate = 0
 	gc_comp=0
 	completed_missions_count = 0

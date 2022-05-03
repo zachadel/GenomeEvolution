@@ -138,6 +138,7 @@ var vesicle_scales = {
 		"scale": Vector2(.5, .5),
 		"enabled": true
 		}
+
 }
 
 var MIN_ENERGY = 0;
@@ -959,6 +960,7 @@ func apply_repair_choice(type: String):
 	make_repair_choices(sel_repair_gap, type);
 
 func make_repair_choices(gap, repair_type: String):
+	print(repair_type)
 	emit_signal("clear_gap_msg");
 	var choice_info = {};
 	var perform_repair := true;
@@ -1107,8 +1109,8 @@ func make_repair_choices(gap, repair_type: String):
 var repair_canceled = false;
 func repair_gap(gap, repair_type, choice_info = {}):
 	emit_signal("clear_gap_msg");
-	#print("repair type: "+repair_type)
-	#print("is it possible?: "+str(repair_type_possible[repair_type]))
+	print("repair type: "+repair_type)
+	print("is it possible?: "+str(repair_type_possible[repair_type]))
 	if (repair_type_possible[repair_type]):
 		reset_repair_opts(); #resets the boolean logic of the reparations
 		var cmsm = gap.get_parent(); # grabs the chromosome from the gap
@@ -3160,8 +3162,9 @@ func acquire_resources():
 					if cfp_resources[resource_class]["total"] + current_tile["resources"][index] <= max_capacity:
 						cfp_resources[resource_class]["total"] += current_tile["resources"][index]
 						cfp_resources[resource_class][resource] += current_tile["resources"][index]
-						#print("resource class: "+resource_class)
-						#print("resource: "+resource)
+						
+						print("resource class: "+resource_class)
+						print("resource: "+resource)
 						if(resource_class == "simple_carbs" and resource == "candy1"):
 							emit_signal("add_card_event_log",str(current_tile["resources"][index])+" peppermints were eaten",{})
 						

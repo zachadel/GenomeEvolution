@@ -16,7 +16,7 @@ const NON_GODOT_VALUES = ["type", "stacked", "final_value"]
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	Settings.load_all_settings(false)
+	Settings.load_all_settings(true)
 	resources.reload()
 	#settings_menu.reload()
 	var iterator = 0

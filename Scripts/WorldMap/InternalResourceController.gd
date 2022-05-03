@@ -34,7 +34,8 @@ var resources = {
 	"simple_fats": {},
 	"complex_fats": {},
 	"simple_proteins": {},
-	"complex_proteins": {}	
+	"complex_proteins": {},
+	"hazardous_proteins":{}
 }
 
 var selected_resources = {
@@ -43,7 +44,7 @@ var selected_resources = {
 	"simple_fats": {},
 	"complex_fats": {},
 	"simple_proteins": {},
-	"complex_proteins": {}	
+	"complex_proteins": {},
 }
 
 # Called when the node enters the scene tree for the first time.
@@ -240,27 +241,33 @@ func set_visibility(node: Line2D, status: bool):
 #cfp_resources[resource_class][resource] = value
 #should not be called when selected_resources has stuff
 func update_resources(cfp_resources: Dictionary):
+	#print(cfp_resources['hazardous_proteins'])
 	for resource_class in cfp_resources:
 		for resource in cfp_resources[resource_class]:
+			#print("resource class: " + str(resource_class) + ',resource: ' + str(resource))
 			
+			#print("cfp_resources " + str(cfp_resources[resource_class]))
 			if resource != "total":
-				var diff = len(resources[resource_class][resource]) - cfp_resources[resource_class][resource]
-				
+				if resource_class in cfp_resources.keys():
+					var diff = len(resources[resource_class][resource]) - cfp_resources[resource_class][resource]
+					
 				#means we have too few resources
-				if diff < 0:
-					add_resource(resource, int(abs(diff)))
-				elif diff > 0:
-					remove_resource_by_name(resource, diff)
+					if diff < 0:
+						add_resource(resource, int(abs(diff)))
+					elif diff > 0:
+						remove_resource_by_name(resource, diff)
 
 func add_resource(resource_name: String, amount: int = 1):
-	
+	#adding in the resource classes to the vesicles. 
+	#print("adding in resource: " + resource_name)
 	for i in range(amount):
 		var resource = load(Settings.settings["resources"][resource_name]["collision_scene"]).instance()
+		#print(str(Settings.settings['resources'][resource_name]['collision_scene']))
 		var resource_class = Game.get_class_from_name(resource_name)
 		resource.position = get_node(resource_class).get_position()
 		resource.set_default_position(get_node(resource_class).get_global_position())
-
 		resources[resource_class][resource_name].append(resource)
+		
 
 		add_child(resource)
 
@@ -502,9 +509,9 @@ func set_input(enabled: bool):
 
 func _on_Organism_vesicle_scale_changed(vesicle_scales, cfp_resources):
 	for resource_class in vesicle_scales:
+		#if resource_class == hazardous_proteins, then act like it's a regular 
 		var vesicle = get_node(resource_class)
 		var old_scale = vesicle.get_scale()
-		
 		vesicle.set_scale(vesicle_scales[resource_class]["scale"])
 		
 		center_resources(resource_class)

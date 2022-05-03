@@ -4,22 +4,25 @@ extends MarginContainer
 # var a = 2
 # var b = "text"
 onready var scroller = get_node("ScrollContainer/VBoxContainer")
+onready var comp_button = get_node("ScrollContainer/VBoxContainer/add_competitors");
 
 const NON_GODOT_VALUES = ["type", "stacked", "final_value"]
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
 	var iterator = 0
 	for setting in Settings.settings["ingame_settings"]:
+		#print("setting: " + setting + " , iterator: " + str(iterator))
 		iterator+=1
-		var node = create_node_from_dictionary(setting, Settings.settings["ingame_settings"][setting]["type"], Settings.settings["ingame_settings"][setting])
-		#So for each of the nodes, you want to seperate them into their respective fields.
-		#print("node: " + str(typeof(node)))
-		var row = create_settings_row(setting, Settings.settings["ingame_settings"][setting]["stacked"])
-		row.add_child(node)
-		scroller.add_child(row)
-		if iterator == 3: # This is to stop the settings from continuing to populate the table. 
-			break
+		
+		if iterator < 4 or iterator > 20:
+			var node = create_node_from_dictionary(setting, Settings.settings["ingame_settings"][setting]["type"], Settings.settings["ingame_settings"][setting])
+			var row = create_settings_row(setting, Settings.settings["ingame_settings"][setting]["stacked"])
+			row.add_child(node)
+			scroller.add_child(row)
+		#if iterator == 3: # This is to stop the settings from continuing to populate the table. 
+			#break
 	pass # Replace with function body.
 
 #If you want the name of the setting to the left of the option, stacked = false
@@ -65,6 +68,9 @@ func create_node_from_dictionary(option_name: String, godot_type: String, option
 			
 		"TextEdit":
 			node = TextEdit.new()
+		
+		"BaseButton":
+			node = BaseButton.new()
 			
 		var _x:
 			print('ERROR: Unknown node type of %s in function create_node_from_dictionary' % [_x])
@@ -105,12 +111,16 @@ func get_final_settings()->Dictionary:
 	for box in scroller.get_children():
 		#Get the setting which isn't a label
 		for child in box.get_children():
+			#print("child: " + str(child.name))
 			if not child is Label:
 				#If it has a value, report the value
 				if child.get("value") != null:
 					Settings.settings["ingame_settings"][child.name]["final_value"] = child.get("value")
 				elif child.get("selected") != null: #in the case of option boxes
 					if child.has_method("get_item_text"):
+						print("option boxes: " + child.get_item_text(child.selected))
+						if child.name == "add_competitors" and child.get_item_text(child.selected) != 'None':
+							_on_add_competitors_pressed()
 						Settings.settings["ingame_settings"][child.name]["final_value"] = child.get_item_text(child.selected)
 				elif child.get("pressed") != null:
 					Settings.settings["ingame_settings"][child.name]["final_value"] = child.get("pressed")
@@ -137,5 +147,6 @@ func reload():
 
 
 func _on_add_competitors_pressed():
+	print("add competitors still pressed")
 	STATS.set_has_competitors(COMPETITORS.active_toggle())
 	pass # Replace with function body.

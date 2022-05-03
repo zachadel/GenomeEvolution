@@ -47,7 +47,7 @@ func _ready():
 	var list_of_actors = [first_player]
 	#Uncomment below to add the agent back into the game.
 	if competitors_allowed:
-		#print("Compettitors are in this game.")
+		print("Compettitors are in this game.")
 		var agent = create_agent()
 		COMPETITORS.add_competitors(agent) #This lets me control the little one.
 		agent.set_cell_type("cell_3")
@@ -173,7 +173,7 @@ func _on_WorldMap_end_map_turn():
 func create_agent():
 	var agent = competitor.instance() #This should make a new instance of the player class
 	agent.add_to_group("players") #It seems all "players" are here, players and agents are interchangeable in name, not variable.
-	agent.setup(2,2) # This adds in where the agent should appears, by default it's 0,0. 
+	agent.setup(0,0) # This adds in where the agent should appears, by default it's 0,0. 
 	#For now, I will hard code in 2,2 into the positional points above. Moving forward, if we want more tahn 
 	#One single competitor, we'll need an algorithm to check what spots are taken, and then choosing one that isn't taken.
 	add_child(agent) #adds the agent as a child of the main game function

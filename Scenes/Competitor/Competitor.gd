@@ -22,7 +22,7 @@ var clear_path = {}
 onready var sprite = get_node("Body")
 #Number of turns out of range.
 var num_turns_OR = 0
-const STARTING_POS = Vector2(2, 2) #Player is at 0,0
+const STARTING_POS = Vector2(0, 0) #Player is at 0,0
 # I want to intimidate them, but not be immediately the same.
 
 #I see this potentially causing issues for creating AI players in the future
@@ -37,6 +37,7 @@ func _ready():
 		set_cell_type("cell_2")
 	
 	position = STARTING_POS
+	print(position)
 
 func setup(x = STARTING_POS.x, y = STARTING_POS.y):
 	position.x = x
@@ -82,7 +83,7 @@ func get_texture_size():
 	return sprite.texture.get_size()
 	
 func set_texture_size():
-	var scale = Vector2((0.15), (0.15))
+	var scale = Vector2((0.1), (0.1))
 	var this_sprite = get_node("Body")
 	this_sprite.set_scale(scale)
 	#sprite.texture.set_size(x)
@@ -147,7 +148,7 @@ func breakdown_external_resource(resource_index, amount = 1):
 		kill("ran out of resources")
 	pass
 	
-func eject_mineral_resource(resource, amount = 1):
+func eject_poison_resource(resource, amount = 1):
 	organism.eject_mineral_resource(resource, amount)
 	
 	if not is_alive_resource_check():

@@ -52,18 +52,24 @@ func reset():
 	pass # Replace 
 
 func load_setting(setting_type: String, use_user_settings_if_possible: bool = true):
+	#print("entered the load settings function " )
+	print(" LOADING SETTING " + setting_type)
 	if setting_type in FILE_NAMES:
+		print(setting_type)
 		#print("setting type: " + str(setting_type))
 		if setting_type == "ate_personalities":
 			load_personalities(FILE_NAMES[setting_type], settings["ate_personalities"])
 			
 		else:
 			#load user settings
+			#print("entered else")
 			#print("it's ok, " + str(setting_type))
 			if use_user_settings_if_possible:
+				#print("use user_settings ")
 				#print("user settings possible")
 				var config = ConfigFile.new()
 				var err = config.load(USER_PATH + FILE_NAMES[setting_type])
+				#print("loading the " + USER_PATH + " " + FILE_NAMES[setting_type] )
 				#print(USER_PATH)
 				#print(FILE_NAMES[setting_type])
 				#load user settings if you can, if not load default
@@ -90,7 +96,7 @@ func load_setting(setting_type: String, use_user_settings_if_possible: bool = tr
 			else:
 				var config = ConfigFile.new()
 				#print("default path: " + str(DEFAULT_PATH))
-				#print("file names: " + str(FILE_NAMES[setting_type]))
+				print("file names: " + str(FILE_NAMES[setting_type]))
 				var err = config.load(DEFAULT_PATH + FILE_NAMES[setting_type])
 					
 				if err == OK:
@@ -189,8 +195,10 @@ func apply_richness():
 #		print("Accessory Min: ", settings["resources"][resource]["accessory_resource_min"])
 
 func populate_cell_texture_paths():
+	print("populate cell texture \n\n")
 	for cell in Settings.settings["cells"].keys():
 		for part in Settings.settings["cells"][cell].keys():
+			#print(part)
 			if not Settings.settings["cells"][cell][part]:
 				Settings.settings["cells"][cell][part] = CELL_TEXTURES_PATH + part + '/' + part + SEPARATOR + cell + CELL_IMAGE_TYPE
 		
@@ -254,6 +262,26 @@ func starting_blanks() -> Array:
 			min_max[MIN] = 40
 			min_max[MAX] = 40
 			
+	return min_max
+
+func add_competitors()-> Array:
+	var min_max = [0,0]
+	match(settings["ingame_settings"]["add_competitors"]["final_value"]):
+		"None":
+			min_max[MIN] = 0
+			min_max[MAX] = 0
+			
+		"Some":
+			min_max[MIN] = 1
+			min_max[MAX] = 1
+			
+		"Many":
+			min_max[MIN] = 1
+			min_max[MAX] = 3
+			
+		"Absurd":
+			min_max[MIN] = 1
+			min_max[MAX] = 10
 	return min_max
 	
 func starting_transposons() -> Array:

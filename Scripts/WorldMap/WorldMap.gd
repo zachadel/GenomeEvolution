@@ -39,7 +39,7 @@ var move_enabled = false
 
 var default_start = Vector2(-20,0)
 
-var agent_start = Vector2(50, 40)
+var agent_start = Vector2(00, 0)
 
 var no_one_on_tile = true
 var biome_generator
@@ -172,7 +172,7 @@ func _on_update_competitor_placement():
 				i.organism.current_tile = get_tile_at_pos( greedy_behavior(child_tile, STATS.get_round_moves()))
 	
 				
-			print(i.organism.current_tile)
+			#print(i.organism.current_tile)
 			var path_of_tiles = astar.get_tile_path_from_to(Game.world_to_map(old_tile), Game.world_to_map(i.position))
 			for j in path_of_tiles:
 				$ResourceMap.clear_tile_resources(j)
@@ -204,7 +204,7 @@ func _on_update_progeny_placement():
 				i.organism.current_tile = get_tile_at_pos( greedy_behavior(child_tile, STATS.get_round_moves()))
 				#print("current_tile: " + str(i.organism.current_tile))
 				
-			print(i.organism.current_tile)
+			#print(i.organism.current_tile)
 			var path_of_tiles = astar.get_tile_path_from_to(Game.world_to_map(old_tile), Game.world_to_map(i.position))
 			for j in path_of_tiles:
 				$ResourceMap.clear_tile_resources(j)
@@ -1708,17 +1708,17 @@ func setup(biome_seed, hazard_seeds, resource_seed, tiebreak_seed, _chunk_size, 
 	current_player.organism.refresh_behavior_profile()
 	#This gets done for the current player
 	
-	print(players)
+	#print(players)
 	if len(players) > 1:
 	#To add the agent back into the game, uncomment 1708, 1711-1714.
 		agent = players[1]
-		player_sprite_offset = (tile_sprite_size - agent.get_texture_size()) / 2
+		player_sprite_offset = (tile_sprite_size - current_player.get_texture_size()) / 2
 		#So for whatever reason, if you set the texture size here. It creates this weird bug where it keeps growing.
 		#I'm not super sure why it's acting so odd. But if you comment out the function it doesn't keep going.
 		#agent.set_texture_size() #This kinda sets things based off a consant. It's not great.
-		agent.position = Game.map_to_world(Game.world_to_map(agent_start))
-		agent.organism.current_tile = get_tile_at_pos(Game.world_to_map(agent_start))
-		agent.organism.set_start_tile(get_tile_at_pos(Game.world_to_map((agent_start))))
+		agent.position = Game.map_to_world(Game.world_to_map(default_start))
+		agent.organism.current_tile = get_tile_at_pos(Game.world_to_map(default_start))
+		agent.organism.set_start_tile(get_tile_at_pos(Game.world_to_map(default_start)))
 		agent.organism.refresh_behavior_profile()
 	#Now we need to start applying it to the agents
 	
@@ -2116,6 +2116,7 @@ func move_player(pos: Vector3):
 						ui.transposon_ui.set_dmg(current_player.organism.get_transposons())
 					"gap", "dmg":
 						ui.genome_dmg.add_dmg()
+						print("adding damage.")
 				
 				ui.update_repair_button(current_player.organism.get_non_te_dmg(), current_player.organism.get_max_dmg())
 				#current_player.update_nucleus()

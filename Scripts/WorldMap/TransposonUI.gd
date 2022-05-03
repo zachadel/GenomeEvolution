@@ -14,6 +14,7 @@ func _ready():
 
 func add_dmg():
 	for i in range(1, len(get_children()) + 1):
+		
 		if not get_node(str(i)).visible:
 			get_node(str(i)).visible = true
 			break
@@ -21,6 +22,7 @@ func add_dmg():
 func set_dmg(value: int):
 	for i in range(1, value + 1):
 		if not get_node(str(i)).visible:
+			STATS.increment_final_transposon_tiles()
 			get_node(str(i)).visible = true
 			
 func clear():
