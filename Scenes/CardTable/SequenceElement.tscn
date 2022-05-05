@@ -233,7 +233,6 @@ margin_bottom = 37.0
 image_texture = ExtResource( 12 )
 
 [node name="Tween" type="Tween" parent="."]
-
 [connection signal="mouse_entered" from="." to="." method="_on_SeqElm_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_SeqElm_mouse_exited"]
 [connection signal="pressed" from="." to="." method="_on_SeqElm_pressed"]

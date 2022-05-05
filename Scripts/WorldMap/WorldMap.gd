@@ -23,7 +23,7 @@ curr_tile = {
 	}
 
 """
-var MAX_ZOOM = 2
+var MAX_ZOOM = 1.7
 var MIN_ZOOM = .5
 var ZOOM_UPDATE = .1
 var CAMERA_MOVEMENT = 10

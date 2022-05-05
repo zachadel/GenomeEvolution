@@ -2163,6 +2163,7 @@ margin_top = 274.0
 margin_right = 776.0
 margin_bottom = 288.0
 text = "Collapse Duplicates"
+
 [connection signal="gui_input" from="." to="." method="_on_CardTable_gui_input"]
 [connection signal="bandage_msg" from="Organism" to="." method="_on_Organism_bandage_msg"]
 [connection signal="clear_gap_msg" from="Organism" to="." method="_on_Organism_clear_gap_msg"]

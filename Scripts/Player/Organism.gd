@@ -3909,7 +3909,7 @@ func _on_chromes_on_cmsm_changed():
 ####################################SENSING AND LOCOMOTION#####################
 #This is what you can directly see, not counting the cone system
 func get_vision_radius():
-	return min(floor(get_behavior_profile().get_behavior("Sensing")),10)
+	return min(floor(get_behavior_profile().get_behavior("Sensing")),13)
 	
 func get_locomotion_radius():
 	return floor(get_behavior_profile().get_behavior("Locomotion"))

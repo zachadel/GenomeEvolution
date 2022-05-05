@@ -37,12 +37,12 @@ func create_settings_row(name: String, stacked: bool = true, value_label: bool =
 	label.size_flags_vertical = SIZE_EXPAND_FILL
 	
 	box.add_child(label)
-	
+	print("Making setting " + name)
 	return box
 
 func create_node_from_dictionary(option_name: String, godot_type: String, options: Dictionary) -> Control:
 	var node = null
-
+	print("Options " + str(options))
 	match(godot_type):
 		"HSlider":
 			node = HSlider.new()
