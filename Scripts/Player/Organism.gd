@@ -1562,7 +1562,7 @@ func recombination():
 	if (is_ai):
 		gene_selection.clear();
 	else:
-		if !has_done_recombination and Settings.tutorial() and get_behavior_profile().get_skill_count("recombo") > 0:
+		if Settings.tutorial() and !has_done_recombination and get_behavior_profile().get_skill_count("recombo") > 0:
 			#yield(get_card_table().play_recombination_slides(), "completed")
 			print("changed")
 			has_done_recombination = true
@@ -3944,7 +3944,7 @@ func _on_chromes_on_cmsm_changed():
 ####################################SENSING AND LOCOMOTION#####################
 #This is what you can directly see, not counting the cone system
 func get_vision_radius():
-	return min(floor(get_behavior_profile().get_behavior("Sensing")),10)
+	return min(floor(get_behavior_profile().get_behavior("Sensing")),13)
 	
 func get_locomotion_radius():
 	return floor(get_behavior_profile().get_behavior("Locomotion"))

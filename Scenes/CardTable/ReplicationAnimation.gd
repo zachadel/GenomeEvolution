@@ -58,24 +58,28 @@ func stop_and_hide(slide: Control):
 
 func play_and_show(slide: Control):
 	var tween = $Tween
+	var time_start = OS.get_unix_time()
+	var max_length = 50
 	
 	var cmsm1 = cmsms.get_child(0).get_genes()
-	var cmsm1data = cmsms.get_child(0).get_csmsm().get_elms_save()
+	var cmsm1data = cmsms.get_child(0).get_csmsm().get_elms_save_size(max_length)
 	
 	var cmsm2 = cmsms.get_child(1).get_genes()
-	var cmsm2data = cmsms.get_child(1).get_csmsm().get_elms_save()
+	var cmsm2data = cmsms.get_child(1).get_csmsm().get_elms_save_size(max_length)
 	
 	var cmsm3 = cmsms.get_child(2).get_genes()
-	var cmsm3data = cmsms.get_child(2).get_csmsm().get_elms_save()
+	var cmsm3data = cmsms.get_child(2).get_csmsm().get_elms_save_size(max_length)
 	
 	var cmsm4 = cmsms.get_child(3).get_genes()
-	var cmsm4data = cmsms.get_child(3).get_csmsm().get_elms_save()
+	var cmsm4data = cmsms.get_child(3).get_csmsm().get_elms_save_size(max_length)
 	
 	var length1 = len(cmsm1) #This is the length of chromosome 1
 	var clength1 = len(cmsm2) #len of copy of chrom 1
 	var length2 = len(cmsm3) #len chrom 2
 	var clength2 = len(cmsm4) #len of copy of chrom 2
 	
+	var time_now = OS.get_unix_time()
+	print("Assigning took " + str(time_now - time_start))
 
 	
 	longest = length1
@@ -86,7 +90,6 @@ func play_and_show(slide: Control):
 	if longest < clength2:
 		longest = clength2
 
-	
 	var o_indicator = ""
 	var c_indicator = ""
 	var o_value = 0
@@ -95,7 +98,8 @@ func play_and_show(slide: Control):
 	var counter1 = 0
 	var pseudo = false
 	
-	while progress2 < length2 or progress1 < length1:
+	time_start = OS.get_unix_time()
+	while (progress2 < length2 or progress1 < length1):
 		page = page + 1
 		counter1 = 0
 		while counter1 < 8:
@@ -107,7 +111,8 @@ func play_and_show(slide: Control):
 			pseudo = false
 			var limit1 = false
 			var limit2 = false
-			
+			if progress1 >= max_length:
+				break
 			if progress1 < length1:
 				var original = load("res://Scenes/CardTable/SequenceElement.tscn").instance()
 				original.is_display = true
@@ -149,6 +154,9 @@ func play_and_show(slide: Control):
 			else:
 				limit1 = true
 			
+			if progress1 >= max_length:
+				break
+				
 			if progress1 < clength1:
 				var copies = load("res://Scenes/CardTable/SequenceElement.tscn").instance()
 				copies.is_display = true
@@ -230,7 +238,9 @@ func play_and_show(slide: Control):
 			counter1 = counter1 + 1
 			progress1 = progress1 + 1
 		
-		
+	
+		if progress1 >= max_length:
+			break
 		
 		var counter2 = 0
 		while counter2 < 8:
@@ -381,6 +391,10 @@ func play_and_show(slide: Control):
 		print(tween.interpolate_property($UI,"rect_position:x",0,200*(longest-10),(.6725*longest),Tween.TRANS_LINEAR, Tween.EASE_IN_OUT,5))
 		print(tween.interpolate_property($Choose/ColorRect, "rect_position:x",0,200*(longest-10),(.6725*longest),Tween.TRANS_LINEAR, Tween.EASE_IN_OUT,5))
 		
+	
+	
+	time_now = OS.get_unix_time()
+	print("Calculating took " + str(time_now - time_start))
 	
 	tween.start()
 	#yield(timer,"timeout")

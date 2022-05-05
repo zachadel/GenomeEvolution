@@ -207,6 +207,14 @@ func get_elms_save():
 	for g in get_children():
 		data.append(g.get_save_data());	
 	return data;
+	
+func get_elms_save_size(size):
+	var data = [];
+	for g in get_children():
+		data.append(g.get_save_data());	
+		if(data.size() > size):
+			return data;
+	return data;
 
 func load_from_save(elms):
 	# Clear chromosome

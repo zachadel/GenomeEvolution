@@ -2803,6 +2803,7 @@ default_color = Color( 1, 0, 0, 1 )
 position = Vector2( 828.339, 560.994 )
 points = PoolVector2Array( 0, 0, 367.232, 0 )
 default_color = Color( 0.341176, 0.545098, 0.788235, 1 )
+
 [connection signal="pressed" from="Explanation/Skip" to="." method="_on_Skip_pressed"]
 [connection signal="pressed" from="Explanation/Next" to="." method="_on_Next_pressed"]
 [connection signal="pressed" from="BrokenGenes/Skip" to="." method="_on_Skip_pressed"]
