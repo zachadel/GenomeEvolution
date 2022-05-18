@@ -393,7 +393,7 @@ func add_resource_to_tile(pos, resource_name: String, amount: int):
 	if not [int(conv_pos.x), int(conv_pos.y)] in Game.modified_tiles:
 		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]] = {}
 		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["resources"] = tile_resources
-		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["hazards"] = {}
+		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["hazards"] = get_parent().current_player.get_current_tile()["hazards"]
 		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["biome"] = get_biome(conv_pos)
 		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["primary_resource"] = get_primary_resource(conv_pos)
 		Game.modified_tiles[[int(conv_pos.x), int(conv_pos.y)]]["location"] = [int(conv_pos.x), int(conv_pos.y)]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Scripts/WorldMap/WorldMap_UI.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/WorldMap/InternalResourceController.tscn" type="PackedScene" id=2]
@@ -7,7 +7,6 @@
 [ext_resource path="res://Scenes/WorldMap/HazardsContainer.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scenes/WorldMap/GenomeDamage.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Assets/Fonts/OpenSans-22.tres" type="DynamicFont" id=7]
-[ext_resource path="res://Assets/Images/Tiles/Resources/trash.png" type="Texture" id=8]
 [ext_resource path="res://Scenes/WorldMap/TransposonUI.tscn" type="PackedScene" id=9]
 [ext_resource path="res://Scenes/WorldMap/BiomeIcon.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Assets/Images/Menus/Q.png" type="Texture" id=11]
@@ -98,18 +97,6 @@ margin_top = 814.0
 margin_right = -91.0
 margin_bottom = -24.0
 
-[node name="TextureRect" type="TextureRect" parent="InternalPanel"]
-margin_left = 320.0
-margin_top = 780.0
-margin_right = 397.0
-margin_bottom = 876.0
-texture = ExtResource( 8 )
-expand = true
-stretch_mode = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="TransposonLabel2" type="RichTextLabel" parent="InternalPanel"]
 margin_left = 21.0
 margin_top = 772.957
@@ -133,6 +120,26 @@ margin_bottom = 972.961
 rect_scale = Vector2( 0.15, 0.15 )
 texture = ExtResource( 11 )
 expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Poison" type="Button" parent="InternalPanel"]
+margin_left = 333.0
+margin_top = 796.0
+margin_right = 388.0
+margin_bottom = 831.0
+text = "Poison"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Antidote" type="Button" parent="InternalPanel"]
+margin_left = 328.0
+margin_top = 835.0
+margin_right = 383.0
+margin_bottom = 870.0
+text = "Antidote"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -578,6 +585,8 @@ margin_bottom = -830.0
 [connection signal="mouse_entered" from="InternalPanel/StoredResourcesLabel/q_mark" to="." method="_on_q_mark_mouse_entered"]
 [connection signal="mouse_exited" from="InternalPanel/StoredResourcesLabel/q_mark" to="." method="_on_q_mark_mouse_exited"]
 [connection signal="gui_input" from="InternalPanel/q_mark1" to="." method="_on_q_mark1_gui_input"]
+[connection signal="pressed" from="InternalPanel/Poison" to="." method="_on_Poison_pressed"]
+[connection signal="pressed" from="InternalPanel/Antidote" to="." method="_on_Antidote_pressed"]
 [connection signal="mouse_entered" from="ExternalPanel/TileResourcesLabel/q_mark2" to="." method="_on_q_mark2_mouse_entered"]
 [connection signal="mouse_exited" from="ExternalPanel/TileResourcesLabel/q_mark2" to="." method="_on_q_mark2_mouse_exited"]
 [connection signal="mouse_entered" from="ExternalPanel/TileResourcesLabel3/q_mark3" to="." method="_on_q_mark3_mouse_entered"]

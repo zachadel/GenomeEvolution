@@ -420,3 +420,18 @@ func _on_greenLight_gui_input(event):
 func _on_xout_pressed():
 	$MissionControl/completed.visible = false;
 	pass # Replace with function body.
+
+
+func _on_Poison_pressed():
+	# if i have the skills that allow me to produce poison
+	get_parent().eject_poison_onto_map()
+	# run through the materials, if there is enogh stuff ot make it, convert that into poison
+	# place the poison on the tile
+	#exit
+	#You need to run through the internal resources and see what 
+	pass # Replace with function body.
+
+
+func _on_Antidote_pressed():
+	get_parent().eject_antidote_onto_map();
+	pass # Replace with function body.

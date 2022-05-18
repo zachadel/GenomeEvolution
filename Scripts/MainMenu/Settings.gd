@@ -16,7 +16,7 @@ func _ready():
 		#print("setting: " + setting + " , iterator: " + str(iterator))
 		iterator+=1
 		
-		if iterator < 4 or iterator > 20:
+		if iterator < 4 or iterator > 21:
 			var node = create_node_from_dictionary(setting, Settings.settings["ingame_settings"][setting]["type"], Settings.settings["ingame_settings"][setting])
 			var row = create_settings_row(setting, Settings.settings["ingame_settings"][setting]["stacked"])
 			row.add_child(node)

@@ -358,7 +358,6 @@ func handle_click_with_selection():
 										for resource_type in curr_org.mineral_resources:
 											for j in curr_org.mineral_resources[resource_type]:
 												if j == "nitrogen":
-								
 													curr_org.mineral_resources[resource_type][j] = STATS.get_amt_of_nitrogen()
 													#print("Resource type: " + str(resource_type))
 													#print("J: " + str(j))
