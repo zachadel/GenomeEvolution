@@ -19,8 +19,9 @@ var trim_genes_mission = 0;
 var collapse_dupes_mission = 0;
 var copy_rep_mission = 0;
 var temperature_array = [];
+var cheat = false;
 #Declaring/initializing variables to keep track of: 
-
+var readOut = ""
 var tiles_traveled = 0
 var resources_consumed = 0
 var resources_converted = 0
@@ -175,6 +176,18 @@ var fats_eaten = 0;
 
 var has_competitors;
 
+
+func append_readOut(key):
+	readOut += key
+	
+func get_readOut():
+	return readOut
+
+func set_cheat(v):
+	cheat = v;
+
+func get_cheat():
+	return cheat;
 func set_has_competitors(v):
 	has_competitors = v
 
@@ -869,6 +882,7 @@ func _reset_game():
 	gc_ate = 0
 	gc_comp=0
 	completed_missions_count = 0
+	readOut = ""
 	gc_con=0
 	gc_decon =0
 	gc_help=0

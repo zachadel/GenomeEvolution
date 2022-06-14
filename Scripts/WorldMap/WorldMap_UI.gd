@@ -9,6 +9,9 @@ signal stats_screen
 signal show_event_log
 signal eject_resources(resources_dict)
 signal add_card_event_log
+
+var poison_choice = ""
+var antidote_choice = ""
 #internal resources controller
 onready var irc = get_node("InternalPanel/InternalResourceController")
 onready var mineral_levels = get_node("InternalPanel/MineralLevels")
@@ -49,12 +52,22 @@ var curr_index = 0;
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	Game.connect("unlockPoisonA", self, "_on_unlockPoisonA");
+	Game.connect("unlockPoisonB", self, "_on_unlockPoisonB");
+	Game.connect("unlockPoisonC", self, "_on_unlockPoisonC");
+	Game.connect("unlockPoisonD", self, "_on_unlockPoisonD");
+	Game.connect("unlockPoisonE", self, "_on_unlockPoisonE");
+	Game.connect("unlockPoisonF", self, "_on_unlockPoisonF");
+	Game.connect("unlockPoisonG", self, "_on_unlockPoisonG");
+	Game.connect("unlockAntidote", self, "_on_unlockAntidote")
+	
 	acquire_resources_button.text = DEFAULT_BUTTON_TEXT[BUTTONS.ACQUIRE]
 	stats_screen_button.text = DEFAULT_BUTTON_TEXT[BUTTONS.STATS]
 	check_genome_button.text = DEFAULT_BUTTON_TEXT[BUTTONS.CHECK]
 	end_turn_button.text = DEFAULT_BUTTON_TEXT[BUTTONS.END]
 	rng.randomize()
 	curr_index = rng.randi_range(0,len(missions)-1)
+
 	 
 	#$popUp.visible = false;
 	
@@ -63,6 +76,36 @@ func progress_bar(percent):
 	$MissionControl/greenLight/ProgressBar.value = percent * 100
 pass
 
+func _on_unlockPoisonA():
+	$InternalPanel/Poison.disabled= false;
+	$Control/PoisonPopUp/CheckBoxA.disabled= false;
+
+func _on_unlockPoisonB():
+	$InternalPanel/Poison.disabled= false;
+	$Control/PoisonPopUp/CheckBoxB.disabled= false;
+	
+func _on_unlockPoisonC():
+	$InternalPanel/Poison.disabled= false;
+	$Control/PoisonPopUp/CheckBoxC.disabled= false;
+	
+func _on_unlockPoisonD():
+	$InternalPanel/Poison.disabled= false;
+	$Control/PoisonPopUp/CheckBoxD.disabled= false;
+	
+func _on_unlockPoisonE():
+	$InternalPanel/Poison.disabled= false;
+	$Control/PoisonPopUp/CheckBoxE.disabled= false;
+
+func _on_unlockPoisonF():
+	$InternalPanel/Poison.disabled= false;
+	$Control/PoisonPopUp/CheckBoxF.disabled= false;
+
+func _on_unlockPoisonG():
+	$InternalPanel/Poison.disabled= false;
+	$Control/PoisonPopUp/CheckBoxG.disabled= false;
+
+func _on_unlockAntidote():
+	$InternalPanel/Antidote.disabled = false;
 func _update_mission(index):
 	var length_mission = len(missions)-1
 	#rng = RandomNumberGenerator.new()
@@ -419,4 +462,133 @@ func _on_greenLight_gui_input(event):
 
 func _on_xout_pressed():
 	$MissionControl/completed.visible = false;
+	pass # Replace with function body.
+
+
+func _on_Poison_pressed():
+	# if i have the skills that allow me to produce poison
+	get_parent().eject_poison_onto_map(poison_choice)
+	# run through the materials, if there is enogh stuff ot make it, convert that into poison
+	# place the poison on the tile
+	#exit
+	#You need to run through the internal resources and see what 
+	pass # Replace with function body.
+
+
+func _on_Antidote_pressed():
+	get_parent().eject_antidote_onto_map(antidote_choice);
+	pass # Replace with function body.
+
+
+func _on_exit_pressed():
+	#get_parent().eject_poison_onto_map(poison_choice)
+	$Control/PoisonPopUp.visible = false;
+	pass # Replace with function body.
+
+
+
+func _on_PoisonControl_gui_input(event):
+	if event.is_action_pressed("mouse_left"):
+		if $Control/PoisonPopUp.visible == true:
+			$Control/PoisonPopUp.visible = false;
+		else:
+			$Control/PoisonPopUp.visible = true;
+		
+	pass # Replace with function body.
+
+
+func _on_AntidoteControl_gui_input(event):
+	if event.is_action_pressed("mouse_left"):
+		if $Control/AntidotePopUp.visible == true:
+			$Control/AntidotePopUp.visible = false;
+		else:
+			$Control/AntidotePopUp.visible = true;
+	pass # Replace with function body.
+
+
+func _on_Antidoteexit_pressed():
+	$Control/AntidotePopUp.visible = false;
+	pass # Replace with function body.
+
+func _on_antBoxA_toggled(button_pressed):
+	antidote_choice = "A"
+	$InternalPanel/AntidoteControl.color = Color(1,0,0);
+	pass # Replace with function body.
+
+
+func _on_antBoxB_toggled(button_pressed):
+	antidote_choice = "B"
+	$InternalPanel/AntidoteControl.color = Color(1,1,0);
+	pass # Replace with function body.
+
+
+func _on_antBoxC_toggled(button_pressed):
+	antidote_choice = "C"
+	$InternalPanel/AntidoteControl.color = Color(0,1,0);
+	pass # Replace with function body.
+
+
+func _on_antBoxD_toggled(button_pressed):
+	antidote_choice = "D"
+	$InternalPanel/AntidoteControl.color = Color(0,0,1);
+	pass # Replace with function body.
+
+
+func _on_antBoxE_toggled(button_pressed):
+	$InternalPanel/AntidoteControl.color = Color(1,.75,.75);
+	antidote_choice = "E"
+	pass # Replace with function body.
+
+
+func _on_antBoxF_toggled(button_pressed):
+	antidote_choice = "F"
+	$InternalPanel/AntidoteControl.color = Color(0.5,0.5,0.5);
+	pass # Replace with function body.
+
+
+func _on_antBoxG_toggled(button_pressed):
+	antidote_choice = "G"
+	$InternalPanel/AntidoteControl.color = Color(0.5,0.3,0.1);
+	pass # Replace with function body.
+
+
+func _on_CheckBoxA_toggled(button_pressed):
+	poison_choice = "A"
+	$InternalPanel/PoisonControl.color = Color(1,0,0);
+	pass # Replace with function body.
+
+
+func _on_CheckBoxB_toggled(button_pressed):
+	poison_choice = "B"
+	$InternalPanel/PoisonControl.color = Color(1,1,0);
+	pass # Replace with function body.
+
+
+func _on_CheckBoxC_toggled(button_pressed):
+	poison_choice = "C"
+	$InternalPanel/PoisonControl.color = Color(0,1,0);
+	pass # Replace with function body.
+
+
+func _on_CheckBoxD_toggled(button_pressed):
+	poison_choice = "D"
+	$InternalPanel/PoisonControl.color = Color(0,0,1);
+	pass # Replace with function body.
+
+
+func _on_CheckBoxE_toggled(button_pressed):
+	poison_choice = "E"
+	$InternalPanel/PoisonControl.color = Color(1,.75,.75);
+	pass # Replace with function body.
+
+
+func _on_CheckBoxF_toggled(button_pressed):
+	poison_choice = "F"
+	$InternalPanel/PoisonControl.color = Color(0.5,0.5,0.5);
+	pass # Replace with function body.
+
+
+func _on_CheckBoxG_toggled(button_pressed):
+	poison_choice = "G"
+	$InternalPanel/PoisonControl.color = Color(0.5,0.3,0.1);
 	pass # Replace with function body.

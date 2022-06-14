@@ -49,7 +49,7 @@ var HELP = {
 	"insert_gap": "    Usage: insert_gap [top/bottom] [position]\n    Details: Use this function to insert a gap into a particular chromosome.\n        -top/bottom: type top or bottom for which chromosome the gene should be at\n        -position: integer which is the position for the gene to be damaged at",
 	"refresh_profile": "    Usage: refresh_profile\n    Details: Use this function to refresh the gene profile after modifying chromosomes.",
 	"add_energy": "    Usage: add_energy [amount]\n    Details: Use this function to cheat energy in.\n       -amount: integer (positive or negative) saying how much energy to add",
-	"add_skill": "    Usage: add_skill [top/bottom] [position] [skill_name]\n    Details: Use this function to add a skill to a particular gene.\n        -top/bottom: type top or bottom for which chromosome the gene should be at\n        -position: integer which is the position where the gene is at\n        -skill_name: choose one of fix_dmg_genes, extend_cmsm, recombo, trim_dmg_genes, trim_gap_genes, sugar->am_acid, sugar->carb, sugar->fat_acid, energy->sugar, am_acid->protein, fat_acid->fat, uv->energy, am_acid->sugar, carb->sugar, sugar->energy, protein->am_acid, fat->fat_acid, fat_acid->energy, ph_buffer, shuttle, shuttle_salt, shuttle_metal, shuttle_fert, pump, pump_sugar, pump_am_acid, pump_fat_acid, sense_sugar, sense_am_acid, sense_carb, sense_protein, sense_fat, move_mtn, move_forest, move_sand, move_ocean, move_lake, move_hill, cell_wall, sunscreen, spike.",	
+	"add_skill": "    Usage: add_skill [top/bottom] [position] [skill_name]\n    Details: Use this function to add a skill to a particular gene.\n        -top/bottom: type top or bottom for which chromosome the gene should be at\n        -position: integer which is the position where the gene is at\n        -skill_name: choose one of fix_dmg_genes, extend_cmsm, recombo, trim_dmg_genes, trim_gap_genes, sugar->am_acid, sugar->carb, sugar->fat_acid, energy->sugar, am_acid->protein, fat_acid->fat, uv->energy, am_acid->sugar, carb->sugar, sugar->energy, protein->am_acid, fat->fat_acid, fat_acid->energy, ph_buffer, shuttle, shuttle_salt, shuttle_metal, shuttle_fert, pump, pump_sugar, pump_am_acid, pump_fat_acid, sense_sugar, sense_am_acid, sense_carb, sense_protein, sense_fat, move_mtn, move_forest, move_sand, move_ocean, move_lake, move_hill, cell_wall, sunscreen, spike, create_poison, create_antidote.",	
 	"list": "    Usage: list\n    Details: list all available commands",
 	"get_chrom_length": "    Usage: get_chrom_length [top/bottom]\n    Details: Use this function to get the length of a particular chromosome.\n        -top/bottom type top or bottom for which chromosome to select",
 	"get_current_pos": "    Usage: get_current_pos\n    Details: Get the current x y z position of the player.",
@@ -90,7 +90,7 @@ func add_gene(chrom: String, pos: int, gene_type: String, value: float) -> Strin
 			if gene_type in Game.ESSENTIAL_CLASSES.keys():
 				if value >= 0:
 					var chrom_pos = _get_chrom_idx(chrom)
-					STATS.update_currentType(gene_type)
+					#STATS.update_currentType(gene_type)
 					STATS.update_maxType()
 					organism.add_gene(chrom_pos, pos, gene_type, value)
 					_refresh_profile()

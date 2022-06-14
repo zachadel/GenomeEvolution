@@ -2479,6 +2479,56 @@ func _on_WorldMap_UI_eject_resource(resource, value):
 	emit_signal("tile_changed", current_player.get_current_tile())
 	pass # Replace with function body.
 
+func eject_poison_onto_map(poison):
+	
+	var player_pos = Game.world_to_map(current_player.position)
+	var curr_tile = get_tile_at_pos(player_pos)
+	current_player.set_current_tile(curr_tile)
+	var c_b_p = current_player.organism.get_behavior_profile()
+	if c_b_p.has_skill("create_poisonA") && poison == "A":
+		$ResourceMap.add_resource_to_tile(player_pos, "poisonA",1)
+	elif c_b_p.has_skill("create_poisonB") && poison == "B" :
+		$ResourceMap.add_resource_to_tile(player_pos, "poisonB",1)
+	elif c_b_p.has_skill("create_poisonC") && poison == "C":
+		$ResourceMap.add_resource_to_tile(player_pos, "poisonC",1)
+	elif c_b_p.has_skill("create_poisonD")&& poison == "D":
+		$ResourceMap.add_resource_to_tile(player_pos, "poisonD",1)
+	elif c_b_p.has_skill("create_poisonE")&& poison == "E":
+		$ResourceMap.add_resource_to_tile(player_pos, "poisonE",1)
+	elif c_b_p.has_skill("create_poisonF")&& poison == "F":
+		$ResourceMap.add_resource_to_tile(player_pos, "poisonF",1)
+	elif c_b_p.has_skill("create_poisonF")&& poison == "G":
+		$ResourceMap.add_resource_to_tile(player_pos, "poisonG",1)
+	
+	$ResourceMap.update_tile_resource(player_pos, current_player.get_current_tile()["primary_resource"])
+	print("current tile: " + str(current_player.get_current_tile()))
+	emit_signal("tile_changed", current_player.get_current_tile())
+	pass
+
+func eject_antidote_onto_map(antidote_choice):
+	var player_pos = Game.world_to_map(current_player.position)
+	var curr_tile = get_tile_at_pos(player_pos)
+	current_player.set_current_tile(curr_tile)
+	var c_b_p = current_player.organism.get_behavior_profile()
+	if c_b_p.has_skill("create_antidoteA") && antidote_choice == "A":
+		$ResourceMap.add_resource_to_tile(player_pos, "antidoteA",1)
+	elif c_b_p.has_skill("create_antidoteB") && antidote_choice == "B":
+		$ResourceMap.add_resource_to_tile(player_pos, "antidoteB",1)
+	elif c_b_p.has_skill("create_antidoteC") && antidote_choice == "C":
+		$ResourceMap.add_resource_to_tile(player_pos, "antidoteC",1)
+	elif c_b_p.has_skill("create_antidoteD") && antidote_choice == "D":
+		$ResourceMap.add_resource_to_tile(player_pos, "antidoteD",1)
+	elif c_b_p.has_skill("create_antidoteE") && antidote_choice == "E":
+		$ResourceMap.add_resource_to_tile(player_pos, "antidoteE",1)
+	elif c_b_p.has_skill("create_antidoteF") && antidote_choice == "F":
+		$ResourceMap.add_resource_to_tile(player_pos, "antidoteF",1)
+	elif c_b_p.has_skill("create_antidoteG") && antidote_choice == "G":
+		$ResourceMap.add_resource_to_tile(player_pos, "antidoteG",1)
+	$ResourceMap.update_tile_resource(player_pos, current_player.get_current_tile()["primary_resource"])
+	emit_signal("tile_changed", current_player.get_current_tile())
+	pass
+
+
 func _on_MapZoom_tween_completed(object, key):
 	current_player.enable_sprite(false)
 	emit_signal("end_map_turn")

@@ -4576,6 +4576,28 @@ valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Cheat" type="Label" parent="."]
+visible = false
+margin_left = 1386.93
+margin_top = 7.77716
+margin_right = 1426.93
+margin_bottom = 21.7772
+rect_scale = Vector2( 2, 2 )
+custom_fonts/font = ExtResource( 7 )
+text = "*"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="readOut" type="Label" parent="."]
+margin_left = 1103.0
+margin_top = 638.0
+margin_right = 1391.0
+margin_bottom = 726.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="mouse_entered" from="mainStat1" to="." method="_on_mainStat1_mouse_entered"]
 [connection signal="mouse_exited" from="mainStat1" to="." method="_on_mainStat1_mouse_exited"]
 [connection signal="mouse_entered" from="mainStat2" to="." method="_on_mainStat2_mouse_entered"]

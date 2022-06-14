@@ -209,10 +209,10 @@ func populate_cfp_resources_dict():
 				var resource_class = tier + Game.SEPARATOR + resource_type
 				cfp_resources[resource_class] = {}
 				cfp_resources[resource_class]["total"] = 0
-				
 				var resource_to_start = Game.get_random_element_from_array(Game.resource_groups[resource_type][tier].keys())
 				
 				for resource in Game.resource_groups[resource_type][tier]:
+					
 					cfp_resources[resource_class][resource] = 0
 					if resource == resource_to_start and tier == "simple":
 						cfp_resources[resource_class][resource] = randi() % MAX_START_RESOURCES + MIN_START_RESOURCES
@@ -533,10 +533,20 @@ func apply_break_after_move() -> String:
 		var final_damage_probability = clamp(base_damage_probability + (avg_diff*Settings.environment_weight() + mineral_value*Settings.mineral_weight()) / (Settings.environment_weight() + Settings.mineral_weight()) - dmg_threshold, 0.02, 0.98)
 		
 		#If i have poison, then add in 0,1 for final_damage_probability;
-		#HERE 
-		print("poison: " + str(cfp_resources["complex_proteins"]["poison"]))
-		print("final damage prob; " + str(final_damage_probability))
-		for i in range(cfp_resources["complex_proteins"]["poison"]):
+		#HERE IS WHERE THE DAMAGE BREAKS
+		for i in range(cfp_resources["complex_proteins"]["poisonA"]):
+			final_damage_probability += 0.03
+		for i in range(cfp_resources["complex_proteins"]["poisonB"]):
+			final_damage_probability += 0.03
+		for i in range(cfp_resources["complex_proteins"]["poisonC"]):
+			final_damage_probability += 0.03
+		for i in range(cfp_resources["complex_proteins"]["poisonD"]):
+			final_damage_probability += 0.03
+		for i in range(cfp_resources["complex_proteins"]["poisonE"]):
+			final_damage_probability += 0.03
+		for i in range(cfp_resources["complex_proteins"]["poisonF"]):
+			final_damage_probability += 0.03
+		for i in range(cfp_resources["complex_proteins"]["poisonG"]):
 			final_damage_probability += 0.03
 	#	print("dmg_threshold: ", dmg_threshold)
 	#	print("dmg_weight: ", dmg_weight)
@@ -3190,15 +3200,65 @@ func acquire_resources():
 					var max_capacity = get_estimated_capacity(resource_class)
 					
 					
-					if resource == "poison":
-						while(cfp_resources["complex_proteins"]["antidote"] > 0 && current_tile["resources"][index] > 0 ):
+					if resource == "poisonA":
+						while(cfp_resources["complex_proteins"]["antidoteA"] > 0 && current_tile["resources"][index] > 0 ):
 							current_tile["resources"][index] -=1
-							cfp_resources["complex_proteins"]["antidote"] -= 1
+							cfp_resources["complex_proteins"]["antidoteA"] -= 1
+					elif resource == "poisonB":
+						while(cfp_resources["complex_proteins"]["antidoteB"] > 0 && current_tile["resources"][index] > 0 ):
+							current_tile["resources"][index] -=1
+							cfp_resources["complex_proteins"]["antidoteB"] -= 1
+					elif resource =="poisonC":
+						while(cfp_resources["complex_proteins"]["antidoteC"] > 0 && current_tile["resources"][index] > 0 ):
+							current_tile["resources"][index] -=1
+							cfp_resources["complex_proteins"]["antidoteC"] -= 1
+					elif resource =="poisonD":
+						while(cfp_resources["complex_proteins"]["antidoteD"] > 0 && current_tile["resources"][index] > 0 ):
+							current_tile["resources"][index] -=1
+							cfp_resources["complex_proteins"]["antidoteD"] -= 1
+					elif resource =="poisonE":
+						while(cfp_resources["complex_proteins"]["antidoteE"] > 0 && current_tile["resources"][index] > 0 ):
+							current_tile["resources"][index] -=1
+							cfp_resources["complex_proteins"]["antidoteE"] -= 1
+					elif resource =="poisonF":
+						while(cfp_resources["complex_proteins"]["antidoteF"] > 0 && current_tile["resources"][index] > 0 ):
+							current_tile["resources"][index] -=1
+							cfp_resources["complex_proteins"]["antidoteF"] -= 1
+					elif resource == "poisonG":
+						print("ate antidote")
+						while(cfp_resources["complex_proteins"]["antidoteG"] > 0 && current_tile["resources"][index] > 0 ):
+							current_tile["resources"][index] -=1
+							cfp_resources["complex_proteins"]["antidoteG"] -= 1
 							
-					if resource == "antidote":
-						while(cfp_resources["complex_proteins"]["poison"] > 0 && current_tile["resources"][index] > 0 ):
+					if resource == "antidoteA":
+						while(cfp_resources["complex_proteins"]["poisonA"] > 0 && current_tile["resources"][index] > 0 ):
 							current_tile["resources"][index] -=1
-							cfp_resources["complex_proteins"]["poison"] -= 1
+							cfp_resources["complex_proteins"]["poisonA"] -= 1
+					elif resource == "antidoteB":
+						while(cfp_resources["complex_proteins"]["poisonB"] > 0 && current_tile["resources"][index] > 0 ):
+							current_tile["resources"][index] -=1
+							cfp_resources["complex_proteins"]["poisonB"] -= 1
+					elif resource == "antidoteC":
+						while(cfp_resources["complex_proteins"]["poisonC"] > 0 && current_tile["resources"][index] > 0 ):
+							current_tile["resources"][index] -=1
+							cfp_resources["complex_proteins"]["poisonC"] -= 1
+					elif resource == "antidoteD":
+						while(cfp_resources["complex_proteins"]["poisonD"] > 0 && current_tile["resources"][index] > 0 ):
+							current_tile["resources"][index] -=1
+							cfp_resources["complex_proteins"]["poisonD"] -= 1
+					elif resource == "antidoteE":
+						while(cfp_resources["complex_proteins"]["poisonE"] > 0 && current_tile["resources"][index] > 0 ):
+							current_tile["resources"][index] -=1
+							cfp_resources["complex_proteins"]["poisonE"] -= 1
+					elif resource == "antidoteF":
+						print("ate antidote")
+						while(cfp_resources["complex_proteins"]["poisonF"] > 0 && current_tile["resources"][index] > 0 ):
+							current_tile["resources"][index] -=1
+							cfp_resources["complex_proteins"]["poisonF"] -= 1
+					elif resource == "antidoteG":
+						while(cfp_resources["complex_proteins"]["poisonG"] > 0 && current_tile["resources"][index] > 0 ):
+							current_tile["resources"][index] -=1
+							cfp_resources["complex_proteins"]["poisonG"] -= 1
 	
 					#Vesicle can accomodate all resources
 					if cfp_resources[resource_class]["total"] + current_tile["resources"][index] <= max_capacity:
@@ -3270,14 +3330,12 @@ func acquire_resources():
 							emit_signal("add_card_event_log",str(current_tile["resources"][index])+" jars of peanut butter eaten",{})
 						
 						current_tile["resources"][index] = 0
-	
 					#Can only accomodate some of the resources
 					else:
 						current_tile["resources"][index] -= (max_capacity - cfp_resources[resource_class]["total"])
-						#print(cfp_resources[resource_class].keys())
+						print(cfp_resources[resource_class].keys())
 						cfp_resources[resource_class][resource] += (max_capacity - cfp_resources[resource_class]["total"])
 						cfp_resources[resource_class]["total"] = max_capacity
-	
 	else:
 		modified = false
 	#Reestablish what the new primary_resource indicator on the tile should be
@@ -3620,6 +3678,8 @@ func eject_cfp_resource(resource, amount = 1):
 								"hazards": current_tile["hazards"]
 							}
 		use_resources("cfp_ejection", amount)
+
+
 
 func get_cost_mult(action) -> float:
 	var cost_mult = 1.0;
@@ -4032,3 +4092,14 @@ func _on_indicator6_mouse_entered():
 func _on_indicator6_mouse_exited():
 	$tool_tip6.hide()
 	pass # Replace with function body.
+	
+#This is a simple function that will give a gut check about whehter or not you have the poison skill or not. 
+#I will add it to the chromosome when Testing to see how accurate it is.
+func excrete_poison_or_antidote():
+	if behavior_profile.has_skill("create_poison"):
+		print(" I have poison")
+	elif behavior_profile.has_skill("create_antidote"):
+		print("i have antidotes");
+	else:
+		print(" i dont have either.");
+	pass

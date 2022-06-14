@@ -538,6 +538,34 @@ func get_resource_icon(resource):
 
 #Can accept energy, resource_class (simple_carbs/complex_fats, etc.), or resource_names
 func is_valid_interaction(resource_from: String, resource_to: String, bhv_profile: BehaviorProfile = null):
+	if bhv_profile.has_behavior("create_poisonA"):
+		emit_signal("unlockPoisonA")
+	if bhv_profile.has_behavior("create_poisonB"):
+		emit_signal("unlockPoisonB")
+	if bhv_profile.has_behavior("create_poisonC"):
+		emit_signal("unlockPoisonC")
+	if bhv_profile.has_behavior("create_poisonD"):
+		emit_signal("unlockPoisonD")
+	if bhv_profile.has_behavior("create_poisonE"):
+		emit_signal("unlockPoisonE")
+	if bhv_profile.has_behavior("create_poisonF"):
+		emit_signal("unlockPoisonF")
+	if bhv_profile.has_behavior("create_poisonG"):
+		emit_signal("unlockPoisonG")
+	if bhv_profile.has_behavior("create_AntidoteA"):
+		emit_signal("unlockAntidote")
+	if bhv_profile.has_behavior("create_AntidoteB"):
+		emit_signal("unlockAntidote")
+	if bhv_profile.has_behavior("create_AntidoteC"):
+		emit_signal("unlockAntidote")
+	if bhv_profile.has_behavior("create_AntidoteD"):
+		emit_signal("unlockAntidote")
+	if bhv_profile.has_behavior("create_AntidoteE"):
+		emit_signal("unlockAntidote")
+	if bhv_profile.has_behavior("create_AntidoteF"):
+		emit_signal("unlockAntidote")
+	if bhv_profile.has_behavior("create_AntidoteG"):
+		emit_signal("unlockAntidote")
 	var possible = false
 	var from_is_class = false
 	var to_is_class = false

@@ -23,7 +23,7 @@ func _ready():
 	for setting in Settings.settings["ingame_settings"]:
 		
 		iterator += 1
-		if iterator > 3:
+		if iterator > 4 && iterator < 21:
 			var node = create_node_from_dictionary(setting, Settings.settings["ingame_settings"][setting]["type"], Settings.settings["ingame_settings"][setting])
 			var row = create_settings_row(setting, Settings.settings["ingame_settings"][setting]["stacked"])
 			row.add_child(node)
@@ -209,6 +209,7 @@ func update_global_settings():
 func get_final_settings()->Dictionary:
 	#print("getting final settings")
 	var settings = {}
+	STATS.set_cheat(false)
 	#Loop over boxes
 	for box in scroller.get_children():
 		#Get the setting which isn't a label
@@ -218,10 +219,18 @@ func get_final_settings()->Dictionary:
 				if child.get("value") != null:
 					Settings.settings["ingame_settings"][child.name]["final_value"] = child.get("value")
 				elif child.get("selected") != null: #in the case of option boxes
+					STATS.set_cheat(true)
 					if child.has_method("get_item_text"):
 						Settings.settings["ingame_settings"][child.name]["final_value"] = child.get_item_text(child.selected)
+						#print("\n")
+						#print(child.get_item_text(child.selected))
 				elif child.get("pressed") != null:
 					Settings.settings["ingame_settings"][child.name]["final_value"] = child.get("pressed")
+					#STATS.set_cheat(true)
+					print("options: " + str(child.name) + ", "+str(child.get("pressed")))
+					if not child.name == "tutorial" and child.get("pressed"):
+						print(child.name+"\n")
+						STATS.set_cheat(true)
 				elif child.get("text") != null:
 					Settings.settings["ingame_settings"][child.name]["final_value"] = child.text
 	return settings

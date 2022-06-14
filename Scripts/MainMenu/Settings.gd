@@ -4,7 +4,7 @@ extends MarginContainer
 # var a = 2
 # var b = "text"
 onready var scroller = get_node("ScrollContainer/VBoxContainer")
-onready var comp_button = get_node("ScrollContainer/VBoxContainer/add_competitors");
+#onready var comp_button = get_node("ScrollContainer/VBoxContainer/add_competitors");
 
 const NON_GODOT_VALUES = ["type", "stacked", "final_value"]
 
@@ -16,7 +16,7 @@ func _ready():
 		#print("setting: " + setting + " , iterator: " + str(iterator))
 		iterator+=1
 		
-		if iterator < 4 or iterator > 20:
+		if iterator <5 or iterator > 22:
 			var node = create_node_from_dictionary(setting, Settings.settings["ingame_settings"][setting]["type"], Settings.settings["ingame_settings"][setting])
 			var row = create_settings_row(setting, Settings.settings["ingame_settings"][setting]["stacked"])
 			row.add_child(node)
@@ -107,6 +107,7 @@ func use_dictionary_to_populate_node(node: Control, option_name: String, options
 func get_final_settings()->Dictionary:
 	#print("getting final settings")
 	var settings = {}
+	var counter = 0;
 	#Loop over boxes
 	for box in scroller.get_children():
 		#Get the setting which isn't a label
@@ -116,13 +117,30 @@ func get_final_settings()->Dictionary:
 				#If it has a value, report the value
 				if child.get("value") != null:
 					Settings.settings["ingame_settings"][child.name]["final_value"] = child.get("value")
+					
 				elif child.get("selected") != null: #in the case of option boxes
 					if child.has_method("get_item_text"):
-						print("option boxes: " + child.get_item_text(child.selected))
+						#print("option boxes: " + child.get_item_text(child.selected))
+						#print(STATS.get_readOut())
+						#STATS.append_readOut(child.get_item_text(child.selected))
+						if counter == 0:
+							STATS.append_readOut("\n Starting Blanks: " +child.get_item_text(child.selected))
+							counter += 1
+						elif counter == 1:
+							STATS.append_readOut("\n Starting Transposons: " + child.get_item_text(child.selected))
+							counter += 1
+						elif counter == 2:
+							STATS.append_readOut("\n Starting Additional Genes: " + child.get_item_text(child.selected))
+							counter += 1
+						elif counter == 3:
+							STATS.append_readOut("\n Add Competitors: " + child.get_item_text(child.selected))
+							counter += 1
+							
 						if child.name == "add_competitors" and child.get_item_text(child.selected) != 'None':
 							_on_add_competitors_pressed()
 						Settings.settings["ingame_settings"][child.name]["final_value"] = child.get_item_text(child.selected)
 				elif child.get("pressed") != null:
+					#print("Pressed")
 					Settings.settings["ingame_settings"][child.name]["final_value"] = child.get("pressed")
 				elif child.get("text") != null:
 					Settings.settings["ingame_settings"][child.name]["final_value"] = child.text

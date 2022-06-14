@@ -250,6 +250,8 @@ func _set_max_bar():
 	$maxBarDisplay4/Label.text = "You started with "+str(first_ate_value)+" transposons, these made up " + str(stepify(first_transposon_percent*100,0.1))+"% of your genome.";
 
 func _update_values():
+	$Cheat.visible = STATS.get_cheat()
+	$readOut.text = STATS.get_readOut()
 	num_progeny = STATS.get_progeny();
 	tiles_explored = STATS.get_tiles_traveled();
 	resources_consumed = STATS.get_resources_consumed();

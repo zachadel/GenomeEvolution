@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://Scripts/WorldMap/WorldMap_UI.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/WorldMap/InternalResourceController.tscn" type="PackedScene" id=2]
@@ -7,11 +7,25 @@
 [ext_resource path="res://Scenes/WorldMap/HazardsContainer.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scenes/WorldMap/GenomeDamage.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Assets/Fonts/OpenSans-22.tres" type="DynamicFont" id=7]
-[ext_resource path="res://Assets/Images/Tiles/Resources/trash.png" type="Texture" id=8]
+[ext_resource path="res://Assets/Images/Tiles/Resources/posion.png" type="Texture" id=8]
 [ext_resource path="res://Scenes/WorldMap/TransposonUI.tscn" type="PackedScene" id=9]
 [ext_resource path="res://Scenes/WorldMap/BiomeIcon.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Assets/Images/Menus/Q.png" type="Texture" id=11]
 [ext_resource path="res://Scenes/Missions/Missions.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Assets/Images/Tiles/Resources/PoisonYellow.png" type="Texture" id=13]
+[ext_resource path="res://Assets/Images/Tiles/Resources/PoisonBrown.png" type="Texture" id=14]
+[ext_resource path="res://Assets/Images/Tiles/Resources/PoisonRed.png" type="Texture" id=15]
+[ext_resource path="res://Assets/Images/Tiles/Resources/PoisonWhite.png" type="Texture" id=16]
+[ext_resource path="res://Assets/Images/Tiles/Resources/PoisonBlue.png" type="Texture" id=17]
+[ext_resource path="res://Assets/Images/Tiles/Resources/PoisonPink.png" type="Texture" id=18]
+[ext_resource path="res://Assets/Images/Menus/Q_s.png" type="Texture" id=19]
+[ext_resource path="res://Assets/Images/Tiles/Resources/AntidoteBlue.png" type="Texture" id=20]
+[ext_resource path="res://Assets/Images/Tiles/Resources/AntidoteRed.png" type="Texture" id=21]
+[ext_resource path="res://Assets/Images/Tiles/Resources/AntidoteWhite.png" type="Texture" id=22]
+[ext_resource path="res://Assets/Images/Tiles/Resources/AntidoteBrown.png" type="Texture" id=23]
+[ext_resource path="res://Assets/Images/Tiles/Resources/AntidotePink.png" type="Texture" id=24]
+[ext_resource path="res://Assets/Images/Tiles/Resources/AntidoteGreen.png" type="Texture" id=25]
+[ext_resource path="res://Assets/Images/Tiles/Resources/antidoteYellow.png" type="Texture" id=26]
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
@@ -46,6 +60,8 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 shadow_size = 2
+
+[sub_resource type="ButtonGroup" id=7]
 
 [node name="WorldMap_UI" type="CanvasLayer"]
 script = ExtResource( 1 )
@@ -98,18 +114,6 @@ margin_top = 814.0
 margin_right = -91.0
 margin_bottom = -24.0
 
-[node name="TextureRect" type="TextureRect" parent="InternalPanel"]
-margin_left = 320.0
-margin_top = 780.0
-margin_right = 397.0
-margin_bottom = 876.0
-texture = ExtResource( 8 )
-expand = true
-stretch_mode = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="TransposonLabel2" type="RichTextLabel" parent="InternalPanel"]
 margin_left = 21.0
 margin_top = 772.957
@@ -136,6 +140,77 @@ expand = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Poison" type="Button" parent="InternalPanel"]
+margin_left = 320.0
+margin_top = 779.216
+margin_right = 386.0
+margin_bottom = 832.216
+expand_icon = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="InternalPanel/Poison"]
+margin_left = 1.00665
+margin_top = 0.0984497
+margin_right = 67.0067
+margin_bottom = 51.0984
+text = "Make
+Poison"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Antidote" type="Button" parent="InternalPanel"]
+margin_left = 320.0
+margin_top = 835.0
+margin_right = 385.0
+margin_bottom = 882.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="InternalPanel/Antidote"]
+margin_left = 1.0
+margin_top = 8.0
+margin_right = 64.0
+margin_bottom = 42.0
+text = "Make 
+Antidote"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureButton" type="TextureButton" parent="InternalPanel"]
+margin_left = 361.165
+margin_top = 751.575
+margin_right = 385.165
+margin_bottom = 778.575
+texture_normal = ExtResource( 19 )
+
+[node name="PoisonControl" type="ColorRect" parent="InternalPanel"]
+margin_left = 387.705
+margin_top = 780.879
+margin_right = 397.705
+margin_bottom = 828.879
+rect_pivot_offset = Vector2( 0.706818, 37.1454 )
+color = Color( 1, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AntidoteControl" type="ColorRect" parent="InternalPanel"]
+margin_left = 387.423
+margin_top = 835.141
+margin_right = 397.423
+margin_bottom = 883.141
+rect_pivot_offset = Vector2( 0.706818, 37.1454 )
+color = Color( 1, 0, 0, 1 )
 
 [node name="ExternalPanel" type="Panel" parent="."]
 margin_left = 1310.0
@@ -467,9 +542,10 @@ __meta__ = {
 }
 
 [node name="control_hide" type="Control" parent="."]
-margin_left = 2.0
-margin_right = 42.0
-margin_bottom = 40.0
+margin_left = 1.81023
+margin_top = 2.41771
+margin_right = 41.8102
+margin_bottom = 42.4177
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -574,10 +650,379 @@ margin_left = 411.0
 margin_top = 0.0
 margin_right = -285.0
 margin_bottom = -830.0
+
+[node name="Control" type="Control" parent="."]
+margin_left = 69.8159
+margin_top = 54.8607
+margin_right = 109.816
+margin_bottom = 94.8607
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PoisonPopUp" type="ColorRect" parent="Control"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 579.232
+margin_top = 300.768
+margin_right = 1107.23
+margin_bottom = 560.768
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="title" type="Label" parent="Control/PoisonPopUp"]
+margin_left = 13.0
+margin_right = 525.0
+margin_bottom = 31.0
+custom_fonts/font = ExtResource( 7 )
+text = "Pick Your Poison"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="poisonA" type="TextureRect" parent="Control/PoisonPopUp"]
+margin_top = 50.0
+margin_right = 77.0
+margin_bottom = 127.0
+texture = ExtResource( 15 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="poisonB" type="TextureRect" parent="Control/PoisonPopUp"]
+margin_left = 75.0
+margin_top = 50.0
+margin_right = 152.0
+margin_bottom = 127.0
+texture = ExtResource( 13 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="poisonC" type="TextureRect" parent="Control/PoisonPopUp"]
+margin_left = 150.0
+margin_top = 50.0
+margin_right = 227.0
+margin_bottom = 127.0
+texture = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="poisonD" type="TextureRect" parent="Control/PoisonPopUp"]
+margin_left = 225.0
+margin_top = 50.0
+margin_right = 302.0
+margin_bottom = 127.0
+texture = ExtResource( 17 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="poisonE" type="TextureRect" parent="Control/PoisonPopUp"]
+margin_left = 300.0
+margin_top = 50.0
+margin_right = 377.0
+margin_bottom = 127.0
+texture = ExtResource( 18 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="poisonF" type="TextureRect" parent="Control/PoisonPopUp"]
+margin_left = 375.0
+margin_top = 50.0
+margin_right = 452.0
+margin_bottom = 127.0
+texture = ExtResource( 16 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="poisonG" type="TextureRect" parent="Control/PoisonPopUp"]
+margin_left = 450.0
+margin_top = 50.0
+margin_right = 527.0
+margin_bottom = 127.0
+texture = ExtResource( 14 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CheckBoxA" type="CheckBox" parent="Control/PoisonPopUp"]
+margin_left = 24.9358
+margin_top = 130.031
+margin_right = 48.9358
+margin_bottom = 154.031
+group = SubResource( 7 )
+
+[node name="CheckBoxB" type="CheckBox" parent="Control/PoisonPopUp"]
+margin_left = 100.0
+margin_top = 130.031
+margin_right = 124.0
+margin_bottom = 154.031
+group = SubResource( 7 )
+
+[node name="CheckBoxC" type="CheckBox" parent="Control/PoisonPopUp"]
+margin_left = 174.552
+margin_top = 130.031
+margin_right = 198.552
+margin_bottom = 154.031
+group = SubResource( 7 )
+
+[node name="CheckBoxD" type="CheckBox" parent="Control/PoisonPopUp"]
+margin_left = 250.448
+margin_top = 130.031
+margin_right = 274.448
+margin_bottom = 154.031
+group = SubResource( 7 )
+
+[node name="CheckBoxE" type="CheckBox" parent="Control/PoisonPopUp"]
+margin_left = 324.68
+margin_top = 131.376
+margin_right = 348.68
+margin_bottom = 155.376
+group = SubResource( 7 )
+
+[node name="CheckBoxF" type="CheckBox" parent="Control/PoisonPopUp"]
+margin_left = 400.0
+margin_top = 130.031
+margin_right = 424.0
+margin_bottom = 154.031
+group = SubResource( 7 )
+
+[node name="CheckBoxG" type="CheckBox" parent="Control/PoisonPopUp"]
+margin_left = 474.552
+margin_top = 130.031
+margin_right = 498.552
+margin_bottom = 154.031
+group = SubResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Control/PoisonPopUp"]
+margin_left = 319.825
+margin_top = 198.869
+margin_right = 389.825
+margin_bottom = 212.869
+text = "Set Default"
+
+[node name="default" type="CheckBox" parent="Control/PoisonPopUp"]
+margin_left = 403.186
+margin_top = 192.331
+margin_right = 427.186
+margin_bottom = 216.331
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="exit" type="Button" parent="Control/PoisonPopUp"]
+margin_left = 479.5
+margin_top = 230.662
+margin_right = 514.5
+margin_bottom = 250.662
+text = "Exit"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AntidotePopUp" type="ColorRect" parent="Control"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 579.232
+margin_top = 300.768
+margin_right = 1107.23
+margin_bottom = 560.768
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="title" type="Label" parent="Control/AntidotePopUp"]
+margin_left = 13.0
+margin_right = 525.0
+margin_bottom = 31.0
+custom_fonts/font = ExtResource( 7 )
+text = "Pick Your Antidote"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="poisonA" type="TextureRect" parent="Control/AntidotePopUp"]
+margin_top = 50.0
+margin_right = 96.0
+margin_bottom = 128.0
+rect_scale = Vector2( 0.8, 1 )
+texture = ExtResource( 21 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="poisonB" type="TextureRect" parent="Control/AntidotePopUp"]
+margin_left = 75.0
+margin_top = 48.9117
+margin_right = 152.0
+margin_bottom = 125.912
+rect_scale = Vector2( 0.8, 1 )
+texture = ExtResource( 26 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="poisonC" type="TextureRect" parent="Control/AntidotePopUp"]
+margin_left = 149.84
+margin_top = 50.0
+margin_right = 245.84
+margin_bottom = 127.0
+rect_scale = Vector2( 0.8, 1 )
+texture = ExtResource( 25 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="poisonD" type="TextureRect" parent="Control/AntidotePopUp"]
+margin_left = 225.0
+margin_top = 50.0
+margin_right = 302.0
+margin_bottom = 127.0
+rect_scale = Vector2( 0.8, 1 )
+texture = ExtResource( 20 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="poisonE" type="TextureRect" parent="Control/AntidotePopUp"]
+margin_left = 300.0
+margin_top = 50.0
+margin_right = 396.0
+margin_bottom = 127.0
+rect_scale = Vector2( 0.8, 1 )
+texture = ExtResource( 24 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="poisonF" type="TextureRect" parent="Control/AntidotePopUp"]
+margin_left = 375.0
+margin_top = 50.0
+margin_right = 452.0
+margin_bottom = 127.0
+rect_scale = Vector2( 0.8, 1 )
+texture = ExtResource( 22 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="poisonG" type="TextureRect" parent="Control/AntidotePopUp"]
+margin_left = 450.0
+margin_top = 50.0
+margin_right = 527.0
+margin_bottom = 127.0
+rect_scale = Vector2( 0.8, 1 )
+texture = ExtResource( 23 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="antBoxA" type="CheckBox" parent="Control/AntidotePopUp"]
+margin_left = 26.2805
+margin_top = 130.031
+margin_right = 50.2805
+margin_bottom = 154.031
+group = SubResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="antBoxB" type="CheckBox" parent="Control/AntidotePopUp"]
+margin_left = 99.5518
+margin_top = 129.583
+margin_right = 123.552
+margin_bottom = 153.583
+group = SubResource( 7 )
+
+[node name="antBoxC" type="CheckBox" parent="Control/AntidotePopUp"]
+margin_left = 174.552
+margin_top = 130.031
+margin_right = 198.552
+margin_bottom = 154.031
+group = SubResource( 7 )
+
+[node name="antBoxD" type="CheckBox" parent="Control/AntidotePopUp"]
+margin_left = 250.0
+margin_top = 130.031
+margin_right = 274.0
+margin_bottom = 154.031
+group = SubResource( 7 )
+
+[node name="antBoxE" type="CheckBox" parent="Control/AntidotePopUp"]
+margin_left = 324.232
+margin_top = 129.583
+margin_right = 348.232
+margin_bottom = 153.583
+group = SubResource( 7 )
+
+[node name="antBoxF" type="CheckBox" parent="Control/AntidotePopUp"]
+margin_left = 400.0
+margin_top = 130.031
+margin_right = 424.0
+margin_bottom = 154.031
+group = SubResource( 7 )
+
+[node name="antBoxG" type="CheckBox" parent="Control/AntidotePopUp"]
+margin_left = 475.0
+margin_top = 130.031
+margin_right = 499.0
+margin_bottom = 154.031
+group = SubResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Control/AntidotePopUp"]
+margin_left = 319.825
+margin_top = 198.869
+margin_right = 389.825
+margin_bottom = 212.869
+text = "Set Default"
+
+[node name="default" type="CheckBox" parent="Control/AntidotePopUp"]
+margin_left = 403.186
+margin_top = 192.331
+margin_right = 427.186
+margin_bottom = 216.331
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Antidoteexit" type="Button" parent="Control/AntidotePopUp"]
+margin_left = 479.5
+margin_top = 230.214
+margin_right = 514.5
+margin_bottom = 250.214
+text = "Exit"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="gui_input" from="InternalPanel/StoredResourcesLabel/q_mark" to="." method="_on_q_mark_gui_input"]
 [connection signal="mouse_entered" from="InternalPanel/StoredResourcesLabel/q_mark" to="." method="_on_q_mark_mouse_entered"]
 [connection signal="mouse_exited" from="InternalPanel/StoredResourcesLabel/q_mark" to="." method="_on_q_mark_mouse_exited"]
 [connection signal="gui_input" from="InternalPanel/q_mark1" to="." method="_on_q_mark1_gui_input"]
+[connection signal="pressed" from="InternalPanel/Poison" to="." method="_on_Poison_pressed"]
+[connection signal="pressed" from="InternalPanel/Antidote" to="." method="_on_Antidote_pressed"]
+[connection signal="gui_input" from="InternalPanel/PoisonControl" to="." method="_on_PoisonControl_gui_input"]
+[connection signal="gui_input" from="InternalPanel/AntidoteControl" to="." method="_on_AntidoteControl_gui_input"]
 [connection signal="mouse_entered" from="ExternalPanel/TileResourcesLabel/q_mark2" to="." method="_on_q_mark2_mouse_entered"]
 [connection signal="mouse_exited" from="ExternalPanel/TileResourcesLabel/q_mark2" to="." method="_on_q_mark2_mouse_exited"]
 [connection signal="mouse_entered" from="ExternalPanel/TileResourcesLabel3/q_mark3" to="." method="_on_q_mark3_mouse_entered"]
@@ -592,3 +1037,19 @@ margin_bottom = -830.0
 [connection signal="pressed" from="MenuPanel/HBoxContainer/CheckGenome" to="." method="_on_CheckGenome_pressed"]
 [connection signal="pressed" from="MenuPanel/HBoxContainer/EventLog" to="." method="_on_EventLog_pressed"]
 [connection signal="gui_input" from="MenuPanel/map_q_mark" to="." method="_on_map_q_mark_gui_input"]
+[connection signal="toggled" from="Control/PoisonPopUp/CheckBoxA" to="." method="_on_CheckBoxA_toggled"]
+[connection signal="toggled" from="Control/PoisonPopUp/CheckBoxB" to="." method="_on_CheckBoxB_toggled"]
+[connection signal="toggled" from="Control/PoisonPopUp/CheckBoxC" to="." method="_on_CheckBoxC_toggled"]
+[connection signal="toggled" from="Control/PoisonPopUp/CheckBoxD" to="." method="_on_CheckBoxD_toggled"]
+[connection signal="toggled" from="Control/PoisonPopUp/CheckBoxE" to="." method="_on_CheckBoxE_toggled"]
+[connection signal="toggled" from="Control/PoisonPopUp/CheckBoxF" to="." method="_on_CheckBoxF_toggled"]
+[connection signal="toggled" from="Control/PoisonPopUp/CheckBoxG" to="." method="_on_CheckBoxG_toggled"]
+[connection signal="pressed" from="Control/PoisonPopUp/exit" to="." method="_on_exit_pressed"]
+[connection signal="toggled" from="Control/AntidotePopUp/antBoxA" to="." method="_on_antBoxA_toggled"]
+[connection signal="toggled" from="Control/AntidotePopUp/antBoxB" to="." method="_on_antBoxB_toggled"]
+[connection signal="toggled" from="Control/AntidotePopUp/antBoxC" to="." method="_on_antBoxC_toggled"]
+[connection signal="toggled" from="Control/AntidotePopUp/antBoxD" to="." method="_on_antBoxD_toggled"]
+[connection signal="toggled" from="Control/AntidotePopUp/antBoxE" to="." method="_on_antBoxE_toggled"]
+[connection signal="toggled" from="Control/AntidotePopUp/antBoxF" to="." method="_on_antBoxF_toggled"]
+[connection signal="toggled" from="Control/AntidotePopUp/antBoxG" to="." method="_on_antBoxG_toggled"]
+[connection signal="pressed" from="Control/AntidotePopUp/Antidoteexit" to="." method="_on_Antidoteexit_pressed"]

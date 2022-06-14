@@ -60,6 +60,7 @@ func _ready():
 	Game.connect("carb_to_sugar", self, "_on_carb_to_sugar");
 	Game.connect("fat_to_fat_acid", self, "_on_fat_to_fat_acid");
 	Game.connect("protein_to_am_acid", self, "_on_protein_to_am_acid");
+
 	for resource in Settings.settings["resources"]:
 		var resource_class = Game.get_class_from_name(resource)
 		
@@ -128,6 +129,8 @@ func _process(delta):
 #	if resource_class.split(Game.SEPARATOR)[0] == "simple":
 #		pass
 
+
+	
 func highlight_energy_bar_if_necessary(energy = 0):
 	if organism.energy > organism.get_energy_cost("replicate_mitosis"):
 		energy_bar.glow(true)
@@ -358,7 +361,6 @@ func handle_click_with_selection():
 										for resource_type in curr_org.mineral_resources:
 											for j in curr_org.mineral_resources[resource_type]:
 												if j == "nitrogen":
-								
 													curr_org.mineral_resources[resource_type][j] = STATS.get_amt_of_nitrogen()
 													#print("Resource type: " + str(resource_type))
 													#print("J: " + str(j))

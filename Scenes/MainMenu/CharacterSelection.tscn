@@ -97,7 +97,7 @@ margin_bottom = -6.10352e-05
 margin_left = 1243.0
 margin_top = 100.0
 margin_right = 1468.0
-margin_bottom = 352.0
+margin_bottom = 360.0
 __meta__ = {
 "_edit_group_": true,
 "_edit_use_anchors_": false
@@ -189,9 +189,9 @@ __meta__ = {
 
 [node name="ADS" type="Button" parent="."]
 margin_left = 1359.48
-margin_top = 846.647
-margin_right = 1544.48
-margin_bottom = 889.647
+margin_top = 845.783
+margin_right = 1573.48
+margin_bottom = 888.783
 text = "Advanced Environment Settings"
 __meta__ = {
 "_edit_use_anchors_": false
