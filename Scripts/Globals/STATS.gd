@@ -178,7 +178,10 @@ var has_competitors;
 
 
 func append_readOut(key):
-	readOut += key
+	if not key == "~":
+		readOut += key
+	else:
+		readOut = ""
 	
 func get_readOut():
 	return readOut

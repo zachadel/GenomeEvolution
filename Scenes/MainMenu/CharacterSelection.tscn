@@ -95,9 +95,9 @@ margin_bottom = -6.10352e-05
 
 [node name="Panel" type="Panel" parent="."]
 margin_left = 1243.0
-margin_top = 100.0
-margin_right = 1468.0
-margin_bottom = 360.0
+margin_top = 84.0
+margin_right = 1446.0
+margin_bottom = 403.0
 __meta__ = {
 "_edit_group_": true,
 "_edit_use_anchors_": false
@@ -226,9 +226,9 @@ __meta__ = {
 [node name="scroller" type="ColorRect" parent="."]
 visible = false
 margin_left = 1180.0
-margin_top = 400.0
+margin_top = 420.0
 margin_right = 1485.0
-margin_bottom = 650.0
+margin_bottom = 670.0
 color = Color( 0.238281, 0.212589, 0.212589, 1 )
 __meta__ = {
 "_edit_use_anchors_": false

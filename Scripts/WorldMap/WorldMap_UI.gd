@@ -59,7 +59,7 @@ func _ready():
 	Game.connect("unlockPoisonE", self, "_on_unlockPoisonE");
 	Game.connect("unlockPoisonF", self, "_on_unlockPoisonF");
 	Game.connect("unlockPoisonG", self, "_on_unlockPoisonG");
-	Game.connect("unlockAntidote", self, "_on_unlockAntidote")
+	Game.connect("unlockAntidote", self, "_on_unlockAntidote");
 	
 	acquire_resources_button.text = DEFAULT_BUTTON_TEXT[BUTTONS.ACQUIRE]
 	stats_screen_button.text = DEFAULT_BUTTON_TEXT[BUTTONS.STATS]
@@ -77,35 +77,46 @@ func progress_bar(percent):
 pass
 
 func _on_unlockPoisonA():
+	print("\n\n\n\n unlocking poison A")
+	$InternalPanel/Poison/lock.visible = false;
 	$InternalPanel/Poison.disabled= false;
 	$Control/PoisonPopUp/CheckBoxA.disabled= false;
 
 func _on_unlockPoisonB():
+	$InternalPanel/Poison/lock.visible = false;
 	$InternalPanel/Poison.disabled= false;
 	$Control/PoisonPopUp/CheckBoxB.disabled= false;
 	
 func _on_unlockPoisonC():
+	$InternalPanel/Poison/lock.visible = false;
 	$InternalPanel/Poison.disabled= false;
 	$Control/PoisonPopUp/CheckBoxC.disabled= false;
 	
 func _on_unlockPoisonD():
+	$InternalPanel/Poison/lock.visible = false;
 	$InternalPanel/Poison.disabled= false;
 	$Control/PoisonPopUp/CheckBoxD.disabled= false;
 	
 func _on_unlockPoisonE():
+	$InternalPanel/Poison/lock.visible = false;
 	$InternalPanel/Poison.disabled= false;
 	$Control/PoisonPopUp/CheckBoxE.disabled= false;
 
 func _on_unlockPoisonF():
+	$InternalPanel/Poison/lock.visible = false;
 	$InternalPanel/Poison.disabled= false;
 	$Control/PoisonPopUp/CheckBoxF.disabled= false;
 
 func _on_unlockPoisonG():
+	$InternalPanel/Poison/lock.visible = false;
 	$InternalPanel/Poison.disabled= false;
 	$Control/PoisonPopUp/CheckBoxG.disabled= false;
 
 func _on_unlockAntidote():
+	print("unlocking antidote")
+	$InternalPanel/Antidote/lock.visible = false;
 	$InternalPanel/Antidote.disabled = false;
+	
 func _update_mission(index):
 	var length_mission = len(missions)-1
 	#rng = RandomNumberGenerator.new()

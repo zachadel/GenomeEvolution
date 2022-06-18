@@ -4591,6 +4591,8 @@ __meta__ = {
 }
 
 [node name="readOut" type="Label" parent="."]
+anchor_top = -0.000960151
+anchor_bottom = -0.000960151
 margin_left = 1103.0
 margin_top = 638.0
 margin_right = 1391.0

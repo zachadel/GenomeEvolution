@@ -497,6 +497,7 @@ func _ready():
 	pass # Replace with function body.
 
 func _reset_values():
+	$readOut.text = ""
 	has_updated_values = false;
 	#reset variables
 	mission_accomplished = 0;

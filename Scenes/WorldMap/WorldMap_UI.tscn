@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=2]
+[gd_scene load_steps=35 format=2]
 
 [ext_resource path="res://Scripts/WorldMap/WorldMap_UI.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/WorldMap/InternalResourceController.tscn" type="PackedScene" id=2]
@@ -26,6 +26,7 @@
 [ext_resource path="res://Assets/Images/Tiles/Resources/AntidotePink.png" type="Texture" id=24]
 [ext_resource path="res://Assets/Images/Tiles/Resources/AntidoteGreen.png" type="Texture" id=25]
 [ext_resource path="res://Assets/Images/Tiles/Resources/antidoteYellow.png" type="Texture" id=26]
+[ext_resource path="res://Assets/Images/icons/padlock_small.png" type="Texture" id=27]
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
@@ -146,29 +147,35 @@ margin_left = 320.0
 margin_top = 779.216
 margin_right = 386.0
 margin_bottom = 832.216
+disabled = true
 expand_icon = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="InternalPanel/Poison"]
-margin_left = 1.00665
-margin_top = 0.0984497
-margin_right = 67.0067
-margin_bottom = 51.0984
+margin_left = 1.0
+margin_right = 66.0
+margin_bottom = 51.0
 text = "Make
 Poison"
-align = 1
+align = 2
 valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="lock" type="TextureRect" parent="InternalPanel/Poison"]
+margin_right = 31.0
+margin_bottom = 23.0
+texture = ExtResource( 27 )
 
 [node name="Antidote" type="Button" parent="InternalPanel"]
 margin_left = 320.0
 margin_top = 835.0
 margin_right = 385.0
 margin_bottom = 882.0
+disabled = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -180,8 +187,18 @@ margin_right = 64.0
 margin_bottom = 42.0
 text = "Make 
 Antidote"
-align = 1
+align = 2
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="lock" type="TextureRect" parent="InternalPanel/Antidote"]
+margin_left = 2.02756
+margin_top = -0.363586
+margin_right = 33.0276
+margin_bottom = 22.6364
+texture = ExtResource( 27 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

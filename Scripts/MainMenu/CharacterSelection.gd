@@ -13,6 +13,11 @@ onready var file_dialog = get_node("FileDialog")
 onready var scroller = get_node("scroller/ScrollContainer/VBoxContainer")
 
 const NON_GODOT_VALUES = ["type", "stacked", "final_value"]
+const names = ["resource_consumption_rate", "max_resources_per_tile", "skill_evolve_chance", "component_curve_exponent", 
+"base_damage_probability", "random_number_seed", "tutorial", "unlock_everything", 
+"disable_movement_costs", "disable_resource_costs", "disable_fog", "disable_zoom_cap", 
+"disable_missing_resources", "disable_resource_smoothing", "disable_genome_damage"]
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -20,15 +25,12 @@ func _ready():
 	resources.reload()
 	#settings_menu.reload()
 	var iterator = 0
-	for setting in Settings.settings["ingame_settings"]:
-		
-		iterator += 1
-		if iterator > 4 && iterator < 21:
-			var node = create_node_from_dictionary(setting, Settings.settings["ingame_settings"][setting]["type"], Settings.settings["ingame_settings"][setting])
-			var row = create_settings_row(setting, Settings.settings["ingame_settings"][setting]["stacked"])
-			row.add_child(node)
-			scroller.add_child(row)
-			
+	print(Settings.settings["ingame_settings"].keys())
+	for setting in names:
+		var node = create_node_from_dictionary(setting, Settings.settings["ingame_settings"][setting]["type"], Settings.settings["ingame_settings"][setting])
+		var row = create_settings_row(setting, Settings.settings["ingame_settings"][setting]["stacked"])
+		row.add_child(node)
+		scroller.add_child(row)
 	transposon.set_color(Color.red)
 	_on_CellSelection_cell_changed(cell_selection.get_cell_string())
 	pass # Replace with function body.
@@ -227,9 +229,9 @@ func get_final_settings()->Dictionary:
 				elif child.get("pressed") != null:
 					Settings.settings["ingame_settings"][child.name]["final_value"] = child.get("pressed")
 					#STATS.set_cheat(true)
-					print("options: " + str(child.name) + ", "+str(child.get("pressed")))
+					#print("options: " + str(child.name) + ", "+str(child.get("pressed")))
 					if not child.name == "tutorial" and child.get("pressed"):
-						print(child.name+"\n")
+						#print(child.name+"\n")
 						STATS.set_cheat(true)
 				elif child.get("text") != null:
 					Settings.settings["ingame_settings"][child.name]["final_value"] = child.text

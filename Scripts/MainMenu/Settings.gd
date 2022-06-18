@@ -3,6 +3,13 @@ extends MarginContainer
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
+
+var saved_settings = {
+	"starting_blanks":"",
+	"add_competitors":"",
+	"starting_transposons":"",
+	"starting_additional_genes":""
+}
 onready var scroller = get_node("ScrollContainer/VBoxContainer")
 #onready var comp_button = get_node("ScrollContainer/VBoxContainer/add_competitors");
 
@@ -10,19 +17,22 @@ const NON_GODOT_VALUES = ["type", "stacked", "final_value"]
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	for i in $ScrollContainer/VBoxContainer.get_children():
+		if not i is Label:
+			i.text =	Settings.settings["ingame_settings"][i.name]["final_value"]
 	
-	var iterator = 0
-	for setting in Settings.settings["ingame_settings"]:
-		#print("setting: " + setting + " , iterator: " + str(iterator))
-		iterator+=1
-		
-		if iterator <5 or iterator > 22:
-			var node = create_node_from_dictionary(setting, Settings.settings["ingame_settings"][setting]["type"], Settings.settings["ingame_settings"][setting])
-			var row = create_settings_row(setting, Settings.settings["ingame_settings"][setting]["stacked"])
-			row.add_child(node)
-			scroller.add_child(row)
-		#if iterator == 3: # This is to stop the settings from continuing to populate the table. 
-			#break
+#	var iterator = 0
+#	for setting in Settings.settings["ingame_settings"]:
+#		#print("setting: " + setting + " , iterator: " + str(iterator))
+#		iterator+=1
+#
+#		if iterator < 5 or iterator > 22:
+#			var node = create_node_from_dictionary(setting, Settings.settings["ingame_settings"][setting]["type"], Settings.settings["ingame_settings"][setting])
+#			var row = create_settings_row(setting, Settings.settings["ingame_settings"][setting]["stacked"])
+#			row.add_child(node)
+#			scroller.add_child(row)
+#		#if iterator == 3: # This is to stop the settings from continuing to populate the table. 
+#			#break
 	pass # Replace with function body.
 
 #If you want the name of the setting to the left of the option, stacked = false
@@ -46,12 +56,12 @@ func create_settings_row(name: String, stacked: bool = true, value_label: bool =
 	label.size_flags_vertical = SIZE_EXPAND_FILL
 	
 	box.add_child(label)
-	print("Making setting " + name)
+	#print("Making setting " + name)
 	return box
 
 func create_node_from_dictionary(option_name: String, godot_type: String, options: Dictionary) -> Control:
 	var node = null
-	print("Options " + str(options))
+	#print("Options " + str(options))
 	match(godot_type):
 		"HSlider":
 			node = HSlider.new()
@@ -107,15 +117,29 @@ func use_dictionary_to_populate_node(node: Control, option_name: String, options
 func get_final_settings()->Dictionary:
 	#print("getting final settings")
 	var settings = {}
+	STATS.append_readOut("~")
 	var counter = 0;
+	saved_settings["starting_blanks"] = $ScrollContainer/VBoxContainer/starting_blanks.text;
+	saved_settings["add_competitors"] = $ScrollContainer/VBoxContainer/add_competitors.text;
+	saved_settings["starting_transposons"] = $ScrollContainer/VBoxContainer/starting_transposons.text;
+	saved_settings["starting_additional_genes"] = $ScrollContainer/VBoxContainer/starting_additional_genes.text;
 	#Loop over boxes
-	for box in scroller.get_children():
+	#print("keys: " + str(Settings.settings["ingame_settings"].keys()))
+	for item in $ScrollContainer/VBoxContainer.get_children():
+		if not item is Label:
+			print(item.selected)
+		pass
+	for box in $ScrollContainer.get_children():
 		#Get the setting which isn't a label
 		for child in box.get_children():
 			#print("child: " + str(child.name))
+			#print($ScrollContainer/VBoxContainer/StartingTransposons.selected)
+			#print("boxes: " + str(child.get_current_index()))
+			
 			if not child is Label:
 				#If it has a value, report the value
 				if child.get("value") != null:
+					#print("child name: " + child.name)
 					Settings.settings["ingame_settings"][child.name]["final_value"] = child.get("value")
 					
 				elif child.get("selected") != null: #in the case of option boxes
@@ -148,18 +172,23 @@ func get_final_settings()->Dictionary:
 
 func update_global_settings():
 	print("UPDATING THE SETTINGS SETTINGS")
+	
+	print("saved settings: \n"+ str(saved_settings))
 	for box in scroller.get_children():
-		for child in box.get_children():
+		for child in $ScrollContainer/VBoxContainer.get_children():
+			#print(child)
 			var prop_list = child.get_property_list()
 			if not child is Label:
+				#print(child.name)
 				for setting in Settings.settings["ingame_settings"][child.name]:
 					if setting in ["pressed", "selected", "value"]:
-						Settings.settings["ingame_settings"][child.name][setting] = child.get(setting)
+						Settings.settings["ingame_settings"][child.name][setting] = child.text
+						
 						
 
 func reload():
-	for child in $ScrollContainer/VBoxContainer.get_children():
-		child.queue_free()
+	#for child in $ScrollContainer/VBoxContainer.get_children():
+		#child.queue_free()
 		
 	_ready()
 

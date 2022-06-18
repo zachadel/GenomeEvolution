@@ -5,6 +5,7 @@ extends Node
 #what is in the config file.  Check
 #settings.cfg for complete information
 #settings[setting_type][section][key] = value
+
 var settings = {}
 var seed_value = 0
 var unlock_buttons = false
@@ -53,7 +54,7 @@ func reset():
 
 func load_setting(setting_type: String, use_user_settings_if_possible: bool = true):
 	#print("entered the load settings function " )
-	print(" LOADING SETTING " + setting_type)
+	#print(" LOADING SETTING " + setting_type)
 	if setting_type in FILE_NAMES:
 		print(setting_type)
 		#print("setting type: " + str(setting_type))
@@ -110,7 +111,7 @@ func load_setting(setting_type: String, use_user_settings_if_possible: bool = tr
 		print("ERROR: Invalid setting_type of %s given for function load_setting." % setting_type)
 
 func save_setting(setting_type: String):
-	print("Save settings going off now")
+	#print("Save settings going off now")
 	var config = ConfigFile.new()
 	
 	if setting_type in SAVE_NAMES:
@@ -133,7 +134,7 @@ func load_all_settings(use_user_settings_if_possible: bool = true):
 func save_all_settings():
 	print("save all settings")
 	for setting_type in SAVE_NAMES:
-		print(setting_type)
+		#print(setting_type)
 		save_setting(setting_type)
 
 func load_personalities(file_name, dict):

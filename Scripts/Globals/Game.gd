@@ -11,7 +11,14 @@ signal am_acid_to_sugar
 signal carb_to_sugar
 signal fat_to_fat_acid
 signal protein_to_am_acid
-
+signal unlockPoisonA
+signal unlockPoisonB
+signal unlockPoisonC
+signal unlockPoisonD
+signal unlockPoisonE
+signal unlockPoisonF
+signal unlockPoisonG
+signal unlockAntidote
 var seed_value = 0
 
 var n_for_am_to_s = true
@@ -538,6 +545,16 @@ func get_resource_icon(resource):
 
 #Can accept energy, resource_class (simple_carbs/complex_fats, etc.), or resource_names
 func is_valid_interaction(resource_from: String, resource_to: String, bhv_profile: BehaviorProfile = null):
+	if Settings.unlock_buttons:
+		print("settings unlocked \n\n\n\n")
+		emit_signal("unlockPoisonA")
+		emit_signal("unlockPoisonB")
+		emit_signal("unlockPoisonC")
+		emit_signal("unlockPoisonD")
+		emit_signal("unlockPoisonE")
+		emit_signal("unlockPoisonF")
+		emit_signal("unlockPoisonG")
+		emit_signal("unlockAntidote")
 	if bhv_profile.has_behavior("create_poisonA"):
 		emit_signal("unlockPoisonA")
 	if bhv_profile.has_behavior("create_poisonB"):
