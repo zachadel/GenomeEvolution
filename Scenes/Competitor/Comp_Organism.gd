@@ -2087,6 +2087,7 @@ func adv_turn(round_num, turn_idx):
 					print(cmsms.get_cmsms()[1].get_elms_save())
 
 func kill(descr := "died"):
+	#COMPETITORS.kill_dead_competitors()
 	emit_signal("died", self, descr);
 
 func is_viable(missing_classes: Array) -> bool:

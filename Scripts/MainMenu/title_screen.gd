@@ -47,6 +47,7 @@ func _on_Cell_Exploded(dna_array):
 
 func _on_TitleScreen_begin_new_game():
 	Game.round_num = 0
+	COMPETITORS.new_game()
 	get_tree().change_scene("res://Scenes/MainMenu/Intro.tscn")
 	pass # Replace with function body.
 
