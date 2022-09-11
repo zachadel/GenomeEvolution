@@ -129,7 +129,7 @@ __meta__ = {
 margin_top = -20.0
 margin_right = 300.0
 margin_bottom = -6.0
-text = "Scale
+text = "Scale (%) [0,100]
 "
 align = 1
 valign = 1
@@ -137,13 +137,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Amount" type="Label" parent="scale"]
+[node name="Amount" type="LineEdit" parent="scale"]
 margin_left = 250.0
-margin_right = 302.0
-margin_bottom = 20.0
-text = "12"
+margin_top = -5.0
+margin_right = 308.0
+margin_bottom = 19.0
+hint_tooltip = "Press Enter to apply changes"
 align = 1
-valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -175,16 +175,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Amount" type="Label" parent="bias"]
+[node name="Amount" type="LineEdit" parent="bias"]
 margin_left = 250.0
-margin_right = 302.0
-margin_bottom = 20.0
-text = "12"
+margin_top = -5.0
+margin_right = 58.0
+margin_bottom = 24.0
+hint_tooltip = "Press Enter to apply changes"
 align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="richness" type="HSlider" parent="."]
 margin_left = 10.0
@@ -193,9 +190,8 @@ margin_right = 251.0
 margin_bottom = 336.0
 hint_tooltip = "Percentage that affects the maximum and minimum spawn rates for a tile for that resource."
 max_value = 400.0
-step = 50.0
 value = 50.0
-tick_count = 5
+tick_count = 11
 ticks_on_borders = true
 __meta__ = {
 "_edit_group_": true,
@@ -206,7 +202,7 @@ __meta__ = {
 margin_top = -20.0
 margin_right = 300.0
 margin_bottom = 11.0
-text = "Richness
+text = "Richness (%) [0, 400]
 "
 align = 1
 valign = 1
@@ -214,16 +210,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Amount" type="Label" parent="richness"]
+[node name="Amount" type="LineEdit" parent="richness"]
 margin_left = 250.0
-margin_right = 302.0
-margin_bottom = 20.0
-text = "12"
+margin_top = -5.0
+margin_right = 58.0
+margin_bottom = 24.0
+hint_tooltip = "Press Enter to apply changes"
 align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="priority" type="HSlider" parent="."]
 margin_left = 10.0
@@ -245,7 +238,7 @@ __meta__ = {
 margin_top = -20.0
 margin_right = 300.0
 margin_bottom = 11.0
-text = "Priority
+text = "Priority [1, 10]
 "
 align = 1
 valign = 1
@@ -253,16 +246,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Amount" type="Label" parent="priority"]
+[node name="Amount" type="LineEdit" parent="priority"]
 margin_left = 250.0
-margin_right = 302.0
-margin_bottom = 20.0
-text = "12"
+margin_top = -5.0
+margin_right = 58.0
+margin_bottom = 24.0
+hint_tooltip = "Press Enter to apply changes"
 align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="observation_threshold" type="SpinBox" parent="."]
 margin_left = 10.0
@@ -336,9 +326,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 [connection signal="value_changed" from="scale" to="." method="_on_scale_value_changed"]
+[connection signal="mouse_entered" from="scale/Amount" to="." method="_on_Amount_mouse_entered"]
+[connection signal="text_changed" from="scale/Amount" to="." method="_on_scale_value_text_changed"]
+[connection signal="text_entered" from="scale/Amount" to="." method="_on_scale_Amount_text_entered"]
 [connection signal="value_changed" from="bias" to="." method="_on_bias_value_changed"]
+[connection signal="text_entered" from="bias/Amount" to="." method="_on_bias_Amount_text_entered"]
 [connection signal="value_changed" from="richness" to="." method="_on_richness_value_changed"]
 [connection signal="value_changed" from="priority" to="." method="_on_priority_value_changed"]
+[connection signal="text_entered" from="priority/Amount" to="." method="_on_priority_Amount_text_entered"]
 [connection signal="value_changed" from="observation_threshold" to="." method="_on_observation_threshold_value_changed"]
 [connection signal="pressed" from="ArrowLeft" to="." method="_on_ArrowLeft_pressed"]
 [connection signal="pressed" from="ArrowRight" to="." method="_on_ArrowRight_pressed"]

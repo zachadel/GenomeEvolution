@@ -71,7 +71,7 @@ func _update_ui():
 	$Icon.texture = load(Settings.settings["resources"][resource_name]["tile_image"])		
 	
 	$scale.value = settings[resource_index]["scale"]
-	$scale/Amount.text = str($scale.value) + "%"
+	$scale/Amount.text = str($scale.value)
 	
 	$bias.value = settings[resource_index]["bias"]
 	$bias.max_value = clamp($scale.max_value - $scale.value, -100, 100)
@@ -117,31 +117,42 @@ func _on_ArrowRight_pressed():
 	resource_index = int(fposmod(resource_index + 1, len(Settings.settings["resources"].keys())))
 	_update_ui() 
 
-func _on_scale_value_changed(value):
-	$scale/Amount.text = str(value) + '%'
+func _on_scale_Amount_text_entered(value):
+	$scale.value = int(value)
+	$scale/Amount.caret_position = len($scale/Amount.text)
 	
+func _on_scale_value_changed(value):
+	$scale/Amount.text = str(value);
 	$bias.max_value = clamp($scale.max_value - $scale.value, -100, 100)
 	$bias.min_value = clamp(-$scale.max_value + $scale.value, -100, 100)
 	$bias.value = clamp($bias.value, $bias.min_value, $bias.max_value)
 	$bias/Amount.text = str($bias.value)
-	
-	pass # Replace with function body.
+	$bias/Title.text = str("Bias [" + str($bias.min_value) + ", " + str($bias.max_value) + "]" )
+
+func _on_bias_Amount_text_entered(value):
+	$bias.value = int(value)
+	$bias/Amount.caret_position = len($bias/Amount.text)
 
 func _on_bias_value_changed(value):
 	$bias/Amount.text = str($bias.value)
-	pass # Replace with function body.
 
 func _on_richness_value_changed(value):
-	$richness/Amount.text = str($richness.value) + '%'
-	pass # Replace with function body.
-	
+	$richness/Amount.text = str($richness.value)
+
+
+func _on_priority_Amount_text_entered(value):
+	$priority.value = int(value)
+	$priority/Amount.caret_position = len($priority/Amount.text)
+
 func _on_priority_value_changed(value):
 	$priority/Amount.text = str($priority.value)
-	pass # Replace with function body.
 
 func _on_observation_threshold_value_changed(value):
 	$observation_threshold/Amount.text = str($observation_threshold.value)
-	pass # Replace with function body.
 
 func reload():
 	_ready()
+
+
+func _on_Amount_mouse_entered():
+	pass # Replace with function body.
