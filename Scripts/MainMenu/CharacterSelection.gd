@@ -137,7 +137,7 @@ func _on_FileDialog_file_selected(path):
 	pass # Replace with function body.
 
 
-func _on_AFS_pressed():
+func _on_ARS_pressed():
 	$ResourceSettings.visible = !$ResourceSettings.visible;
 	pass # Replace with function body.
 

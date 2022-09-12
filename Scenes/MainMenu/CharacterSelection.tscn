@@ -48,9 +48,9 @@ __meta__ = {
 }
 
 [node name="GoToGame" type="Button" parent="."]
-margin_left = 1182.27
+margin_left = 1158.0
 margin_top = 719.0
-margin_right = 1571.27
+margin_right = 1571.0
 margin_bottom = 834.0
 custom_fonts/font = SubResource( 2 )
 text = "Start the Game!"
@@ -174,15 +174,15 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AFS" type="Button" parent="."]
+[node name="ARS" type="Button" parent="."]
 anchor_top = -0.00882873
 anchor_right = 0.425
 anchor_bottom = -0.00882873
-margin_left = 1182.48
+margin_left = 1160.0
 margin_top = 847.0
-margin_right = 1329.48
+margin_right = 1335.0
 margin_bottom = 890.0
-text = "Advanced Food Settings"
+text = "Advanced Resource Settings"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -247,7 +247,7 @@ __meta__ = {
 [connection signal="cell_changed" from="CellSelection" to="." method="_on_CellSelection_cell_changed"]
 [connection signal="pressed" from="Save" to="." method="_on_Save_pressed"]
 [connection signal="pressed" from="Load" to="." method="_on_Load_pressed"]
-[connection signal="pressed" from="AFS" to="." method="_on_AFS_pressed"]
+[connection signal="pressed" from="ARS" to="." method="_on_ARS_pressed"]
 [connection signal="pressed" from="ADS" to="." method="_on_ADS_pressed"]
 [connection signal="pressed" from="Load File" to="." method="_on_Load_File_pressed"]
 [connection signal="file_selected" from="FileDialog" to="." method="_on_FileDialog_file_selected"]
