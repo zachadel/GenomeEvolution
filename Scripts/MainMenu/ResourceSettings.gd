@@ -79,7 +79,7 @@ func _update_ui():
 	$bias/Amount.text = str($bias.value)
 	
 	$richness.value = settings[resource_index]["richness"]
-	$richness/Amount.text = str($richness.value) + "%"
+	$richness/Amount.text = str($richness.value)
 	
 	$priority.value = settings[resource_index]["priority"]
 	$priority/Amount.text = str($priority.value)
