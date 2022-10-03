@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Scenes/MainMenu/Settings.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/CardTable/Art/TEs/Hexagon.tscn" type="PackedScene" id=2]
@@ -8,6 +8,8 @@
 [ext_resource path="res://Assets/Images/pngs/SpeechRectLeft.png" type="Texture" id=6]
 [ext_resource path="res://Assets/Fonts/OpenSans-Light.ttf" type="DynamicFontData" id=7]
 [ext_resource path="res://Scenes/MainMenu/ResourceSettings.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Scenes/MainMenu/AddNewResource.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Scenes/MainMenu/ImportExport.tscn" type="PackedScene" id=10]
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
@@ -59,9 +61,9 @@ __meta__ = {
 }
 
 [node name="SettingsLabel" type="RichTextLabel" parent="."]
-margin_left = 1200.0
+margin_left = 1186.65
 margin_top = 10.0
-margin_right = 1508.0
+margin_right = 1494.65
 margin_bottom = 103.0
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
@@ -149,58 +151,65 @@ __meta__ = {
 
 [node name="ResourceSettings" parent="." instance=ExtResource( 8 )]
 visible = false
-margin_left = 797.145
-margin_top = 398.145
-margin_right = 1117.15
-margin_bottom = 834.145
+margin_left = 800.0
+margin_top = 400.0
+margin_right = 1120.0
+margin_bottom = 836.0
 
 [node name="Save" type="Button" parent="."]
-margin_left = 668.0
-margin_top = 847.102
-margin_right = 815.0
-margin_bottom = 890.102
+margin_left = 479.541
+margin_top = 797.077
+margin_right = 626.541
+margin_bottom = 840.077
 text = "Save Current Settings"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Load" type="Button" parent="."]
-margin_left = 826.647
-margin_top = 846.706
-margin_right = 973.647
-margin_bottom = 889.706
+margin_left = 637.0
+margin_top = 847.0
+margin_right = 792.0
+margin_bottom = 890.0
 text = "Load Default Settings"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="ImportExport" type="Button" parent="."]
+margin_left = 636.713
+margin_top = 796.917
+margin_right = 783.713
+margin_bottom = 839.917
+text = "Import/Export Settings"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="ARS" type="Button" parent="."]
-anchor_top = -0.00882873
-anchor_right = 0.425
-anchor_bottom = -0.00882873
 margin_left = 1160.0
-margin_top = 847.0
-margin_right = 1335.0
-margin_bottom = 890.0
+margin_top = 846.0
+margin_right = 1352.0
+margin_bottom = 889.0
 text = "Advanced Resource Settings"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ADS" type="Button" parent="."]
-margin_left = 1359.48
-margin_top = 845.783
-margin_right = 1573.48
-margin_bottom = 888.783
+margin_left = 1360.0
+margin_top = 846.0
+margin_right = 1574.0
+margin_bottom = 889.0
 text = "Advanced Environment Settings"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Load File" type="Button" parent="."]
-margin_left = 511.0
+margin_left = 480.0
 margin_top = 847.353
-margin_right = 658.0
+margin_right = 627.0
 margin_bottom = 890.353
 text = "Load File"
 __meta__ = {
@@ -243,11 +252,37 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="scroller/ScrollContainer"]
+
+[node name="AddNewResourceButton" type="Button" parent="."]
+margin_left = 955.0
+margin_top = 846.0
+margin_right = 1147.0
+margin_bottom = 889.0
+text = "Add New Resource"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AddNewResourcePanel" parent="." instance=ExtResource( 9 )]
+visible = false
+margin_left = 800.0
+margin_top = 400.0
+margin_right = 1120.0
+margin_bottom = 832.0
+
+[node name="ImportExportPanel" parent="." instance=ExtResource( 10 )]
+visible = false
+margin_left = 473.762
+margin_top = 347.897
+margin_right = 1123.76
+margin_bottom = 779.897
 [connection signal="pressed" from="GoToGame" to="." method="_on_GoToGame_pressed"]
 [connection signal="cell_changed" from="CellSelection" to="." method="_on_CellSelection_cell_changed"]
 [connection signal="pressed" from="Save" to="." method="_on_Save_pressed"]
 [connection signal="pressed" from="Load" to="." method="_on_Load_pressed"]
+[connection signal="pressed" from="ImportExport" to="." method="_on_ImportExport_pressed"]
 [connection signal="pressed" from="ARS" to="." method="_on_ARS_pressed"]
 [connection signal="pressed" from="ADS" to="." method="_on_ADS_pressed"]
 [connection signal="pressed" from="Load File" to="." method="_on_Load_File_pressed"]
 [connection signal="file_selected" from="FileDialog" to="." method="_on_FileDialog_file_selected"]
+[connection signal="pressed" from="AddNewResourceButton" to="." method="_on_AddNewResourceButton_pressed"]
