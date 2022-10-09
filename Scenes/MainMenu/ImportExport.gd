@@ -54,5 +54,6 @@ func _on_LoadSettings_pressed():
 	newFile.close()
 	# New settings are saved, let's run, now let's replace?
 	# Change Settings.settings["reousrces"]
+	print(OS.get_clipboard())
 	Settings.load_setting("resources", false)
 	pass # Replace with function body.
