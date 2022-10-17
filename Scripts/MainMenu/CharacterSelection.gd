@@ -137,9 +137,18 @@ func _on_FileDialog_file_selected(path):
 	pass # Replace with function body.
 
 
-func _on_AFS_pressed():
-	$ResourceSettings.visible = !$ResourceSettings.visible;
+func _on_ARS_pressed():
+	$AddNewResourcePanel.visible = false
+	$ImportExportPanel.visible = false
+	$ResourceSettings.visible = !$ResourceSettings.visible
+	$ResourceSettings.refresh()
 	pass # Replace with function body.
+
+func _on_AddNewResourceButton_pressed():
+	$ResourceSettings.visible = false
+	$ImportExportPanel.visible = false
+	$AddNewResourcePanel.visible = !$AddNewResourcePanel.visible
+	$AddNewResourcePanel.refresh()
 
 #I am adding in a bunch of functions from the settings 
 #I'm doing this so that it works.
@@ -236,3 +245,14 @@ func get_final_settings()->Dictionary:
 				elif child.get("text") != null:
 					Settings.settings["ingame_settings"][child.name]["final_value"] = child.text
 	return settings
+
+
+
+func _on_ImportExport_pressed():
+	# Open Import Export Window
+	$AddNewResourcePanel.visible = false
+	$ResourceSettings.visible = false
+	$ImportExportPanel.visible = !$ImportExportPanel.visible
+	$ImportExportPanel.clean()
+	#Maybe run reset here
+	pass # Replace with function body.

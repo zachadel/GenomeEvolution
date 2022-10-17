@@ -2148,8 +2148,15 @@ func obtain_resource_knowledge(cfp_resources: Dictionary, mineral_resources: Dic
 	for resource_class in cfp_resources:
 		for resource in cfp_resources[resource_class]:
 			if resource != "total" and cfp_resources[resource_class][resource] >= Settings.settings["resources"][resource]["observation_threshold"]:
-				ui.resource_ui.observe(resource)
-				$ResourceMap.observe_resource(resource)
+				# here we should loop
+				# loop through all resource names containing base resource
+				# for (all resource names):
+				# if resource in resource name (ie, bread in bread|-|sflkjsdf
+				# then observe it
+				for resource_name in Settings.settings["resources"]:
+					if resource in resource_name:
+						ui.resource_ui.observe(resource_name)
+						$ResourceMap.observe_resource(resource_name)
 	
 	for resource_class in mineral_resources:
 		for resource in mineral_resources[resource_class]:
@@ -2435,6 +2442,7 @@ func _on_WorldMap_UI_acquire_resources():
 	current_player.set_current_tile(curr_tile) 
 	current_player.acquire_resources()
 	update_ui_resources()
+	#obtain resource knowledge
 	obtain_resource_knowledge(current_player.organism.cfp_resources, current_player.organism.mineral_resources)
 
 #	print("After acquiring cfp resources: ", current_player.organism.cfp_resources, '\n')

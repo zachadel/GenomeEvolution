@@ -505,16 +505,24 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Data Collection" type="Button" parent="MenuPanel/HBoxContainer"]
+margin_right = 128.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Data Collection"
+
 [node name="AcquireResources" type="Button" parent="MenuPanel/HBoxContainer"]
-margin_right = 178.0
+margin_left = 148.0
+margin_right = 279.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Acquire Resources"
 
 [node name="StatsScreen" type="Button" parent="MenuPanel/HBoxContainer"]
-margin_left = 198.0
-margin_right = 376.0
+margin_left = 299.0
+margin_right = 427.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -530,8 +538,8 @@ size_flags_vertical = 3
 text = "Help"
 
 [node name="CheckGenome" type="Button" parent="MenuPanel/HBoxContainer"]
-margin_left = 396.0
-margin_right = 574.0
+margin_left = 447.0
+margin_right = 575.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -541,17 +549,17 @@ __meta__ = {
 }
 
 [node name="EventLog" type="Button" parent="MenuPanel/HBoxContainer"]
-margin_left = 594.0
-margin_right = 729.0
+margin_left = 595.0
+margin_right = 730.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 135, 32 )
 text = "Genome Diary"
 
 [node name="map_q_mark" type="TextureRect" parent="MenuPanel"]
-margin_left = 810.462
-margin_top = 20.5986
-margin_right = 969.462
-margin_bottom = 214.599
+margin_left = 874.145
+margin_top = 21.0005
+margin_right = 1033.14
+margin_bottom = 215.0
 rect_scale = Vector2( 0.15, 0.15 )
 texture = ExtResource( 11 )
 __meta__ = {
@@ -1049,6 +1057,7 @@ __meta__ = {
 [connection signal="mouse_entered" from="GenomeStatusLabel2/q_mark5" to="." method="_on_q_mark5_mouse_entered"]
 [connection signal="mouse_exited" from="GenomeStatusLabel2/q_mark5" to="." method="_on_q_mark5_mouse_exited"]
 [connection signal="pressed" from="GenomePanel/RepairGenome" to="." method="_on_EndMapTurn_pressed"]
+[connection signal="pressed" from="MenuPanel/HBoxContainer/Data Collection" to="." method="_on_Data_Collection_pressed"]
 [connection signal="pressed" from="MenuPanel/HBoxContainer/AcquireResources" to="." method="_on_AcquireResources_pressed"]
 [connection signal="pressed" from="MenuPanel/HBoxContainer/StatsScreen" to="." method="_on_StatsScreen_pressed"]
 [connection signal="pressed" from="MenuPanel/HBoxContainer/CheckGenome" to="." method="_on_CheckGenome_pressed"]

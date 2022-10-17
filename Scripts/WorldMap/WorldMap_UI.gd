@@ -603,3 +603,11 @@ func _on_CheckBoxG_toggled(button_pressed):
 	poison_choice = "G"
 	$InternalPanel/PoisonControl.color = Color(0.5,0.3,0.1);
 	pass # Replace with function body.
+
+
+func _on_Data_Collection_pressed():
+	# Open popup that lets you print settings to the console?
+	# No, this should print out everything within an X radius of you
+	# Maybe just a popup of a number?
+	pass
+	

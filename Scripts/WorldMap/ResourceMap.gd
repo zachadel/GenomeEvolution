@@ -343,11 +343,13 @@ func update_tile_resource(pos, primary_resource_index):
 	set_cell(int(conv_pos.x), int(conv_pos.y), get_tile_image_index(conv_pos))
 	
 func observe_resource(resource: String):
+	var tile_texture_keys = tile_textures.keys()
 	if not tile_textures[resource]["observed"]:
 		var resource_index = Game.get_index_from_resource(resource)
-		
 		tile_set.tile_set_texture(resource_index, tile_textures[resource]["texture"])
-		tile_textures[resource]["observed"] = true
+		for resource_instance in tile_texture_keys:
+			if resource in resource_instance:
+				tile_textures[resource]["observed"] = true
 		
 func observe_resources(cfp_resources: Dictionary, mineral_resources: Dictionary):
 	for resource_class in cfp_resources:

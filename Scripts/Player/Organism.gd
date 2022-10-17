@@ -3174,6 +3174,8 @@ func acquire_resources():
 		for index in range(len(current_tile["resources"])):
 			#grab the resource
 			var resource = Settings.settings["resources"].keys()[index]
+			if "|-|" in resource:
+				resource = resource.substr(0, len(resource)-13)
 			var resource_class = Game.get_class_from_name(resource)
 			
 			#Later, the resources to be grabbed should be randomly selected from all
@@ -3279,7 +3281,7 @@ func acquire_resources():
 								#print("eating sugar also")
 							emit_signal("add_card_event_log",str(current_tile["resources"][index])+" hard candies eaten",{})
 						
-						elif(resource_class == "simple_proteins" and resource == "proetin_shake"):
+						elif(resource_class == "simple_proteins" and resource == "protein_shake"):
 							for i in range(current_tile['resources'][index]):
 								STATS.incr_amino()
 							emit_signal("add_card_event_log",str(current_tile["resources"][index])+" protein shakes eaten",{})
