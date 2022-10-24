@@ -7,7 +7,11 @@ var settings = {}
 func _ready():
 	#print("HELLO WORLD")
 	settings = {}
+	print("All settings keys are")
+	for key in Settings.settings["resources"].keys():
+		print(key)
 	for i in range(len(Settings.settings["resources"].keys())):
+		
 		settings[i] = {}
 		
 		var resource_name = Settings.settings["resources"].keys()[i]

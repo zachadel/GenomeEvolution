@@ -10,8 +10,11 @@ signal show_event_log
 signal eject_resources(resources_dict)
 signal add_card_event_log
 
+var player_position
+var current_player
 var poison_choice = ""
 var antidote_choice = ""
+var scan_radius 
 #internal resources controller
 onready var irc = get_node("InternalPanel/InternalResourceController")
 onready var mineral_levels = get_node("InternalPanel/MineralLevels")
@@ -71,6 +74,12 @@ func _ready():
 	 
 	#$popUp.visible = false;
 	
+func setup(pos, player):
+	current_player = player
+	player_position = pos
+	
+func update_position(pos):
+	player_position = pos
 
 func progress_bar(percent):
 	$MissionControl/greenLight/ProgressBar.value = percent * 100
@@ -604,10 +613,64 @@ func _on_CheckBoxG_toggled(button_pressed):
 	$InternalPanel/PoisonControl.color = Color(0.5,0.3,0.1);
 	pass # Replace with function body.
 
-
 func _on_Data_Collection_pressed():
 	# Open popup that lets you print settings to the console?
 	# No, this should print out everything within an X radius of you
 	# Maybe just a popup of a number?
-	pass
+	$MenuPanel/HBoxContainer/DataCollection/DataPanel.visible = !$MenuPanel/HBoxContainer/DataCollection/DataPanel.visible
+	# Worry about number popup - for now just hardcode a number
 	
+
+
+func _on_Button_pressed():
+	scan_radius = int($MenuPanel/HBoxContainer/DataCollection/DataPanel/RadiusInput.text)
+	print("scan radius is " + str(scan_radius))
+	scan_area(scan_radius)
+	$MenuPanel/HBoxContainer/DataCollection/DataPanel.visible = false
+	pass # Replace with function body.
+
+func tiles_to_scan(radius):
+	var vectors = []
+	for x in range(player_position.x - radius, player_position.x + radius + 1):
+		print("x: " + str(x))
+		for y in range(max(radius * -1, (x * -1) - radius), min(radius, (x * -1) + radius) + 1):
+			var z = (x * -1) - y
+			vectors.append(Vector3(x, y, z))
+	return vectors
+
+func scan_area(radius):
+	
+	var VECTOR2D_TYPE = 5
+	
+	if( typeof(player_position) == VECTOR2D_TYPE):
+		player_position = Vector3(0, 0, 0)
+	
+	var valid_coordinate_vectors = tiles_to_scan(radius)
+	
+	# base tile dictionary
+	var total_tile_resources = get_parent().get_node("ResourceMap").get_tile_resources(player_position)
+	
+	#Blank out dictionary
+	for key in total_tile_resources.keys():
+		total_tile_resources[key] = 0
+	
+	for vector in valid_coordinate_vectors:
+		#Get resources from tile
+		var current_tile_resources = get_parent().get_node("ResourceMap").get_tile_resources(vector)
+		#Add it to the total count
+		for resource in current_tile_resources:
+			total_tile_resources[resource] += current_tile_resources[resource]
+		
+	# Gather resource names
+	var resource_names = []
+	for setting in Settings.settings["resources"]:
+		resource_names.append(setting)
+	
+	clear_console()
+	
+	for resource in total_tile_resources:
+		print(resource_names[resource] + " " + str(total_tile_resources[resource]))
+	
+func clear_console():
+	var escape = PoolByteArray([0x1b]).get_string_from_ascii()
+	print(escape + "[2J")

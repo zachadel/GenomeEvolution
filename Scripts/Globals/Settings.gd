@@ -55,8 +55,6 @@ func reset():
 func load_setting(setting_type: String, use_user_settings_if_possible: bool = true):
 	#print("entered the load settings function " )
 	#print(" LOADING SETTING " + setting_type)
-	print("Load_setting has been called")
-	print(setting_type)
 	if setting_type in FILE_NAMES:
 		#print("setting type: " + str(setting_type))
 		if setting_type == "ate_personalities":
@@ -71,8 +69,8 @@ func load_setting(setting_type: String, use_user_settings_if_possible: bool = tr
 				#print("user settings possible")
 				var config = ConfigFile.new()
 				var err = config.load(USER_PATH + FILE_NAMES[setting_type])
-				#print("loading the " + USER_PATH + " " + FILE_NAMES[setting_type] )
-				#print(USER_PATH)
+				print("loading the " + USER_PATH + " " + FILE_NAMES[setting_type] )
+				#rint(USER_PATH)
 				#print(FILE_NAMES[setting_type])
 				#load user settings if you can, if not load default
 				if err == OK:
