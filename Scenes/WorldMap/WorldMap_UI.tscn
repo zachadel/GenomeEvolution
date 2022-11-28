@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=2]
+[gd_scene load_steps=37 format=2]
 
 [ext_resource path="res://Scripts/WorldMap/WorldMap_UI.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/WorldMap/InternalResourceController.tscn" type="PackedScene" id=2]
@@ -27,6 +27,8 @@
 [ext_resource path="res://Assets/Images/Tiles/Resources/AntidoteGreen.png" type="Texture" id=25]
 [ext_resource path="res://Assets/Images/Tiles/Resources/antidoteYellow.png" type="Texture" id=26]
 [ext_resource path="res://Assets/Images/icons/padlock_small.png" type="Texture" id=27]
+[ext_resource path="res://Assets/Fonts/OpenSans-64.tres" type="DynamicFont" id=28]
+[ext_resource path="res://Assets/Fonts/OpenSans-48.tres" type="DynamicFont" id=29]
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
@@ -505,12 +507,53 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Data Collection" type="Button" parent="MenuPanel/HBoxContainer"]
+[node name="DataCollection" type="Button" parent="MenuPanel/HBoxContainer"]
 margin_right = 128.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Data Collection"
+
+[node name="DataPanel" type="Panel" parent="MenuPanel/HBoxContainer/DataCollection"]
+visible = false
+margin_left = 39.0
+margin_top = -477.0
+margin_right = 634.0
+margin_bottom = -392.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MenuPanel/HBoxContainer/DataCollection/DataPanel"]
+margin_right = 276.0
+margin_bottom = 142.0
+custom_fonts/mono_font = ExtResource( 29 )
+custom_fonts/normal_font = ExtResource( 28 )
+text = "Enter a radius for surveying: "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RadiusInput" type="TextEdit" parent="MenuPanel/HBoxContainer/DataCollection/DataPanel"]
+margin_left = 280.0
+margin_top = 2.0
+margin_right = 434.0
+margin_bottom = 83.0
+custom_fonts/font = ExtResource( 28 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="MenuPanel/HBoxContainer/DataCollection/DataPanel"]
+margin_left = 437.0
+margin_top = 1.0
+margin_right = 593.0
+margin_bottom = 83.0
+custom_fonts/font = ExtResource( 28 )
+text = "Scan"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="AcquireResources" type="Button" parent="MenuPanel/HBoxContainer"]
 margin_left = 148.0
@@ -1057,7 +1100,8 @@ __meta__ = {
 [connection signal="mouse_entered" from="GenomeStatusLabel2/q_mark5" to="." method="_on_q_mark5_mouse_entered"]
 [connection signal="mouse_exited" from="GenomeStatusLabel2/q_mark5" to="." method="_on_q_mark5_mouse_exited"]
 [connection signal="pressed" from="GenomePanel/RepairGenome" to="." method="_on_EndMapTurn_pressed"]
-[connection signal="pressed" from="MenuPanel/HBoxContainer/Data Collection" to="." method="_on_Data_Collection_pressed"]
+[connection signal="pressed" from="MenuPanel/HBoxContainer/DataCollection" to="." method="_on_Data_Collection_pressed"]
+[connection signal="pressed" from="MenuPanel/HBoxContainer/DataCollection/DataPanel/Button" to="." method="_on_Button_pressed"]
 [connection signal="pressed" from="MenuPanel/HBoxContainer/AcquireResources" to="." method="_on_AcquireResources_pressed"]
 [connection signal="pressed" from="MenuPanel/HBoxContainer/StatsScreen" to="." method="_on_StatsScreen_pressed"]
 [connection signal="pressed" from="MenuPanel/HBoxContainer/CheckGenome" to="." method="_on_CheckGenome_pressed"]

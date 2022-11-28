@@ -37,7 +37,6 @@ func _ready():
 		set_cell_type("cell_2")
 	
 	position = STARTING_POS
-	print(position)
 
 func setup(x = STARTING_POS.x, y = STARTING_POS.y):
 	position.x = x

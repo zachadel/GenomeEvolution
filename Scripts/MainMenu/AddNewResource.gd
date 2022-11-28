@@ -8,6 +8,7 @@ func _ready():
 	#print("HELLO WORLD")
 	settings = {}
 	for i in range(len(Settings.settings["resources"].keys())):
+		
 		settings[i] = {}
 		
 		var resource_name = Settings.settings["resources"].keys()[i]
@@ -29,11 +30,9 @@ func _update_ui():
 	$ResourceIcon.texture = load(Settings.settings["resources"][resource_name]["tile_image"])	
 	$EventLabel.text = ""
 
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
-
 
 func _on_LeftArrow_pressed():
 	resource_index = int(fposmod(resource_index - 1, len(Settings.settings["resources"].keys())))
@@ -64,7 +63,6 @@ func _on_AddNewInstance_pressed():
 			Settings.settings["resources"][newResource][characteristic] = Settings.settings["resources"][original_resource][characteristic]
 	
 	$EventLabel.text = "New instance added"
-
 
 func _on_DeleteInstance_pressed():
 	var original_resource = Settings.settings["resources"].keys()[resource_index]

@@ -1698,6 +1698,7 @@ func setup(biome_seed, hazard_seeds, resource_seed, tiebreak_seed, _chunk_size, 
 	$BiomeMap.setup(biome_generator, tiebreak_generator, hazard_generators, chunk_size, starting_pos)
 	$ResourceMap.setup(biome_generator, resource_generator, tiebreak_generator, funcref(current_player.organism, "get_vision_radius"), chunk_size, starting_pos)
 	$ObscurityMap.setup(chunk_size, starting_pos)
+	$WorldMap_UI.setup(starting_pos, current_player)
 	
 	#we assume that the player sprite is smaller than the tiles
 	player_sprite_offset = (tile_sprite_size - current_player.get_texture_size()) / 2
@@ -2079,6 +2080,7 @@ func teleport_player(pos: Vector3):
 	loc_highlight.position = current_player.position
 	
 func move_player(pos: Vector3):
+	$WorldMap_UI.update_position(pos)
 	no_one_on_tile = true
 	var player_tile = Game.world_to_map(current_player.position)
 	var tiles_moved = 0
