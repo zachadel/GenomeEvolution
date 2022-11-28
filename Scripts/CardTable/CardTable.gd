@@ -274,9 +274,7 @@ func _on_RepairTabs_tab_changed(idx: int):
 
 func show_repair_tab(tab_idx: int, upd_locks_disp := true) -> void:
 	$RepairTabs.current_tab = tab_idx;
-	print($RepairTabs.current_tab)
 	if upd_locks_disp:
-		print("upd locks disp")
 		upd_repair_lock_display();
 	#print("organism clear repair elms selections")
 	orgn.clear_repair_elm_selections();
@@ -289,10 +287,8 @@ func show_repair_tab(tab_idx: int, upd_locks_disp := true) -> void:
 			orgn.highlight_gap_choices();
 		0, 2:
 			if orgn.total_scissors_left > 0:
-				print("organism total scissors: " + str(orgn.total_scissors_left))
 				continue;
 			else: 
-				print("organism total scissors: " + str(orgn.total_scissors_left))
 				continue;
 		0:
 			orgn.highlight_dmg_genes("bandage");
@@ -429,7 +425,6 @@ func _on_btn_nxt_pressed():
 		print("we have comps in the game.")
 		for i in COMPETITORS.competitors_created:
 			auto_repair_all_breaks_join_end_competitors(i.organism.get_cmsm_pair())
-			print(i)
 	#if STATS.get_rounds() % 2 == 1:
 #		$pop_quiz.setup_q(quiz_counter)
 #		$pop_quiz.visible = true#
@@ -479,7 +474,6 @@ func adv_turn():
 				
 		elif Game.get_next_turn_type() == Game.TURN_TYPES.Recombination:
 			var recombos = orgn.get_recombos_per_turn()
-			print("recombos: " + str(recombos))
 			if check_if_any_dmg_in_chromosomes() or orgn.get_cmsm_pair().get_gap_list() != []: 
 				notifications.emit_signal("notification_needed", "There are still some breaks and harmed genes that you need to mend.")
 				$RepairTabs.current_tab = 1
@@ -862,7 +856,6 @@ func _on_fix_one_pressed():
 
 func check_if_any_dmg_in_chromosomes():
 	var list_dmg_genes = orgn.get_damaged_genes()
-	print(list_dmg_genes)
 	#print("Length of damage genes list: " + str(len(list_dmg_genes)))
 	if(len(list_dmg_genes) > 0):
 		#print("SCREEEEEECH")

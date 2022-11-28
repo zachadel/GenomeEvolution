@@ -69,7 +69,6 @@ func load_setting(setting_type: String, use_user_settings_if_possible: bool = tr
 				#print("user settings possible")
 				var config = ConfigFile.new()
 				var err = config.load(USER_PATH + FILE_NAMES[setting_type])
-				print("loading the " + USER_PATH + " " + FILE_NAMES[setting_type] )
 				#rint(USER_PATH)
 				#print(FILE_NAMES[setting_type])
 				#load user settings if you can, if not load default

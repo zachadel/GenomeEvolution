@@ -21,7 +21,6 @@ var tile_textures = {}
 func _ready():
 	var i = 0
 	tile_textures["question_mark"] = load(Game.DEFAULT_RESOURCE_PATH)
-	print(Game.DEFAULT_RESOURCE_PATH)
 	tile_set = TileSet.new()
 	for resource in Settings.settings["resources"].keys():
 		tile_textures[resource] = {}
@@ -167,8 +166,10 @@ func get_biome(pos):
 		-Each tile can have at most one primary resource on it in a value large
 			enough to trigger the tile's image to activate
 """	
+
+
+
 func get_primary_resource(pos) -> int:
-	
 	var conv_pos = _convert_pos(pos)
 		
 	var resource = -1
@@ -191,12 +192,16 @@ func get_primary_resource(pos) -> int:
 		var possible_resources = []
 		
 		var highest_priority = 10000000
-	
+		
 		#loop through and establish all possible biomes this random value could
 		#fall into
 		for resource_name in resource_names:
 			if Settings.settings["biomes"].keys()[biome] in Settings.settings["resources"][resource_name]["biomes"]:
-				var resource_range = [-1*Settings.settings["resources"][resource_name]["scale"] + Settings.settings["resources"][resource_name]["bias"], Settings.settings["resources"][resource_name]["scale"] + Settings.settings["resources"][resource_name]["bias"]]
+				#Not sure why 'resource_range' works like this
+				#The only implementation for bias is this one line of arithmetic?
+				#Settings.settings["resources"][resource_name]["bias"]
+				#This is primary resource, so bias shouldnt matter
+				var resource_range = [-1*Settings.settings["resources"][resource_name]["scale"], Settings.settings["resources"][resource_name]["scale"]]
 				if random_resource >= resource_range[0] and random_resource < resource_range[1]:
 					possible_resources.append(resource_name)
 					
@@ -278,7 +283,7 @@ func clear_tile_resources(tile):
 	
 #resources[i] = value
 func get_tile_resources(pos):
-	
+	print("in here")
 	var conv_pos = _convert_pos(pos)
 		
 	var resources = {}
@@ -297,6 +302,7 @@ func get_tile_resources(pos):
 		
 		#Generate list of resources possible on the tile
 		var resource_list = _generate_resource_list(conv_pos.x, conv_pos.y, Settings.max_resources_per_tile())
+		# Here all possible resources are chosen
 		
 		for i in range(len(Settings.settings["resources"])):
 			var resource_name = Settings.settings["resources"].keys()[i]
@@ -323,7 +329,8 @@ func _generate_resource_list(x: float, y: float, max_resources: int) -> Array:
 	var number_resources = len(Settings.settings["resources"].keys())
 	var resource_keys = Settings.settings["resources"].keys()
 	
-	max_resources = int(clamp(max_resources, 1, len(resource_keys)))
+	# max resources is a global var? Not sure if that makes sense
+	max_resources = int(clamp(max_resources, 1, number_resources))
 	var tiebreak 
 	
 	if Settings.disable_resource_smoothing():
@@ -332,9 +339,36 @@ func _generate_resource_list(x: float, y: float, max_resources: int) -> Array:
 		tiebreak = abs(erf(tiebreak_generator.get_noise_2d(x, y))) * 10
 	
 	for i in range(max_resources):
-		resource_list.append(resource_keys[int((int(tiebreak) % 10) * float(number_resources - 1)/9.0)])
+		# I think it's here?
+		var valid = false
+		var chosen_resource_index
+		var resource_name
+		var chosen_resource_bias
+		var rng = RandomNumberGenerator.new()
+		#Settings.settings["resources"][resource_name]["bias"]
+		while(!valid):
+			chosen_resource_index = int((int(tiebreak) % 10) * float(number_resources - 1)/9.0)
+			resource_name = resource_keys[chosen_resource_index]
+			chosen_resource_bias = Settings.settings["resources"][resource_name]["bias"]
+			
+			# Now do a roll if its not the first resource
+			if (i != 0):
+				var acceptance_value = 90
+				#If acceptance_check is lower than acceptance value, then it's valid. If not, try the next resource
+				var acceptance_check = rng.randi_range(0,100)
+				
+				acceptance_value = acceptance_value + (chosen_resource_bias / 100)*acceptance_value
+				
+				if(acceptance_check <= acceptance_value):
+					valid = true
+				else:
+					valid = false
+			else:
+				#First resource, bias doesn't matter
+				valid = true
+		resource_list.append(resource_name)
 		tiebreak *= 10.0 #consider the next digit
-	
+	print(resource_list)
 	return resource_list
 
 func update_tile_resource(pos, primary_resource_index):
@@ -435,19 +469,6 @@ func _is_higher_priority(resource_1: String, resource_2: String) -> bool:
 		return false
 	
 func erf(x: float) -> float:
-#	var a1 = 0.278393
-#	var a2 = 0.230389
-#	var a3 = 0.000972
-#	var a4 = 0.078108
-#
-#	var uniform = 0
-#
-#	if x < 0:
-#		uniform = -1.0*erf(-1.0*x)
-#	else:
-#		uniform = 1.0 - 1.0/pow(1.0 + a1*x + a2*pow(x, 2) + a3*pow(x, 3) + a4*pow(x, 4), 4)
-#		print(uniform)
-
 	var A = 1.98
 	var B = 1.135
 	

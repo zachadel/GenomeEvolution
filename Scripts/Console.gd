@@ -190,7 +190,7 @@ func get_current_pos() -> String:
 	
 func add_resource_to_tile(resource_name: String, amount: int, x: int, y: int, z: int) -> String:
 	var output_str = ""
-	
+	print("Console, we're adding to a tile")
 	if resource_name in Settings.settings["resources"].keys():
 		if amount > 0:
 			if world_map.resource_map.can_add_resource_to_tile(Vector3(x,y,z), resource_name, amount):

@@ -442,30 +442,21 @@ func get_max_gene_dist():
 	return max_equality_dist;
 
 func gain_ates(count = 1):
-	print("gain ates getting called in competittor organism.")
 	yield(get_tree(), "idle_frame")
 	var justnow = "";
-	print("I made it to the loop. ")
 	for i in range(count):
-		print("before the new te")
 		var nxt_te = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
-		print("after the new te")
 		nxt_te.setup("gene", "", "ate");
-		print('set up the te')
 		var pos;
 		if (do_yields):
-			print("do yields")
 			pos = yield(cmsms.insert_ate(nxt_te), "completed");
 		else:
-			print("does not yields")
 			pos = cmsms.insert_ate(nxt_te);
 			yield(get_tree(), "idle_frame");
 		justnow += "Inserted %s into position %d (%d, %d).\n" % ([nxt_te.get_gene_name(), pos] + nxt_te.get_position_display());
-	print('it made it to the end')
 	emit_signal("justnow_update", justnow);
 
 func gain_gaps(count = 1):
-	print("gain gaps getting called in competittor organism.")
 	for i in range(count):
 		if (do_yields):
 			yield(cmsms.create_gap(), "completed");
@@ -473,7 +464,6 @@ func gain_gaps(count = 1):
 		else:
 			yield(get_tree(), "idle_frame");
 			cmsms.create_gap();
-	print('it made it to the end')
 	return cmsms.collapse_gaps();
 	
 func create_gap(pos: int):
@@ -960,7 +950,6 @@ func apply_repair_choice(type: String):
 	make_repair_choices(sel_repair_gap, type);
 
 func make_repair_choices(gap, repair_type: String):
-	print(repair_type)
 	emit_signal("clear_gap_msg");
 	var choice_info = {};
 	var perform_repair := true;
@@ -1109,8 +1098,6 @@ func make_repair_choices(gap, repair_type: String):
 var repair_canceled = false;
 func repair_gap(gap, repair_type, choice_info = {}):
 	emit_signal("clear_gap_msg");
-	print("repair type: "+repair_type)
-	print("is it possible?: "+str(repair_type_possible[repair_type]))
 	if (repair_type_possible[repair_type]):
 		reset_repair_opts(); #resets the boolean logic of the reparations
 		var cmsm = gap.get_parent(); # grabs the chromosome from the gap
@@ -1519,7 +1506,6 @@ func get_current_ph(apply_buffer := false):
 
 func get_current_temp():
 	if current_tile.has("hazards"):
-		print(current_tile.hazards)
 		var temp: float = current_tile.hazards["temperature"];
 		return temp;
 	return null;
@@ -1900,7 +1886,6 @@ func replicate(idx):
 				alive_arr.append(true)
 				alive_arr.append(true)
 				alive_arr.append(true)
-				print("11")
 				emit_signal("close_warning")
 				cmsms.move_cmsm(keep_idx, 0);
 				if not check_cmsm_(0):

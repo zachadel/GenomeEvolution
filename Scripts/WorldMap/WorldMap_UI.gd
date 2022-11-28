@@ -624,7 +624,6 @@ func _on_Data_Collection_pressed():
 
 func _on_Button_pressed():
 	scan_radius = int($MenuPanel/HBoxContainer/DataCollection/DataPanel/RadiusInput.text)
-	print("scan radius is " + str(scan_radius))
 	scan_area(scan_radius)
 	$MenuPanel/HBoxContainer/DataCollection/DataPanel.visible = false
 	pass # Replace with function body.
@@ -632,7 +631,6 @@ func _on_Button_pressed():
 func tiles_to_scan(radius):
 	var vectors = []
 	for x in range(player_position.x - radius, player_position.x + radius + 1):
-		print("x: " + str(x))
 		for y in range(max(radius * -1, (x * -1) - radius), min(radius, (x * -1) + radius) + 1):
 			var z = (x * -1) - y
 			vectors.append(Vector3(x, y, z))
@@ -666,11 +664,7 @@ func scan_area(radius):
 	for setting in Settings.settings["resources"]:
 		resource_names.append(setting)
 	
-	clear_console()
 	
 	for resource in total_tile_resources:
-		print(resource_names[resource] + " " + str(total_tile_resources[resource]))
+		print(resource_names[resource] + "," + str(total_tile_resources[resource]))
 	
-func clear_console():
-	var escape = PoolByteArray([0x1b]).get_string_from_ascii()
-	print(escape + "[2J")

@@ -79,7 +79,6 @@ func play_and_show(slide: Control):
 	var clength2 = len(cmsm4) #len of copy of chrom 2
 	
 	var time_now = OS.get_unix_time()
-	print("Assigning took " + str(time_now - time_start))
 
 	
 	longest = length1
@@ -394,7 +393,6 @@ func play_and_show(slide: Control):
 	
 	
 	time_now = OS.get_unix_time()
-	print("Calculating took " + str(time_now - time_start))
 	
 	tween.start()
 	#yield(timer,"timeout")
