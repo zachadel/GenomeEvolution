@@ -669,7 +669,7 @@ func _on_quit_to_menu_check_yes():
 	PROGENY.new_game()
 	STATS._reset_game()
 	Game.restart_game()
-	Settings.reset()
+	# Settings.reset()
 	get_tree().change_scene("res://Scenes/MainMenu/TitleScreen.tscn")
 
 func _on_quit_to_menu_check_no():
@@ -831,7 +831,7 @@ func _on_btn_qtmenu_pressed():
 	STATS._reset_game()
 	PROGENY.new_game()
 	Game.restart_game()
-	Settings.reset()
+	# Settings.reset()
 	get_tree().change_scene("res://Scenes/MainMenu/TitleScreen.tscn")
 	$pnl_quit_check.hide()
 	$pnl_dead_overview.hide()

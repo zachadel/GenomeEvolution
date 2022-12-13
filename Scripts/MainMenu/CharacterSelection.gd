@@ -97,6 +97,9 @@ func _on_CellSelection_cell_changed(cell_string):
 
 func _on_Save_pressed():
 	#print(Settings.settings["resources"]["nitrogen"])
+	
+	$ResourceSettings._update_settings()
+	$ResourceSettings.update_global_settings()
 	resources.update_global_settings()
 	settings_menu.get_final_settings()
 	settings_menu.update_global_settings()
@@ -140,6 +143,7 @@ func _on_FileDialog_file_selected(path):
 func _on_ARS_pressed():
 	$AddNewResourcePanel.visible = false
 	$ImportExportPanel.visible = false
+	$FoodPreferencesPanel.visible = false
 	$ResourceSettings.visible = !$ResourceSettings.visible
 	$ResourceSettings.refresh()
 	pass # Replace with function body.
@@ -147,6 +151,7 @@ func _on_ARS_pressed():
 func _on_AddNewResourceButton_pressed():
 	$ResourceSettings.visible = false
 	$ImportExportPanel.visible = false
+	$FoodPreferencesPanel.visible = false
 	$AddNewResourcePanel.visible = !$AddNewResourcePanel.visible
 	$AddNewResourcePanel.refresh()
 
@@ -252,7 +257,16 @@ func _on_ImportExport_pressed():
 	# Open Import Export Window
 	$AddNewResourcePanel.visible = false
 	$ResourceSettings.visible = false
+	$FoodPreferencesPanel.visible = false
 	$ImportExportPanel.visible = !$ImportExportPanel.visible
 	$ImportExportPanel.clean()
 	#Maybe run reset here
+	pass # Replace with function body.
+
+
+func _on_FoodPreferences_pressed():
+	$FoodPreferencesPanel.visible = !$FoodPreferencesPanel.visible
+	$AddNewResourcePanel.visible = false
+	$ResourceSettings.visible = false
+	$ImportExportPanel.visible = false
 	pass # Replace with function body.

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Scenes/MainMenu/Settings.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/CardTable/Art/TEs/Hexagon.tscn" type="PackedScene" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://Scenes/MainMenu/ResourceSettings.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Scenes/MainMenu/AddNewResource.tscn" type="PackedScene" id=9]
 [ext_resource path="res://Scenes/MainMenu/ImportExport.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Scenes/MainMenu/FoodPreference.tscn" type="PackedScene" id=11]
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
@@ -149,19 +150,22 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="ResourceSettings" parent="." instance=ExtResource( 8 )]
-visible = false
-margin_left = 800.0
-margin_top = 400.0
-margin_right = 1120.0
-margin_bottom = 836.0
-
 [node name="Save" type="Button" parent="."]
 margin_left = 479.541
 margin_top = 797.077
 margin_right = 626.541
 margin_bottom = 840.077
-text = "Save Current Settings"
+text = "Apply Changes"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FoodPreferences" type="Button" parent="."]
+margin_left = 799.106
+margin_top = 847.004
+margin_right = 946.106
+margin_bottom = 890.004
+text = "Food Preferences"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -276,9 +280,23 @@ margin_left = 473.762
 margin_top = 347.897
 margin_right = 1123.76
 margin_bottom = 779.897
+
+[node name="FoodPreferencesPanel" parent="." instance=ExtResource( 11 )]
+visible = false
+margin_left = 818.949
+margin_top = 370.417
+margin_right = 1138.95
+margin_bottom = 802.417
+
+[node name="ResourceSettings" parent="." instance=ExtResource( 8 )]
+margin_left = 800.0
+margin_top = 400.0
+margin_right = 1120.0
+margin_bottom = 836.0
 [connection signal="pressed" from="GoToGame" to="." method="_on_GoToGame_pressed"]
 [connection signal="cell_changed" from="CellSelection" to="." method="_on_CellSelection_cell_changed"]
 [connection signal="pressed" from="Save" to="." method="_on_Save_pressed"]
+[connection signal="pressed" from="FoodPreferences" to="." method="_on_FoodPreferences_pressed"]
 [connection signal="pressed" from="Load" to="." method="_on_Load_pressed"]
 [connection signal="pressed" from="ImportExport" to="." method="_on_ImportExport_pressed"]
 [connection signal="pressed" from="ARS" to="." method="_on_ARS_pressed"]

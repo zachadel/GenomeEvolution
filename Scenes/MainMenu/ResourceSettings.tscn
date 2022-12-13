@@ -335,6 +335,17 @@ margin_right = 319.0
 margin_bottom = 1.0
 custom_fonts/font = ExtResource( 6 )
 align = 1
+
+[node name="Button" type="Button" parent="."]
+visible = false
+margin_left = 1.0
+margin_top = -54.0
+margin_right = 322.0
+custom_fonts/font = ExtResource( 6 )
+text = "Apply Changes"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="value_changed" from="scale" to="." method="_on_scale_value_changed"]
 [connection signal="mouse_entered" from="scale/Amount" to="." method="_on_Amount_mouse_entered"]
 [connection signal="text_changed" from="scale/Amount" to="." method="_on_scale_value_text_changed"]
@@ -347,3 +358,4 @@ align = 1
 [connection signal="value_changed" from="observation_threshold" to="." method="_on_observation_threshold_value_changed"]
 [connection signal="pressed" from="ArrowLeft" to="." method="_on_ArrowLeft_pressed"]
 [connection signal="pressed" from="ArrowRight" to="." method="_on_ArrowRight_pressed"]
+[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
