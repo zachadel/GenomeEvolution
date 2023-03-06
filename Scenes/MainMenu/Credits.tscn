@@ -585,6 +585,7 @@ Alex Cavasso
 Ryan Malthaner
 Samuel Mahan
 Edward Mondragon
+Lance Abuan
 
 Additional Programming
 Marco Ravelo
@@ -654,14 +655,15 @@ margin_right = 1411.0
 margin_bottom = 858.0
 focus_mode = 0
 theme = SubResource( 12 )
-custom_styles/normal = SubResource( 10 )
-custom_fonts/font = SubResource( 13 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 0.341176, 0.545098, 0.788235, 1 )
+custom_fonts/font = SubResource( 13 )
+custom_styles/normal = SubResource( 10 )
 enabled_focus_mode = 0
 text = "Return"
 __meta__ = {
 "_edit_use_anchors_": false,
 "_editor_description_": ""
 }
+
 [connection signal="pressed" from="Return" to="." method="_on_Return_pressed"]

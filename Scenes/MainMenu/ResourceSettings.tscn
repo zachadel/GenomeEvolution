@@ -7,7 +7,7 @@
 [ext_resource path="res://Assets/Images/Tiles/Resources/bread.png" type="Texture" id=5]
 [ext_resource path="res://Assets/Fonts/OpenSans-22.tres" type="DynamicFont" id=6]
 
-[node name="Panel" type="Panel"]
+[node name="Panel2" type="Panel"]
 margin_top = -22.0
 margin_right = 320.0
 margin_bottom = 432.0
@@ -346,6 +346,7 @@ text = "Apply Changes"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
 [connection signal="value_changed" from="scale" to="." method="_on_scale_value_changed"]
 [connection signal="mouse_entered" from="scale/Amount" to="." method="_on_Amount_mouse_entered"]
 [connection signal="text_changed" from="scale/Amount" to="." method="_on_scale_value_text_changed"]

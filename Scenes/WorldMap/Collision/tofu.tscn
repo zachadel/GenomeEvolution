@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scenes/WorldMap/Collision/ResourceCollision.tscn" type="PackedScene" id=1]
+
+[sub_resource type="StreamTexture" id=2]
+flags = 4
+load_path = "res://.import/tofu.png-1f8dce5d175f824ee7f34f3e313f7b2a.stex"
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 7.56974
+height = 0.0
+
+[node name="Resource" instance=ExtResource( 1 )]
+resource = "tofu"
+
+[node name="Icon" parent="." index="0"]
+position = Vector2( -2.2113, -1.01355 )
+texture = SubResource( 2 )
+
+[node name="Boundary" parent="." index="1"]
+position = Vector2( -2.195, -0.911 )
+rotation = -0.568977
+scale = Vector2( 0.846, 0.735 )
+shape = SubResource( 1 )
