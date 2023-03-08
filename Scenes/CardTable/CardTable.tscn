@@ -1,0 +1,2259 @@
+[gd_scene load_steps=59 format=2]
+
+[ext_resource path="res://Scripts/CardTable/CardTable.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/Player/Organism.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/CardTable/ChromosomeStatus.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/Images/icons/collapse_dupes.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Images/icons/copy_pattern.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Images/icons/join_ends.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Images/icons/mitosis.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Images/icons/meiosis.png" type="Texture" id=8]
+[ext_resource path="res://Assets/Images/icons/skip_rep.png" type="Texture" id=9]
+[ext_resource path="res://Scripts/CardTable/pnl_saveload.gd" type="Script" id=10]
+[ext_resource path="res://Scripts/CardTable/pnl_ph_filter.gd" type="Script" id=11]
+[ext_resource path="res://Assets/Images/pngs/CHAOS.png" type="Texture" id=12]
+[ext_resource path="res://Assets/Fonts/OpenSans-22.tres" type="DynamicFont" id=13]
+[ext_resource path="res://Scenes/WorldMap/EnergyBar.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Scenes/CardTable/TurnList.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Scenes/CardTable/DarkenedBG.tres" type="StyleBox" id=16]
+[ext_resource path="res://Scenes/CardTable/LabeledNumber.tscn" type="PackedScene" id=17]
+[ext_resource path="res://Scenes/CardTable/pnl_bugreport.gd" type="Script" id=18]
+[ext_resource path="res://Assets/Images/pngs/DNA_small.png" type="Texture" id=19]
+[ext_resource path="res://Scenes/MainMenu/CreditsDisplay.tscn" type="PackedScene" id=20]
+[ext_resource path="res://Assets/Images/pngs/DNA_left.png" type="Texture" id=21]
+[ext_resource path="res://Assets/Images/pngs/DNA_right.png" type="Texture" id=22]
+[ext_resource path="res://Assets/Images/genes/Replication.png" type="Texture" id=23]
+[ext_resource path="res://Assets/Fonts/OpenSans-48.tres" type="DynamicFont" id=24]
+[ext_resource path="res://Scenes/CardTable/pnl_dead_overview.gd" type="Script" id=25]
+[ext_resource path="res://Assets/Images/genes/Helix_Circle.png" type="Texture" id=26]
+[ext_resource path="res://Assets/Images/genes/Sensing.png" type="Texture" id=27]
+[ext_resource path="res://Assets/Images/genes/Deconstruction.png" type="Texture" id=28]
+[ext_resource path="res://Assets/Images/genes/Helper.png" type="Texture" id=29]
+[ext_resource path="res://Assets/Images/genes/Construction.png" type="Texture" id=30]
+[ext_resource path="res://Assets/Images/genes/Locomotion.png" type="Texture" id=31]
+[ext_resource path="res://Assets/Images/genes/Component.png" type="Texture" id=32]
+[ext_resource path="res://Assets/Images/genes/Manipulation.png" type="Texture" id=33]
+[ext_resource path="res://Assets/Fonts/OpenSans-Bold.ttf" type="DynamicFontData" id=34]
+[ext_resource path="res://Scenes/CardTable/pnl_temp_filter.gd" type="Script" id=35]
+[ext_resource path="res://Assets/Images/Hazards/temp_full.png" type="Texture" id=36]
+[ext_resource path="res://Assets/Images/Hazards/temp_empty.png" type="Texture" id=37]
+[ext_resource path="res://Assets/Images/Hazards/ph_empty.png" type="Texture" id=38]
+[ext_resource path="res://Assets/Images/Hazards/ph_full.png" type="Texture" id=39]
+[ext_resource path="res://Assets/Images/icons/padlock.png" type="Texture" id=40]
+[ext_resource path="res://Assets/Images/icons/stats_button_image.png" type="Texture" id=41]
+[ext_resource path="res://Assets/Images/icons/journal_image.png" type="Texture" id=42]
+[ext_resource path="res://Assets/Images/icons/treasure-map_image.png" type="Texture" id=43]
+[ext_resource path="res://Scenes/TestScenes/Notifications.tscn" type="PackedScene" id=44]
+[ext_resource path="res://Assets/Images/Menus/Q_s.png" type="Texture" id=45]
+[ext_resource path="res://Scenes/WorldMap/pop_quiz.tscn" type="PackedScene" id=46]
+[ext_resource path="res://Assets/Images/Menus/Q.png" type="Texture" id=47]
+[ext_resource path="res://Scenes/Competitor/Comp_Organism.tscn" type="PackedScene" id=48]
+
+[sub_resource type="Theme" id=1]
+Button/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.0431373, 0.0588235, 0.564706, 1 )
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color( 0, 0.0313726, 0.223529, 1 )
+border_blend = true
+
+[sub_resource type="Animation" id=3]
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("part_lone:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=4]
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("part_lone:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
+[sub_resource type="Curve" id=5]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.0294118, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.849673, 0.509091 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 0.121569, 0.431373, 0.803922, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="DynamicFontData" id=7]
+font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
+
+[sub_resource type="DynamicFont" id=8]
+size = 20
+use_mipmaps = true
+use_filter = true
+font_data = SubResource( 7 )
+
+[sub_resource type="StyleBoxFlat" id=9]
+bg_color = Color( 0.21875, 0.21875, 0.21875, 1 )
+
+[sub_resource type="DynamicFont" id=10]
+resource_local_to_scene = true
+size = 45
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 34 )
+
+[node name="CardTable" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 0.28064
+margin_top = -3.64417
+margin_right = 0.28064
+margin_bottom = -3.64417
+mouse_filter = 1
+theme = SubResource( 1 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ctl_justnow" type="Control" parent="."]
+margin_left = 527.0
+margin_top = 577.0
+margin_right = 1221.0
+margin_bottom = 845.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="lbl_log" type="Label" parent="ctl_justnow"]
+anchor_right = 1.0
+margin_left = 24.0476
+margin_top = -16.0
+margin_right = 15.0476
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 13 )
+text = "Event Log"
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="lbl_justnow" type="RichTextLabel" parent="ctl_justnow"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 24.0476
+margin_top = 32.0
+margin_right = 15.0476
+margin_bottom = -5.0
+focus_mode = 2
+custom_styles/normal = ExtResource( 16 )
+bbcode_enabled = true
+scroll_following = true
+selection_enabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="lbl_turnorder" type="Label" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -380.0
+margin_top = -334.0
+margin_right = -128.0
+margin_bottom = -290.0
+custom_fonts/font = ExtResource( 13 )
+text = "Turn Order"
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TurnList" parent="." instance=ExtResource( 15 )]
+margin_left = 1248.0
+margin_top = 604.0
+margin_right = 1451.0
+margin_bottom = 749.0
+
+[node name="Organism" parent="." instance=ExtResource( 2 )]
+pause_mode = 2
+anchor_left = -0.00105225
+anchor_top = 0.000535549
+anchor_right = 0.998948
+anchor_bottom = 0.00053555
+margin_left = -4.74633
+margin_top = -0.481994
+margin_right = -4.7467
+margin_bottom = 599.518
+
+[node name="lbl_behavior2" type="Label" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -1302.0
+margin_top = -193.0
+margin_right = -1006.0
+margin_bottom = -128.0
+rect_scale = Vector2( 0.75, 0.85 )
+custom_fonts/font = ExtResource( 13 )
+text = "Influence of Environment on Genes"
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RepairTabs" type="TabContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -266.221
+margin_top = -328.0
+margin_right = 432.779
+margin_bottom = -18.0
+tab_align = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="pnl_bandage_dmg" type="Panel" parent="RepairTabs"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="vbox" type="VBoxContainer" parent="RepairTabs/pnl_bandage_dmg"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 8
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LblInstr" type="Label" parent="RepairTabs/pnl_bandage_dmg/vbox"]
+margin_right = 691.0
+margin_bottom = 82.0
+text = "
+Click a damaged gene to attempt to repair it.
+
+Damaged genes are more likely to obtain harmful mutations during replication.
+or"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RepairTabs/pnl_bandage_dmg/vbox"]
+margin_top = 90.0
+margin_right = 691.0
+margin_bottom = 146.0
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer"]
+margin_right = 691.0
+margin_bottom = 20.0
+alignment = 1
+
+[node name="fix_all" type="Button" parent="RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer"]
+margin_left = 265.0
+margin_right = 425.0
+margin_bottom = 20.0
+disabled = true
+text = "Fix All Damaged Genes"
+
+[node name="fix_all_details" type="ColorRect" parent="RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer/fix_all"]
+margin_left = 5.0
+margin_top = 50.0
+margin_right = 155.0
+margin_bottom = 50.0
+color = Color( 0.113725, 0.0980392, 0.0980392, 0.764706 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer/fix_all/fix_all_details"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -343.0
+margin_right = 343.0
+margin_bottom = 65.0
+text = "This is a skill that can be unlocked after 20 genes healed manually."
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer"]
+margin_top = 24.0
+margin_right = 691.0
+margin_bottom = 56.0
+alignment = 1
+
+[node name="lock4" type="TextureRect" parent="RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer2"]
+margin_left = 334.0
+margin_right = 356.0
+margin_bottom = 32.0
+texture = ExtResource( 40 )
+
+[node name="HSeparator" type="HSeparator" parent="RepairTabs/pnl_bandage_dmg/vbox"]
+margin_top = 154.0
+margin_right = 691.0
+margin_bottom = 158.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="pnl_repair_choices" type="Panel" parent="RepairTabs"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="hsplit" type="HSplitContainer" parent="RepairTabs/pnl_repair_choices"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 3.0
+margin_right = -6.0
+margin_bottom = -2.0
+split_offset = 230
+dragger_visibility = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ilist_choices" type="ItemList" parent="RepairTabs/pnl_repair_choices/hsplit"]
+margin_right = 230.0
+margin_bottom = 269.0
+items = [ "Collapse Duplicates", ExtResource( 4 ), false, "Copy Pattern", ExtResource( 5 ), false, "Join Ends", ExtResource( 6 ), false ]
+same_column_width = true
+fixed_icon_size = Vector2( 50, 50 )
+
+[node name="collaps_q" type="TextureButton" parent="RepairTabs/pnl_repair_choices/hsplit/ilist_choices"]
+margin_left = 190.0
+margin_top = 15.0
+margin_right = 230.0
+margin_bottom = 55.0
+texture_normal = ExtResource( 45 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="copy_pat_q" type="TextureButton" parent="RepairTabs/pnl_repair_choices/hsplit/ilist_choices"]
+margin_left = 190.0
+margin_top = 75.0
+margin_right = 230.0
+margin_bottom = 115.0
+texture_normal = ExtResource( 45 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="join_end_q" type="TextureButton" parent="RepairTabs/pnl_repair_choices/hsplit/ilist_choices"]
+margin_left = 190.0
+margin_top = 130.0
+margin_right = 230.0
+margin_bottom = 170.0
+texture_normal = ExtResource( 45 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="vsplit" type="VSplitContainer" parent="RepairTabs/pnl_repair_choices/hsplit"]
+margin_left = 242.0
+margin_right = 753.0
+margin_bottom = 269.0
+split_offset = 160
+dragger_visibility = 1
+
+[node name="scroll" type="ScrollContainer" parent="RepairTabs/pnl_repair_choices/hsplit/vsplit"]
+margin_right = 511.0
+margin_bottom = 160.0
+scroll_horizontal_enabled = false
+
+[node name="lbl_choice_desc" type="Label" parent="RepairTabs/pnl_repair_choices/hsplit/vsplit/scroll"]
+margin_right = 295.0
+margin_bottom = 235.0
+rect_min_size = Vector2( 295, 0 )
+text = "This is a big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long text."
+autowrap = true
+
+[node name="btn_apply_repair" type="Button" parent="RepairTabs/pnl_repair_choices/hsplit/vsplit"]
+margin_top = 172.0
+margin_right = 511.0
+margin_bottom = 269.0
+text = "Repair"
+
+[node name="vbox" type="VBoxContainer" parent="RepairTabs/pnl_repair_choices"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 8
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LblInstr" type="Label" parent="RepairTabs/pnl_repair_choices/vbox"]
+visible = false
+margin_right = 686.0
+margin_bottom = 48.0
+text = "
+Select a break to repair.
+or"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RepairTabs/pnl_repair_choices/vbox"]
+margin_right = 691.0
+margin_bottom = 56.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="RepairTabs/pnl_repair_choices/vbox/VBoxContainer"]
+margin_right = 691.0
+margin_bottom = 20.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="fixAllBreaksWJoinEnds" type="Button" parent="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer"]
+margin_left = 12.0
+margin_right = 199.0
+margin_bottom = 20.0
+disabled = true
+text = "Fix all breaks with Join Ends"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="fixAllBreaksWCopyPattern" type="Button" parent="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer"]
+margin_left = 203.0
+margin_right = 415.0
+margin_bottom = 20.0
+disabled = true
+text = "Fix all Breaks with Copy Pattern"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="fixAllBreaksWCollapseDuplicates" type="Button" parent="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer"]
+margin_left = 419.0
+margin_right = 678.0
+margin_bottom = 20.0
+disabled = true
+text = "Fix All Breaks with Collapse Duplicates"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="RepairTabs/pnl_repair_choices/vbox/VBoxContainer"]
+margin_top = 24.0
+margin_right = 691.0
+margin_bottom = 56.0
+custom_constants/separation = 200
+alignment = 1
+
+[node name="lock1" type="TextureRect" parent="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer2"]
+margin_left = 112.0
+margin_right = 134.0
+margin_bottom = 32.0
+texture = ExtResource( 40 )
+stretch_mode = 4
+
+[node name="lock2" type="TextureRect" parent="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer2"]
+margin_left = 334.0
+margin_right = 356.0
+margin_bottom = 32.0
+texture = ExtResource( 40 )
+
+[node name="lock3" type="TextureRect" parent="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer2"]
+margin_left = 556.0
+margin_right = 578.0
+margin_bottom = 32.0
+texture = ExtResource( 40 )
+
+[node name="Label" type="Label" parent="RepairTabs/pnl_repair_choices/vbox"]
+margin_top = 64.0
+margin_right = 691.0
+margin_bottom = 78.0
+text = "These buttons will fix all breaks that they can of their kind."
+align = 1
+valign = 1
+
+[node name="HSeparator" type="HSeparator" parent="RepairTabs/pnl_repair_choices/vbox"]
+margin_top = 86.0
+margin_right = 691.0
+margin_bottom = 90.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="joinEndsHidden" type="ColorRect" parent="RepairTabs/pnl_repair_choices/vbox"]
+visible = false
+margin_top = 98.0
+margin_right = 686.0
+margin_bottom = 98.0
+rect_min_size = Vector2( 148, 0 )
+color = Color( 0.0901961, 0.0980392, 0.0980392, 0.529412 )
+
+[node name="Label" type="Label" parent="RepairTabs/pnl_repair_choices/vbox/joinEndsHidden"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -343.0
+margin_right = 343.0
+margin_bottom = 48.0
+text = "This will unlock after 20 join ends have been committed."
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="copyPatternHidden" type="ColorRect" parent="RepairTabs/pnl_repair_choices/vbox"]
+visible = false
+margin_top = 62.0
+margin_right = 686.0
+margin_bottom = 62.0
+color = Color( 0.0901961, 0.0980392, 0.0980392, 0.529412 )
+
+[node name="Label" type="Label" parent="RepairTabs/pnl_repair_choices/vbox/copyPatternHidden"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -343.0
+margin_right = 343.0
+margin_bottom = 48.0
+text = "This will unlock after 20 join ends have been committed."
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="collapseDupesHidden" type="ColorRect" parent="RepairTabs/pnl_repair_choices/vbox"]
+visible = false
+margin_top = 62.0
+margin_right = 686.0
+margin_bottom = 62.0
+color = Color( 0.0901961, 0.0980392, 0.0980392, 0.529412 )
+
+[node name="Label" type="Label" parent="RepairTabs/pnl_repair_choices/vbox/collapseDupesHidden"]
+margin_right = 686.0
+margin_bottom = 48.0
+text = "This will unlock after 20 join ends have been committed."
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="pnl_rem_sides" type="Panel" parent="RepairTabs"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="LblInstr" type="Label" parent="RepairTabs/pnl_rem_sides"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "
+
+Click a gene on either end of a break to remove the gene.
+
+The amount you remove is based on your Disassembly skill.
+You have %d removals remaining."
+align = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LblInstr" type="Label" parent="RepairTabs/pnl_rem_sides"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "
+
+Click a gene on either end of a break to remove the gene.
+
+The amount you remove is based on your Disassembly skill.
+You have %d removals remaining."
+align = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="pnl_rem_dmg" type="Panel" parent="RepairTabs"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="LblInstr" type="Label" parent="RepairTabs/pnl_rem_dmg"]
+margin_right = 689.0
+margin_bottom = 121.0
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="pnl_quit_check" type="Panel" parent="."]
+visible = false
+margin_left = 530.439
+margin_top = 431.893
+margin_right = 1140.44
+margin_bottom = 545.893
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="yes" type="Button" parent="pnl_quit_check"]
+margin_left = 91.8113
+margin_top = 71.0
+margin_right = 191.811
+margin_bottom = 102.0
+text = "Yes"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="no" type="Button" parent="pnl_quit_check"]
+margin_left = 391.265
+margin_top = 72.0
+margin_right = 491.265
+margin_bottom = 100.0
+text = "No"
+
+[node name="Label" type="Label" parent="pnl_quit_check"]
+margin_left = 58.5204
+margin_top = 15.1021
+margin_right = 530.52
+margin_bottom = 54.1021
+text = "Are you sure you want to quit? All Progress will be lost"
+align = 1
+
+[node name="pnl_reproduce" type="Panel" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -273.0
+margin_top = -280.0
+margin_right = 421.0
+margin_bottom = -12.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="hsplit" type="HSplitContainer" parent="pnl_reproduce"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 15.0
+margin_right = -6.0
+margin_bottom = -14.0
+split_offset = 230
+dragger_visibility = 1
+
+[node name="ilist_choices" type="ItemList" parent="pnl_reproduce/hsplit"]
+margin_right = 230.0
+margin_bottom = 239.0
+items = [ "Mitosis", ExtResource( 7 ), false, "Meiosis", ExtResource( 8 ), false, "Skip", ExtResource( 9 ), false ]
+same_column_width = true
+fixed_icon_size = Vector2( 50, 50 )
+
+[node name="mit_q" type="TextureButton" parent="pnl_reproduce/hsplit/ilist_choices"]
+margin_left = 170.0
+margin_top = 15.0
+margin_right = 193.0
+margin_bottom = 42.0
+texture_normal = ExtResource( 45 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="me_q" type="TextureButton" parent="pnl_reproduce/hsplit/ilist_choices"]
+margin_left = 170.0
+margin_top = 75.0
+margin_right = 193.0
+margin_bottom = 102.0
+texture_normal = ExtResource( 45 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="vsplit" type="VSplitContainer" parent="pnl_reproduce/hsplit"]
+margin_left = 242.0
+margin_right = 688.0
+margin_bottom = 239.0
+split_offset = 127
+dragger_visibility = 1
+
+[node name="scroll" type="ScrollContainer" parent="pnl_reproduce/hsplit/vsplit"]
+margin_right = 446.0
+margin_bottom = 127.0
+scroll_horizontal_enabled = false
+
+[node name="lbl_choice_desc" type="Label" parent="pnl_reproduce/hsplit/vsplit/scroll"]
+margin_right = 295.0
+margin_bottom = 235.0
+rect_min_size = Vector2( 295, 0 )
+text = "This is a big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long big long text."
+autowrap = true
+
+[node name="btn_apply_replic" type="Button" parent="pnl_reproduce/hsplit/vsplit"]
+margin_top = 139.0
+margin_right = 446.0
+margin_bottom = 239.0
+text = "Reproduce"
+
+[node name="pnl_saveload" type="Panel" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -226.0
+margin_top = 142.0
+margin_right = 288.0
+margin_bottom = 440.0
+script = ExtResource( 10 )
+
+[node name="btn_load" type="Button" parent="pnl_saveload"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -123.0
+margin_top = -36.0
+margin_right = -3.0
+margin_bottom = -6.0
+text = "Load"
+
+[node name="tbox_load" type="LineEdit" parent="pnl_saveload"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -66.0
+margin_bottom = -42.0
+
+[node name="tbox_save" type="TextEdit" parent="pnl_saveload"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -90.0
+mouse_default_cursor_shape = 0
+readonly = true
+show_line_numbers = true
+
+[node name="pnl_bugreport" type="Panel" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -236.0
+margin_top = 177.0
+margin_right = 399.0
+margin_bottom = 427.0
+script = ExtResource( 18 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="btn_load" type="Button" parent="pnl_bugreport"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -123.0
+margin_top = -36.0
+margin_right = -3.0
+margin_bottom = -6.0
+text = "Submit"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="tbox_bugtitle" type="TextEdit" parent="pnl_bugreport"]
+margin_left = 29.0
+margin_top = 55.0
+margin_right = 604.0
+margin_bottom = 85.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="tbox_bugdesc" type="TextEdit" parent="pnl_bugreport"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 28.0
+margin_top = 90.0
+margin_right = -29.0
+margin_bottom = -42.0
+rect_pivot_offset = Vector2( 247, -5.82202 )
+mouse_default_cursor_shape = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="lbl_bug" type="Label" parent="pnl_bugreport"]
+anchor_right = 1.0
+margin_left = 97.0
+margin_right = -97.0
+margin_bottom = 51.0
+text = "Please describe the bug by describing what you did, what you expected, and what actually happened."
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HTTPRequest" type="HTTPRequest" parent="pnl_bugreport"]
+
+[node name="pnl_ph_filter" type="Panel" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -169.0
+margin_top = 226.0
+margin_right = 345.0
+margin_bottom = 362.0
+script = ExtResource( 11 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="slider_ph" type="HSlider" parent="pnl_ph_filter"]
+anchor_right = 1.0
+margin_left = 42.0
+margin_top = 70.0
+margin_right = -42.0
+margin_bottom = 86.0
+rect_scale = Vector2( 1, 1.25 )
+max_value = 14.0
+step = 0.05
+value = 7.0
+tick_count = 15
+ticks_on_borders = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="current_ph" type="ColorRect" parent="pnl_ph_filter/slider_ph"]
+show_behind_parent = true
+margin_left = 212.0
+margin_top = -20.0
+margin_right = 217.0
+margin_bottom = 25.0
+color = Color( 0.301961, 0.301961, 0.301961, 1 )
+
+[node name="lbl" type="Label" parent="pnl_ph_filter/slider_ph/current_ph"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -34.5
+margin_top = -31.0
+margin_right = 34.5
+text = "Current pH
+7.00"
+align = 1
+
+[node name="lbl_slider_value" type="Label" parent="pnl_ph_filter"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -24.0
+margin_top = 97.0
+margin_right = 25.0
+margin_bottom = 116.0
+text = "7.00"
+align = 1
+valign = 1
+clip_text = true
+
+[node name="pnl_chaos" type="Panel" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -273.0
+margin_top = 127.0
+margin_right = 421.0
+margin_bottom = 395.0
+rect_clip_content = true
+custom_styles/panel = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Anim" type="AnimationPlayer" parent="pnl_chaos"]
+anims/hide = SubResource( 3 )
+anims/show = SubResource( 4 )
+
+[node name="part_lone" type="CPUParticles2D" parent="pnl_chaos"]
+light_mask = 16
+position = Vector2( 312, 125 )
+emitting = false
+amount = 240
+lifetime = 10.0
+preprocess = 5.0
+texture = ExtResource( 19 )
+emission_shape = 2
+emission_rect_extents = Vector2( 158, 62 )
+direction = Vector2( 0, 0 )
+spread = 180.0
+gravity = Vector2( 0, 0 )
+initial_velocity = 300.0
+initial_velocity_random = 0.75
+angular_velocity = 300.0
+angular_velocity_random = 0.75
+radial_accel = -30.0
+radial_accel_random = 0.25
+angle = 720.0
+angle_random = 1.0
+scale_amount_random = 0.5
+scale_amount_curve = SubResource( 5 )
+
+[node name="texrect_chaos" type="TextureRect" parent="pnl_chaos"]
+light_mask = 16
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 65.0
+margin_top = 26.0
+margin_right = -66.0
+margin_bottom = -26.0
+texture = ExtResource( 12 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="lnum_turn" parent="." instance=ExtResource( 17 )]
+margin_left = 1282.0
+margin_top = 756.0
+margin_right = 1423.0
+margin_bottom = 891.0
+num = 0
+show_change = false
+
+[node name="lnum_progeny" parent="." instance=ExtResource( 17 )]
+visible = false
+margin_left = 1337.14
+margin_top = 772.178
+margin_right = 1437.14
+margin_bottom = 872.178
+num = 0
+show_change = false
+
+[node name="EnergyBar" parent="." instance=ExtResource( 14 )]
+visible = false
+margin_left = 3.48102
+margin_top = 672.836
+margin_right = 3.48102
+margin_bottom = 672.836
+rect_scale = Vector2( 0.75, 0.75 )
+
+[node name="AutoContinue" type="Timer" parent="."]
+wait_time = 0.01
+one_shot = true
+
+[node name="button_grid" type="VBoxContainer" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -130.0
+margin_top = 570.0
+margin_right = -9.99988
+margin_bottom = -15.0
+grow_horizontal = 0
+grow_vertical = 0
+rect_min_size = Vector2( 70, 0 )
+custom_constants/separation = 10
+alignment = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="btn_qtmenu" type="Button" parent="button_grid"]
+margin_top = 10.0
+margin_right = 120.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 60, 40 )
+size_flags_horizontal = 3
+text = "Quit to Menu"
+
+[node name="btn_bugreport" type="Button" parent="button_grid"]
+margin_top = 60.0
+margin_right = 120.0
+margin_bottom = 105.0
+rect_min_size = Vector2( 60, 45 )
+size_flags_horizontal = 3
+text = "Report Bug"
+
+[node name="btn_saveload" type="Button" parent="button_grid"]
+margin_top = 115.0
+margin_right = 120.0
+margin_bottom = 155.0
+rect_min_size = Vector2( 60, 40 )
+size_flags_horizontal = 3
+text = "Save/Load"
+
+[node name="spacer" type="ColorRect" parent="button_grid"]
+margin_top = 165.0
+margin_right = 120.0
+margin_bottom = 165.0
+color = Color( 1, 1, 1, 0 )
+
+[node name="spacer4" type="ColorRect" parent="button_grid"]
+margin_top = 175.0
+margin_right = 120.0
+margin_bottom = 175.0
+color = Color( 1, 1, 1, 0 )
+
+[node name="spacer2" type="ColorRect" parent="button_grid"]
+margin_top = 185.0
+margin_right = 120.0
+margin_bottom = 185.0
+color = Color( 1, 1, 1, 0 )
+
+[node name="btn_nxt" type="Button" parent="button_grid"]
+margin_top = 195.0
+margin_right = 120.0
+margin_bottom = 315.0
+rect_min_size = Vector2( 60, 120 )
+size_flags_horizontal = 3
+custom_styles/normal = SubResource( 6 )
+custom_fonts/font = ExtResource( 13 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "Continue"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ViewMap_Old" type="TextureButton" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 0.995
+margin_left = 66.0
+margin_top = 766.0
+margin_right = -1321.0
+margin_bottom = -20.5
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="ViewMap_Old"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -113.206
+margin_top = -27.9999
+margin_right = 114.794
+margin_bottom = 7.00006
+custom_fonts/font = SubResource( 8 )
+text = "Map View"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="pnl_dead_overview" type="Panel" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 9 )
+script = ExtResource( 25 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSplitContainer" type="HSplitContainer" parent="pnl_dead_overview"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 124.0
+split_offset = 150
+dragger_visibility = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="pnl_dead_overview/HSplitContainer"]
+margin_right = 1600.0
+margin_bottom = 776.0
+
+[node name="Credits" parent="pnl_dead_overview/HSplitContainer/CenterContainer" instance=ExtResource( 20 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 675.0
+margin_top = 338.0
+margin_right = 925.0
+margin_bottom = 438.0
+
+[node name="background" type="ColorRect" parent="pnl_dead_overview"]
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 1601.0
+margin_bottom = 901.0
+color = Color( 0.0431373, 0.0588235, 0.564706, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="btn_qtmenu" type="Button" parent="pnl_dead_overview/background"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -500.0
+margin_top = -115.435
+margin_right = -185.0
+margin_bottom = -45.4349
+rect_min_size = Vector2( 120, 45 )
+custom_fonts/font = ExtResource( 13 )
+text = "Quit to Menu"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="leftDNA" type="TextureRect" parent="pnl_dead_overview/background"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 21 )
+
+[node name="rightDNA" type="TextureRect" parent="pnl_dead_overview/background"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -150.0
+margin_bottom = 900.0
+texture = ExtResource( 22 )
+
+[node name="Title" type="Label" parent="pnl_dead_overview/background"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -106.5
+margin_top = 50.0
+margin_right = 106.5
+margin_bottom = 117.0
+rect_scale = Vector2( 1.25, 1.25 )
+custom_fonts/font = ExtResource( 24 )
+text = "You Died"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="progeny1" type="Label" parent="pnl_dead_overview/background"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -300.0
+margin_top = 150.0
+margin_right = 193.0
+margin_bottom = 217.0
+custom_fonts/font = ExtResource( 24 )
+text = "Number of Progeny: "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="progeny2" type="Label" parent="pnl_dead_overview/background"]
+margin_left = 1000.0
+margin_top = 150.0
+margin_right = 1073.0
+margin_bottom = 217.0
+custom_fonts/font = ExtResource( 24 )
+text = "%d"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="rounds1" type="Label" parent="pnl_dead_overview/background"]
+margin_left = 500.0
+margin_top = 250.0
+margin_right = 965.0
+margin_bottom = 317.0
+custom_fonts/font = ExtResource( 24 )
+text = "Number of Rounds:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="rounds2" type="Label" parent="pnl_dead_overview/background"]
+margin_left = 1000.0
+margin_top = 250.0
+margin_right = 1073.0
+margin_bottom = 317.0
+custom_fonts/font = ExtResource( 24 )
+text = "%d"
+
+[node name="gene1" type="TextureRect" parent="pnl_dead_overview/background"]
+margin_left = 225.0
+margin_top = 350.0
+margin_right = 801.0
+margin_bottom = 926.0
+rect_scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 26 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="pnl_dead_overview/background/gene1"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 23 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="scoreBox" type="ColorRect" parent="pnl_dead_overview/background/gene1"]
+margin_left = 40.0
+margin_top = 600.0
+margin_right = 540.0
+margin_bottom = 1100.0
+
+[node name="Label" type="Label" parent="pnl_dead_overview/background/gene1/scoreBox"]
+margin_right = 101.0
+margin_bottom = 101.0
+rect_scale = Vector2( 5, 5 )
+custom_fonts/font = ExtResource( 24 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "%d"
+align = 1
+valign = 1
+
+[node name="gene2" type="TextureRect" parent="pnl_dead_overview/background"]
+margin_left = 375.0
+margin_top = 350.0
+margin_right = 951.0
+margin_bottom = 926.0
+rect_scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 26 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="pnl_dead_overview/background/gene2"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 27 )
+
+[node name="scoreBox" type="ColorRect" parent="pnl_dead_overview/background/gene2"]
+margin_left = 40.0
+margin_top = 600.0
+margin_right = 540.0
+margin_bottom = 1100.0
+
+[node name="Label" type="Label" parent="pnl_dead_overview/background/gene2/scoreBox"]
+margin_right = 101.0
+margin_bottom = 101.0
+rect_scale = Vector2( 5, 5 )
+custom_fonts/font = ExtResource( 24 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "%d"
+align = 1
+valign = 1
+
+[node name="gene3" type="TextureRect" parent="pnl_dead_overview/background"]
+margin_left = 525.0
+margin_top = 350.0
+margin_right = 1101.0
+margin_bottom = 926.0
+rect_scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 26 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="pnl_dead_overview/background/gene3"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 33 )
+
+[node name="scoreBox" type="ColorRect" parent="pnl_dead_overview/background/gene3"]
+margin_left = 40.0
+margin_top = 600.0
+margin_right = 540.0
+margin_bottom = 1100.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="pnl_dead_overview/background/gene3/scoreBox"]
+margin_right = 101.0
+margin_bottom = 101.0
+rect_scale = Vector2( 5, 5 )
+custom_fonts/font = ExtResource( 24 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "%d"
+align = 1
+valign = 1
+
+[node name="gene4" type="TextureRect" parent="pnl_dead_overview/background"]
+margin_left = 675.0
+margin_top = 350.0
+margin_right = 1251.0
+margin_bottom = 926.0
+rect_scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 26 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="pnl_dead_overview/background/gene4"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 32 )
+
+[node name="scoreBox" type="ColorRect" parent="pnl_dead_overview/background/gene4"]
+margin_left = 40.0
+margin_top = 600.0
+margin_right = 540.0
+margin_bottom = 1100.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="pnl_dead_overview/background/gene4/scoreBox"]
+margin_right = 101.0
+margin_bottom = 101.0
+rect_scale = Vector2( 5, 5 )
+custom_fonts/font = ExtResource( 24 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "%d"
+align = 1
+valign = 1
+
+[node name="gene5" type="TextureRect" parent="pnl_dead_overview/background"]
+margin_left = 825.0
+margin_top = 350.0
+margin_right = 1401.0
+margin_bottom = 926.0
+rect_scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 26 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="pnl_dead_overview/background/gene5"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 30 )
+
+[node name="scoreBox" type="ColorRect" parent="pnl_dead_overview/background/gene5"]
+margin_left = 40.0
+margin_top = 600.0
+margin_right = 540.0
+margin_bottom = 1100.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="pnl_dead_overview/background/gene5/scoreBox"]
+margin_right = 101.0
+margin_bottom = 101.0
+rect_scale = Vector2( 5, 5 )
+custom_fonts/font = ExtResource( 24 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "%d"
+align = 1
+valign = 1
+
+[node name="gene6" type="TextureRect" parent="pnl_dead_overview/background"]
+margin_left = 975.0
+margin_top = 350.0
+margin_right = 1551.0
+margin_bottom = 926.0
+rect_scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 26 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="pnl_dead_overview/background/gene6"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 28 )
+
+[node name="scoreBox" type="ColorRect" parent="pnl_dead_overview/background/gene6"]
+margin_left = 40.0
+margin_top = 600.0
+margin_right = 540.0
+margin_bottom = 1100.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="pnl_dead_overview/background/gene6/scoreBox"]
+margin_right = 101.0
+margin_bottom = 101.0
+rect_scale = Vector2( 5, 5 )
+custom_fonts/font = ExtResource( 24 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "%d"
+align = 1
+valign = 1
+
+[node name="gene7" type="TextureRect" parent="pnl_dead_overview/background"]
+margin_left = 1125.0
+margin_top = 350.0
+margin_right = 1701.0
+margin_bottom = 926.0
+rect_scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 26 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="pnl_dead_overview/background/gene7"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 29 )
+
+[node name="scoreBox" type="ColorRect" parent="pnl_dead_overview/background/gene7"]
+margin_left = 40.0
+margin_top = 600.0
+margin_right = 540.0
+margin_bottom = 1100.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="pnl_dead_overview/background/gene7/scoreBox"]
+margin_right = 101.0
+margin_bottom = 101.0
+rect_scale = Vector2( 5, 5 )
+custom_fonts/font = ExtResource( 24 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "%d"
+align = 1
+valign = 1
+
+[node name="gene8" type="TextureRect" parent="pnl_dead_overview/background"]
+margin_left = 1275.0
+margin_top = 350.0
+margin_right = 1851.0
+margin_bottom = 926.0
+rect_scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 26 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="pnl_dead_overview/background/gene8"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 31 )
+
+[node name="scoreBox" type="ColorRect" parent="pnl_dead_overview/background/gene8"]
+margin_left = 40.0
+margin_top = 600.0
+margin_right = 540.0
+margin_bottom = 1100.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="pnl_dead_overview/background/gene8/scoreBox"]
+margin_right = 101.0
+margin_bottom = 101.0
+rect_scale = Vector2( 5, 5 )
+custom_fonts/font = ExtResource( 24 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "%d"
+align = 1
+valign = 1
+
+[node name="death_Reason" type="Label" parent="pnl_dead_overview/background"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -209.0
+margin_top = -320.0
+margin_right = 209.0
+margin_bottom = -212.0
+custom_fonts/font = SubResource( 10 )
+text = "You died because: "
+align = 1
+valign = 1
+autowrap = true
+
+[node name="Button" type="Button" parent="pnl_dead_overview"]
+margin_left = 200.0
+margin_top = 784.0
+margin_right = 460.0
+margin_bottom = 853.0
+custom_fonts/font = ExtResource( 24 )
+text = "Show Stats"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="pnl_temp_filter" type="Panel" parent="."]
+visible = false
+margin_left = 573.145
+margin_top = 695.0
+margin_right = 1087.14
+margin_bottom = 831.0
+script = ExtResource( 35 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="slider_temp" type="HSlider" parent="pnl_temp_filter"]
+margin_left = 42.0
+margin_top = 70.0
+margin_right = 472.0
+margin_bottom = 86.0
+rect_scale = Vector2( 1, 1.25 )
+min_value = -40.0
+value = 30.0
+tick_count = 15
+ticks_on_borders = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="current_temp" type="ColorRect" parent="pnl_temp_filter/slider_temp"]
+show_behind_parent = true
+margin_left = 213.0
+margin_top = -20.0
+margin_right = 218.0
+margin_bottom = 25.0
+color = Color( 0.301961, 0.301961, 0.301961, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="currentTemp" type="Label" parent="pnl_temp_filter/slider_temp/current_temp"]
+margin_left = -65.0
+margin_top = -30.0
+margin_right = 72.0
+margin_bottom = 0.999998
+text = "Current Temperature:
+30"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Temp" type="Label" parent="pnl_temp_filter"]
+margin_left = 240.0
+margin_top = 100.0
+margin_right = 280.0
+margin_bottom = 131.0
+text = "30"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Temp_Button" type="TextureButton" parent="."]
+margin_left = 467.0
+margin_top = 789.178
+margin_right = 517.0
+margin_bottom = 885.178
+texture_normal = ExtResource( 37 )
+texture_hover = ExtResource( 36 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="temp_details" type="ColorRect" parent="Temp_Button"]
+visible = false
+margin_left = -120.0
+margin_top = -10.0
+margin_right = 2.28882e-05
+margin_bottom = 100.0
+color = Color( 0.113725, 0.0980392, 0.0980392, 0.745098 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="details_lbl" type="Label" parent="Temp_Button/temp_details"]
+margin_left = 2.0
+margin_right = 119.0
+margin_bottom = 111.0
+text = "Shows how the different temperature values change the effictiveness of each gene."
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ph_button" type="TextureButton" parent="."]
+margin_left = 300.0
+margin_top = 789.178
+margin_right = 350.0
+margin_bottom = 885.178
+texture_normal = ExtResource( 38 )
+texture_hover = ExtResource( 39 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ph_details" type="ColorRect" parent="ph_button"]
+visible = false
+margin_left = 50.0
+margin_top = -10.0
+margin_right = 170.0
+margin_bottom = 100.0
+color = Color( 0.113725, 0.0980392, 0.0980392, 0.745098 )
+
+[node name="Label" type="Label" parent="ph_button/ph_details"]
+margin_left = 2.0
+margin_top = 1.0
+margin_right = 118.0
+margin_bottom = 109.0
+text = "Shows how the different pH values change the effictiveness of each gene."
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="stats_hidden" type="ColorRect" parent="."]
+visible = false
+margin_left = 20.0
+margin_top = 710.0
+margin_right = 270.0
+margin_bottom = 760.0
+color = Color( 0.113725, 0.0980392, 0.0980392, 0.764706 )
+
+[node name="Label" type="Label" parent="stats_hidden"]
+margin_left = 5.0
+margin_right = 250.0
+margin_bottom = 50.0
+custom_fonts/font = ExtResource( 13 )
+text = "Show Stats"
+align = 1
+valign = 1
+
+[node name="diary_hidden" type="ColorRect" parent="."]
+visible = false
+margin_left = 20.0
+margin_top = 710.0
+margin_right = 270.0
+margin_bottom = 760.0
+color = Color( 0.113725, 0.0980392, 0.0980392, 0.764706 )
+
+[node name="Label" type="Label" parent="diary_hidden"]
+margin_left = 5.0
+margin_right = 250.0
+margin_bottom = 50.0
+custom_fonts/font = ExtResource( 13 )
+text = "Genome Diary"
+align = 1
+valign = 1
+
+[node name="map_hidden" type="ColorRect" parent="."]
+visible = false
+margin_left = 20.0
+margin_top = 710.0
+margin_right = 270.0
+margin_bottom = 760.0
+color = Color( 0.113725, 0.0980392, 0.0980392, 0.764706 )
+
+[node name="Label" type="Label" parent="map_hidden"]
+margin_left = 5.0
+margin_right = 250.0
+margin_bottom = 50.0
+custom_fonts/font = ExtResource( 13 )
+text = "Show Map Screen"
+align = 1
+valign = 1
+
+[node name="Border1" type="ColorRect" parent="."]
+margin_top = 579.0
+margin_right = 520.0
+margin_bottom = 704.0
+color = Color( 1, 1, 1, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="lbl_behavior" type="Label" parent="Border1"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -525.0
+margin_top = -125.0
+margin_right = -5.0
+margin_bottom = -81.0
+custom_fonts/font = ExtResource( 13 )
+text = "Gene Content"
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ChromosomeStatus" parent="Border1" instance=ExtResource( 3 )]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -240.0
+margin_top = 40.0
+margin_right = 245.0
+margin_bottom = 112.0
+rect_min_size = Vector2( 0, 50 )
+
+[node name="sub_border1" type="ColorRect" parent="Border1"]
+margin_left = -0.0234375
+margin_top = 0.0234375
+margin_right = 524.977
+margin_bottom = 5.02344
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="sub_border2" type="ColorRect" parent="Border1"]
+margin_left = -0.023
+margin_top = 120.0
+margin_right = 524.977
+margin_bottom = 125.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="sub_border3" type="ColorRect" parent="Border1"]
+margin_left = -0.0234375
+margin_top = 0.0234375
+margin_right = 4.97656
+margin_bottom = 125.023
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="sub_border4" type="ColorRect" parent="Border1"]
+margin_left = 520.0
+margin_top = 0.023
+margin_right = 525.0
+margin_bottom = 125.023
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Border2" type="ColorRect" parent="."]
+margin_left = 10.0
+margin_top = 750.0
+margin_right = 285.0
+margin_bottom = 850.0
+color = Color( 1, 1, 1, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="button_control" type="Control" parent="Border2"]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="stats_image_button" type="TextureButton" parent="Border2/button_control"]
+margin_top = 51.0
+margin_right = 1280.0
+margin_bottom = 1160.0
+rect_scale = Vector2( 0.08, 0.08 )
+shortcut_in_tooltip = false
+texture_normal = ExtResource( 41 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="event_image_button" type="TextureButton" parent="Border2/button_control"]
+margin_left = 105.0
+margin_top = 45.0
+margin_right = 1134.0
+margin_bottom = 1325.0
+rect_scale = Vector2( 0.08, 0.08 )
+texture_normal = ExtResource( 42 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="map_image_button" type="TextureButton" parent="Border2/button_control"]
+margin_left = 190.0
+margin_top = 70.0
+margin_right = 1470.0
+margin_bottom = 1068.0
+rect_scale = Vector2( 0.06, 0.07 )
+texture_normal = ExtResource( 43 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="sub_border1" type="ColorRect" parent="Border2"]
+margin_left = -10.0
+margin_top = -50.0
+margin_right = -5.0
+margin_bottom = 155.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="sub_border2" type="ColorRect" parent="Border2"]
+margin_left = 275.42
+margin_top = -49.1591
+margin_right = 280.42
+margin_bottom = 150.841
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Border3" type="ColorRect" parent="."]
+margin_left = 520.0
+margin_top = 700.0
+margin_right = 525.0
+margin_bottom = 905.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Border4" type="ColorRect" parent="."]
+margin_top = 890.0
+margin_right = 520.0
+margin_bottom = 905.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WarningPopUp" type="Panel" parent="."]
+visible = false
+margin_left = 547.0
+margin_top = 610.0
+margin_right = 1217.0
+margin_bottom = 750.0
+
+[node name="Label" type="Label" parent="WarningPopUp"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -321.0
+margin_top = -35.0
+margin_right = 318.0
+margin_bottom = 67.0
+custom_fonts/font = ExtResource( 13 )
+text = "Test Text here"
+align = 1
+autowrap = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 12
+
+[node name="Notifications" parent="CanvasLayer" instance=ExtResource( 44 )]
+
+[node name="q_s2" type="TextureRect" parent="."]
+margin_left = 558.589
+margin_top = 577.324
+margin_right = 581.589
+margin_bottom = 604.324
+texture = ExtResource( 45 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="q_s3" type="TextureRect" parent="."]
+visible = false
+margin_left = 806.458
+margin_top = 577.0
+margin_right = 829.458
+margin_bottom = 604.0
+texture = ExtResource( 45 )
+
+[node name="q_s4" type="TextureRect" parent="."]
+visible = false
+margin_left = 1025.0
+margin_top = 577.935
+margin_right = 1048.0
+margin_bottom = 604.935
+texture = ExtResource( 45 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Turns_Check" type="ColorRect" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -600.0
+margin_top = -150.0
+margin_right = 600.0
+margin_bottom = 150.0
+color = Color( 0.176471, 0.176471, 0.176471, 1 )
+
+[node name="Title" type="Label" parent="Turns_Check"]
+margin_right = 799.0
+margin_bottom = 67.0
+rect_scale = Vector2( 1.5, 1.5 )
+custom_fonts/font = ExtResource( 24 )
+text = "Are you having an issue?"
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="go_to_survey" type="Button" parent="Turns_Check"]
+margin_left = 300.0
+margin_top = 150.0
+margin_right = 600.0
+margin_bottom = 200.0
+rect_scale = Vector2( 2, 2 )
+custom_styles/normal = SubResource( 6 )
+custom_fonts/font = ExtResource( 13 )
+text = "Click Here to let us know"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="pop_quiz" parent="." instance=ExtResource( 46 )]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = -400.0
+margin_top = -250.0
+margin_right = 400.0
+margin_bottom = 250.0
+
+[node name="popUp" type="ColorRect" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -450.774
+margin_top = -199.226
+margin_right = 449.226
+margin_bottom = 200.774
+color = Color( 0.192157, 0.192157, 0.192157, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="inputTimer" type="Timer" parent="popUp"]
+wait_time = 30.0
+
+[node name="Label" type="Label" parent="popUp"]
+margin_left = 240.0
+margin_top = 40.0
+margin_right = 1121.0
+margin_bottom = 317.0
+rect_scale = Vector2( 0.5, 0.5 )
+custom_fonts/font = ExtResource( 24 )
+text = "Are you having trouble with this game? 
+Click on the question marks to get guidance on what they do."
+align = 1
+valign = 1
+autowrap = true
+
+[node name="Exit_pop" type="Button" parent="popUp"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -200.0
+margin_top = 118.377
+margin_right = -129.0
+margin_bottom = 155.377
+custom_fonts/font = ExtResource( 13 )
+text = "Close"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CheckBox" type="CheckBox" parent="popUp"]
+margin_left = 10.5249
+margin_top = 366.172
+margin_right = 34.5249
+margin_bottom = 390.172
+
+[node name="Label2" type="Label" parent="popUp"]
+margin_left = 36.6561
+margin_top = 372.288
+margin_right = 391.656
+margin_bottom = 386.288
+text = "Click the check box if you don't want this to show again."
+
+[node name="popUp_report" type="Button" parent="popUp"]
+margin_left = 535.0
+margin_top = 318.549
+margin_right = 670.0
+margin_bottom = 355.549
+custom_fonts/font = ExtResource( 13 )
+text = "Report Bug"
+
+[node name="slide_1" type="TextureRect" parent="popUp"]
+margin_left = 156.972
+margin_top = 211.283
+margin_right = 196.972
+margin_bottom = 251.283
+rect_scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 47 )
+
+[node name="slide_2" type="TextureRect" parent="popUp"]
+margin_left = 350.0
+margin_top = 212.428
+margin_right = 509.0
+margin_bottom = 406.428
+rect_scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 47 )
+
+[node name="slide_3" type="TextureRect" parent="popUp"]
+margin_left = 520.0
+margin_top = 211.283
+margin_right = 679.0
+margin_bottom = 405.283
+rect_scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 47 )
+
+[node name="slide_4" type="TextureRect" parent="popUp"]
+margin_left = 700.0
+margin_top = 211.283
+margin_right = 859.0
+margin_bottom = 405.283
+rect_scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 47 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Repair_genes" type="Label" parent="popUp"]
+margin_left = 132.0
+margin_top = 274.0
+margin_right = 217.0
+margin_bottom = 288.0
+text = "Repair Genes"
+
+[node name="join_ends" type="Label" parent="popUp"]
+margin_left = 340.0
+margin_top = 274.0
+margin_right = 397.0
+margin_bottom = 288.0
+text = "Join Ends"
+
+[node name="copy_pattern" type="Label" parent="popUp"]
+margin_left = 500.0
+margin_top = 274.0
+margin_right = 581.0
+margin_bottom = 288.0
+text = "Copy Pattern"
+
+[node name="collapse_duplicates" type="Label" parent="popUp"]
+margin_left = 650.0
+margin_top = 274.0
+margin_right = 776.0
+margin_bottom = 288.0
+text = "Collapse Duplicates"
+
+[node name="Comp_Organism" parent="." instance=ExtResource( 48 )]
+visible = false
+[connection signal="gui_input" from="." to="." method="_on_CardTable_gui_input"]
+[connection signal="bandage_msg" from="Organism" to="." method="_on_Organism_bandage_msg"]
+[connection signal="clear_gap_msg" from="Organism" to="." method="_on_Organism_clear_gap_msg"]
+[connection signal="cmsm_changed" from="Organism" to="Border1/ChromosomeStatus" method="update"]
+[connection signal="died" from="Organism" to="." method="_on_Organism_died"]
+[connection signal="doing_work" from="Organism" to="." method="_on_Organism_doing_work"]
+[connection signal="energy_changed" from="Organism" to="." method="_on_Organism_energy_changed"]
+[connection signal="finished_replication" from="Organism" to="." method="_on_Organism_finished_replication"]
+[connection signal="gap_close_msg" from="Organism" to="." method="_on_Organism_gap_close_msg"]
+[connection signal="gap_selected" from="Organism" to="." method="_on_Organism_gap_selected"]
+[connection signal="gene_bandaged" from="Organism" to="." method="_on_Organism_gene_bandaged"]
+[connection signal="gene_trimmed" from="Organism" to="." method="_on_Organism_gene_trimmed"]
+[connection signal="justnow_update" from="Organism" to="." method="_on_Organism_justnow_update"]
+[connection signal="resources_changed" from="Organism" to="." method="_on_Organism_resources_changed"]
+[connection signal="show_repair_opts" from="Organism" to="." method="_on_Organism_show_repair_opts"]
+[connection signal="show_reprod_opts" from="Organism" to="." method="_on_Organism_show_reprod_opts"]
+[connection signal="transposon_activity" from="Organism" to="." method="_on_Organism_transposon_activity"]
+[connection signal="updated_gaps" from="Organism" to="." method="_on_Organism_updated_gaps"]
+[connection signal="tab_changed" from="RepairTabs" to="." method="_on_RepairTabs_tab_changed"]
+[connection signal="mouse_entered" from="RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer/fix_all" to="." method="_on_fix_all_mouse_entered"]
+[connection signal="mouse_exited" from="RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer/fix_all" to="." method="_on_fix_all_mouse_exited"]
+[connection signal="pressed" from="RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer/fix_all" to="." method="_on_fix_all_pressed"]
+[connection signal="gui_input" from="RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer2/lock4" to="." method="_on_lock4_gui_input"]
+[connection signal="item_activated" from="RepairTabs/pnl_repair_choices/hsplit/ilist_choices" to="." method="_on_ilist_choices_item_activated"]
+[connection signal="item_selected" from="RepairTabs/pnl_repair_choices/hsplit/ilist_choices" to="." method="upd_repair_desc"]
+[connection signal="pressed" from="RepairTabs/pnl_repair_choices/hsplit/ilist_choices/collaps_q" to="." method="_on_collaps_q_pressed"]
+[connection signal="pressed" from="RepairTabs/pnl_repair_choices/hsplit/ilist_choices/copy_pat_q" to="." method="_on_copy_pat_q_pressed"]
+[connection signal="pressed" from="RepairTabs/pnl_repair_choices/hsplit/ilist_choices/join_end_q" to="." method="_on_join_end_q_pressed"]
+[connection signal="pressed" from="RepairTabs/pnl_repair_choices/hsplit/vsplit/btn_apply_repair" to="." method="_on_btn_apply_repair_pressed"]
+[connection signal="mouse_entered" from="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer/fixAllBreaksWJoinEnds" to="." method="_on_fixAllBreaksWJoinEnds_mouse_entered"]
+[connection signal="mouse_exited" from="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer/fixAllBreaksWJoinEnds" to="." method="_on_fixAllBreaksWJoinEnds_mouse_exited"]
+[connection signal="pressed" from="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer/fixAllBreaksWJoinEnds" to="." method="_on_fixAllBreaks_pressed"]
+[connection signal="mouse_entered" from="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer/fixAllBreaksWCopyPattern" to="." method="_on_fixAllBreaksWCopyPattern_mouse_entered"]
+[connection signal="mouse_exited" from="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer/fixAllBreaksWCopyPattern" to="." method="_on_fixAllBreaksWCopyPattern_mouse_exited"]
+[connection signal="pressed" from="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer/fixAllBreaksWCopyPattern" to="." method="_on_fixAllBreaksWCopyPattern_pressed"]
+[connection signal="mouse_entered" from="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer/fixAllBreaksWCollapseDuplicates" to="." method="_on_fixAllBreaksWCollapseDuplicates_mouse_entered"]
+[connection signal="mouse_exited" from="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer/fixAllBreaksWCollapseDuplicates" to="." method="_on_fixAllBreaksWCollapseDuplicates_mouse_exited"]
+[connection signal="pressed" from="RepairTabs/pnl_repair_choices/vbox/VBoxContainer/HBoxContainer/fixAllBreaksWCollapseDuplicates" to="." method="_on_fixAllBreaksWCollapseDuplicates_pressed"]
+[connection signal="pressed" from="pnl_quit_check/yes" to="." method="_on_quit_to_menu_check_yes"]
+[connection signal="pressed" from="pnl_quit_check/no" to="." method="_on_quit_to_menu_check_no"]
+[connection signal="item_activated" from="pnl_reproduce/hsplit/ilist_choices" to="." method="_on_replic_choices_item_activated"]
+[connection signal="item_selected" from="pnl_reproduce/hsplit/ilist_choices" to="." method="upd_replicate_desc"]
+[connection signal="pressed" from="pnl_reproduce/hsplit/vsplit/btn_apply_replic" to="." method="_on_btn_apply_replic_pressed"]
+[connection signal="loaded" from="pnl_saveload" to="." method="_on_pnl_saveload_loaded"]
+[connection signal="pressed" from="pnl_saveload/btn_load" to="pnl_saveload" method="_on_btn_load_pressed"]
+[connection signal="pressed" from="pnl_bugreport/btn_load" to="." method="_on_btn_load_pressed"]
+[connection signal="request_completed" from="pnl_bugreport/HTTPRequest" to="pnl_bugreport" method="_on_request_completed"]
+[connection signal="update_seqelm_coloration" from="pnl_ph_filter" to="." method="_on_pnl_ph_filter_update_seqelm_coloration"]
+[connection signal="visibility_changed" from="pnl_ph_filter" to="pnl_ph_filter" method="_on_pnl_ph_filter_visibility_changed"]
+[connection signal="value_changed" from="pnl_ph_filter/slider_ph" to="pnl_ph_filter" method="_on_slider_ph_value_changed"]
+[connection signal="animation_finished" from="pnl_chaos/Anim" to="." method="_on_chaos_anim_finished"]
+[connection signal="timeout" from="AutoContinue" to="." method="_on_AutoContinue_timeout"]
+[connection signal="pressed" from="button_grid/btn_qtmenu" to="." method="quit_to_menu"]
+[connection signal="pressed" from="button_grid/btn_bugreport" to="." method="_on_btn_bugreport_pressed"]
+[connection signal="pressed" from="button_grid/btn_saveload" to="." method="_on_btn_saveload_pressed"]
+[connection signal="pressed" from="button_grid/btn_nxt" to="." method="_on_btn_nxt_pressed"]
+[connection signal="pressed" from="pnl_dead_overview/background/btn_qtmenu" to="." method="_on_btn_qtmenu_pressed"]
+[connection signal="pressed" from="pnl_dead_overview/Button" to="." method="_on_Button_pressed"]
+[connection signal="update_seqelm_coloration" from="pnl_temp_filter" to="." method="_on_pnl_temp_filter_update_seqelm_coloration"]
+[connection signal="visibility_changed" from="pnl_temp_filter" to="pnl_temp_filter" method="_on_pnl_temp_filter_visibility_changed"]
+[connection signal="value_changed" from="pnl_temp_filter/slider_temp" to="pnl_temp_filter" method="_on_slider_temp_value_changed"]
+[connection signal="mouse_entered" from="Temp_Button" to="." method="_on_Temp_Button_mouse_entered"]
+[connection signal="mouse_exited" from="Temp_Button" to="." method="_on_Temp_Button_mouse_exited"]
+[connection signal="pressed" from="Temp_Button" to="." method="_on_Temp_Button_pressed"]
+[connection signal="mouse_entered" from="ph_button" to="." method="_on_ph_button_mouse_entered"]
+[connection signal="mouse_exited" from="ph_button" to="." method="_on_ph_button_mouse_exited"]
+[connection signal="pressed" from="ph_button" to="." method="_on_ph_button_pressed"]
+[connection signal="mouse_entered" from="Border2/button_control/stats_image_button" to="." method="_on_stats_image_button_mouse_entered"]
+[connection signal="mouse_exited" from="Border2/button_control/stats_image_button" to="." method="_on_stats_image_button_mouse_exited"]
+[connection signal="pressed" from="Border2/button_control/stats_image_button" to="." method="_on_stats_image_button_pressed"]
+[connection signal="mouse_entered" from="Border2/button_control/event_image_button" to="." method="_on_event_image_button_mouse_entered"]
+[connection signal="mouse_exited" from="Border2/button_control/event_image_button" to="." method="_on_event_image_button_mouse_exited"]
+[connection signal="pressed" from="Border2/button_control/event_image_button" to="." method="_on_event_image_button_pressed"]
+[connection signal="mouse_entered" from="Border2/button_control/map_image_button" to="." method="_on_map_image_button_mouse_entered"]
+[connection signal="mouse_exited" from="Border2/button_control/map_image_button" to="." method="_on_map_image_button_mouse_exited"]
+[connection signal="pressed" from="Border2/button_control/map_image_button" to="." method="_on_map_image_button_pressed"]
+[connection signal="gui_input" from="q_s2" to="." method="_on_q_s2_gui_input"]
+[connection signal="gui_input" from="q_s3" to="." method="_on_q_s3_gui_input"]
+[connection signal="gui_input" from="q_s4" to="." method="_on_q_s4_gui_input"]
+[connection signal="pressed" from="Turns_Check/go_to_survey" to="." method="_on_go_to_survey_pressed"]
+[connection signal="timeout" from="popUp/inputTimer" to="." method="_on_inputTimer_timeout"]
+[connection signal="pressed" from="popUp/Exit_pop" to="." method="_on_Exit_pop_pressed"]
+[connection signal="pressed" from="popUp/CheckBox" to="." method="_on_CheckBox_pressed"]
+[connection signal="pressed" from="popUp/popUp_report" to="." method="_on_popUp_report_pressed"]
+[connection signal="gui_input" from="popUp/slide_1" to="." method="_on_slide_1_gui_input"]
+[connection signal="gui_input" from="popUp/slide_2" to="." method="_on_slide_2_gui_input"]
+[connection signal="gui_input" from="popUp/slide_3" to="." method="_on_slide_3_gui_input"]
+[connection signal="gui_input" from="popUp/slide_4" to="." method="_on_slide_4_gui_input"]

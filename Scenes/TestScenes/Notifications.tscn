@@ -1,0 +1,48 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scenes/TestScenes/Notifications.gd" type="Script" id=1]
+
+[node name="Notifications" type="Control"]
+mouse_filter = 2
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="UserInput" type="AcceptDialog" parent="."]
+margin_top = 0.513344
+margin_right = 233.0
+margin_bottom = 58.5133
+popup_exclusive = true
+dialog_autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NoInput" type="WindowDialog" parent="."]
+margin_right = 179.0
+margin_bottom = 137.0
+mouse_filter = 2
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Text" type="Label" parent="NoInput"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 50.0
+margin_right = -50.0
+align = 1
+valign = 1
+autowrap = true
+
+[node name="FadeOut" type="Tween" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 100.0
+[connection signal="notification_begin_dismissing" from="." to="." method="_on_notification_begin_dismissing"]
+[connection signal="notification_needed" from="." to="." method="_on_notification_received"]
+[connection signal="popup_hide" from="UserInput" to="." method="_on_notification_dismissed"]
+[connection signal="popup_hide" from="NoInput" to="." method="_on_notification_dismissed"]
+[connection signal="tween_completed" from="FadeOut" to="." method="_on_notification_dismissed"]
+[connection signal="timeout" from="Timer" to="." method="_on_notification_begin_dismissing"]

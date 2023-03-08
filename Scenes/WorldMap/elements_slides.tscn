@@ -1,0 +1,3400 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://Assets/Fonts/OpenSans-48.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Assets/Images/pngs/speech_bubble.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Images/tes/ATE_Full_Template.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Fonts/OpenSans-22.tres" type="DynamicFont" id=4]
+[ext_resource path="res://Assets/Images/Tiles/Resources/trash.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Images/Menus/left_arrow_blue.svg" type="Texture" id=6]
+[ext_resource path="res://Assets/Images/Tiles/Resources/mercury.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Images/Menus/Q.png" type="Texture" id=8]
+[ext_resource path="res://Assets/Images/genes/broken_helix_circle.png" type="Texture" id=9]
+[ext_resource path="res://Scenes/WorldMap/elements_slides.gd" type="Script" id=10]
+
+[sub_resource type="DynamicFontData" id=1]
+font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
+
+[sub_resource type="DynamicFont" id=2]
+size = 45
+use_mipmaps = true
+use_filter = true
+font_data = SubResource( 1 )
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.94902, 0.952941, 0.956863, 1 )
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color( 0, 0, 0, 1 )
+border_blend = true
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+shadow_color = Color( 0.282353, 0.282353, 0.282353, 1 )
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.341176, 0.545098, 0.788235, 1 )
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color( 0, 0, 0, 1 )
+border_blend = true
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+shadow_color = Color( 0.282353, 0.282353, 0.282353, 1 )
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.427451, 0.427451, 0.427451, 1 )
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color( 0, 0, 0, 1 )
+border_blend = true
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="Theme" id=6]
+Button/colors/font_color = Color( 1, 1, 1, 1 )
+Button/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+Button/colors/font_color_hover = Color( 0.341176, 0.545098, 0.788235, 1 )
+Button/colors/font_color_pressed = Color( 0, 0, 0, 1 )
+Button/constants/hseparation = 2
+Button/fonts/font = SubResource( 2 )
+Button/styles/disabled = null
+Button/styles/focus = null
+Button/styles/hover = SubResource( 3 )
+Button/styles/normal = SubResource( 4 )
+Button/styles/pressed = SubResource( 5 )
+CheckBox/colors/font_color = Color( 0, 0, 0, 1 )
+CheckBox/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+CheckBox/colors/font_color_hover = Color( 0, 0, 0, 1 )
+CheckBox/colors/font_color_hover_pressed = Color( 0, 0, 0, 1 )
+CheckBox/colors/font_color_pressed = Color( 0, 0, 0, 1 )
+CheckBox/constants/check_vadjust = 0
+CheckBox/constants/hseparation = 4
+CheckBox/fonts/font = null
+CheckBox/icons/checked = null
+CheckBox/icons/radio_checked = null
+CheckBox/icons/radio_unchecked = null
+CheckBox/icons/unchecked = null
+CheckBox/styles/disabled = null
+CheckBox/styles/focus = null
+CheckBox/styles/hover = null
+CheckBox/styles/hover_pressed = null
+CheckBox/styles/normal = null
+CheckBox/styles/pressed = null
+CheckButton/colors/font_color = Color( 0, 0, 0, 1 )
+CheckButton/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+CheckButton/colors/font_color_hover = Color( 0, 0, 0, 1 )
+CheckButton/colors/font_color_hover_pressed = Color( 0, 0, 0, 1 )
+CheckButton/colors/font_color_pressed = Color( 0, 0, 0, 1 )
+CheckButton/constants/check_vadjust = 0
+CheckButton/constants/hseparation = 4
+CheckButton/fonts/font = null
+CheckButton/icons/off = null
+CheckButton/icons/off_disabled = null
+CheckButton/icons/on = null
+CheckButton/icons/on_disabled = null
+CheckButton/styles/disabled = null
+CheckButton/styles/focus = null
+CheckButton/styles/hover = null
+CheckButton/styles/hover_pressed = null
+CheckButton/styles/normal = null
+CheckButton/styles/pressed = null
+ColorPicker/constants/h_width = 30
+ColorPicker/constants/label_width = 10
+ColorPicker/constants/margin = 4
+ColorPicker/constants/sv_height = 256
+ColorPicker/constants/sv_width = 256
+ColorPicker/icons/add_preset = null
+ColorPicker/icons/color_hue = null
+ColorPicker/icons/color_sample = null
+ColorPicker/icons/overbright_indicator = null
+ColorPicker/icons/preset_bg = null
+ColorPicker/icons/screen_picker = null
+ColorPickerButton/colors/font_color = Color( 0, 0, 0, 1 )
+ColorPickerButton/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+ColorPickerButton/colors/font_color_hover = Color( 0, 0, 0, 1 )
+ColorPickerButton/colors/font_color_pressed = Color( 0, 0, 0, 1 )
+ColorPickerButton/constants/hseparation = 2
+ColorPickerButton/fonts/font = null
+ColorPickerButton/icons/bg = null
+ColorPickerButton/styles/disabled = null
+ColorPickerButton/styles/focus = null
+ColorPickerButton/styles/hover = null
+ColorPickerButton/styles/normal = null
+ColorPickerButton/styles/pressed = null
+Dialogs/constants/button_margin = 32
+Dialogs/constants/margin = 8
+FileDialog/colors/files_disabled = Color( 0, 0, 0, 1 )
+FileDialog/colors/folder_icon_modulate = Color( 0, 0, 0, 1 )
+FileDialog/icons/folder = null
+FileDialog/icons/parent_folder = null
+FileDialog/icons/reload = null
+FileDialog/icons/toggle_hidden = null
+Fonts/fonts/large = null
+Fonts/fonts/normal = null
+GraphEdit/colors/activity = Color( 0, 0, 0, 1 )
+GraphEdit/colors/grid_major = Color( 0, 0, 0, 1 )
+GraphEdit/colors/grid_minor = Color( 0, 0, 0, 1 )
+GraphEdit/colors/selection_fill = Color( 0, 0, 0, 1 )
+GraphEdit/colors/selection_stroke = Color( 0, 0, 0, 1 )
+GraphEdit/constants/bezier_len_neg = 160
+GraphEdit/constants/bezier_len_pos = 80
+GraphEdit/constants/port_grab_distance_horizontal = 48
+GraphEdit/constants/port_grab_distance_vertical = 6
+GraphEdit/icons/minus = null
+GraphEdit/icons/more = null
+GraphEdit/icons/reset = null
+GraphEdit/icons/snap = null
+GraphEdit/styles/bg = null
+GraphNode/colors/close_color = Color( 0, 0, 0, 1 )
+GraphNode/colors/resizer_color = Color( 0, 0, 0, 1 )
+GraphNode/colors/title_color = Color( 0, 0, 0, 1 )
+GraphNode/constants/close_offset = 18
+GraphNode/constants/port_offset = 3
+GraphNode/constants/separation = 1
+GraphNode/constants/title_offset = 20
+GraphNode/fonts/title_font = null
+GraphNode/icons/close = null
+GraphNode/icons/port = null
+GraphNode/icons/resizer = null
+GraphNode/styles/breakpoint = null
+GraphNode/styles/comment = null
+GraphNode/styles/commentfocus = null
+GraphNode/styles/defaultfocus = null
+GraphNode/styles/defaultframe = null
+GraphNode/styles/frame = null
+GraphNode/styles/position = null
+GraphNode/styles/selectedframe = null
+GridContainer/constants/hseparation = 4
+GridContainer/constants/vseparation = 4
+HBoxContainer/constants/separation = 4
+HScrollBar/icons/decrement = null
+HScrollBar/icons/decrement_highlight = null
+HScrollBar/icons/increment = null
+HScrollBar/icons/increment_highlight = null
+HScrollBar/styles/grabber = null
+HScrollBar/styles/grabber_highlight = null
+HScrollBar/styles/grabber_pressed = null
+HScrollBar/styles/scroll = null
+HScrollBar/styles/scroll_focus = null
+HSeparator/constants/separation = 4
+HSeparator/styles/separator = null
+HSlider/icons/grabber = null
+HSlider/icons/grabber_disabled = null
+HSlider/icons/grabber_highlight = null
+HSlider/icons/tick = null
+HSlider/styles/grabber_area = null
+HSlider/styles/slider = null
+HSplitContainer/constants/autohide = 1
+HSplitContainer/constants/separation = 12
+HSplitContainer/icons/grabber = null
+HSplitContainer/styles/bg = null
+Icons/icons/close = null
+ItemList/colors/font_color = Color( 0, 0, 0, 1 )
+ItemList/colors/font_color_selected = Color( 0, 0, 0, 1 )
+ItemList/colors/guide_color = Color( 0, 0, 0, 1 )
+ItemList/constants/hseparation = 4
+ItemList/constants/icon_margin = 4
+ItemList/constants/line_separation = 2
+ItemList/constants/vseparation = 2
+ItemList/fonts/font = null
+ItemList/styles/bg = null
+ItemList/styles/bg_focus = null
+ItemList/styles/cursor = null
+ItemList/styles/cursor_unfocused = null
+ItemList/styles/selected = null
+ItemList/styles/selected_focus = null
+Label/colors/font_color = Color( 0, 0, 0, 1 )
+Label/colors/font_color_shadow = Color( 0, 0, 0, 1 )
+Label/colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+Label/constants/line_spacing = 3
+Label/constants/shadow_as_outline = 0
+Label/constants/shadow_offset_x = 1
+Label/constants/shadow_offset_y = 1
+Label/fonts/font = null
+Label/styles/normal = null
+LineEdit/colors/clear_button_color = Color( 0, 0, 0, 1 )
+LineEdit/colors/clear_button_color_pressed = Color( 0, 0, 0, 1 )
+LineEdit/colors/cursor_color = Color( 0, 0, 0, 1 )
+LineEdit/colors/font_color = Color( 0, 0, 0, 1 )
+LineEdit/colors/font_color_selected = Color( 0, 0, 0, 1 )
+LineEdit/colors/font_color_uneditable = Color( 0, 0, 0, 1 )
+LineEdit/colors/selection_color = Color( 0, 0, 0, 1 )
+LineEdit/constants/minimum_spaces = 12
+LineEdit/fonts/font = null
+LineEdit/icons/clear = null
+LineEdit/styles/focus = null
+LineEdit/styles/normal = null
+LineEdit/styles/read_only = null
+LinkButton/colors/font_color = Color( 0, 0, 0, 1 )
+LinkButton/colors/font_color_hover = Color( 0, 0, 0, 1 )
+LinkButton/colors/font_color_pressed = Color( 0, 0, 0, 1 )
+LinkButton/constants/underline_spacing = 2
+LinkButton/fonts/font = null
+LinkButton/styles/focus = null
+MarginContainer/constants/margin_bottom = 0
+MarginContainer/constants/margin_left = 0
+MarginContainer/constants/margin_right = 0
+MarginContainer/constants/margin_top = 0
+MenuButton/colors/font_color = Color( 0, 0, 0, 1 )
+MenuButton/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+MenuButton/colors/font_color_hover = Color( 0, 0, 0, 1 )
+MenuButton/colors/font_color_pressed = Color( 0, 0, 0, 1 )
+MenuButton/constants/hseparation = 3
+MenuButton/fonts/font = null
+MenuButton/styles/disabled = null
+MenuButton/styles/focus = null
+MenuButton/styles/hover = null
+MenuButton/styles/normal = null
+MenuButton/styles/pressed = null
+OptionButton/colors/font_color = Color( 0, 0, 0, 1 )
+OptionButton/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+OptionButton/colors/font_color_hover = Color( 0, 0, 0, 1 )
+OptionButton/colors/font_color_pressed = Color( 0, 0, 0, 1 )
+OptionButton/constants/arrow_margin = 2
+OptionButton/constants/hseparation = 2
+OptionButton/fonts/font = null
+OptionButton/icons/arrow = null
+OptionButton/styles/disabled = null
+OptionButton/styles/focus = null
+OptionButton/styles/hover = null
+OptionButton/styles/normal = null
+OptionButton/styles/pressed = null
+Panel/styles/panel = null
+PanelContainer/styles/panel = null
+PopupDialog/styles/panel = null
+PopupMenu/colors/font_color = Color( 0, 0, 0, 1 )
+PopupMenu/colors/font_color_accel = Color( 0, 0, 0, 1 )
+PopupMenu/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+PopupMenu/colors/font_color_hover = Color( 0, 0, 0, 1 )
+PopupMenu/constants/hseparation = 4
+PopupMenu/constants/vseparation = 4
+PopupMenu/fonts/font = null
+PopupMenu/icons/checked = null
+PopupMenu/icons/radio_checked = null
+PopupMenu/icons/radio_unchecked = null
+PopupMenu/icons/submenu = null
+PopupMenu/icons/unchecked = null
+PopupMenu/styles/hover = null
+PopupMenu/styles/labeled_separator_left = null
+PopupMenu/styles/labeled_separator_right = null
+PopupMenu/styles/panel = null
+PopupMenu/styles/panel_disabled = null
+PopupMenu/styles/separator = null
+PopupPanel/styles/panel = null
+ProgressBar/colors/font_color = Color( 0, 0, 0, 1 )
+ProgressBar/colors/font_color_shadow = Color( 0, 0, 0, 1 )
+ProgressBar/fonts/font = null
+ProgressBar/styles/bg = null
+ProgressBar/styles/fg = null
+RichTextLabel/colors/default_color = Color( 0, 0, 0, 1 )
+RichTextLabel/colors/font_color_selected = Color( 0, 0, 0, 1 )
+RichTextLabel/colors/font_color_shadow = Color( 0, 0, 0, 1 )
+RichTextLabel/colors/selection_color = Color( 0, 0, 0, 1 )
+RichTextLabel/constants/line_separation = 1
+RichTextLabel/constants/shadow_as_outline = 0
+RichTextLabel/constants/shadow_offset_x = 1
+RichTextLabel/constants/shadow_offset_y = 1
+RichTextLabel/constants/table_hseparation = 3
+RichTextLabel/constants/table_vseparation = 3
+RichTextLabel/fonts/bold_font = null
+RichTextLabel/fonts/bold_italics_font = null
+RichTextLabel/fonts/italics_font = null
+RichTextLabel/fonts/mono_font = null
+RichTextLabel/fonts/normal_font = null
+RichTextLabel/styles/focus = null
+RichTextLabel/styles/normal = null
+ScrollContainer/styles/bg = null
+SpinBox/icons/updown = null
+TabContainer/colors/font_color_bg = Color( 0, 0, 0, 1 )
+TabContainer/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+TabContainer/colors/font_color_fg = Color( 0, 0, 0, 1 )
+TabContainer/constants/hseparation = 4
+TabContainer/constants/label_valign_bg = 2
+TabContainer/constants/label_valign_fg = 0
+TabContainer/constants/side_margin = 8
+TabContainer/constants/top_margin = 24
+TabContainer/fonts/font = null
+TabContainer/icons/decrement = null
+TabContainer/icons/decrement_highlight = null
+TabContainer/icons/increment = null
+TabContainer/icons/increment_highlight = null
+TabContainer/icons/menu = null
+TabContainer/icons/menu_highlight = null
+TabContainer/styles/panel = null
+TabContainer/styles/tab_bg = null
+TabContainer/styles/tab_disabled = null
+TabContainer/styles/tab_fg = null
+Tabs/colors/font_color_bg = Color( 0, 0, 0, 1 )
+Tabs/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+Tabs/colors/font_color_fg = Color( 0, 0, 0, 1 )
+Tabs/constants/hseparation = 4
+Tabs/constants/label_valign_bg = 2
+Tabs/constants/label_valign_fg = 0
+Tabs/constants/top_margin = 24
+Tabs/fonts/font = null
+Tabs/icons/close = null
+Tabs/icons/decrement = null
+Tabs/icons/decrement_highlight = null
+Tabs/icons/increment = null
+Tabs/icons/increment_highlight = null
+Tabs/styles/button = null
+Tabs/styles/button_pressed = null
+Tabs/styles/panel = null
+Tabs/styles/tab_bg = null
+Tabs/styles/tab_disabled = null
+Tabs/styles/tab_fg = null
+TextEdit/colors/background_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/bookmark_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/brace_mismatch_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/breakpoint_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/caret_background_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/caret_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/code_folding_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/completion_background_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/completion_existing_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/completion_font_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/completion_scroll_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/completion_selected_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/current_line_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/executing_line_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/font_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/font_color_readonly = Color( 0, 0, 0, 1 )
+TextEdit/colors/font_color_selected = Color( 0, 0, 0, 1 )
+TextEdit/colors/function_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/line_number_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/mark_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/member_variable_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/number_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/safe_line_number_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/selection_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/symbol_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/word_highlighted_color = Color( 0, 0, 0, 1 )
+TextEdit/constants/completion_lines = 7
+TextEdit/constants/completion_max_width = 50
+TextEdit/constants/completion_scroll_width = 3
+TextEdit/constants/line_spacing = 4
+TextEdit/fonts/font = null
+TextEdit/icons/fold = null
+TextEdit/icons/folded = null
+TextEdit/icons/space = null
+TextEdit/icons/tab = null
+TextEdit/styles/completion = null
+TextEdit/styles/focus = null
+TextEdit/styles/normal = null
+TextEdit/styles/read_only = null
+ToolButton/colors/font_color = Color( 0, 0, 0, 1 )
+ToolButton/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+ToolButton/colors/font_color_hover = Color( 0, 0, 0, 1 )
+ToolButton/colors/font_color_pressed = Color( 0, 0, 0, 1 )
+ToolButton/constants/hseparation = 3
+ToolButton/fonts/font = null
+ToolButton/styles/disabled = null
+ToolButton/styles/focus = null
+ToolButton/styles/hover = null
+ToolButton/styles/normal = null
+ToolButton/styles/pressed = null
+TooltipLabel/colors/font_color = Color( 0, 0, 0, 1 )
+TooltipLabel/colors/font_color_shadow = Color( 0, 0, 0, 1 )
+TooltipLabel/constants/shadow_offset_x = 1
+TooltipLabel/constants/shadow_offset_y = 1
+TooltipLabel/fonts/font = null
+TooltipPanel/styles/panel = null
+Tree/colors/cursor_color = Color( 0, 0, 0, 1 )
+Tree/colors/custom_button_font_highlight = Color( 0, 0, 0, 1 )
+Tree/colors/drop_position_color = Color( 0, 0, 0, 1 )
+Tree/colors/font_color = Color( 0, 0, 0, 1 )
+Tree/colors/font_color_selected = Color( 0, 0, 0, 1 )
+Tree/colors/guide_color = Color( 0, 0, 0, 1 )
+Tree/colors/relationship_line_color = Color( 0, 0, 0, 1 )
+Tree/colors/selection_color = Color( 0, 0, 0, 1 )
+Tree/colors/title_button_color = Color( 0, 0, 0, 1 )
+Tree/constants/button_margin = 4
+Tree/constants/draw_guides = 1
+Tree/constants/draw_relationship_lines = 0
+Tree/constants/hseparation = 4
+Tree/constants/item_margin = 12
+Tree/constants/scroll_border = 4
+Tree/constants/scroll_speed = 12
+Tree/constants/vseparation = 4
+Tree/fonts/font = null
+Tree/fonts/title_button_font = null
+Tree/icons/arrow = null
+Tree/icons/arrow_collapsed = null
+Tree/icons/checked = null
+Tree/icons/select_arrow = null
+Tree/icons/unchecked = null
+Tree/icons/updown = null
+Tree/styles/bg = null
+Tree/styles/bg_focus = null
+Tree/styles/button_pressed = null
+Tree/styles/cursor = null
+Tree/styles/cursor_unfocused = null
+Tree/styles/custom_button = null
+Tree/styles/custom_button_hover = null
+Tree/styles/custom_button_pressed = null
+Tree/styles/selected = null
+Tree/styles/selected_focus = null
+Tree/styles/title_button_hover = null
+Tree/styles/title_button_normal = null
+Tree/styles/title_button_pressed = null
+VBoxContainer/constants/separation = 4
+VScrollBar/icons/decrement = null
+VScrollBar/icons/decrement_highlight = null
+VScrollBar/icons/increment = null
+VScrollBar/icons/increment_highlight = null
+VScrollBar/styles/grabber = null
+VScrollBar/styles/grabber_highlight = null
+VScrollBar/styles/grabber_pressed = null
+VScrollBar/styles/scroll = null
+VScrollBar/styles/scroll_focus = null
+VSeparator/constants/separation = 4
+VSeparator/styles/separator = null
+VSlider/icons/grabber = null
+VSlider/icons/grabber_disabled = null
+VSlider/icons/grabber_highlight = null
+VSlider/icons/tick = null
+VSlider/styles/grabber_area = null
+VSlider/styles/slider = null
+VSplitContainer/constants/autohide = 1
+VSplitContainer/constants/separation = 12
+VSplitContainer/icons/grabber = null
+VSplitContainer/styles/bg = null
+WindowDialog/colors/title_color = Color( 0, 0, 0, 1 )
+WindowDialog/constants/close_h_ofs = 18
+WindowDialog/constants/close_v_ofs = 18
+WindowDialog/constants/scaleborder_size = 4
+WindowDialog/constants/title_height = 20
+WindowDialog/fonts/title_font = null
+WindowDialog/icons/close = null
+WindowDialog/icons/close_highlight = null
+WindowDialog/styles/panel = null
+
+[node name="element_slides" type="Control"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Slide1" type="Control" parent="."]
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="background" type="ColorRect" parent="Slide1"]
+margin_left = -0.91449
+margin_top = 3.31415
+margin_right = 1599.09
+margin_bottom = 903.314
+color = Color( 0.0431373, 0.054902, 0.564706, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextBox" type="TextureRect" parent="Slide1"]
+margin_left = -1686.26
+margin_top = -719.32
+margin_right = 3939.74
+margin_bottom = 1256.68
+rect_scale = Vector2( 0.25, 0.25 )
+rect_pivot_offset = Vector2( 2287.05, 967.565 )
+texture = ExtResource( 2 )
+expand = true
+flip_h = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Slide1/TextBox"]
+margin_left = 767.337
+margin_top = 89.2213
+margin_right = 1760.34
+margin_bottom = 464.221
+rect_scale = Vector2( 4, 4 )
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "In addition to the food you use for energy or to reproduce you will need to make sure you have enough of each element."
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Transposon" type="TextureRect" parent="Slide1"]
+margin_left = 1180.28
+margin_top = 372.263
+margin_right = 1537.28
+margin_bottom = 648.263
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ElementBar" type="ColorRect" parent="Slide1"]
+anchor_top = -0.0339447
+anchor_bottom = -0.0339447
+margin_left = 99.5579
+margin_top = 501.237
+margin_right = 999.558
+margin_bottom = 731.237
+color = Color( 0.301961, 0.298039, 0.298039, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Elm1" type="ColorRect" parent="Slide1/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 10.0
+margin_top = 58.7586
+margin_right = 110.0
+margin_bottom = 208.759
+color = Color( 0.247059, 0.968627, 0.223529, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide1/ElementBar/Elm1"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide1/ElementBar/Elm1/Internal"]
+margin_top = 59.0
+margin_right = 94.0
+margin_bottom = 144.0
+color = Color( 0.945098, 0.952941, 0.0823529, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide1/ElementBar/Elm1/Internal"]
+margin_left = 16.0
+margin_top = 45.6025
+margin_right = 76.0
+margin_bottom = 112.603
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Ca"
+
+[node name="ElmNum" type="Label" parent="Slide1/ElementBar/Elm1/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "20"
+
+[node name="Title" type="Label" parent="Slide1/ElementBar/Elm1/Internal"]
+margin_left = 22.0
+margin_top = 115.0
+margin_right = 73.0
+margin_bottom = 129.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Calcium"
+align = 1
+valign = 1
+
+[node name="Elm2" type="ColorRect" parent="Slide1/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 120.0
+margin_top = 58.7586
+margin_right = 220.0
+margin_bottom = 208.759
+color = Color( 0.247059, 0.968627, 0.223529, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide1/ElementBar/Elm2"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide1/ElementBar/Elm2/Internal"]
+margin_top = 64.0
+margin_right = 94.0
+margin_bottom = 144.0
+color = Color( 0.945098, 0.952941, 0.0823529, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide1/ElementBar/Elm2/Internal"]
+margin_left = 14.0
+margin_top = 45.0
+margin_right = 82.0
+margin_bottom = 112.0
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Na"
+
+[node name="ElmNum" type="Label" parent="Slide1/ElementBar/Elm2/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "11"
+
+[node name="Title2" type="Label" parent="Slide1/ElementBar/Elm2/Internal"]
+margin_left = 22.0
+margin_top = 115.0
+margin_right = 73.0
+margin_bottom = 129.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Sodium"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Elm3" type="ColorRect" parent="Slide1/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 230.0
+margin_top = 58.7586
+margin_right = 330.0
+margin_bottom = 208.759
+color = Color( 0.247059, 0.968627, 0.223529, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide1/ElementBar/Elm3"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide1/ElementBar/Elm3/Internal"]
+margin_top = 94.0
+margin_right = 94.0
+margin_bottom = 144.0
+color = Color( 0.239216, 0.694118, 1, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide1/ElementBar/Elm3/Internal"]
+margin_left = 16.0
+margin_top = 44.4857
+margin_right = 76.0
+margin_bottom = 111.486
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "N"
+align = 1
+
+[node name="ElmNum" type="Label" parent="Slide1/ElementBar/Elm3/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "7"
+
+[node name="Title3" type="Label" parent="Slide1/ElementBar/Elm3/Internal"]
+margin_left = 22.0
+margin_top = 115.0
+margin_right = 77.0
+margin_bottom = 129.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Nitrogen"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Elm4" type="ColorRect" parent="Slide1/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 340.0
+margin_top = 58.7586
+margin_right = 440.0
+margin_bottom = 208.759
+color = Color( 0.247059, 0.968627, 0.223529, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide1/ElementBar/Elm4"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide1/ElementBar/Elm4/Internal"]
+margin_left = 0.38739
+margin_top = 48.3873
+margin_right = 94.3874
+margin_bottom = 144.387
+color = Color( 0.239216, 0.694118, 0.996078, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide1/ElementBar/Elm4/Internal"]
+margin_left = 16.0
+margin_top = 45.9017
+margin_right = 76.0
+margin_bottom = 112.902
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "P"
+align = 1
+
+[node name="ElmNum" type="Label" parent="Slide1/ElementBar/Elm4/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "15"
+
+[node name="Title4" type="Label" parent="Slide1/ElementBar/Elm4/Internal"]
+margin_left = 10.0
+margin_top = 115.0
+margin_right = 77.0
+margin_bottom = 129.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Phosporus"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Elm5" type="ColorRect" parent="Slide1/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 450.0
+margin_top = 58.7586
+margin_right = 550.0
+margin_bottom = 208.759
+color = Color( 0.247059, 0.968627, 0.223529, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide1/ElementBar/Elm5"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide1/ElementBar/Elm5/Internal"]
+margin_top = 64.0
+margin_right = 94.0
+margin_bottom = 144.0
+color = Color( 0.945098, 0.952941, 0.0823529, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide1/ElementBar/Elm5/Internal"]
+margin_left = 16.0
+margin_top = 45.0
+margin_right = 76.0
+margin_bottom = 112.0
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Fe"
+
+[node name="ElmNum" type="Label" parent="Slide1/ElementBar/Elm5/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "24"
+
+[node name="Title5" type="Label" parent="Slide1/ElementBar/Elm5/Internal"]
+margin_left = 21.558
+margin_top = 115.0
+margin_right = 76.558
+margin_bottom = 129.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Iron"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Elm6" type="ColorRect" parent="Slide1/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 560.0
+margin_top = 58.7586
+margin_right = 660.0
+margin_bottom = 208.759
+color = Color( 0.933333, 0.0470588, 0.00392157, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide1/ElementBar/Elm6"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide1/ElementBar/Elm6/Internal"]
+margin_top = 104.0
+margin_right = 94.0
+margin_bottom = 144.0
+color = Color( 1, 0.0980392, 0.00784314, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide1/ElementBar/Elm6/Internal"]
+margin_left = 16.0
+margin_top = 45.5143
+margin_right = 76.0
+margin_bottom = 112.514
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Hg"
+
+[node name="ElmNum" type="Label" parent="Slide1/ElementBar/Elm6/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "80"
+
+[node name="Title6" type="Label" parent="Slide1/ElementBar/Elm6/Internal"]
+margin_left = 22.0
+margin_top = 115.0
+margin_right = 77.0
+margin_bottom = 129.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Mercury"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="Slide1/ElementBar"]
+margin_left = 682.349
+margin_top = 21.0881
+margin_right = 722.349
+margin_bottom = 61.0881
+rect_scale = Vector2( 5, 5 )
+texture = ExtResource( 5 )
+expand = true
+
+[node name="Label" type="Label" parent="Slide1/ElementBar"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 112.0
+margin_bottom = 41.0
+rect_scale = Vector2( 1.5, 1.5 )
+custom_fonts/font = ExtResource( 4 )
+text = "Elements"
+
+[node name="back" type="Button" parent="Slide1"]
+margin_left = 60.0
+margin_top = 760.0
+margin_right = 235.0
+margin_bottom = 850.0
+theme = SubResource( 6 )
+text = "Back"
+
+[node name="next" type="Button" parent="Slide1"]
+margin_left = 1365.0
+margin_top = 760.0
+margin_right = 1540.0
+margin_bottom = 850.0
+theme = SubResource( 6 )
+text = "Next"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="skip" type="Button" parent="Slide1"]
+margin_left = 1170.0
+margin_top = 760.0
+margin_right = 1345.0
+margin_bottom = 850.0
+theme = SubResource( 6 )
+text = "Skip"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Slide2" type="Control" parent="."]
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="background" type="ColorRect" parent="Slide2"]
+margin_left = 3.43909
+margin_top = 3.94757
+margin_right = 1603.44
+margin_bottom = 903.948
+color = Color( 0.0431373, 0.054902, 0.564706, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextBox" type="TextureRect" parent="Slide2"]
+margin_left = -1686.26
+margin_top = -719.32
+margin_right = 3939.74
+margin_bottom = 1256.68
+rect_scale = Vector2( 0.25, 0.25 )
+rect_pivot_offset = Vector2( 2287.05, 967.565 )
+texture = ExtResource( 2 )
+expand = true
+flip_h = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Slide2/TextBox"]
+margin_left = 767.337
+margin_top = 89.2213
+margin_right = 1760.34
+margin_bottom = 464.221
+rect_scale = Vector2( 4, 4 )
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "When you have the right amount, the box will be green. Note that for Mercury  (      ), the right amount is as little as possible.  "
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="Slide2/TextBox"]
+margin_left = 1046.0
+margin_top = 813.0
+margin_right = 1475.0
+margin_bottom = 1159.0
+texture = ExtResource( 7 )
+expand = true
+
+[node name="Transposon" type="TextureRect" parent="Slide2"]
+margin_left = 1180.28
+margin_top = 372.263
+margin_right = 1537.28
+margin_bottom = 648.263
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ElementBar" type="ColorRect" parent="Slide2"]
+anchor_top = -0.0339447
+anchor_bottom = -0.0339447
+margin_left = 99.5579
+margin_top = 501.237
+margin_right = 999.558
+margin_bottom = 731.237
+color = Color( 0.301961, 0.298039, 0.298039, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Elm1" type="ColorRect" parent="Slide2/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 10.0
+margin_top = 58.7586
+margin_right = 110.0
+margin_bottom = 208.759
+color = Color( 1, 0.796078, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide2/ElementBar/Elm1"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide2/ElementBar/Elm1/Internal"]
+margin_top = 94.0
+margin_right = 94.0
+margin_bottom = 144.0
+color = Color( 0.945098, 0.952941, 0.0823529, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide2/ElementBar/Elm1/Internal"]
+margin_left = 16.0
+margin_top = 45.6025
+margin_right = 76.0
+margin_bottom = 112.603
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Ca"
+
+[node name="ElmNum" type="Label" parent="Slide2/ElementBar/Elm1/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "20"
+
+[node name="Title" type="Label" parent="Slide2/ElementBar/Elm1/Internal"]
+margin_left = 22.0
+margin_top = 115.0
+margin_right = 73.0
+margin_bottom = 129.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Calcium"
+align = 1
+valign = 1
+
+[node name="Elm2" type="ColorRect" parent="Slide2/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 120.0
+margin_top = 58.7586
+margin_right = 220.0
+margin_bottom = 208.759
+color = Color( 1, 0.0980392, 0.00784314, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide2/ElementBar/Elm2"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide2/ElementBar/Elm2/Internal"]
+margin_top = 134.0
+margin_right = 94.0
+margin_bottom = 144.0
+color = Color( 0.945098, 0.952941, 0.0823529, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide2/ElementBar/Elm2/Internal"]
+margin_left = 14.0
+margin_top = 45.0
+margin_right = 82.0
+margin_bottom = 112.0
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Na"
+
+[node name="ElmNum" type="Label" parent="Slide2/ElementBar/Elm2/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "11"
+
+[node name="Title2" type="Label" parent="Slide2/ElementBar/Elm2/Internal"]
+margin_left = 22.0
+margin_top = 115.0
+margin_right = 73.0
+margin_bottom = 129.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Sodium"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Elm3" type="ColorRect" parent="Slide2/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 230.0
+margin_top = 58.7586
+margin_right = 330.0
+margin_bottom = 208.759
+color = Color( 1, 0.0980392, 0.00784314, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide2/ElementBar/Elm3"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide2/ElementBar/Elm3/Internal"]
+margin_top = 134.0
+margin_right = 94.0
+margin_bottom = 144.0
+color = Color( 0.239216, 0.694118, 1, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide2/ElementBar/Elm3/Internal"]
+margin_left = 16.0
+margin_top = 44.4857
+margin_right = 76.0
+margin_bottom = 111.486
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "N"
+align = 1
+
+[node name="ElmNum" type="Label" parent="Slide2/ElementBar/Elm3/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "7"
+
+[node name="Title3" type="Label" parent="Slide2/ElementBar/Elm3/Internal"]
+margin_left = 22.0
+margin_top = 115.0
+margin_right = 77.0
+margin_bottom = 129.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Nitrogen"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Elm4" type="ColorRect" parent="Slide2/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 340.0
+margin_top = 58.7586
+margin_right = 440.0
+margin_bottom = 208.759
+color = Color( 1, 0.0980392, 0.00784314, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide2/ElementBar/Elm4"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide2/ElementBar/Elm4/Internal"]
+margin_top = 134.0
+margin_right = 94.0
+margin_bottom = 144.0
+color = Color( 0.239216, 0.694118, 0.996078, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide2/ElementBar/Elm4/Internal"]
+margin_left = 16.0
+margin_top = 45.9017
+margin_right = 76.0
+margin_bottom = 112.902
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "P"
+align = 1
+
+[node name="ElmNum" type="Label" parent="Slide2/ElementBar/Elm4/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "15"
+
+[node name="Title4" type="Label" parent="Slide2/ElementBar/Elm4/Internal"]
+margin_left = 10.0
+margin_top = 115.0
+margin_right = 77.0
+margin_bottom = 129.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Phosporus"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Elm5" type="ColorRect" parent="Slide2/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 450.0
+margin_top = 58.7586
+margin_right = 550.0
+margin_bottom = 208.759
+color = Color( 0.247059, 0.968627, 0.223529, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide2/ElementBar/Elm5"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide2/ElementBar/Elm5/Internal"]
+margin_top = 44.0
+margin_right = 94.0
+margin_bottom = 144.0
+color = Color( 0.945098, 0.952941, 0.0823529, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide2/ElementBar/Elm5/Internal"]
+margin_left = 16.0
+margin_top = 45.0
+margin_right = 76.0
+margin_bottom = 112.0
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Fe"
+
+[node name="ElmNum" type="Label" parent="Slide2/ElementBar/Elm5/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "24"
+
+[node name="Title5" type="Label" parent="Slide2/ElementBar/Elm5/Internal"]
+margin_left = 21.558
+margin_top = 114.288
+margin_right = 76.558
+margin_bottom = 128.288
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Iron"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Elm6" type="ColorRect" parent="Slide2/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 560.0
+margin_top = 58.7586
+margin_right = 660.0
+margin_bottom = 208.759
+color = Color( 0.247059, 0.968627, 0.223529, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide2/ElementBar/Elm6"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide2/ElementBar/Elm6/Internal"]
+margin_top = 124.0
+margin_right = 94.0
+margin_bottom = 144.0
+color = Color( 1, 0.0980392, 0.00784314, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide2/ElementBar/Elm6/Internal"]
+margin_left = 16.0
+margin_top = 45.5143
+margin_right = 76.0
+margin_bottom = 112.514
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Hg"
+
+[node name="ElmNum" type="Label" parent="Slide2/ElementBar/Elm6/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "80"
+
+[node name="Title6" type="Label" parent="Slide2/ElementBar/Elm6/Internal"]
+margin_left = 22.0
+margin_top = 115.0
+margin_right = 77.0
+margin_bottom = 129.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Mercury"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="Slide2/ElementBar"]
+margin_left = 682.349
+margin_top = 20.8195
+margin_right = 722.349
+margin_bottom = 60.8195
+rect_scale = Vector2( 5, 5 )
+texture = ExtResource( 5 )
+expand = true
+
+[node name="Label" type="Label" parent="Slide2/ElementBar"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 112.0
+margin_bottom = 41.0
+rect_scale = Vector2( 1.5, 1.5 )
+custom_fonts/font = ExtResource( 4 )
+text = "Elements"
+
+[node name="back" type="Button" parent="Slide2"]
+margin_left = 60.0
+margin_top = 760.0
+margin_right = 235.0
+margin_bottom = 850.0
+theme = SubResource( 6 )
+text = "Back"
+
+[node name="next" type="Button" parent="Slide2"]
+margin_left = 1365.0
+margin_top = 760.0
+margin_right = 1540.0
+margin_bottom = 850.0
+theme = SubResource( 6 )
+text = "Next"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="skip" type="Button" parent="Slide2"]
+margin_left = 1170.0
+margin_top = 760.0
+margin_right = 1345.0
+margin_bottom = 850.0
+theme = SubResource( 6 )
+text = "Skip"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Arrow" type="TextureRect" parent="Slide2"]
+margin_left = 528.192
+margin_top = 715.0
+margin_right = 658.192
+margin_bottom = 818.0
+rect_rotation = 90.0
+rect_pivot_offset = Vector2( 71.4351, 55.1335 )
+texture = ExtResource( 6 )
+
+[node name="Arrow2" type="TextureRect" parent="Slide2"]
+margin_left = 638.599
+margin_top = 715.0
+margin_right = 768.599
+margin_bottom = 818.0
+rect_rotation = 90.0
+rect_pivot_offset = Vector2( 71.4351, 55.1335 )
+texture = ExtResource( 6 )
+
+[node name="Slide3" type="Control" parent="."]
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="background" type="ColorRect" parent="Slide3"]
+margin_left = 3.43909
+margin_top = 3.94757
+margin_right = 1603.44
+margin_bottom = 903.948
+color = Color( 0.0431373, 0.054902, 0.564706, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextBox" type="TextureRect" parent="Slide3"]
+margin_left = -1686.26
+margin_top = -719.32
+margin_right = 3939.74
+margin_bottom = 1256.68
+rect_scale = Vector2( 0.25, 0.25 )
+rect_pivot_offset = Vector2( 2287.05, 967.565 )
+texture = ExtResource( 2 )
+expand = true
+flip_h = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Slide3/TextBox"]
+margin_left = 774.296
+margin_top = 96.1798
+margin_right = 1767.3
+margin_bottom = 471.18
+rect_scale = Vector2( 4, 4 )
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "When you have a bit too much or too little, the box will be orange, and your genome will take more damage."
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Transposon" type="TextureRect" parent="Slide3"]
+margin_left = 1180.28
+margin_top = 372.263
+margin_right = 1537.28
+margin_bottom = 648.263
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ElementBar" type="ColorRect" parent="Slide3"]
+anchor_top = -0.0339447
+anchor_bottom = -0.0339447
+margin_left = 99.5579
+margin_top = 501.237
+margin_right = 999.558
+margin_bottom = 731.237
+color = Color( 0.301961, 0.298039, 0.298039, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Elm1" type="ColorRect" parent="Slide3/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 10.0
+margin_top = 58.7586
+margin_right = 110.0
+margin_bottom = 208.759
+color = Color( 1, 0.796078, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide3/ElementBar/Elm1"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide3/ElementBar/Elm1/Internal"]
+margin_top = 94.0
+margin_right = 94.0
+margin_bottom = 144.0
+color = Color( 0.945098, 0.952941, 0.0823529, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide3/ElementBar/Elm1/Internal"]
+margin_left = 16.0
+margin_top = 45.6025
+margin_right = 76.0
+margin_bottom = 112.603
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Ca"
+
+[node name="ElmNum" type="Label" parent="Slide3/ElementBar/Elm1/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "20"
+
+[node name="Title" type="Label" parent="Slide3/ElementBar/Elm1/Internal"]
+margin_left = 22.0
+margin_top = 115.0
+margin_right = 73.0
+margin_bottom = 129.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Calcium"
+align = 1
+valign = 1
+
+[node name="Elm2" type="ColorRect" parent="Slide3/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 120.0
+margin_top = 58.7586
+margin_right = 220.0
+margin_bottom = 208.759
+color = Color( 1, 0.0980392, 0.00784314, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide3/ElementBar/Elm2"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide3/ElementBar/Elm2/Internal"]
+margin_top = 134.0
+margin_right = 94.0
+margin_bottom = 144.0
+color = Color( 0.945098, 0.952941, 0.0823529, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide3/ElementBar/Elm2/Internal"]
+margin_left = 14.0
+margin_top = 45.0
+margin_right = 82.0
+margin_bottom = 112.0
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Na"
+
+[node name="ElmNum" type="Label" parent="Slide3/ElementBar/Elm2/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "11"
+
+[node name="Title2" type="Label" parent="Slide3/ElementBar/Elm2/Internal"]
+margin_left = 22.0
+margin_top = 115.0
+margin_right = 73.0
+margin_bottom = 129.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Sodium"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Elm3" type="ColorRect" parent="Slide3/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 230.0
+margin_top = 58.7586
+margin_right = 330.0
+margin_bottom = 208.759
+color = Color( 1, 0.0980392, 0.00784314, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide3/ElementBar/Elm3"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide3/ElementBar/Elm3/Internal"]
+margin_top = 134.0
+margin_right = 94.0
+margin_bottom = 144.0
+color = Color( 0.239216, 0.694118, 1, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide3/ElementBar/Elm3/Internal"]
+margin_left = 16.0
+margin_top = 44.4857
+margin_right = 76.0
+margin_bottom = 111.486
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "N"
+align = 1
+
+[node name="ElmNum" type="Label" parent="Slide3/ElementBar/Elm3/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "7"
+
+[node name="Title3" type="Label" parent="Slide3/ElementBar/Elm3/Internal"]
+margin_left = 22.0
+margin_top = 115.0
+margin_right = 77.0
+margin_bottom = 129.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Nitrogen"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Elm4" type="ColorRect" parent="Slide3/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 340.0
+margin_top = 58.7586
+margin_right = 440.0
+margin_bottom = 208.759
+color = Color( 1, 0.0980392, 0.00784314, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide3/ElementBar/Elm4"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide3/ElementBar/Elm4/Internal"]
+margin_top = 134.0
+margin_right = 94.0
+margin_bottom = 144.0
+color = Color( 0.239216, 0.694118, 0.996078, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide3/ElementBar/Elm4/Internal"]
+margin_left = 16.0
+margin_top = 45.9017
+margin_right = 76.0
+margin_bottom = 112.902
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "P"
+align = 1
+
+[node name="ElmNum" type="Label" parent="Slide3/ElementBar/Elm4/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "15"
+
+[node name="Title4" type="Label" parent="Slide3/ElementBar/Elm4/Internal"]
+margin_left = 10.0
+margin_top = 115.0
+margin_right = 77.0
+margin_bottom = 129.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Phosporus"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Elm5" type="ColorRect" parent="Slide3/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 450.0
+margin_top = 58.7586
+margin_right = 550.0
+margin_bottom = 208.759
+color = Color( 0.247059, 0.968627, 0.223529, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide3/ElementBar/Elm5"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide3/ElementBar/Elm5/Internal"]
+margin_top = 44.0
+margin_right = 94.0
+margin_bottom = 144.0
+color = Color( 0.945098, 0.952941, 0.0823529, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide3/ElementBar/Elm5/Internal"]
+margin_left = 16.0
+margin_top = 45.0
+margin_right = 76.0
+margin_bottom = 112.0
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Fe"
+
+[node name="ElmNum" type="Label" parent="Slide3/ElementBar/Elm5/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "24"
+
+[node name="Title5" type="Label" parent="Slide3/ElementBar/Elm5/Internal"]
+margin_left = 21.558
+margin_top = 114.288
+margin_right = 76.558
+margin_bottom = 128.288
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Iron"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Elm6" type="ColorRect" parent="Slide3/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 560.0
+margin_top = 58.7586
+margin_right = 660.0
+margin_bottom = 208.759
+color = Color( 0.247059, 0.968627, 0.223529, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide3/ElementBar/Elm6"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide3/ElementBar/Elm6/Internal"]
+margin_top = 124.0
+margin_right = 94.0
+margin_bottom = 144.0
+color = Color( 1, 0.0980392, 0.00784314, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide3/ElementBar/Elm6/Internal"]
+margin_left = 16.0
+margin_top = 45.5143
+margin_right = 76.0
+margin_bottom = 112.514
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Hg"
+
+[node name="ElmNum" type="Label" parent="Slide3/ElementBar/Elm6/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "80"
+
+[node name="Title6" type="Label" parent="Slide3/ElementBar/Elm6/Internal"]
+margin_left = 22.0
+margin_top = 115.0
+margin_right = 77.0
+margin_bottom = 129.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Mercury"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="Slide3/ElementBar"]
+margin_left = 682.349
+margin_top = 20.8195
+margin_right = 722.349
+margin_bottom = 60.8195
+rect_scale = Vector2( 5, 5 )
+texture = ExtResource( 5 )
+expand = true
+
+[node name="Label" type="Label" parent="Slide3/ElementBar"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 112.0
+margin_bottom = 41.0
+rect_scale = Vector2( 1.5, 1.5 )
+custom_fonts/font = ExtResource( 4 )
+text = "Elements"
+
+[node name="back" type="Button" parent="Slide3"]
+margin_left = 60.0
+margin_top = 760.0
+margin_right = 235.0
+margin_bottom = 850.0
+theme = SubResource( 6 )
+text = "Back"
+
+[node name="next" type="Button" parent="Slide3"]
+margin_left = 1365.0
+margin_top = 760.0
+margin_right = 1540.0
+margin_bottom = 850.0
+theme = SubResource( 6 )
+text = "Next"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="skip" type="Button" parent="Slide3"]
+margin_left = 1171.35
+margin_top = 760.0
+margin_right = 1346.35
+margin_bottom = 850.0
+theme = SubResource( 6 )
+text = "Skip"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Arrow" type="TextureRect" parent="Slide3"]
+margin_left = 84.6852
+margin_top = 403.829
+margin_right = 214.685
+margin_bottom = 506.829
+rect_rotation = 270.0
+rect_pivot_offset = Vector2( 71.4351, 55.1335 )
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Slide4" type="Control" parent="."]
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="background" type="ColorRect" parent="Slide4"]
+margin_left = 4.25275
+margin_top = 4.35577
+margin_right = 1604.25
+margin_bottom = 904.356
+color = Color( 0.0431373, 0.054902, 0.564706, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextBox" type="TextureRect" parent="Slide4"]
+margin_left = -1687.33
+margin_top = -719.32
+margin_right = 3938.67
+margin_bottom = 1256.68
+rect_scale = Vector2( 0.25, 0.25 )
+rect_pivot_offset = Vector2( 2287.05, 967.565 )
+texture = ExtResource( 2 )
+expand = true
+flip_h = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Slide4/TextBox"]
+margin_left = 782.233
+margin_top = 104.116
+margin_right = 1775.23
+margin_bottom = 479.116
+rect_scale = Vector2( 4, 4 )
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "When you are almost out ..."
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Transposon" type="TextureRect" parent="Slide4"]
+margin_left = 1180.28
+margin_top = 372.263
+margin_right = 1537.28
+margin_bottom = 648.263
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ElementBar" type="ColorRect" parent="Slide4"]
+anchor_top = -0.0339447
+anchor_bottom = -0.0339447
+margin_left = 99.5579
+margin_top = 501.635
+margin_right = 999.558
+margin_bottom = 731.635
+color = Color( 0.301961, 0.298039, 0.298039, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Elm1" type="ColorRect" parent="Slide4/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 10.0
+margin_top = 58.7586
+margin_right = 110.0
+margin_bottom = 208.759
+color = Color( 1, 0.796078, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide4/ElementBar/Elm1"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide4/ElementBar/Elm1/Internal"]
+margin_top = 94.0
+margin_right = 94.0
+margin_bottom = 144.0
+color = Color( 0.945098, 0.952941, 0.0823529, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide4/ElementBar/Elm1/Internal"]
+margin_left = 16.0
+margin_top = 45.6025
+margin_right = 76.0
+margin_bottom = 112.603
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Ca"
+
+[node name="ElmNum" type="Label" parent="Slide4/ElementBar/Elm1/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "20"
+
+[node name="Title" type="Label" parent="Slide4/ElementBar/Elm1/Internal"]
+margin_left = 22.0
+margin_top = 115.0
+margin_right = 73.0
+margin_bottom = 129.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Calcium"
+align = 1
+valign = 1
+
+[node name="Elm2" type="ColorRect" parent="Slide4/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 120.0
+margin_top = 58.7586
+margin_right = 220.0
+margin_bottom = 208.759
+color = Color( 1, 0.0980392, 0.00784314, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide4/ElementBar/Elm2"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide4/ElementBar/Elm2/Internal"]
+margin_top = 134.0
+margin_right = 94.0
+margin_bottom = 144.0
+color = Color( 0.945098, 0.952941, 0.0823529, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide4/ElementBar/Elm2/Internal"]
+margin_left = 14.0
+margin_top = 45.0
+margin_right = 82.0
+margin_bottom = 112.0
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Na"
+
+[node name="ElmNum" type="Label" parent="Slide4/ElementBar/Elm2/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "11"
+
+[node name="Title2" type="Label" parent="Slide4/ElementBar/Elm2/Internal"]
+margin_left = 22.0
+margin_top = 115.0
+margin_right = 73.0
+margin_bottom = 129.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Sodium"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Elm3" type="ColorRect" parent="Slide4/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 230.0
+margin_top = 58.7586
+margin_right = 330.0
+margin_bottom = 208.759
+color = Color( 1, 0.0980392, 0.00784314, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide4/ElementBar/Elm3"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide4/ElementBar/Elm3/Internal"]
+margin_left = 0.219
+margin_top = 134.0
+margin_right = 94.219
+margin_bottom = 144.0
+color = Color( 0.239216, 0.694118, 1, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide4/ElementBar/Elm3/Internal"]
+margin_left = 16.0
+margin_top = 44.4857
+margin_right = 76.0
+margin_bottom = 111.486
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "N"
+align = 1
+
+[node name="ElmNum" type="Label" parent="Slide4/ElementBar/Elm3/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "7"
+
+[node name="Title3" type="Label" parent="Slide4/ElementBar/Elm3/Internal"]
+margin_left = 22.0
+margin_top = 115.0
+margin_right = 77.0
+margin_bottom = 129.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Nitrogen"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Elm4" type="ColorRect" parent="Slide4/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 340.0
+margin_top = 59.0144
+margin_right = 440.0
+margin_bottom = 209.014
+color = Color( 1, 0.0980392, 0.00784314, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide4/ElementBar/Elm4"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide4/ElementBar/Elm4/Internal"]
+margin_left = 0.256
+margin_top = 134.0
+margin_right = 94.256
+margin_bottom = 144.0
+color = Color( 0.239216, 0.694118, 0.996078, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide4/ElementBar/Elm4/Internal"]
+margin_left = 16.0
+margin_top = 45.9017
+margin_right = 76.0
+margin_bottom = 112.902
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "P"
+align = 1
+
+[node name="ElmNum" type="Label" parent="Slide4/ElementBar/Elm4/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "15"
+
+[node name="Title4" type="Label" parent="Slide4/ElementBar/Elm4/Internal"]
+margin_left = 10.0
+margin_top = 115.0
+margin_right = 77.0
+margin_bottom = 129.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Phosporus"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Elm5" type="ColorRect" parent="Slide4/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 450.0
+margin_top = 58.7586
+margin_right = 550.0
+margin_bottom = 208.759
+color = Color( 0.247059, 0.968627, 0.223529, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide4/ElementBar/Elm5"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide4/ElementBar/Elm5/Internal"]
+margin_top = 44.0
+margin_right = 94.0
+margin_bottom = 144.0
+color = Color( 0.945098, 0.952941, 0.0823529, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide4/ElementBar/Elm5/Internal"]
+margin_left = 16.0
+margin_top = 45.0
+margin_right = 76.0
+margin_bottom = 112.0
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Fe"
+
+[node name="ElmNum" type="Label" parent="Slide4/ElementBar/Elm5/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "24"
+
+[node name="Title5" type="Label" parent="Slide4/ElementBar/Elm5/Internal"]
+margin_left = 21.558
+margin_top = 114.288
+margin_right = 76.558
+margin_bottom = 128.288
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Iron"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Elm6" type="ColorRect" parent="Slide4/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 560.0
+margin_top = 58.7586
+margin_right = 660.0
+margin_bottom = 208.759
+color = Color( 0.247059, 0.968627, 0.223529, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide4/ElementBar/Elm6"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide4/ElementBar/Elm6/Internal"]
+margin_top = 124.0
+margin_right = 94.0
+margin_bottom = 144.0
+color = Color( 1, 0.0980392, 0.00784314, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide4/ElementBar/Elm6/Internal"]
+margin_left = 16.0
+margin_top = 45.5143
+margin_right = 76.0
+margin_bottom = 112.514
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Hg"
+
+[node name="ElmNum" type="Label" parent="Slide4/ElementBar/Elm6/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "80"
+
+[node name="Title6" type="Label" parent="Slide4/ElementBar/Elm6/Internal"]
+margin_left = 22.0
+margin_top = 115.0
+margin_right = 77.0
+margin_bottom = 129.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Mercury"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="Slide4/ElementBar"]
+margin_left = 682.349
+margin_top = 20.8195
+margin_right = 722.349
+margin_bottom = 60.8195
+rect_scale = Vector2( 5, 5 )
+texture = ExtResource( 5 )
+expand = true
+
+[node name="Label" type="Label" parent="Slide4/ElementBar"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 112.0
+margin_bottom = 41.0
+rect_scale = Vector2( 1.5, 1.5 )
+custom_fonts/font = ExtResource( 4 )
+text = "Elements"
+
+[node name="back" type="Button" parent="Slide4"]
+margin_left = 60.0
+margin_top = 760.0
+margin_right = 235.0
+margin_bottom = 850.0
+theme = SubResource( 6 )
+text = "Back"
+
+[node name="next" type="Button" parent="Slide4"]
+margin_left = 1365.0
+margin_top = 760.0
+margin_right = 1540.0
+margin_bottom = 850.0
+theme = SubResource( 6 )
+text = "Next"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="skip" type="Button" parent="Slide4"]
+margin_left = 1170.0
+margin_top = 760.0
+margin_right = 1345.0
+margin_bottom = 850.0
+theme = SubResource( 6 )
+text = "Skip"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Arrow2" type="TextureRect" parent="Slide4"]
+margin_left = 304.213
+margin_top = 712.421
+margin_right = 434.213
+margin_bottom = 815.421
+rect_rotation = 90.0
+rect_pivot_offset = Vector2( 71.4351, 55.1335 )
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Arrow3" type="TextureRect" parent="Slide4"]
+margin_left = 415.213
+margin_top = 712.421
+margin_right = 545.213
+margin_bottom = 815.421
+rect_rotation = 90.0
+rect_pivot_offset = Vector2( 71.4351, 55.1335 )
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Arrow" type="TextureRect" parent="Slide4"]
+margin_left = 197.213
+margin_top = 712.421
+margin_right = 327.213
+margin_bottom = 815.421
+rect_rotation = 90.0
+rect_pivot_offset = Vector2( 71.4351, 55.1335 )
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Slide5" type="Control" parent="."]
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="background" type="ColorRect" parent="Slide5"]
+margin_left = 4.25275
+margin_top = 3.94757
+margin_right = 1604.25
+margin_bottom = 903.948
+color = Color( 0.0431373, 0.054902, 0.564706, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextBox" type="TextureRect" parent="Slide5"]
+margin_left = -1687.07
+margin_top = -719.32
+margin_right = 3938.93
+margin_bottom = 1256.68
+rect_scale = Vector2( 0.25, 0.25 )
+rect_pivot_offset = Vector2( 2287.05, 967.565 )
+texture = ExtResource( 2 )
+expand = true
+flip_h = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Slide5/TextBox"]
+margin_left = 782.233
+margin_top = 104.116
+margin_right = 1775.23
+margin_bottom = 479.116
+rect_scale = Vector2( 4, 4 )
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "... or have way too much ..."
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Transposon" type="TextureRect" parent="Slide5"]
+margin_left = 1180.28
+margin_top = 372.263
+margin_right = 1537.28
+margin_bottom = 648.263
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ElementBar" type="ColorRect" parent="Slide5"]
+anchor_top = -0.0339447
+anchor_bottom = -0.0339447
+margin_left = 99.5579
+margin_top = 501.635
+margin_right = 999.558
+margin_bottom = 731.635
+color = Color( 0.301961, 0.298039, 0.298039, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Elm1" type="ColorRect" parent="Slide5/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 10.0
+margin_top = 58.7586
+margin_right = 110.0
+margin_bottom = 208.759
+color = Color( 1, 0.796078, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide5/ElementBar/Elm1"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide5/ElementBar/Elm1/Internal"]
+margin_top = 94.0
+margin_right = 94.0
+margin_bottom = 144.0
+color = Color( 0.945098, 0.952941, 0.0823529, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide5/ElementBar/Elm1/Internal"]
+margin_left = 16.0
+margin_top = 45.6025
+margin_right = 76.0
+margin_bottom = 112.603
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Ca"
+
+[node name="ElmNum" type="Label" parent="Slide5/ElementBar/Elm1/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "20"
+
+[node name="Title" type="Label" parent="Slide5/ElementBar/Elm1/Internal"]
+margin_left = 22.0
+margin_top = 115.0
+margin_right = 73.0
+margin_bottom = 129.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Calcium"
+align = 1
+valign = 1
+
+[node name="Elm2" type="ColorRect" parent="Slide5/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 120.0
+margin_top = 58.7586
+margin_right = 220.0
+margin_bottom = 208.759
+color = Color( 1, 0.0980392, 0.00784314, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide5/ElementBar/Elm2"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide5/ElementBar/Elm2/Internal"]
+margin_top = 134.0
+margin_right = 94.0
+margin_bottom = 144.0
+color = Color( 0.945098, 0.952941, 0.0823529, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide5/ElementBar/Elm2/Internal"]
+margin_left = 14.0
+margin_top = 45.0
+margin_right = 82.0
+margin_bottom = 112.0
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Na"
+
+[node name="ElmNum" type="Label" parent="Slide5/ElementBar/Elm2/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "11"
+
+[node name="Title2" type="Label" parent="Slide5/ElementBar/Elm2/Internal"]
+margin_left = 22.0
+margin_top = 115.0
+margin_right = 73.0
+margin_bottom = 129.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Sodium"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Elm3" type="ColorRect" parent="Slide5/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 230.0
+margin_top = 58.7586
+margin_right = 330.0
+margin_bottom = 208.759
+color = Color( 1, 0.0980392, 0.00784314, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide5/ElementBar/Elm3"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide5/ElementBar/Elm3/Internal"]
+margin_left = 0.219
+margin_top = 4.0
+margin_right = 94.219
+margin_bottom = 144.0
+color = Color( 0.239216, 0.694118, 1, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide5/ElementBar/Elm3/Internal"]
+margin_left = 16.0
+margin_top = 44.4857
+margin_right = 76.0
+margin_bottom = 111.486
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "N"
+align = 1
+
+[node name="ElmNum" type="Label" parent="Slide5/ElementBar/Elm3/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "7"
+
+[node name="Title3" type="Label" parent="Slide5/ElementBar/Elm3/Internal"]
+margin_left = 22.0
+margin_top = 115.0
+margin_right = 77.0
+margin_bottom = 129.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Nitrogen"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Elm4" type="ColorRect" parent="Slide5/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 340.0
+margin_top = 58.7586
+margin_right = 440.0
+margin_bottom = 208.759
+color = Color( 1, 0.796078, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide5/ElementBar/Elm4"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide5/ElementBar/Elm4/Internal"]
+margin_top = 103.0
+margin_right = 94.0
+margin_bottom = 143.0
+color = Color( 0.239216, 0.694118, 0.996078, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide5/ElementBar/Elm4/Internal"]
+margin_left = 16.0
+margin_top = 45.9017
+margin_right = 76.0
+margin_bottom = 112.902
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "P"
+align = 1
+
+[node name="ElmNum" type="Label" parent="Slide5/ElementBar/Elm4/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "15"
+
+[node name="Title4" type="Label" parent="Slide5/ElementBar/Elm4/Internal"]
+margin_left = 10.0
+margin_top = 115.0
+margin_right = 77.0
+margin_bottom = 129.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Phosporus"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Elm5" type="ColorRect" parent="Slide5/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 450.0
+margin_top = 58.7586
+margin_right = 550.0
+margin_bottom = 208.759
+color = Color( 0.247059, 0.968627, 0.223529, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide5/ElementBar/Elm5"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide5/ElementBar/Elm5/Internal"]
+margin_top = 44.0
+margin_right = 94.0
+margin_bottom = 144.0
+color = Color( 0.945098, 0.952941, 0.0823529, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide5/ElementBar/Elm5/Internal"]
+margin_left = 16.0
+margin_top = 45.0
+margin_right = 76.0
+margin_bottom = 112.0
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Fe"
+
+[node name="ElmNum" type="Label" parent="Slide5/ElementBar/Elm5/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "24"
+
+[node name="Title5" type="Label" parent="Slide5/ElementBar/Elm5/Internal"]
+margin_left = 21.558
+margin_top = 114.288
+margin_right = 76.558
+margin_bottom = 128.288
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Iron"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Elm6" type="ColorRect" parent="Slide5/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 560.0
+margin_top = 58.7586
+margin_right = 660.0
+margin_bottom = 208.759
+color = Color( 0.247059, 0.968627, 0.223529, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide5/ElementBar/Elm6"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide5/ElementBar/Elm6/Internal"]
+margin_top = 124.0
+margin_right = 94.0
+margin_bottom = 144.0
+color = Color( 1, 0.0980392, 0.00784314, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide5/ElementBar/Elm6/Internal"]
+margin_left = 16.0
+margin_top = 45.5143
+margin_right = 76.0
+margin_bottom = 112.514
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Hg"
+
+[node name="ElmNum" type="Label" parent="Slide5/ElementBar/Elm6/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "80"
+
+[node name="Title6" type="Label" parent="Slide5/ElementBar/Elm6/Internal"]
+margin_left = 22.0
+margin_top = 115.0
+margin_right = 77.0
+margin_bottom = 129.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Mercury"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="Slide5/ElementBar"]
+margin_left = 682.349
+margin_top = 20.8195
+margin_right = 722.349
+margin_bottom = 60.8195
+rect_scale = Vector2( 5, 5 )
+texture = ExtResource( 5 )
+expand = true
+
+[node name="Label" type="Label" parent="Slide5/ElementBar"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 112.0
+margin_bottom = 41.0
+rect_scale = Vector2( 1.5, 1.5 )
+custom_fonts/font = ExtResource( 4 )
+text = "Elements"
+
+[node name="back" type="Button" parent="Slide5"]
+margin_left = 60.0
+margin_top = 760.0
+margin_right = 235.0
+margin_bottom = 850.0
+theme = SubResource( 6 )
+text = "Back"
+
+[node name="next" type="Button" parent="Slide5"]
+margin_left = 1365.0
+margin_top = 760.0
+margin_right = 1540.0
+margin_bottom = 850.0
+theme = SubResource( 6 )
+text = "Next"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="skip" type="Button" parent="Slide5"]
+margin_left = 1170.0
+margin_top = 760.0
+margin_right = 1345.0
+margin_bottom = 850.0
+theme = SubResource( 6 )
+text = "Skip"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Arrow2" type="TextureRect" parent="Slide5"]
+margin_left = 304.213
+margin_top = 712.421
+margin_right = 434.213
+margin_bottom = 815.421
+rect_rotation = 90.0
+rect_pivot_offset = Vector2( 71.4351, 55.1335 )
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Slide6" type="Control" parent="."]
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="background" type="ColorRect" parent="Slide6"]
+margin_left = 4.25275
+margin_top = 3.94757
+margin_right = 1604.25
+margin_bottom = 903.948
+color = Color( 0.0431373, 0.054902, 0.564706, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextBox" type="TextureRect" parent="Slide6"]
+margin_left = -1687.07
+margin_top = -719.32
+margin_right = 3938.93
+margin_bottom = 1256.68
+rect_scale = Vector2( 0.25, 0.25 )
+rect_pivot_offset = Vector2( 2287.05, 967.565 )
+texture = ExtResource( 2 )
+expand = true
+flip_h = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Slide6/TextBox"]
+margin_left = 782.233
+margin_top = 104.116
+margin_right = 1775.23
+margin_bottom = 479.116
+rect_scale = Vector2( 4, 4 )
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Your genome will take a lot more damage. "
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Transposon" type="TextureRect" parent="Slide6"]
+margin_left = 1180.28
+margin_top = 372.263
+margin_right = 1537.28
+margin_bottom = 648.263
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ElementBar" type="ColorRect" parent="Slide6"]
+anchor_top = -0.0339447
+anchor_bottom = -0.0339447
+margin_left = 265.0
+margin_top = 499.616
+margin_right = 885.0
+margin_bottom = 729.616
+color = Color( 0.301961, 0.298039, 0.298039, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Slide6/ElementBar"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 112.0
+margin_bottom = 41.0
+rect_scale = Vector2( 1.5, 1.5 )
+custom_fonts/font = ExtResource( 4 )
+text = "Damaged Genes"
+
+[node name="dmg_1" type="TextureRect" parent="Slide6/ElementBar"]
+margin_left = 15.0
+margin_top = 65.5581
+margin_right = 591.0
+margin_bottom = 641.558
+rect_scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 9 )
+
+[node name="dmg_2" type="TextureRect" parent="Slide6/ElementBar"]
+margin_left = 165.0
+margin_top = 65.558
+margin_right = 741.0
+margin_bottom = 641.558
+rect_scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 9 )
+
+[node name="dmg_3" type="TextureRect" parent="Slide6/ElementBar"]
+margin_left = 315.0
+margin_top = 65.558
+margin_right = 891.0
+margin_bottom = 641.558
+rect_scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 9 )
+
+[node name="dmg_4" type="TextureRect" parent="Slide6/ElementBar"]
+margin_left = 465.0
+margin_top = 65.558
+margin_right = 1041.0
+margin_bottom = 641.558
+rect_scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 9 )
+
+[node name="TextureRect" type="TextureRect" parent="Slide6/ElementBar"]
+margin_left = 285.0
+margin_top = 5.0
+margin_right = 356.0
+margin_bottom = 76.0
+texture = ExtResource( 8 )
+expand = true
+
+[node name="back" type="Button" parent="Slide6"]
+margin_left = 60.0
+margin_top = 760.0
+margin_right = 235.0
+margin_bottom = 850.0
+theme = SubResource( 6 )
+text = "Back"
+
+[node name="next" type="Button" parent="Slide6"]
+margin_left = 1365.0
+margin_top = 760.0
+margin_right = 1540.0
+margin_bottom = 850.0
+theme = SubResource( 6 )
+text = "Next"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="skip" type="Button" parent="Slide6"]
+margin_left = 1170.0
+margin_top = 760.0
+margin_right = 1345.0
+margin_bottom = 850.0
+theme = SubResource( 6 )
+text = "Skip"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Slide7" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="background" type="ColorRect" parent="Slide7"]
+margin_left = -0.91449
+margin_top = 3.31415
+margin_right = 1599.09
+margin_bottom = 903.314
+color = Color( 0.0431373, 0.054902, 0.564706, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextBox" type="TextureRect" parent="Slide7"]
+margin_left = -1686.26
+margin_top = -719.32
+margin_right = 3939.74
+margin_bottom = 1256.68
+rect_scale = Vector2( 0.25, 0.25 )
+rect_pivot_offset = Vector2( 2287.05, 967.565 )
+texture = ExtResource( 2 )
+expand = true
+flip_h = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Slide7/TextBox"]
+margin_left = 770.297
+margin_top = 89.2213
+margin_right = 1763.3
+margin_bottom = 464.221
+rect_scale = Vector2( 4, 4 )
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "So keep it green, if you know what I mean!"
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Transposon" type="TextureRect" parent="Slide7"]
+margin_left = 1180.28
+margin_top = 372.263
+margin_right = 1537.28
+margin_bottom = 648.263
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ElementBar" type="ColorRect" parent="Slide7"]
+anchor_top = -0.0339447
+anchor_bottom = -0.0339447
+margin_left = 99.5579
+margin_top = 501.237
+margin_right = 999.558
+margin_bottom = 731.237
+color = Color( 0.301961, 0.298039, 0.298039, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Elm1" type="ColorRect" parent="Slide7/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 10.0
+margin_top = 58.7586
+margin_right = 110.0
+margin_bottom = 208.759
+color = Color( 0.247059, 0.968627, 0.223529, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide7/ElementBar/Elm1"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide7/ElementBar/Elm1/Internal"]
+margin_top = 59.0
+margin_right = 94.0
+margin_bottom = 144.0
+color = Color( 0.945098, 0.952941, 0.0823529, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide7/ElementBar/Elm1/Internal"]
+margin_left = 16.0
+margin_top = 45.6025
+margin_right = 76.0
+margin_bottom = 112.603
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Ca"
+
+[node name="ElmNum" type="Label" parent="Slide7/ElementBar/Elm1/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "20"
+
+[node name="Title" type="Label" parent="Slide7/ElementBar/Elm1/Internal"]
+margin_left = 22.0
+margin_top = 115.0
+margin_right = 73.0
+margin_bottom = 129.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Calcium"
+align = 1
+valign = 1
+
+[node name="Elm2" type="ColorRect" parent="Slide7/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 120.0
+margin_top = 58.7586
+margin_right = 220.0
+margin_bottom = 208.759
+color = Color( 0.247059, 0.968627, 0.223529, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide7/ElementBar/Elm2"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide7/ElementBar/Elm2/Internal"]
+margin_top = 64.0
+margin_right = 94.0
+margin_bottom = 144.0
+color = Color( 0.945098, 0.952941, 0.0823529, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide7/ElementBar/Elm2/Internal"]
+margin_left = 14.0
+margin_top = 45.0
+margin_right = 82.0
+margin_bottom = 112.0
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Na"
+
+[node name="ElmNum" type="Label" parent="Slide7/ElementBar/Elm2/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "11"
+
+[node name="Title2" type="Label" parent="Slide7/ElementBar/Elm2/Internal"]
+margin_left = 22.0
+margin_top = 115.0
+margin_right = 73.0
+margin_bottom = 129.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Sodium"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Elm3" type="ColorRect" parent="Slide7/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 230.0
+margin_top = 58.7586
+margin_right = 330.0
+margin_bottom = 208.759
+color = Color( 0.247059, 0.968627, 0.223529, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide7/ElementBar/Elm3"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide7/ElementBar/Elm3/Internal"]
+margin_top = 94.0
+margin_right = 94.0
+margin_bottom = 144.0
+color = Color( 0.239216, 0.694118, 1, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide7/ElementBar/Elm3/Internal"]
+margin_left = 16.0
+margin_top = 44.4857
+margin_right = 76.0
+margin_bottom = 111.486
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "N"
+align = 1
+
+[node name="ElmNum" type="Label" parent="Slide7/ElementBar/Elm3/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "7"
+
+[node name="Title3" type="Label" parent="Slide7/ElementBar/Elm3/Internal"]
+margin_left = 22.0
+margin_top = 115.0
+margin_right = 77.0
+margin_bottom = 129.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Nitrogen"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Elm4" type="ColorRect" parent="Slide7/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 340.0
+margin_top = 58.7586
+margin_right = 440.0
+margin_bottom = 208.759
+color = Color( 0.247059, 0.968627, 0.223529, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide7/ElementBar/Elm4"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide7/ElementBar/Elm4/Internal"]
+margin_left = 0.38739
+margin_top = 48.3873
+margin_right = 94.3874
+margin_bottom = 144.387
+color = Color( 0.239216, 0.694118, 0.996078, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide7/ElementBar/Elm4/Internal"]
+margin_left = 16.0
+margin_top = 45.9017
+margin_right = 76.0
+margin_bottom = 112.902
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "P"
+align = 1
+
+[node name="ElmNum" type="Label" parent="Slide7/ElementBar/Elm4/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "15"
+
+[node name="Title4" type="Label" parent="Slide7/ElementBar/Elm4/Internal"]
+margin_left = 10.0
+margin_top = 115.0
+margin_right = 77.0
+margin_bottom = 129.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Phosporus"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Elm5" type="ColorRect" parent="Slide7/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 450.0
+margin_top = 58.7586
+margin_right = 550.0
+margin_bottom = 208.759
+color = Color( 0.247059, 0.968627, 0.223529, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide7/ElementBar/Elm5"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide7/ElementBar/Elm5/Internal"]
+margin_top = 64.0
+margin_right = 94.0
+margin_bottom = 144.0
+color = Color( 0.945098, 0.952941, 0.0823529, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide7/ElementBar/Elm5/Internal"]
+margin_left = 16.0
+margin_top = 45.0
+margin_right = 76.0
+margin_bottom = 112.0
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Fe"
+
+[node name="ElmNum" type="Label" parent="Slide7/ElementBar/Elm5/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "24"
+
+[node name="Title5" type="Label" parent="Slide7/ElementBar/Elm5/Internal"]
+margin_left = 21.558
+margin_top = 115.0
+margin_right = 76.558
+margin_bottom = 129.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Iron"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Elm6" type="ColorRect" parent="Slide7/ElementBar"]
+anchor_top = 0.00539733
+anchor_bottom = 0.00539734
+margin_left = 560.0
+margin_top = 58.7586
+margin_right = 660.0
+margin_bottom = 208.759
+color = Color( 0.247059, 0.968627, 0.223529, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Internal" type="ColorRect" parent="Slide7/ElementBar/Elm6"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 97.0
+margin_bottom = 147.0
+color = Color( 0.301961, 0.298039, 0.294118, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="Slide7/ElementBar/Elm6/Internal"]
+margin_top = 134.0
+margin_right = 94.0
+margin_bottom = 144.0
+color = Color( 1, 0.0980392, 0.00784314, 1 )
+
+[node name="ElementSymbol" type="Label" parent="Slide7/ElementBar/Elm6/Internal"]
+margin_left = 16.0
+margin_top = 45.5143
+margin_right = 76.0
+margin_bottom = 112.514
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Hg"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ElmNum" type="Label" parent="Slide7/ElementBar/Elm6/Internal"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "80"
+
+[node name="Title6" type="Label" parent="Slide7/ElementBar/Elm6/Internal"]
+margin_left = 22.0
+margin_top = 115.0
+margin_right = 77.0
+margin_bottom = 129.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Mercury"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="Slide7/ElementBar"]
+margin_left = 682.349
+margin_top = 21.0881
+margin_right = 722.349
+margin_bottom = 61.0881
+rect_scale = Vector2( 5, 5 )
+texture = ExtResource( 5 )
+expand = true
+
+[node name="Label" type="Label" parent="Slide7/ElementBar"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 112.0
+margin_bottom = 41.0
+rect_scale = Vector2( 1.5, 1.5 )
+custom_fonts/font = ExtResource( 4 )
+text = "Elements"
+
+[node name="back" type="Button" parent="Slide7"]
+margin_left = 60.0
+margin_top = 760.0
+margin_right = 235.0
+margin_bottom = 850.0
+theme = SubResource( 6 )
+text = "Back"
+
+[node name="next" type="Button" parent="Slide7"]
+margin_left = 1365.0
+margin_top = 760.0
+margin_right = 1540.0
+margin_bottom = 850.0
+theme = SubResource( 6 )
+text = "Next"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="skip" type="Button" parent="Slide7"]
+margin_left = 1170.0
+margin_top = 760.0
+margin_right = 1345.0
+margin_bottom = 850.0
+theme = SubResource( 6 )
+text = "Skip"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="Slide1/back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="Slide1/next" to="." method="_on_next_pressed"]
+[connection signal="pressed" from="Slide1/skip" to="." method="_on_skip_pressed"]
+[connection signal="pressed" from="Slide2/back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="Slide2/next" to="." method="_on_next_pressed"]
+[connection signal="pressed" from="Slide2/skip" to="." method="_on_skip_pressed"]
+[connection signal="pressed" from="Slide3/back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="Slide3/next" to="." method="_on_next_pressed"]
+[connection signal="pressed" from="Slide3/skip" to="." method="_on_skip_pressed"]
+[connection signal="pressed" from="Slide4/back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="Slide4/next" to="." method="_on_next_pressed"]
+[connection signal="pressed" from="Slide4/skip" to="." method="_on_skip_pressed"]
+[connection signal="pressed" from="Slide5/back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="Slide5/next" to="." method="_on_next_pressed"]
+[connection signal="pressed" from="Slide5/skip" to="." method="_on_skip_pressed"]
+[connection signal="pressed" from="Slide6/back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="Slide6/next" to="." method="_on_next_pressed"]
+[connection signal="pressed" from="Slide6/skip" to="." method="_on_skip_pressed"]
+[connection signal="pressed" from="Slide7/back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="Slide7/next" to="." method="_on_next_pressed"]
+[connection signal="pressed" from="Slide7/skip" to="." method="_on_skip_pressed"]

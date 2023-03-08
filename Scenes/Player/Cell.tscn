@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Assets/Images/Cells/body/body_cell_1_large.svg" type="Texture" id=1]
+[ext_resource path="res://Scripts/Player/Cell.gd" type="Script" id=2]
+[ext_resource path="res://Assets/Images/Cells/nucleus/nucleus_cell_1_large.svg" type="Texture" id=3]
+
+[node name="Body" type="Sprite"]
+texture = ExtResource( 1 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+cell_type = "cell_1"
+large = true
+
+[node name="Nucleus" type="Sprite" parent="."]
+texture = ExtResource( 3 )

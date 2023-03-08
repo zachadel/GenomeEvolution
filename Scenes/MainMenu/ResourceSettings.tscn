@@ -1,0 +1,362 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Scripts/MainMenu/ResourceSettings.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Images/Menus/left_arrow_pressed.svg" type="Texture" id=2]
+[ext_resource path="res://Assets/Images/Menus/left_arrow_hover.svg" type="Texture" id=3]
+[ext_resource path="res://Assets/Images/Menus/left_arrow_normal.svg" type="Texture" id=4]
+[ext_resource path="res://Assets/Images/Tiles/Resources/bread.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Fonts/OpenSans-22.tres" type="DynamicFont" id=6]
+
+[node name="Panel2" type="Panel"]
+margin_top = -22.0
+margin_right = 320.0
+margin_bottom = 432.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BiomeTitle" type="Label" parent="."]
+anchor_right = 1.0
+margin_top = 70.0
+margin_bottom = 105.0
+text = "Biomes Available In:"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Biomes" type="GridContainer" parent="."]
+margin_left = 2.65372
+margin_top = 101.844
+margin_right = 318.654
+margin_bottom = 209.844
+columns = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="dirt" type="CheckBox" parent="Biomes"]
+margin_right = 114.0
+margin_bottom = 24.0
+text = "dirt"
+
+[node name="fire" type="CheckBox" parent="Biomes"]
+margin_left = 118.0
+margin_right = 223.0
+margin_bottom = 24.0
+text = "fire"
+
+[node name="forest" type="CheckBox" parent="Biomes"]
+margin_left = 227.0
+margin_right = 316.0
+margin_bottom = 24.0
+text = "forest"
+
+[node name="grass" type="CheckBox" parent="Biomes"]
+margin_top = 28.0
+margin_right = 114.0
+margin_bottom = 52.0
+text = "grass"
+
+[node name="basalt" type="CheckBox" parent="Biomes"]
+margin_left = 118.0
+margin_top = 28.0
+margin_right = 223.0
+margin_bottom = 52.0
+text = "basalt"
+
+[node name="mountain" type="CheckBox" parent="Biomes"]
+margin_left = 227.0
+margin_top = 28.0
+margin_right = 316.0
+margin_bottom = 52.0
+text = "mountain"
+
+[node name="ocean_fresh" type="CheckBox" parent="Biomes"]
+margin_top = 56.0
+margin_right = 114.0
+margin_bottom = 80.0
+text = "ocean_fresh"
+
+[node name="ocean_salt" type="CheckBox" parent="Biomes"]
+margin_left = 118.0
+margin_top = 56.0
+margin_right = 223.0
+margin_bottom = 80.0
+text = "ocean_salt"
+
+[node name="sand" type="CheckBox" parent="Biomes"]
+margin_left = 227.0
+margin_top = 56.0
+margin_right = 316.0
+margin_bottom = 80.0
+text = "sand"
+
+[node name="shallow_fresh" type="CheckBox" parent="Biomes"]
+margin_top = 84.0
+margin_right = 114.0
+margin_bottom = 108.0
+text = "shallow_fresh"
+
+[node name="shallow_salt" type="CheckBox" parent="Biomes"]
+margin_left = 118.0
+margin_top = 84.0
+margin_right = 223.0
+margin_bottom = 108.0
+text = "shallow_salt"
+
+[node name="snow" type="CheckBox" parent="Biomes"]
+margin_left = 227.0
+margin_top = 84.0
+margin_right = 316.0
+margin_bottom = 108.0
+text = "snow"
+
+[node name="scale" type="HSlider" parent="."]
+margin_left = 10.0
+margin_top = 240.0
+margin_right = 251.0
+margin_bottom = 256.0
+hint_tooltip = "Affects how widespread in a particular biome the resource is."
+tick_count = 11
+ticks_on_borders = true
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="scale"]
+margin_top = -20.0
+margin_right = 300.0
+margin_bottom = -6.0
+text = "Scale (%) [0,100]
+"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Amount" type="LineEdit" parent="scale"]
+margin_left = 250.0
+margin_top = -5.0
+margin_right = 308.0
+margin_bottom = 19.0
+hint_tooltip = "Press Enter to apply changes"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="bias" type="HSlider" parent="."]
+margin_left = 10.0
+margin_top = 280.0
+margin_right = 251.0
+margin_bottom = 296.0
+hint_tooltip = "Affects how widespread in a particular biome the resource is."
+min_value = -50.0
+max_value = 50.0
+tick_count = 11
+ticks_on_borders = true
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="bias"]
+margin_top = -20.0
+margin_right = 300.0
+margin_bottom = 11.0
+text = "Bias
+"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Amount" type="LineEdit" parent="bias"]
+margin_left = 250.0
+margin_top = -5.0
+margin_right = 58.0
+margin_bottom = 24.0
+hint_tooltip = "Press Enter to apply changes"
+align = 1
+
+[node name="richness" type="HSlider" parent="."]
+margin_left = 10.0
+margin_top = 320.0
+margin_right = 251.0
+margin_bottom = 336.0
+hint_tooltip = "Percentage that affects the maximum and minimum spawn rates for a tile for that resource."
+max_value = 400.0
+value = 50.0
+tick_count = 11
+ticks_on_borders = true
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="richness"]
+margin_top = -20.0
+margin_right = 300.0
+margin_bottom = 11.0
+text = "Richness (%) [0, 400]
+"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Amount" type="LineEdit" parent="richness"]
+margin_left = 250.0
+margin_top = -5.0
+margin_right = 58.0
+margin_bottom = 24.0
+hint_tooltip = "Press Enter to apply changes"
+align = 1
+
+[node name="priority" type="HSlider" parent="."]
+margin_left = 10.0
+margin_top = 360.0
+margin_right = 251.0
+margin_bottom = 376.0
+hint_tooltip = "Lower numbers have higher priority if two resources could spawn at the same location."
+min_value = 1.0
+max_value = 10.0
+value = 5.0
+tick_count = 10
+ticks_on_borders = true
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="priority"]
+margin_top = -20.0
+margin_right = 300.0
+margin_bottom = 11.0
+text = "Priority [1, 10]
+"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Amount" type="LineEdit" parent="priority"]
+margin_left = 250.0
+margin_top = -5.0
+margin_right = 58.0
+margin_bottom = 24.0
+hint_tooltip = "Press Enter to apply changes"
+align = 1
+
+[node name="observation_threshold" type="SpinBox" parent="."]
+margin_left = 10.0
+margin_top = 404.0
+margin_right = 251.0
+margin_bottom = 420.0
+hint_tooltip = "This determines what sensing value is necessary for a resource to be visible.  The formula is given by if (obs_thresh - sensing_value) >= resource_value, then appear on the map."
+min_value = 1.0
+max_value = 50.0
+value = 4.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="observation_threshold"]
+margin_top = -20.0
+margin_right = 300.0
+margin_bottom = 11.0
+text = "Observation Threshold
+"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Amount" type="Label" parent="observation_threshold"]
+margin_left = 250.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "12"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Icon" type="TextureRect" parent="."]
+margin_left = 110.0
+margin_right = 206.0
+margin_bottom = 82.0
+texture = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ArrowLeft" type="TextureButton" parent="."]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 100.0
+margin_bottom = 70.0
+texture_normal = ExtResource( 4 )
+texture_pressed = ExtResource( 2 )
+texture_hover = ExtResource( 3 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ArrowRight" type="TextureButton" parent="."]
+margin_left = 310.0
+margin_top = 10.0
+margin_right = 400.0
+margin_bottom = 70.0
+rect_scale = Vector2( -1, 1 )
+texture_normal = ExtResource( 4 )
+texture_pressed = ExtResource( 2 )
+texture_hover = ExtResource( 3 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="resourceName" type="Label" parent="."]
+margin_left = 1.0
+margin_top = -41.0
+margin_right = 319.0
+margin_bottom = 1.0
+custom_fonts/font = ExtResource( 6 )
+align = 1
+
+[node name="Button" type="Button" parent="."]
+visible = false
+margin_left = 1.0
+margin_top = -54.0
+margin_right = 322.0
+custom_fonts/font = ExtResource( 6 )
+text = "Apply Changes"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="value_changed" from="scale" to="." method="_on_scale_value_changed"]
+[connection signal="mouse_entered" from="scale/Amount" to="." method="_on_Amount_mouse_entered"]
+[connection signal="text_changed" from="scale/Amount" to="." method="_on_scale_value_text_changed"]
+[connection signal="text_entered" from="scale/Amount" to="." method="_on_scale_Amount_text_entered"]
+[connection signal="value_changed" from="bias" to="." method="_on_bias_value_changed"]
+[connection signal="text_entered" from="bias/Amount" to="." method="_on_bias_Amount_text_entered"]
+[connection signal="value_changed" from="richness" to="." method="_on_richness_value_changed"]
+[connection signal="value_changed" from="priority" to="." method="_on_priority_value_changed"]
+[connection signal="text_entered" from="priority/Amount" to="." method="_on_priority_Amount_text_entered"]
+[connection signal="value_changed" from="observation_threshold" to="." method="_on_observation_threshold_value_changed"]
+[connection signal="pressed" from="ArrowLeft" to="." method="_on_ArrowLeft_pressed"]
+[connection signal="pressed" from="ArrowRight" to="." method="_on_ArrowRight_pressed"]
+[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]

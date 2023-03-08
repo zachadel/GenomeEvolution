@@ -1,0 +1,108 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Assets/Images/icons/Down2.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Fonts/OpenSans-SemiBold.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://Assets/Images/icons/Down1.png" type="Texture" id=3]
+[ext_resource path="res://Scenes/CardTable/result_arrow.gd" type="Script" id=4]
+[ext_resource path="res://Assets/Images/icons/gene_death.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Images/pngs/SpeechRectCenter.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Fonts/BoldItalics_50 Arrow.tres" type="DynamicFont" id=7]
+
+[sub_resource type="DynamicFont" id=1]
+size = 60
+font_data = ExtResource( 2 )
+
+[node name="TextureRect" type="TextureRect"]
+margin_right = 263.0
+margin_bottom = 334.0
+rect_min_size = Vector2( 263, 334 )
+expand = true
+stretch_mode = 6
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="green_arrow" type="TextureRect" parent="."]
+visible = false
+margin_right = 251.0
+margin_bottom = 334.0
+rect_min_size = Vector2( 232, 334 )
+mouse_filter = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="red_arrow" type="TextureRect" parent="."]
+visible = false
+margin_left = -14.0
+margin_top = -2.0
+margin_right = 241.0
+margin_bottom = 330.0
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="pseudo_arrow" type="TextureRect" parent="."]
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="top_value" type="RichTextLabel" parent="."]
+margin_top = -67.0
+margin_right = 254.0
+margin_bottom = 20.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="bottom_value" type="RichTextLabel" parent="."]
+margin_top = 315.07
+margin_right = 254.0
+margin_bottom = 402.07
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="skill_box" type="TextureRect" parent="."]
+visible = false
+margin_left = -10.0
+margin_top = 70.0
+margin_right = 633.0
+margin_bottom = 372.0
+rect_scale = Vector2( 0.425, 0.5 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="skill_text" type="RichTextLabel" parent="skill_box"]
+margin_left = 4.0
+margin_top = 9.0
+margin_right = 641.0
+margin_bottom = 212.0
+rect_scale = Vector2( 1, 1.5 )
+custom_fonts/normal_font = ExtResource( 7 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center][wave amp=50 freq=2]Skill Changed![/wave][/center]"
+text = "Skill Changed!"
+__meta__ = {
+"_edit_use_anchors_": false
+}

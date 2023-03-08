@@ -1,0 +1,89 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scripts/MainMenu/Settings.gd" type="Script" id=1]
+
+[node name="Settings" type="MarginContainer"]
+margin_left = 535.302
+margin_top = 159.727
+margin_right = 785.302
+margin_bottom = 299.727
+custom_constants/margin_right = 20
+custom_constants/margin_top = 20
+custom_constants/margin_left = 20
+custom_constants/margin_bottom = 20
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 230.0
+margin_bottom = 119.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+margin_right = 162.0
+margin_bottom = 276.0
+custom_constants/separation = 20
+
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer"]
+margin_right = 162.0
+margin_bottom = 14.0
+text = "Starting Blanks"
+align = 1
+
+[node name="starting_blanks" type="OptionButton" parent="ScrollContainer/VBoxContainer"]
+margin_top = 34.0
+margin_right = 162.0
+margin_bottom = 54.0
+text = "Some"
+items = [ "None", null, false, 0, null, "Some", null, false, 1, null, "Many", null, false, 2, null ]
+selected = 1
+
+[node name="Label2" type="Label" parent="ScrollContainer/VBoxContainer"]
+margin_top = 74.0
+margin_right = 162.0
+margin_bottom = 88.0
+text = "Add Competitors"
+align = 1
+
+[node name="add_competitors" type="OptionButton" parent="ScrollContainer/VBoxContainer"]
+margin_top = 108.0
+margin_right = 162.0
+margin_bottom = 128.0
+text = "Some"
+items = [ "None", null, false, 0, null, "Some", null, false, 1, null, "Many", null, false, 2, null ]
+selected = 1
+
+[node name="Label3" type="Label" parent="ScrollContainer/VBoxContainer"]
+margin_top = 148.0
+margin_right = 162.0
+margin_bottom = 162.0
+text = "Starting Transposons"
+align = 1
+
+[node name="starting_transposons" type="OptionButton" parent="ScrollContainer/VBoxContainer"]
+margin_top = 182.0
+margin_right = 162.0
+margin_bottom = 202.0
+text = "Some"
+items = [ "None", null, false, 0, null, "Some", null, false, 1, null, "Many", null, false, 2, null ]
+selected = 1
+
+[node name="Label4" type="Label" parent="ScrollContainer/VBoxContainer"]
+margin_top = 222.0
+margin_right = 162.0
+margin_bottom = 236.0
+text = "Starting Additional Genes"
+align = 1
+
+[node name="starting_additional_genes" type="OptionButton" parent="ScrollContainer/VBoxContainer"]
+margin_top = 256.0
+margin_right = 162.0
+margin_bottom = 276.0
+text = "None"
+items = [ "None", null, false, 0, null, "Some", null, false, 1, null, "Many", null, false, 2, null ]
+selected = 0

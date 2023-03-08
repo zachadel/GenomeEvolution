@@ -1,81 +1,70 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scripts/Main.gd" type="Script" id=1]
-[ext_resource path="res://Scenes/CardTable.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Scenes/WorldMap.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/Console.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/WorldMap/WorldMap.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/CardTable/CardTable.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/statsScreen/statsScreen.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scenes/EventLog/eventLog.tscn" type="PackedScene" id=6]
 
-[node name="Control" type="Control"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_right = -1600.0
-margin_bottom = -900.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
+[node name="Main" type="Control"]
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource( 1 )
-_sections_unfolded = [ "Hint", "Mouse" ]
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Canvas_CardTable" type="CanvasLayer" parent="." index="0"]
+[node name="Event_Log_Layer" type="CanvasLayer" parent="."]
+layer = 70
 
-layer = 1
-offset = Vector2( 0, 0 )
-rotation = 0.0
-scale = Vector2( 1, 1 )
-transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-
-[node name="CardTable" parent="Canvas_CardTable" index="0" instance=ExtResource( 2 )]
-
-margin_left = 1.0
-margin_right = 1.0
-
-[node name="Canvas_UI" type="CanvasLayer" parent="." index="1"]
-
-layer = 1
-offset = Vector2( 0, 0 )
-rotation = 0.0
-scale = Vector2( 1, 1 )
-transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-
-[node name="modeSwitch" type="Button" parent="Canvas_UI" index="0"]
-
-anchor_left = 0.0
+[node name="pnl_event_log" parent="Event_Log_Layer" instance=ExtResource( 6 )]
+visible = false
+anchor_left = 0.5
 anchor_top = 1.0
-anchor_right = 0.0
+anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = 25.0
-margin_top = -135.0
-margin_right = 175.0
-margin_bottom = -60.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
-text = "To Map"
-flat = false
-align = 1
-_sections_unfolded = [ "Anchor", "Margin", "Rect" ]
+margin_left = -265.0
+margin_top = -380.0
+margin_right = 420.0
+margin_bottom = -80.0
 
-[node name="WorldMap" parent="." index="2" instance=ExtResource( 3 )]
+[node name="MessageLayer" type="CanvasLayer" parent="."]
+layer = 10
 
+[node name="GameOver" type="AcceptDialog" parent="MessageLayer"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = 709.787
+margin_top = -91.1203
+margin_right = -522.213
+margin_bottom = -33.1203
+popup_exclusive = true
+window_title = "Game Over!"
+dialog_text = "You died! Please press OK to go to the death screen."
+
+[node name="WorldMap" parent="." instance=ExtResource( 3 )]
+
+[node name="Canvas_CardTable" type="CanvasLayer" parent="."]
+layer = 5
+
+[node name="CardTable" parent="Canvas_CardTable" instance=ExtResource( 4 )]
 visible = false
 
-[connection signal="next_turn" from="Canvas_CardTable/CardTable" to="WorldMap" method="_on_CardTable_next_turn"]
+[node name="Console_Layer" type="CanvasLayer" parent="."]
+layer = 125
 
-[connection signal="pressed" from="Canvas_UI/modeSwitch" to="." method="_on_modeSwitch_pressed"]
+[node name="Console" parent="Console_Layer" instance=ExtResource( 2 )]
 
-[connection signal="player_done" from="WorldMap" to="Canvas_CardTable/CardTable" method="_on_WorldMap_player_done"]
+[node name="stats_Layer" type="CanvasLayer" parent="."]
 
-
+[node name="statsScreen" parent="stats_Layer" instance=ExtResource( 5 )]
+visible = false
+[connection signal="confirmed" from="MessageLayer/GameOver" to="." method="_on_GameOver_confirmed"]
+[connection signal="change_to_main_menu" from="WorldMap" to="." method="_on_WorldMap_change_to_main_menu"]
+[connection signal="end_map_turn" from="WorldMap" to="." method="_on_WorldMap_end_map_turn"]
+[connection signal="switch_to_card_table" from="WorldMap" to="." method="_on_WorldMap_switch_to_card_table"]
+[connection signal="next_turn" from="Canvas_CardTable/CardTable" to="." method="_on_CardTable_next_turn"]
+[connection signal="switch_to_map" from="Canvas_CardTable/CardTable" to="." method="_on_CardTable_switch_to_map"]
