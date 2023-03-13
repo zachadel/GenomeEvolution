@@ -506,9 +506,6 @@ margin_right = 1600.0
 margin_bottom = 900.0
 mouse_filter = 2
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 Cell = ExtResource( 5 )
 
 [node name="CellPath" type="Path2D" parent="."]
@@ -525,9 +522,6 @@ margin_left = -1600.0
 margin_bottom = 900.0
 mouse_filter = 2
 color = Color( 0.0431373, 0.0588235, 0.564706, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="DNALeft" type="TextureRect" parent="."]
 margin_right = 150.0
@@ -605,9 +599,6 @@ custom_fonts/font = SubResource( 9 )
 custom_styles/normal = SubResource( 5 )
 enabled_focus_mode = 0
 text = "Credits"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Exit" type="Button" parent="."]
 visible = false

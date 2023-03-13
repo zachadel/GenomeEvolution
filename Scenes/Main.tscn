@@ -62,6 +62,7 @@ layer = 125
 
 [node name="statsScreen" parent="stats_Layer" instance=ExtResource( 5 )]
 visible = false
+
 [connection signal="confirmed" from="MessageLayer/GameOver" to="." method="_on_GameOver_confirmed"]
 [connection signal="change_to_main_menu" from="WorldMap" to="." method="_on_WorldMap_change_to_main_menu"]
 [connection signal="end_map_turn" from="WorldMap" to="." method="_on_WorldMap_end_map_turn"]

@@ -355,6 +355,7 @@ texture = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
 [connection signal="cmsm_picked" from="scroll/chromes" to="." method="_on_chromes_cmsm_picked"]
 [connection signal="elm_clicked" from="scroll/chromes" to="." method="_on_chromes_elm_clicked"]
 [connection signal="elm_mouse_entered" from="scroll/chromes" to="." method="_on_chromes_elm_mouse_entered"]
