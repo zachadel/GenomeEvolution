@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Tutorials.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/MainMenu/Tutorials.gd" type="Script" id=1]
 
 [sub_resource type="DynamicFontData" id=2]
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
