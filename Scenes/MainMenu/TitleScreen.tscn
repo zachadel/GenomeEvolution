@@ -566,9 +566,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -247.0
-margin_top = -52.5017
+margin_top = -180.0
 margin_right = 247.0
-margin_bottom = 55.4983
+margin_bottom = -72.0
 focus_mode = 0
 theme = SubResource( 7 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
@@ -579,6 +579,27 @@ enabled_focus_mode = 0
 text = "Play Now"
 __meta__ = {
 "_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Tutorials" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -247.0
+margin_top = -50.0
+margin_right = 247.0
+margin_bottom = 58.0
+focus_mode = 0
+theme = SubResource( 7 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 0.341176, 0.545098, 0.788235, 1 )
+custom_fonts/font = SubResource( 8 )
+custom_styles/normal = SubResource( 5 )
+enabled_focus_mode = 0
+text = "Tutorials"
+__meta__ = {
 "_editor_description_": ""
 }
 
@@ -662,6 +683,7 @@ __meta__ = {
 [connection signal="begin_new_game" from="." to="." method="_on_TitleScreen_begin_new_game"]
 [connection signal="exit_game" from="." to="." method="_on_TitleScreen_exit_game"]
 [connection signal="pressed" from="NewGame" to="." method="_on_NewGame_pressed"]
+[connection signal="pressed" from="Tutorials" to="." method="_on_Tutorials_pressed"]
 [connection signal="pressed" from="Credits" to="." method="_on_Credits_pressed"]
 [connection signal="pressed" from="Exit" to="." method="_on_Exit_pressed"]
 [connection signal="timeout" from="CellTimer" to="." method="_on_CellTimer_timeout"]

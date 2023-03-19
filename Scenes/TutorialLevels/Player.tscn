@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scripts/TutorialLevels/Player.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Images/Cells/body/body_cell_1_large.svg" type="Texture" id=2]
+
+[node name="Player" type="Sprite"]
+scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 2 )
+script = ExtResource( 1 )
+
+[node name="Reload_speed" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[connection signal="timeout" from="Reload_speed" to="." method="_on_Reload_speed_timeout"]
