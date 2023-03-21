@@ -1,8 +1,11 @@
 extends KinematicBody2D
 
+signal hit
+
 var movespeed = 500
 var bullet_speed = 2000
 var bullet = preload("res://Scenes/TutorialLevels/Bullet.tscn")
+export var health = 100
 
 func _physics_process(delta):
 	var motion = Vector2()
@@ -38,4 +41,7 @@ func kill():
 
 func _on_Area2D_body_entered(body):
 	if "Enemy" in body.name:
-		kill()
+		health -= 10
+		emit_signal("hit", health)
+		if health < 0:
+			kill()

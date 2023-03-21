@@ -32,7 +32,7 @@ func _on_Next_pressed():
 		leave_intro()
 	
 func leave_intro():
-	get_tree().change_scene("res://Scenes/MainMenu/CharacterSelection.tscn")
+	get_tree().change_scene("res://Scenes/TutorialLevels/MiniGame.tscn")
 	
 
 func _gui_input(event):
