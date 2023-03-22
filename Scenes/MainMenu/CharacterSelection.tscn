@@ -25,14 +25,14 @@ font_data = SubResource( 1 )
 size = 30
 font_data = ExtResource( 7 )
 
-[sub_resource type="StyleBoxFlat" id=4]
-content_margin_top = 10.0
-bg_color = Color( 0.6, 0.6, 0.6, 0 )
-
 [sub_resource type="DynamicFont" id=5]
 size = 20
 use_filter = true
 font_data = ExtResource( 5 )
+
+[sub_resource type="StyleBoxFlat" id=4]
+content_margin_top = 10.0
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
 
 [node name="CharacterSelection" type="Control"]
 margin_right = 40.0
@@ -138,10 +138,10 @@ anchor_left = 0.0461957
 anchor_top = 0.0927835
 anchor_right = 0.967391
 anchor_bottom = 0.659794
-custom_styles/normal = SubResource( 4 )
-custom_fonts/bold_font = SubResource( 5 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 custom_constants/table_vseparation = 0
+custom_fonts/bold_font = SubResource( 5 )
+custom_styles/normal = SubResource( 4 )
 bbcode_enabled = true
 bbcode_text = "[center][b]Select your single cell life form![/b][/center]"
 text = "Select your single cell life form!"
@@ -230,8 +230,6 @@ window_title = "Open a File"
 mode = 0
 access = 2
 filters = PoolStringArray( "*.txt ; Text Files" )
-current_dir = "/"
-current_path = "/"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -293,6 +291,7 @@ margin_left = 800.0
 margin_top = 400.0
 margin_right = 1120.0
 margin_bottom = 836.0
+
 [connection signal="pressed" from="GoToGame" to="." method="_on_GoToGame_pressed"]
 [connection signal="cell_changed" from="CellSelection" to="." method="_on_CellSelection_cell_changed"]
 [connection signal="pressed" from="Save" to="." method="_on_Save_pressed"]

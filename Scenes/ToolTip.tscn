@@ -193,6 +193,7 @@ anims/DoHide = SubResource( 5 )
 anims/HideNow = SubResource( 6 )
 anims/Show = SubResource( 7 )
 anims/ShowNow = SubResource( 8 )
+
 [connection signal="mouse_entered" from="PnlTooltip" to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="PnlTooltip" to="." method="_on_mouse_exited"]
 [connection signal="mouse_entered" from="PnlTooltip/LblDesc" to="." method="_on_mouse_entered"]
