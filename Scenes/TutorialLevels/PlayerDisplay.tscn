@@ -16,10 +16,9 @@ border_width_bottom = 10
 border_color = Color( 0, 0, 0, 1 )
 border_blend = true
 
-[node name="CellDisplay" type="Panel"]
-margin_top = 88.0
+[node name="PlayerDisplay" type="Panel"]
 margin_right = 399.0
-margin_bottom = 375.0
+margin_bottom = 287.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/panel = SubResource( 1 )

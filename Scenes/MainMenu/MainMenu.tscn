@@ -18,6 +18,7 @@ margin_bottom = 904.0
 
 [node name="CharacterSelection" parent="." instance=ExtResource( 3 )]
 visible = false
+
 [connection signal="begin_new_game" from="TitleScreen" to="." method="_on_TitleScreen_begin_new_game"]
 [connection signal="exit_game" from="TitleScreen" to="." method="_on_TitleScreen_exit_game"]
 [connection signal="go_to_settings" from="TitleScreen" to="." method="_on_TitleScreen_go_to_settings"]

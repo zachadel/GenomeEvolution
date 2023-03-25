@@ -18,13 +18,13 @@
 [ext_resource path="res://Assets/Fonts/OpenSans-Italic.ttf" type="DynamicFontData" id=16]
 [ext_resource path="res://Assets/Images/pngs/SpeechRectLeft.png" type="Texture" id=17]
 
-[sub_resource type="DynamicFontData" id=1]
+[sub_resource type="DynamicFontData" id=36]
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
 
 [sub_resource type="DynamicFont" id=2]
 use_mipmaps = true
 use_filter = true
-font_data = SubResource( 1 )
+font_data = SubResource( 36 )
 
 [sub_resource type="DynamicFontData" id=9]
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
