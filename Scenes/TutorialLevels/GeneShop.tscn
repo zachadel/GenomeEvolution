@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://Scenes/TutorialLevels/GeneShop.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/TutorialLevels/Background.png" type="Texture" id=2]
@@ -17,6 +17,7 @@
 [ext_resource path="res://Scenes/CardTable/Art/TEs/Hexagon.tscn" type="PackedScene" id=15]
 [ext_resource path="res://Assets/Fonts/Italics_50.tres" type="DynamicFont" id=16]
 [ext_resource path="res://Assets/Images/pngs/SpeechRectCenter.png" type="Texture" id=17]
+[ext_resource path="res://Scenes/TutorialLevels/Star-Clipart-PNG_nvsofi.png" type="Texture" id=18]
 
 [sub_resource type="GDScript" id=2]
 script/source = "extends NinePatchRect
@@ -706,7 +707,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="Store" type="TextureRect" parent="."]
 modulate = Color( 0.141176, 0.137255, 0.137255, 1 )
 margin_left = 751.0
 margin_top = 54.0
@@ -749,7 +750,7 @@ margin_bottom = -435.0
 rect_scale = Vector2( 2, 2 )
 mouse_filter = 2
 
-[node name="TextureRect2" type="TextureRect" parent="."]
+[node name="Table" type="TextureRect" parent="."]
 modulate = Color( 0.317647, 0.266667, 0.207843, 1 )
 margin_left = 840.0
 margin_top = 438.0
@@ -757,6 +758,47 @@ margin_right = 856.0
 margin_bottom = 454.0
 rect_scale = Vector2( 40, 25 )
 texture = ExtResource( 2 )
+
+[node name="Credit" type="TextureRect" parent="."]
+margin_left = 838.0
+margin_top = 352.0
+margin_right = 854.0
+margin_bottom = 368.0
+rect_scale = Vector2( 7, 3 )
+texture = ExtResource( 2 )
+
+[node name="CreditImg" type="TextureRect" parent="Credit"]
+margin_left = -0.144531
+margin_top = 3.0
+margin_right = 2894.86
+margin_bottom = 2916.0
+rect_scale = Vector2( 0.002, 0.004 )
+texture = ExtResource( 18 )
+
+[node name="CreditVal" type="RichTextLabel" parent="Credit"]
+modulate = Color( 0, 0, 0, 1 )
+margin_left = 6.0
+margin_top = 2.0
+margin_right = 25.0
+margin_bottom = 58.0
+rect_scale = Vector2( 0.5, 0.5 )
+custom_fonts/normal_font = SubResource( 5 )
+bbcode_enabled = true
+bbcode_text = "[center]30[center]"
+text = "30"
+
+[node name="NotEnough" type="RichTextLabel" parent="Credit"]
+visible = false
+modulate = Color( 1, 0.219608, 0.219608, 1 )
+margin_top = 20.0
+margin_right = 159.0
+margin_bottom = 50.0
+rect_scale = Vector2( 0.2, 0.3 )
+custom_fonts/italics_font = ExtResource( 16 )
+custom_fonts/normal_font = SubResource( 5 )
+bbcode_enabled = true
+bbcode_text = "[center]Not enough credits![/center]"
+text = "Not enough credits!"
 
 [node name="Construction" type="Button" parent="."]
 margin_left = 863.0
@@ -1387,42 +1429,42 @@ __meta__ = {
 [connection signal="mouse_entered" from="Genome/Sensing/Sensing" to="Genome/Sensing/Sensing/ToolTip/RichTextLabel" method="_on_Sensing_mouse_entered"]
 [connection signal="mouse_exited" from="Genome/Sensing/Sensing" to="Genome/Sensing/Sensing/ToolTip" method="_on_Sensing_mouse_exited"]
 [connection signal="mouse_exited" from="Genome/Sensing/Sensing" to="Genome/Sensing/Sensing/ToolTip/RichTextLabel" method="_on_Sensing_mouse_exited"]
-[connection signal="pressed" from="Construction" to="." method="_on_Construction_pressed"]
+[connection signal="pressed" from="Construction" to="." method="_on_gene_pressed" binds= [ "Construction" ]]
 [connection signal="mouse_entered" from="Construction/Construction" to="Construction/Construction/ToolTip" method="_on_Replication_mouse_entered"]
 [connection signal="mouse_entered" from="Construction/Construction" to="Construction/Construction/ToolTip/RichTextLabel" method="_on_Replication_mouse_entered"]
 [connection signal="mouse_exited" from="Construction/Construction" to="Construction/Construction/ToolTip" method="_on_Replication_mouse_exited"]
 [connection signal="mouse_exited" from="Construction/Construction" to="Construction/Construction/ToolTip/RichTextLabel" method="_on_Replication_mouse_exited"]
-[connection signal="pressed" from="Component" to="." method="_on_Component_pressed"]
+[connection signal="pressed" from="Component" to="." method="_on_gene_pressed" binds= [ "Component" ]]
 [connection signal="mouse_entered" from="Component/Component" to="Component/Component/ToolTip" method="_on_Component_mouse_entered"]
 [connection signal="mouse_entered" from="Component/Component" to="Component/Component/ToolTip/RichTextLabel" method="_on_Component_mouse_entered"]
 [connection signal="mouse_exited" from="Component/Component" to="Component/Component/ToolTip" method="_on_Component_mouse_exited"]
 [connection signal="mouse_exited" from="Component/Component" to="Component/Component/ToolTip/RichTextLabel" method="_on_Component_mouse_exited"]
-[connection signal="pressed" from="Helper" to="." method="_on_Helper_pressed"]
+[connection signal="pressed" from="Helper" to="." method="_on_gene_pressed" binds= [ "Helper" ]]
 [connection signal="mouse_entered" from="Helper/Helper" to="Helper/Helper/ToolTip" method="_on_Helper_mouse_entered"]
 [connection signal="mouse_entered" from="Helper/Helper" to="Helper/Helper/ToolTip/RichTextLabel" method="_on_Helper_mouse_entered"]
 [connection signal="mouse_exited" from="Helper/Helper" to="Helper/Helper/ToolTip" method="_on_Helper_mouse_exited"]
 [connection signal="mouse_exited" from="Helper/Helper" to="Helper/Helper/ToolTip/RichTextLabel" method="_on_Helper_mouse_exited"]
-[connection signal="pressed" from="Replication" to="." method="_on_Replication_pressed"]
+[connection signal="pressed" from="Replication" to="." method="_on_gene_pressed" binds= [ "Replication" ]]
 [connection signal="mouse_entered" from="Replication/Replication" to="Replication/Replication/ToolTip" method="_on_Replication_mouse_entered"]
 [connection signal="mouse_entered" from="Replication/Replication" to="Replication/Replication/ToolTip/RichTextLabel" method="_on_Replication_mouse_entered"]
 [connection signal="mouse_exited" from="Replication/Replication" to="Replication/Replication/ToolTip" method="_on_Replication_mouse_exited"]
 [connection signal="mouse_exited" from="Replication/Replication" to="Replication/Replication/ToolTip/RichTextLabel" method="_on_Replication_mouse_exited"]
-[connection signal="pressed" from="Locomotion" to="." method="_on_Locomotion_pressed"]
+[connection signal="pressed" from="Locomotion" to="." method="_on_gene_pressed" binds= [ "Locomotion" ]]
 [connection signal="mouse_entered" from="Locomotion/Locomotion" to="Locomotion/Locomotion/ToolTip" method="_on_Locomotion_mouse_entered"]
 [connection signal="mouse_entered" from="Locomotion/Locomotion" to="Locomotion/Locomotion/ToolTip/RichTextLabel" method="_on_Locomotion_mouse_entered"]
 [connection signal="mouse_exited" from="Locomotion/Locomotion" to="Locomotion/Locomotion/ToolTip" method="_on_Locomotion_mouse_exited"]
 [connection signal="mouse_exited" from="Locomotion/Locomotion" to="Locomotion/Locomotion/ToolTip/RichTextLabel" method="_on_Locomotion_mouse_exited"]
-[connection signal="pressed" from="Sensing" to="." method="_on_Sensing_pressed"]
+[connection signal="pressed" from="Sensing" to="." method="_on_gene_pressed" binds= [ "Sensing" ]]
 [connection signal="mouse_entered" from="Sensing/Sensing" to="Sensing/Sensing/ToolTip" method="_on_Sensing_mouse_entered"]
 [connection signal="mouse_entered" from="Sensing/Sensing" to="Sensing/Sensing/ToolTip/RichTextLabel" method="_on_Sensing_mouse_entered"]
 [connection signal="mouse_exited" from="Sensing/Sensing" to="Sensing/Sensing/ToolTip" method="_on_Sensing_mouse_exited"]
 [connection signal="mouse_exited" from="Sensing/Sensing" to="Sensing/Sensing/ToolTip/RichTextLabel" method="_on_Sensing_mouse_exited"]
-[connection signal="pressed" from="Manipulation" to="." method="_on_Manipulation_pressed"]
+[connection signal="pressed" from="Manipulation" to="." method="_on_gene_pressed" binds= [ "Manipulation" ]]
 [connection signal="mouse_entered" from="Manipulation/Manipulation" to="Manipulation/Manipulation/ToolTip" method="_on_Manipulation_mouse_entered"]
 [connection signal="mouse_entered" from="Manipulation/Manipulation" to="Manipulation/Manipulation/ToolTip/RichTextLabel" method="_on_Manipulation_mouse_entered"]
 [connection signal="mouse_exited" from="Manipulation/Manipulation" to="Manipulation/Manipulation/ToolTip" method="_on_Manipulation_mouse_exited"]
 [connection signal="mouse_exited" from="Manipulation/Manipulation" to="Manipulation/Manipulation/ToolTip/RichTextLabel" method="_on_Manipulation_mouse_exited"]
-[connection signal="pressed" from="Deconstruction" to="." method="_on_Deconstruction_pressed"]
+[connection signal="pressed" from="Deconstruction" to="." method="_on_gene_pressed" binds= [ "Deconstruction" ]]
 [connection signal="mouse_entered" from="Deconstruction/Deconstruction" to="Deconstruction/Deconstruction/ToolTip" method="_on_Deconstruction_mouse_entered"]
 [connection signal="mouse_entered" from="Deconstruction/Deconstruction" to="Deconstruction/Deconstruction/ToolTip/RichTextLabel" method="_on_Deconstruction_mouse_entered"]
 [connection signal="mouse_exited" from="Deconstruction/Deconstruction" to="Deconstruction/Deconstruction/ToolTip" method="_on_Deconstruction_mouse_exited"]

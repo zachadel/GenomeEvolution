@@ -1,79 +1,76 @@
 extends Control
 
-onready var Construction = get_node("Genome/Construction_Label")
-onready var Component = get_node("Genome/Component_Label")
-onready var Deconstruction = get_node("Genome/Deconstruction_Label")
-onready var Helper = get_node("Genome/Helper_Label")
-onready var Locomotion = get_node("Genome/Locomotion_Label")
-onready var Manipulation = get_node("Genome/Manipulation_Label")
-onready var Replication = get_node("Genome/Replication_Label")
-onready var Sensing = get_node("Genome/Sensing_Label")
+onready var gene_labels = [
+	get_node("Genome/Construction_Label"),
+	get_node("Genome/Component_Label"),
+	get_node("Genome/Deconstruction_Label"),
+	get_node("Genome/Helper_Label"),
+	get_node("Genome/Locomotion_Label"),
+	get_node("Genome/Manipulation_Label"),
+	get_node("Genome/Replication_Label"),
+	get_node("Genome/Sensing_Label")
+]
 
-var genes = {
-	"Construction": 2,
-	"Component": 2,
-	"Deconstruction": 2,
-	"Helper": 2,
-	"Locomotion": 2, 
-	"Manipulation": 2,
-	"Replication": 2,
-	"Sensing": 2
-}
+onready var gene_prices = [
+	int(get_node("Construction/Construction_Price").get_text()),
+	int(get_node("Component/Component_Price").get_text()),
+	int(get_node("Deconstruction/Deconstruction_Price").get_text()),
+	int(get_node("Helper/Helper_Price").get_text()),
+	int(get_node("Locomotion/Locomotion_Price").get_text()),
+	int(get_node("Manipulation/Manipulation_Price").get_text()),
+	int(get_node("Replication/Replication_Price").get_text()),
+	int(get_node("Sensing/Sensing_Price").get_text())
+]
+
+const gene_buttons = [
+	"Construction", 
+	"Component", 
+	"Deconstruction",
+	"Helper", 
+	"Locomotion", 
+	"Manipulation", 
+	"Replication", 
+	"Sensing"
+]
+
+var genes = [2, 2, 2, 2, 2, 2, 2, 2]
+const LV1 = 3
+const LV2 = 4
+const LV3 = 6
+const LV4 = 8
+const LV5 = 10
+
+var credits = 30
 
 func _ready():
 	get_node("Transposon").set_color(Color.red)
+	
+func _update_player_display(index: int):
+	var gene = gene_buttons[index]
+	if genes[index] >= LV4:
+		get_node("PlayerDisplay/"+gene+"Part").set_texture(load("res://Scenes/TutorialLevels/PlayerSprite/"+gene+"_4.png"))
+	elif genes[index] >= LV3:
+		get_node("PlayerDisplay/"+gene+"Part").set_texture(load("res://Scenes/TutorialLevels/PlayerSprite/"+gene+"_3.png"))
+	elif genes[index] >= LV2:
+		get_node("PlayerDisplay/"+gene+"Part").set_texture(load("res://Scenes/TutorialLevels/PlayerSprite/"+gene+"_2.png"))
+	elif genes[index] >= LV1:
+		get_node("PlayerDisplay/"+gene+"Part").visible = true
 
-func _on_Construction_pressed():
-	var ConstructionCount : int = int(Construction.get_text())
-	ConstructionCount += 1
-	genes.Construction = ConstructionCount
-	Construction.set_text("x "+String(ConstructionCount))
+func _update_gene_count(index: int):
+	genes[index] += 1
+	gene_labels[index].set_text("x " + String(genes[index]))
+	
 
-
-func _on_Component_pressed():
-	var ComponentCount : int = int(Component.get_text())
-	ComponentCount += 1
-	genes.Component = ComponentCount
-	Component.set_text("x "+String(ComponentCount))
-
-
-func _on_Deconstruction_pressed():
-	var DeconstructionCount : int = int(Deconstruction.get_text())
-	DeconstructionCount += 1
-	genes.Deconstruction = DeconstructionCount
-	Deconstruction.set_text("x "+String(DeconstructionCount))
-
-
-func _on_Helper_pressed():
-	var HelperCount : int = int(Helper.get_text())
-	HelperCount += 1
-	genes.Helper = HelperCount
-	Helper.set_text("x "+String(HelperCount))
-
-
-func _on_Locomotion_pressed():
-	var LocomotionCount : int = int(Locomotion.get_text())
-	LocomotionCount += 1
-	genes.Locomotion = LocomotionCount
-	Locomotion.set_text("x "+String(LocomotionCount))
-
-
-func _on_Manipulation_pressed():
-	var ManipulationCount : int = int(Manipulation.get_text())
-	ManipulationCount += 1
-	genes.Manipulation = ManipulationCount
-	Manipulation.set_text("x "+String(ManipulationCount))
-
-
-func _on_Replication_pressed():
-	var ReplicationCount : int = int(Replication.get_text())
-	ReplicationCount += 1
-	genes.Replication = ReplicationCount
-	Replication.set_text("x "+String(ReplicationCount))
-
-
-func _on_Sensing_pressed():
-	var SensingCount : int = int(Sensing.get_text())
-	SensingCount += 1
-	genes.Sensing = SensingCount
-	Sensing.set_text("x "+String(SensingCount))
+func _on_gene_pressed(button_name: String):
+	var index = gene_buttons.find(button_name)
+	var price = gene_prices[index]
+	var warning = get_node("Credit/NotEnough")
+	if credits >= price:
+		warning.visible = false
+		_update_gene_count(index)
+		_update_player_display(index)
+		credits -= price
+		get_node("Credit/CreditVal").set_text(String(credits))
+	else:
+		warning.visible = true
+	
