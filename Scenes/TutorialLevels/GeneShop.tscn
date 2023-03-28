@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://Scenes/TutorialLevels/GeneShop.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/TutorialLevels/Background.png" type="Texture" id=2]
@@ -14,10 +14,11 @@
 [ext_resource path="res://Assets/Images/genes/Sensing.png" type="Texture" id=12]
 [ext_resource path="res://Assets/Images/genes/Component.png" type="Texture" id=13]
 [ext_resource path="res://Scenes/MainMenu/TextScript.gd" type="Script" id=14]
-[ext_resource path="res://Scenes/CardTable/Art/TEs/Hexagon.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Scenes/TutorialLevels/minus-sign.png" type="Texture" id=15]
 [ext_resource path="res://Assets/Fonts/Italics_50.tres" type="DynamicFont" id=16]
-[ext_resource path="res://Assets/Images/pngs/SpeechRectCenter.png" type="Texture" id=17]
+[ext_resource path="res://Scenes/TutorialLevels/plus-sign.png" type="Texture" id=17]
 [ext_resource path="res://Scenes/TutorialLevels/Star-Clipart-PNG_nvsofi.png" type="Texture" id=18]
+[ext_resource path="res://Scenes/CardTable/Art/TEs/Hexagon.tscn" type="PackedScene" id=19]
 
 [sub_resource type="GDScript" id=2]
 script/source = "extends NinePatchRect
@@ -126,32 +127,38 @@ mouse_filter = 2
 color = Color( 0.0431373, 0.0588235, 0.564706, 1 )
 
 [node name="PlayerDisplay" parent="." instance=ExtResource( 3 )]
-margin_left = 109.0
-margin_top = 92.0
-margin_right = 508.0
-margin_bottom = 379.0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -199.5
+margin_top = -143.5
+margin_right = 199.5
+margin_bottom = 143.5
 
 [node name="Genome" type="GridContainer" parent="."]
-margin_left = 119.0
-margin_top = 477.0
-margin_right = 518.0
-margin_bottom = 811.0
+margin_left = 50.0
+margin_top = 36.0
+margin_right = 1570.0
+margin_bottom = 200.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 1.16
-columns = 4
-__meta__ = {
-"_edit_group_": true
-}
+custom_constants/vseparation = 0
+custom_constants/hseparation = 0
+columns = 9
 
 [node name="Construction" type="TextureRect" parent="Genome"]
-margin_right = 97.0
-margin_bottom = 81.0
+margin_right = 169.0
+margin_bottom = 82.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource( 5 )
 expand = true
 stretch_mode = 5
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="Construction" type="TextureRect" parent="Genome/Construction"]
 anchor_right = 0.885417
@@ -166,6 +173,7 @@ __meta__ = {
 }
 
 [node name="ToolTip" type="NinePatchRect" parent="Genome/Construction/Construction"]
+visible = false
 margin_left = 11.89
 margin_top = -197.991
 margin_right = 362.89
@@ -196,25 +204,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Construction_Label" type="Label" parent="Genome"]
-margin_left = 116.0
-margin_top = 7.0
-margin_right = 183.0
-margin_bottom = 74.0
-size_flags_horizontal = 6
-size_flags_vertical = 6
-custom_fonts/font = SubResource( 3 )
-text = "x 2"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="Component" type="TextureRect" parent="Genome"]
-margin_left = 202.0
-margin_right = 299.0
-margin_bottom = 81.0
+margin_left = 169.0
+margin_right = 338.0
+margin_bottom = 82.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource( 5 )
@@ -234,6 +227,7 @@ __meta__ = {
 }
 
 [node name="ToolTip" type="NinePatchRect" parent="Genome/Component/Component"]
+visible = false
 margin_left = 11.89
 margin_top = -197.991
 margin_right = 362.89
@@ -267,25 +261,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Component_Label" type="Label" parent="Genome"]
-margin_left = 317.0
-margin_top = 7.0
-margin_right = 384.0
-margin_bottom = 74.0
-size_flags_horizontal = 6
-size_flags_vertical = 6
-custom_fonts/font = SubResource( 3 )
-text = "x 2"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="Deconstruction" type="TextureRect" parent="Genome"]
-margin_top = 85.0
-margin_right = 97.0
-margin_bottom = 166.0
+margin_left = 338.0
+margin_right = 507.0
+margin_bottom = 82.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource( 5 )
@@ -305,6 +284,7 @@ __meta__ = {
 }
 
 [node name="ToolTip" type="NinePatchRect" parent="Genome/Deconstruction/Deconstruction"]
+visible = false
 margin_left = 11.89
 margin_top = -197.991
 margin_right = 362.89
@@ -338,26 +318,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Deconstruction_Label" type="Label" parent="Genome"]
-margin_left = 116.0
-margin_top = 92.0
-margin_right = 183.0
-margin_bottom = 159.0
-size_flags_horizontal = 6
-size_flags_vertical = 6
-custom_fonts/font = SubResource( 3 )
-text = "x 2"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="Helper" type="TextureRect" parent="Genome"]
-margin_left = 202.0
-margin_top = 85.0
-margin_right = 299.0
-margin_bottom = 166.0
+margin_left = 507.0
+margin_right = 676.0
+margin_bottom = 82.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource( 5 )
@@ -377,6 +341,7 @@ __meta__ = {
 }
 
 [node name="ToolTip" type="NinePatchRect" parent="Genome/Helper/Helper"]
+visible = false
 margin_left = 11.89
 margin_top = -197.991
 margin_right = 362.89
@@ -409,25 +374,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Helper_Label" type="Label" parent="Genome"]
-margin_left = 317.0
-margin_top = 92.0
-margin_right = 384.0
-margin_bottom = 159.0
-size_flags_horizontal = 6
-size_flags_vertical = 6
-custom_fonts/font = SubResource( 3 )
-text = "x 2"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="Locomotion" type="TextureRect" parent="Genome"]
-margin_top = 170.0
-margin_right = 97.0
-margin_bottom = 250.0
+margin_left = 676.0
+margin_right = 845.0
+margin_bottom = 82.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource( 5 )
@@ -447,6 +397,7 @@ __meta__ = {
 }
 
 [node name="ToolTip" type="NinePatchRect" parent="Genome/Locomotion/Locomotion"]
+visible = false
 margin_left = 11.89
 margin_top = -197.991
 margin_right = 362.89
@@ -480,26 +431,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Locomotion_Label" type="Label" parent="Genome"]
-margin_left = 116.0
-margin_top = 176.0
-margin_right = 183.0
-margin_bottom = 243.0
-size_flags_horizontal = 6
-size_flags_vertical = 6
-custom_fonts/font = SubResource( 3 )
-text = "x 2"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="Manipulation" type="TextureRect" parent="Genome"]
-margin_left = 202.0
-margin_top = 170.0
-margin_right = 299.0
-margin_bottom = 250.0
+margin_left = 845.0
+margin_right = 1014.0
+margin_bottom = 82.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource( 5 )
@@ -519,6 +454,7 @@ __meta__ = {
 }
 
 [node name="ToolTip" type="NinePatchRect" parent="Genome/Manipulation/Manipulation"]
+visible = false
 margin_left = 11.89
 margin_top = -197.991
 margin_right = 362.89
@@ -552,25 +488,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Manipulation_Label" type="Label" parent="Genome"]
-margin_left = 317.0
-margin_top = 176.0
-margin_right = 384.0
-margin_bottom = 243.0
-size_flags_horizontal = 6
-size_flags_vertical = 6
-custom_fonts/font = SubResource( 3 )
-text = "x 2"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="Replication" type="TextureRect" parent="Genome"]
-margin_top = 254.0
-margin_right = 97.0
-margin_bottom = 334.0
+margin_left = 1014.0
+margin_right = 1183.0
+margin_bottom = 82.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource( 5 )
@@ -590,6 +511,7 @@ __meta__ = {
 }
 
 [node name="ToolTip" type="NinePatchRect" parent="Genome/Replication/Replication"]
+visible = false
 margin_left = 11.89
 margin_top = -197.991
 margin_right = 362.89
@@ -623,26 +545,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Replication_Label" type="Label" parent="Genome"]
-margin_left = 116.0
-margin_top = 260.0
-margin_right = 183.0
-margin_bottom = 327.0
-size_flags_horizontal = 6
-size_flags_vertical = 6
-custom_fonts/font = SubResource( 3 )
-text = "x 2"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="Sensing" type="TextureRect" parent="Genome"]
-margin_left = 202.0
-margin_top = 254.0
-margin_right = 299.0
-margin_bottom = 334.0
+margin_left = 1183.0
+margin_right = 1352.0
+margin_bottom = 82.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource( 5 )
@@ -662,6 +568,7 @@ __meta__ = {
 }
 
 [node name="ToolTip" type="NinePatchRect" parent="Genome/Sensing/Sensing"]
+visible = false
 margin_left = 11.89
 margin_top = -197.991
 margin_right = 362.89
@@ -692,214 +599,18 @@ text = "SENSING
 Sensing genes encode proteins that sense resources or dangers in either the world or inside your organism."
 script = ExtResource( 14 )
 
-[node name="Sensing_Label" type="Label" parent="Genome"]
-margin_left = 317.0
-margin_top = 260.0
-margin_right = 384.0
-margin_bottom = 327.0
-size_flags_horizontal = 6
-size_flags_vertical = 6
-custom_fonts/font = SubResource( 3 )
-text = "x 2"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Store" type="TextureRect" parent="."]
-modulate = Color( 0.141176, 0.137255, 0.137255, 1 )
-margin_left = 751.0
-margin_top = 54.0
-margin_right = 767.0
-margin_bottom = 70.0
-rect_scale = Vector2( 50, 50 )
-texture = ExtResource( 2 )
-
-[node name="SpeechBubble" type="TextureRect" parent="."]
-margin_left = 849.0
-margin_top = 62.0
-margin_right = 1491.0
-margin_bottom = 302.0
-texture = ExtResource( 17 )
+[node name="Blank" type="TextureRect" parent="Genome"]
+margin_left = 1352.0
+margin_right = 1520.0
+margin_bottom = 82.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 5 )
 expand = true
+stretch_mode = 5
 
-[node name="BubbleText" type="RichTextLabel" parent="SpeechBubble"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -280.0
-margin_top = -113.0
-margin_right = 284.0
-margin_bottom = 88.0
-mouse_filter = 2
-custom_colors/default_color = Color( 0, 0, 0, 1 )
-custom_fonts/italics_font = ExtResource( 16 )
-custom_fonts/normal_font = SubResource( 5 )
-bbcode_enabled = true
-bbcode_text = "[i][center]Think carefully which genes you will need. You only get 30 coins, which means you can't buy all of them![/center][/i]"
-text = "Think carefully which genes you will need. You only get 30 coins, which means you can't buy all of them!"
-scroll_active = false
-
-[node name="Transposon" parent="." instance=ExtResource( 15 )]
-margin_left = 1048.0
-margin_top = 265.0
-margin_right = -352.0
-margin_bottom = -435.0
-rect_scale = Vector2( 2, 2 )
-mouse_filter = 2
-
-[node name="Table" type="TextureRect" parent="."]
-modulate = Color( 0.317647, 0.266667, 0.207843, 1 )
-margin_left = 840.0
-margin_top = 438.0
-margin_right = 856.0
-margin_bottom = 454.0
-rect_scale = Vector2( 40, 25 )
-texture = ExtResource( 2 )
-
-[node name="Credit" type="TextureRect" parent="."]
-margin_left = 838.0
-margin_top = 352.0
-margin_right = 854.0
-margin_bottom = 368.0
-rect_scale = Vector2( 7, 3 )
-texture = ExtResource( 2 )
-
-[node name="CreditImg" type="TextureRect" parent="Credit"]
-margin_left = -0.144531
-margin_top = 3.0
-margin_right = 2894.86
-margin_bottom = 2916.0
-rect_scale = Vector2( 0.002, 0.004 )
-texture = ExtResource( 18 )
-
-[node name="CreditVal" type="RichTextLabel" parent="Credit"]
-modulate = Color( 0, 0, 0, 1 )
-margin_left = 6.0
-margin_top = 2.0
-margin_right = 25.0
-margin_bottom = 58.0
-rect_scale = Vector2( 0.5, 0.5 )
-custom_fonts/normal_font = SubResource( 5 )
-bbcode_enabled = true
-bbcode_text = "[center]30[center]"
-text = "30"
-
-[node name="NotEnough" type="RichTextLabel" parent="Credit"]
+[node name="ToolTip" type="NinePatchRect" parent="Genome/Blank"]
 visible = false
-modulate = Color( 1, 0.219608, 0.219608, 1 )
-margin_top = 20.0
-margin_right = 159.0
-margin_bottom = 50.0
-rect_scale = Vector2( 0.2, 0.3 )
-custom_fonts/italics_font = ExtResource( 16 )
-custom_fonts/normal_font = SubResource( 5 )
-bbcode_enabled = true
-bbcode_text = "[center]Not enough credits![/center]"
-text = "Not enough credits!"
-
-[node name="Construction" type="Button" parent="."]
-margin_left = 863.0
-margin_top = 492.0
-margin_right = 955.0
-margin_bottom = 589.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-icon = ExtResource( 5 )
-expand_icon = true
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="Construction" type="TextureRect" parent="Construction"]
-anchor_left = 0.0543478
-anchor_right = 0.939765
-anchor_bottom = 1.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 4 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": true
-}
-
-[node name="ToolTip" type="NinePatchRect" parent="Construction/Construction"]
-margin_left = 11.89
-margin_top = -197.991
-margin_right = 362.89
-margin_bottom = 30.009
-texture = ExtResource( 11 )
-region_rect = Rect2( 0, 0, 643, 302 )
-script = SubResource( 2 )
-
-[node name="RichTextLabel" type="RichTextLabel" parent="Construction/Construction/ToolTip"]
-anchor_left = 0.021
-anchor_top = 0.034
-anchor_right = 0.086
-anchor_bottom = 0.035
-margin_left = 0.629
-margin_top = 1.248
-margin_right = 300.814
-margin_bottom = 104.02
-grow_horizontal = 2
-rect_scale = Vector2( 1.1, 1.1 )
-custom_colors/default_color = Color( 0, 0, 0, 1 )
-tab_size = 7
-text = "ASSEMBLY
-
-
-Assembly genes encode proteins required to build all your other proteins or store resources"
-script = ExtResource( 14 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Construction_Price" type="Label" parent="Construction"]
-margin_left = 29.0
-margin_top = 66.0
-margin_right = 96.0
-margin_bottom = 133.0
-rect_scale = Vector2( 0.5, 0.5 )
-size_flags_horizontal = 6
-size_flags_vertical = 6
-custom_fonts/font = SubResource( 3 )
-text = "3"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Component" type="Button" parent="."]
-margin_left = 1323.0
-margin_top = 475.0
-margin_right = 1415.0
-margin_bottom = 572.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-icon = ExtResource( 5 )
-align = 0
-expand_icon = true
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="Component" type="TextureRect" parent="Component"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 13 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": true
-}
-
-[node name="ToolTip" type="NinePatchRect" parent="Component/Component"]
 margin_left = 11.89
 margin_top = -197.991
 margin_right = 362.89
@@ -911,306 +622,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Component/Component/ToolTip"]
-anchor_left = 0.021
-anchor_top = 0.034
-anchor_right = 0.086
-anchor_bottom = 0.035
-margin_left = -0.371
-margin_top = 0.248
-margin_right = 286.814
-margin_bottom = 98.02
-grow_horizontal = 2
-rect_scale = Vector2( 1.1, 1.1 )
-custom_colors/default_color = Color( 0, 0, 0, 1 )
-tab_size = 7
-text = "COMPONENT
-
-
-Component genes encode proteins that are used as building blocks for your organism."
-script = ExtResource( 14 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Component_Price" type="Label" parent="Component"]
-margin_left = 28.0
-margin_top = 66.0
-margin_right = 95.0
-margin_bottom = 133.0
-rect_scale = Vector2( 0.5, 0.5 )
-size_flags_horizontal = 6
-size_flags_vertical = 6
-custom_fonts/font = SubResource( 3 )
-text = "3"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Helper" type="Button" parent="."]
-margin_left = 1070.0
-margin_top = 508.0
-margin_right = 1162.0
-margin_bottom = 605.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-icon = ExtResource( 5 )
-expand_icon = true
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="Helper" type="TextureRect" parent="Helper"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 9 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": true
-}
-
-[node name="ToolTip" type="NinePatchRect" parent="Helper/Helper"]
-margin_left = 11.89
-margin_top = -197.991
-margin_right = 362.89
-margin_bottom = 30.009
-texture = ExtResource( 11 )
-region_rect = Rect2( 0, 0, 643, 302 )
-script = SubResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="RichTextLabel" type="RichTextLabel" parent="Helper/Helper/ToolTip"]
-anchor_left = 0.021
-anchor_top = 0.034
-anchor_right = 0.086
-anchor_bottom = 0.035
-margin_left = -0.371
-margin_top = 0.248
-margin_right = 286.814
-margin_bottom = 87.02
-grow_horizontal = 2
-rect_scale = Vector2( 1.1, 1.1 )
-custom_colors/default_color = Color( 0, 0, 0, 1 )
-tab_size = 7
-text = "HELPER
-
-Helper genes encode proteins that help another gene do its job more effectively."
-script = ExtResource( 14 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Helper_Price" type="Label" parent="Helper"]
-margin_left = 30.0
-margin_top = 66.0
-margin_right = 97.0
-margin_bottom = 133.0
-rect_scale = Vector2( 0.5, 0.5 )
-size_flags_horizontal = 6
-size_flags_vertical = 6
-custom_fonts/font = SubResource( 3 )
-text = "3"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Replication" type="Button" parent="."]
-margin_left = 1218.0
-margin_top = 568.0
-margin_right = 1310.0
-margin_bottom = 665.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-icon = ExtResource( 5 )
-expand_icon = true
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="Replication" type="TextureRect" parent="Replication"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 6 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": true
-}
-
-[node name="ToolTip" type="NinePatchRect" parent="Replication/Replication"]
-margin_left = 11.89
-margin_top = -197.991
-margin_right = 362.89
-margin_bottom = 30.009
-texture = ExtResource( 11 )
-region_rect = Rect2( 0, 0, 643, 302 )
-script = SubResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="RichTextLabel" type="RichTextLabel" parent="Replication/Replication/ToolTip"]
-anchor_left = 0.021
-anchor_top = 0.034
-anchor_right = 0.086
-anchor_bottom = 0.035
-margin_left = -0.371
-margin_top = 0.248
-margin_right = 286.814
-margin_bottom = 92.02
-grow_horizontal = 2
-rect_scale = Vector2( 1.1, 1.1 )
-custom_colors/default_color = Color( 0, 0, 0, 1 )
-tab_size = 7
-text = "REPLICATION
-
-
-Replication genes encode proteins needed to copy (replicate) your genome or repair it when it is broken."
-script = ExtResource( 14 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Replication_Price" type="Label" parent="Replication"]
-margin_left = 27.0
-margin_top = 66.0
-margin_right = 94.0
-margin_bottom = 133.0
-rect_scale = Vector2( 0.5, 0.5 )
-size_flags_horizontal = 6
-size_flags_vertical = 6
-custom_fonts/font = SubResource( 3 )
-text = "3"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Locomotion" type="Button" parent="."]
-margin_left = 1028.0
-margin_top = 622.0
-margin_right = 1120.0
-margin_bottom = 719.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-icon = ExtResource( 5 )
-expand_icon = true
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="Locomotion" type="TextureRect" parent="Locomotion"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 8 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": true
-}
-
-[node name="ToolTip" type="NinePatchRect" parent="Locomotion/Locomotion"]
-margin_left = 11.89
-margin_top = -197.991
-margin_right = 362.89
-margin_bottom = 30.009
-texture = ExtResource( 11 )
-region_rect = Rect2( 0, 0, 643, 302 )
-script = SubResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="RichTextLabel" type="RichTextLabel" parent="Locomotion/Locomotion/ToolTip"]
-anchor_left = 0.021
-anchor_top = 0.034
-anchor_right = 0.086
-anchor_bottom = 0.035
-margin_left = -0.371
-margin_top = 0.248
-margin_right = 286.814
-margin_bottom = 105.02
-grow_horizontal = 2
-rect_scale = Vector2( 1.1, 1.1 )
-custom_colors/default_color = Color( 0, 0, 0, 1 )
-tab_size = 7
-text = "MOVEMENT
-
-
-Movement genes encode proteins needed to move your organism around in the world."
-script = ExtResource( 14 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Locomotion_Price" type="Label" parent="Locomotion"]
-margin_left = 29.0
-margin_top = 66.0
-margin_right = 96.0
-margin_bottom = 133.0
-rect_scale = Vector2( 0.5, 0.5 )
-size_flags_horizontal = 6
-size_flags_vertical = 6
-custom_fonts/font = SubResource( 3 )
-text = "3"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Sensing" type="Button" parent="."]
-margin_left = 884.0
-margin_top = 698.0
-margin_right = 976.0
-margin_bottom = 795.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-icon = ExtResource( 5 )
-expand_icon = true
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="Sensing" type="TextureRect" parent="Sensing"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 12 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": true
-}
-
-[node name="ToolTip" type="NinePatchRect" parent="Sensing/Sensing"]
-margin_left = 11.89
-margin_top = -197.991
-margin_right = 362.89
-margin_bottom = 30.009
-texture = ExtResource( 11 )
-region_rect = Rect2( 0, 0, 643, 302 )
-script = SubResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="RichTextLabel" type="RichTextLabel" parent="Sensing/Sensing/ToolTip"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Genome/Blank/ToolTip"]
 anchor_left = 0.021
 anchor_top = 0.034
 anchor_right = 0.086
@@ -1229,173 +641,933 @@ text = "SENSING
 Sensing genes encode proteins that sense resources or dangers in either the world or inside your organism."
 script = ExtResource( 14 )
 
-[node name="Sensing_Price" type="Label" parent="Sensing"]
-margin_left = 30.0
-margin_top = 66.0
-margin_right = 97.0
-margin_bottom = 133.0
-rect_scale = Vector2( 0.5, 0.5 )
+[node name="Construction_Price" type="Label" parent="Genome"]
+margin_left = 71.0
+margin_top = 89.0
+margin_right = 98.0
+margin_bottom = 156.0
 size_flags_horizontal = 6
 size_flags_vertical = 6
 custom_fonts/font = SubResource( 3 )
-text = "3"
+text = "8"
+align = 1
+valign = 1
+
+[node name="Component_Price" type="Label" parent="Genome"]
+margin_left = 226.0
+margin_top = 89.0
+margin_right = 280.0
+margin_bottom = 156.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "15"
 align = 1
 valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Manipulation" type="Button" parent="."]
-margin_left = 1335.0
-margin_top = 712.0
-margin_right = 1427.0
-margin_bottom = 809.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-icon = ExtResource( 5 )
-expand_icon = true
+[node name="Deconstruction_Price" type="Label" parent="Genome"]
+margin_left = 409.0
+margin_top = 89.0
+margin_right = 436.0
+margin_bottom = 156.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "9"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Helper_Price" type="Label" parent="Genome"]
+margin_left = 578.0
+margin_top = 89.0
+margin_right = 605.0
+margin_bottom = 156.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "5"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Locomotion_Price" type="Label" parent="Genome"]
+margin_left = 733.0
+margin_top = 89.0
+margin_right = 787.0
+margin_bottom = 156.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "11"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Manipulation_Price" type="Label" parent="Genome"]
+margin_left = 902.0
+margin_top = 89.0
+margin_right = 956.0
+margin_bottom = 156.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "10"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Replication_Price" type="Label" parent="Genome"]
+margin_left = 1071.0
+margin_top = 89.0
+margin_right = 1125.0
+margin_bottom = 156.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "10"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sensing_Price" type="Label" parent="Genome"]
+margin_left = 1240.0
+margin_top = 89.0
+margin_right = 1294.0
+margin_bottom = 156.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "12"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Blank_Price" type="Label" parent="Genome"]
+margin_left = 1422.0
+margin_top = 89.0
+margin_right = 1449.0
+margin_bottom = 156.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "2"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ConstructionCtrl" type="Control" parent="Genome"]
+margin_top = 164.0
+margin_right = 169.0
+margin_bottom = 164.0
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Manipulation" type="TextureRect" parent="Manipulation"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 10 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": true
-}
+[node name="Increase" type="TextureButton" parent="Genome/ConstructionCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
 
-[node name="ToolTip" type="NinePatchRect" parent="Manipulation/Manipulation"]
-margin_left = 11.89
-margin_top = -197.991
-margin_right = 362.89
-margin_bottom = 30.009
-texture = ExtResource( 11 )
-region_rect = Rect2( 0, 0, 643, 302 )
-script = SubResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="RichTextLabel" type="RichTextLabel" parent="Manipulation/Manipulation/ToolTip"]
-anchor_left = 0.021
-anchor_top = 0.034
-anchor_right = 0.086
-anchor_bottom = 0.035
-margin_left = -0.371
-margin_top = 0.248
-margin_right = 286.814
-margin_bottom = 93.02
-grow_horizontal = 2
-rect_scale = Vector2( 1.1, 1.1 )
-custom_colors/default_color = Color( 0, 0, 0, 1 )
-tab_size = 7
-text = "TRANSPORTER
-
-
-Transporter genes encode proteins that help you aqcuire nutrients and get rid of waste."
-script = ExtResource( 14 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Manipulation_Price" type="Label" parent="Manipulation"]
+[node name="Decrease" type="TextureButton" parent="Genome/ConstructionCtrl"]
 margin_left = 30.0
-margin_top = 66.0
-margin_right = 97.0
-margin_bottom = 133.0
-rect_scale = Vector2( 0.5, 0.5 )
-size_flags_horizontal = 6
-size_flags_vertical = 6
-custom_fonts/font = SubResource( 3 )
-text = "3"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 15 )
 
-[node name="Deconstruction" type="Button" parent="."]
-margin_left = 1163.0
-margin_top = 700.0
-margin_right = 1255.0
-margin_bottom = 797.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-icon = ExtResource( 5 )
-align = 0
-expand_icon = true
+[node name="Construction_Label" type="Label" parent="Genome/ConstructionCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_rotation = -0.0527298
+rect_scale = Vector2( 2, 2 )
+text = "2"
+
+[node name="ComponentCtrl" type="Control" parent="Genome"]
+margin_left = 169.0
+margin_top = 164.0
+margin_right = 338.0
+margin_bottom = 164.0
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Deconstruction" type="TextureRect" parent="Deconstruction"]
-anchor_left = 0.076087
-anchor_right = 0.961504
-anchor_bottom = 1.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 7 )
-expand = true
-stretch_mode = 5
+[node name="Increase" type="TextureButton" parent="Genome/ComponentCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
+
+[node name="Decrease" type="TextureButton" parent="Genome/ComponentCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 15 )
+
+[node name="Component_Label" type="Label" parent="Genome/ComponentCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_scale = Vector2( 2, 2 )
+text = "2"
+
+[node name="DeconstructionCtrl" type="Control" parent="Genome"]
+margin_left = 338.0
+margin_top = 164.0
+margin_right = 507.0
+margin_bottom = 164.0
 __meta__ = {
-"_edit_use_anchors_": true
+"_edit_group_": true
 }
 
-[node name="ToolTip" type="NinePatchRect" parent="Deconstruction/Deconstruction"]
-margin_left = 11.89
-margin_top = -197.991
-margin_right = 362.89
-margin_bottom = 30.009
-texture = ExtResource( 11 )
-region_rect = Rect2( 0, 0, 643, 302 )
-script = SubResource( 2 )
+[node name="Increase" type="TextureButton" parent="Genome/DeconstructionCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
+
+[node name="Decrease" type="TextureButton" parent="Genome/DeconstructionCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 15 )
+
+[node name="Deconstruction_Label" type="Label" parent="Genome/DeconstructionCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_scale = Vector2( 2, 2 )
+text = "2"
+
+[node name="HelperCtrl" type="Control" parent="Genome"]
+margin_left = 507.0
+margin_top = 164.0
+margin_right = 676.0
+margin_bottom = 164.0
 __meta__ = {
-"_edit_use_anchors_": false
+"_edit_group_": true
 }
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Deconstruction/Deconstruction/ToolTip"]
-anchor_left = 0.021
-anchor_top = 0.034
-anchor_right = 0.086
-anchor_bottom = 0.035
-margin_left = -0.371
-margin_top = 0.248
-margin_right = 286.814
-margin_bottom = 98.02
-grow_horizontal = 2
-rect_scale = Vector2( 1.1, 1.1 )
-custom_colors/default_color = Color( 0, 0, 0, 1 )
-tab_size = 7
-text = "DISSASEMBLY
+[node name="Increase" type="TextureButton" parent="Genome/HelperCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
 
+[node name="Decrease" type="TextureButton" parent="Genome/HelperCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 15 )
 
-Dissasembly genes encode proteins required to break down complex resources into simpler, useable ones."
-script = ExtResource( 14 )
+[node name="Helper_Label" type="Label" parent="Genome/HelperCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_scale = Vector2( 2, 2 )
+text = "2"
+
+[node name="LocomotionCtrl" type="Control" parent="Genome"]
+margin_left = 676.0
+margin_top = 164.0
+margin_right = 845.0
+margin_bottom = 164.0
 __meta__ = {
-"_edit_use_anchors_": false
+"_edit_group_": true
 }
 
-[node name="Deconstruction_Price" type="Label" parent="Deconstruction"]
-margin_left = 28.0
-margin_top = 66.0
-margin_right = 95.0
-margin_bottom = 133.0
-rect_scale = Vector2( 0.5, 0.5 )
+[node name="Increase" type="TextureButton" parent="Genome/LocomotionCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
+
+[node name="Decrease" type="TextureButton" parent="Genome/LocomotionCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 15 )
+
+[node name="Locomotion_Label" type="Label" parent="Genome/LocomotionCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_scale = Vector2( 2, 2 )
+text = "2"
+
+[node name="ManipulationCtrl" type="Control" parent="Genome"]
+margin_left = 845.0
+margin_top = 164.0
+margin_right = 1014.0
+margin_bottom = 164.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Increase" type="TextureButton" parent="Genome/ManipulationCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
+
+[node name="Decrease" type="TextureButton" parent="Genome/ManipulationCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 15 )
+
+[node name="Manipulation_Label" type="Label" parent="Genome/ManipulationCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_scale = Vector2( 2, 2 )
+text = "2"
+
+[node name="ReplicationCtrl" type="Control" parent="Genome"]
+margin_left = 1014.0
+margin_top = 164.0
+margin_right = 1183.0
+margin_bottom = 164.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Increase" type="TextureButton" parent="Genome/ReplicationCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
+
+[node name="Decrease" type="TextureButton" parent="Genome/ReplicationCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 15 )
+
+[node name="Replication_Label" type="Label" parent="Genome/ReplicationCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_scale = Vector2( 2, 2 )
+text = "2"
+
+[node name="SensingCtrl" type="Control" parent="Genome"]
+margin_left = 1183.0
+margin_top = 164.0
+margin_right = 1352.0
+margin_bottom = 164.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Increase" type="TextureButton" parent="Genome/SensingCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
+
+[node name="Decrease" type="TextureButton" parent="Genome/SensingCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 15 )
+
+[node name="Sensing_Label" type="Label" parent="Genome/SensingCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_scale = Vector2( 2, 2 )
+text = "2"
+
+[node name="BlankCtrl" type="Control" parent="Genome"]
+margin_left = 1352.0
+margin_top = 164.0
+margin_right = 1520.0
+margin_bottom = 164.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Increase" type="TextureButton" parent="Genome/BlankCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
+
+[node name="Decrease" type="TextureButton" parent="Genome/BlankCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 15 )
+
+[node name="Blank_Label" type="Label" parent="Genome/BlankCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_scale = Vector2( 2, 2 )
+text = "2"
+
+[node name="Credit" type="TextureRect" parent="."]
+margin_left = 223.0
+margin_top = 362.0
+margin_right = 243.0
+margin_bottom = 378.0
+rect_scale = Vector2( 10, 3 )
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CreditImg" type="TextureRect" parent="Credit"]
+margin_left = -0.144531
+margin_top = 3.0
+margin_right = 2894.86
+margin_bottom = 2916.0
+rect_scale = Vector2( 0.002, 0.004 )
+texture = ExtResource( 18 )
+
+[node name="CreditVal" type="RichTextLabel" parent="Credit"]
+modulate = Color( 0, 0, 0, 1 )
+margin_left = 6.0
+margin_top = 2.0
+margin_right = 33.0
+margin_bottom = 58.0
+rect_scale = Vector2( 0.3, 0.5 )
+custom_fonts/normal_font = SubResource( 5 )
+bbcode_enabled = true
+bbcode_text = "[center]100[center]"
+text = "100"
+
+[node name="NotEnough" type="RichTextLabel" parent="Credit"]
+visible = false
+modulate = Color( 1, 0.219608, 0.219608, 1 )
+margin_top = 20.0
+margin_right = 159.0
+margin_bottom = 50.0
+rect_scale = Vector2( 0.2, 0.3 )
+custom_fonts/italics_font = ExtResource( 16 )
+custom_fonts/normal_font = SubResource( 5 )
+bbcode_enabled = true
+bbcode_text = "[center]Not enough credits![/center]"
+text = "Not enough credits!"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Credit"]
+margin_left = -6.0
+margin_top = -20.0
+margin_right = 85.0
+margin_bottom = 80.0
+rect_scale = Vector2( 0.3, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]You have 
+
+
+Genome Credits[center]"
+text = "You have 
+
+
+Genome Credits"
+
+[node name="TE" type="GridContainer" parent="."]
+margin_left = 12.0
+margin_top = 716.0
+margin_right = 1546.0
+margin_bottom = 896.0
+custom_constants/vseparation = -88
+custom_constants/hseparation = 54
+columns = 8
+
+[node name="Classic" parent="TE" instance=ExtResource( 19 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 145.0
+margin_bottom = 0.0
+mouse_filter = 2
+
+[node name="Commuter" parent="TE" instance=ExtResource( 19 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 199.0
+margin_right = 344.0
+margin_bottom = 0.0
+mouse_filter = 2
+
+[node name="SuperJumper" parent="TE" instance=ExtResource( 19 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 398.0
+margin_right = 543.0
+margin_bottom = 0.0
+mouse_filter = 2
+
+[node name="Assist" parent="TE" instance=ExtResource( 19 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 597.0
+margin_right = 742.0
+margin_bottom = 0.0
+mouse_filter = 2
+
+[node name="Nestler" parent="TE" instance=ExtResource( 19 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 796.0
+margin_right = 940.0
+margin_bottom = 0.0
+mouse_filter = 2
+
+[node name="ZigZag" parent="TE" instance=ExtResource( 19 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 994.0
+margin_right = 1138.0
+margin_bottom = 0.0
+mouse_filter = 2
+
+[node name="Buncher" parent="TE" instance=ExtResource( 19 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 1192.0
+margin_right = 1336.0
+margin_bottom = 0.0
+mouse_filter = 2
+
+[node name="Buddy" parent="TE" instance=ExtResource( 19 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 1390.0
+margin_right = 1534.0
+margin_bottom = 0.0
+mouse_filter = 2
+
+[node name="ClassicCtrl" type="Control" parent="TE"]
+margin_top = -88.0
+margin_right = 145.0
+margin_bottom = -88.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Increase" type="TextureButton" parent="TE/ClassicCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
+
+[node name="Decrease" type="TextureButton" parent="TE/ClassicCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 15 )
+
+[node name="Classic_Label" type="Label" parent="TE/ClassicCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_rotation = -0.0527298
+rect_scale = Vector2( 2, 2 )
+text = "0"
+
+[node name="CommuterCtrl" type="Control" parent="TE"]
+margin_left = 199.0
+margin_top = -88.0
+margin_right = 344.0
+margin_bottom = -88.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Increase" type="TextureButton" parent="TE/CommuterCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
+
+[node name="Decrease" type="TextureButton" parent="TE/CommuterCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 15 )
+
+[node name="Commuter_Label" type="Label" parent="TE/CommuterCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_rotation = -0.0527298
+rect_scale = Vector2( 2, 2 )
+text = "0"
+
+[node name="SuperJumperCtrl" type="Control" parent="TE"]
+margin_left = 398.0
+margin_top = -88.0
+margin_right = 543.0
+margin_bottom = -88.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Increase" type="TextureButton" parent="TE/SuperJumperCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
+
+[node name="Decrease" type="TextureButton" parent="TE/SuperJumperCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 15 )
+
+[node name="SuperJumper_Label" type="Label" parent="TE/SuperJumperCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_rotation = -0.0527298
+rect_scale = Vector2( 2, 2 )
+text = "0"
+
+[node name="AssistCtrl" type="Control" parent="TE"]
+margin_left = 597.0
+margin_top = -88.0
+margin_right = 742.0
+margin_bottom = -88.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Increase" type="TextureButton" parent="TE/AssistCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
+
+[node name="Decrease" type="TextureButton" parent="TE/AssistCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 15 )
+
+[node name="Assist_Label" type="Label" parent="TE/AssistCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_rotation = -0.0527298
+rect_scale = Vector2( 2, 2 )
+text = "0"
+
+[node name="NestlerCtrl" type="Control" parent="TE"]
+margin_left = 796.0
+margin_top = -88.0
+margin_right = 940.0
+margin_bottom = -88.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Increase" type="TextureButton" parent="TE/NestlerCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
+
+[node name="Decrease" type="TextureButton" parent="TE/NestlerCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 15 )
+
+[node name="Nestler_Label" type="Label" parent="TE/NestlerCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_rotation = -0.0527298
+rect_scale = Vector2( 2, 2 )
+text = "0"
+
+[node name="ZigZagCtrl" type="Control" parent="TE"]
+margin_left = 994.0
+margin_top = -88.0
+margin_right = 1138.0
+margin_bottom = -88.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Increase" type="TextureButton" parent="TE/ZigZagCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
+
+[node name="Decrease" type="TextureButton" parent="TE/ZigZagCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 15 )
+
+[node name="ZigZag_Label" type="Label" parent="TE/ZigZagCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_rotation = -0.0527298
+rect_scale = Vector2( 2, 2 )
+text = "0"
+
+[node name="BuncherCtrl" type="Control" parent="TE"]
+margin_left = 1192.0
+margin_top = -88.0
+margin_right = 1336.0
+margin_bottom = -88.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Increase" type="TextureButton" parent="TE/BuncherCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
+
+[node name="Decrease" type="TextureButton" parent="TE/BuncherCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 15 )
+
+[node name="Buncher_Label" type="Label" parent="TE/BuncherCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_rotation = -0.0527298
+rect_scale = Vector2( 2, 2 )
+text = "0"
+
+[node name="BuddyCtrl" type="Control" parent="TE"]
+margin_left = 1390.0
+margin_top = -88.0
+margin_right = 1534.0
+margin_bottom = -88.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Increase" type="TextureButton" parent="TE/BuddyCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
+
+[node name="Decrease" type="TextureButton" parent="TE/BuddyCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 15 )
+
+[node name="Buddy_Label" type="Label" parent="TE/BuddyCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_rotation = -0.0527298
+rect_scale = Vector2( 2, 2 )
+text = "0"
+
+[node name="Classic_Price" type="Label" parent="TE"]
+margin_left = 51.0
+margin_top = -32.0
+margin_right = 93.0
+margin_bottom = 35.0
 size_flags_horizontal = 6
 size_flags_vertical = 6
 custom_fonts/font = SubResource( 3 )
-text = "3"
+text = "-1"
 align = 1
 valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
+
+[node name="Commuter_Price" type="Label" parent="TE"]
+margin_left = 258.0
+margin_top = -32.0
+margin_right = 285.0
+margin_bottom = 35.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "2"
+align = 1
+valign = 1
+
+[node name="SuperJumper_Price" type="Label" parent="TE"]
+margin_left = 449.0
+margin_top = -32.0
+margin_right = 491.0
+margin_bottom = 35.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "-8"
+align = 1
+valign = 1
+
+[node name="Assist_Price" type="Label" parent="TE"]
+margin_left = 642.0
+margin_top = -32.0
+margin_right = 696.0
+margin_bottom = 35.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "10"
+align = 1
+valign = 1
+
+[node name="Nestler_Price" type="Label" parent="TE"]
+margin_left = 847.0
+margin_top = -32.0
+margin_right = 889.0
+margin_bottom = 35.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "-4"
+align = 1
+valign = 1
+
+[node name="ZigZag_Price" type="Label" parent="TE"]
+margin_left = 1045.0
+margin_top = -32.0
+margin_right = 1087.0
+margin_bottom = 35.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "-5"
+align = 1
+valign = 1
+
+[node name="Buncher_Price" type="Label" parent="TE"]
+margin_left = 1243.0
+margin_top = -32.0
+margin_right = 1285.0
+margin_bottom = 35.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "-2"
+align = 1
+valign = 1
+
+[node name="Buddy_Price" type="Label" parent="TE"]
+margin_left = 1427.0
+margin_top = -32.0
+margin_right = 1496.0
+margin_bottom = 35.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "-10"
+align = 1
+valign = 1
 
 [connection signal="mouse_entered" from="Genome/Construction/Construction" to="Genome/Construction/Construction/ToolTip" method="_on_Replication_mouse_entered"]
 [connection signal="mouse_entered" from="Genome/Construction/Construction" to="Genome/Construction/Construction/ToolTip/RichTextLabel" method="_on_Replication_mouse_entered"]
@@ -1429,43 +1601,37 @@ __meta__ = {
 [connection signal="mouse_entered" from="Genome/Sensing/Sensing" to="Genome/Sensing/Sensing/ToolTip/RichTextLabel" method="_on_Sensing_mouse_entered"]
 [connection signal="mouse_exited" from="Genome/Sensing/Sensing" to="Genome/Sensing/Sensing/ToolTip" method="_on_Sensing_mouse_exited"]
 [connection signal="mouse_exited" from="Genome/Sensing/Sensing" to="Genome/Sensing/Sensing/ToolTip/RichTextLabel" method="_on_Sensing_mouse_exited"]
-[connection signal="pressed" from="Construction" to="." method="_on_gene_pressed" binds= [ "Construction" ]]
-[connection signal="mouse_entered" from="Construction/Construction" to="Construction/Construction/ToolTip" method="_on_Replication_mouse_entered"]
-[connection signal="mouse_entered" from="Construction/Construction" to="Construction/Construction/ToolTip/RichTextLabel" method="_on_Replication_mouse_entered"]
-[connection signal="mouse_exited" from="Construction/Construction" to="Construction/Construction/ToolTip" method="_on_Replication_mouse_exited"]
-[connection signal="mouse_exited" from="Construction/Construction" to="Construction/Construction/ToolTip/RichTextLabel" method="_on_Replication_mouse_exited"]
-[connection signal="pressed" from="Component" to="." method="_on_gene_pressed" binds= [ "Component" ]]
-[connection signal="mouse_entered" from="Component/Component" to="Component/Component/ToolTip" method="_on_Component_mouse_entered"]
-[connection signal="mouse_entered" from="Component/Component" to="Component/Component/ToolTip/RichTextLabel" method="_on_Component_mouse_entered"]
-[connection signal="mouse_exited" from="Component/Component" to="Component/Component/ToolTip" method="_on_Component_mouse_exited"]
-[connection signal="mouse_exited" from="Component/Component" to="Component/Component/ToolTip/RichTextLabel" method="_on_Component_mouse_exited"]
-[connection signal="pressed" from="Helper" to="." method="_on_gene_pressed" binds= [ "Helper" ]]
-[connection signal="mouse_entered" from="Helper/Helper" to="Helper/Helper/ToolTip" method="_on_Helper_mouse_entered"]
-[connection signal="mouse_entered" from="Helper/Helper" to="Helper/Helper/ToolTip/RichTextLabel" method="_on_Helper_mouse_entered"]
-[connection signal="mouse_exited" from="Helper/Helper" to="Helper/Helper/ToolTip" method="_on_Helper_mouse_exited"]
-[connection signal="mouse_exited" from="Helper/Helper" to="Helper/Helper/ToolTip/RichTextLabel" method="_on_Helper_mouse_exited"]
-[connection signal="pressed" from="Replication" to="." method="_on_gene_pressed" binds= [ "Replication" ]]
-[connection signal="mouse_entered" from="Replication/Replication" to="Replication/Replication/ToolTip" method="_on_Replication_mouse_entered"]
-[connection signal="mouse_entered" from="Replication/Replication" to="Replication/Replication/ToolTip/RichTextLabel" method="_on_Replication_mouse_entered"]
-[connection signal="mouse_exited" from="Replication/Replication" to="Replication/Replication/ToolTip" method="_on_Replication_mouse_exited"]
-[connection signal="mouse_exited" from="Replication/Replication" to="Replication/Replication/ToolTip/RichTextLabel" method="_on_Replication_mouse_exited"]
-[connection signal="pressed" from="Locomotion" to="." method="_on_gene_pressed" binds= [ "Locomotion" ]]
-[connection signal="mouse_entered" from="Locomotion/Locomotion" to="Locomotion/Locomotion/ToolTip" method="_on_Locomotion_mouse_entered"]
-[connection signal="mouse_entered" from="Locomotion/Locomotion" to="Locomotion/Locomotion/ToolTip/RichTextLabel" method="_on_Locomotion_mouse_entered"]
-[connection signal="mouse_exited" from="Locomotion/Locomotion" to="Locomotion/Locomotion/ToolTip" method="_on_Locomotion_mouse_exited"]
-[connection signal="mouse_exited" from="Locomotion/Locomotion" to="Locomotion/Locomotion/ToolTip/RichTextLabel" method="_on_Locomotion_mouse_exited"]
-[connection signal="pressed" from="Sensing" to="." method="_on_gene_pressed" binds= [ "Sensing" ]]
-[connection signal="mouse_entered" from="Sensing/Sensing" to="Sensing/Sensing/ToolTip" method="_on_Sensing_mouse_entered"]
-[connection signal="mouse_entered" from="Sensing/Sensing" to="Sensing/Sensing/ToolTip/RichTextLabel" method="_on_Sensing_mouse_entered"]
-[connection signal="mouse_exited" from="Sensing/Sensing" to="Sensing/Sensing/ToolTip" method="_on_Sensing_mouse_exited"]
-[connection signal="mouse_exited" from="Sensing/Sensing" to="Sensing/Sensing/ToolTip/RichTextLabel" method="_on_Sensing_mouse_exited"]
-[connection signal="pressed" from="Manipulation" to="." method="_on_gene_pressed" binds= [ "Manipulation" ]]
-[connection signal="mouse_entered" from="Manipulation/Manipulation" to="Manipulation/Manipulation/ToolTip" method="_on_Manipulation_mouse_entered"]
-[connection signal="mouse_entered" from="Manipulation/Manipulation" to="Manipulation/Manipulation/ToolTip/RichTextLabel" method="_on_Manipulation_mouse_entered"]
-[connection signal="mouse_exited" from="Manipulation/Manipulation" to="Manipulation/Manipulation/ToolTip" method="_on_Manipulation_mouse_exited"]
-[connection signal="mouse_exited" from="Manipulation/Manipulation" to="Manipulation/Manipulation/ToolTip/RichTextLabel" method="_on_Manipulation_mouse_exited"]
-[connection signal="pressed" from="Deconstruction" to="." method="_on_gene_pressed" binds= [ "Deconstruction" ]]
-[connection signal="mouse_entered" from="Deconstruction/Deconstruction" to="Deconstruction/Deconstruction/ToolTip" method="_on_Deconstruction_mouse_entered"]
-[connection signal="mouse_entered" from="Deconstruction/Deconstruction" to="Deconstruction/Deconstruction/ToolTip/RichTextLabel" method="_on_Deconstruction_mouse_entered"]
-[connection signal="mouse_exited" from="Deconstruction/Deconstruction" to="Deconstruction/Deconstruction/ToolTip" method="_on_Deconstruction_mouse_exited"]
-[connection signal="mouse_exited" from="Deconstruction/Deconstruction" to="Deconstruction/Deconstruction/ToolTip/RichTextLabel" method="_on_Deconstruction_mouse_exited"]
+[connection signal="pressed" from="Genome/ConstructionCtrl/Increase" to="." method="_on_gene_increase" binds= [ "Construction" ]]
+[connection signal="pressed" from="Genome/ConstructionCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "Construction" ]]
+[connection signal="pressed" from="Genome/ComponentCtrl/Increase" to="." method="_on_gene_increase" binds= [ "Component" ]]
+[connection signal="pressed" from="Genome/ComponentCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "Component" ]]
+[connection signal="pressed" from="Genome/DeconstructionCtrl/Increase" to="." method="_on_gene_increase" binds= [ "Deconstruction" ]]
+[connection signal="pressed" from="Genome/DeconstructionCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "Deconstruction" ]]
+[connection signal="pressed" from="Genome/HelperCtrl/Increase" to="." method="_on_gene_increase" binds= [ "Helper" ]]
+[connection signal="pressed" from="Genome/HelperCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "Helper" ]]
+[connection signal="pressed" from="Genome/LocomotionCtrl/Increase" to="." method="_on_gene_increase" binds= [ "Locomotion" ]]
+[connection signal="pressed" from="Genome/LocomotionCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "Locomotion" ]]
+[connection signal="pressed" from="Genome/ManipulationCtrl/Increase" to="." method="_on_gene_increase" binds= [ "Manipulation" ]]
+[connection signal="pressed" from="Genome/ManipulationCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "Manipulation" ]]
+[connection signal="pressed" from="Genome/ReplicationCtrl/Increase" to="." method="_on_gene_increase" binds= [ "Replication" ]]
+[connection signal="pressed" from="Genome/ReplicationCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "Replication" ]]
+[connection signal="pressed" from="Genome/SensingCtrl/Increase" to="." method="_on_gene_increase" binds= [ "Sensing" ]]
+[connection signal="pressed" from="Genome/SensingCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "Sensing" ]]
+[connection signal="pressed" from="Genome/BlankCtrl/Increase" to="." method="_on_gene_increase" binds= [ "Blank" ]]
+[connection signal="pressed" from="Genome/BlankCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "Blank" ]]
+[connection signal="pressed" from="TE/ClassicCtrl/Increase" to="." method="_on_gene_increase" binds= [ "Classic" ]]
+[connection signal="pressed" from="TE/ClassicCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "Classic" ]]
+[connection signal="pressed" from="TE/CommuterCtrl/Increase" to="." method="_on_gene_increase" binds= [ "Commuter" ]]
+[connection signal="pressed" from="TE/CommuterCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "Commuter" ]]
+[connection signal="pressed" from="TE/SuperJumperCtrl/Increase" to="." method="_on_gene_increase" binds= [ "SuperJumper" ]]
+[connection signal="pressed" from="TE/SuperJumperCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "SuperJumper" ]]
+[connection signal="pressed" from="TE/AssistCtrl/Increase" to="." method="_on_gene_increase" binds= [ "Assist" ]]
+[connection signal="pressed" from="TE/AssistCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "Assist" ]]
+[connection signal="pressed" from="TE/NestlerCtrl/Increase" to="." method="_on_gene_increase" binds= [ "Nestler" ]]
+[connection signal="pressed" from="TE/NestlerCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "Nestler" ]]
+[connection signal="pressed" from="TE/ZigZagCtrl/Increase" to="." method="_on_gene_increase" binds= [ "ZigZag" ]]
+[connection signal="pressed" from="TE/ZigZagCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "ZigZag" ]]
+[connection signal="pressed" from="TE/BuncherCtrl/Increase" to="." method="_on_gene_increase" binds= [ "Buncher" ]]
+[connection signal="pressed" from="TE/BuncherCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "Buncher" ]]
+[connection signal="pressed" from="TE/BuddyCtrl/Increase" to="." method="_on_gene_increase" binds= [ "Buddy" ]]
+[connection signal="pressed" from="TE/BuddyCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "Buddy" ]]
