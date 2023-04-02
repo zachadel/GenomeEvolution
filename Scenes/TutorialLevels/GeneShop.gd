@@ -68,6 +68,12 @@ const LV4 = 9
 
 var credits = 100
 
+onready var credits_spent_on = {
+	"genes":[0, get_node("Indicator/GenePower/GenePowerProgress")],
+	"HBTE":[0, get_node("Indicator/EvolutionP/EvolutionPProgress")],
+	"TEs":[0, get_node("Indicator/RiskOfChaos/RiskOfChaosProgress")]
+}
+
 func _ready():
 	for te in range(9, 17):
 		get_node("TE/"+gene_buttons[te]).set_color(Color.red)
@@ -107,6 +113,7 @@ func _on_gene_increase(button_name: String):
 		_update_player_display(index, "buy")
 		credits -= price
 		get_node("Credit/CreditVal").set_text(String(credits))
+		_update_credit_spent(index, price)
 	else:
 		warning.visible = true
 	
@@ -122,3 +129,20 @@ func _on_gene_decrease(button_name: String):
 		_update_player_display(index, "sell")
 		credits += price
 		get_node("Credit/CreditVal").set_text(String(credits))
+		
+func _update_credit_spent(index: int, price: int):
+	price = abs(price)
+	if index > 8:
+		for key in credits_spent_on:
+			credits_spent_on[key][0]+=price
+			credits_spent_on[key][1].value = credits_spent_on[key][0]
+	elif index == 3 or index > 7:
+		credits_spent_on["HBTE"][0]+=price
+		credits_spent_on["HBTE"][1].value = credits_spent_on["HBTE"][0]
+		credits_spent_on["TEs"][0]+=price
+		credits_spent_on["TEs"][1].value = credits_spent_on["TEs"][0]
+	else:
+		credits_spent_on["genes"][0]+=price
+		credits_spent_on["genes"][1].value = credits_spent_on["genes"][0]
+	
+

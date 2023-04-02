@@ -21,7 +21,7 @@
 [sub_resource type="DynamicFontData" id=36]
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=37]
 use_mipmaps = true
 use_filter = true
 font_data = SubResource( 36 )
@@ -1974,7 +1974,7 @@ margin_bottom = 50.0
 mouse_filter = 2
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 custom_fonts/italics_font = ExtResource( 2 )
-custom_fonts/normal_font = SubResource( 2 )
+custom_fonts/normal_font = SubResource( 37 )
 bbcode_enabled = true
 bbcode_text = "[i][center]Welcome to your first tutorial!
 In This tutorial, you will learn about genes, and how genes can  affect your game![/center][/i]"
