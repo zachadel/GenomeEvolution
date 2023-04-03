@@ -52,4 +52,11 @@ func _on_RightArrow_pressed():
 	update_genome()
 	emit_signal("cell_changed", get_cell_string())
 	pass # Replace with function body.
-	
+
+
+func _on_StartButton_pressed():
+	get_tree().change_scene("res://Scenes/AssemblyVignette/AssemblyVignette.tscn")
+	print("pressed")
+
+	pass
+

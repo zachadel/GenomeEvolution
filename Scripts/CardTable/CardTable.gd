@@ -11,7 +11,7 @@ signal show_pop_quiz;
 
 
 onready var justnow_label : RichTextLabel = $ctl_justnow/lbl_justnow;
-onready var orgn = $Organism;
+onready var orgn = $Organism	;
 onready var C_orgn = $Comp_Organism;
 onready var nxt_btn = $button_grid/btn_nxt;
 onready var status_bar = $Border1/ChromosomeStatus;
@@ -36,7 +36,7 @@ var show_popUp = true;
 var disable_turn_adv = true
 
 func _ready():
-	#print("entered card table")
+	print("entered card table")
 	visible = false; # Prevents an auto-turn before the game begins
 	orgn.setup(self);
 	if STATS.has_competitors:
