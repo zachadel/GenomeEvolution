@@ -1,14 +1,7 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Scenes/AssemblyVignette/BlankGene.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Scenes/AssemblyVignette/drop_zone.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/AssemblyVignette/ArrangeGene.gd" type="Script" id=3]
-[ext_resource path="res://Assets/Images/genes/Construction.png" type="Texture" id=4]
-[ext_resource path="res://Assets/Images/genes/Replication.png" type="Texture" id=5]
-[ext_resource path="res://Assets/Images/genes/Helix.png" type="Texture" id=6]
-[ext_resource path="res://Assets/Images/genes/Component.png" type="Texture" id=7]
-[ext_resource path="res://Assets/Images/genes/Sensing.png" type="Texture" id=8]
-[ext_resource path="res://Assets/Images/genes/Helix_Circle.png" type="Texture" id=9]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource( 3 )
@@ -35,141 +28,6 @@ margin_bottom = 88.0
 [node name="blankgene" parent="Control/HBoxContainer/CenterContainer" instance=ExtResource( 1 )]
 position = Vector2( 68, -230 )
 
-[node name="Chromosome" type="HBoxContainer" parent="Control"]
-margin_left = 77.0
-margin_top = 596.0
-margin_right = 2311.0
-margin_bottom = 969.0
-rect_scale = Vector2( 0.5, 0.5 )
-mouse_filter = 2
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="GeneBackground" type="TextureRect" parent="Control/Chromosome"]
-margin_right = 369.0
-margin_bottom = 373.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 9 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Component" type="TextureRect" parent="Control/Chromosome/GeneBackground"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 7 )
-expand = true
-stretch_mode = 5
-
-[node name="GeneBackground2" type="TextureRect" parent="Control/Chromosome"]
-margin_left = 373.0
-margin_right = 742.0
-margin_bottom = 373.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 9 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Sensing" type="TextureRect" parent="Control/Chromosome/GeneBackground2"]
-modulate = Color( 0.733333, 0.67451, 0.0392157, 1 )
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-size_flags_vertical = 3
-texture = ExtResource( 8 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": true
-}
-
-[node name="Blank" type="TextureRect" parent="Control/Chromosome"]
-margin_left = 746.0
-margin_right = 1115.0
-margin_bottom = 373.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 6 )
-expand = true
-
-[node name="GeneBackground3" type="TextureRect" parent="Control/Chromosome"]
-margin_left = 1119.0
-margin_right = 1488.0
-margin_bottom = 373.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 9 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Assembly" type="TextureRect" parent="Control/Chromosome/GeneBackground3"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource( 4 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="GeneBackground4" type="TextureRect" parent="Control/Chromosome"]
-margin_left = 1492.0
-margin_right = 1861.0
-margin_bottom = 373.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 9 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Replication" type="TextureRect" parent="Control/Chromosome/GeneBackground4"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource( 5 )
-expand = true
-stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Blank2" type="TextureRect" parent="Control/Chromosome"]
-margin_left = 1865.0
-margin_right = 2234.0
-margin_bottom = 373.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 6 )
-expand = true
-
 [node name="Control2" type="Control" parent="."]
 margin_right = 40.0
 margin_bottom = 40.0
@@ -181,17 +39,7 @@ margin_right = 1526.0
 margin_bottom = 513.0
 grow_horizontal = 0
 grow_vertical = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 custom_constants/separation = 150
 alignment = 1
-
-[node name="CenterContainer" type="CenterContainer" parent="Control2/HBoxContainer"]
-margin_left = 600.0
-margin_right = 600.0
-margin_bottom = 88.0
-
-[node name="drop_zone2" parent="Control2/HBoxContainer/CenterContainer" instance=ExtResource( 2 )]
-
-[node name="CenterContainer2" type="CenterContainer" parent="Control2/HBoxContainer"]
-margin_left = 750.0
-margin_right = 750.0
-margin_bottom = 88.0

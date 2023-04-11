@@ -6,12 +6,23 @@ var rest_nodes = []
 var gene_type = -1
 
 func _ready():
+	yield(get_tree().root, "ready")
 	rest_nodes = get_tree().get_nodes_in_group("zone")
-	rest_point = rest_nodes[0].global_position
-	rest_nodes[0].select()
+	print(rest_nodes)
+	# assume the first node is closest
+	var nearest_rest_node = rest_nodes[0]
+
+	# look through nodes to see if any are closer
+	for x in rest_nodes:
+			if x.global_position.distance_to(global_position) < nearest_rest_node.global_position.distance_to(global_position):
+				nearest_rest_node = x
+
+	# reposition rest point
+	rest_point = nearest_rest_node.global_position
+	nearest_rest_node.select()
+
 
 func _on_Area2D_input_event(viewport, event, shape_idx):
-	print("clicked")
 	if Input.is_action_just_pressed("click"):
 		selected = true
 		
@@ -43,5 +54,8 @@ func set_gene_texture(n):
 
 func set_gene_type(n):
 	gene_type = n
+	
+func set_position(n):
+	global_position = n
 
 
