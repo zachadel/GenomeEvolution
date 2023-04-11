@@ -488,9 +488,6 @@ WindowDialog/styles/panel = null
 margin_right = 40.0
 margin_bottom = 40.0
 script = ExtResource( 12 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="1" type="Control" parent="."]
 visible = false
@@ -526,8 +523,8 @@ margin_left = 114.857
 margin_top = 16.5904
 margin_right = 1088.86
 margin_bottom = 220.59
-custom_fonts/font = ExtResource( 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 1 )
 text = "Trimming genes from breaks can help you repair your genome in interesting ways!"
 align = 1
 valign = 1
@@ -808,8 +805,8 @@ margin_left = 114.857
 margin_top = 16.5904
 margin_right = 1088.86
 margin_bottom = 220.59
-custom_fonts/font = ExtResource( 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 1 )
 text = "How does it work?
 Imagine one chromosome has been broken"
 align = 1
@@ -1092,8 +1089,8 @@ margin_top = 39.5391
 margin_right = 1123.28
 margin_bottom = 252.539
 rect_scale = Vector2( 0.9, 0.9 )
-custom_fonts/font = ExtResource( 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 1 )
 text = "Since one of the ends of the break does not match the top chromosome, only join ends could be used to fix it..."
 align = 1
 valign = 1
@@ -1390,8 +1387,8 @@ margin_left = 114.857
 margin_top = 16.5904
 margin_right = 1088.86
 margin_bottom = 220.59
-custom_fonts/font = ExtResource( 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 1 )
 text = "This is ok, but could we do better?"
 align = 1
 valign = 1
@@ -1640,8 +1637,8 @@ margin_top = 39.5391
 margin_right = 1123.28
 margin_bottom = 252.539
 rect_scale = Vector2( 0.9, 0.9 )
-custom_fonts/font = ExtResource( 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 1 )
 text = "This time, we will trim one gene away from the broken ends."
 align = 1
 valign = 1
@@ -1936,8 +1933,8 @@ margin_top = 39.5391
 margin_right = 1123.28
 margin_bottom = 252.539
 rect_scale = Vector2( 0.9, 0.9 )
-custom_fonts/font = ExtResource( 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 1 )
 text = "Now let's try to fix the break again."
 align = 1
 valign = 1
@@ -2230,8 +2227,8 @@ margin_top = 39.5391
 margin_right = 1123.28
 margin_bottom = 252.539
 rect_scale = Vector2( 0.9, 0.9 )
-custom_fonts/font = ExtResource( 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 1 )
 text = "Now both sides of the break have a match on the top chromosome!"
 align = 1
 valign = 1
@@ -2553,8 +2550,8 @@ margin_left = 114.857
 margin_top = 16.5904
 margin_right = 1088.86
 margin_bottom = 220.59
-custom_fonts/font = ExtResource( 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 1 )
 text = "Using copy-repair, we can restore a gene that was previously lost!"
 align = 1
 valign = 1
@@ -2767,6 +2764,7 @@ text = "Back"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
 [connection signal="pressed" from="1/next" to="." method="_on_next_pressed"]
 [connection signal="pressed" from="1/skip" to="." method="_on_skip_pressed"]
 [connection signal="pressed" from="1/back" to="." method="_on_back_pressed"]

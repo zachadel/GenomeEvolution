@@ -511,9 +511,6 @@ __meta__ = {
 [node name="1" type="Control" parent="."]
 margin_right = 40.0
 margin_bottom = 40.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="background" type="ColorRect" parent="1"]
 margin_right = 1600.0
@@ -532,8 +529,8 @@ margin_left = 190.0
 margin_top = 42.0
 margin_right = 1248.0
 margin_bottom = 183.0
-custom_fonts/font = ExtResource( 9 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 9 )
 text = "Many things can damage your genome"
 align = 1
 valign = 1
@@ -674,9 +671,6 @@ __meta__ = {
 margin_right = 40.0
 margin_bottom = 40.0
 texture = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="sens1" type="TextureRect" parent="1/cmsm2"]
 margin_left = 480.0
@@ -788,8 +782,8 @@ margin_left = 157.0
 margin_top = 74.0
 margin_right = 1297.0
 margin_bottom = 215.0
-custom_fonts/font = ExtResource( 9 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 9 )
 text = "When a gene is damaged, it may not work as well as before."
 align = 1
 valign = 1
@@ -1047,8 +1041,8 @@ margin_left = 190.0
 margin_top = 42.0
 margin_right = 1267.0
 margin_bottom = 183.0
-custom_fonts/font = ExtResource( 9 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 9 )
 text = "And it cannot be copied during replication"
 align = 1
 valign = 1
@@ -1306,8 +1300,8 @@ margin_left = 167.0
 margin_top = 22.6383
 margin_right = 1260.0
 margin_bottom = 235.638
-custom_fonts/font = ExtResource( 9 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 9 )
 text = "So if you want to stay alive and divide, you will need to fix any damaged genes"
 align = 1
 valign = 1
@@ -1565,8 +1559,8 @@ margin_left = 165.74
 margin_top = 23.8982
 margin_right = 1273.74
 margin_bottom = 236.898
-custom_fonts/font = ExtResource( 9 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 9 )
 text = "Just give it a click, and if you are lucky, the gene can be fixed"
 align = 1
 valign = 1
@@ -1836,8 +1830,8 @@ margin_left = 160.0
 margin_top = 25.0
 margin_right = 1292.0
 margin_bottom = 238.0
-custom_fonts/font = ExtResource( 9 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 9 )
 text = "However, sometimes the gene is damaged beyond repair and the gene dies"
 align = 1
 valign = 1
@@ -2109,8 +2103,8 @@ margin_left = 264.75
 margin_top = 23.9256
 margin_right = 1145.75
 margin_bottom = 236.926
-custom_fonts/font = ExtResource( 9 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 9 )
 text = "Or is lost..."
 align = 1
 valign = 1
@@ -2373,8 +2367,8 @@ margin_left = 192.0
 margin_top = 22.0
 margin_right = 1302.0
 margin_bottom = 235.0
-custom_fonts/font = ExtResource( 9 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 9 )
 text = "The higher your Replication score, the more often you will fix damaged genes correctly."
 align = 1
 valign = 1
@@ -2635,8 +2629,8 @@ margin_left = 167.0
 margin_top = 27.0
 margin_right = 1307.0
 margin_bottom = 240.0
-custom_fonts/font = ExtResource( 9 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 9 )
 text = "Otherwise, try to keep your genome in good shape and don't let too many genes take damage!"
 align = 1
 valign = 1
@@ -2868,6 +2862,7 @@ margin_right = 300.0
 margin_bottom = 848.0
 theme = SubResource( 6 )
 text = "Back"
+
 [connection signal="pressed" from="1/next" to="." method="_on_next_pressed"]
 [connection signal="pressed" from="1/skip" to="." method="_on_skip_pressed"]
 [connection signal="pressed" from="1/back" to="." method="_on_back_pressed"]

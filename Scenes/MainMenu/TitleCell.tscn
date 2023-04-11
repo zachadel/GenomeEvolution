@@ -12,9 +12,9 @@ bounce = 1.0
 extents = Vector2( 48, 41 )
 
 [node name="Cell" type="RigidBody2D"]
-input_pickable = true
 collision_layer = 2
 collision_mask = 4
+input_pickable = true
 physics_material_override = SubResource( 1 )
 gravity_scale = 0.0
 linear_damp = 0.0
@@ -27,5 +27,6 @@ DNA = ExtResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 2 )
+
 [connection signal="input_event" from="." to="." method="_on_Cell_input_event"]
 [connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
