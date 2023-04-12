@@ -4,7 +4,7 @@
 [ext_resource path="res://Scenes/AssemblyVignette/MoveGene.gd" type="Script" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 306.87
+radius = 102.07
 
 [node name="ArragingGene" type="Node2D"]
 script = ExtResource( 2 )

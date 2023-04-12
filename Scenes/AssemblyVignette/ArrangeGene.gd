@@ -6,7 +6,10 @@ enum ESSENTIAL_CLASSES {Replication, Locomotion, Helper, Manipulation, Sensing, 
 var blank_gene_scene = preload("res://Scenes/AssemblyVignette/BlankGene.tscn")
 var drop_zone_scene = preload("res://Scenes/AssemblyVignette/drop_zone.tscn")
 var genes = ["Replication", "Locomotion", "Helper", "Manipulation", "Sensing", "Component", "Construction", "Deconstruction"];
+
 var ess_textures = {};
+var zones = []
+var gene_list = []
 var x_offset = 150
 var y_offset = 200
 
@@ -19,10 +22,12 @@ func _ready():
 	   gene.set_gene_texture(ess_textures[n])
 	   gene.set_gene_type(n)
 	   gene.set_position(Vector2(x_offset,y_offset))
+	   gene_list.append(gene)
 	   get_node("Control/HBoxContainer").add_child(gene)
 	   
 	   var drop_zone = drop_zone_scene.instance()
 	   drop_zone.set_position(Vector2(x_offset,y_offset))
+	   zones.append(drop_zone)
 	   get_node("Control2/HBoxContainer").add_child(drop_zone)
 
 	   x_offset = x_offset + 150
@@ -37,3 +42,10 @@ func _ready():
 func class_to_string(type):
 	return ESSENTIAL_CLASSES.keys()[type];
 
+func set_gene_list(x):
+	gene_list = x
+
+func get_gene_list(x):
+	return gene_list
+
+	

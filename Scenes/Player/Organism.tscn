@@ -53,9 +53,6 @@ margin_bottom = 600.0
 rect_min_size = Vector2( 200, 600 )
 mouse_filter = 1
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="slider_correct" type="AnimationPlayer" parent="."]
 autoplay = "correction"
@@ -80,7 +77,6 @@ size_flags_horizontal = 3
 custom_constants/separation = 5
 
 [node name="lbl_dead" type="Label" parent="."]
-visible = false
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
@@ -92,7 +88,6 @@ valign = 1
 autowrap = true
 
 [node name="tool_tip" type="ColorRect" parent="."]
-visible = false
 margin_left = 1100.0
 margin_top = 50.0
 margin_right = 1400.0
@@ -109,7 +104,6 @@ align = 1
 autowrap = true
 
 [node name="tool_tip2" type="ColorRect" parent="."]
-visible = false
 margin_left = 1100.0
 margin_top = 50.0
 margin_right = 1400.0
@@ -126,7 +120,6 @@ align = 1
 autowrap = true
 
 [node name="tool_tip3" type="ColorRect" parent="."]
-visible = false
 margin_left = 1100.0
 margin_top = 50.0
 margin_right = 1400.0
@@ -143,7 +136,6 @@ align = 1
 autowrap = true
 
 [node name="tool_tip4" type="ColorRect" parent="."]
-visible = false
 margin_left = 1100.0
 margin_top = 50.0
 margin_right = 1400.0
@@ -194,7 +186,6 @@ align = 1
 autowrap = true
 
 [node name="Spectrum" type="ColorRect" parent="."]
-visible = false
 margin_left = 50.0
 margin_top = 410.0
 margin_right = 650.0
@@ -355,6 +346,7 @@ texture = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
 [connection signal="cmsm_picked" from="scroll/chromes" to="." method="_on_chromes_cmsm_picked"]
 [connection signal="elm_clicked" from="scroll/chromes" to="." method="_on_chromes_elm_clicked"]
 [connection signal="elm_mouse_entered" from="scroll/chromes" to="." method="_on_chromes_elm_mouse_entered"]
