@@ -69,9 +69,6 @@ margin_right = 0.00012207
 margin_bottom = -25.0
 rect_min_size = Vector2( 1600, 600 )
 scroll_horizontal_enabled = false
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="chromes" parent="scroll" instance=ExtResource( 2 )]
 anchor_right = 0.0

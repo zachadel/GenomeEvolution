@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Background.png-3ed895d0d34f8a4c3fff7fffb7eeea1c.stex"
+path="res://.import/plus-sign.png-574bff6c6cb99802d4241bcd6ad14723.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/TutorialLevels/Background.png"
-dest_files=[ "res://.import/Background.png-3ed895d0d34f8a4c3fff7fffb7eeea1c.stex" ]
+source_file="res://Scenes/TutorialLevels/imgs/plus-sign.png"
+dest_files=[ "res://.import/plus-sign.png-574bff6c6cb99802d4241bcd6ad14723.stex" ]
 
 [params]
 

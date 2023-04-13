@@ -1,5 +1,6 @@
 extends Control
 
+
 onready var gene_labels = [
 	get_node("Genome/ConstructionCtrl/Construction_Label"),
 	get_node("Genome/ComponentCtrl/Component_Label"),
@@ -113,7 +114,7 @@ func _on_gene_increase(button_name: String):
 		_update_player_display(index, "buy")
 		credits -= price
 		get_node("Credit/CreditVal").set_text(String(credits))
-		_update_credit_spent(index, price)
+		_update_credit_spent(index, price, "buy")
 	else:
 		warning.visible = true
 	
@@ -129,9 +130,13 @@ func _on_gene_decrease(button_name: String):
 		_update_player_display(index, "sell")
 		credits += price
 		get_node("Credit/CreditVal").set_text(String(credits))
+		_update_credit_spent(index, price, "sell")
 		
-func _update_credit_spent(index: int, price: int):
-	price = abs(price)
+func _update_credit_spent(index: int, price: int, type: String):
+	if type == "sell":
+		price = -1 * abs(price)
+	elif type == "buy" :
+		price = abs(price)
 	if index > 8:
 		for key in credits_spent_on:
 			credits_spent_on[key][0]+=price
@@ -144,5 +149,22 @@ func _update_credit_spent(index: int, price: int):
 	else:
 		credits_spent_on["genes"][0]+=price
 		credits_spent_on["genes"][1].value = credits_spent_on["genes"][0]
-	
 
+
+func _on_btn_load_pressed():
+		SaveExports.load_from_save($LineEdit.text.strip_edges(), get_parent());
+		get_parent().close_extra_menus(self);
+		emit_signal("loaded");
+
+func _on_Start_pressed():
+	
+	Game.resource_mult = Settings.resource_consumption_rate()
+
+	Unlocks.unlock_override = Settings.unlock_everything()
+	Settings.apply_richness()
+	Settings.populate_cell_texture_paths()
+	Settings.update_seed()
+#	Settings.save_all_settings()
+	#print(Settings.settings["resources"])
+	get_tree().change_scene("res://Scenes/TutorialLevels/GeneSimulation.tscn")
+	pass # Replace with function body.

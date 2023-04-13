@@ -179,18 +179,12 @@ margin_bottom = -3.64417
 mouse_filter = 1
 theme = SubResource( 1 )
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="ctl_justnow" type="Control" parent="."]
 margin_left = 527.0
 margin_top = 577.0
 margin_right = 1221.0
 margin_bottom = 845.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="lbl_log" type="Label" parent="ctl_justnow"]
 anchor_right = 1.0
@@ -303,9 +297,6 @@ margin_bottom = -4.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_constants/separation = 8
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="LblInstr" type="Label" parent="RepairTabs/pnl_bandage_dmg/vbox"]
 margin_right = 691.0
@@ -344,9 +335,6 @@ margin_top = 50.0
 margin_right = 155.0
 margin_bottom = 50.0
 color = Color( 0.113725, 0.0980392, 0.0980392, 0.764706 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Label" type="Label" parent="RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer/fix_all/fix_all_details"]
 anchor_left = 0.5
@@ -449,13 +437,13 @@ __meta__ = {
 
 [node name="vsplit" type="VSplitContainer" parent="RepairTabs/pnl_repair_choices/hsplit"]
 margin_left = 242.0
-margin_right = 753.0
+margin_right = 685.0
 margin_bottom = 269.0
 split_offset = 160
 dragger_visibility = 1
 
 [node name="scroll" type="ScrollContainer" parent="RepairTabs/pnl_repair_choices/hsplit/vsplit"]
-margin_right = 511.0
+margin_right = 443.0
 margin_bottom = 160.0
 scroll_horizontal_enabled = false
 
@@ -468,7 +456,7 @@ autowrap = true
 
 [node name="btn_apply_repair" type="Button" parent="RepairTabs/pnl_repair_choices/hsplit/vsplit"]
 margin_top = 172.0
-margin_right = 511.0
+margin_right = 443.0
 margin_bottom = 269.0
 text = "Repair"
 
@@ -1037,7 +1025,6 @@ margin_left = 1282.0
 margin_top = 756.0
 margin_right = 1423.0
 margin_bottom = 891.0
-num = 0
 show_change = false
 
 [node name="lnum_progeny" parent="." instance=ExtResource( 17 )]
@@ -1046,7 +1033,6 @@ margin_left = 1337.14
 margin_top = 772.178
 margin_right = 1437.14
 margin_bottom = 872.178
-num = 0
 show_change = false
 
 [node name="EnergyBar" parent="." instance=ExtResource( 14 )]
@@ -1126,9 +1112,9 @@ margin_right = 120.0
 margin_bottom = 315.0
 rect_min_size = Vector2( 60, 120 )
 size_flags_horizontal = 3
-custom_styles/normal = SubResource( 6 )
-custom_fonts/font = ExtResource( 13 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = ExtResource( 13 )
+custom_styles/normal = SubResource( 6 )
 text = "Continue"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1322,8 +1308,8 @@ margin_bottom = 1100.0
 margin_right = 101.0
 margin_bottom = 101.0
 rect_scale = Vector2( 5, 5 )
-custom_fonts/font = ExtResource( 24 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 24 )
 text = "%d"
 align = 1
 valign = 1
@@ -1354,8 +1340,8 @@ margin_bottom = 1100.0
 margin_right = 101.0
 margin_bottom = 101.0
 rect_scale = Vector2( 5, 5 )
-custom_fonts/font = ExtResource( 24 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 24 )
 text = "%d"
 align = 1
 valign = 1
@@ -1389,8 +1375,8 @@ __meta__ = {
 margin_right = 101.0
 margin_bottom = 101.0
 rect_scale = Vector2( 5, 5 )
-custom_fonts/font = ExtResource( 24 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 24 )
 text = "%d"
 align = 1
 valign = 1
@@ -1424,8 +1410,8 @@ __meta__ = {
 margin_right = 101.0
 margin_bottom = 101.0
 rect_scale = Vector2( 5, 5 )
-custom_fonts/font = ExtResource( 24 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 24 )
 text = "%d"
 align = 1
 valign = 1
@@ -1459,8 +1445,8 @@ __meta__ = {
 margin_right = 101.0
 margin_bottom = 101.0
 rect_scale = Vector2( 5, 5 )
-custom_fonts/font = ExtResource( 24 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 24 )
 text = "%d"
 align = 1
 valign = 1
@@ -1494,8 +1480,8 @@ __meta__ = {
 margin_right = 101.0
 margin_bottom = 101.0
 rect_scale = Vector2( 5, 5 )
-custom_fonts/font = ExtResource( 24 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 24 )
 text = "%d"
 align = 1
 valign = 1
@@ -1529,8 +1515,8 @@ __meta__ = {
 margin_right = 101.0
 margin_bottom = 101.0
 rect_scale = Vector2( 5, 5 )
-custom_fonts/font = ExtResource( 24 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 24 )
 text = "%d"
 align = 1
 valign = 1
@@ -1564,8 +1550,8 @@ __meta__ = {
 margin_right = 101.0
 margin_bottom = 101.0
 rect_scale = Vector2( 5, 5 )
-custom_fonts/font = ExtResource( 24 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 24 )
 text = "%d"
 align = 1
 valign = 1
@@ -2020,8 +2006,8 @@ margin_top = 150.0
 margin_right = 600.0
 margin_bottom = 200.0
 rect_scale = Vector2( 2, 2 )
-custom_styles/normal = SubResource( 6 )
 custom_fonts/font = ExtResource( 13 )
+custom_styles/normal = SubResource( 6 )
 text = "Click Here to let us know"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -2169,6 +2155,7 @@ text = "Collapse Duplicates"
 
 [node name="Comp_Organism" parent="." instance=ExtResource( 48 )]
 visible = false
+
 [connection signal="gui_input" from="." to="." method="_on_CardTable_gui_input"]
 [connection signal="bandage_msg" from="Organism" to="." method="_on_Organism_bandage_msg"]
 [connection signal="clear_gap_msg" from="Organism" to="." method="_on_Organism_clear_gap_msg"]

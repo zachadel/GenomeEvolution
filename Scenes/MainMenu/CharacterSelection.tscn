@@ -57,9 +57,6 @@ margin_right = 1571.0
 margin_bottom = 834.0
 custom_fonts/font = SubResource( 2 )
 text = "Start the Game!"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="SettingsLabel" type="RichTextLabel" parent="."]
 margin_left = 1186.65

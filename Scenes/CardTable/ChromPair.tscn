@@ -9,6 +9,3 @@ rect_min_size = Vector2( 1550, 600 )
 rect_clip_content = true
 custom_constants/separation = 25
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}

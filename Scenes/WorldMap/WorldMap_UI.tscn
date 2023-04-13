@@ -472,13 +472,10 @@ margin_right = 268.0
 margin_bottom = 230.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/normal = SubResource( 6 )
-custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = ExtResource( 7 )
+custom_styles/normal = SubResource( 6 )
 text = "Repair Genome!"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="MenuPanel" type="Panel" parent="."]
 anchor_top = -0.000887994
@@ -1083,6 +1080,7 @@ text = "Exit"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
 [connection signal="gui_input" from="InternalPanel/StoredResourcesLabel/q_mark" to="." method="_on_q_mark_gui_input"]
 [connection signal="mouse_entered" from="InternalPanel/StoredResourcesLabel/q_mark" to="." method="_on_q_mark_mouse_entered"]
 [connection signal="mouse_exited" from="InternalPanel/StoredResourcesLabel/q_mark" to="." method="_on_q_mark_mouse_exited"]
