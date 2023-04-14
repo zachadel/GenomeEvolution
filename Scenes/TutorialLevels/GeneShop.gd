@@ -157,14 +157,12 @@ func _on_btn_load_pressed():
 		emit_signal("loaded");
 
 func _on_Start_pressed():
-	
 	Game.resource_mult = Settings.resource_consumption_rate()
 
 	Unlocks.unlock_override = Settings.unlock_everything()
 	Settings.apply_richness()
 	Settings.populate_cell_texture_paths()
 	Settings.update_seed()
-#	Settings.save_all_settings()
-	#print(Settings.settings["resources"])
+	SimulationSettings.selected_genes = genes
 	get_tree().change_scene("res://Scenes/TutorialLevels/GeneSimulation.tscn")
 	pass # Replace with function body.

@@ -88,8 +88,37 @@ func _ready():
 	STATS.connect("progress_bar", self, "_on_progress_bar");
 	#$WorldMap.connect("add_card_event_log", self, "_add_event_content")
 	#$WorldMap/WorldMap_UI/InternalPanel/InternalResourceController.connect("add_card_event_log", self, "_add_event_content")
+	switch_to_simulation()
+	only_show_chromosome()
+	setup_simulation()
+	
+	
+func switch_to_simulation():
 	yield(get_tree().create_timer(1.0), "timeout")
 	$WorldMap/WorldMap_UI._on_EndMapTurn_pressed()
+	
+	
+func only_show_chromosome():
+	for child in card_table.get_children():
+		if child.get_class() != "Timer":
+			child.hide()
+	card_table.get_Organism().show()
+	
+func setup_simulation():
+	yield(get_tree().create_timer(3.0), "timeout")
+	for i in range(console.get_chrom_length("top")):
+		console.remove_gene("top", i, false)
+	for i in range(console.get_chrom_length("bottom")):
+		console.remove_gene("bottom", i, false)
+		
+	var arrayIndex = 0
+	for genedex in range(8):
+		for gene_count in range(SimulationSettings.selected_genes[genedex]):
+			console.add_gene("top", arrayIndex, SimulationSettings.genes[genedex], 2)
+			arrayIndex += 1
+		
+	
+	
 func _on_new_progeny(alive):
 	if alive:
 		var new_player = create_player()
