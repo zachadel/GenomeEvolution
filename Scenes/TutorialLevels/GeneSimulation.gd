@@ -105,7 +105,7 @@ func only_show_chromosome():
 	card_table.get_Organism().show()
 	
 func setup_simulation():
-	yield(get_tree().create_timer(3.0), "timeout")
+	yield(get_tree().create_timer(4.0), "timeout")
 	for i in range(console.get_chrom_length("top")):
 		console.remove_gene("top", i, false)
 	for i in range(console.get_chrom_length("bottom")):
@@ -113,8 +113,11 @@ func setup_simulation():
 		
 	var arrayIndex = 0
 	for genedex in range(8):
-		for gene_count in range(SimulationSettings.selected_genes[genedex]):
+		for gene_count in range(SimulationSettings.selected_genes[genedex]/2):
 			console.add_gene("top", arrayIndex, SimulationSettings.genes[genedex], 2)
+			arrayIndex += 1
+		for gene_count in range(SimulationSettings.selected_genes[genedex]/2, SimulationSettings.selected_genes[genedex]):
+			console.add_gene("bottom", arrayIndex, SimulationSettings.genes[genedex], 2)
 			arrayIndex += 1
 		
 	

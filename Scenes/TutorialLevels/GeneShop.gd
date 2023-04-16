@@ -83,17 +83,17 @@ func _update_player_display(index: int, type: String):
 	var gene = gene_buttons[index]
 	if index <8:
 		if genes[index] >= LV4:
-			get_node("PlayerDisplay/"+gene+"Part").set_texture(load("res://Scenes/TutorialLevels/PlayerSprite/"+gene+"_4.png"))
+			get_node("PlayerDisplay/Body/"+gene+"Part").set_texture(load("res://Scenes/TutorialLevels/PlayerSprite/"+gene+"_4.png"))
 		elif genes[index] >= LV3:
-			get_node("PlayerDisplay/"+gene+"Part").set_texture(load("res://Scenes/TutorialLevels/PlayerSprite/"+gene+"_3.png"))
+			get_node("PlayerDisplay/Body/"+gene+"Part").set_texture(load("res://Scenes/TutorialLevels/PlayerSprite/"+gene+"_3.png"))
 		elif genes[index] >= LV2:
-			get_node("PlayerDisplay/"+gene+"Part").set_texture(load("res://Scenes/TutorialLevels/PlayerSprite/"+gene+"_2.png"))
+			get_node("PlayerDisplay/Body/"+gene+"Part").set_texture(load("res://Scenes/TutorialLevels/PlayerSprite/"+gene+"_2.png"))
 		elif genes[index] == LV1 and type == "sell":
-			get_node("PlayerDisplay/"+gene+"Part").set_texture(load("res://Scenes/TutorialLevels/PlayerSprite/"+gene+"_1.png"))
+			get_node("PlayerDisplay/Body/"+gene+"Part").set_texture(load("res://Scenes/TutorialLevels/PlayerSprite/"+gene+"_1.png"))
 		elif genes[index] == LV1 and type == "buy":
-			get_node("PlayerDisplay/"+gene+"Part").visible = true
+			get_node("PlayerDisplay/Body/"+gene+"Part").visible = true
 		else:
-			get_node("PlayerDisplay/"+gene+"Part").visible = false
+			get_node("PlayerDisplay/Body/"+gene+"Part").visible = false
 
 func _update_gene_count(index: int, type: String):
 	if type == "buy":
@@ -163,6 +163,8 @@ func _on_Start_pressed():
 	Settings.apply_richness()
 	Settings.populate_cell_texture_paths()
 	Settings.update_seed()
-	SimulationSettings.selected_genes = genes
+	SimulationSettings.set_genes(genes)
+	SimulationSettings.is_simulation = true
+	SimulationSettings.register_simulation_cell($PlayerDisplay)
 	get_tree().change_scene("res://Scenes/TutorialLevels/GeneSimulation.tscn")
 	pass # Replace with function body.

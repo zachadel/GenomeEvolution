@@ -17,24 +17,45 @@ const DANGER_MODULATE = Color(5, 0, 0, 5)
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	rng.randomize()
-	if cell_type in Settings.settings["cells"]:
-		var tex_path = ""
-		if not large:
-			tex_path = Settings.settings["cells"][cell_type]["body"]
-		else:
-			tex_path = Game.get_large_cell_path(cell_type, "body")
+	if SimulationSettings.is_simulation:
+		nucleus.hide()
+		var simulation_cell = load("res://Scenes/TutorialLevels/Body.tscn").instance()
+		simulation_cell.set_position(Vector2(-190, -135))
+		var genes = SimulationSettings.selected_genes
+		var gene_dict = SimulationSettings.genes
+		for index in range(9):
+			if genes[index] >= 9:
+				simulation_cell.get_node(gene_dict[index]+"Part").visible = true
+				simulation_cell.get_node(gene_dict[index]+"Part").set_texture(load("res://Scenes/TutorialLevels/PlayerSprite/"+gene_dict[index]+"_4.png"))
+			elif genes[index] >= 7:
+				simulation_cell.get_node(gene_dict[index]+"Part").visible = true
+				simulation_cell.get_node(gene_dict[index]+"Part").set_texture(load("res://Scenes/TutorialLevels/PlayerSprite/"+gene_dict[index]+"_3.png"))
+			elif genes[index] >= 4:
+				simulation_cell.get_node(gene_dict[index]+"Part").visible = true
+				simulation_cell.get_node(gene_dict[index]+"Part").set_texture(load("res://Scenes/TutorialLevels/PlayerSprite/"+gene_dict[index]+"_2.png"))
+			elif genes[index] == 3:
+				simulation_cell.get_node(gene_dict[index]+"Part").visible = true
+				simulation_cell.get_node(gene_dict[index]+"Part").set_texture(load("res://Scenes/TutorialLevels/PlayerSprite/"+gene_dict[index]+"_1.png"))
+		add_child(simulation_cell)
+	else:
+		if cell_type in Settings.settings["cells"]:
+			var tex_path = ""
+			if not large:
+				tex_path = Settings.settings["cells"][cell_type]["body"]
+			else:
+				tex_path = Game.get_large_cell_path(cell_type, "body")
+				
+			texture = load(tex_path)
 			
-		texture = load(tex_path)
-		
-		for child in get_children():
-			if child is Sprite:
-				if not large:
-					tex_path = Settings.settings["cells"][cell_type][child.name.to_lower()]
-				else:
-					tex_path = Game.get_large_cell_path(cell_type, child.name.to_lower())
-					
-				child.texture = load(tex_path)
-	pass # Replace with function body.
+			for child in get_children():
+				if child is Sprite:
+					if not large:
+						tex_path = Settings.settings["cells"][cell_type][child.name.to_lower()]
+					else:
+						tex_path = Game.get_large_cell_path(cell_type, child.name.to_lower())
+						
+					child.texture = load(tex_path)
+		pass # Replace with function body.
 
 # Must be any of the valid names in the Settings.settings["cells"] dictionary
 func set_cell_type(_cell_type: String, _large: bool = false):
