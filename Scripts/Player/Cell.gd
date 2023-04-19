@@ -21,21 +21,22 @@ func _ready():
 		nucleus.hide()
 		var simulation_cell = load("res://Scenes/TutorialLevels/Body.tscn").instance()
 		simulation_cell.set_position(Vector2(-190, -135))
-		var genes = SimulationSettings.selected_genes
 		var gene_dict = SimulationSettings.genes
-		for index in range(9):
-			if genes[index] >= 9:
-				simulation_cell.get_node(gene_dict[index]+"Part").visible = true
-				simulation_cell.get_node(gene_dict[index]+"Part").set_texture(load("res://Scenes/TutorialLevels/PlayerSprite/"+gene_dict[index]+"_4.png"))
-			elif genes[index] >= 7:
-				simulation_cell.get_node(gene_dict[index]+"Part").visible = true
-				simulation_cell.get_node(gene_dict[index]+"Part").set_texture(load("res://Scenes/TutorialLevels/PlayerSprite/"+gene_dict[index]+"_3.png"))
-			elif genes[index] >= 4:
-				simulation_cell.get_node(gene_dict[index]+"Part").visible = true
-				simulation_cell.get_node(gene_dict[index]+"Part").set_texture(load("res://Scenes/TutorialLevels/PlayerSprite/"+gene_dict[index]+"_2.png"))
-			elif genes[index] == 3:
-				simulation_cell.get_node(gene_dict[index]+"Part").visible = true
-				simulation_cell.get_node(gene_dict[index]+"Part").set_texture(load("res://Scenes/TutorialLevels/PlayerSprite/"+gene_dict[index]+"_1.png"))
+		for gene in gene_dict:
+			if gene == "card": break
+			else:
+				if gene_dict[gene][1] >= 8:
+					simulation_cell.get_node(gene+"Part").visible = true
+					simulation_cell.get_node(gene+"Part").set_texture(load("res://Scenes/TutorialLevels/PlayerSprite/"+gene+"_4.png"))
+				elif gene_dict[gene][1] >= 5:
+					simulation_cell.get_node(gene+"Part").visible = true
+					simulation_cell.get_node(gene+"Part").set_texture(load("res://Scenes/TutorialLevels/PlayerSprite/"+gene+"_3.png"))
+				elif gene_dict[gene][1] >= 3:
+					simulation_cell.get_node(gene+"Part").visible = true
+					simulation_cell.get_node(gene+"Part").set_texture(load("res://Scenes/TutorialLevels/PlayerSprite/"+gene+"_2.png"))
+				elif gene_dict[gene][1] == 2:
+					simulation_cell.get_node(gene+"Part").visible = true
+					simulation_cell.get_node(gene+"Part").set_texture(load("res://Scenes/TutorialLevels/PlayerSprite/"+gene+"_1.png"))
 		add_child(simulation_cell)
 	else:
 		if cell_type in Settings.settings["cells"]:

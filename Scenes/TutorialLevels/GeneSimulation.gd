@@ -111,15 +111,19 @@ func setup_simulation():
 	for i in range(console.get_chrom_length("bottom")):
 		console.remove_gene("bottom", i, false)
 		
-	var arrayIndex = 0
-	for genedex in range(8):
-		for gene_count in range(SimulationSettings.selected_genes[genedex]/2):
-			console.add_gene("top", arrayIndex, SimulationSettings.genes[genedex], 2)
-			arrayIndex += 1
-		for gene_count in range(SimulationSettings.selected_genes[genedex]/2, SimulationSettings.selected_genes[genedex]):
-			console.add_gene("bottom", arrayIndex, SimulationSettings.genes[genedex], 2)
-			arrayIndex += 1
-		
+	var arrayIndexTop = 0
+	var arrayIndexBottom = 0
+	var genes = SimulationSettings.shuffle()
+	for gene in genes:
+		var TopOrBottom = "top" if randi() % 2 == 0 else "bottom"
+		if genes[gene][0] == 0:
+			for count in range(genes[gene][1]):
+				console.add_gene(TopOrBottom, arrayIndexTop, gene, 1)
+				arrayIndexTop += 1
+		elif genes[gene][0] == 1:
+			for count in range(genes[gene][1]):
+				console.add_ate(TopOrBottom, arrayIndexBottom, gene, 1)
+				arrayIndexBottom += 1
 	
 	
 func _on_new_progeny(alive):

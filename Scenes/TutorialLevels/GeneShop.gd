@@ -61,11 +61,11 @@ const gene_buttons = [
 	"Buddy"
 ]
 
-var genes = [2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0]
-const LV1 = 3
-const LV2 = 4
-const LV3 = 7
-const LV4 = 9
+var genes = [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+const LV1 = 2
+const LV2 = 3
+const LV3 = 5
+const LV4 = 8
 
 var credits = 100
 
@@ -151,10 +151,7 @@ func _update_credit_spent(index: int, price: int, type: String):
 		credits_spent_on["genes"][1].value = credits_spent_on["genes"][0]
 
 
-func _on_btn_load_pressed():
-		SaveExports.load_from_save($LineEdit.text.strip_edges(), get_parent());
-		get_parent().close_extra_menus(self);
-		emit_signal("loaded");
+
 
 func _on_Start_pressed():
 	Game.resource_mult = Settings.resource_consumption_rate()
