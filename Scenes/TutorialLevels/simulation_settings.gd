@@ -13,7 +13,7 @@ const genes = {
 	"Manipulation":[0,1], 
 	"Replication":[0,1], 
 	"Sensing":[0,1],
-	"Blank":[0,0],
+	"Blank":[2,0],
 	"card":[1,0],
 	"commuter":[1,0],
 	"superjump":[1,0],
@@ -31,23 +31,15 @@ func get_simulation_cell():
 	return simulation_cell_display
 	
 func set_genes(genes_recieved):
-	selected_genes = genes_recieved
 	var i = 0
 	for gene in genes:
-		genes[gene][1] = selected_genes[i]
+		genes[gene][1] = genes_recieved[i]
 		i += 1
+	
+	for gene in genes:
+		for count in range(genes[gene][1]):
+			selected_genes.append([gene, genes[gene][0]])
 
 func shuffle():
-	var keys = genes.keys()
-	var shuffled_keys = []
-	while keys.size() > 0:
-		var index = randi() % keys.size()
-		shuffled_keys.append(keys[index])
-		keys.remove(index)
-	
-	var shuffled_dict = {}
-	for key in shuffled_keys:
-		shuffled_dict[key] = genes[key]
-	
-	return shuffled_dict
-
+	selected_genes.shuffle()
+	return selected_genes

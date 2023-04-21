@@ -111,19 +111,25 @@ func setup_simulation():
 	for i in range(console.get_chrom_length("bottom")):
 		console.remove_gene("bottom", i, false)
 		
-	var arrayIndexTop = 0
-	var arrayIndexBottom = 0
+	var arrayIndex = 0
 	var genes = SimulationSettings.shuffle()
 	for gene in genes:
-		var TopOrBottom = "top" if randi() % 2 == 0 else "bottom"
-		if genes[gene][0] == 0:
-			for count in range(genes[gene][1]):
-				console.add_gene(TopOrBottom, arrayIndexTop, gene, 1)
-				arrayIndexTop += 1
-		elif genes[gene][0] == 1:
-			for count in range(genes[gene][1]):
-				console.add_ate(TopOrBottom, arrayIndexBottom, gene, 1)
-				arrayIndexBottom += 1
+		if gene[1] == 0:
+			console.add_gene("top", arrayIndex, gene[0], 1)
+			console.add_gene("bottom", arrayIndex, gene[0], 1)
+			arrayIndex += 1
+		elif gene[1] == 1:
+			console.add_ate("top", arrayIndex, gene[0], 1)
+			console.add_ate("bottom", arrayIndex, gene[0], 1)
+			arrayIndex += 1
+		elif gene[1] == 2:
+			var nxt_gelm = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
+			nxt_gelm.setup("gene", "blank", "blank");
+			$Canvas_CardTable/CardTable/Organism/scroll/chromes.get_cmsm(0).add_elm(nxt_gelm, arrayIndex)
+			$Canvas_CardTable/CardTable/Organism/scroll/chromes.get_cmsm(1).add_elm(Game.copy_elm(nxt_gelm), arrayIndex)
+			arrayIndex += 1
+			
+	
 	
 	
 func _on_new_progeny(alive):

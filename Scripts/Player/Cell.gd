@@ -23,7 +23,7 @@ func _ready():
 		simulation_cell.set_position(Vector2(-190, -135))
 		var gene_dict = SimulationSettings.genes
 		for gene in gene_dict:
-			if gene == "card": break
+			if gene == "Blank": break
 			else:
 				if gene_dict[gene][1] >= 8:
 					simulation_cell.get_node(gene+"Part").visible = true
