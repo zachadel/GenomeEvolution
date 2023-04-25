@@ -281,9 +281,6 @@ margin_top = -328.0
 margin_right = 432.779
 margin_bottom = -18.0
 tab_align = 0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="pnl_bandage_dmg" type="Panel" parent="RepairTabs"]
 anchor_right = 1.0

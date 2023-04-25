@@ -91,19 +91,21 @@ func _ready():
 	switch_to_simulation()
 	only_show_chromosome()
 	setup_simulation()
+	start_simulation()
 	
 	
 func switch_to_simulation():
 	yield(get_tree().create_timer(1.0), "timeout")
 	$WorldMap/WorldMap_UI._on_EndMapTurn_pressed()
 	
-	
+# This function hides all UI except Organism
 func only_show_chromosome():
 	for child in card_table.get_children():
 		if child.get_class() != "Timer":
 			child.hide()
 	card_table.get_Organism().show()
-	
+
+# This function sets up arrays of genes that the player selected.
 func setup_simulation():
 	yield(get_tree().create_timer(4.0), "timeout")
 	for i in range(console.get_chrom_length("top")):
@@ -129,7 +131,13 @@ func setup_simulation():
 			$Canvas_CardTable/CardTable/Organism/scroll/chromes.get_cmsm(1).add_elm(Game.copy_elm(nxt_gelm), arrayIndex)
 			arrayIndex += 1
 			
-	
+func start_simulation():
+	yield(get_tree().create_timer(20.0), "timeout")
+	for i in range(10):
+		card_table._on_fixAllBreaks_pressed()
+		yield(get_tree().create_timer(5.0), "timeout")
+		$Canvas_CardTable/CardTable/Organism.jump_ates()
+		yield(get_tree().create_timer(15.0), "timeout")
 	
 	
 func _on_new_progeny(alive):
