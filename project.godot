@@ -43,6 +43,7 @@ Actions="*res://Scripts/Globals/Actions.gd"
 STATS="*res://Scripts/Globals/STATS.gd"
 PROGENY="*res://Scripts/Globals/PROGENY.gd"
 COMPETITORS="*res://Scripts/Globals/COMPETITORS.gd"
+SimulationSettings="*res://Scenes/TutorialLevels/simulation_settings.gd"
 
 [display]
 

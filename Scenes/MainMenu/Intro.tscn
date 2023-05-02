@@ -25,13 +25,13 @@
 [ext_resource path="res://Assets/Images/pngs/SpeechRectCenter.png" type="Texture" id=23]
 [ext_resource path="res://Assets/Images/pngs/CHAOS.png" type="Texture" id=24]
 
-[sub_resource type="DynamicFontData" id=1]
+[sub_resource type="DynamicFontData" id=13]
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
 
 [sub_resource type="DynamicFont" id=2]
 use_mipmaps = true
 use_filter = true
-font_data = SubResource( 1 )
+font_data = SubResource( 13 )
 
 [sub_resource type="StyleBoxFlat" id=3]
 content_margin_left = 10.0
@@ -49,13 +49,13 @@ border_blend = true
 [sub_resource type="DynamicFontData" id=4]
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
 
-[sub_resource type="DynamicFont" id=5]
+[sub_resource type="DynamicFont" id=14]
 size = 45
 use_mipmaps = true
 use_filter = true
 font_data = SubResource( 4 )
 
-[sub_resource type="StyleBoxFlat" id=6]
+[sub_resource type="StyleBoxFlat" id=15]
 bg_color = Color( 0.94902, 0.952941, 0.956863, 1 )
 border_width_left = 10
 border_width_top = 10
@@ -70,7 +70,7 @@ corner_radius_bottom_left = 30
 corner_detail = 20
 shadow_color = Color( 0.282353, 0.282353, 0.282353, 1 )
 
-[sub_resource type="StyleBoxFlat" id=7]
+[sub_resource type="StyleBoxFlat" id=16]
 bg_color = Color( 0.341176, 0.545098, 0.788235, 1 )
 border_width_left = 10
 border_width_top = 10
@@ -85,7 +85,7 @@ corner_radius_bottom_left = 30
 corner_detail = 20
 shadow_color = Color( 0.282353, 0.282353, 0.282353, 1 )
 
-[sub_resource type="StyleBoxFlat" id=8]
+[sub_resource type="StyleBoxFlat" id=17]
 bg_color = Color( 0.427451, 0.427451, 0.427451, 1 )
 border_width_left = 10
 border_width_top = 10
@@ -104,12 +104,12 @@ Button/colors/font_color_disabled = Color( 0, 0, 0, 1 )
 Button/colors/font_color_hover = Color( 0.341176, 0.545098, 0.788235, 1 )
 Button/colors/font_color_pressed = Color( 0, 0, 0, 1 )
 Button/constants/hseparation = 2
-Button/fonts/font = SubResource( 5 )
+Button/fonts/font = SubResource( 14 )
 Button/styles/disabled = null
 Button/styles/focus = null
-Button/styles/hover = SubResource( 6 )
-Button/styles/normal = SubResource( 7 )
-Button/styles/pressed = SubResource( 8 )
+Button/styles/hover = SubResource( 15 )
+Button/styles/normal = SubResource( 16 )
+Button/styles/pressed = SubResource( 17 )
 CheckBox/colors/font_color = Color( 0, 0, 0, 1 )
 CheckBox/colors/font_color_disabled = Color( 0, 0, 0, 1 )
 CheckBox/colors/font_color_hover = Color( 0, 0, 0, 1 )
@@ -579,7 +579,7 @@ custom_fonts/italics_font = ExtResource( 9 )
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[i][center]All living cells are made of stuff...[/center][/i]"
-text = "All living cells are made of stuff..."
+text = "[i][center]All living cells are made of stuff...[/center][/i]"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -737,7 +737,7 @@ custom_fonts/italics_font = ExtResource( 9 )
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[i][center]The instructions for how to put this stuff together to build and protect a living cell are written in code as genes...[/center][/i]"
-text = "The instructions for how to put this stuff together to build and protect a living cell are written in code as genes..."
+text = "[i][center]The instructions for how to put this stuff together to build and protect a living cell are written in code as genes...[/center][/i]"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -841,7 +841,7 @@ custom_fonts/italics_font = ExtResource( 9 )
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[i][center]Each gene is a blueprint for making or doing something important...[/center][/i]"
-text = "Each gene is a blueprint for making or doing something important..."
+text = "[i][center]Each gene is a blueprint for making or doing something important...[/center][/i]"
 scroll_active = false
 
 [node name="Transposon" parent="Genes" instance=ExtResource( 3 )]
@@ -879,7 +879,7 @@ custom_fonts/italics_font = ExtResource( 9 )
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[i][b]Instructions to make the cell itself. Without them, your cells would fall apart![/b][/i]"
-text = "Instructions to make the cell itself. Without them, your cells would fall apart!"
+text = "[i][b]Instructions to make the cell itself. Without them, your cells would fall apart![/b][/i]"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -899,7 +899,7 @@ custom_fonts/italics_font = ExtResource( 9 )
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[i][b]Instructions to make tools for sensing the world around you. Without them, your cells couldn't find food or detect danger![/b][/i]"
-text = "Instructions to make tools for sensing the world around you. Without them, your cells couldn't find food or detect danger!"
+text = "[i][b]Instructions to make tools for sensing the world around you. Without them, your cells couldn't find food or detect danger![/b][/i]"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -919,7 +919,7 @@ custom_fonts/italics_font = ExtResource( 9 )
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[i][b]Instructions to make tools for building other tools - without them, your cells could not make anything![/b][/i]"
-text = "Instructions to make tools for building other tools - without them, your cells could not make anything!"
+text = "[i][b]Instructions to make tools for building other tools - without them, your cells could not make anything![/b][/i]"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1095,7 +1095,7 @@ custom_fonts/italics_font = ExtResource( 9 )
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[i][center]All the genes in a living cell are linked together like beads on strings.[/center][/i]"
-text = "All the genes in a living cell are linked together like beads on strings."
+text = "[i][center]All the genes in a living cell are linked together like beads on strings.[/center][/i]"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1156,7 +1156,7 @@ custom_fonts/bold_font = SubResource( 11 )
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[b]All the genes on a single string are called a Chromosome. All the chromosomes together are called the Genome.[/b]"
-text = "All the genes on a single string are called a Chromosome. All the chromosomes together are called the Genome."
+text = "[b]All the genes on a single string are called a Chromosome. All the chromosomes together are called the Genome.[/b]"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1327,7 +1327,7 @@ custom_fonts/italics_font = ExtResource( 9 )
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[i][center]Just like real strings, the strings that make up the genome can be damaged or broken![/center][/i]"
-text = "Just like real strings, the strings that make up the genome can be damaged or broken!"
+text = "[i][center]Just like real strings, the strings that make up the genome can be damaged or broken![/center][/i]"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1390,7 +1390,7 @@ custom_fonts/bold_font = SubResource( 11 )
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[i][b]If these breaks are not fixed, the cell can't make what it needs and will die![/b][/i]"
-text = "If these breaks are not fixed, the cell can't make what it needs and will die!"
+text = "[i][b]If these breaks are not fixed, the cell can't make what it needs and will die![/b][/i]"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1570,7 +1570,7 @@ custom_fonts/italics_font = ExtResource( 9 )
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[i][center]Oh, and not every piece of the genome is a gene.[/center][/i]"
-text = "Oh, and not every piece of the genome is a gene."
+text = "[i][center]Oh, and not every piece of the genome is a gene.[/center][/i]"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1633,7 +1633,7 @@ custom_fonts/bold_font = SubResource( 11 )
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[i][b]Some parts don't have any instructions, like these blanks here and here.[/b][/i]"
-text = "Some parts don't have any instructions, like these blanks here and here."
+text = "[i][b]Some parts don't have any instructions, like these blanks here and here.[/b][/i]"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1673,9 +1673,6 @@ size_flags_vertical = 3
 texture = ExtResource( 13 )
 expand = true
 stretch_mode = 5
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="GeneBackground2" type="TextureRect" parent="Blanks/Genes"]
 margin_left = 335.0
@@ -1846,7 +1843,7 @@ custom_fonts/italics_font = ExtResource( 9 )
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[i][center]What's that?  Who am I you ask?[/center][/i]"
-text = "What's that?  Who am I you ask?"
+text = "[i][center]What's that?  Who am I you ask?[/center][/i]"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1877,7 +1874,7 @@ custom_fonts/italics_font = ExtResource( 9 )
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[i][center]I'm a transposon! I live in the genome too![/center][/i]"
-text = "I'm a transposon! I live in the genome too!"
+text = "[i][center]I'm a transposon! I live in the genome too![/center][/i]"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": true
@@ -1913,7 +1910,7 @@ custom_fonts/italics_font = ExtResource( 9 )
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[i][center]When me and my friends jump around, it is...[/center][/i]"
-text = "When me and my friends jump around, it is..."
+text = "[i][center]When me and my friends jump around, it is...[/center][/i]"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false

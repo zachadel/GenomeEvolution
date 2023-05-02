@@ -185,9 +185,6 @@ margin_left = 527.0
 margin_top = 577.0
 margin_right = 1221.0
 margin_bottom = 845.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="lbl_log" type="Label" parent="ctl_justnow"]
 anchor_right = 1.0
@@ -284,9 +281,6 @@ margin_top = -328.0
 margin_right = 432.779
 margin_bottom = -18.0
 tab_align = 0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="pnl_bandage_dmg" type="Panel" parent="RepairTabs"]
 anchor_right = 1.0
@@ -300,9 +294,6 @@ margin_bottom = -4.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_constants/separation = 8
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="LblInstr" type="Label" parent="RepairTabs/pnl_bandage_dmg/vbox"]
 margin_right = 691.0
@@ -341,9 +332,6 @@ margin_top = 50.0
 margin_right = 155.0
 margin_bottom = 50.0
 color = Color( 0.113725, 0.0980392, 0.0980392, 0.764706 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Label" type="Label" parent="RepairTabs/pnl_bandage_dmg/vbox/VBoxContainer/HBoxContainer/fix_all/fix_all_details"]
 anchor_left = 0.5

@@ -54,9 +54,6 @@ margin_right = 1571.0
 margin_bottom = 834.0
 custom_fonts/font = SubResource( 2 )
 text = "Start the Game!"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="SettingsLabel" type="RichTextLabel" parent="."]
 margin_left = 1186.65
@@ -99,8 +96,7 @@ margin_top = 84.0
 margin_right = 1446.0
 margin_bottom = 403.0
 __meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
+"_edit_group_": true
 }
 
 [node name="Settings" parent="Panel" instance=ExtResource( 1 )]
@@ -153,9 +149,6 @@ margin_top = 797.077
 margin_right = 626.541
 margin_bottom = 840.077
 text = "Apply Changes"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="FoodPreferences" type="Button" parent="."]
 margin_left = 799.106
@@ -258,9 +251,6 @@ margin_top = 846.0
 margin_right = 1147.0
 margin_bottom = 889.0
 text = "Add New Resource"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="AddNewResourcePanel" parent="." instance=ExtResource( 9 )]
 visible = false

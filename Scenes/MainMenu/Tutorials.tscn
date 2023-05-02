@@ -1,0 +1,56 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Scripts/MainMenu/Tutorials.gd" type="Script" id=1]
+
+[sub_resource type="DynamicFontData" id=2]
+font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
+
+[sub_resource type="DynamicFont" id=8]
+size = 64
+use_mipmaps = true
+use_filter = true
+font_data = SubResource( 2 )
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.341176, 0.545098, 0.788235, 1 )
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color( 0, 0, 0, 1 )
+border_blend = true
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+shadow_color = Color( 0.282353, 0.282353, 0.282353, 1 )
+
+[node name="Tutorials" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color( 0.0431373, 0.0588235, 0.564706, 1 )
+
+[node name="SelectGenes" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -261.5
+margin_top = -54.0
+margin_right = 261.5
+margin_bottom = 54.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 0.34, 0.54, 0.78, 1 )
+custom_fonts/font = SubResource( 8 )
+custom_styles/normal = SubResource( 5 )
+text = "Selecting Genes"
+
+[connection signal="begin_select_genes" from="." to="." method="_on_Tutorials_begin_select_genes"]
+[connection signal="pressed" from="SelectGenes" to="." method="_on_SelectGenes_pressed"]

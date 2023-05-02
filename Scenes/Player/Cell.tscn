@@ -7,9 +7,6 @@
 [node name="Body" type="Sprite"]
 texture = ExtResource( 1 )
 script = ExtResource( 2 )
-__meta__ = {
-"_edit_group_": true
-}
 cell_type = "cell_1"
 large = true
 

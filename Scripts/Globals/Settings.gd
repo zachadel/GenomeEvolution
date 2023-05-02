@@ -201,6 +201,7 @@ func populate_cell_texture_paths():
 			#print(part)
 			if not Settings.settings["cells"][cell][part]:
 				Settings.settings["cells"][cell][part] = CELL_TEXTURES_PATH + part + '/' + part + SEPARATOR + cell + CELL_IMAGE_TYPE
+
 		
 func reset_rng():
 	randomize()

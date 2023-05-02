@@ -71,3 +71,8 @@ func _on_Button_pressed():
 func _on_HTTPRequest_request_completed(result, response_code, headers, body):
 	var json = JSON.parse(body.get_string_from_utf8())
 	print(json.result)
+
+
+func _on_Tutorials_pressed():
+	get_tree().change_scene("res://Scenes/MainMenu/Tutorials.tscn")
+	pass # Replace with function body.

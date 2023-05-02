@@ -18,9 +18,6 @@ margin_bottom = 60.0
 rect_min_size = Vector2( 800, 60 )
 scroll_vertical_enabled = false
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 margin_right = 482.0

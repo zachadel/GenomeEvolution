@@ -1,0 +1,2262 @@
+[gd_scene load_steps=40 format=2]
+
+[ext_resource path="res://Scenes/TutorialLevels/GeneShop.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/TutorialLevels/imgs/Background.png" type="Texture" id=2]
+[ext_resource path="res://Scenes/TutorialLevels/PlayerDisplay.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/Images/genes/Construction.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Images/genes/Helix_Circle.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Images/genes/Replication.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Images/genes/Deconstruction.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Images/genes/Locomotion.png" type="Texture" id=8]
+[ext_resource path="res://Assets/Images/genes/Helper.png" type="Texture" id=9]
+[ext_resource path="res://Assets/Images/genes/Manipulation.png" type="Texture" id=10]
+[ext_resource path="res://Assets/Images/pngs/SpeechRectLeft.png" type="Texture" id=11]
+[ext_resource path="res://Assets/Images/genes/Sensing.png" type="Texture" id=12]
+[ext_resource path="res://Assets/Images/genes/Component.png" type="Texture" id=13]
+[ext_resource path="res://Scenes/MainMenu/TextScript.gd" type="Script" id=14]
+[ext_resource path="res://Scenes/TutorialLevels/imgs/Star-Clipart-PNG_nvsofi.png" type="Texture" id=15]
+[ext_resource path="res://Assets/Fonts/Italics_50.tres" type="DynamicFont" id=16]
+[ext_resource path="res://Scenes/TutorialLevels/imgs/plus-sign.png" type="Texture" id=17]
+[ext_resource path="res://Scenes/TutorialLevels/imgs/minus-sign.png" type="Texture" id=18]
+[ext_resource path="res://Scenes/CardTable/Art/TEs/Hexagon.tscn" type="PackedScene" id=19]
+[ext_resource path="res://Scenes/CardTable/Art/TEs/Semicircle.tscn" type="PackedScene" id=20]
+[ext_resource path="res://Scenes/CardTable/Art/TEs/Circle.tscn" type="PackedScene" id=21]
+[ext_resource path="res://Scenes/CardTable/Art/TEs/Pentagon.tscn" type="PackedScene" id=22]
+[ext_resource path="res://Scenes/CardTable/Art/TEs/Triangle.tscn" type="PackedScene" id=23]
+[ext_resource path="res://Scenes/CardTable/Art/TEs/Kite.tscn" type="PackedScene" id=24]
+[ext_resource path="res://Scenes/CardTable/Art/TEs/Star.tscn" type="PackedScene" id=25]
+[ext_resource path="res://Scenes/CardTable/Art/TEs/Square.tscn" type="PackedScene" id=26]
+
+[sub_resource type="GDScript" id=2]
+script/source = "extends NinePatchRect
+
+
+# Declare member variables here. Examples:
+# var a = 2
+# var b = \"text\"
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	self.set_texture(null)
+	connect(\"mouse_entered\", self, \"_on_mouse_entered\")
+	connect(\"mouse_exited\", self, \"_on_mouse_exited\")
+	pass # Replace with function body.
+	
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+#func _process(delta):
+#	pass
+
+
+func _on_Replication_mouse_entered():
+	self.set_texture(load(\"res://.import/SpeechRectLeft.png-f6bb2d2ed643c75702148229d976685c.stex\"))
+
+func _on_Replication_mouse_exited():
+	self.set_texture(null)
+
+
+func _on_Component_mouse_entered():
+	self.set_texture(load(\"res://.import/SpeechRectLeft.png-f6bb2d2ed643c75702148229d976685c.stex\"))
+
+
+func _on_Component_mouse_exited():
+	self.set_texture(null)
+
+
+func _on_Deconstruction_mouse_entered():
+	self.set_texture(load(\"res://.import/SpeechRectLeft.png-f6bb2d2ed643c75702148229d976685c.stex\"))
+
+
+func _on_Deconstruction_mouse_exited():
+	self.set_texture(null)
+
+
+func _on_Helper_mouse_entered():
+	self.set_texture(load(\"res://.import/SpeechRectLeft.png-f6bb2d2ed643c75702148229d976685c.stex\"))
+
+
+func _on_Helper_mouse_exited():
+	self.set_texture(null)
+
+
+func _on_Locomotion_mouse_entered():
+	self.set_texture(load(\"res://.import/SpeechRectLeft.png-f6bb2d2ed643c75702148229d976685c.stex\"))
+
+
+func _on_Locomotion_mouse_exited():
+	self.set_texture(null)
+
+
+func _on_Manipulation_mouse_entered():
+	self.set_texture(load(\"res://.import/SpeechRectLeft.png-f6bb2d2ed643c75702148229d976685c.stex\"))
+
+
+func _on_Manipulation_mouse_exited():
+	self.set_texture(null)
+
+
+func _on_Sensing_mouse_entered():
+	self.set_texture(load(\"res://.import/SpeechRectLeft.png-f6bb2d2ed643c75702148229d976685c.stex\"))
+
+
+func _on_Sensing_mouse_exited():
+	self.set_texture(null)
+"
+
+[sub_resource type="DynamicFontData" id=1]
+font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
+
+[sub_resource type="DynamicFont" id=3]
+size = 48
+use_mipmaps = true
+use_filter = true
+font_data = SubResource( 1 )
+
+[sub_resource type="DynamicFontData" id=4]
+font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
+
+[sub_resource type="DynamicFont" id=5]
+use_mipmaps = true
+use_filter = true
+font_data = SubResource( 4 )
+
+[sub_resource type="DynamicFontData" id=36]
+font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
+
+[sub_resource type="DynamicFont" id=37]
+use_mipmaps = true
+use_filter = true
+font_data = SubResource( 36 )
+
+[sub_resource type="DynamicFontData" id=29]
+font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
+
+[sub_resource type="DynamicFont" id=30]
+size = 45
+use_mipmaps = true
+use_filter = true
+font_data = SubResource( 29 )
+
+[sub_resource type="StyleBoxFlat" id=31]
+bg_color = Color( 0.94902, 0.952941, 0.956863, 1 )
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color( 0, 0, 0, 1 )
+border_blend = true
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+shadow_color = Color( 0.282353, 0.282353, 0.282353, 1 )
+
+[sub_resource type="StyleBoxFlat" id=32]
+bg_color = Color( 0.341176, 0.545098, 0.788235, 1 )
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color( 0, 0, 0, 1 )
+border_blend = true
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 20
+shadow_color = Color( 0.282353, 0.282353, 0.282353, 1 )
+
+[sub_resource type="StyleBoxFlat" id=33]
+bg_color = Color( 0.427451, 0.427451, 0.427451, 1 )
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color( 0, 0, 0, 1 )
+border_blend = true
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="Theme" id=34]
+Button/colors/font_color = Color( 1, 1, 1, 1 )
+Button/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+Button/colors/font_color_hover = Color( 0.341176, 0.545098, 0.788235, 1 )
+Button/colors/font_color_pressed = Color( 0, 0, 0, 1 )
+Button/constants/hseparation = 2
+Button/fonts/font = SubResource( 30 )
+Button/styles/disabled = null
+Button/styles/focus = null
+Button/styles/hover = SubResource( 31 )
+Button/styles/normal = SubResource( 32 )
+Button/styles/pressed = SubResource( 33 )
+CheckBox/colors/font_color = Color( 0, 0, 0, 1 )
+CheckBox/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+CheckBox/colors/font_color_hover = Color( 0, 0, 0, 1 )
+CheckBox/colors/font_color_hover_pressed = Color( 0, 0, 0, 1 )
+CheckBox/colors/font_color_pressed = Color( 0, 0, 0, 1 )
+CheckBox/constants/check_vadjust = 0
+CheckBox/constants/hseparation = 4
+CheckBox/fonts/font = null
+CheckBox/icons/checked = null
+CheckBox/icons/radio_checked = null
+CheckBox/icons/radio_unchecked = null
+CheckBox/icons/unchecked = null
+CheckBox/styles/disabled = null
+CheckBox/styles/focus = null
+CheckBox/styles/hover = null
+CheckBox/styles/hover_pressed = null
+CheckBox/styles/normal = null
+CheckBox/styles/pressed = null
+CheckButton/colors/font_color = Color( 0, 0, 0, 1 )
+CheckButton/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+CheckButton/colors/font_color_hover = Color( 0, 0, 0, 1 )
+CheckButton/colors/font_color_hover_pressed = Color( 0, 0, 0, 1 )
+CheckButton/colors/font_color_pressed = Color( 0, 0, 0, 1 )
+CheckButton/constants/check_vadjust = 0
+CheckButton/constants/hseparation = 4
+CheckButton/fonts/font = null
+CheckButton/icons/off = null
+CheckButton/icons/off_disabled = null
+CheckButton/icons/on = null
+CheckButton/icons/on_disabled = null
+CheckButton/styles/disabled = null
+CheckButton/styles/focus = null
+CheckButton/styles/hover = null
+CheckButton/styles/hover_pressed = null
+CheckButton/styles/normal = null
+CheckButton/styles/pressed = null
+ColorPicker/constants/h_width = 30
+ColorPicker/constants/label_width = 10
+ColorPicker/constants/margin = 4
+ColorPicker/constants/sv_height = 256
+ColorPicker/constants/sv_width = 256
+ColorPicker/icons/add_preset = null
+ColorPicker/icons/color_hue = null
+ColorPicker/icons/color_sample = null
+ColorPicker/icons/overbright_indicator = null
+ColorPicker/icons/preset_bg = null
+ColorPicker/icons/screen_picker = null
+ColorPickerButton/colors/font_color = Color( 0, 0, 0, 1 )
+ColorPickerButton/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+ColorPickerButton/colors/font_color_hover = Color( 0, 0, 0, 1 )
+ColorPickerButton/colors/font_color_pressed = Color( 0, 0, 0, 1 )
+ColorPickerButton/constants/hseparation = 2
+ColorPickerButton/fonts/font = null
+ColorPickerButton/icons/bg = null
+ColorPickerButton/styles/disabled = null
+ColorPickerButton/styles/focus = null
+ColorPickerButton/styles/hover = null
+ColorPickerButton/styles/normal = null
+ColorPickerButton/styles/pressed = null
+Dialogs/constants/button_margin = 32
+Dialogs/constants/margin = 8
+FileDialog/colors/files_disabled = Color( 0, 0, 0, 1 )
+FileDialog/colors/folder_icon_modulate = Color( 0, 0, 0, 1 )
+FileDialog/icons/folder = null
+FileDialog/icons/parent_folder = null
+FileDialog/icons/reload = null
+FileDialog/icons/toggle_hidden = null
+Fonts/fonts/large = null
+Fonts/fonts/normal = null
+GraphEdit/colors/activity = Color( 0, 0, 0, 1 )
+GraphEdit/colors/grid_major = Color( 0, 0, 0, 1 )
+GraphEdit/colors/grid_minor = Color( 0, 0, 0, 1 )
+GraphEdit/colors/selection_fill = Color( 0, 0, 0, 1 )
+GraphEdit/colors/selection_stroke = Color( 0, 0, 0, 1 )
+GraphEdit/constants/bezier_len_neg = 160
+GraphEdit/constants/bezier_len_pos = 80
+GraphEdit/constants/port_grab_distance_horizontal = 48
+GraphEdit/constants/port_grab_distance_vertical = 6
+GraphEdit/icons/minus = null
+GraphEdit/icons/more = null
+GraphEdit/icons/reset = null
+GraphEdit/icons/snap = null
+GraphEdit/styles/bg = null
+GraphNode/colors/close_color = Color( 0, 0, 0, 1 )
+GraphNode/colors/resizer_color = Color( 0, 0, 0, 1 )
+GraphNode/colors/title_color = Color( 0, 0, 0, 1 )
+GraphNode/constants/close_offset = 18
+GraphNode/constants/port_offset = 3
+GraphNode/constants/separation = 1
+GraphNode/constants/title_offset = 20
+GraphNode/fonts/title_font = null
+GraphNode/icons/close = null
+GraphNode/icons/port = null
+GraphNode/icons/resizer = null
+GraphNode/styles/breakpoint = null
+GraphNode/styles/comment = null
+GraphNode/styles/commentfocus = null
+GraphNode/styles/defaultfocus = null
+GraphNode/styles/defaultframe = null
+GraphNode/styles/frame = null
+GraphNode/styles/position = null
+GraphNode/styles/selectedframe = null
+GridContainer/constants/hseparation = 4
+GridContainer/constants/vseparation = 4
+HBoxContainer/constants/separation = 4
+HScrollBar/icons/decrement = null
+HScrollBar/icons/decrement_highlight = null
+HScrollBar/icons/increment = null
+HScrollBar/icons/increment_highlight = null
+HScrollBar/styles/grabber = null
+HScrollBar/styles/grabber_highlight = null
+HScrollBar/styles/grabber_pressed = null
+HScrollBar/styles/scroll = null
+HScrollBar/styles/scroll_focus = null
+HSeparator/constants/separation = 4
+HSeparator/styles/separator = null
+HSlider/icons/grabber = null
+HSlider/icons/grabber_disabled = null
+HSlider/icons/grabber_highlight = null
+HSlider/icons/tick = null
+HSlider/styles/grabber_area = null
+HSlider/styles/slider = null
+HSplitContainer/constants/autohide = 1
+HSplitContainer/constants/separation = 12
+HSplitContainer/icons/grabber = null
+HSplitContainer/styles/bg = null
+Icons/icons/close = null
+ItemList/colors/font_color = Color( 0, 0, 0, 1 )
+ItemList/colors/font_color_selected = Color( 0, 0, 0, 1 )
+ItemList/colors/guide_color = Color( 0, 0, 0, 1 )
+ItemList/constants/hseparation = 4
+ItemList/constants/icon_margin = 4
+ItemList/constants/line_separation = 2
+ItemList/constants/vseparation = 2
+ItemList/fonts/font = null
+ItemList/styles/bg = null
+ItemList/styles/bg_focus = null
+ItemList/styles/cursor = null
+ItemList/styles/cursor_unfocused = null
+ItemList/styles/selected = null
+ItemList/styles/selected_focus = null
+Label/colors/font_color = Color( 0, 0, 0, 1 )
+Label/colors/font_color_shadow = Color( 0, 0, 0, 1 )
+Label/colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+Label/constants/line_spacing = 3
+Label/constants/shadow_as_outline = 0
+Label/constants/shadow_offset_x = 1
+Label/constants/shadow_offset_y = 1
+Label/fonts/font = null
+Label/styles/normal = null
+LineEdit/colors/clear_button_color = Color( 0, 0, 0, 1 )
+LineEdit/colors/clear_button_color_pressed = Color( 0, 0, 0, 1 )
+LineEdit/colors/cursor_color = Color( 0, 0, 0, 1 )
+LineEdit/colors/font_color = Color( 0, 0, 0, 1 )
+LineEdit/colors/font_color_selected = Color( 0, 0, 0, 1 )
+LineEdit/colors/font_color_uneditable = Color( 0, 0, 0, 1 )
+LineEdit/colors/selection_color = Color( 0, 0, 0, 1 )
+LineEdit/constants/minimum_spaces = 12
+LineEdit/fonts/font = null
+LineEdit/icons/clear = null
+LineEdit/styles/focus = null
+LineEdit/styles/normal = null
+LineEdit/styles/read_only = null
+LinkButton/colors/font_color = Color( 0, 0, 0, 1 )
+LinkButton/colors/font_color_hover = Color( 0, 0, 0, 1 )
+LinkButton/colors/font_color_pressed = Color( 0, 0, 0, 1 )
+LinkButton/constants/underline_spacing = 2
+LinkButton/fonts/font = null
+LinkButton/styles/focus = null
+MarginContainer/constants/margin_bottom = 0
+MarginContainer/constants/margin_left = 0
+MarginContainer/constants/margin_right = 0
+MarginContainer/constants/margin_top = 0
+MenuButton/colors/font_color = Color( 0, 0, 0, 1 )
+MenuButton/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+MenuButton/colors/font_color_hover = Color( 0, 0, 0, 1 )
+MenuButton/colors/font_color_pressed = Color( 0, 0, 0, 1 )
+MenuButton/constants/hseparation = 3
+MenuButton/fonts/font = null
+MenuButton/styles/disabled = null
+MenuButton/styles/focus = null
+MenuButton/styles/hover = null
+MenuButton/styles/normal = null
+MenuButton/styles/pressed = null
+OptionButton/colors/font_color = Color( 0, 0, 0, 1 )
+OptionButton/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+OptionButton/colors/font_color_hover = Color( 0, 0, 0, 1 )
+OptionButton/colors/font_color_pressed = Color( 0, 0, 0, 1 )
+OptionButton/constants/arrow_margin = 2
+OptionButton/constants/hseparation = 2
+OptionButton/fonts/font = null
+OptionButton/icons/arrow = null
+OptionButton/styles/disabled = null
+OptionButton/styles/focus = null
+OptionButton/styles/hover = null
+OptionButton/styles/normal = null
+OptionButton/styles/pressed = null
+Panel/styles/panel = null
+PanelContainer/styles/panel = null
+PopupDialog/styles/panel = null
+PopupMenu/colors/font_color = Color( 0, 0, 0, 1 )
+PopupMenu/colors/font_color_accel = Color( 0, 0, 0, 1 )
+PopupMenu/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+PopupMenu/colors/font_color_hover = Color( 0, 0, 0, 1 )
+PopupMenu/constants/hseparation = 4
+PopupMenu/constants/vseparation = 4
+PopupMenu/fonts/font = null
+PopupMenu/icons/checked = null
+PopupMenu/icons/radio_checked = null
+PopupMenu/icons/radio_unchecked = null
+PopupMenu/icons/submenu = null
+PopupMenu/icons/unchecked = null
+PopupMenu/styles/hover = null
+PopupMenu/styles/labeled_separator_left = null
+PopupMenu/styles/labeled_separator_right = null
+PopupMenu/styles/panel = null
+PopupMenu/styles/panel_disabled = null
+PopupMenu/styles/separator = null
+PopupPanel/styles/panel = null
+ProgressBar/colors/font_color = Color( 0, 0, 0, 1 )
+ProgressBar/colors/font_color_shadow = Color( 0, 0, 0, 1 )
+ProgressBar/fonts/font = null
+ProgressBar/styles/bg = null
+ProgressBar/styles/fg = null
+RichTextLabel/colors/default_color = Color( 0, 0, 0, 1 )
+RichTextLabel/colors/font_color_selected = Color( 0, 0, 0, 1 )
+RichTextLabel/colors/font_color_shadow = Color( 0, 0, 0, 1 )
+RichTextLabel/colors/selection_color = Color( 0, 0, 0, 1 )
+RichTextLabel/constants/line_separation = 1
+RichTextLabel/constants/shadow_as_outline = 0
+RichTextLabel/constants/shadow_offset_x = 1
+RichTextLabel/constants/shadow_offset_y = 1
+RichTextLabel/constants/table_hseparation = 3
+RichTextLabel/constants/table_vseparation = 3
+RichTextLabel/fonts/bold_font = null
+RichTextLabel/fonts/bold_italics_font = null
+RichTextLabel/fonts/italics_font = null
+RichTextLabel/fonts/mono_font = null
+RichTextLabel/fonts/normal_font = null
+RichTextLabel/styles/focus = null
+RichTextLabel/styles/normal = null
+ScrollContainer/styles/bg = null
+SpinBox/icons/updown = null
+TabContainer/colors/font_color_bg = Color( 0, 0, 0, 1 )
+TabContainer/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+TabContainer/colors/font_color_fg = Color( 0, 0, 0, 1 )
+TabContainer/constants/hseparation = 4
+TabContainer/constants/label_valign_bg = 2
+TabContainer/constants/label_valign_fg = 0
+TabContainer/constants/side_margin = 8
+TabContainer/constants/top_margin = 24
+TabContainer/fonts/font = null
+TabContainer/icons/decrement = null
+TabContainer/icons/decrement_highlight = null
+TabContainer/icons/increment = null
+TabContainer/icons/increment_highlight = null
+TabContainer/icons/menu = null
+TabContainer/icons/menu_highlight = null
+TabContainer/styles/panel = null
+TabContainer/styles/tab_bg = null
+TabContainer/styles/tab_disabled = null
+TabContainer/styles/tab_fg = null
+Tabs/colors/font_color_bg = Color( 0, 0, 0, 1 )
+Tabs/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+Tabs/colors/font_color_fg = Color( 0, 0, 0, 1 )
+Tabs/constants/hseparation = 4
+Tabs/constants/label_valign_bg = 2
+Tabs/constants/label_valign_fg = 0
+Tabs/constants/top_margin = 24
+Tabs/fonts/font = null
+Tabs/icons/close = null
+Tabs/icons/decrement = null
+Tabs/icons/decrement_highlight = null
+Tabs/icons/increment = null
+Tabs/icons/increment_highlight = null
+Tabs/styles/button = null
+Tabs/styles/button_pressed = null
+Tabs/styles/panel = null
+Tabs/styles/tab_bg = null
+Tabs/styles/tab_disabled = null
+Tabs/styles/tab_fg = null
+TextEdit/colors/background_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/bookmark_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/brace_mismatch_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/breakpoint_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/caret_background_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/caret_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/code_folding_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/completion_background_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/completion_existing_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/completion_font_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/completion_scroll_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/completion_selected_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/current_line_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/executing_line_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/font_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/font_color_readonly = Color( 0, 0, 0, 1 )
+TextEdit/colors/font_color_selected = Color( 0, 0, 0, 1 )
+TextEdit/colors/function_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/line_number_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/mark_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/member_variable_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/number_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/safe_line_number_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/selection_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/symbol_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/word_highlighted_color = Color( 0, 0, 0, 1 )
+TextEdit/constants/completion_lines = 7
+TextEdit/constants/completion_max_width = 50
+TextEdit/constants/completion_scroll_width = 3
+TextEdit/constants/line_spacing = 4
+TextEdit/fonts/font = null
+TextEdit/icons/fold = null
+TextEdit/icons/folded = null
+TextEdit/icons/space = null
+TextEdit/icons/tab = null
+TextEdit/styles/completion = null
+TextEdit/styles/focus = null
+TextEdit/styles/normal = null
+TextEdit/styles/read_only = null
+ToolButton/colors/font_color = Color( 0, 0, 0, 1 )
+ToolButton/colors/font_color_disabled = Color( 0, 0, 0, 1 )
+ToolButton/colors/font_color_hover = Color( 0, 0, 0, 1 )
+ToolButton/colors/font_color_pressed = Color( 0, 0, 0, 1 )
+ToolButton/constants/hseparation = 3
+ToolButton/fonts/font = null
+ToolButton/styles/disabled = null
+ToolButton/styles/focus = null
+ToolButton/styles/hover = null
+ToolButton/styles/normal = null
+ToolButton/styles/pressed = null
+TooltipLabel/colors/font_color = Color( 0, 0, 0, 1 )
+TooltipLabel/colors/font_color_shadow = Color( 0, 0, 0, 1 )
+TooltipLabel/constants/shadow_offset_x = 1
+TooltipLabel/constants/shadow_offset_y = 1
+TooltipLabel/fonts/font = null
+TooltipPanel/styles/panel = null
+Tree/colors/cursor_color = Color( 0, 0, 0, 1 )
+Tree/colors/custom_button_font_highlight = Color( 0, 0, 0, 1 )
+Tree/colors/drop_position_color = Color( 0, 0, 0, 1 )
+Tree/colors/font_color = Color( 0, 0, 0, 1 )
+Tree/colors/font_color_selected = Color( 0, 0, 0, 1 )
+Tree/colors/guide_color = Color( 0, 0, 0, 1 )
+Tree/colors/relationship_line_color = Color( 0, 0, 0, 1 )
+Tree/colors/selection_color = Color( 0, 0, 0, 1 )
+Tree/colors/title_button_color = Color( 0, 0, 0, 1 )
+Tree/constants/button_margin = 4
+Tree/constants/draw_guides = 1
+Tree/constants/draw_relationship_lines = 0
+Tree/constants/hseparation = 4
+Tree/constants/item_margin = 12
+Tree/constants/scroll_border = 4
+Tree/constants/scroll_speed = 12
+Tree/constants/vseparation = 4
+Tree/fonts/font = null
+Tree/fonts/title_button_font = null
+Tree/icons/arrow = null
+Tree/icons/arrow_collapsed = null
+Tree/icons/checked = null
+Tree/icons/select_arrow = null
+Tree/icons/unchecked = null
+Tree/icons/updown = null
+Tree/styles/bg = null
+Tree/styles/bg_focus = null
+Tree/styles/button_pressed = null
+Tree/styles/cursor = null
+Tree/styles/cursor_unfocused = null
+Tree/styles/custom_button = null
+Tree/styles/custom_button_hover = null
+Tree/styles/custom_button_pressed = null
+Tree/styles/selected = null
+Tree/styles/selected_focus = null
+Tree/styles/title_button_hover = null
+Tree/styles/title_button_normal = null
+Tree/styles/title_button_pressed = null
+VBoxContainer/constants/separation = 4
+VScrollBar/icons/decrement = null
+VScrollBar/icons/decrement_highlight = null
+VScrollBar/icons/increment = null
+VScrollBar/icons/increment_highlight = null
+VScrollBar/styles/grabber = null
+VScrollBar/styles/grabber_highlight = null
+VScrollBar/styles/grabber_pressed = null
+VScrollBar/styles/scroll = null
+VScrollBar/styles/scroll_focus = null
+VSeparator/constants/separation = 4
+VSeparator/styles/separator = null
+VSlider/icons/grabber = null
+VSlider/icons/grabber_disabled = null
+VSlider/icons/grabber_highlight = null
+VSlider/icons/tick = null
+VSlider/styles/grabber_area = null
+VSlider/styles/slider = null
+VSplitContainer/constants/autohide = 1
+VSplitContainer/constants/separation = 12
+VSplitContainer/icons/grabber = null
+VSplitContainer/styles/bg = null
+WindowDialog/colors/title_color = Color( 0, 0, 0, 1 )
+WindowDialog/constants/close_h_ofs = 18
+WindowDialog/constants/close_v_ofs = 18
+WindowDialog/constants/scaleborder_size = 4
+WindowDialog/constants/title_height = 20
+WindowDialog/fonts/title_font = null
+WindowDialog/icons/close = null
+WindowDialog/icons/close_highlight = null
+WindowDialog/styles/panel = null
+
+[node name="GeneShop" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+
+[node name="Background" type="ColorRect" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -1600.0
+margin_bottom = 900.0
+mouse_filter = 2
+color = Color( 0.0431373, 0.0588235, 0.564706, 1 )
+
+[node name="PlayerDisplay" parent="." instance=ExtResource( 3 )]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -199.5
+margin_top = -143.5
+margin_right = 199.5
+margin_bottom = 143.5
+
+[node name="Genome" type="GridContainer" parent="."]
+margin_left = 50.0
+margin_top = 36.0
+margin_right = 1570.0
+margin_bottom = 200.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.16
+custom_constants/vseparation = 0
+custom_constants/hseparation = 0
+columns = 9
+
+[node name="Construction" type="TextureRect" parent="Genome"]
+margin_right = 169.0
+margin_bottom = 82.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 5 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Construction" type="TextureRect" parent="Genome/Construction"]
+anchor_right = 0.885417
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="ToolTip" type="NinePatchRect" parent="Genome/Construction/Construction"]
+visible = false
+margin_left = 11.89
+margin_top = -197.991
+margin_right = 362.89
+margin_bottom = 30.009
+texture = ExtResource( 11 )
+region_rect = Rect2( 0, 0, 643, 302 )
+script = SubResource( 2 )
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Genome/Construction/Construction/ToolTip"]
+anchor_left = 0.021
+anchor_top = 0.034
+anchor_right = 0.086
+anchor_bottom = 0.035
+margin_left = 0.629
+margin_top = 1.248
+margin_right = 300.814
+margin_bottom = 104.02
+grow_horizontal = 2
+rect_scale = Vector2( 1.1, 1.1 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+tab_size = 7
+text = "ASSEMBLY
+
+
+Assembly genes encode proteins required to build all your other proteins or store resources"
+script = ExtResource( 14 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Component" type="TextureRect" parent="Genome"]
+margin_left = 169.0
+margin_right = 338.0
+margin_bottom = 82.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 5 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Component" type="TextureRect" parent="Genome/Component"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 13 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="ToolTip" type="NinePatchRect" parent="Genome/Component/Component"]
+visible = false
+margin_left = 11.89
+margin_top = -197.991
+margin_right = 362.89
+margin_bottom = 30.009
+texture = ExtResource( 11 )
+region_rect = Rect2( 0, 0, 643, 302 )
+script = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Genome/Component/Component/ToolTip"]
+anchor_left = 0.021
+anchor_top = 0.034
+anchor_right = 0.086
+anchor_bottom = 0.035
+margin_left = -0.371
+margin_top = 0.248
+margin_right = 286.814
+margin_bottom = 98.02
+grow_horizontal = 2
+rect_scale = Vector2( 1.1, 1.1 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+tab_size = 7
+text = "COMPONENT
+
+
+Component genes encode proteins that are used as building blocks for your organism."
+script = ExtResource( 14 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Deconstruction" type="TextureRect" parent="Genome"]
+margin_left = 338.0
+margin_right = 507.0
+margin_bottom = 82.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 5 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Deconstruction" type="TextureRect" parent="Genome/Deconstruction"]
+anchor_right = 0.885417
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 7 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="ToolTip" type="NinePatchRect" parent="Genome/Deconstruction/Deconstruction"]
+visible = false
+margin_left = 11.89
+margin_top = -197.991
+margin_right = 362.89
+margin_bottom = 30.009
+texture = ExtResource( 11 )
+region_rect = Rect2( 0, 0, 643, 302 )
+script = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Genome/Deconstruction/Deconstruction/ToolTip"]
+anchor_left = 0.021
+anchor_top = 0.034
+anchor_right = 0.086
+anchor_bottom = 0.035
+margin_left = -0.371
+margin_top = 0.248
+margin_right = 286.814
+margin_bottom = 98.02
+grow_horizontal = 2
+rect_scale = Vector2( 1.1, 1.1 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+tab_size = 7
+text = "DISSASEMBLY
+
+
+Dissasembly genes encode proteins required to break down complex resources into simpler, useable ones."
+script = ExtResource( 14 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Helper" type="TextureRect" parent="Genome"]
+margin_left = 507.0
+margin_right = 676.0
+margin_bottom = 82.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 5 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Helper" type="TextureRect" parent="Genome/Helper"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 9 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="ToolTip" type="NinePatchRect" parent="Genome/Helper/Helper"]
+visible = false
+margin_left = 11.89
+margin_top = -197.991
+margin_right = 362.89
+margin_bottom = 30.009
+texture = ExtResource( 11 )
+region_rect = Rect2( 0, 0, 643, 302 )
+script = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Genome/Helper/Helper/ToolTip"]
+anchor_left = 0.021
+anchor_top = 0.034
+anchor_right = 0.086
+anchor_bottom = 0.035
+margin_left = -0.371
+margin_top = 0.248
+margin_right = 286.814
+margin_bottom = 87.02
+grow_horizontal = 2
+rect_scale = Vector2( 1.1, 1.1 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+tab_size = 7
+text = "HELPER
+
+Helper genes encode proteins that help another gene do its job more effectively."
+script = ExtResource( 14 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Locomotion" type="TextureRect" parent="Genome"]
+margin_left = 676.0
+margin_right = 845.0
+margin_bottom = 82.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 5 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Locomotion" type="TextureRect" parent="Genome/Locomotion"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 8 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="ToolTip" type="NinePatchRect" parent="Genome/Locomotion/Locomotion"]
+visible = false
+margin_left = 11.89
+margin_top = -197.991
+margin_right = 362.89
+margin_bottom = 30.009
+texture = ExtResource( 11 )
+region_rect = Rect2( 0, 0, 643, 302 )
+script = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Genome/Locomotion/Locomotion/ToolTip"]
+anchor_left = 0.021
+anchor_top = 0.034
+anchor_right = 0.086
+anchor_bottom = 0.035
+margin_left = -0.371
+margin_top = 0.248
+margin_right = 286.814
+margin_bottom = 105.02
+grow_horizontal = 2
+rect_scale = Vector2( 1.1, 1.1 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+tab_size = 7
+text = "MOVEMENT
+
+
+Movement genes encode proteins needed to move your organism around in the world."
+script = ExtResource( 14 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Manipulation" type="TextureRect" parent="Genome"]
+margin_left = 845.0
+margin_right = 1014.0
+margin_bottom = 82.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 5 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Manipulation" type="TextureRect" parent="Genome/Manipulation"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 10 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="ToolTip" type="NinePatchRect" parent="Genome/Manipulation/Manipulation"]
+visible = false
+margin_left = 11.89
+margin_top = -197.991
+margin_right = 362.89
+margin_bottom = 30.009
+texture = ExtResource( 11 )
+region_rect = Rect2( 0, 0, 643, 302 )
+script = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Genome/Manipulation/Manipulation/ToolTip"]
+anchor_left = 0.021
+anchor_top = 0.034
+anchor_right = 0.086
+anchor_bottom = 0.035
+margin_left = -0.371
+margin_top = 0.248
+margin_right = 286.814
+margin_bottom = 93.02
+grow_horizontal = 2
+rect_scale = Vector2( 1.1, 1.1 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+tab_size = 7
+text = "TRANSPORTER
+
+
+Transporter genes encode proteins that help you aqcuire nutrients and get rid of waste."
+script = ExtResource( 14 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Replication" type="TextureRect" parent="Genome"]
+margin_left = 1014.0
+margin_right = 1183.0
+margin_bottom = 82.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 5 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Replication" type="TextureRect" parent="Genome/Replication"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="ToolTip" type="NinePatchRect" parent="Genome/Replication/Replication"]
+visible = false
+margin_left = 11.89
+margin_top = -197.991
+margin_right = 362.89
+margin_bottom = 30.009
+texture = ExtResource( 11 )
+region_rect = Rect2( 0, 0, 643, 302 )
+script = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Genome/Replication/Replication/ToolTip"]
+anchor_left = 0.021
+anchor_top = 0.034
+anchor_right = 0.086
+anchor_bottom = 0.035
+margin_left = -0.371
+margin_top = 0.248
+margin_right = 286.814
+margin_bottom = 92.02
+grow_horizontal = 2
+rect_scale = Vector2( 1.1, 1.1 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+tab_size = 7
+text = "REPLICATION
+
+
+Replication genes encode proteins needed to copy (replicate) your genome or repair it when it is broken."
+script = ExtResource( 14 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sensing" type="TextureRect" parent="Genome"]
+margin_left = 1183.0
+margin_right = 1352.0
+margin_bottom = 82.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 5 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sensing" type="TextureRect" parent="Genome/Sensing"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 12 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="ToolTip" type="NinePatchRect" parent="Genome/Sensing/Sensing"]
+visible = false
+margin_left = 11.89
+margin_top = -197.991
+margin_right = 362.89
+margin_bottom = 30.009
+texture = ExtResource( 11 )
+region_rect = Rect2( 0, 0, 643, 302 )
+script = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Genome/Sensing/Sensing/ToolTip"]
+anchor_left = 0.021
+anchor_top = 0.034
+anchor_right = 0.086
+anchor_bottom = 0.035
+margin_left = -0.371
+margin_top = 0.248
+margin_right = 286.814
+margin_bottom = 92.02
+grow_horizontal = 2
+rect_scale = Vector2( 1.1, 1.1 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+tab_size = 7
+text = "SENSING
+
+
+Sensing genes encode proteins that sense resources or dangers in either the world or inside your organism."
+script = ExtResource( 14 )
+
+[node name="Blank" type="TextureRect" parent="Genome"]
+margin_left = 1352.0
+margin_right = 1520.0
+margin_bottom = 82.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 5 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="ToolTip" type="NinePatchRect" parent="Genome/Blank"]
+visible = false
+margin_left = 11.89
+margin_top = -197.991
+margin_right = 362.89
+margin_bottom = 30.009
+texture = ExtResource( 11 )
+region_rect = Rect2( 0, 0, 643, 302 )
+script = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Genome/Blank/ToolTip"]
+anchor_left = 0.021
+anchor_top = 0.034
+anchor_right = 0.086
+anchor_bottom = 0.035
+margin_left = -0.371
+margin_top = 0.248
+margin_right = 286.814
+margin_bottom = 92.02
+grow_horizontal = 2
+rect_scale = Vector2( 1.1, 1.1 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+tab_size = 7
+text = "SENSING
+
+
+Sensing genes encode proteins that sense resources or dangers in either the world or inside your organism."
+script = ExtResource( 14 )
+
+[node name="Construction_Price" type="Label" parent="Genome"]
+margin_left = 71.0
+margin_top = 89.0
+margin_right = 98.0
+margin_bottom = 156.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "8"
+align = 1
+valign = 1
+
+[node name="Component_Price" type="Label" parent="Genome"]
+margin_left = 226.0
+margin_top = 89.0
+margin_right = 280.0
+margin_bottom = 156.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "15"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Deconstruction_Price" type="Label" parent="Genome"]
+margin_left = 409.0
+margin_top = 89.0
+margin_right = 436.0
+margin_bottom = 156.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "9"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Helper_Price" type="Label" parent="Genome"]
+margin_left = 578.0
+margin_top = 89.0
+margin_right = 605.0
+margin_bottom = 156.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "5"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Locomotion_Price" type="Label" parent="Genome"]
+margin_left = 733.0
+margin_top = 89.0
+margin_right = 787.0
+margin_bottom = 156.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "11"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Manipulation_Price" type="Label" parent="Genome"]
+margin_left = 902.0
+margin_top = 89.0
+margin_right = 956.0
+margin_bottom = 156.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "10"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Replication_Price" type="Label" parent="Genome"]
+margin_left = 1071.0
+margin_top = 89.0
+margin_right = 1125.0
+margin_bottom = 156.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "10"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sensing_Price" type="Label" parent="Genome"]
+margin_left = 1240.0
+margin_top = 89.0
+margin_right = 1294.0
+margin_bottom = 156.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "12"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Blank_Price" type="Label" parent="Genome"]
+margin_left = 1422.0
+margin_top = 89.0
+margin_right = 1449.0
+margin_bottom = 156.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "2"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ConstructionCtrl" type="Control" parent="Genome"]
+margin_top = 164.0
+margin_right = 169.0
+margin_bottom = 164.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Increase" type="TextureButton" parent="Genome/ConstructionCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
+
+[node name="Decrease" type="TextureButton" parent="Genome/ConstructionCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 18 )
+
+[node name="Construction_Label" type="Label" parent="Genome/ConstructionCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_rotation = -0.0527298
+rect_scale = Vector2( 2, 2 )
+text = "1"
+
+[node name="ComponentCtrl" type="Control" parent="Genome"]
+margin_left = 169.0
+margin_top = 164.0
+margin_right = 338.0
+margin_bottom = 164.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Increase" type="TextureButton" parent="Genome/ComponentCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
+
+[node name="Decrease" type="TextureButton" parent="Genome/ComponentCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 18 )
+
+[node name="Component_Label" type="Label" parent="Genome/ComponentCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_scale = Vector2( 2, 2 )
+text = "1"
+
+[node name="DeconstructionCtrl" type="Control" parent="Genome"]
+margin_left = 338.0
+margin_top = 164.0
+margin_right = 507.0
+margin_bottom = 164.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Increase" type="TextureButton" parent="Genome/DeconstructionCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
+
+[node name="Decrease" type="TextureButton" parent="Genome/DeconstructionCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 18 )
+
+[node name="Deconstruction_Label" type="Label" parent="Genome/DeconstructionCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_scale = Vector2( 2, 2 )
+text = "1"
+
+[node name="HelperCtrl" type="Control" parent="Genome"]
+margin_left = 507.0
+margin_top = 164.0
+margin_right = 676.0
+margin_bottom = 164.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Increase" type="TextureButton" parent="Genome/HelperCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
+
+[node name="Decrease" type="TextureButton" parent="Genome/HelperCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 18 )
+
+[node name="Helper_Label" type="Label" parent="Genome/HelperCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_scale = Vector2( 2, 2 )
+text = "1"
+
+[node name="LocomotionCtrl" type="Control" parent="Genome"]
+margin_left = 676.0
+margin_top = 164.0
+margin_right = 845.0
+margin_bottom = 164.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Increase" type="TextureButton" parent="Genome/LocomotionCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
+
+[node name="Decrease" type="TextureButton" parent="Genome/LocomotionCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 18 )
+
+[node name="Locomotion_Label" type="Label" parent="Genome/LocomotionCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_scale = Vector2( 2, 2 )
+text = "1"
+
+[node name="ManipulationCtrl" type="Control" parent="Genome"]
+margin_left = 845.0
+margin_top = 164.0
+margin_right = 1014.0
+margin_bottom = 164.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Increase" type="TextureButton" parent="Genome/ManipulationCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
+
+[node name="Decrease" type="TextureButton" parent="Genome/ManipulationCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 18 )
+
+[node name="Manipulation_Label" type="Label" parent="Genome/ManipulationCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_scale = Vector2( 2, 2 )
+text = "1"
+
+[node name="ReplicationCtrl" type="Control" parent="Genome"]
+margin_left = 1014.0
+margin_top = 164.0
+margin_right = 1183.0
+margin_bottom = 164.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Increase" type="TextureButton" parent="Genome/ReplicationCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
+
+[node name="Decrease" type="TextureButton" parent="Genome/ReplicationCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 18 )
+
+[node name="Replication_Label" type="Label" parent="Genome/ReplicationCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_scale = Vector2( 2, 2 )
+text = "1"
+
+[node name="SensingCtrl" type="Control" parent="Genome"]
+margin_left = 1183.0
+margin_top = 164.0
+margin_right = 1352.0
+margin_bottom = 164.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Increase" type="TextureButton" parent="Genome/SensingCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
+
+[node name="Decrease" type="TextureButton" parent="Genome/SensingCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 18 )
+
+[node name="Sensing_Label" type="Label" parent="Genome/SensingCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_scale = Vector2( 2, 2 )
+text = "1"
+
+[node name="BlankCtrl" type="Control" parent="Genome"]
+margin_left = 1352.0
+margin_top = 164.0
+margin_right = 1520.0
+margin_bottom = 164.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Increase" type="TextureButton" parent="Genome/BlankCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
+
+[node name="Decrease" type="TextureButton" parent="Genome/BlankCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 18 )
+
+[node name="Blank_Label" type="Label" parent="Genome/BlankCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_scale = Vector2( 2, 2 )
+text = "0"
+
+[node name="Credit" type="TextureRect" parent="."]
+margin_left = 223.0
+margin_top = 362.0
+margin_right = 243.0
+margin_bottom = 378.0
+rect_scale = Vector2( 10, 3 )
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CreditImg" type="TextureRect" parent="Credit"]
+margin_left = -0.144531
+margin_top = 3.0
+margin_right = 2894.86
+margin_bottom = 2916.0
+rect_scale = Vector2( 0.002, 0.004 )
+texture = ExtResource( 15 )
+
+[node name="CreditVal" type="RichTextLabel" parent="Credit"]
+modulate = Color( 0, 0, 0, 1 )
+margin_left = 6.0
+margin_top = 2.0
+margin_right = 33.0
+margin_bottom = 58.0
+rect_scale = Vector2( 0.3, 0.5 )
+custom_fonts/normal_font = SubResource( 5 )
+bbcode_enabled = true
+bbcode_text = "[center]100[center]"
+text = "100"
+
+[node name="NotEnough" type="RichTextLabel" parent="Credit"]
+visible = false
+modulate = Color( 1, 0.219608, 0.219608, 1 )
+margin_top = 20.0
+margin_right = 159.0
+margin_bottom = 50.0
+rect_scale = Vector2( 0.2, 0.3 )
+custom_fonts/italics_font = ExtResource( 16 )
+custom_fonts/normal_font = SubResource( 5 )
+bbcode_enabled = true
+bbcode_text = "[center]Not enough credits![/center]"
+text = "Not enough credits!"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Credit"]
+margin_left = -6.0
+margin_top = -20.0
+margin_right = 85.0
+margin_bottom = 80.0
+rect_scale = Vector2( 0.3, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]You have 
+
+
+Genome Credits[center]"
+text = "You have 
+
+
+Genome Credits"
+
+[node name="TE" type="GridContainer" parent="."]
+margin_left = 12.0
+margin_top = 716.0
+margin_right = 1546.0
+margin_bottom = 896.0
+custom_constants/vseparation = -88
+custom_constants/hseparation = 54
+columns = 8
+
+[node name="Classic" parent="TE" instance=ExtResource( 21 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 145.0
+margin_bottom = 0.0
+
+[node name="Commuter" parent="TE" instance=ExtResource( 20 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 199.0
+margin_right = 344.0
+margin_bottom = 0.0
+
+[node name="SuperJumper" parent="TE" instance=ExtResource( 23 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 398.0
+margin_right = 543.0
+margin_bottom = 0.0
+
+[node name="Assist" parent="TE" instance=ExtResource( 19 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 597.0
+margin_right = 742.0
+margin_bottom = 0.0
+
+[node name="Nestler" parent="TE" instance=ExtResource( 25 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 796.0
+margin_right = 940.0
+margin_bottom = 0.0
+
+[node name="ZigZag" parent="TE" instance=ExtResource( 24 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 994.0
+margin_right = 1138.0
+margin_bottom = 0.0
+
+[node name="Buncher" parent="TE" instance=ExtResource( 26 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 1192.0
+margin_right = 1336.0
+margin_bottom = 0.0
+
+[node name="Buddy" parent="TE" instance=ExtResource( 22 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 1390.0
+margin_right = 1534.0
+margin_bottom = 0.0
+
+[node name="ClassicCtrl" type="Control" parent="TE"]
+margin_top = -88.0
+margin_right = 145.0
+margin_bottom = -88.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Increase" type="TextureButton" parent="TE/ClassicCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
+
+[node name="Decrease" type="TextureButton" parent="TE/ClassicCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 18 )
+
+[node name="Classic_Label" type="Label" parent="TE/ClassicCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_rotation = -0.0527298
+rect_scale = Vector2( 2, 2 )
+text = "0"
+
+[node name="CommuterCtrl" type="Control" parent="TE"]
+margin_left = 199.0
+margin_top = -88.0
+margin_right = 344.0
+margin_bottom = -88.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Increase" type="TextureButton" parent="TE/CommuterCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
+
+[node name="Decrease" type="TextureButton" parent="TE/CommuterCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 18 )
+
+[node name="Commuter_Label" type="Label" parent="TE/CommuterCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_rotation = -0.0527298
+rect_scale = Vector2( 2, 2 )
+text = "0"
+
+[node name="SuperJumperCtrl" type="Control" parent="TE"]
+margin_left = 398.0
+margin_top = -88.0
+margin_right = 543.0
+margin_bottom = -88.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Increase" type="TextureButton" parent="TE/SuperJumperCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
+
+[node name="Decrease" type="TextureButton" parent="TE/SuperJumperCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 18 )
+
+[node name="SuperJumper_Label" type="Label" parent="TE/SuperJumperCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_rotation = -0.0527298
+rect_scale = Vector2( 2, 2 )
+text = "0"
+
+[node name="AssistCtrl" type="Control" parent="TE"]
+margin_left = 597.0
+margin_top = -88.0
+margin_right = 742.0
+margin_bottom = -88.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Increase" type="TextureButton" parent="TE/AssistCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
+
+[node name="Decrease" type="TextureButton" parent="TE/AssistCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 18 )
+
+[node name="Assist_Label" type="Label" parent="TE/AssistCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_rotation = -0.0527298
+rect_scale = Vector2( 2, 2 )
+text = "0"
+
+[node name="NestlerCtrl" type="Control" parent="TE"]
+margin_left = 796.0
+margin_top = -88.0
+margin_right = 940.0
+margin_bottom = -88.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Increase" type="TextureButton" parent="TE/NestlerCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
+
+[node name="Decrease" type="TextureButton" parent="TE/NestlerCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 18 )
+
+[node name="Nestler_Label" type="Label" parent="TE/NestlerCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_rotation = -0.0527298
+rect_scale = Vector2( 2, 2 )
+text = "0"
+
+[node name="ZigZagCtrl" type="Control" parent="TE"]
+margin_left = 994.0
+margin_top = -88.0
+margin_right = 1138.0
+margin_bottom = -88.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Increase" type="TextureButton" parent="TE/ZigZagCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
+
+[node name="Decrease" type="TextureButton" parent="TE/ZigZagCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 18 )
+
+[node name="ZigZag_Label" type="Label" parent="TE/ZigZagCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_rotation = -0.0527298
+rect_scale = Vector2( 2, 2 )
+text = "0"
+
+[node name="BuncherCtrl" type="Control" parent="TE"]
+margin_left = 1192.0
+margin_top = -88.0
+margin_right = 1336.0
+margin_bottom = -88.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Increase" type="TextureButton" parent="TE/BuncherCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
+
+[node name="Decrease" type="TextureButton" parent="TE/BuncherCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 18 )
+
+[node name="Buncher_Label" type="Label" parent="TE/BuncherCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_rotation = -0.0527298
+rect_scale = Vector2( 2, 2 )
+text = "0"
+
+[node name="BuddyCtrl" type="Control" parent="TE"]
+margin_left = 1390.0
+margin_top = -88.0
+margin_right = 1534.0
+margin_bottom = -88.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Increase" type="TextureButton" parent="TE/BuddyCtrl"]
+margin_left = 100.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 17 )
+
+[node name="Decrease" type="TextureButton" parent="TE/BuddyCtrl"]
+margin_left = 30.0
+margin_top = 15.0
+margin_right = 130.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.3, 0.3 )
+texture_normal = ExtResource( 18 )
+
+[node name="Buddy_Label" type="Label" parent="TE/BuddyCtrl"]
+margin_left = 70.0
+margin_top = 20.0
+margin_right = 84.0
+margin_bottom = 34.0
+rect_rotation = -0.0527298
+rect_scale = Vector2( 2, 2 )
+text = "0"
+
+[node name="Classic_Price" type="Label" parent="TE"]
+margin_left = 51.0
+margin_top = -32.0
+margin_right = 93.0
+margin_bottom = 35.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "-1"
+align = 1
+valign = 1
+
+[node name="Commuter_Price" type="Label" parent="TE"]
+margin_left = 258.0
+margin_top = -32.0
+margin_right = 285.0
+margin_bottom = 35.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "2"
+align = 1
+valign = 1
+
+[node name="SuperJumper_Price" type="Label" parent="TE"]
+margin_left = 449.0
+margin_top = -32.0
+margin_right = 491.0
+margin_bottom = 35.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "-8"
+align = 1
+valign = 1
+
+[node name="Assist_Price" type="Label" parent="TE"]
+margin_left = 642.0
+margin_top = -32.0
+margin_right = 696.0
+margin_bottom = 35.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "10"
+align = 1
+valign = 1
+
+[node name="Nestler_Price" type="Label" parent="TE"]
+margin_left = 847.0
+margin_top = -32.0
+margin_right = 889.0
+margin_bottom = 35.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "-4"
+align = 1
+valign = 1
+
+[node name="ZigZag_Price" type="Label" parent="TE"]
+margin_left = 1045.0
+margin_top = -32.0
+margin_right = 1087.0
+margin_bottom = 35.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "-5"
+align = 1
+valign = 1
+
+[node name="Buncher_Price" type="Label" parent="TE"]
+margin_left = 1243.0
+margin_top = -32.0
+margin_right = 1285.0
+margin_bottom = 35.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "-2"
+align = 1
+valign = 1
+
+[node name="Buddy_Price" type="Label" parent="TE"]
+margin_left = 1427.0
+margin_top = -32.0
+margin_right = 1496.0
+margin_bottom = 35.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+custom_fonts/font = SubResource( 3 )
+text = "-10"
+align = 1
+valign = 1
+
+[node name="Indicator" type="TextureRect" parent="."]
+modulate = Color( 0.278431, 0.533333, 0.827451, 1 )
+margin_left = 1100.0
+margin_top = 322.0
+margin_right = 1116.0
+margin_bottom = 338.0
+rect_scale = Vector2( 25, 15 )
+texture = ExtResource( 2 )
+
+[node name="IndicatorTitle" type="RichTextLabel" parent="Indicator"]
+margin_left = -0.76001
+margin_top = 0.0666656
+margin_right = 172.24
+margin_bottom = 53.0667
+rect_scale = Vector2( 0.1, 0.1 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+custom_fonts/bold_font = SubResource( 37 )
+custom_fonts/normal_font = SubResource( 37 )
+bbcode_enabled = true
+bbcode_text = "[center][b]Genome indicators[b][center]"
+text = "Genome indicators"
+
+[node name="GenePower" type="Control" parent="Indicator"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Label" type="RichTextLabel" parent="Indicator/GenePower"]
+margin_left = 0.279999
+margin_top = 3.86666
+margin_right = 111.28
+margin_bottom = 55.8667
+rect_scale = Vector2( 0.05, 0.05 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+custom_fonts/normal_font = SubResource( 37 )
+bbcode_enabled = true
+bbcode_text = "[center]Gene Power[center]"
+text = "Gene Power"
+
+[node name="GenePowerProgress" type="TextureProgress" parent="Indicator/GenePower"]
+margin_left = 7.0
+margin_top = 4.0
+margin_right = 23.0
+margin_bottom = 20.0
+rect_scale = Vector2( 0.5, 0.1 )
+max_value = 500.0
+texture_under = ExtResource( 2 )
+texture_progress = ExtResource( 2 )
+tint_under = Color( 0.643137, 0.643137, 0.643137, 1 )
+tint_progress = Color( 0.101961, 0.298039, 0.956863, 1 )
+
+[node name="EvolutionP" type="Control" parent="Indicator"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Label" type="RichTextLabel" parent="Indicator/EvolutionP"]
+margin_top = 7.0
+margin_right = 111.0
+margin_bottom = 82.0
+rect_scale = Vector2( 0.05, 0.05 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+custom_fonts/normal_font = SubResource( 37 )
+bbcode_enabled = true
+bbcode_text = "[center]Evolution Potential[center]"
+text = "Evolution Potential"
+
+[node name="EvolutionPProgress" type="TextureProgress" parent="Indicator/EvolutionP"]
+margin_left = 7.0
+margin_top = 7.5
+margin_right = 23.0
+margin_bottom = 23.5
+rect_scale = Vector2( 0.5, 0.1 )
+max_value = 500.0
+texture_under = ExtResource( 2 )
+texture_progress = ExtResource( 2 )
+tint_under = Color( 0.643137, 0.643137, 0.643137, 1 )
+tint_progress = Color( 0.101961, 0.298039, 0.956863, 1 )
+
+[node name="RiskOfChaos" type="Control" parent="Indicator"]
+margin_left = 0.079998
+margin_top = 0.0666637
+margin_right = 16.08
+margin_bottom = 16.0667
+
+[node name="Label" type="RichTextLabel" parent="Indicator/RiskOfChaos"]
+margin_top = 12.0
+margin_right = 111.0
+margin_bottom = 132.0
+rect_scale = Vector2( 0.05, 0.05 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+custom_fonts/normal_font = SubResource( 37 )
+bbcode_enabled = true
+bbcode_text = "[center]Risk of Chaos / Destruction[center]"
+text = "Risk of Chaos / Destruction"
+
+[node name="RiskOfChaosProgress" type="TextureProgress" parent="Indicator/RiskOfChaos"]
+margin_left = 6.84
+margin_top = 12.46
+margin_right = 22.84
+margin_bottom = 28.46
+rect_scale = Vector2( 0.5, 0.1 )
+max_value = 500.0
+texture_under = ExtResource( 2 )
+texture_progress = ExtResource( 2 )
+tint_under = Color( 0.643137, 0.643137, 0.643137, 1 )
+tint_progress = Color( 0.101961, 0.298039, 0.956863, 1 )
+
+[node name="Start" type="Button" parent="."]
+margin_left = 131.0
+margin_top = 535.0
+margin_right = 286.0
+margin_bottom = 618.0
+theme = SubResource( 34 )
+text = "START"
+
+[node name="VIEW" type="Button" parent="."]
+margin_left = 319.0
+margin_top = 535.0
+margin_right = 474.0
+margin_bottom = 618.0
+theme = SubResource( 34 )
+text = "VIEW"
+
+[connection signal="mouse_entered" from="Genome/Construction/Construction" to="Genome/Construction/Construction/ToolTip" method="_on_Replication_mouse_entered"]
+[connection signal="mouse_entered" from="Genome/Construction/Construction" to="Genome/Construction/Construction/ToolTip/RichTextLabel" method="_on_Replication_mouse_entered"]
+[connection signal="mouse_exited" from="Genome/Construction/Construction" to="Genome/Construction/Construction/ToolTip" method="_on_Replication_mouse_exited"]
+[connection signal="mouse_exited" from="Genome/Construction/Construction" to="Genome/Construction/Construction/ToolTip/RichTextLabel" method="_on_Replication_mouse_exited"]
+[connection signal="mouse_entered" from="Genome/Component/Component" to="Genome/Component/Component/ToolTip" method="_on_Component_mouse_entered"]
+[connection signal="mouse_entered" from="Genome/Component/Component" to="Genome/Component/Component/ToolTip/RichTextLabel" method="_on_Component_mouse_entered"]
+[connection signal="mouse_exited" from="Genome/Component/Component" to="Genome/Component/Component/ToolTip" method="_on_Component_mouse_exited"]
+[connection signal="mouse_exited" from="Genome/Component/Component" to="Genome/Component/Component/ToolTip/RichTextLabel" method="_on_Component_mouse_exited"]
+[connection signal="mouse_entered" from="Genome/Deconstruction/Deconstruction" to="Genome/Deconstruction/Deconstruction/ToolTip" method="_on_Deconstruction_mouse_entered"]
+[connection signal="mouse_entered" from="Genome/Deconstruction/Deconstruction" to="Genome/Deconstruction/Deconstruction/ToolTip/RichTextLabel" method="_on_Deconstruction_mouse_entered"]
+[connection signal="mouse_exited" from="Genome/Deconstruction/Deconstruction" to="Genome/Deconstruction/Deconstruction/ToolTip" method="_on_Deconstruction_mouse_exited"]
+[connection signal="mouse_exited" from="Genome/Deconstruction/Deconstruction" to="Genome/Deconstruction/Deconstruction/ToolTip/RichTextLabel" method="_on_Deconstruction_mouse_exited"]
+[connection signal="mouse_entered" from="Genome/Helper/Helper" to="Genome/Helper/Helper/ToolTip" method="_on_Helper_mouse_entered"]
+[connection signal="mouse_entered" from="Genome/Helper/Helper" to="Genome/Helper/Helper/ToolTip/RichTextLabel" method="_on_Helper_mouse_entered"]
+[connection signal="mouse_exited" from="Genome/Helper/Helper" to="Genome/Helper/Helper/ToolTip" method="_on_Helper_mouse_exited"]
+[connection signal="mouse_exited" from="Genome/Helper/Helper" to="Genome/Helper/Helper/ToolTip/RichTextLabel" method="_on_Helper_mouse_exited"]
+[connection signal="mouse_entered" from="Genome/Locomotion/Locomotion" to="Genome/Locomotion/Locomotion/ToolTip" method="_on_Locomotion_mouse_entered"]
+[connection signal="mouse_entered" from="Genome/Locomotion/Locomotion" to="Genome/Locomotion/Locomotion/ToolTip/RichTextLabel" method="_on_Locomotion_mouse_entered"]
+[connection signal="mouse_exited" from="Genome/Locomotion/Locomotion" to="Genome/Locomotion/Locomotion/ToolTip" method="_on_Locomotion_mouse_exited"]
+[connection signal="mouse_exited" from="Genome/Locomotion/Locomotion" to="Genome/Locomotion/Locomotion/ToolTip/RichTextLabel" method="_on_Locomotion_mouse_exited"]
+[connection signal="mouse_entered" from="Genome/Manipulation/Manipulation" to="Genome/Manipulation/Manipulation/ToolTip" method="_on_Manipulation_mouse_entered"]
+[connection signal="mouse_entered" from="Genome/Manipulation/Manipulation" to="Genome/Manipulation/Manipulation/ToolTip/RichTextLabel" method="_on_Manipulation_mouse_entered"]
+[connection signal="mouse_exited" from="Genome/Manipulation/Manipulation" to="Genome/Manipulation/Manipulation/ToolTip" method="_on_Manipulation_mouse_exited"]
+[connection signal="mouse_exited" from="Genome/Manipulation/Manipulation" to="Genome/Manipulation/Manipulation/ToolTip/RichTextLabel" method="_on_Manipulation_mouse_exited"]
+[connection signal="mouse_entered" from="Genome/Replication/Replication" to="Genome/Replication/Replication/ToolTip" method="_on_Replication_mouse_entered"]
+[connection signal="mouse_entered" from="Genome/Replication/Replication" to="Genome/Replication/Replication/ToolTip/RichTextLabel" method="_on_Replication_mouse_entered"]
+[connection signal="mouse_exited" from="Genome/Replication/Replication" to="Genome/Replication/Replication/ToolTip" method="_on_Replication_mouse_exited"]
+[connection signal="mouse_exited" from="Genome/Replication/Replication" to="Genome/Replication/Replication/ToolTip/RichTextLabel" method="_on_Replication_mouse_exited"]
+[connection signal="mouse_entered" from="Genome/Sensing/Sensing" to="Genome/Sensing/Sensing/ToolTip" method="_on_Sensing_mouse_entered"]
+[connection signal="mouse_entered" from="Genome/Sensing/Sensing" to="Genome/Sensing/Sensing/ToolTip/RichTextLabel" method="_on_Sensing_mouse_entered"]
+[connection signal="mouse_exited" from="Genome/Sensing/Sensing" to="Genome/Sensing/Sensing/ToolTip" method="_on_Sensing_mouse_exited"]
+[connection signal="mouse_exited" from="Genome/Sensing/Sensing" to="Genome/Sensing/Sensing/ToolTip/RichTextLabel" method="_on_Sensing_mouse_exited"]
+[connection signal="pressed" from="Genome/ConstructionCtrl/Increase" to="." method="_on_gene_increase" binds= [ "Construction" ]]
+[connection signal="pressed" from="Genome/ConstructionCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "Construction" ]]
+[connection signal="pressed" from="Genome/ComponentCtrl/Increase" to="." method="_on_gene_increase" binds= [ "Component" ]]
+[connection signal="pressed" from="Genome/ComponentCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "Component" ]]
+[connection signal="pressed" from="Genome/DeconstructionCtrl/Increase" to="." method="_on_gene_increase" binds= [ "Deconstruction" ]]
+[connection signal="pressed" from="Genome/DeconstructionCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "Deconstruction" ]]
+[connection signal="pressed" from="Genome/HelperCtrl/Increase" to="." method="_on_gene_increase" binds= [ "Helper" ]]
+[connection signal="pressed" from="Genome/HelperCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "Helper" ]]
+[connection signal="pressed" from="Genome/LocomotionCtrl/Increase" to="." method="_on_gene_increase" binds= [ "Locomotion" ]]
+[connection signal="pressed" from="Genome/LocomotionCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "Locomotion" ]]
+[connection signal="pressed" from="Genome/ManipulationCtrl/Increase" to="." method="_on_gene_increase" binds= [ "Manipulation" ]]
+[connection signal="pressed" from="Genome/ManipulationCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "Manipulation" ]]
+[connection signal="pressed" from="Genome/ReplicationCtrl/Increase" to="." method="_on_gene_increase" binds= [ "Replication" ]]
+[connection signal="pressed" from="Genome/ReplicationCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "Replication" ]]
+[connection signal="pressed" from="Genome/SensingCtrl/Increase" to="." method="_on_gene_increase" binds= [ "Sensing" ]]
+[connection signal="pressed" from="Genome/SensingCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "Sensing" ]]
+[connection signal="pressed" from="Genome/BlankCtrl/Increase" to="." method="_on_gene_increase" binds= [ "Blank" ]]
+[connection signal="pressed" from="Genome/BlankCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "Blank" ]]
+[connection signal="pressed" from="TE/ClassicCtrl/Increase" to="." method="_on_gene_increase" binds= [ "Classic" ]]
+[connection signal="pressed" from="TE/ClassicCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "Classic" ]]
+[connection signal="pressed" from="TE/CommuterCtrl/Increase" to="." method="_on_gene_increase" binds= [ "Commuter" ]]
+[connection signal="pressed" from="TE/CommuterCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "Commuter" ]]
+[connection signal="pressed" from="TE/SuperJumperCtrl/Increase" to="." method="_on_gene_increase" binds= [ "SuperJumper" ]]
+[connection signal="pressed" from="TE/SuperJumperCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "SuperJumper" ]]
+[connection signal="pressed" from="TE/AssistCtrl/Increase" to="." method="_on_gene_increase" binds= [ "Assist" ]]
+[connection signal="pressed" from="TE/AssistCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "Assist" ]]
+[connection signal="pressed" from="TE/NestlerCtrl/Increase" to="." method="_on_gene_increase" binds= [ "Nestler" ]]
+[connection signal="pressed" from="TE/NestlerCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "Nestler" ]]
+[connection signal="pressed" from="TE/ZigZagCtrl/Increase" to="." method="_on_gene_increase" binds= [ "ZigZag" ]]
+[connection signal="pressed" from="TE/ZigZagCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "ZigZag" ]]
+[connection signal="pressed" from="TE/BuncherCtrl/Increase" to="." method="_on_gene_increase" binds= [ "Buncher" ]]
+[connection signal="pressed" from="TE/BuncherCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "Buncher" ]]
+[connection signal="pressed" from="TE/BuddyCtrl/Increase" to="." method="_on_gene_increase" binds= [ "Buddy" ]]
+[connection signal="pressed" from="TE/BuddyCtrl/Decrease" to="." method="_on_gene_decrease" binds= [ "Buddy" ]]
+[connection signal="pressed" from="Start" to="." method="_on_Start_pressed"]
