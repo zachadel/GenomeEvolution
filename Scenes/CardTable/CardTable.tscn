@@ -1,4 +1,4 @@
-[gd_scene load_steps=59 format=2]
+[gd_scene load_steps=60 format=2]
 
 [ext_resource path="res://Scripts/CardTable/CardTable.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player/Organism.tscn" type="PackedScene" id=2]
@@ -167,6 +167,10 @@ resource_local_to_scene = true
 size = 45
 use_mipmaps = true
 use_filter = true
+font_data = ExtResource( 34 )
+
+[sub_resource type="DynamicFont" id=35]
+size = 50
 font_data = ExtResource( 34 )
 
 [node name="CardTable" type="Control"]
@@ -2152,6 +2156,18 @@ text = "Collapse Duplicates"
 
 [node name="Comp_Organism" parent="." instance=ExtResource( 48 )]
 visible = false
+
+[node name="Score" type="RichTextLabel" parent="."]
+visible = false
+margin_left = 8.71936
+margin_top = 557.644
+margin_right = 254.719
+margin_bottom = 663.644
+custom_fonts/bold_font = SubResource( 35 )
+custom_fonts/normal_font = SubResource( 35 )
+bbcode_enabled = true
+bbcode_text = "[b]Turn: 0 [/b]"
+text = "Turn: 0 "
 
 [connection signal="gui_input" from="." to="." method="_on_CardTable_gui_input"]
 [connection signal="bandage_msg" from="Organism" to="." method="_on_Organism_bandage_msg"]

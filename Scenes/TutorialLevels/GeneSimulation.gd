@@ -104,6 +104,7 @@ func only_show_chromosome():
 		if child.get_class() != "Timer":
 			child.hide()
 	card_table.get_Organism().show()
+	$Canvas_CardTable/CardTable/Score.show()
 
 # This function sets up arrays of genes that the player selected.
 func setup_simulation():
@@ -117,12 +118,12 @@ func setup_simulation():
 	var genes = SimulationSettings.shuffle()
 	for gene in genes:
 		if gene[1] == 0:
-			console.add_gene("top", arrayIndex, gene[0], 1)
-			console.add_gene("bottom", arrayIndex, gene[0], 1)
+			console.add_gene("top", arrayIndex, gene[0], gene[2])
+			console.add_gene("bottom", arrayIndex, gene[0], gene[2])
 			arrayIndex += 1
 		elif gene[1] == 1:
-			console.add_ate("top", arrayIndex, gene[0], 1)
-			console.add_ate("bottom", arrayIndex, gene[0], 1)
+			console.add_ate("top", arrayIndex, gene[0], gene[2])
+			console.add_ate("bottom", arrayIndex, gene[0], gene[2])
 			arrayIndex += 1
 		elif gene[1] == 2:
 			var nxt_gelm = load("res://Scenes/CardTable/SequenceElement.tscn").instance();
@@ -133,11 +134,15 @@ func setup_simulation():
 			
 func start_simulation():
 	yield(get_tree().create_timer(20.0), "timeout")
+	var score = 1
+	$Canvas_CardTable/CardTable/Score.bbcode_text = "[b]Turn: %s[/b]" % str(score)
 	for i in range(10):
 		card_table._on_fixAllBreaks_pressed()
 		yield(get_tree().create_timer(5.0), "timeout")
 		$Canvas_CardTable/CardTable/Organism.jump_ates()
 		yield(get_tree().create_timer(15.0), "timeout")
+		score = score + 1
+		$Canvas_CardTable/CardTable/Score.bbcode_text = "[b]Turn: %s[/b]" % str(score)
 	
 	
 func _on_new_progeny(alive):

@@ -1163,6 +1163,14 @@ text = "8"
 align = 1
 valign = 1
 
+[node name="TextureRect" type="TextureRect" parent="Genome/Construction_Price"]
+margin_left = -39.0
+margin_top = 21.0
+margin_right = 2856.0
+margin_bottom = 2934.0
+rect_scale = Vector2( 0.01, 0.01 )
+texture = ExtResource( 15 )
+
 [node name="Component_Price" type="Label" parent="Genome"]
 margin_left = 226.0
 margin_top = 89.0
@@ -1177,6 +1185,14 @@ valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="TextureRect" type="TextureRect" parent="Genome/Component_Price"]
+margin_left = -39.0
+margin_top = 21.0
+margin_right = 2856.0
+margin_bottom = 2934.0
+rect_scale = Vector2( 0.01, 0.01 )
+texture = ExtResource( 15 )
 
 [node name="Deconstruction_Price" type="Label" parent="Genome"]
 margin_left = 409.0
@@ -1193,6 +1209,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="TextureRect" type="TextureRect" parent="Genome/Deconstruction_Price"]
+margin_left = -39.0
+margin_top = 21.0
+margin_right = 2856.0
+margin_bottom = 2934.0
+rect_scale = Vector2( 0.01, 0.01 )
+texture = ExtResource( 15 )
+
 [node name="Helper_Price" type="Label" parent="Genome"]
 margin_left = 578.0
 margin_top = 89.0
@@ -1207,6 +1231,14 @@ valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="TextureRect" type="TextureRect" parent="Genome/Helper_Price"]
+margin_left = -39.0
+margin_top = 21.0
+margin_right = 2856.0
+margin_bottom = 2934.0
+rect_scale = Vector2( 0.01, 0.01 )
+texture = ExtResource( 15 )
 
 [node name="Locomotion_Price" type="Label" parent="Genome"]
 margin_left = 733.0
@@ -1223,6 +1255,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="TextureRect" type="TextureRect" parent="Genome/Locomotion_Price"]
+margin_left = -39.0
+margin_top = 21.0
+margin_right = 2856.0
+margin_bottom = 2934.0
+rect_scale = Vector2( 0.01, 0.01 )
+texture = ExtResource( 15 )
+
 [node name="Manipulation_Price" type="Label" parent="Genome"]
 margin_left = 902.0
 margin_top = 89.0
@@ -1237,6 +1277,14 @@ valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="TextureRect" type="TextureRect" parent="Genome/Manipulation_Price"]
+margin_left = -39.0
+margin_top = 21.0
+margin_right = 2856.0
+margin_bottom = 2934.0
+rect_scale = Vector2( 0.01, 0.01 )
+texture = ExtResource( 15 )
 
 [node name="Replication_Price" type="Label" parent="Genome"]
 margin_left = 1071.0
@@ -1253,6 +1301,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="TextureRect" type="TextureRect" parent="Genome/Replication_Price"]
+margin_left = -39.0
+margin_top = 21.0
+margin_right = 2856.0
+margin_bottom = 2934.0
+rect_scale = Vector2( 0.01, 0.01 )
+texture = ExtResource( 15 )
+
 [node name="Sensing_Price" type="Label" parent="Genome"]
 margin_left = 1240.0
 margin_top = 89.0
@@ -1268,6 +1324,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="TextureRect" type="TextureRect" parent="Genome/Sensing_Price"]
+margin_left = -39.0
+margin_top = 21.0
+margin_right = 2856.0
+margin_bottom = 2934.0
+rect_scale = Vector2( 0.01, 0.01 )
+texture = ExtResource( 15 )
+
 [node name="Blank_Price" type="Label" parent="Genome"]
 margin_left = 1422.0
 margin_top = 89.0
@@ -1282,6 +1346,14 @@ valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="TextureRect" type="TextureRect" parent="Genome/Blank_Price"]
+margin_left = -39.0
+margin_top = 21.0
+margin_right = 2856.0
+margin_bottom = 2934.0
+rect_scale = Vector2( 0.01, 0.01 )
+texture = ExtResource( 15 )
 
 [node name="ConstructionCtrl" type="Control" parent="Genome"]
 margin_top = 164.0
@@ -1987,6 +2059,14 @@ text = "-1"
 align = 1
 valign = 1
 
+[node name="TextureRect" type="TextureRect" parent="TE/Classic_Price"]
+margin_left = -39.0
+margin_top = 21.0
+margin_right = 2856.0
+margin_bottom = 2934.0
+rect_scale = Vector2( 0.01, 0.01 )
+texture = ExtResource( 15 )
+
 [node name="Commuter_Price" type="Label" parent="TE"]
 margin_left = 258.0
 margin_top = -32.0
@@ -1998,6 +2078,14 @@ custom_fonts/font = SubResource( 3 )
 text = "2"
 align = 1
 valign = 1
+
+[node name="TextureRect" type="TextureRect" parent="TE/Commuter_Price"]
+margin_left = -39.0
+margin_top = 21.0
+margin_right = 2856.0
+margin_bottom = 2934.0
+rect_scale = Vector2( 0.01, 0.01 )
+texture = ExtResource( 15 )
 
 [node name="SuperJumper_Price" type="Label" parent="TE"]
 margin_left = 449.0
@@ -2011,6 +2099,14 @@ text = "-8"
 align = 1
 valign = 1
 
+[node name="TextureRect" type="TextureRect" parent="TE/SuperJumper_Price"]
+margin_left = -39.0
+margin_top = 21.0
+margin_right = 2856.0
+margin_bottom = 2934.0
+rect_scale = Vector2( 0.01, 0.01 )
+texture = ExtResource( 15 )
+
 [node name="Assist_Price" type="Label" parent="TE"]
 margin_left = 642.0
 margin_top = -32.0
@@ -2022,6 +2118,14 @@ custom_fonts/font = SubResource( 3 )
 text = "10"
 align = 1
 valign = 1
+
+[node name="TextureRect" type="TextureRect" parent="TE/Assist_Price"]
+margin_left = -39.0
+margin_top = 21.0
+margin_right = 2856.0
+margin_bottom = 2934.0
+rect_scale = Vector2( 0.01, 0.01 )
+texture = ExtResource( 15 )
 
 [node name="Nestler_Price" type="Label" parent="TE"]
 margin_left = 847.0
@@ -2035,6 +2139,14 @@ text = "-4"
 align = 1
 valign = 1
 
+[node name="TextureRect" type="TextureRect" parent="TE/Nestler_Price"]
+margin_left = -39.0
+margin_top = 21.0
+margin_right = 2856.0
+margin_bottom = 2934.0
+rect_scale = Vector2( 0.01, 0.01 )
+texture = ExtResource( 15 )
+
 [node name="ZigZag_Price" type="Label" parent="TE"]
 margin_left = 1045.0
 margin_top = -32.0
@@ -2046,6 +2158,14 @@ custom_fonts/font = SubResource( 3 )
 text = "-5"
 align = 1
 valign = 1
+
+[node name="TextureRect" type="TextureRect" parent="TE/ZigZag_Price"]
+margin_left = -39.0
+margin_top = 21.0
+margin_right = 2856.0
+margin_bottom = 2934.0
+rect_scale = Vector2( 0.01, 0.01 )
+texture = ExtResource( 15 )
 
 [node name="Buncher_Price" type="Label" parent="TE"]
 margin_left = 1243.0
@@ -2059,6 +2179,14 @@ text = "-2"
 align = 1
 valign = 1
 
+[node name="TextureRect" type="TextureRect" parent="TE/Buncher_Price"]
+margin_left = -39.0
+margin_top = 21.0
+margin_right = 2856.0
+margin_bottom = 2934.0
+rect_scale = Vector2( 0.01, 0.01 )
+texture = ExtResource( 15 )
+
 [node name="Buddy_Price" type="Label" parent="TE"]
 margin_left = 1427.0
 margin_top = -32.0
@@ -2070,6 +2198,14 @@ custom_fonts/font = SubResource( 3 )
 text = "-10"
 align = 1
 valign = 1
+
+[node name="TextureRect" type="TextureRect" parent="TE/Buddy_Price"]
+margin_left = -39.0
+margin_top = 21.0
+margin_right = 2856.0
+margin_bottom = 2934.0
+rect_scale = Vector2( 0.01, 0.01 )
+texture = ExtResource( 15 )
 
 [node name="Indicator" type="TextureRect" parent="."]
 modulate = Color( 0.278431, 0.533333, 0.827451, 1 )
@@ -2115,7 +2251,7 @@ margin_top = 4.0
 margin_right = 23.0
 margin_bottom = 20.0
 rect_scale = Vector2( 0.5, 0.1 )
-max_value = 500.0
+max_value = 50.0
 texture_under = ExtResource( 2 )
 texture_progress = ExtResource( 2 )
 tint_under = Color( 0.643137, 0.643137, 0.643137, 1 )
@@ -2142,7 +2278,7 @@ margin_top = 7.5
 margin_right = 23.0
 margin_bottom = 23.5
 rect_scale = Vector2( 0.5, 0.1 )
-max_value = 500.0
+max_value = 50.0
 texture_under = ExtResource( 2 )
 texture_progress = ExtResource( 2 )
 tint_under = Color( 0.643137, 0.643137, 0.643137, 1 )
@@ -2171,7 +2307,7 @@ margin_top = 12.46
 margin_right = 22.84
 margin_bottom = 28.46
 rect_scale = Vector2( 0.5, 0.1 )
-max_value = 500.0
+max_value = 50.0
 texture_under = ExtResource( 2 )
 texture_progress = ExtResource( 2 )
 tint_under = Color( 0.643137, 0.643137, 0.643137, 1 )

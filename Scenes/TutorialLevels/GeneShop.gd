@@ -62,6 +62,7 @@ const gene_buttons = [
 ]
 
 var genes = [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+var gene_values = [1, 1, 1, 1, 3, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1]
 const LV1 = 2
 const LV2 = 3
 const LV3 = 5
@@ -107,6 +108,7 @@ func _update_gene_count(index: int, type: String):
 func _on_gene_increase(button_name: String):
 	var index = gene_buttons.find(button_name)
 	var price = gene_prices[index]
+	var value = gene_values[index]
 	var warning = get_node("Credit/NotEnough")
 	if credits >= price:
 		warning.visible = false
@@ -114,7 +116,7 @@ func _on_gene_increase(button_name: String):
 		_update_player_display(index, "buy")
 		credits -= price
 		get_node("Credit/CreditVal").set_text(String(credits))
-		_update_credit_spent(index, price, "buy")
+		_update_total_values(index, value, "buy")
 	else:
 		warning.visible = true
 	
@@ -124,30 +126,31 @@ func _on_gene_decrease(button_name: String):
 	var index = gene_buttons.find(button_name)
 	if genes[index] > 0:
 		var price = gene_prices[index]
+		var value = gene_values[index]
 		var warning = get_node("Credit/NotEnough")
 		warning.visible = false
 		_update_gene_count(index, "sell")
 		_update_player_display(index, "sell")
 		credits += price
 		get_node("Credit/CreditVal").set_text(String(credits))
-		_update_credit_spent(index, price, "sell")
+		_update_total_values(index, value, "sell")
 		
-func _update_credit_spent(index: int, price: int, type: String):
+func _update_total_values(index: int, value: int, type: String):
 	if type == "sell":
-		price = -1 * abs(price)
+		value = -1 * abs(value)
 	elif type == "buy" :
-		price = abs(price)
+		value = abs(value)
 	if index > 8:
 		for key in credits_spent_on:
-			credits_spent_on[key][0]+=price
+			credits_spent_on[key][0]+=value
 			credits_spent_on[key][1].value = credits_spent_on[key][0]
 	elif index == 3 or index > 7:
-		credits_spent_on["HBTE"][0]+=price
+		credits_spent_on["HBTE"][0]+=value
 		credits_spent_on["HBTE"][1].value = credits_spent_on["HBTE"][0]
-		credits_spent_on["TEs"][0]+=price
+		credits_spent_on["TEs"][0]+=value
 		credits_spent_on["TEs"][1].value = credits_spent_on["TEs"][0]
 	else:
-		credits_spent_on["genes"][0]+=price
+		credits_spent_on["genes"][0]+=value
 		credits_spent_on["genes"][1].value = credits_spent_on["genes"][0]
 
 
@@ -160,7 +163,7 @@ func _on_Start_pressed():
 	Settings.apply_richness()
 	Settings.populate_cell_texture_paths()
 	Settings.update_seed()
-	SimulationSettings.set_genes(genes)
+	SimulationSettings.set_genes(genes, gene_values)
 	SimulationSettings.is_simulation = true
 	SimulationSettings.register_simulation_cell($PlayerDisplay)
 	get_tree().change_scene("res://Scenes/TutorialLevels/GeneSimulation.tscn")
