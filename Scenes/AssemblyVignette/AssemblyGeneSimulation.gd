@@ -24,7 +24,7 @@ onready var card_table = get_node("Canvas_CardTable/CardTable")
 onready var game_over = get_node("MessageLayer/GameOver")
 onready var console = get_node("Console_Layer/Console")
 onready var statsScreen = get_node("stats_Layer/statsScreen")
-
+onready var label = get_node("Label")
 #NOTE: $Player should NEVER be called. Ever.  For any reason.
 #Eventually, I will put documentation in here explaining the workflow that
 #allows for multiplayer
@@ -91,7 +91,7 @@ func _ready():
 	#$WorldMap.connect("add_card_event_log", self, "_add_event_content")
 	#$WorldMap/WorldMap_UI/InternalPanel/InternalResourceController.connect("add_card_event_log", self, "_add_event_content")
 	switch_to_simulation()
-	#only_show_chromosome()
+	only_show_chromosome()
 	setup_simulation()
 	start_simulation()
 	
@@ -115,9 +115,13 @@ func setup_simulation():
 		console.remove_gene("top", i, false)
 	for i in range(console.get_chrom_length("bottom")):
 		console.remove_gene("bottom", i, false)
+		
 	get_node("Goal").hide()
 	get_node("Canvas_CardTable").show()
-	_show_card_table()
+	get_node("Canvas_CardTable/CardTable/Organism/lbl_dead").hide()
+	get_node("Canvas_CardTable/CardTable/Organism/tool_tip4").hide()
+	
+	label.show()
 	var arrayIndex = 0
 
 	print(AssemblyVignetteGlobal.chromosome1)
@@ -161,6 +165,8 @@ func setup_simulation():
 func start_simulation():
 	yield(get_tree().create_timer(20.0), "timeout")
 	for i in range(10):
+		print("Number of repairs: "+ str(i))
+		label.set_text ("Number of repairs: "+ str(i))
 		card_table._on_fixAllBreaks_pressed()
 		yield(get_tree().create_timer(5.0), "timeout")
 		$Canvas_CardTable/CardTable/Organism.jump_ates()

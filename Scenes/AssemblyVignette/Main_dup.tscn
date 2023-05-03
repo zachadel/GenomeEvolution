@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Scenes/AssemblyVignette/AssemblyGeneSimulation.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Console.tscn" type="PackedScene" id=2]
@@ -7,6 +7,11 @@
 [ext_resource path="res://Scenes/statsScreen/statsScreen.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scenes/EventLog/eventLog.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Scenes/MainMenu/Goal.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Assets/Fonts/OpenSans-Bold.ttf" type="DynamicFontData" id=8]
+
+[sub_resource type="DynamicFont" id=1]
+size = 40
+font_data = ExtResource( 8 )
 
 [node name="Main" type="Control"]
 mouse_filter = 2
@@ -63,6 +68,18 @@ layer = 125
 
 [node name="statsScreen" parent="stats_Layer" instance=ExtResource( 5 )]
 visible = false
+
+[node name="Label" type="Label" parent="."]
+visible = false
+margin_left = 50.0
+margin_top = 617.0
+margin_right = 450.0
+margin_bottom = 840.0
+custom_fonts/font = SubResource( 1 )
+text = "Number of repairs:"
+align = 1
+valign = 1
+autowrap = true
 
 [connection signal="confirmed" from="MessageLayer/GameOver" to="." method="_on_GameOver_confirmed"]
 [connection signal="change_to_main_menu" from="WorldMap" to="." method="_on_WorldMap_change_to_main_menu"]
