@@ -44,6 +44,7 @@ STATS="*res://Scripts/Globals/STATS.gd"
 PROGENY="*res://Scripts/Globals/PROGENY.gd"
 COMPETITORS="*res://Scripts/Globals/COMPETITORS.gd"
 SimulationSettings="*res://Scenes/TutorialLevels/simulation_settings.gd"
+AssemblyVignetteGlobal="*res://Scenes/AssemblyVignette/AssemblyVignetteGlobal.gd"
 
 [display]
 

@@ -280,18 +280,18 @@ func mission_control(category, idx):
 					0,1,2,3,4,5:
 						#print("eat 2 of something")
 						end_curr_mission = 2;
-					6:
-						print("eat till the Fe border is green")
-					7:
-						print("eat till the Ca border is green")
-					8:
-						print("eat till the Na border is green")
-					9:
-						print("eat till the P border is green")
-					10:
-						print("eat till the Hg border is green")
-					11:
-						print("eat till the N border is green")
+					# 6:
+					# 	print("eat till the Fe border is green")
+					# 7:
+					# 	print("eat till the Ca border is green")
+					# 8:
+					# 	print("eat till the Na border is green")
+					# 9:
+					# 	print("eat till the P border is green")
+					# 10:
+					# 	print("eat till the Hg border is green")
+					# 11:
+					# 	print("eat till the N border is green")
 			else:
 				return false
 		"explore": #explore

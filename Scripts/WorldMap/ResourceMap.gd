@@ -283,7 +283,6 @@ func clear_tile_resources(tile):
 	
 #resources[i] = value
 func get_tile_resources(pos):
-	print("in here")
 	var conv_pos = _convert_pos(pos)
 		
 	var resources = {}

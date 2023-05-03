@@ -30,9 +30,6 @@ custom_constants/margin_right = 80
 custom_constants/margin_top = 80
 custom_constants/margin_left = 80
 custom_constants/margin_bottom = 80
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Label" type="Label" parent="MarginContainer"]
 margin_left = 80.0

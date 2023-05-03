@@ -1,20 +1,20 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://Scripts/Main.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/AssemblyVignette/AssemblyGeneSimulation.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Console.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/WorldMap/WorldMap.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/CardTable/CardTable.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Scenes/statsScreen/statsScreen.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scenes/EventLog/eventLog.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/MainMenu/Goal.tscn" type="PackedScene" id=7]
 
 [node name="Main" type="Control"]
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+
+[node name="Goal" parent="." instance=ExtResource( 7 )]
 
 [node name="Event_Log_Layer" type="CanvasLayer" parent="."]
 layer = 70
@@ -46,6 +46,7 @@ window_title = "Game Over!"
 dialog_text = "You died! Please press OK to go to the death screen."
 
 [node name="WorldMap" parent="." instance=ExtResource( 3 )]
+visible = false
 
 [node name="Canvas_CardTable" type="CanvasLayer" parent="."]
 layer = 5

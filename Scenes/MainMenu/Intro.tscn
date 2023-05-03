@@ -579,7 +579,7 @@ custom_fonts/italics_font = ExtResource( 9 )
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[i][center]All living cells are made of stuff...[/center][/i]"
-text = "[i][center]All living cells are made of stuff...[/center][/i]"
+text = "All living cells are made of stuff..."
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -737,7 +737,7 @@ custom_fonts/italics_font = ExtResource( 9 )
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[i][center]The instructions for how to put this stuff together to build and protect a living cell are written in code as genes...[/center][/i]"
-text = "[i][center]The instructions for how to put this stuff together to build and protect a living cell are written in code as genes...[/center][/i]"
+text = "The instructions for how to put this stuff together to build and protect a living cell are written in code as genes..."
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -841,7 +841,7 @@ custom_fonts/italics_font = ExtResource( 9 )
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[i][center]Each gene is a blueprint for making or doing something important...[/center][/i]"
-text = "[i][center]Each gene is a blueprint for making or doing something important...[/center][/i]"
+text = "Each gene is a blueprint for making or doing something important..."
 scroll_active = false
 
 [node name="Transposon" parent="Genes" instance=ExtResource( 3 )]
@@ -879,7 +879,7 @@ custom_fonts/italics_font = ExtResource( 9 )
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[i][b]Instructions to make the cell itself. Without them, your cells would fall apart![/b][/i]"
-text = "[i][b]Instructions to make the cell itself. Without them, your cells would fall apart![/b][/i]"
+text = "Instructions to make the cell itself. Without them, your cells would fall apart!"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -899,7 +899,7 @@ custom_fonts/italics_font = ExtResource( 9 )
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[i][b]Instructions to make tools for sensing the world around you. Without them, your cells couldn't find food or detect danger![/b][/i]"
-text = "[i][b]Instructions to make tools for sensing the world around you. Without them, your cells couldn't find food or detect danger![/b][/i]"
+text = "Instructions to make tools for sensing the world around you. Without them, your cells couldn't find food or detect danger!"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -919,7 +919,7 @@ custom_fonts/italics_font = ExtResource( 9 )
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[i][b]Instructions to make tools for building other tools - without them, your cells could not make anything![/b][/i]"
-text = "[i][b]Instructions to make tools for building other tools - without them, your cells could not make anything![/b][/i]"
+text = "Instructions to make tools for building other tools - without them, your cells could not make anything!"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1095,7 +1095,7 @@ custom_fonts/italics_font = ExtResource( 9 )
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[i][center]All the genes in a living cell are linked together like beads on strings.[/center][/i]"
-text = "[i][center]All the genes in a living cell are linked together like beads on strings.[/center][/i]"
+text = "All the genes in a living cell are linked together like beads on strings."
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1156,7 +1156,7 @@ custom_fonts/bold_font = SubResource( 11 )
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[b]All the genes on a single string are called a Chromosome. All the chromosomes together are called the Genome.[/b]"
-text = "[b]All the genes on a single string are called a Chromosome. All the chromosomes together are called the Genome.[/b]"
+text = "All the genes on a single string are called a Chromosome. All the chromosomes together are called the Genome."
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1327,7 +1327,7 @@ custom_fonts/italics_font = ExtResource( 9 )
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[i][center]Just like real strings, the strings that make up the genome can be damaged or broken![/center][/i]"
-text = "[i][center]Just like real strings, the strings that make up the genome can be damaged or broken![/center][/i]"
+text = "Just like real strings, the strings that make up the genome can be damaged or broken!"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1390,7 +1390,7 @@ custom_fonts/bold_font = SubResource( 11 )
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[i][b]If these breaks are not fixed, the cell can't make what it needs and will die![/b][/i]"
-text = "[i][b]If these breaks are not fixed, the cell can't make what it needs and will die![/b][/i]"
+text = "If these breaks are not fixed, the cell can't make what it needs and will die!"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1570,7 +1570,7 @@ custom_fonts/italics_font = ExtResource( 9 )
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[i][center]Oh, and not every piece of the genome is a gene.[/center][/i]"
-text = "[i][center]Oh, and not every piece of the genome is a gene.[/center][/i]"
+text = "Oh, and not every piece of the genome is a gene."
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1633,7 +1633,7 @@ custom_fonts/bold_font = SubResource( 11 )
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[i][b]Some parts don't have any instructions, like these blanks here and here.[/b][/i]"
-text = "[i][b]Some parts don't have any instructions, like these blanks here and here.[/b][/i]"
+text = "Some parts don't have any instructions, like these blanks here and here."
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1843,7 +1843,7 @@ custom_fonts/italics_font = ExtResource( 9 )
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[i][center]What's that?  Who am I you ask?[/center][/i]"
-text = "[i][center]What's that?  Who am I you ask?[/center][/i]"
+text = "What's that?  Who am I you ask?"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1874,7 +1874,7 @@ custom_fonts/italics_font = ExtResource( 9 )
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[i][center]I'm a transposon! I live in the genome too![/center][/i]"
-text = "[i][center]I'm a transposon! I live in the genome too![/center][/i]"
+text = "I'm a transposon! I live in the genome too!"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": true
@@ -1910,7 +1910,7 @@ custom_fonts/italics_font = ExtResource( 9 )
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[i][center]When me and my friends jump around, it is...[/center][/i]"
-text = "[i][center]When me and my friends jump around, it is...[/center][/i]"
+text = "When me and my friends jump around, it is..."
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
