@@ -23,6 +23,7 @@ onready var card_table = get_node("Canvas_CardTable/CardTable")
 onready var game_over = get_node("MessageLayer/GameOver")
 onready var console = get_node("Console_Layer/Console")
 onready var statsScreen = get_node("stats_Layer/statsScreen")
+onready var resultsScreen = get_node("results_Layer/resultsScreen")
 
 #NOTE: $Player should NEVER be called. Ever.  For any reason.
 #Eventually, I will put documentation in here explaining the workflow that
@@ -30,7 +31,9 @@ onready var statsScreen = get_node("stats_Layer/statsScreen")
 var cardTable = false;
 var worldMapUI = false;
 var competitors_allowed;
+var simulation_done = false;
 func _ready(): 
+	$Canvas_CardTable/CardTable.connect("break_simulation", self, "break_simulation")
 	
 	_hide_card_table()
 	#Add looping after first_player if there are multiple players, but only give the first
@@ -136,14 +139,20 @@ func start_simulation():
 	yield(get_tree().create_timer(20.0), "timeout")
 	var score = 1
 	$Canvas_CardTable/CardTable/Score.bbcode_text = "[b]Turn: %s[/b]" % str(score)
-	for i in range(10):
+	while !simulation_done:
+		if score == 5: break
 		card_table._on_fixAllBreaks_pressed()
 		yield(get_tree().create_timer(5.0), "timeout")
 		$Canvas_CardTable/CardTable/Organism.jump_ates()
 		yield(get_tree().create_timer(15.0), "timeout")
 		score = score + 1
 		$Canvas_CardTable/CardTable/Score.bbcode_text = "[b]Turn: %s[/b]" % str(score)
+	$Canvas_CardTable.hide()
+	resultsScreen.set_values(score-1)
+	$results_Layer/resultsScreen.show()
 	
+func break_simulation():
+	simulation_done = true
 	
 func _on_new_progeny(alive):
 	if alive:

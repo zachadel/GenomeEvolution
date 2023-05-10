@@ -8,6 +8,7 @@ signal card_stats_screen;
 signal card_event_log;
 signal add_card_event_log(content, tags);
 signal show_pop_quiz;
+signal break_simulation;
 
 
 onready var justnow_label : RichTextLabel = $ctl_justnow/lbl_justnow;
@@ -348,6 +349,8 @@ func _add_justnow_bbcode(bbcode : String, tags := {}):
 		justnow_label.pop();
 
 func _on_Organism_justnow_update(text):
+	if text == "There are no transposons in your genes.":
+		emit_signal("break_simulation")
 	_add_justnow_bbcode("\n%s\n" % text);
 	$WarningPopUp/Label.text = text
 	emit_signal("add_card_event_log", "\n%s\n" % text, {})

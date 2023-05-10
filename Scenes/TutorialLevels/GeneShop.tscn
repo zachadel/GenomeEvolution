@@ -2230,8 +2230,8 @@ bbcode_text = "[center][b]Genome indicators[b][center]"
 text = "Genome indicators"
 
 [node name="GenePower" type="Control" parent="Indicator"]
-margin_right = 40.0
-margin_bottom = 40.0
+margin_right = 16.0
+margin_bottom = 16.0
 
 [node name="Label" type="RichTextLabel" parent="Indicator/GenePower"]
 margin_left = 0.279999
@@ -2258,8 +2258,8 @@ tint_under = Color( 0.643137, 0.643137, 0.643137, 1 )
 tint_progress = Color( 0.101961, 0.298039, 0.956863, 1 )
 
 [node name="EvolutionP" type="Control" parent="Indicator"]
-margin_right = 40.0
-margin_bottom = 40.0
+margin_right = 16.0
+margin_bottom = 16.0
 
 [node name="Label" type="RichTextLabel" parent="Indicator/EvolutionP"]
 margin_top = 7.0
