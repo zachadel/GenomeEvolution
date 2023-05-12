@@ -6,6 +6,12 @@ enum GSTATE {
 	MAP
 };
 
+onready var indicator_values = {
+	"genes":[0, get_node("Canvas_CardTable/CardTable/Indicator/GenePower/GenePowerProgress"), get_node("Canvas_CardTable/CardTable/Indicator/GenePower/GenePowerValue")],
+	"HBTE":[0, get_node("Canvas_CardTable/CardTable/Indicator/EvolutionP/EvolutionPProgress"), get_node("Canvas_CardTable/CardTable/Indicator/EvolutionP/EvolutionPValue")],
+	"TEs":[0, get_node("Canvas_CardTable/CardTable/Indicator/RiskOfChaos/RiskOfChaosProgress"), get_node("Canvas_CardTable/CardTable/Indicator/RiskOfChaos/RiskOfChosValue")]
+}
+
 var gstate = GSTATE.TITLE
 var state_label = ["Title", "Map", "Table"]
 
@@ -79,13 +85,6 @@ func _ready():
 	#this_settings.connect("unlock_all_buttons", self, "_on_unlock_all_buttons")
 	$stats_Layer/statsScreen.connect('show_cardTable', self, "_show_cardTable")
 	$WorldMap/WorldMap_UI.connect('stats_screen', self, "_show_control")
-	$Canvas_CardTable/CardTable/Organism.connect("add_card_event_log", self, "_add_event_content")
-	$Canvas_CardTable/CardTable.connect('card_stats_screen', self, "_card_show_control")
-	$WorldMap/WorldMap_UI.connect("show_event_log", self, "_show_event_log")
-	$Canvas_CardTable/CardTable.connect("card_event_log", self, "_card_event_log")
-	$Canvas_CardTable/CardTable.connect("add_card_event_log", self, "_add_event_content")
-	$WorldMap.connect("add_card_event_log", self, "_add_event_content")
-	$WorldMap/WorldMap_UI/InternalPanel/InternalResourceController/EnergyBar.connect("add_card_event_log", self,"_add_event_content")
 	STATS.connect("progeny_updated", self, "_on_new_progeny");
 	STATS.connect("mission_accomplished", self, "_on_mission_accomplished");
 	STATS.connect("progress_bar", self, "_on_progress_bar");
@@ -106,8 +105,11 @@ func only_show_chromosome():
 	for child in card_table.get_children():
 		if child.get_class() != "Timer":
 			child.hide()
-	card_table.get_Organism().show()
+	
+	#card_table.get_Organism().show()
+	$Canvas_CardTable/CardTable/Organism.show()
 	$Canvas_CardTable/CardTable/Score.show()
+	$Canvas_CardTable/CardTable/Indicator.show()
 
 # This function sets up arrays of genes that the player selected.
 func setup_simulation():
@@ -134,26 +136,48 @@ func setup_simulation():
 			$Canvas_CardTable/CardTable/Organism/scroll/chromes.get_cmsm(0).add_elm(nxt_gelm, arrayIndex)
 			$Canvas_CardTable/CardTable/Organism/scroll/chromes.get_cmsm(1).add_elm(Game.copy_elm(nxt_gelm), arrayIndex)
 			arrayIndex += 1
+	update_indicator()
 			
 func start_simulation():
 	yield(get_tree().create_timer(20.0), "timeout")
 	var score = 1
 	$Canvas_CardTable/CardTable/Score.bbcode_text = "[b]Turn: %s[/b]" % str(score)
 	while !simulation_done:
-		if score == 5: break
+		update_indicator()
+		if score == 10: break
+		if indicator_values["genes"][0] >= 30: break
 		card_table._on_fixAllBreaks_pressed()
 		yield(get_tree().create_timer(5.0), "timeout")
 		$Canvas_CardTable/CardTable/Organism.jump_ates()
 		yield(get_tree().create_timer(15.0), "timeout")
 		score = score + 1
+		#$Canvas_CardTable/CardTable/Score.bbcode_text = str($Canvas_CardTable/CardTable/Border1/ChromosomeStatus/HBoxContainer/Locomotion.get_value())
 		$Canvas_CardTable/CardTable/Score.bbcode_text = "[b]Turn: %s[/b]" % str(score)
 	$Canvas_CardTable.hide()
-	resultsScreen.set_values(score-1)
+	resultsScreen.set_values(score-1, indicator_values)
 	$results_Layer/resultsScreen.show()
 	
 func break_simulation():
 	simulation_done = true
 	
+func update_indicator():
+	for key in indicator_values:
+		indicator_values[key][0] = 0
+	for child in $Canvas_CardTable/CardTable/Border1/ChromosomeStatus/HBoxContainer.get_children():
+		if "ate" in str(child):
+			for key in indicator_values:
+				indicator_values[key][0]+= int(round($Canvas_CardTable/CardTable/Border1/ChromosomeStatus/HBoxContainer/ate.get_value()))
+				indicator_values[key][1].value = indicator_values[key][0]
+				indicator_values[key][2].bbcode_text = "[center]" + str(indicator_values[key][0]) + "[/center]"
+		elif "Helper" in str(child):
+			indicator_values["HBTE"][0]+= int(round($Canvas_CardTable/CardTable/Border1/ChromosomeStatus/HBoxContainer/Helper.get_value()))
+			indicator_values["HBTE"][1].value = indicator_values["HBTE"][0]
+			indicator_values["HBTE"][2].bbcode_text = "[center]" + str(indicator_values["HBTE"][0]) + "[/center]"
+		else:
+			indicator_values["genes"][0]+= int(round(get_node("Canvas_CardTable/CardTable/Border1/ChromosomeStatus/HBoxContainer/"+str(child).split(':')[0]).get_value()))
+			indicator_values["genes"][1].value = indicator_values["genes"][0]
+			indicator_values["genes"][2].bbcode_text = "[center]" + str(indicator_values["genes"][0]) + "[/center]"
+		
 func _on_new_progeny(alive):
 	if alive:
 		var new_player = create_player()
@@ -175,17 +199,6 @@ func _on_progress_bar(category, index, percent):
 		$WorldMap/WorldMap_UI/Missions.progressBar(percent)
 		pass
 
-func _add_event_content(content, tags):
-	$Event_Log_Layer/pnl_event_log.addContent(content, tags)
-	#print("what is being passed through: "+ title +" "+content)
-	pass
-	
-func _card_event_log():
-	$Event_Log_Layer/pnl_event_log.show()
-	pass
-func _show_event_log():
-	$Event_Log_Layer/pnl_event_log.show()
-	pass
 	
 func _show_control():
 	worldMapUI = true

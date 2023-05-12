@@ -62,7 +62,7 @@ const gene_buttons = [
 ]
 
 var genes = [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-var gene_values = [1, 1, 1, 1, 3, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1]
+var gene_values = [1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1]
 const LV1 = 2
 const LV2 = 3
 const LV3 = 5
@@ -71,9 +71,9 @@ const LV4 = 8
 var credits = 100
 
 onready var credits_spent_on = {
-	"genes":[0, get_node("Indicator/GenePower/GenePowerProgress")],
-	"HBTE":[0, get_node("Indicator/EvolutionP/EvolutionPProgress")],
-	"TEs":[0, get_node("Indicator/RiskOfChaos/RiskOfChaosProgress")]
+	"genes":[0, get_node("Indicator/GenePower/GenePowerProgress"), get_node("Indicator/GenePower/GenePowerValue")],
+	"HBTE":[0, get_node("Indicator/EvolutionP/EvolutionPProgress"), get_node("Indicator/EvolutionP/EvolutionPValue")],
+	"TEs":[0, get_node("Indicator/RiskOfChaos/RiskOfChaosProgress"), get_node("Indicator/RiskOfChaos/RiskOfChosValue")]
 }
 
 func _ready():
@@ -142,16 +142,17 @@ func _update_total_values(index: int, value: int, type: String):
 		value = abs(value)
 	if index > 8:
 		for key in credits_spent_on:
-			credits_spent_on[key][0]+=value
+			credits_spent_on[key][0]+=2*value
 			credits_spent_on[key][1].value = credits_spent_on[key][0]
+			credits_spent_on[key][2].bbcode_text = "[center]" + str(credits_spent_on[key][0]) + "[/center]"
 	elif index == 3 or index > 7:
-		credits_spent_on["HBTE"][0]+=value
+		credits_spent_on["HBTE"][0]+=2*value
 		credits_spent_on["HBTE"][1].value = credits_spent_on["HBTE"][0]
-		credits_spent_on["TEs"][0]+=value
-		credits_spent_on["TEs"][1].value = credits_spent_on["TEs"][0]
+		credits_spent_on["HBTE"][2].bbcode_text = "[center]" + str(credits_spent_on["HBTE"][0]) + "[/center]"
 	else:
 		credits_spent_on["genes"][0]+=value
 		credits_spent_on["genes"][1].value = credits_spent_on["genes"][0]
+		credits_spent_on["genes"][2].bbcode_text = "[center]" + str(credits_spent_on["genes"][0]) + "[/center]"
 
 
 

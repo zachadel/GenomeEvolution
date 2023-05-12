@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=2]
+[gd_scene load_steps=69 format=2]
 
 [ext_resource path="res://Scripts/CardTable/CardTable.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player/Organism.tscn" type="PackedScene" id=2]
@@ -48,6 +48,7 @@
 [ext_resource path="res://Scenes/WorldMap/pop_quiz.tscn" type="PackedScene" id=46]
 [ext_resource path="res://Assets/Images/Menus/Q.png" type="Texture" id=47]
 [ext_resource path="res://Scenes/Competitor/Comp_Organism.tscn" type="PackedScene" id=48]
+[ext_resource path="res://Scenes/TutorialLevels/imgs/Background.png" type="Texture" id=49]
 
 [sub_resource type="Theme" id=1]
 Button/colors/font_color_disabled = Color( 0, 0, 0, 1 )
@@ -172,6 +173,38 @@ font_data = ExtResource( 34 )
 [sub_resource type="DynamicFont" id=35]
 size = 50
 font_data = ExtResource( 34 )
+
+[sub_resource type="DynamicFontData" id=36]
+font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
+
+[sub_resource type="DynamicFont" id=37]
+use_mipmaps = true
+use_filter = true
+font_data = SubResource( 36 )
+
+[sub_resource type="DynamicFontData" id=38]
+font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
+
+[sub_resource type="DynamicFont" id=39]
+use_mipmaps = true
+use_filter = true
+font_data = SubResource( 38 )
+
+[sub_resource type="DynamicFontData" id=40]
+font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
+
+[sub_resource type="DynamicFont" id=41]
+use_mipmaps = true
+use_filter = true
+font_data = SubResource( 40 )
+
+[sub_resource type="DynamicFontData" id=42]
+font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
+
+[sub_resource type="DynamicFont" id=43]
+use_mipmaps = true
+use_filter = true
+font_data = SubResource( 42 )
 
 [node name="CardTable" type="Control"]
 anchor_right = 1.0
@@ -2168,6 +2201,158 @@ custom_fonts/normal_font = SubResource( 35 )
 bbcode_enabled = true
 bbcode_text = "[b]Turn: 0 [/b]"
 text = "Turn: 0 "
+
+[node name="Indicator" type="TextureRect" parent="."]
+visible = false
+modulate = Color( 0.278431, 0.533333, 0.827451, 1 )
+margin_left = 64.7194
+margin_top = 660.644
+margin_right = 80.7194
+margin_bottom = 676.644
+rect_scale = Vector2( 25, 15 )
+texture = ExtResource( 49 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="IndicatorTitle" type="RichTextLabel" parent="Indicator"]
+margin_left = -0.76001
+margin_top = 0.0666656
+margin_right = 172.24
+margin_bottom = 53.0667
+rect_scale = Vector2( 0.1, 0.1 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+custom_fonts/bold_font = SubResource( 37 )
+custom_fonts/normal_font = SubResource( 37 )
+bbcode_enabled = true
+bbcode_text = "[center][b]Genome indicators[b][center]"
+text = "Genome indicators"
+
+[node name="GenePower" type="Control" parent="Indicator"]
+margin_right = 16.0
+margin_bottom = 16.0
+
+[node name="Label" type="RichTextLabel" parent="Indicator/GenePower"]
+margin_left = 0.279999
+margin_top = 3.86666
+margin_right = 111.28
+margin_bottom = 55.8667
+rect_scale = Vector2( 0.05, 0.05 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+custom_fonts/normal_font = SubResource( 37 )
+bbcode_enabled = true
+bbcode_text = "[center]Gene Power[center]"
+text = "Gene Power"
+
+[node name="GenePowerProgress" type="TextureProgress" parent="Indicator/GenePower"]
+margin_left = 7.0
+margin_top = 4.0
+margin_right = 23.0
+margin_bottom = 20.0
+rect_scale = Vector2( 0.5, 0.1 )
+max_value = 50.0
+texture_under = ExtResource( 49 )
+texture_progress = ExtResource( 49 )
+tint_under = Color( 0.643137, 0.643137, 0.643137, 1 )
+tint_progress = Color( 0.101961, 0.298039, 0.956863, 1 )
+
+[node name="GenePowerValue" type="RichTextLabel" parent="Indicator/GenePower"]
+modulate = Color( 0.94902, 0.94902, 0.94902, 1 )
+margin_left = 5.0
+margin_top = 4.0
+margin_right = 28.0
+margin_bottom = 52.0
+rect_scale = Vector2( 0.08, 0.08 )
+custom_colors/default_color = Color( 0.0431373, 0.0313726, 0.984314, 1 )
+custom_colors/font_color_selected = Color( 0.843137, 0.129412, 0.129412, 1 )
+custom_fonts/normal_font = SubResource( 39 )
+bbcode_enabled = true
+bbcode_text = "[center]0[center]"
+text = "0"
+
+[node name="EvolutionP" type="Control" parent="Indicator"]
+margin_right = 16.0
+margin_bottom = 16.0
+
+[node name="Label" type="RichTextLabel" parent="Indicator/EvolutionP"]
+margin_top = 7.0
+margin_right = 111.0
+margin_bottom = 82.0
+rect_scale = Vector2( 0.05, 0.05 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+custom_fonts/normal_font = SubResource( 37 )
+bbcode_enabled = true
+bbcode_text = "[center]Evolution Potential[center]"
+text = "Evolution Potential"
+
+[node name="EvolutionPProgress" type="TextureProgress" parent="Indicator/EvolutionP"]
+margin_left = 7.0
+margin_top = 7.5
+margin_right = 23.0
+margin_bottom = 23.5
+rect_scale = Vector2( 0.5, 0.1 )
+max_value = 50.0
+texture_under = ExtResource( 49 )
+texture_progress = ExtResource( 49 )
+tint_under = Color( 0.643137, 0.643137, 0.643137, 1 )
+tint_progress = Color( 0.101961, 0.298039, 0.956863, 1 )
+
+[node name="EvolutionPValue" type="RichTextLabel" parent="Indicator/EvolutionP"]
+modulate = Color( 0.94902, 0.94902, 0.94902, 1 )
+margin_left = 5.0
+margin_top = 8.0
+margin_right = 29.0
+margin_bottom = 59.0
+rect_scale = Vector2( 0.08, 0.08 )
+custom_colors/default_color = Color( 0.0431373, 0.0313726, 0.984314, 1 )
+custom_colors/font_color_selected = Color( 0.843137, 0.129412, 0.129412, 1 )
+custom_fonts/normal_font = SubResource( 41 )
+bbcode_enabled = true
+bbcode_text = "[center]0[center]"
+text = "0"
+
+[node name="RiskOfChaos" type="Control" parent="Indicator"]
+margin_left = 0.079998
+margin_top = 0.0666637
+margin_right = 16.08
+margin_bottom = 16.0667
+
+[node name="Label" type="RichTextLabel" parent="Indicator/RiskOfChaos"]
+margin_top = 12.0
+margin_right = 111.0
+margin_bottom = 132.0
+rect_scale = Vector2( 0.05, 0.05 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+custom_fonts/normal_font = SubResource( 37 )
+bbcode_enabled = true
+bbcode_text = "[center]Risk of Chaos / Destruction[center]"
+text = "Risk of Chaos / Destruction"
+
+[node name="RiskOfChaosProgress" type="TextureProgress" parent="Indicator/RiskOfChaos"]
+margin_left = 6.84
+margin_top = 12.46
+margin_right = 22.84
+margin_bottom = 28.46
+rect_scale = Vector2( 0.5, 0.1 )
+max_value = 50.0
+texture_under = ExtResource( 49 )
+texture_progress = ExtResource( 49 )
+tint_under = Color( 0.643137, 0.643137, 0.643137, 1 )
+tint_progress = Color( 0.101961, 0.298039, 0.956863, 1 )
+
+[node name="RiskOfChosValue" type="RichTextLabel" parent="Indicator/RiskOfChaos"]
+modulate = Color( 0.94902, 0.94902, 0.94902, 1 )
+margin_left = 5.0
+margin_top = 12.0
+margin_right = 30.0
+margin_bottom = 62.0
+rect_scale = Vector2( 0.08, 0.08 )
+custom_colors/default_color = Color( 0.0431373, 0.0313726, 0.984314, 1 )
+custom_colors/font_color_selected = Color( 0.843137, 0.129412, 0.129412, 1 )
+custom_fonts/normal_font = SubResource( 43 )
+bbcode_enabled = true
+bbcode_text = "[center]0[center]"
+text = "0"
 
 [connection signal="gui_input" from="." to="." method="_on_CardTable_gui_input"]
 [connection signal="bandage_msg" from="Organism" to="." method="_on_Organism_bandage_msg"]

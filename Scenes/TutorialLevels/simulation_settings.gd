@@ -12,7 +12,7 @@ const genes = {
 	"Component":[0,1,1], 
 	"Deconstruction":[0,1,1],
 	"Helper":[0,1,1], 
-	"Locomotion":[0,1,3], 
+	"Locomotion":[0,1,1], 
 	"Manipulation":[0,1,1], 
 	"Replication":[0,1,1], 
 	"Sensing":[0,1,1],

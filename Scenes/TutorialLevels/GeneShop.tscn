@@ -120,13 +120,13 @@ use_mipmaps = true
 use_filter = true
 font_data = SubResource( 4 )
 
-[sub_resource type="DynamicFontData" id=36]
+[sub_resource type="DynamicFontData" id=38]
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
 
 [sub_resource type="DynamicFont" id=37]
 use_mipmaps = true
 use_filter = true
-font_data = SubResource( 36 )
+font_data = SubResource( 38 )
 
 [sub_resource type="DynamicFontData" id=29]
 font_path = "res://Assets/Fonts/OpenSans-Bold.ttf"
@@ -2208,6 +2208,7 @@ rect_scale = Vector2( 0.01, 0.01 )
 texture = ExtResource( 15 )
 
 [node name="Indicator" type="TextureRect" parent="."]
+visible = false
 modulate = Color( 0.278431, 0.533333, 0.827451, 1 )
 margin_left = 1100.0
 margin_top = 322.0
@@ -2257,6 +2258,20 @@ texture_progress = ExtResource( 2 )
 tint_under = Color( 0.643137, 0.643137, 0.643137, 1 )
 tint_progress = Color( 0.101961, 0.298039, 0.956863, 1 )
 
+[node name="GenePowerValue" type="RichTextLabel" parent="Indicator/GenePower"]
+modulate = Color( 0.94902, 0.94902, 0.94902, 1 )
+margin_left = 5.0
+margin_top = 4.0
+margin_right = 28.0
+margin_bottom = 52.0
+rect_scale = Vector2( 0.08, 0.08 )
+custom_colors/default_color = Color( 0.0431373, 0.0313726, 0.984314, 1 )
+custom_colors/font_color_selected = Color( 0.843137, 0.129412, 0.129412, 1 )
+custom_fonts/normal_font = SubResource( 37 )
+bbcode_enabled = true
+bbcode_text = "[center]0[center]"
+text = "0"
+
 [node name="EvolutionP" type="Control" parent="Indicator"]
 margin_right = 16.0
 margin_bottom = 16.0
@@ -2284,6 +2299,20 @@ texture_progress = ExtResource( 2 )
 tint_under = Color( 0.643137, 0.643137, 0.643137, 1 )
 tint_progress = Color( 0.101961, 0.298039, 0.956863, 1 )
 
+[node name="EvolutionPValue" type="RichTextLabel" parent="Indicator/EvolutionP"]
+modulate = Color( 0.94902, 0.94902, 0.94902, 1 )
+margin_left = 5.0
+margin_top = 8.0
+margin_right = 29.0
+margin_bottom = 59.0
+rect_scale = Vector2( 0.08, 0.08 )
+custom_colors/default_color = Color( 0.0431373, 0.0313726, 0.984314, 1 )
+custom_colors/font_color_selected = Color( 0.843137, 0.129412, 0.129412, 1 )
+custom_fonts/normal_font = SubResource( 37 )
+bbcode_enabled = true
+bbcode_text = "[center]0[center]"
+text = "0"
+
 [node name="RiskOfChaos" type="Control" parent="Indicator"]
 margin_left = 0.079998
 margin_top = 0.0666637
@@ -2292,7 +2321,7 @@ margin_bottom = 16.0667
 
 [node name="Label" type="RichTextLabel" parent="Indicator/RiskOfChaos"]
 margin_top = 12.0
-margin_right = 111.0
+margin_right = 118.0
 margin_bottom = 132.0
 rect_scale = Vector2( 0.05, 0.05 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
@@ -2312,6 +2341,75 @@ texture_under = ExtResource( 2 )
 texture_progress = ExtResource( 2 )
 tint_under = Color( 0.643137, 0.643137, 0.643137, 1 )
 tint_progress = Color( 0.101961, 0.298039, 0.956863, 1 )
+
+[node name="RiskOfChosValue" type="RichTextLabel" parent="Indicator/RiskOfChaos"]
+modulate = Color( 0.94902, 0.94902, 0.94902, 1 )
+margin_left = 5.0
+margin_top = 12.0
+margin_right = 30.0
+margin_bottom = 62.0
+rect_scale = Vector2( 0.08, 0.08 )
+custom_colors/default_color = Color( 0.0431373, 0.0313726, 0.984314, 1 )
+custom_colors/font_color_selected = Color( 0.843137, 0.129412, 0.129412, 1 )
+custom_fonts/normal_font = SubResource( 37 )
+bbcode_enabled = true
+bbcode_text = "[center]0[center]"
+text = "0"
+
+[node name="missions" type="TextureRect" parent="."]
+modulate = Color( 0.278431, 0.533333, 0.827451, 1 )
+margin_left = 1100.0
+margin_top = 322.0
+margin_right = 1116.0
+margin_bottom = 338.0
+rect_scale = Vector2( 25, 15 )
+texture = ExtResource( 2 )
+
+[node name="MissionsTitle" type="RichTextLabel" parent="missions"]
+margin_left = -0.76001
+margin_top = 0.0666656
+margin_right = 172.24
+margin_bottom = 53.0667
+rect_scale = Vector2( 0.1, 0.1 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+custom_fonts/bold_font = SubResource( 37 )
+custom_fonts/normal_font = SubResource( 37 )
+bbcode_enabled = true
+bbcode_text = "[center][b]Mission[b][center]"
+text = "Mission"
+
+[node name="StartCondition" type="Control" parent="missions"]
+margin_right = 16.0
+margin_bottom = 16.0
+
+[node name="Label" type="RichTextLabel" parent="missions/StartCondition"]
+margin_left = 0.279999
+margin_top = 3.86666
+margin_right = 111.28
+margin_bottom = 55.8667
+rect_scale = Vector2( 0.05, 0.05 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+custom_fonts/normal_font = SubResource( 37 )
+bbcode_enabled = true
+bbcode_text = "[center]Start With:[center]"
+text = "Start With:"
+
+[node name="WinCondition" type="Control" parent="missions"]
+margin_left = 0.079998
+margin_top = 0.0666637
+margin_right = 16.08
+margin_bottom = 16.0667
+
+[node name="Label" type="RichTextLabel" parent="missions/WinCondition"]
+margin_top = 12.0
+margin_right = 317.0
+margin_bottom = 132.0
+rect_scale = Vector2( 0.05, 0.05 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+custom_fonts/normal_font = SubResource( 37 )
+bbcode_enabled = true
+bbcode_text = "[center]Win Condition: Reach Gene Power 30![center]"
+text = "Win Condition: Reach Gene Power 30!"
 
 [node name="Start" type="Button" parent="."]
 margin_left = 131.0
